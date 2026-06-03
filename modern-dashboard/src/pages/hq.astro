@@ -41,21 +41,48 @@ const knowledgeBase = [
     source: "Notion",
     url: "https://zany-seer-d0e.notion.site/NY-STATE-ONE-CLICK-CANCELLATION-3651c22c014480b8b393ef3f40f294f3",
     owner: "CORE QA",
+    status: "Live link",
+    access: "QA Engineer",
+    freshness: "External source",
+    summary: "Cancellation compliance flow reference for validating one-click cancellation coverage and expected reservation-state behavior.",
+    nextAction: "Open source page and attach structured test cases to this HQ registry.",
     tags: ["Cancellation", "Compliance", "Reservation"]
   },
   {
-    title: "Release test flow registry",
-    source: "Planned",
+    title: "Release regression flow registry",
+    source: "HQ draft",
     url: "#kb",
     owner: "CORE QA",
+    status: "Draft",
+    access: "QA Engineer",
+    freshness: "Spec pending",
+    summary: "Central index for the smoke, regression, and release-signoff flows that should be reused across active release boards.",
+    nextAction: "Convert recurring release checklist items into reusable flow records.",
     tags: ["Regression", "Smoke", "Checklist"]
   },
   {
     title: "Jira comment and evidence patterns",
-    source: "Planned",
+    source: "HQ draft",
     url: "#kb",
     owner: "CORE QA",
+    status: "Draft",
+    access: "Automation Owner",
+    freshness: "Spec pending",
+    summary: "Reference patterns for posting Jira-ready findings, evidence links, screenshots, videos, and checklist summaries.",
+    nextAction: "Add examples from the Playwright evidence workflow once SPEC-HQ-05 expands.",
     tags: ["Jira", "Evidence", "QA Notes"]
+  },
+  {
+    title: "CORE API health validation",
+    source: "HQ draft",
+    url: "#kb",
+    owner: "Automation Owners",
+    status: "Planned",
+    access: "Automation Owner",
+    freshness: "Automation spec pending",
+    summary: "API validation flow library for the service health cards that will run on the five-minute operations cadence.",
+    nextAction: "Attach endpoint contracts and expected response rules during SPEC-HQ-06.",
+    tags: ["API", "Health", "Operations"]
   }
 ];
 
@@ -90,7 +117,7 @@ const statusCards = [
   { label: "Jira data pull", value: "Healthy", detail: "5 minute single-shot refresh", tone: "green" },
   { label: "Automation runner", value: "Ready", detail: "Approved scripts only", tone: "blue" },
   { label: "Cloudflare host", value: "Auth needed", detail: "Dry run passed; deploy token required", tone: "amber" },
-  { label: "Access model", value: "Mapped", detail: "Roles and gated sections drafted", tone: "violet" }
+  { label: "Knowledge base", value: "Mapped", detail: "Flow previews and owners drafted", tone: "violet" }
 ];
 
 const accessRoles = [
@@ -152,7 +179,7 @@ const hqSpecs = [
   { id: "SPEC-HQ-01", title: "Board registry", status: "Implemented", detail: ".122, .123, .124 board slots and preview panel." },
   { id: "SPEC-HQ-02", title: "Cloudflare hosting", status: "In progress", detail: "Static Assets config validated; deploy waits on Cloudflare auth." },
   { id: "SPEC-HQ-03", title: "Auth and permissions", status: "In progress", detail: "Role model, gated cards, and request-access UI are drafted." },
-  { id: "SPEC-HQ-04", title: "Knowledge base", status: "Planned", detail: "External links, previews, ownership, freshness." },
+  { id: "SPEC-HQ-04", title: "Knowledge base", status: "In progress", detail: "Flow cards, source links, ownership, and freshness are drafted." },
   { id: "SPEC-HQ-05", title: "Automation bench", status: "Planned", detail: "Playwright and Python API script registry." },
   { id: "SPEC-HQ-06", title: "Operational status", status: "Planned", detail: "5 minute API health results and service cards." },
   { id: "SPEC-HQ-07", title: "AI release summary", status: "Planned", detail: "Ticket risk, stale work, QA recommendations." },
@@ -267,29 +294,77 @@ const hqSpecs = [
         </article>
       </section>
 
-      <section class="module-grid">
-        <article class="module-panel" id="kb">
-          <div class="module-heading">
-            <div>
-              <p class="eyebrow">Knowledge base</p>
-              <h2>Test flow library</h2>
-            </div>
-            <span class="module-pill">Preview registry</span>
+      <section class="module-panel kb-module" id="kb">
+        <div class="module-heading">
+          <div>
+            <p class="eyebrow">Knowledge base</p>
+            <h2>Test flow library</h2>
           </div>
-          <div class="kb-list">
+          <span class="module-pill">SPEC-HQ-04 active</span>
+        </div>
+
+        <div class="kb-console">
+          <article class="kb-spotlight">
+            <div>
+              <p class="eyebrow">Featured flow</p>
+              <h3>{knowledgeBase[0].title}</h3>
+              <p>{knowledgeBase[0].summary}</p>
+            </div>
+            <dl>
+              <div>
+                <dt>Owner</dt>
+                <dd>{knowledgeBase[0].owner}</dd>
+              </div>
+              <div>
+                <dt>Source</dt>
+                <dd>{knowledgeBase[0].source}</dd>
+              </div>
+              <div>
+                <dt>Access</dt>
+                <dd>{knowledgeBase[0].access}</dd>
+              </div>
+            </dl>
+            <div class="kb-actions">
+              <a href={knowledgeBase[0].url}>Open source</a>
+              <a href="#access">Review access</a>
+            </div>
+          </article>
+
+          <div class="kb-list" aria-label="Knowledge base flow cards">
             {knowledgeBase.map((item) => (
-              <a class="kb-card" href={item.url}>
-                <span>{item.source}</span>
+              <article class="kb-card">
+                <div class="kb-card-top">
+                  <span>{item.source}</span>
+                  <em>{item.status}</em>
+                </div>
                 <strong>{item.title}</strong>
-                <small>Owner: {item.owner}</small>
-                <div>
+                <p>{item.summary}</p>
+                <dl>
+                  <div>
+                    <dt>Owner</dt>
+                    <dd>{item.owner}</dd>
+                  </div>
+                  <div>
+                    <dt>Freshness</dt>
+                    <dd>{item.freshness}</dd>
+                  </div>
+                  <div>
+                    <dt>Access</dt>
+                    <dd>{item.access}</dd>
+                  </div>
+                </dl>
+                <small>{item.nextAction}</small>
+                <div class="kb-tags">
                   {item.tags.map((tag) => <em>{tag}</em>)}
                 </div>
-              </a>
+                <a class="kb-open" href={item.url}>Open flow</a>
+              </article>
             ))}
           </div>
-        </article>
+        </div>
+      </section>
 
+      <section class="module-grid">
         <article class="module-panel" id="automation">
           <div class="module-heading">
             <div>
@@ -402,7 +477,7 @@ const hqSpecs = [
             <p class="eyebrow">Spec-driven delivery</p>
             <h2>HQ build checklist</h2>
           </div>
-          <span class="module-pill">2 complete / 2 active</span>
+          <span class="module-pill">2 complete / 3 active</span>
         </div>
         <div class="spec-grid">
           {hqSpecs.map((spec) => (
