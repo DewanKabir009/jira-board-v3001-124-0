@@ -1,0 +1,329 @@
+---
+import QaHqLayout from "../layouts/QaHqLayout.astro";
+import "../styles/qa-hq.css";
+
+const releaseBoards = [
+  {
+    release: "v3001.122.0",
+    label: ".122",
+    status: "Active",
+    state: "Live",
+    url: "https://dewankabir009.github.io/jira-board-v3001-122-0/",
+    modernUrl: "https://dewankabir009.github.io/jira-board-v3001-122-0/modern/",
+    repo: "DewanKabir009/jira-board-v3001-122-0",
+    summary: "Legacy board with the modern Astro preview path available for comparison."
+  },
+  {
+    release: "v3001.123.0",
+    label: ".123",
+    status: "Active",
+    state: "Live",
+    url: "https://dewankabir009.github.io/jira-board-v3001-123-0/",
+    modernUrl: "https://dewankabir009.github.io/jira-board-v3001-123-0/modern/",
+    repo: "DewanKabir009/jira-board-v3001-123-0",
+    summary: "Active prior CORE QA release board with automation runner, evidence, and assignment bridge."
+  },
+  {
+    release: "v3001.124.0",
+    label: ".124",
+    status: "Current",
+    state: "Live",
+    url: "https://dewankabir009.github.io/jira-board-v3001-124-0/",
+    modernUrl: "https://dewankabir009.github.io/jira-board-v3001-124-0/modern/",
+    repo: "DewanKabir009/jira-board-v3001-124-0",
+    summary: "Current CORE QA release board for v3001.124.0 with hosted bridge defaults and the HQ migration path."
+  }
+];
+
+const knowledgeBase = [
+  {
+    title: "NY State One Click Cancellation",
+    source: "Notion",
+    url: "https://zany-seer-d0e.notion.site/NY-STATE-ONE-CLICK-CANCELLATION-3651c22c014480b8b393ef3f40f294f3",
+    owner: "CORE QA",
+    tags: ["Cancellation", "Compliance", "Reservation"]
+  },
+  {
+    title: "Release test flow registry",
+    source: "Planned",
+    url: "#kb",
+    owner: "CORE QA",
+    tags: ["Regression", "Smoke", "Checklist"]
+  },
+  {
+    title: "Jira comment and evidence patterns",
+    source: "Planned",
+    url: "#kb",
+    owner: "CORE QA",
+    tags: ["Jira", "Evidence", "QA Notes"]
+  }
+];
+
+const automationScripts = [
+  {
+    name: "GolfNow Central smoke check",
+    kind: "Playwright",
+    environment: "DEV",
+    cadence: "On demand",
+    status: "Ready",
+    evidence: "Screenshot, video, trace, logs"
+  },
+  {
+    name: "CORE API health probe",
+    kind: "Python API",
+    environment: "DEV/STG",
+    cadence: "Every 5 min",
+    status: "Spec planned",
+    evidence: "JSON response, latency, assertion log"
+  },
+  {
+    name: "Release checkout regression",
+    kind: "Playwright",
+    environment: "STG",
+    cadence: "On demand",
+    status: "Spec planned",
+    evidence: "Screenshot, video, Jira-ready summary"
+  }
+];
+
+const statusCards = [
+  { label: "Jira data pull", value: "Healthy", detail: "5 minute single-shot refresh", tone: "green" },
+  { label: "Automation runner", value: "Ready", detail: "Approved scripts only", tone: "blue" },
+  { label: "Cloudflare host", value: "Auth needed", detail: "Dry run passed; deploy token required", tone: "amber" },
+  { label: "AI summary", value: "Planned", detail: "Worker endpoint required", tone: "violet" }
+];
+
+const hqSpecs = [
+  { id: "SPEC-HQ-00", title: "Product shell", status: "Implemented", detail: "HQ navigation, workbench layout, module cards." },
+  { id: "SPEC-HQ-01", title: "Board registry", status: "Implemented", detail: ".122, .123, .124 board slots and preview panel." },
+  { id: "SPEC-HQ-02", title: "Cloudflare hosting", status: "In progress", detail: "Static Assets config validated; deploy waits on Cloudflare auth." },
+  { id: "SPEC-HQ-03", title: "Auth and permissions", status: "Planned", detail: "Cloudflare Access plus in-app RBAC." },
+  { id: "SPEC-HQ-04", title: "Knowledge base", status: "Planned", detail: "External links, previews, ownership, freshness." },
+  { id: "SPEC-HQ-05", title: "Automation bench", status: "Planned", detail: "Playwright and Python API script registry." },
+  { id: "SPEC-HQ-06", title: "Operational status", status: "Planned", detail: "5 minute API health results and service cards." },
+  { id: "SPEC-HQ-07", title: "AI release summary", status: "Planned", detail: "Ticket risk, stale work, QA recommendations." },
+  { id: "SPEC-HQ-08", title: "Admin console", status: "Planned", detail: "Users, roles, sections, and script permissions." }
+];
+---
+
+<QaHqLayout title="CORE QA Headquarters">
+  <main class="hq-shell" id="hq-main">
+    <aside class="hq-sidebar" aria-label="CORE QA headquarters navigation">
+      <div class="hq-brand">
+        <span class="brand-mark" aria-hidden="true">QA</span>
+        <div>
+          <p class="eyebrow">CORE</p>
+          <h1>QA Headquarters</h1>
+        </div>
+      </div>
+
+      <nav class="hq-nav" aria-label="HQ modules">
+        <a class="active" href="#boards">Release boards</a>
+        <a href="#kb">Knowledge base</a>
+        <a href="#automation">Automation bench</a>
+        <a href="#ai">AI summary</a>
+        <a href="#status">Operations status</a>
+        <a href="#access">Access control</a>
+      </nav>
+
+      <div class="side-status">
+        <p class="eyebrow">Current pilot</p>
+        <strong>v3001.124.0</strong>
+        <span>Cloudflare migration target</span>
+      </div>
+    </aside>
+
+    <section class="hq-workbench" aria-label="CORE QA HQ workbench">
+      <header class="command-strip">
+        <div>
+          <p class="eyebrow">Test bench</p>
+          <h2>CORE QA operating hub</h2>
+          <p class="command-summary">Central workspace for release dashboards, test knowledge, automation evidence, AI triage, and service health.</p>
+        </div>
+        <div class="command-actions" aria-label="HQ quick links">
+          <a href="#boards">Boards</a>
+          <a href="#automation">Runbook</a>
+          <a href="#specs">Specs</a>
+        </div>
+      </header>
+
+      <section class="status-grid" id="status" aria-label="Operational status snapshot">
+        {statusCards.map((card) => (
+          <article class={`status-card ${card.tone}`}>
+            <span>{card.label}</span>
+            <strong>{card.value}</strong>
+            <p>{card.detail}</p>
+          </article>
+        ))}
+      </section>
+
+      <section class="module-panel board-module" id="boards">
+        <div class="module-heading">
+          <div>
+            <p class="eyebrow">Release boards</p>
+            <h2>Dashboard command center</h2>
+          </div>
+          <span class="module-pill">3 releases tracked</span>
+        </div>
+
+        <div class="board-tabs" role="list" aria-label="Release dashboard shortcuts">
+          {releaseBoards.map((board) => (
+            <a class={board.status === "Current" ? "board-tab current" : "board-tab"} href={board.modernUrl}>
+              <span>{board.label}</span>
+              <strong>{board.release}</strong>
+              <em>{board.status}</em>
+            </a>
+          ))}
+        </div>
+
+        <div class="board-grid">
+          {releaseBoards.map((board) => (
+            <article class={board.status === "Current" ? "board-card current" : "board-card"}>
+              <div class="board-card-top">
+                <div>
+                  <p class="eyebrow">{board.state}</p>
+                  <h3>{board.release}</h3>
+                </div>
+                <span>{board.status}</span>
+              </div>
+              <p>{board.summary}</p>
+              <dl>
+                <div>
+                  <dt>Repository</dt>
+                  <dd>{board.repo}</dd>
+                </div>
+              </dl>
+              <div class="card-actions">
+                <a href={board.modernUrl}>Modern board</a>
+                <a href={board.url}>Legacy board</a>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <article class="board-preview">
+          <div class="preview-heading">
+            <div>
+              <p class="eyebrow">Current preview</p>
+              <h3>v3001.124.0 modern dashboard</h3>
+            </div>
+            <a href="https://dewankabir009.github.io/jira-board-v3001-124-0/modern/">Open full board</a>
+          </div>
+          <iframe title="v3001.124.0 modern board preview" src="https://dewankabir009.github.io/jira-board-v3001-124-0/modern/" loading="lazy"></iframe>
+        </article>
+      </section>
+
+      <section class="module-grid">
+        <article class="module-panel" id="kb">
+          <div class="module-heading">
+            <div>
+              <p class="eyebrow">Knowledge base</p>
+              <h2>Test flow library</h2>
+            </div>
+            <span class="module-pill">Preview registry</span>
+          </div>
+          <div class="kb-list">
+            {knowledgeBase.map((item) => (
+              <a class="kb-card" href={item.url}>
+                <span>{item.source}</span>
+                <strong>{item.title}</strong>
+                <small>Owner: {item.owner}</small>
+                <div>
+                  {item.tags.map((tag) => <em>{tag}</em>)}
+                </div>
+              </a>
+            ))}
+          </div>
+        </article>
+
+        <article class="module-panel" id="automation">
+          <div class="module-heading">
+            <div>
+              <p class="eyebrow">Automation bench</p>
+              <h2>Approved run surface</h2>
+            </div>
+            <span class="module-pill">Script registry</span>
+          </div>
+          <div class="script-list">
+            {automationScripts.map((script) => (
+              <div class="script-row">
+                <div>
+                  <strong>{script.name}</strong>
+                  <span>{script.kind} / {script.environment}</span>
+                </div>
+                <div>
+                  <span>{script.cadence}</span>
+                  <em>{script.status}</em>
+                </div>
+                <p>{script.evidence}</p>
+              </div>
+            ))}
+          </div>
+        </article>
+      </section>
+
+      <section class="module-grid">
+        <article class="module-panel ai-panel" id="ai">
+          <div class="module-heading">
+            <div>
+              <p class="eyebrow">AI summary</p>
+              <h2>Release intelligence</h2>
+            </div>
+            <span class="module-pill locked">Worker API planned</span>
+          </div>
+          <div class="ai-summary-card">
+            <strong>Current active board summary</strong>
+            <p>Future AI pass will summarize ticket risk, stale work, component concentration, latest comments, media evidence, and recommended QA focus for the selected release.</p>
+            <ul>
+              <li>Summarize ticket intent and risk.</li>
+              <li>Suggest next QA steps and missing checklist items.</li>
+              <li>Draft Jira-ready test notes from evidence.</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="module-panel access-panel" id="access">
+          <div class="module-heading">
+            <div>
+              <p class="eyebrow">Access control</p>
+              <h2>Permission-aware sections</h2>
+            </div>
+            <span class="module-pill locked">Spec planned</span>
+          </div>
+          <div class="locked-preview">
+            <div class="blurred-content" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="access-callout">
+              <strong>Restricted module preview</strong>
+              <p>Users without permission will see a softened preview with a request-access action instead of a dead end.</p>
+              <a href="#specs">Review permission spec</a>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="module-panel specs-panel" id="specs">
+        <div class="module-heading">
+          <div>
+            <p class="eyebrow">Spec-driven delivery</p>
+            <h2>HQ build checklist</h2>
+          </div>
+          <span class="module-pill">2 complete / 1 active</span>
+        </div>
+        <div class="spec-grid">
+          {hqSpecs.map((spec) => (
+            <article class={spec.status === "Implemented" ? "spec-card done" : spec.status === "In progress" ? "spec-card active" : "spec-card"}>
+              <span>{spec.id}</span>
+              <strong>{spec.title}</strong>
+              <em>{spec.status}</em>
+              <p>{spec.detail}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+    </section>
+  </main>
+</QaHqLayout>

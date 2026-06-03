@@ -1,0 +1,49 @@
+name = "jira-board-provisioner"
+main = "workers/board-provisioner-worker.js"
+compatibility_date = "2026-05-09"
+
+[triggers]
+crons = ["*/5 * * * *"]
+
+[vars]
+TEMPLATE_OWNER = "DewanKabir009"
+TEMPLATE_REPOSITORY = "jira-board-template"
+TARGET_OWNER = "DewanKabir009"
+DEFAULT_BRANCH = "master"
+DEFAULT_VISIBILITY = "public"
+GITHUB_API_VERSION = "2022-11-28"
+GITHUB_OIDC_AUDIENCE = "jira-board-provisioner"
+GITHUB_OIDC_ISSUER = "https://token.actions.githubusercontent.com"
+GITHUB_OIDC_JWKS_URL = "https://token.actions.githubusercontent.com/.well-known/jwks"
+ALLOWED_REPOSITORY_PREFIXES = "DewanKabir009/jira-board-"
+ALLOWED_REPOSITORIES = "DewanKabir009/jira-board-template"
+ASSIGNEE_DISPATCH_ENDPOINT = "https://jira-board-assignee-bridge.dfkabir253.workers.dev/assign"
+TEST_CHECKLIST_COMMENT_ENDPOINT = "https://jira-board-assignee-bridge.dfkabir253.workers.dev/comment-checklist"
+TRUSTED_GITHUB_ACTORS = "DewanKabir009"
+BOARD_REGISTRY_URL = "https://raw.githubusercontent.com/DewanKabir009/jira-board-template/master/boards.json"
+REFRESH_MONITOR_STALE_MINUTES = "20"
+REFRESH_MONITOR_CRITICAL_MINUTES = "40"
+REFRESH_MONITOR_PUBLISHING_GRACE_MINUTES = "10"
+
+# Optional if you put this Worker behind Cloudflare Access for /provision.
+# PROVISIONER_ADMIN_EMAILS = "qa.lead@example.com"
+# ACCESS_AUD = "replace-with-cloudflare-access-audience"
+# ACCESS_JWKS_URL = "https://your-team.cloudflareaccess.com/cdn-cgi/access/certs"
+# ACCESS_ISSUER = "https://your-team.cloudflareaccess.com"
+
+# Required Cloudflare Worker secrets:
+# wrangler secret put GITHUB_PROVISIONER_TOKEN -c wrangler.provisioner.toml
+# wrangler secret put PROVISIONER_ADMIN_TOKEN -c wrangler.provisioner.toml
+# wrangler secret put JIRA_CLOUD_ID -c wrangler.provisioner.toml
+# wrangler secret put JIRA_EMAIL -c wrangler.provisioner.toml
+# wrangler secret put JIRA_MCP_TOKEN -c wrangler.provisioner.toml
+#
+# Optional notification secrets:
+# wrangler secret put SLACK_BOT_TOKEN -c wrangler.provisioner.toml
+# wrangler secret put SLACK_CHANNEL_ID -c wrangler.provisioner.toml
+# wrangler secret put QA_EMAIL_TO -c wrangler.provisioner.toml
+# wrangler secret put QA_EMAIL_FROM -c wrangler.provisioner.toml
+# wrangler secret put SMTP_HOST -c wrangler.provisioner.toml
+# wrangler secret put SMTP_PORT -c wrangler.provisioner.toml
+# wrangler secret put SMTP_USERNAME -c wrangler.provisioner.toml
+# wrangler secret put SMTP_PASSWORD -c wrangler.provisioner.toml

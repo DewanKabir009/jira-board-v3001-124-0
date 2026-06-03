@@ -1,0 +1,12 @@
+name = "core-qa-headquarters-124"
+compatibility_date = "2026-06-03"
+workers_dev = true
+
+[assets]
+directory = "./.cloudflare-hq-assets"
+not_found_handling = "404-page"
+
+[vars]
+HQ_ENVIRONMENT = "current-124"
+RELEASE_VERSION = "v3001.124.0"
+GITHUB_PAGES_FALLBACK_URL = "https://dewankabir009.github.io/jira-board-v3001-124-0/modern/"

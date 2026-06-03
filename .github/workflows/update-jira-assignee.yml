@@ -1,0 +1,118 @@
+name: Update Jira Assignee
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_key:
+        description: Jira issue key, for example CORE-14398
+        required: true
+        type: string
+      assignee_display_name:
+        description: New assignee
+        required: true
+        type: choice
+        options:
+          - Dewan Kabir
+          - Nicole Greer
+          - Alex McNay
+          - Anton Yurkevich
+
+concurrency:
+  group: jira-assignee-update
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  update:
+    name: Update Jira and publish dashboard
+    if: github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Load managed secrets from Cloudflare
+        if: vars.SECRET_PROVIDER_ENDPOINT != ''
+        env:
+          SECRET_PROVIDER_ENDPOINT: ${{ vars.SECRET_PROVIDER_ENDPOINT }}
+          SECRET_PROVIDER_AUDIENCE: ${{ vars.SECRET_PROVIDER_AUDIENCE }}
+        run: node scripts/load-managed-secrets.cjs
+
+      - name: Update Jira assignee
+        id: assign
+        env:
+          JIRA_FIX_VERSION: ${{ vars.JIRA_FIX_VERSION }}
+          BOARD_OWNER: ${{ github.repository_owner }}
+          BOARD_REPOSITORY_NAME: ${{ github.event.repository.name }}
+          BOARD_REPOSITORY_SLUG: ${{ github.repository }}
+          DASHBOARD_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+          REPO_SECRET_JIRA_CLOUD_ID: ${{ secrets.JIRA_CLOUD_ID }}
+          REPO_SECRET_JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          REPO_SECRET_JIRA_MCP_TOKEN: ${{ secrets.JIRA_MCP_TOKEN }}
+          TRUSTED_GITHUB_ACTORS: ${{ vars.TRUSTED_GITHUB_ACTORS || github.repository_owner }}
+          ISSUE_KEY: ${{ inputs.issue_key }}
+          ASSIGNEE_DISPLAY_NAME: ${{ inputs.assignee_display_name }}
+        run: |
+          set -euo pipefail
+          export JIRA_CLOUD_ID="${JIRA_CLOUD_ID:-${REPO_SECRET_JIRA_CLOUD_ID:-}}"
+          export JIRA_EMAIL="${JIRA_EMAIL:-${REPO_SECRET_JIRA_EMAIL:-}}"
+          export JIRA_MCP_TOKEN="${JIRA_MCP_TOKEN:-${REPO_SECRET_JIRA_MCP_TOKEN:-}}"
+          node scripts/update-jira-assignee.cjs
+
+      - name: Commit and push dashboard
+        if: steps.assign.outputs.board_changed == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git pull --rebase --autostash origin "$GITHUB_REF_NAME"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No dashboard changes remain after syncing with origin."
+            exit 0
+          fi
+          git commit -m "Update Jira assignee ${{ steps.assign.outputs.issue_key }}"
+          for attempt in 1 2 3; do
+            if git push origin "HEAD:$GITHUB_REF_NAME"; then
+              exit 0
+            fi
+            echo "Push failed on attempt ${attempt}; rebasing and retrying."
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME"
+          done
+          echo "::error::Failed to push dashboard after 3 attempts."
+          exit 1
+
+      - name: Send assignee notification
+        if: steps.assign.outputs.success == 'true'
+        env:
+          JIRA_FIX_VERSION: ${{ vars.JIRA_FIX_VERSION }}
+          BOARD_REPOSITORY_SLUG: ${{ github.repository }}
+          DASHBOARD_URL: ${{ steps.assign.outputs.dashboard_url }}
+          ASSIGNEE_ISSUE_KEY: ${{ steps.assign.outputs.issue_key }}
+          ASSIGNEE_DISPLAY_NAME: ${{ steps.assign.outputs.assignee_display_name }}
+          PREVIOUS_ASSIGNEE_DISPLAY_NAME: ${{ steps.assign.outputs.previous_assignee_display_name }}
+          ISSUE_SUMMARY: ${{ steps.assign.outputs.issue_summary }}
+          ISSUE_STATUS: ${{ steps.assign.outputs.issue_status }}
+          ISSUE_URL: ${{ steps.assign.outputs.issue_url }}
+          BOARD_CHANGED: ${{ steps.assign.outputs.board_changed }}
+          REPO_SECRET_SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          REPO_SECRET_SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+          REPO_SECRET_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          REPO_SECRET_SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
+        run: |
+          set -euo pipefail
+          export SLACK_BOT_TOKEN="${SLACK_BOT_TOKEN:-${REPO_SECRET_SLACK_BOT_TOKEN:-}}"
+          export SLACK_CHANNEL_ID="${SLACK_CHANNEL_ID:-${REPO_SECRET_SLACK_CHANNEL_ID:-}}"
+          export SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL:-${REPO_SECRET_SLACK_WEBHOOK_URL:-}}"
+          export SLACK_CHANNEL="${SLACK_CHANNEL:-${REPO_SECRET_SLACK_CHANNEL:-}}"
+          node scripts/send-assignee-notification.cjs || echo "::warning::Assignee Slack notification failed; continuing."

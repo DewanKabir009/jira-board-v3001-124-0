@@ -1,0 +1,123 @@
+name: Refresh Jira Board
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/5 * * * *"
+
+concurrency:
+  group: refresh-jira-board
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  refresh:
+    name: Pull Jira and publish dashboard
+    if: vars.JIRA_FIX_VERSION != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      MANUAL_REFRESH_ITERATIONS: 1
+      SCHEDULE_REFRESH_ITERATIONS: 1
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Load managed secrets from Cloudflare
+        if: vars.SECRET_PROVIDER_ENDPOINT != ''
+        env:
+          SECRET_PROVIDER_ENDPOINT: ${{ vars.SECRET_PROVIDER_ENDPOINT }}
+          SECRET_PROVIDER_AUDIENCE: ${{ vars.SECRET_PROVIDER_AUDIENCE }}
+        run: node scripts/load-managed-secrets.cjs
+
+      - name: Pull Jira data and publish dashboard
+        id: refresh
+        env:
+          JIRA_FIX_VERSION: ${{ vars.JIRA_FIX_VERSION }}
+          BOARD_OWNER: ${{ github.repository_owner }}
+          BOARD_REPOSITORY_NAME: ${{ github.event.repository.name }}
+          BOARD_REPOSITORY_SLUG: ${{ github.repository }}
+          DASHBOARD_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+          REPO_SECRET_JIRA_CLOUD_ID: ${{ secrets.JIRA_CLOUD_ID }}
+          REPO_SECRET_JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          REPO_SECRET_JIRA_MCP_TOKEN: ${{ secrets.JIRA_MCP_TOKEN }}
+          REPO_SECRET_SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          REPO_SECRET_SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+          REPO_SECRET_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          REPO_SECRET_SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
+          REPO_SECRET_QA_EMAIL_TO: ${{ secrets.QA_EMAIL_TO }}
+          REPO_SECRET_QA_EMAIL_FROM: ${{ secrets.QA_EMAIL_FROM }}
+          REPO_SECRET_SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          REPO_SECRET_SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          REPO_SECRET_SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          REPO_SECRET_SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          REPO_SECRET_SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+          REPO_SECRET_SMTP_REJECT_UNAUTHORIZED: ${{ secrets.SMTP_REJECT_UNAUTHORIZED }}
+          ASSIGNEE_DISPATCH_ENDPOINT: ${{ vars.ASSIGNEE_DISPATCH_ENDPOINT }}
+          TEST_CHECKLIST_COMMENT_ENDPOINT: ${{ vars.TEST_CHECKLIST_COMMENT_ENDPOINT }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          : "${JIRA_FIX_VERSION:?Set repository variable JIRA_FIX_VERSION, for example v3001.124.0}"
+          export JIRA_CLOUD_ID="${JIRA_CLOUD_ID:-${REPO_SECRET_JIRA_CLOUD_ID:-}}"
+          export JIRA_EMAIL="${JIRA_EMAIL:-${REPO_SECRET_JIRA_EMAIL:-}}"
+          export JIRA_MCP_TOKEN="${JIRA_MCP_TOKEN:-${REPO_SECRET_JIRA_MCP_TOKEN:-}}"
+          export SLACK_BOT_TOKEN="${SLACK_BOT_TOKEN:-${REPO_SECRET_SLACK_BOT_TOKEN:-}}"
+          export SLACK_CHANNEL_ID="${SLACK_CHANNEL_ID:-${REPO_SECRET_SLACK_CHANNEL_ID:-}}"
+          export SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL:-${REPO_SECRET_SLACK_WEBHOOK_URL:-}}"
+          export SLACK_CHANNEL="${SLACK_CHANNEL:-${REPO_SECRET_SLACK_CHANNEL:-}}"
+          export QA_EMAIL_TO="${QA_EMAIL_TO:-${REPO_SECRET_QA_EMAIL_TO:-}}"
+          export QA_EMAIL_FROM="${QA_EMAIL_FROM:-${REPO_SECRET_QA_EMAIL_FROM:-}}"
+          export SMTP_HOST="${SMTP_HOST:-${REPO_SECRET_SMTP_HOST:-}}"
+          export SMTP_PORT="${SMTP_PORT:-${REPO_SECRET_SMTP_PORT:-}}"
+          export SMTP_USERNAME="${SMTP_USERNAME:-${REPO_SECRET_SMTP_USERNAME:-}}"
+          export SMTP_PASSWORD="${SMTP_PASSWORD:-${REPO_SECRET_SMTP_PASSWORD:-}}"
+          export SMTP_SECURE="${SMTP_SECURE:-${REPO_SECRET_SMTP_SECURE:-}}"
+          export SMTP_REJECT_UNAUTHORIZED="${SMTP_REJECT_UNAUTHORIZED:-${REPO_SECRET_SMTP_REJECT_UNAUTHORIZED:-}}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          if [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
+            refresh_iterations="$SCHEDULE_REFRESH_ITERATIONS"
+          else
+            refresh_iterations="$MANUAL_REFRESH_ITERATIONS"
+          fi
+
+          for iteration in $(seq 1 "$refresh_iterations"); do
+            echo "Refresh iteration ${iteration}/${refresh_iterations}"
+            git pull --rebase origin "$GITHUB_REF_NAME"
+            node scripts/refresh-jira-board-action.cjs
+
+            if [ -z "$(git status --porcelain -- index.html dashboard-data.json assets/jira-media)" ]; then
+              echo "No dashboard, data artifact, or Jira media asset change to commit."
+            else
+              pulled_at="$(node - <<'NODE'
+          const fs = require("fs");
+          const html = fs.readFileSync("index.html", "utf8");
+          const start = '<script id="jira-data" type="application/json">';
+          const end = "</script>";
+          const startIndex = html.indexOf(start);
+          const endIndex = html.indexOf(end, startIndex);
+          const data = JSON.parse(html.slice(startIndex + start.length, endIndex));
+          console.log(data.pullDiff?.currentPulledAtDisplay || data.pulledAtDisplay || new Date().toISOString());
+          NODE
+              )"
+              git add index.html
+              git add dashboard-data.json
+              if [ -d assets/jira-media ]; then
+                git add assets/jira-media
+              fi
+              git commit -m "Refresh Jira board data ${pulled_at}"
+              git push origin "HEAD:${GITHUB_REF_NAME}"
+              node scripts/send-refresh-notifications.cjs || echo "::warning::Notification send failed; continuing refresh loop."
+            fi
+          done

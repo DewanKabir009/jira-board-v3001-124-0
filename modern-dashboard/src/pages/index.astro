@@ -1,0 +1,12 @@
+---
+import TicketExplorerIsland from "../components/TicketExplorerIsland";
+import DashboardLayout from "../layouts/DashboardLayout.astro";
+import "../styles/dashboard.css";
+
+const dataUrl = import.meta.env.PUBLIC_DASHBOARD_DATA_URL || "../dashboard-data.json";
+const boardRegistryUrl = import.meta.env.PUBLIC_BOARD_REGISTRY_URL || "../boards.json";
+---
+
+<DashboardLayout title="Modern Jira Dashboard" dataUrl={dataUrl} boardRegistryUrl={boardRegistryUrl}>
+  <TicketExplorerIsland client:load dataUrl={dataUrl} boardRegistryUrl={boardRegistryUrl} />
+</DashboardLayout>

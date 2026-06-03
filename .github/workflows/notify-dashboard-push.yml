@@ -1,0 +1,69 @@
+name: Notify Dashboard Push
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - index.html
+      - assets/jira-media/**
+
+jobs:
+  notify:
+    name: Notify manually published dashboard changes
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Load managed secrets from Cloudflare
+        if: vars.SECRET_PROVIDER_ENDPOINT != ''
+        env:
+          SECRET_PROVIDER_ENDPOINT: ${{ vars.SECRET_PROVIDER_ENDPOINT }}
+          SECRET_PROVIDER_AUDIENCE: ${{ vars.SECRET_PROVIDER_AUDIENCE }}
+        run: node scripts/load-managed-secrets.cjs
+
+      - name: Send change notification
+        env:
+          JIRA_FIX_VERSION: ${{ vars.JIRA_FIX_VERSION }}
+          BOARD_OWNER: ${{ github.repository_owner }}
+          BOARD_REPOSITORY_NAME: ${{ github.event.repository.name }}
+          BOARD_REPOSITORY_SLUG: ${{ github.repository }}
+          DASHBOARD_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+          REPO_SECRET_SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          REPO_SECRET_SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+          REPO_SECRET_SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          REPO_SECRET_SLACK_CHANNEL: ${{ secrets.SLACK_CHANNEL }}
+          REPO_SECRET_QA_EMAIL_TO: ${{ secrets.QA_EMAIL_TO }}
+          REPO_SECRET_QA_EMAIL_FROM: ${{ secrets.QA_EMAIL_FROM }}
+          REPO_SECRET_SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          REPO_SECRET_SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          REPO_SECRET_SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          REPO_SECRET_SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          REPO_SECRET_SMTP_SECURE: ${{ secrets.SMTP_SECURE }}
+          REPO_SECRET_SMTP_REJECT_UNAUTHORIZED: ${{ secrets.SMTP_REJECT_UNAUTHORIZED }}
+        run: |
+          set -euo pipefail
+          export SLACK_BOT_TOKEN="${SLACK_BOT_TOKEN:-${REPO_SECRET_SLACK_BOT_TOKEN:-}}"
+          export SLACK_CHANNEL_ID="${SLACK_CHANNEL_ID:-${REPO_SECRET_SLACK_CHANNEL_ID:-}}"
+          export SLACK_WEBHOOK_URL="${SLACK_WEBHOOK_URL:-${REPO_SECRET_SLACK_WEBHOOK_URL:-}}"
+          export SLACK_CHANNEL="${SLACK_CHANNEL:-${REPO_SECRET_SLACK_CHANNEL:-}}"
+          export QA_EMAIL_TO="${QA_EMAIL_TO:-${REPO_SECRET_QA_EMAIL_TO:-}}"
+          export QA_EMAIL_FROM="${QA_EMAIL_FROM:-${REPO_SECRET_QA_EMAIL_FROM:-}}"
+          export SMTP_HOST="${SMTP_HOST:-${REPO_SECRET_SMTP_HOST:-}}"
+          export SMTP_PORT="${SMTP_PORT:-${REPO_SECRET_SMTP_PORT:-}}"
+          export SMTP_USERNAME="${SMTP_USERNAME:-${REPO_SECRET_SMTP_USERNAME:-}}"
+          export SMTP_PASSWORD="${SMTP_PASSWORD:-${REPO_SECRET_SMTP_PASSWORD:-}}"
+          export SMTP_SECURE="${SMTP_SECURE:-${REPO_SECRET_SMTP_SECURE:-}}"
+          export SMTP_REJECT_UNAUTHORIZED="${SMTP_REJECT_UNAUTHORIZED:-${REPO_SECRET_SMTP_REJECT_UNAUTHORIZED:-}}"
+          node scripts/send-refresh-notifications.cjs

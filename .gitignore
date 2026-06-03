@@ -1,0 +1,13 @@
+node_modules/
+modern-dashboard/.astro/
+modern-dashboard/dist/
+modern-dashboard/qa-artifacts/
+*.log
+localtunnel*.out.log
+localtunnel*.err.log
+jira-board-latest.html
+jira-board-latest.png
+jira-v*-tickets.json
+completion-targets-repo/
+assets/jira-testcases-source/
+.cloudflare-hq-assets/

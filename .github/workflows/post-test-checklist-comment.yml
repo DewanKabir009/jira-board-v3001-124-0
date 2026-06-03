@@ -1,0 +1,59 @@
+name: Post Test Checklist Comment
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_key:
+        description: Jira issue key, for example CORE-14332
+        required: true
+        type: string
+      checklist_payload:
+        description: JSON payload from the dashboard checklist modal
+        required: true
+        type: string
+
+concurrency:
+  group: jira-test-checklist-comment
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  post:
+    name: Post Jira checklist comment
+    if: github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Load managed secrets from Cloudflare
+        if: vars.SECRET_PROVIDER_ENDPOINT != ''
+        env:
+          SECRET_PROVIDER_ENDPOINT: ${{ vars.SECRET_PROVIDER_ENDPOINT }}
+          SECRET_PROVIDER_AUDIENCE: ${{ vars.SECRET_PROVIDER_AUDIENCE }}
+        run: node scripts/load-managed-secrets.cjs
+
+      - name: Post checklist comment
+        env:
+          REPO_SECRET_JIRA_CLOUD_ID: ${{ secrets.JIRA_CLOUD_ID }}
+          REPO_SECRET_JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          REPO_SECRET_JIRA_MCP_TOKEN: ${{ secrets.JIRA_MCP_TOKEN }}
+          TRUSTED_GITHUB_ACTORS: ${{ vars.TRUSTED_GITHUB_ACTORS || github.repository_owner }}
+          ISSUE_KEY: ${{ inputs.issue_key }}
+          CHECKLIST_PAYLOAD: ${{ inputs.checklist_payload }}
+        run: |
+          set -euo pipefail
+          export JIRA_CLOUD_ID="${JIRA_CLOUD_ID:-${REPO_SECRET_JIRA_CLOUD_ID:-}}"
+          export JIRA_EMAIL="${JIRA_EMAIL:-${REPO_SECRET_JIRA_EMAIL:-}}"
+          export JIRA_MCP_TOKEN="${JIRA_MCP_TOKEN:-${REPO_SECRET_JIRA_MCP_TOKEN:-}}"
+          node scripts/post-test-checklist-comment.cjs

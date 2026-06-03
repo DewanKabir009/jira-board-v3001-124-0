@@ -1,0 +1,24 @@
+<section class="ticket-panel" aria-labelledby="tickets-heading">
+  <div class="panel-heading">
+    <div>
+      <p class="eyebrow">Ticket explorer preview</p>
+      <h2 id="tickets-heading">Status lanes and ticket cards</h2>
+    </div>
+    <p class="panel-stat" data-meta="filteredCount">0 shown</p>
+  </div>
+
+  <div class="status-lanes" data-status-lanes aria-label="Status summary">
+    <article class="status-lane placeholder">
+      <h3>Loading status lanes</h3>
+      <p>Waiting for dashboard-data.json.</p>
+    </article>
+  </div>
+
+  <div class="ticket-list" data-ticket-list aria-live="polite">
+    <article class="ticket-card placeholder">
+      <p class="ticket-key">Loading</p>
+      <h3>Reading the board snapshot</h3>
+      <p>The Astro shell will render from the published JSON artifact.</p>
+    </article>
+  </div>
+</section>
