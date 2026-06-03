@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.10.6",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-03T16:00:47.595Z",
-  "pulledAtDisplay": "Jun 3, 2026, 12:00 PM",
+  "pulledAt": "2026-06-03T16:25:39.413Z",
+  "pulledAtDisplay": "Jun 3, 2026, 12:25 PM",
   "total": 5,
   "issues": [
     {
@@ -41,16 +41,16 @@
       "testChecklist": null,
       "type": "Story",
       "isSubtask": false,
-      "status": "Code Review",
+      "status": "Pending Deployment (DEV)",
       "priority": "P0",
-      "assignee": "Yoel Martin Pardo",
-      "assigneeAccountId": "625571809e7380006fb29599",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+      "assignee": "Tyler Olechnowicz",
+      "assigneeAccountId": "5d2396c1ea26c40c2043fc92",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
       "assignedDeveloper": "Tyler Olechnowicz",
       "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
       "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-      "updated": "2026-06-02T18:03:33.536-0400",
-      "updatedDisplay": "Jun 2, 2026, 6:03 PM",
+      "updated": "2026-06-03T12:25:35.892-0400",
+      "updatedDisplay": "Jun 3, 2026, 12:25 PM",
       "created": "2026-06-02T17:27:50.603-0400",
       "createdDisplay": "Jun 2, 2026, 5:27 PM",
       "components": [
@@ -394,17 +394,120 @@
     }
   ],
   "pullDiff": {
-    "previousPulledAt": "2026-06-03T15:35:43.895Z",
-    "previousPulledAtDisplay": "Jun 3, 2026, 11:35 AM",
-    "currentPulledAt": "2026-06-03T16:00:47.595Z",
-    "currentPulledAtDisplay": "Jun 3, 2026, 12:00 PM",
+    "previousPulledAt": "2026-06-03T16:00:47.595Z",
+    "previousPulledAtDisplay": "Jun 3, 2026, 12:00 PM",
+    "currentPulledAt": "2026-06-03T16:25:39.413Z",
+    "currentPulledAtDisplay": "Jun 3, 2026, 12:25 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
-    "updated": [],
-    "statusChanges": []
+    "updated": [
+      {
+        "key": "CORE-14505",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14505",
+        "summary": "Modernize Affiliate API dependencies to remediate security vulnerabilities",
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "Code Review",
+            "after": "Pending Deployment (DEV)"
+          },
+          {
+            "field": "assignee",
+            "label": "Assignee",
+            "before": "Yoel Martin Pardo",
+            "after": "Tyler Olechnowicz"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 2, 2026, 6:03 PM",
+            "after": "Jun 3, 2026, 12:25 PM"
+          }
+        ],
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Tyler Olechnowicz",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "status": "Pending Deployment (DEV)",
+        "parent": null
+      }
+    ],
+    "statusChanges": [
+      {
+        "key": "CORE-14505",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14505",
+        "summary": "Modernize Affiliate API dependencies to remediate security vulnerabilities",
+        "before": "Code Review",
+        "after": "Pending Deployment (DEV)",
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Tyler Olechnowicz",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "status": "Pending Deployment (DEV)",
+        "parent": null
+      }
+    ]
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-03T16:00:47.595Z",
+      "previousPulledAtDisplay": "Jun 3, 2026, 12:00 PM",
+      "currentPulledAt": "2026-06-03T16:25:39.413Z",
+      "currentPulledAtDisplay": "Jun 3, 2026, 12:25 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14505",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14505",
+          "summary": "Modernize Affiliate API dependencies to remediate security vulnerabilities",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "Code Review",
+              "after": "Pending Deployment (DEV)"
+            },
+            {
+              "field": "assignee",
+              "label": "Assignee",
+              "before": "Yoel Martin Pardo",
+              "after": "Tyler Olechnowicz"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 2, 2026, 6:03 PM",
+              "after": "Jun 3, 2026, 12:25 PM"
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Tyler Olechnowicz",
+          "assignedDeveloper": "Tyler Olechnowicz",
+          "status": "Pending Deployment (DEV)",
+          "parent": null
+        }
+      ],
+      "statusChanges": [
+        {
+          "key": "CORE-14505",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14505",
+          "summary": "Modernize Affiliate API dependencies to remediate security vulnerabilities",
+          "before": "Code Review",
+          "after": "Pending Deployment (DEV)",
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Tyler Olechnowicz",
+          "assignedDeveloper": "Tyler Olechnowicz",
+          "status": "Pending Deployment (DEV)",
+          "parent": null
+        }
+      ]
+    },
     {
       "previousPulledAt": "2026-06-03T15:35:43.895Z",
       "previousPulledAtDisplay": "Jun 3, 2026, 11:35 AM",
@@ -467,9 +570,9 @@
           "testChecklist": null,
           "type": "Story",
           "isSubtask": false,
-          "status": "Code Review",
+          "status": "Pending Deployment (DEV)",
           "priority": "P0",
-          "assignee": "Yoel Martin Pardo",
+          "assignee": "Tyler Olechnowicz",
           "assigneeAccountId": "625571809e7380006fb29599",
           "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
           "assignedDeveloper": "Tyler Olechnowicz",
