@@ -7,6 +7,7 @@ const workspace = path.resolve(__dirname, "..");
 const version = process.env.JIRA_FIX_VERSION || "vNEXT.0";
 const safeVersion = version.replace(/[^a-zA-Z0-9._-]/g, "_");
 const jsonPath = path.join(workspace, `jira-${safeVersion}-tickets.json`);
+const dashboardDataPath = path.join(workspace, "dashboard-data.json");
 const indexPath = path.join(workspace, "index.html");
 
 function defaultDashboardUrl(data) {
@@ -566,9 +567,19 @@ async function sendEmail(summary) {
 }
 
 async function main() {
-  const data = fs.existsSync(jsonPath)
-    ? JSON.parse(fs.readFileSync(jsonPath, "utf8"))
-    : readEmbeddedDashboardData();
+  let data = null;
+  if (fs.existsSync(jsonPath)) {
+    data = JSON.parse(fs.readFileSync(jsonPath, "utf8"));
+  } else if (fs.existsSync(dashboardDataPath)) {
+    data = JSON.parse(fs.readFileSync(dashboardDataPath, "utf8"));
+  } else {
+    try {
+      data = readEmbeddedDashboardData();
+    } catch (error) {
+      console.log(`${error.message}; notifications skipped until the first Jira refresh publishes data.`);
+      return;
+    }
+  }
 
   if (!hasChanges(data.pullDiff || {})) {
     console.log("No Jira ticket changes detected; notifications skipped.");
