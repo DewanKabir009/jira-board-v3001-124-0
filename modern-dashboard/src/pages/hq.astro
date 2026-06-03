@@ -90,14 +90,68 @@ const statusCards = [
   { label: "Jira data pull", value: "Healthy", detail: "5 minute single-shot refresh", tone: "green" },
   { label: "Automation runner", value: "Ready", detail: "Approved scripts only", tone: "blue" },
   { label: "Cloudflare host", value: "Auth needed", detail: "Dry run passed; deploy token required", tone: "amber" },
-  { label: "AI summary", value: "Planned", detail: "Worker endpoint required", tone: "violet" }
+  { label: "Access model", value: "Mapped", detail: "Roles and gated sections drafted", tone: "violet" }
+];
+
+const accessRoles = [
+  {
+    role: "QA Admin",
+    people: "CORE QA leads",
+    access: "All boards, admin console, automation approvals, AI settings",
+    state: "Planned backend"
+  },
+  {
+    role: "Automation Owner",
+    people: "Approved automation maintainers",
+    access: "Run Playwright/Python scripts, review evidence, edit runbook metadata",
+    state: "Ready to gate"
+  },
+  {
+    role: "QA Engineer",
+    people: "CORE QA contributors",
+    access: "View boards, knowledge base, ticket detail, evidence, operations health",
+    state: "Default target"
+  },
+  {
+    role: "Stakeholder Viewer",
+    people: "Product, dev leads, support partners",
+    access: "Read-only board, AI summary, status overview, selected knowledge pages",
+    state: "Read-only"
+  }
+];
+
+const guardedModules = [
+  {
+    name: "Automation approvals",
+    required: "Automation Owner",
+    status: "Restricted",
+    detail: "Users can view available scripts, but execution controls stay gated until approval."
+  },
+  {
+    name: "Admin console",
+    required: "QA Admin",
+    status: "Locked",
+    detail: "User and section permission management stays hidden behind a request-access pattern."
+  },
+  {
+    name: "AI summary settings",
+    required: "QA Admin",
+    status: "Planned",
+    detail: "Prompt controls and source selection will be admin-only once the AI endpoint exists."
+  },
+  {
+    name: "Knowledge base",
+    required: "QA Engineer",
+    status: "Visible",
+    detail: "Core test flow links remain broadly visible while sensitive pages can be marked restricted."
+  }
 ];
 
 const hqSpecs = [
   { id: "SPEC-HQ-00", title: "Product shell", status: "Implemented", detail: "HQ navigation, workbench layout, module cards." },
   { id: "SPEC-HQ-01", title: "Board registry", status: "Implemented", detail: ".122, .123, .124 board slots and preview panel." },
   { id: "SPEC-HQ-02", title: "Cloudflare hosting", status: "In progress", detail: "Static Assets config validated; deploy waits on Cloudflare auth." },
-  { id: "SPEC-HQ-03", title: "Auth and permissions", status: "Planned", detail: "Cloudflare Access plus in-app RBAC." },
+  { id: "SPEC-HQ-03", title: "Auth and permissions", status: "In progress", detail: "Role model, gated cards, and request-access UI are drafted." },
   { id: "SPEC-HQ-04", title: "Knowledge base", status: "Planned", detail: "External links, previews, ownership, freshness." },
   { id: "SPEC-HQ-05", title: "Automation bench", status: "Planned", detail: "Playwright and Python API script registry." },
   { id: "SPEC-HQ-06", title: "Operational status", status: "Planned", detail: "5 minute API health results and service cards." },
@@ -288,18 +342,55 @@ const hqSpecs = [
               <p class="eyebrow">Access control</p>
               <h2>Permission-aware sections</h2>
             </div>
-            <span class="module-pill locked">Spec planned</span>
+            <span class="module-pill locked">SPEC-HQ-03 active</span>
           </div>
-          <div class="locked-preview">
-            <div class="blurred-content" aria-hidden="true">
-              <span></span>
-              <span></span>
-              <span></span>
+          <div class="access-console">
+            <div class="identity-card">
+              <p class="eyebrow">Signed-in context</p>
+              <strong>Cloudflare Access pending</strong>
+              <span>Static preview mode uses the planned QA Engineer baseline until Access headers and RBAC storage are connected.</span>
             </div>
-            <div class="access-callout">
-              <strong>Restricted module preview</strong>
-              <p>Users without permission will see a softened preview with a request-access action instead of a dead end.</p>
-              <a href="#specs">Review permission spec</a>
+
+            <div class="role-matrix" aria-label="Planned HQ roles and permissions">
+              {accessRoles.map((item) => (
+                <article class="role-card">
+                  <div>
+                    <strong>{item.role}</strong>
+                    <span>{item.state}</span>
+                  </div>
+                  <p>{item.people}</p>
+                  <small>{item.access}</small>
+                </article>
+              ))}
+            </div>
+
+            <div class="guarded-grid" aria-label="Protected HQ module states">
+              {guardedModules.map((module) => (
+                <article class={module.status === "Visible" ? "guarded-card visible" : "guarded-card"}>
+                  <div>
+                    <strong>{module.name}</strong>
+                    <span>{module.status}</span>
+                  </div>
+                  <p>{module.detail}</p>
+                  <small>Required role: {module.required}</small>
+                </article>
+              ))}
+            </div>
+
+            <div class="locked-preview">
+              <div class="blurred-content" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="access-callout">
+                <strong>Need access?</strong>
+                <p>Restricted HQ modules will keep the content shape visible, blur the protected details, and route the user to an access request instead of a dead screen.</p>
+                <div class="access-actions">
+                  <a href="mailto:dewan.kabir@versantmedia.com?subject=CORE%20QA%20HQ%20access%20request">Request access</a>
+                  <a href="/jira-board-v3001-124-0/modern/hq/#specs">Open spec status</a>
+                </div>
+              </div>
             </div>
           </div>
         </article>
@@ -311,7 +402,7 @@ const hqSpecs = [
             <p class="eyebrow">Spec-driven delivery</p>
             <h2>HQ build checklist</h2>
           </div>
-          <span class="module-pill">2 complete / 1 active</span>
+          <span class="module-pill">2 complete / 2 active</span>
         </div>
         <div class="spec-grid">
           {hqSpecs.map((spec) => (

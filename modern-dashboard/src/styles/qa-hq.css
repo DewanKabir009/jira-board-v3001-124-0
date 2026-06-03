@@ -149,7 +149,8 @@ ul {
 .command-actions a,
 .card-actions a,
 .preview-heading a,
-.access-callout a {
+.access-callout a,
+.access-actions a {
   min-height: 40px;
   border: 1px solid var(--hq-line-strong);
   border-radius: 8px;
@@ -234,7 +235,8 @@ ul {
 .command-actions a,
 .card-actions a,
 .preview-heading a,
-.access-callout a {
+.access-callout a,
+.access-actions a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -488,7 +490,8 @@ ul {
 }
 
 .ai-summary-card,
-.locked-preview {
+.locked-preview,
+.access-console {
   margin-top: 14px;
 }
 
@@ -505,6 +508,107 @@ ul {
   display: grid;
   gap: 6px;
   padding-left: 18px;
+}
+
+.access-console {
+  display: grid;
+  gap: 12px;
+}
+
+.identity-card {
+  display: grid;
+  gap: 6px;
+  border: 1px solid rgba(0, 95, 204, 0.28);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(224, 239, 255, 0.92), rgba(255, 255, 255, 0.98) 58%, rgba(217, 255, 235, 0.76));
+  padding: 14px;
+}
+
+.identity-card strong {
+  font-size: 1.18rem;
+}
+
+.identity-card span,
+.role-card p,
+.role-card small,
+.guarded-card p,
+.guarded-card small {
+  color: var(--hq-muted);
+  line-height: 1.45;
+}
+
+.role-matrix,
+.guarded-grid {
+  display: grid;
+  gap: 10px;
+}
+
+.role-matrix {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.guarded-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.role-card,
+.guarded-card {
+  display: grid;
+  gap: 8px;
+  border: 1px solid var(--hq-line);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 13px;
+}
+
+.role-card {
+  border-top: 4px solid var(--hq-blue);
+}
+
+.role-card > div,
+.guarded-card > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+
+.role-card strong,
+.guarded-card strong {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.role-card span,
+.guarded-card span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  border-radius: 999px;
+  background: var(--hq-blue-soft);
+  color: var(--hq-blue);
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 0 9px;
+  white-space: nowrap;
+}
+
+.guarded-card {
+  position: relative;
+  overflow: hidden;
+  border-left: 5px solid var(--hq-orange);
+  background: linear-gradient(135deg, #ffffff, rgba(255, 240, 214, 0.48));
+}
+
+.guarded-card.visible {
+  border-left-color: var(--hq-green);
+  background: linear-gradient(135deg, #ffffff, rgba(217, 255, 235, 0.58));
+}
+
+.guarded-card.visible span {
+  background: var(--hq-green-soft);
+  color: var(--hq-green);
 }
 
 .locked-preview {
@@ -541,6 +645,19 @@ ul {
   background: rgba(255, 255, 255, 0.94);
   padding: 14px;
   box-shadow: var(--hq-shadow);
+}
+
+.access-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.access-actions a:first-child {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--hq-blue), var(--hq-green));
+  color: #ffffff;
+  box-shadow: 0 12px 26px rgba(0, 95, 204, 0.2);
 }
 
 .spec-grid {
@@ -598,6 +715,8 @@ ul {
   .hq-nav,
   .status-grid,
   .board-grid,
+  .role-matrix,
+  .guarded-grid,
   .spec-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -620,6 +739,8 @@ ul {
   .board-tabs,
   .board-grid,
   .module-grid,
+  .role-matrix,
+  .guarded-grid,
   .spec-grid,
   .hq-nav {
     grid-template-columns: 1fr;
