@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.10.6",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-03T16:25:39.413Z",
-  "pulledAtDisplay": "Jun 3, 2026, 12:25 PM",
+  "pulledAt": "2026-06-03T16:50:39.031Z",
+  "pulledAtDisplay": "Jun 3, 2026, 12:50 PM",
   "total": 5,
   "issues": [
     {
@@ -41,16 +41,16 @@
       "testChecklist": null,
       "type": "Story",
       "isSubtask": false,
-      "status": "Pending Deployment (DEV)",
+      "status": "QA Testing (DEV)",
       "priority": "P0",
-      "assignee": "Tyler Olechnowicz",
-      "assigneeAccountId": "5d2396c1ea26c40c2043fc92",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
       "assignedDeveloper": "Tyler Olechnowicz",
       "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
       "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-      "updated": "2026-06-03T12:25:35.892-0400",
-      "updatedDisplay": "Jun 3, 2026, 12:25 PM",
+      "updated": "2026-06-03T12:33:05.788-0400",
+      "updatedDisplay": "Jun 3, 2026, 12:33 PM",
       "created": "2026-06-02T17:27:50.603-0400",
       "createdDisplay": "Jun 2, 2026, 5:27 PM",
       "components": [
@@ -394,10 +394,10 @@
     }
   ],
   "pullDiff": {
-    "previousPulledAt": "2026-06-03T16:00:47.595Z",
-    "previousPulledAtDisplay": "Jun 3, 2026, 12:00 PM",
-    "currentPulledAt": "2026-06-03T16:25:39.413Z",
-    "currentPulledAtDisplay": "Jun 3, 2026, 12:25 PM",
+    "previousPulledAt": "2026-06-03T16:25:39.413Z",
+    "previousPulledAtDisplay": "Jun 3, 2026, 12:25 PM",
+    "currentPulledAt": "2026-06-03T16:50:39.031Z",
+    "currentPulledAtDisplay": "Jun 3, 2026, 12:50 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -410,27 +410,27 @@
           {
             "field": "status",
             "label": "Status",
-            "before": "Code Review",
-            "after": "Pending Deployment (DEV)"
+            "before": "Pending Deployment (DEV)",
+            "after": "QA Testing (DEV)"
           },
           {
             "field": "assignee",
             "label": "Assignee",
-            "before": "Yoel Martin Pardo",
-            "after": "Tyler Olechnowicz"
+            "before": "Tyler Olechnowicz",
+            "after": "Dewan Kabir"
           },
           {
             "field": "updatedDisplay",
             "label": "Jira updated",
-            "before": "Jun 2, 2026, 6:03 PM",
-            "after": "Jun 3, 2026, 12:25 PM"
+            "before": "Jun 3, 2026, 12:25 PM",
+            "after": "Jun 3, 2026, 12:33 PM"
           }
         ],
         "type": "Story",
         "isSubtask": false,
-        "assignee": "Tyler Olechnowicz",
+        "assignee": "Dewan Kabir",
         "assignedDeveloper": "Tyler Olechnowicz",
-        "status": "Pending Deployment (DEV)",
+        "status": "QA Testing (DEV)",
         "parent": null
       }
     ],
@@ -439,18 +439,75 @@
         "key": "CORE-14505",
         "url": "https://golfnow.atlassian.net/browse/CORE-14505",
         "summary": "Modernize Affiliate API dependencies to remediate security vulnerabilities",
-        "before": "Code Review",
-        "after": "Pending Deployment (DEV)",
+        "before": "Pending Deployment (DEV)",
+        "after": "QA Testing (DEV)",
         "type": "Story",
         "isSubtask": false,
-        "assignee": "Tyler Olechnowicz",
+        "assignee": "Dewan Kabir",
         "assignedDeveloper": "Tyler Olechnowicz",
-        "status": "Pending Deployment (DEV)",
+        "status": "QA Testing (DEV)",
         "parent": null
       }
     ]
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-03T16:25:39.413Z",
+      "previousPulledAtDisplay": "Jun 3, 2026, 12:25 PM",
+      "currentPulledAt": "2026-06-03T16:50:39.031Z",
+      "currentPulledAtDisplay": "Jun 3, 2026, 12:50 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14505",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14505",
+          "summary": "Modernize Affiliate API dependencies to remediate security vulnerabilities",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "Pending Deployment (DEV)",
+              "after": "QA Testing (DEV)"
+            },
+            {
+              "field": "assignee",
+              "label": "Assignee",
+              "before": "Tyler Olechnowicz",
+              "after": "Dewan Kabir"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 3, 2026, 12:25 PM",
+              "after": "Jun 3, 2026, 12:33 PM"
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Tyler Olechnowicz",
+          "status": "QA Testing (DEV)",
+          "parent": null
+        }
+      ],
+      "statusChanges": [
+        {
+          "key": "CORE-14505",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14505",
+          "summary": "Modernize Affiliate API dependencies to remediate security vulnerabilities",
+          "before": "Pending Deployment (DEV)",
+          "after": "QA Testing (DEV)",
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Tyler Olechnowicz",
+          "status": "QA Testing (DEV)",
+          "parent": null
+        }
+      ]
+    },
     {
       "previousPulledAt": "2026-06-03T16:00:47.595Z",
       "previousPulledAtDisplay": "Jun 3, 2026, 12:00 PM",
@@ -486,9 +543,9 @@
           ],
           "type": "Story",
           "isSubtask": false,
-          "assignee": "Tyler Olechnowicz",
+          "assignee": "Dewan Kabir",
           "assignedDeveloper": "Tyler Olechnowicz",
-          "status": "Pending Deployment (DEV)",
+          "status": "QA Testing (DEV)",
           "parent": null
         }
       ],
@@ -501,9 +558,9 @@
           "after": "Pending Deployment (DEV)",
           "type": "Story",
           "isSubtask": false,
-          "assignee": "Tyler Olechnowicz",
+          "assignee": "Dewan Kabir",
           "assignedDeveloper": "Tyler Olechnowicz",
-          "status": "Pending Deployment (DEV)",
+          "status": "QA Testing (DEV)",
           "parent": null
         }
       ]
@@ -570,9 +627,9 @@
           "testChecklist": null,
           "type": "Story",
           "isSubtask": false,
-          "status": "Pending Deployment (DEV)",
+          "status": "QA Testing (DEV)",
           "priority": "P0",
-          "assignee": "Tyler Olechnowicz",
+          "assignee": "Dewan Kabir",
           "assigneeAccountId": "625571809e7380006fb29599",
           "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
           "assignedDeveloper": "Tyler Olechnowicz",
