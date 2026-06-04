@@ -99,6 +99,7 @@ The first Workers AI implementation is intentionally focused and review-first:
 - Source data: the current board's `dashboard-data.json`.
 - User input: visible HQ prompt composer with ticket lookup, release triage, QA focus, Jira-ready notes, and leadership rollup presets.
 - Output shape: structured JSON with executive brief, risks, focus tickets, and review gates.
+- Ticket test plans: prompts like `make test plan for CORE-14427` override the selected preset and send the named ticket's description/comments to Workers AI with `answerType: "ticket_test_plan"`.
 - Safety posture: draft-only, direct board-data lookup for assignment and component questions, deterministic fallback if AI fails, and no Jira mutations from the AI endpoint.
 
 The Worker requests JSON output from the model so the browser can render predictable sections instead of parsing free-form prose.
@@ -222,7 +223,19 @@ Component lookup request:
 }
 ```
 
+Ticket test-plan request:
+
+```json
+{
+  "output": "release_brief",
+  "promptTemplate": "leadership",
+  "userPrompt": "make test plan for CORE-14427"
+}
+```
+
 Lookup responses use the same renderable brief envelope with `answerType: "assignee_lookup"` or `answerType: "component_lookup"` and matching ticket details sourced from `dashboard-data.json`.
+
+Ticket test-plan responses use `answerType: "ticket_test_plan"` and render coverage risks, test scenarios, related tickets, and review gates from the named ticket context.
 
 Response:
 

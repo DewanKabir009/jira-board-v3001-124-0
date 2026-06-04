@@ -1169,6 +1169,8 @@ const hqSpecs = [
           renderBrief(payload);
           statusLine.textContent = payload.warning
             ? "Draft ready with deterministic fallback."
+            : payload.answerType === "ticket_test_plan"
+              ? "AI ticket test plan ready for review."
             : payload.answerType === "assignee_lookup" || payload.answerType === "component_lookup" || payload.answerType === "ticket_lookup" || payload.answerType === "direct_lookup"
               ? "Board lookup ready from dashboard-data.json."
             : "AI draft ready for review from your prompt.";
@@ -1215,10 +1217,11 @@ const hqSpecs = [
 
       function setResultLabels(answerType) {
         const lookupMode = answerType === "assignee_lookup" || answerType === "component_lookup" || answerType === "ticket_lookup" || answerType === "direct_lookup";
+        const testPlanMode = answerType === "ticket_test_plan";
 
-        if (riskTitle) riskTitle.textContent = lookupMode ? "Lookup notes" : "Top risks";
-        if (focusTitle) focusTitle.textContent = lookupMode ? "Matching tickets" : "QA focus";
-        if (ticketTitle) ticketTitle.textContent = lookupMode ? "Ticket details" : "Tickets to watch";
+        if (riskTitle) riskTitle.textContent = testPlanMode ? "Coverage risks" : lookupMode ? "Lookup notes" : "Top risks";
+        if (focusTitle) focusTitle.textContent = testPlanMode ? "Test scenarios" : lookupMode ? "Matching tickets" : "QA focus";
+        if (ticketTitle) ticketTitle.textContent = testPlanMode ? "Related tickets" : lookupMode ? "Ticket details" : "Tickets to watch";
         if (gateTitle) gateTitle.textContent = lookupMode ? "Review gates" : "Review gates";
       }
 
@@ -1238,19 +1241,20 @@ const hqSpecs = [
         const brief = payload.brief || {};
         const answerType = payload.answerType || brief.answerType || "release_brief";
         const lookupMode = answerType === "assignee_lookup" || answerType === "component_lookup" || answerType === "ticket_lookup" || answerType === "direct_lookup";
+        const testPlanMode = answerType === "ticket_test_plan";
         const tickets = (brief.ticketsToWatch || []).map((ticket) => `- ${ticket.key}: ${ticket.reason}`).join("\n");
         return [
           brief.title || "Draft release brief",
           "",
           brief.summary || "",
           "",
-          lookupMode ? "Lookup notes:" : "Top risks:",
+          testPlanMode ? "Coverage risks:" : lookupMode ? "Lookup notes:" : "Top risks:",
           toBulletList(brief.topRisks),
           "",
-          lookupMode ? "Matching tickets:" : "QA focus:",
+          testPlanMode ? "Test scenarios:" : lookupMode ? "Matching tickets:" : "QA focus:",
           toBulletList(brief.qaFocus),
           "",
-          lookupMode ? "Ticket details:" : "Tickets to watch:",
+          testPlanMode ? "Related tickets:" : lookupMode ? "Ticket details:" : "Tickets to watch:",
           tickets || "- No tickets returned.",
           "",
           "Review gates:",

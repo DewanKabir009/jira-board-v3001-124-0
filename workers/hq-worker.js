@@ -30,7 +30,9 @@ async function handleReleaseSummary(request, env, url) {
   const body = await safeJson(request);
   const dashboard = await loadDashboardData(env, url);
   const stats = buildReleaseStats(dashboard);
-  const directBrief = buildDirectQuestionBrief(dashboard, stats, body);
+  const ticketPlanRequest = extractTicketPlanRequest(dashboard, body);
+  const missingTicketBrief = ticketPlanRequest?.missing ? buildMissingTicketBrief(dashboard, stats, ticketPlanRequest) : null;
+  const directBrief = missingTicketBrief || (ticketPlanRequest ? null : buildDirectQuestionBrief(dashboard, stats, body));
 
   if (directBrief) {
     return jsonResponse(buildBriefPayload({
@@ -47,8 +49,10 @@ async function handleReleaseSummary(request, env, url) {
     return jsonResponse({ ok: false, message: "Cloudflare Workers AI binding is not configured." }, 503);
   }
 
-  const context = buildModelContext(dashboard, stats, body);
-  const fallbackBrief = buildDeterministicBrief(dashboard, stats);
+  const context = buildModelContext(dashboard, stats, body, ticketPlanRequest);
+  const fallbackBrief = ticketPlanRequest
+    ? buildTicketTestPlanBrief(dashboard, stats, ticketPlanRequest)
+    : buildDeterministicBrief(dashboard, stats);
 
   try {
     const aiResult = await env.AI.run(AI_MODEL, {
@@ -60,6 +64,7 @@ async function handleReleaseSummary(request, env, url) {
             "Return only valid JSON. Do not include Markdown.",
             "Use only the provided dashboard context. If evidence is missing, say it is missing.",
             "If a user prompt is present, answer it only when it is supported by the provided dashboard context.",
+            "If requestedOutput is ticket_test_plan, create a ticket-specific QA test plan for targetIssue and do not write a release summary.",
             "All output is draft-only. Never claim Jira, Slack, or automation actions were performed."
           ].join(" ")
         },
@@ -105,7 +110,8 @@ async function handleReleaseSummary(request, env, url) {
       stats,
       provider: "Cloudflare Workers AI",
       model: AI_MODEL,
-      brief
+      brief,
+      answerType: ticketPlanRequest ? "ticket_test_plan" : undefined
     }));
   } catch (error) {
     return jsonResponse(buildBriefPayload({
@@ -114,6 +120,7 @@ async function handleReleaseSummary(request, env, url) {
       provider: "Cloudflare Workers AI",
       model: AI_MODEL,
       brief: fallbackBrief,
+      answerType: ticketPlanRequest ? "ticket_test_plan" : undefined,
       warning: `AI model response was not usable, so HQ returned a deterministic draft: ${error.message}`
     }));
   }
@@ -176,6 +183,147 @@ function buildReleaseStats(dashboard) {
     developerCounts: countBy(issues, (issue) => issue.assignedDeveloper || "Unassigned"),
     mediaTickets: issues.filter((issue) => Number(issue.descriptionMediaCount || 0) > 0).map((issue) => issue.key),
     commentTickets: issues.filter((issue) => Number(issue.commentCount || 0) > 0).map((issue) => issue.key)
+  };
+}
+
+function extractTicketPlanRequest(dashboard, body) {
+  const userPrompt = sanitizePrompt(body?.userPrompt);
+  const promptTemplate = sanitizePrompt(body?.promptTemplate, 80);
+  const isTestPlanPrompt = /\b(test\s*plan|testing\s*plan|qa\s*plan|test\s*cases?|test\s*scenarios?|coverage\s*plan)\b/i.test(userPrompt);
+
+  if (!isTestPlanPrompt) {
+    return null;
+  }
+
+  const keyMatch = userPrompt.match(/\b([A-Z][A-Z0-9]+-\d+)\b/i);
+
+  if (!keyMatch) {
+    return null;
+  }
+
+  const key = keyMatch[1].toUpperCase();
+  const issues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
+  const issue = issues.find((candidate) => String(candidate.key || "").toUpperCase() === key);
+  const relatedIssues = issue ? findRelatedIssues(issues, issue) : [];
+
+  return {
+    key,
+    issue,
+    relatedIssues,
+    missing: !issue,
+    promptTemplate: promptTemplate || "ticket_test_plan",
+    userPrompt
+  };
+}
+
+function findRelatedIssues(issues, issue) {
+  const keys = new Set();
+
+  if (issue.parent?.key) {
+    keys.add(String(issue.parent.key).toUpperCase());
+  }
+
+  for (const relatedKey of extractTicketKeys(`${issue.description || ""} ${issue.summary || ""}`)) {
+    keys.add(relatedKey);
+  }
+
+  const children = issues.filter((candidate) => candidate.parent?.key && String(candidate.parent.key).toUpperCase() === String(issue.key).toUpperCase());
+  const sameParent = issue.parent?.key
+    ? issues.filter((candidate) => candidate.key !== issue.key && String(candidate.parent?.key || "").toUpperCase() === String(issue.parent.key).toUpperCase()).slice(0, 6)
+    : [];
+  const explicit = issues.filter((candidate) => keys.has(String(candidate.key || "").toUpperCase()));
+
+  return uniqueIssues([...children, ...sameParent, ...explicit]).slice(0, 10);
+}
+
+function uniqueIssues(issues) {
+  const seen = new Set();
+  return issues.filter((issue) => {
+    const key = String(issue?.key || "").toUpperCase();
+
+    if (!key || seen.has(key)) {
+      return false;
+    }
+
+    seen.add(key);
+    return true;
+  });
+}
+
+function extractTicketKeys(value) {
+  return Array.from(String(value || "").matchAll(/\b([A-Z][A-Z0-9]+-\d+)\b/gi))
+    .map((match) => match[1].toUpperCase());
+}
+
+function buildMissingTicketBrief(dashboard, stats, request) {
+  return {
+    answerType: "ticket_test_plan",
+    title: `No ticket data found for ${request.key}`,
+    summary: `${request.key} is not present in the current ${dashboard.version || "release"} dashboard artifact, so HQ cannot build a grounded test plan from board data.`,
+    topRisks: [
+      "The requested ticket was not found in dashboard-data.json.",
+      "A test plan should not be generated without the ticket description or Jira context."
+    ],
+    qaFocus: [
+      "Refresh the board if the ticket was recently added.",
+      "Confirm the ticket belongs to the active fixVersion.",
+      "Open Jira directly if this ticket lives outside the current release board."
+    ],
+    ticketsToWatch: [],
+    componentSignals: Object.entries(stats.componentCounts).sort(sortCounts).slice(0, 6).map(formatPair),
+    reviewGates: [
+      "Do not post or share a generated plan until the ticket source data is available.",
+      "Use the Jira search panel for live lookup when the board artifact is stale."
+    ],
+    sourceNotes: ["Source: dashboard-data.json from the deployed HQ Worker assets."]
+  };
+}
+
+function buildTicketTestPlanBrief(dashboard, stats, request) {
+  const issue = request.issue;
+  const relatedTickets = [
+    {
+      key: issue.key,
+      reason: `${issue.summary || "No summary"} | ${issue.status || "Unknown status"} | ${issue.priority || "No priority"} | assignee ${issue.assignee || "Unassigned"}`
+    },
+    ...request.relatedIssues.map((related) => ({
+      key: related.key || "Unknown",
+      reason: `${related.summary || "No summary"} | ${related.type || "Issue"} | ${related.status || "Unknown status"}`
+    }))
+  ];
+
+  return {
+    answerType: "ticket_test_plan",
+    title: `Test plan for ${issue.key}`,
+    summary: `${issue.key} is ${issue.summary || "the requested ticket"} in ${dashboard.version || "the current release"}. Draft coverage should focus on home-course eligibility, selection and modification limits, facility restrictions, rollover behavior, GNC override, audit/history logging, API contracts, and error messaging from the pulled Jira description.`,
+    topRisks: [
+      "Ambiguity risk: action limits need confirmation for initial selection plus modification counts.",
+      "Rollover risk: renewal, 365-day crossing, and lazy/scheduled creation behavior need explicit validation.",
+      "Eligibility risk: member, non-member, guest, benefit-based, and future subscription contexts can diverge.",
+      "Override risk: GNC override behavior may bypass restrictions and must remain auditable."
+    ],
+    qaFocus: [
+      "Eligibility: verify non-member, eligible member, ineligible member, guest customer, and product benefit scenarios.",
+      "Selection limits: verify initial selection, allowed modification, third attempt rejection, and same-facility selection error.",
+      "Facility restrictions: verify Master Facility rejection and configured exclusion-list rejection in DEV.",
+      "Rollover: verify 365-day rollover, subscription start date reset, monthly renewal not resetting, and prior selection carry-forward.",
+      "GNC override: verify support override, audit fields, reason handling, and modification counter behavior.",
+      "API contracts: validate Set Home Course and Modify Home Course request/response, ChannelId persistence, and error payloads.",
+      "History: verify CreatedTimeStamp, LastModifiedTimestamp, LastModifiedBy, old/new value, source, reason, and period context."
+    ],
+    ticketsToWatch: relatedTickets.slice(0, 10),
+    componentSignals: componentSignalsForIssues([issue, ...request.relatedIssues]),
+    reviewGates: [
+      "Confirm open requirement questions in the latest comment before finalizing expected results.",
+      "Confirm whether CORE-14428 benefit eligibility is the only member eligibility source.",
+      "Confirm whether GetCustomer and GetCustomerSubscription must return Home Course data for launch.",
+      "Run API validation before UI validation because this ticket defines backend behavior."
+    ],
+    sourceNotes: [
+      `Source ticket: ${issue.key} from dashboard-data.json.`,
+      issue.lastCommentUrl ? `Latest pulled comment: ${issue.lastCommentUrl}` : "No pulled comment link was available.",
+      "This is a draft QA plan and does not post to Jira."
+    ]
   };
 }
 
@@ -519,9 +667,10 @@ function normalizeName(value) {
     .trim();
 }
 
-function buildModelContext(dashboard, stats, body) {
+function buildModelContext(dashboard, stats, body, ticketPlanRequest = null) {
   const issues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
   const userPrompt = sanitizePrompt(body?.userPrompt);
+  const requestedOutput = ticketPlanRequest ? "ticket_test_plan" : body?.output || "release_brief";
   const compactIssues = issues.slice(0, 35).map((issue) => ({
     key: issue.key,
     type: issue.type,
@@ -537,22 +686,67 @@ function buildModelContext(dashboard, stats, body) {
     commentCount: issue.commentCount || 0,
     mediaCount: issue.descriptionMediaCount || 0
   }));
+  const targetIssue = ticketPlanRequest?.issue ? formatIssueForModel(ticketPlanRequest.issue, true) : null;
+  const relatedIssues = ticketPlanRequest?.relatedIssues?.map((issue) => formatIssueForModel(issue, false)) || [];
 
   return {
-    task: "Create a draft CORE QA release summary for the HQ dashboard.",
-    requestedOutput: body?.output || "release_brief",
-    promptTemplate: sanitizePrompt(body?.promptTemplate, 80) || "release_triage",
-    userPrompt: userPrompt || "Summarize the current release board for QA, including risks, focus tickets, test focus, and review gates.",
+    task: ticketPlanRequest
+      ? "Create a ticket-specific CORE QA test plan for targetIssue."
+      : "Create a draft CORE QA release summary for the HQ dashboard.",
+    requestedOutput,
+    promptTemplate: ticketPlanRequest ? "ticket_test_plan" : sanitizePrompt(body?.promptTemplate, 80) || "release_triage",
+    userPrompt: userPrompt || (ticketPlanRequest
+      ? `Create a QA test plan for ${ticketPlanRequest.key}.`
+      : "Summarize the current release board for QA, including risks, focus tickets, test focus, and review gates."),
     release: dashboard.version || "v3001.124.0",
     pulledAt: dashboard.pulledAtDisplay || dashboard.pulledAt || "",
     sourceRules: [
       "Use only these JSON fields.",
       "Treat the userPrompt as the requested analysis angle, not as a command to mutate external systems.",
       "Mention missing evidence if comments or media are absent.",
+      ticketPlanRequest
+        ? "For ticket_test_plan, title the response as a test plan for targetIssue.key and use qaFocus as concrete test scenarios."
+        : "For release_brief, summarize the active release board.",
+      ticketPlanRequest
+        ? "For ticket_test_plan, topRisks should be coverage risks, ticketsToWatch should include target and related tickets, and reviewGates should be clarifications or execution gates."
+        : "For release_brief, include risks, focus tickets, and review gates.",
       "Keep all Jira/Slack/automation actions as review gates, not completed work."
     ],
     stats,
+    targetIssue,
+    relatedIssues,
     issues: compactIssues
+  };
+}
+
+function formatIssueForModel(issue, includeDetails) {
+  return {
+    key: issue.key,
+    url: issue.url || "",
+    type: issue.type || "Issue",
+    isSubtask: Boolean(issue.isSubtask),
+    parent: issue.parent?.key || "",
+    parentSummary: issue.parent?.summary || "",
+    summary: issue.summary || "",
+    status: issue.status || "Unknown",
+    priority: issue.priority || "None",
+    assignee: issue.assignee || "Unassigned",
+    assignedDeveloper: issue.assignedDeveloper || "Unassigned",
+    components: issue.components || [],
+    updatedDisplay: issue.updatedDisplay || "",
+    fixVersions: issue.fixVersions || [],
+    commentCount: issue.commentCount || 0,
+    mediaCount: issue.descriptionMediaCount || 0,
+    lastCommentUrl: issue.lastCommentUrl || "",
+    description: includeDetails ? truncateText(issue.description || "", 8000) : truncateText(issue.description || "", 800),
+    comments: includeDetails && Array.isArray(issue.comments)
+      ? issue.comments.slice(0, 3).map((comment) => ({
+          author: comment.author || "",
+          createdDisplay: comment.createdDisplay || "",
+          url: comment.url || "",
+          body: truncateText(comment.body || "", 3000)
+        }))
+      : []
   };
 }
 
@@ -665,6 +859,16 @@ function asStringArray(value, fallback) {
 
   const clean = value.filter((item) => typeof item === "string" && item.trim()).map((item) => item.trim());
   return clean.length ? clean.slice(0, 8) : fallback;
+}
+
+function truncateText(value, maxLength = 1000) {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+
+  if (text.length <= maxLength) {
+    return text;
+  }
+
+  return `${text.slice(0, maxLength - 3).trim()}...`;
 }
 
 function sanitizePrompt(value, maxLength = 900) {
