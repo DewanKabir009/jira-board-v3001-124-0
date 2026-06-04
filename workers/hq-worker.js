@@ -183,13 +183,13 @@ function buildDirectQuestionBrief(dashboard, stats, body) {
   const promptTemplate = sanitizePrompt(body?.promptTemplate, 80);
   const userPrompt = sanitizePrompt(body?.userPrompt);
   const issues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
-  const promptLooksLikeLookup = /\b(ticket|tickets|issue|issues|assigned|assignee|developer|owner)\b/i.test(userPrompt);
+  const promptLooksLikeLookup = /\b(ticket|tickets|issue|issues|assigned|assignee|developer|owner|component|components|from|with)\b/i.test(userPrompt);
 
   if (promptTemplate !== "ticket_lookup" && !promptLooksLikeLookup) {
     return null;
   }
 
-  const lookup = extractPeopleLookup(userPrompt, issues);
+  const lookup = extractComponentLookup(userPrompt, issues) || extractPeopleLookup(userPrompt, issues);
 
   if (!lookup) {
     if (promptTemplate !== "ticket_lookup") {
@@ -207,7 +207,8 @@ function buildDirectQuestionBrief(dashboard, stats, body) {
       qaFocus: [
         "Try: What tickets are assigned to Dewan?",
         "Try: Which tickets have Nicole as assignee?",
-        "Try: What tickets have Luis as assigned developer?"
+        "Try: What tickets have Luis as assigned developer?",
+        "Try: Are there any tickets from Reservation?"
       ],
       ticketsToWatch: [],
       componentSignals: Object.entries(stats.assigneeCounts).sort(sortCounts).slice(0, 6).map(formatPair),
@@ -216,7 +217,77 @@ function buildDirectQuestionBrief(dashboard, stats, body) {
     };
   }
 
-  return buildPeopleLookupBrief(dashboard, stats, lookup);
+  return lookup.type === "component"
+    ? buildComponentLookupBrief(dashboard, stats, lookup)
+    : buildPeopleLookupBrief(dashboard, stats, lookup);
+}
+
+function extractComponentLookup(userPrompt, issues) {
+  const prompt = sanitizePrompt(userPrompt);
+
+  if (!prompt) {
+    return null;
+  }
+
+  const normalizedPrompt = normalizeName(prompt);
+  const knownComponents = Array.from(new Set(issues
+    .flatMap((issue) => Array.isArray(issue.components) ? issue.components : [])
+    .filter((component) => typeof component === "string" && component.trim())))
+    .sort((a, b) => b.length - a.length);
+  const explicitComponentQuery = [
+    /component(?:s)?\s+(?:is|are|=|:)?\s*(.+?)(?:[?.!,;]|$)/i,
+    /with\s+(.+?)\s+component(?:s)?(?:[?.!,;]|$)/i,
+    /from\s+(.+?)(?:[?.!,;]|$)/i
+  ];
+
+  for (const regex of explicitComponentQuery) {
+    const match = prompt.match(regex);
+    const cleaned = cleanLookupName(match?.[1]);
+
+    if (!cleaned) {
+      continue;
+    }
+
+    const knownMatch = findKnownComponent(cleaned, knownComponents);
+    return {
+      type: "component",
+      query: knownMatch || cleaned,
+      displayName: knownMatch || cleaned
+    };
+  }
+
+  if (!/\b(component|components|from|with)\b/i.test(prompt)) {
+    return null;
+  }
+
+  const knownMatch = knownComponents.find((component) => {
+    const normalizedComponent = normalizeName(component);
+    const componentParts = getLookupParts(normalizedComponent);
+    return normalizedPrompt.includes(normalizedComponent) || componentParts.some((part) => normalizedPrompt.includes(part));
+  });
+
+  return knownMatch
+    ? { type: "component", query: knownMatch, displayName: knownMatch }
+    : null;
+}
+
+function findKnownComponent(query, knownComponents) {
+  const normalizedQuery = normalizeName(query);
+  return knownComponents.find((component) => {
+    const normalizedComponent = normalizeName(component);
+    const componentParts = getLookupParts(normalizedComponent);
+    return normalizedComponent.includes(normalizedQuery)
+      || normalizedQuery.includes(normalizedComponent)
+      || componentParts.some((part) => normalizedQuery.includes(part))
+      || getLookupParts(normalizedQuery).some((part) => normalizedComponent.includes(part));
+  });
+}
+
+function getLookupParts(value) {
+  const genericParts = new Set(["golfnow", "golf", "services", "service", "svc", "api", "apis", "core", "platform", "windows"]);
+  return normalizeName(value)
+    .split(" ")
+    .filter((part) => part.length > 2 && !genericParts.has(part));
 }
 
 function extractPeopleLookup(userPrompt, issues) {
@@ -306,6 +377,72 @@ function buildPeopleLookupBrief(dashboard, stats, lookup) {
     summary: `Yes. ${matches.length} issue(s) in ${release} have ${fieldLabel} matching ${lookup.displayName}: ${mainCount} main ticket(s) and ${subtaskCount} subtask(s), from the artifact pulled ${pulledAt}.`,
     topRisks: [
       `Lookup mode: matched the ${fieldLabel} field only.`,
+      `${matches.length} of ${stats.total} current issue(s) match ${lookup.displayName}.`,
+      `${mainCount} main ticket(s) and ${subtaskCount} subtask(s) matched.`,
+      `Current artifact pull: ${pulledAt}.`
+    ],
+    qaFocus: matches.slice(0, 10).map(formatLookupLine),
+    ticketsToWatch: matches.slice(0, 12).map((issue) => ({
+      key: issue.key || "Unknown",
+      reason: formatLookupReason(issue)
+    })),
+    componentSignals: componentSignalsForIssues(matches),
+    reviewGates: [
+      "Open Jira for a ticket before posting status or comments.",
+      "Refresh the board if the pull timestamp is stale.",
+      "Use the ticket detail modal for pulled comments, media, and checklist context."
+    ],
+    sourceNotes: [
+      "Source: dashboard-data.json from the deployed HQ Worker assets.",
+      "This direct lookup is deterministic board data, not model inference.",
+      "No Jira, Slack, or automation mutation was performed."
+    ]
+  };
+}
+
+function buildComponentLookupBrief(dashboard, stats, lookup) {
+  const issues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
+  const normalizedQuery = normalizeName(lookup.query);
+  const matches = issues
+    .filter((issue) => {
+      const components = Array.isArray(issue.components) ? issue.components : [];
+      return components.some((component) => {
+        const value = normalizeName(component);
+        return value && (value.includes(normalizedQuery) || normalizedQuery.includes(value));
+      });
+    })
+    .sort(sortIssuesForLookup);
+  const mainCount = matches.filter((issue) => !issue.isSubtask).length;
+  const subtaskCount = matches.length - mainCount;
+  const release = dashboard.version || "current release";
+  const pulledAt = dashboard.pulledAtDisplay || dashboard.pulledAt || "the latest artifact";
+
+  if (!matches.length) {
+    return {
+      answerType: "component_lookup",
+      title: `No tickets found for ${lookup.displayName}`,
+      summary: `No issues in ${release} currently include a component matching ${lookup.displayName} in the dashboard artifact pulled ${pulledAt}.`,
+      topRisks: [
+        "No matching component tickets were found in the current artifact.",
+        "This answer did not call Jira live; it used the deployed dashboard-data.json."
+      ],
+      qaFocus: Object.entries(stats.componentCounts).sort(sortCounts).slice(0, 8).map(formatPair),
+      ticketsToWatch: [],
+      componentSignals: Object.entries(stats.componentCounts).sort(sortCounts).slice(0, 8).map(formatPair),
+      reviewGates: [
+        "Refresh the board if the pull timestamp is stale.",
+        "Use Jira search when you need live data beyond the dashboard artifact."
+      ],
+      sourceNotes: ["Source: dashboard-data.json from the deployed HQ Worker assets."]
+    };
+  }
+
+  return {
+    answerType: "component_lookup",
+    title: `Tickets with ${lookup.displayName} component`,
+    summary: `Yes. ${matches.length} issue(s) in ${release} include a component matching ${lookup.displayName}: ${mainCount} main ticket(s) and ${subtaskCount} subtask(s), from the artifact pulled ${pulledAt}.`,
+    topRisks: [
+      "Lookup mode: matched ticket components only.",
       `${matches.length} of ${stats.total} current issue(s) match ${lookup.displayName}.`,
       `${mainCount} main ticket(s) and ${subtaskCount} subtask(s) matched.`,
       `Current artifact pull: ${pulledAt}.`

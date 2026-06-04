@@ -1169,7 +1169,7 @@ const hqSpecs = [
           renderBrief(payload);
           statusLine.textContent = payload.warning
             ? "Draft ready with deterministic fallback."
-            : payload.answerType === "assignee_lookup" || payload.answerType === "ticket_lookup" || payload.answerType === "direct_lookup"
+            : payload.answerType === "assignee_lookup" || payload.answerType === "component_lookup" || payload.answerType === "ticket_lookup" || payload.answerType === "direct_lookup"
               ? "Board lookup ready from dashboard-data.json."
             : "AI draft ready for review from your prompt.";
           runner.classList.remove("has-error");
@@ -1214,7 +1214,7 @@ const hqSpecs = [
       }
 
       function setResultLabels(answerType) {
-        const lookupMode = answerType === "assignee_lookup" || answerType === "ticket_lookup" || answerType === "direct_lookup";
+        const lookupMode = answerType === "assignee_lookup" || answerType === "component_lookup" || answerType === "ticket_lookup" || answerType === "direct_lookup";
 
         if (riskTitle) riskTitle.textContent = lookupMode ? "Lookup notes" : "Top risks";
         if (focusTitle) focusTitle.textContent = lookupMode ? "Matching tickets" : "QA focus";
@@ -1237,7 +1237,7 @@ const hqSpecs = [
       function buildBriefText(payload) {
         const brief = payload.brief || {};
         const answerType = payload.answerType || brief.answerType || "release_brief";
-        const lookupMode = answerType === "assignee_lookup" || answerType === "ticket_lookup" || answerType === "direct_lookup";
+        const lookupMode = answerType === "assignee_lookup" || answerType === "component_lookup" || answerType === "ticket_lookup" || answerType === "direct_lookup";
         const tickets = (brief.ticketsToWatch || []).map((ticket) => `- ${ticket.key}: ${ticket.reason}`).join("\n");
         return [
           brief.title || "Draft release brief",
