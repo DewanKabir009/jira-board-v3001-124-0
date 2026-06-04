@@ -1,11 +1,17 @@
 name = "core-qa-headquarters-124"
 account_id = "b2642b2648a8f477ae5b541efebfcc72"
 compatibility_date = "2026-06-03"
+main = "workers/hq-worker.js"
 workers_dev = true
 
 [assets]
 directory = "./.cloudflare-hq-assets"
+binding = "ASSETS"
 not_found_handling = "404-page"
+run_worker_first = [ "/api/*" ]
+
+[ai]
+binding = "AI"
 
 [vars]
 HQ_ENVIRONMENT = "current-124"

@@ -14,6 +14,12 @@ if (!fs.existsSync(sourceDir)) {
 fs.rmSync(outputDir, { recursive: true, force: true });
 fs.cpSync(sourceDir, outputDir, { recursive: true });
 
+const dashboardDataPath = path.join(repoRoot, "dashboard-data.json");
+
+if (fs.existsSync(dashboardDataPath)) {
+  fs.copyFileSync(dashboardDataPath, path.join(outputDir, "dashboard-data.json"));
+}
+
 function rewriteHtmlAssets(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const filePath = path.join(dir, entry.name);

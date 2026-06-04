@@ -294,11 +294,20 @@ const operationsSignals = [
 ];
 
 const aiReleaseSnapshot = {
-  state: "Draft intelligence shell",
+  state: "Workers AI draft endpoint",
   activeBoard: "v3001.124.0",
   access: "QA Engineer view; QA Admin controls",
-  freshness: "Board artifact plus HQ signals",
-  summary: "SPEC-HQ-07 turns the current release board into an AI-ready briefing surface without posting or mutating Jira automatically. The first version shows the exact inputs, draft outputs, review gates, and evidence expectations before the Worker AI endpoint is connected."
+  freshness: "Live dashboard-data.json",
+  summary: "SPEC-HQ-07 now has a Cloudflare Workers AI endpoint that turns the current release artifact into a draft QA intelligence brief. It uses the deployed board JSON, returns structured output, and keeps Jira, Slack, and automation actions behind human review gates."
+};
+
+const aiRuntime = {
+  endpoint: "/api/ai/release-summary",
+  statusEndpoint: "/api/ai/status",
+  model: "@cf/meta/llama-3.1-8b-instruct-fast",
+  provider: "Cloudflare Workers AI",
+  mode: "Draft-only response",
+  source: "dashboard-data.json from Worker assets"
 };
 
 const aiInputSources = [
@@ -458,7 +467,7 @@ const hqSpecs = [
   { id: "SPEC-HQ-04", title: "Knowledge base", status: "In progress", detail: "Flow cards, source links, ownership, and freshness are drafted." },
   { id: "SPEC-HQ-05", title: "Automation bench", status: "In progress", detail: "Playwright pilot registry, lifecycle, evidence, and runner guards are drafted." },
   { id: "SPEC-HQ-06", title: "Operational status", status: "In progress", detail: "Service health cards, probe cadence, and status publishing contract are drafted." },
-  { id: "SPEC-HQ-07", title: "AI release summary", status: "In progress", detail: "AI-ready source map, draft outputs, risk signals, and review gates are implemented." },
+  { id: "SPEC-HQ-07", title: "AI release summary", status: "In progress", detail: "Cloudflare Workers AI endpoint, source map, draft outputs, risk signals, and review gates are implemented." },
   { id: "SPEC-HQ-08", title: "Admin console", status: "Planned", detail: "Users, roles, sections, and script permissions." }
 ];
 ---
@@ -867,6 +876,59 @@ const hqSpecs = [
             </dl>
           </article>
 
+          <article
+            class="ai-runner-card"
+            data-ai-endpoint={aiRuntime.endpoint}
+            data-ai-status-endpoint={aiRuntime.statusEndpoint}
+            data-ai-release={aiReleaseSnapshot.activeBoard}
+          >
+            <div class="ai-runner-top">
+              <div>
+                <p class="eyebrow">Live draft generator</p>
+                <h3>Generate the current release brief</h3>
+                <p>The Worker reads the deployed board artifact, calls Cloudflare Workers AI, and returns a structured draft for QA review.</p>
+              </div>
+              <div class="ai-runtime-facts" aria-label="AI runtime facts">
+                <span>{aiRuntime.provider}</span>
+                <span>{aiRuntime.model}</span>
+                <span>{aiRuntime.source}</span>
+              </div>
+            </div>
+            <div class="ai-runner-actions">
+              <button type="button" id="hq-ai-generate">Generate AI brief</button>
+              <button type="button" id="hq-ai-copy" disabled>Copy brief</button>
+              <span class="ai-status-line" id="hq-ai-status" role="status">{aiRuntime.mode}</span>
+            </div>
+            <div class="ai-result-card" id="hq-ai-result" hidden>
+              <div class="ai-result-heading">
+                <div>
+                  <p class="eyebrow" id="hq-ai-result-meta">Waiting for first run</p>
+                  <h3 id="hq-ai-result-title">Draft release brief</h3>
+                </div>
+                <span id="hq-ai-result-source">No source loaded</span>
+              </div>
+              <p id="hq-ai-result-summary"></p>
+              <div class="ai-result-grid">
+                <section>
+                  <h4>Top risks</h4>
+                  <ul id="hq-ai-risks"></ul>
+                </section>
+                <section>
+                  <h4>QA focus</h4>
+                  <ul id="hq-ai-focus"></ul>
+                </section>
+                <section>
+                  <h4>Tickets to watch</h4>
+                  <ul id="hq-ai-tickets"></ul>
+                </section>
+                <section>
+                  <h4>Review gates</h4>
+                  <ul id="hq-ai-gates"></ul>
+                </section>
+              </div>
+            </div>
+          </article>
+
           <div class="ai-source-grid" aria-label="AI release summary source map">
             {aiInputSources.map((source) => (
               <article class="ai-source-card">
@@ -1010,4 +1072,132 @@ const hqSpecs = [
       </section>
     </section>
   </main>
+
+  <script is:inline>
+    (() => {
+      const runner = document.querySelector(".ai-runner-card");
+      const generateButton = document.querySelector("#hq-ai-generate");
+      const copyButton = document.querySelector("#hq-ai-copy");
+      const statusLine = document.querySelector("#hq-ai-status");
+      const resultCard = document.querySelector("#hq-ai-result");
+      const resultTitle = document.querySelector("#hq-ai-result-title");
+      const resultMeta = document.querySelector("#hq-ai-result-meta");
+      const resultSource = document.querySelector("#hq-ai-result-source");
+      const resultSummary = document.querySelector("#hq-ai-result-summary");
+      const riskList = document.querySelector("#hq-ai-risks");
+      const focusList = document.querySelector("#hq-ai-focus");
+      const ticketList = document.querySelector("#hq-ai-tickets");
+      const gateList = document.querySelector("#hq-ai-gates");
+      let latestBriefText = "";
+
+      if (!runner || !generateButton || !statusLine || !resultCard) {
+        return;
+      }
+
+      generateButton.addEventListener("click", async () => {
+        generateButton.disabled = true;
+        if (copyButton) copyButton.disabled = true;
+        statusLine.textContent = "Generating draft with Cloudflare Workers AI...";
+        runner.classList.add("is-loading");
+        runner.classList.remove("has-error");
+
+        try {
+          const response = await fetch(runner.dataset.aiEndpoint, {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+              release: runner.dataset.aiRelease,
+              output: "release_brief"
+            })
+          });
+          const payload = await response.json();
+
+          if (!response.ok || !payload.ok) {
+            throw new Error(payload.message || `AI request failed with HTTP ${response.status}`);
+          }
+
+          renderBrief(payload);
+          statusLine.textContent = payload.warning
+            ? "Draft ready with deterministic fallback."
+            : "AI draft ready for review.";
+          runner.classList.remove("has-error");
+        } catch (error) {
+          statusLine.textContent = `AI endpoint unavailable: ${error.message}. Open the Cloudflare HQ URL, not GitHub Pages, for live AI.`;
+          runner.classList.add("has-error");
+        } finally {
+          runner.classList.remove("is-loading");
+          generateButton.disabled = false;
+        }
+      });
+
+      if (copyButton) {
+        copyButton.addEventListener("click", async () => {
+          if (!latestBriefText) return;
+
+          try {
+            await navigator.clipboard.writeText(latestBriefText);
+            statusLine.textContent = "AI brief copied.";
+          } catch {
+            statusLine.textContent = "Copy failed. Select the brief text manually.";
+          }
+        });
+      }
+
+      function renderBrief(payload) {
+        const brief = payload.brief || {};
+        const source = payload.source || {};
+        resultCard.hidden = false;
+        resultTitle.textContent = brief.title || "Draft release brief";
+        resultMeta.textContent = `${payload.provider || "Cloudflare Workers AI"} / ${payload.model || "unknown model"}`;
+        resultSource.textContent = `${payload.release || "release"} / pulled ${source.pulledAtDisplay || source.pulledAt || "unknown"}`;
+        resultSummary.textContent = brief.summary || "";
+        renderList(riskList, brief.topRisks);
+        renderList(focusList, brief.qaFocus);
+        renderList(ticketList, (brief.ticketsToWatch || []).map((ticket) => `${ticket.key}: ${ticket.reason}`));
+        renderList(gateList, brief.reviewGates);
+        latestBriefText = buildBriefText(payload);
+        if (copyButton) copyButton.disabled = !latestBriefText;
+      }
+
+      function renderList(list, items) {
+        if (!list) return;
+        list.textContent = "";
+        const cleanItems = Array.isArray(items) && items.length ? items : ["No items returned."];
+
+        cleanItems.forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = item;
+          list.appendChild(li);
+        });
+      }
+
+      function buildBriefText(payload) {
+        const brief = payload.brief || {};
+        const tickets = (brief.ticketsToWatch || []).map((ticket) => `- ${ticket.key}: ${ticket.reason}`).join("\n");
+        return [
+          brief.title || "Draft release brief",
+          "",
+          brief.summary || "",
+          "",
+          "Top risks:",
+          toBulletList(brief.topRisks),
+          "",
+          "QA focus:",
+          toBulletList(brief.qaFocus),
+          "",
+          "Tickets to watch:",
+          tickets || "- No tickets returned.",
+          "",
+          "Review gates:",
+          toBulletList(brief.reviewGates),
+          "",
+          `Source: ${payload.release || "release"} / ${payload.source?.pulledAtDisplay || payload.source?.pulledAt || "unknown pull"}`
+        ].join("\n");
+      }
+
+      function toBulletList(items) {
+        return Array.isArray(items) && items.length ? items.map((item) => `- ${item}`).join("\n") : "- No items returned.";
+      }
+    })();
+  </script>
 </QaHqLayout>
