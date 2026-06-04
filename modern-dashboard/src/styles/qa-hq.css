@@ -789,6 +789,190 @@ ul {
   border: 1px solid rgba(0, 122, 77, 0.28);
 }
 
+.operations-module {
+  overflow: hidden;
+}
+
+.operations-console {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.operations-hero {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(0, 1.1fr);
+  gap: 14px;
+  border: 1px solid rgba(0, 95, 204, 0.3);
+  border-radius: 8px;
+  background:
+    linear-gradient(128deg, rgba(224, 239, 255, 0.94), rgba(255, 255, 255, 0.98) 54%, rgba(255, 240, 214, 0.58));
+  padding: 16px;
+  box-shadow: 0 18px 42px rgba(0, 95, 204, 0.13);
+}
+
+.operations-hero h3,
+.ops-signals-card h3 {
+  margin: 5px 0 8px;
+  font-size: 1.35rem;
+  line-height: 1.18;
+}
+
+.operations-hero p,
+.ops-service-card p,
+.ops-cadence-grid p,
+.ops-signal-grid p {
+  color: var(--hq-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.operations-hero dl,
+.ops-service-card dl {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.operations-hero dl {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.operations-hero dl > div,
+.ops-service-card dl > div {
+  border: 1px solid var(--hq-line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  padding: 9px;
+}
+
+.operations-hero dt,
+.ops-service-card dt {
+  color: var(--hq-muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.operations-hero dd,
+.ops-service-card dd {
+  margin: 3px 0 0;
+  font-weight: 850;
+  overflow-wrap: anywhere;
+}
+
+.ops-service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ops-service-card {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--hq-line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #ffffff, var(--hq-surface-soft));
+  padding: 14px;
+}
+
+.ops-service-card.healthy {
+  border-color: rgba(0, 122, 77, 0.36);
+  box-shadow: inset 5px 0 0 var(--hq-green);
+}
+
+.ops-service-card.auth {
+  border-color: rgba(245, 130, 32, 0.48);
+  box-shadow: inset 5px 0 0 var(--hq-orange);
+}
+
+.ops-service-card.planned {
+  border-color: rgba(0, 95, 204, 0.32);
+  box-shadow: inset 5px 0 0 var(--hq-blue);
+}
+
+.ops-service-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.ops-state {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 0 9px;
+  white-space: nowrap;
+}
+
+.ops-state.healthy {
+  background: var(--hq-green-soft);
+  color: var(--hq-green);
+}
+
+.ops-state.auth {
+  background: var(--hq-amber-soft);
+  color: var(--hq-amber);
+}
+
+.ops-state.planned {
+  background: var(--hq-blue-soft);
+  color: var(--hq-blue);
+}
+
+.ops-cadence-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ops-cadence-grid article {
+  display: grid;
+  gap: 7px;
+  border: 1px solid var(--hq-line);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 12px;
+}
+
+.ops-cadence-grid span {
+  color: var(--hq-blue);
+  font-size: 0.76rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.ops-cadence-grid strong {
+  font-size: 1.32rem;
+}
+
+.ops-signals-card {
+  display: grid;
+  gap: 12px;
+  border: 1px solid rgba(0, 122, 77, 0.32);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(217, 255, 235, 0.82), rgba(255, 255, 255, 0.96) 58%, rgba(224, 239, 255, 0.72));
+  padding: 15px;
+}
+
+.ops-signal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ops-signal-grid div {
+  border: 1px solid rgba(0, 122, 77, 0.24);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  padding: 12px;
+}
+
 .script-row {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(150px, 0.6fr);
@@ -1041,7 +1225,11 @@ ul {
   .board-grid,
   .kb-console,
   .automation-status-card,
+  .operations-hero,
   .automation-lifecycle,
+  .ops-service-grid,
+  .ops-cadence-grid,
+  .ops-signal-grid,
   .script-list,
   .script-card dl,
   .role-matrix,
@@ -1072,6 +1260,11 @@ ul {
   .kb-card dl,
   .automation-status-card,
   .automation-status-card dl,
+  .operations-hero,
+  .operations-hero dl,
+  .ops-service-grid,
+  .ops-cadence-grid,
+  .ops-signal-grid,
   .automation-lifecycle,
   .script-list,
   .script-card dl,

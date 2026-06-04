@@ -214,6 +214,85 @@ const statusCards = [
   { label: "Knowledge base", value: "Mapped", detail: "Flow previews and owners drafted", tone: "violet" }
 ];
 
+const operationsSnapshot = {
+  state: "Control surface drafted",
+  cadence: "5 minute probe contract",
+  source: "SPEC-HQ-06",
+  updated: "Live cards use known board and workflow signals until the central API monitor is connected.",
+  summary: "The HQ operations panel separates current hosted health from planned service probes, so QA can see data freshness, deploy status, bridge auth, and automation evidence readiness from one place."
+};
+
+const operationsServices = [
+  {
+    name: "Jira data pull",
+    state: "Healthy",
+    tone: "healthy",
+    cadence: "Every 5 minutes and on demand",
+    source: "refresh-jira-board.yml",
+    signal: "dashboard-data.json published with latest pull timestamp",
+    next: "Keep current board freshness visible in the HQ status panel."
+  },
+  {
+    name: "GitHub Pages deployment",
+    state: "Healthy",
+    tone: "healthy",
+    cadence: "On every publish",
+    source: "pages-build-deployment",
+    signal: ".124 and .123 HQ mirrors render from generated Astro output",
+    next: "Continue using Pages as fallback while Cloudflare Static Assets is blocked."
+  },
+  {
+    name: "Jira write bridge",
+    state: "Auth gated",
+    tone: "auth",
+    cadence: "On demand",
+    source: "Cloudflare Worker",
+    signal: "Assign, checklist, and comment routes require Access login before writes",
+    next: "Surface the login path and route status before user actions."
+  },
+  {
+    name: "Playwright evidence publishing",
+    state: "Healthy",
+    tone: "healthy",
+    cadence: "On demand",
+    source: "v3001.123.0 run-playwright-job.yml",
+    signal: "Summary JSON, screenshot, video, trace, logs, and events are stored per job",
+    next: "Move the pilot runner into the HQ-owned automation registry."
+  },
+  {
+    name: "CORE API health probe",
+    state: "Planned",
+    tone: "planned",
+    cadence: "Every 5 minutes",
+    source: "operations-health.yml planned",
+    signal: "Status code, latency, assertion log, and service tag per endpoint",
+    next: "Add Python/API probes after service endpoints and credentials are approved."
+  },
+  {
+    name: "Slack notification pipeline",
+    state: "Planned",
+    tone: "planned",
+    cadence: "On failure and assignment change",
+    source: "Workflow or Worker notifier",
+    signal: "Delivery state, channel, assignee mention, and failure summary",
+    next: "Connect automation and data-pull failures to dashboard-visible alerts first."
+  }
+];
+
+const operationsCadence = [
+  { label: "Collect", value: "5 min", detail: "API probes and board freshness checks create a compact JSON status record." },
+  { label: "Publish", value: "Pages", detail: "The latest status artifact is published beside the active release dashboard." },
+  { label: "Notify", value: "Inline", detail: "Failed runs and stale pulls appear in the dashboard before users need Actions." },
+  { label: "Escalate", value: "Slack", detail: "Future notifier routes critical failures to the right QA channel and assignee." }
+];
+
+const operationsSignals = [
+  { label: "Availability", detail: "Pass/fail per service plus auth-gated state." },
+  { label: "Latency", detail: "Endpoint response timing for future API probes." },
+  { label: "Freshness", detail: "Last successful data pull, publish, and automation evidence timestamp." },
+  { label: "Evidence", detail: "Logs, screenshots, videos, traces, and summary JSON links." }
+];
+
 const accessRoles = [
   {
     role: "QA Admin",
@@ -275,7 +354,7 @@ const hqSpecs = [
   { id: "SPEC-HQ-03", title: "Auth and permissions", status: "In progress", detail: "Role model, gated cards, and request-access UI are drafted." },
   { id: "SPEC-HQ-04", title: "Knowledge base", status: "In progress", detail: "Flow cards, source links, ownership, and freshness are drafted." },
   { id: "SPEC-HQ-05", title: "Automation bench", status: "In progress", detail: "Playwright pilot registry, lifecycle, evidence, and runner guards are drafted." },
-  { id: "SPEC-HQ-06", title: "Operational status", status: "Planned", detail: "5 minute API health results and service cards." },
+  { id: "SPEC-HQ-06", title: "Operational status", status: "In progress", detail: "Service health cards, probe cadence, and status publishing contract are drafted." },
   { id: "SPEC-HQ-07", title: "AI release summary", status: "Planned", detail: "Ticket risk, stale work, QA recommendations." },
   { id: "SPEC-HQ-08", title: "Admin console", status: "Planned", detail: "Users, roles, sections, and script permissions." }
 ];
@@ -322,7 +401,7 @@ const hqSpecs = [
         </div>
       </header>
 
-      <section class="status-grid" id="status" aria-label="Operational status snapshot">
+      <section class="status-grid" aria-label="Operational status snapshot">
         {statusCards.map((card) => (
           <article class={`status-card ${card.tone}`}>
             <span>{card.label}</span>
@@ -568,6 +647,91 @@ const hqSpecs = [
         </div>
       </section>
 
+      <section class="module-panel operations-module" id="status">
+        <div class="module-heading">
+          <div>
+            <p class="eyebrow">Operations status</p>
+            <h2>Service health command panel</h2>
+          </div>
+          <span class="module-pill">SPEC-HQ-06 active</span>
+        </div>
+
+        <div class="operations-console">
+          <article class="operations-hero">
+            <div>
+              <p class="eyebrow">{operationsSnapshot.source}</p>
+              <h3>{operationsSnapshot.state}</h3>
+              <p>{operationsSnapshot.summary}</p>
+            </div>
+            <dl>
+              <div>
+                <dt>Cadence</dt>
+                <dd>{operationsSnapshot.cadence}</dd>
+              </div>
+              <div>
+                <dt>Source</dt>
+                <dd>{operationsSnapshot.source}</dd>
+              </div>
+              <div>
+                <dt>Current note</dt>
+                <dd>{operationsSnapshot.updated}</dd>
+              </div>
+            </dl>
+          </article>
+
+          <div class="ops-service-grid" aria-label="Tracked service health">
+            {operationsServices.map((service) => (
+              <article class={`ops-service-card ${service.tone}`}>
+                <div class="ops-service-top">
+                  <strong>{service.name}</strong>
+                  <span class={`ops-state ${service.tone}`}>{service.state}</span>
+                </div>
+                <dl>
+                  <div>
+                    <dt>Cadence</dt>
+                    <dd>{service.cadence}</dd>
+                  </div>
+                  <div>
+                    <dt>Source</dt>
+                    <dd>{service.source}</dd>
+                  </div>
+                  <div>
+                    <dt>Signal</dt>
+                    <dd>{service.signal}</dd>
+                  </div>
+                </dl>
+                <p>{service.next}</p>
+              </article>
+            ))}
+          </div>
+
+          <div class="ops-cadence-grid" aria-label="Operational status lifecycle">
+            {operationsCadence.map((item) => (
+              <article>
+                <span>{item.label}</span>
+                <strong>{item.value}</strong>
+                <p>{item.detail}</p>
+              </article>
+            ))}
+          </div>
+
+          <article class="ops-signals-card">
+            <div>
+              <p class="eyebrow">Monitoring contract</p>
+              <h3>What the five-minute health artifact should contain</h3>
+            </div>
+            <div class="ops-signal-grid">
+              {operationsSignals.map((signal) => (
+                <div>
+                  <strong>{signal.label}</strong>
+                  <p>{signal.detail}</p>
+                </div>
+              ))}
+            </div>
+          </article>
+        </div>
+      </section>
+
       <section class="module-grid">
         <article class="module-panel ai-panel" id="ai">
           <div class="module-heading">
@@ -654,7 +818,7 @@ const hqSpecs = [
             <p class="eyebrow">Spec-driven delivery</p>
             <h2>HQ build checklist</h2>
           </div>
-          <span class="module-pill">2 complete / 4 active</span>
+          <span class="module-pill">2 complete / 5 active</span>
         </div>
         <div class="spec-grid">
           {hqSpecs.map((spec) => (

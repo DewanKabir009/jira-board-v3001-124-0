@@ -1,6 +1,6 @@
 # CORE QA Headquarters
 
-Status: started. SPEC-HQ-02 is blocked on Cloudflare auth. SPEC-HQ-03, SPEC-HQ-04, and SPEC-HQ-05 are in progress.
+Status: started. SPEC-HQ-02 is blocked on Cloudflare auth. SPEC-HQ-03, SPEC-HQ-04, SPEC-HQ-05, and SPEC-HQ-06 are in progress.
 
 ## Purpose
 
@@ -27,6 +27,6 @@ The first implementation is a static Astro route at `/hq/` so it can live beside
 - SPEC-HQ-03: Auth and permissions. In progress.
 - SPEC-HQ-04: Knowledge base. In progress.
 - SPEC-HQ-05: Automation bench. In progress.
-- SPEC-HQ-06: Operational status.
+- SPEC-HQ-06: Operational status. In progress.
 - SPEC-HQ-07: AI release summary.
 - SPEC-HQ-08: Admin console.
