@@ -885,14 +885,38 @@ const hqSpecs = [
             <div class="ai-runner-top">
               <div>
                 <p class="eyebrow">Live draft generator</p>
-                <h3>Generate the current release brief</h3>
-                <p>The Worker reads the deployed board artifact, calls Cloudflare Workers AI, and returns a structured draft for QA review.</p>
+                <h3>Prompt Workers AI against the current release</h3>
+                <p>The Worker reads the deployed board artifact, combines it with the user prompt below, calls Cloudflare Workers AI, and returns a structured draft for QA review.</p>
               </div>
               <div class="ai-runtime-facts" aria-label="AI runtime facts">
                 <span>{aiRuntime.provider}</span>
                 <span>{aiRuntime.model}</span>
                 <span>{aiRuntime.source}</span>
               </div>
+            </div>
+            <div class="ai-prompt-panel" aria-labelledby="hq-ai-prompt-heading">
+              <div class="ai-prompt-heading">
+                <div>
+                  <p class="eyebrow" id="hq-ai-prompt-heading">User prompt</p>
+                  <h4>Ask the HQ AI what to analyze</h4>
+                </div>
+                <label class="ai-prompt-template" for="hq-ai-prompt-template">
+                  <span>Prompt type</span>
+                  <select id="hq-ai-prompt-template">
+                    <option value="release_triage">Release triage brief</option>
+                    <option value="qa_focus">QA focus plan</option>
+                    <option value="jira_notes">Jira-ready notes</option>
+                    <option value="leadership">Leadership rollup</option>
+                  </select>
+                </label>
+              </div>
+              <textarea
+                id="hq-ai-prompt"
+                rows="5"
+                maxlength="900"
+                aria-describedby="hq-ai-prompt-note"
+              >Summarize the current v3001.124.0 board for QA. Call out the biggest risks, tickets to watch, testing focus, and review gates before anyone posts Jira or Slack updates.</textarea>
+              <p class="ai-prompt-note" id="hq-ai-prompt-note">Draft-only. The AI can summarize and suggest next checks, but it cannot assign tickets, post Jira comments, send Slack messages, or run automation.</p>
             </div>
             <div class="ai-runner-actions">
               <button type="button" id="hq-ai-generate">Generate AI brief</button>
@@ -1088,13 +1112,31 @@ const hqSpecs = [
       const focusList = document.querySelector("#hq-ai-focus");
       const ticketList = document.querySelector("#hq-ai-tickets");
       const gateList = document.querySelector("#hq-ai-gates");
+      const promptTemplate = document.querySelector("#hq-ai-prompt-template");
+      const promptInput = document.querySelector("#hq-ai-prompt");
       let latestBriefText = "";
+      const promptPresets = {
+        release_triage: "Summarize the current v3001.124.0 board for QA. Call out the biggest risks, tickets to watch, testing focus, and review gates before anyone posts Jira or Slack updates.",
+        qa_focus: "Create a QA focus plan for the current release. Prioritize P0/P1 work, parent tickets with subtasks, stale evidence, components with concentration, and what should be tested next.",
+        jira_notes: "Draft Jira-ready QA notes for the current release. Keep the notes safe for review, cite ticket keys from the board data, and separate findings, concerns, evidence gaps, and next actions.",
+        leadership: "Create a concise leadership rollup for the current release. Include release health, top risks, ownership pressure, evidence gaps, and what needs review before status is shared."
+      };
 
       if (!runner || !generateButton || !statusLine || !resultCard) {
         return;
       }
 
+      if (promptTemplate && promptInput) {
+        promptTemplate.addEventListener("change", () => {
+          const nextPrompt = promptPresets[promptTemplate.value];
+          if (nextPrompt) {
+            promptInput.value = nextPrompt;
+          }
+        });
+      }
+
       generateButton.addEventListener("click", async () => {
+        const userPrompt = promptInput?.value?.trim() || promptPresets.release_triage;
         generateButton.disabled = true;
         if (copyButton) copyButton.disabled = true;
         statusLine.textContent = "Generating draft with Cloudflare Workers AI...";
@@ -1107,7 +1149,9 @@ const hqSpecs = [
             headers: { "content-type": "application/json" },
             body: JSON.stringify({
               release: runner.dataset.aiRelease,
-              output: "release_brief"
+              output: "release_brief",
+              promptTemplate: promptTemplate?.value || "release_triage",
+              userPrompt
             })
           });
           const payload = await response.json();
@@ -1119,7 +1163,7 @@ const hqSpecs = [
           renderBrief(payload);
           statusLine.textContent = payload.warning
             ? "Draft ready with deterministic fallback."
-            : "AI draft ready for review.";
+            : "AI draft ready for review from your prompt.";
           runner.classList.remove("has-error");
         } catch (error) {
           statusLine.textContent = `AI endpoint unavailable: ${error.message}. Open the Cloudflare HQ URL, not GitHub Pages, for live AI.`;

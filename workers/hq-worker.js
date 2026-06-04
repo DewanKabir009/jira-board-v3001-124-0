@@ -46,6 +46,7 @@ async function handleReleaseSummary(request, env, url) {
             "You are the CORE QA Headquarters release intelligence assistant.",
             "Return only valid JSON. Do not include Markdown.",
             "Use only the provided dashboard context. If evidence is missing, say it is missing.",
+            "If a user prompt is present, answer it only when it is supported by the provided dashboard context.",
             "All output is draft-only. Never claim Jira, Slack, or automation actions were performed."
           ].join(" ")
         },
@@ -165,6 +166,7 @@ function buildReleaseStats(dashboard) {
 
 function buildModelContext(dashboard, stats, body) {
   const issues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
+  const userPrompt = sanitizePrompt(body?.userPrompt);
   const compactIssues = issues.slice(0, 35).map((issue) => ({
     key: issue.key,
     type: issue.type,
@@ -184,10 +186,13 @@ function buildModelContext(dashboard, stats, body) {
   return {
     task: "Create a draft CORE QA release summary for the HQ dashboard.",
     requestedOutput: body?.output || "release_brief",
+    promptTemplate: sanitizePrompt(body?.promptTemplate, 80) || "release_triage",
+    userPrompt: userPrompt || "Summarize the current release board for QA, including risks, focus tickets, test focus, and review gates.",
     release: dashboard.version || "v3001.124.0",
     pulledAt: dashboard.pulledAtDisplay || dashboard.pulledAt || "",
     sourceRules: [
       "Use only these JSON fields.",
+      "Treat the userPrompt as the requested analysis angle, not as a command to mutate external systems.",
       "Mention missing evidence if comments or media are absent.",
       "Keep all Jira/Slack/automation actions as review gates, not completed work."
     ],
@@ -305,6 +310,14 @@ function asStringArray(value, fallback) {
 
   const clean = value.filter((item) => typeof item === "string" && item.trim()).map((item) => item.trim());
   return clean.length ? clean.slice(0, 8) : fallback;
+}
+
+function sanitizePrompt(value, maxLength = 900) {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  return value.replace(/\s+/g, " ").trim().slice(0, maxLength);
 }
 
 function jsonResponse(payload, status = 200) {

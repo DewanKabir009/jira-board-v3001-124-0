@@ -61,7 +61,7 @@ GitHub Pages remains useful as a static fallback. The live AI endpoint only work
 - `/modern/` is the active `.124` release dashboard with ticket cards, table view, assignee actions, Jira search, comments, automation status, and ticket detail surfaces.
 - `/modern/hq/` is the HQ landing route built with Astro and deployed as static assets.
 - `/api/ai/status` reports whether the Cloudflare Worker has the Workers AI binding.
-- `/api/ai/release-summary` reads `dashboard-data.json`, builds compact ticket context, calls Cloudflare Workers AI, and returns a draft release brief.
+- `/api/ai/release-summary` reads `dashboard-data.json`, combines it with the user's prompt, builds compact ticket context, calls Cloudflare Workers AI, and returns a draft release brief.
 - GitHub Pages can render the same HQ page but cannot run the AI API. The page tells users to open the Cloudflare URL when the endpoint is unavailable.
 
 ## Architecture
@@ -97,6 +97,7 @@ The first Workers AI implementation is intentionally focused and review-first:
 - Endpoint: `POST /api/ai/release-summary`.
 - Status check: `GET /api/ai/status`.
 - Source data: the current board's `dashboard-data.json`.
+- User input: visible HQ prompt composer with release triage, QA focus, Jira-ready notes, and leadership rollup presets.
 - Output shape: structured JSON with executive brief, risks, focus tickets, and review gates.
 - Safety posture: draft-only, deterministic fallback if AI fails, and no Jira mutations from the AI endpoint.
 
@@ -189,7 +190,19 @@ Returns the AI runtime status.
 
 ### `POST /api/ai/release-summary`
 
-Returns a structured release brief for the current dashboard data.
+Returns a structured release brief for the current dashboard data and the user's requested analysis angle.
+
+Request:
+
+```json
+{
+  "output": "release_brief",
+  "promptTemplate": "release_triage",
+  "userPrompt": "Summarize the current release board for QA and call out risks, tickets to watch, testing focus, and review gates."
+}
+```
+
+Response:
 
 ```json
 {

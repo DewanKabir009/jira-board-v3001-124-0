@@ -62,7 +62,9 @@ const server = http.createServer((request, response) => {
   }
 
   const pathname = decodeURIComponent(requestUrl.pathname).replace(/^\/+/, "");
-  let filePath = path.join(workspaceRoot, pathname);
+  let filePath = pathname.startsWith("_astro/")
+    ? path.join(repoRoot, "modern", pathname)
+    : path.join(workspaceRoot, pathname);
 
   if (requestUrl.pathname.endsWith("/")) {
     filePath = path.join(workspaceRoot, pathname, "index.html");
