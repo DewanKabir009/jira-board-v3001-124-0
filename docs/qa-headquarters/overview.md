@@ -1,6 +1,6 @@
 # CORE QA Headquarters
 
-Status: started. SPEC-HQ-02 has proven Cloudflare Static Assets deployments for the 123 and 124 HQ Workers through local Wrangler OAuth. The hosted Jira bridge is reachable and Cloudflare Access protected. The GitHub Actions deploy path still needs `CLOUDFLARE_API_TOKEN` in the board repository secrets. SPEC-HQ-03, SPEC-HQ-04, SPEC-HQ-05, and SPEC-HQ-06 are in progress.
+Status: started. SPEC-HQ-02 has proven Cloudflare Static Assets deployments for the 123 and 124 HQ Workers through local Wrangler OAuth. The hosted Jira bridge is reachable and Cloudflare Access protected. SPEC-HQ-03, SPEC-HQ-04, SPEC-HQ-05, SPEC-HQ-06, and SPEC-HQ-07 are in progress.
 
 ## Purpose
 
@@ -11,7 +11,7 @@ CORE QA Headquarters turns the standalone release dashboard into a broader proje
 - Release-board tabs for v3001.122.0, v3001.123.0, and v3001.124.0.
 - Knowledge-base registry with external page links and preview metadata.
 - Automation bench registry for Playwright and Python API scripts.
-- AI release summary placeholder for the active dashboard.
+- AI release intelligence workbench for the active dashboard.
 - Operations status cards fed by future API automation.
 - Permission-aware locked section pattern.
 
@@ -23,10 +23,10 @@ The first implementation is a static Astro route at `/hq/` so it can live beside
 
 - SPEC-HQ-00: Product shell.
 - SPEC-HQ-01: Board registry.
-- SPEC-HQ-02: Cloudflare hosting. Config, dry runs, and local Worker deploys pass; GitHub workflow deploy is waiting on `CLOUDFLARE_API_TOKEN`.
+- SPEC-HQ-02: Cloudflare hosting. Config, dry runs, local Worker deploys, and GitHub workflow deploy wiring are in place.
 - SPEC-HQ-03: Auth and permissions. In progress.
 - SPEC-HQ-04: Knowledge base. In progress.
 - SPEC-HQ-05: Automation bench. In progress.
 - SPEC-HQ-06: Operational status. In progress.
-- SPEC-HQ-07: AI release summary.
+- SPEC-HQ-07: AI release summary. AI-ready source map, draft outputs, risk signals, and review gates are in progress.
 - SPEC-HQ-08: Admin console.

@@ -210,7 +210,7 @@ const automationGuards = [
 const statusCards = [
   { label: "Jira data pull", value: "Healthy", detail: "5 minute single-shot refresh", tone: "green" },
   { label: "Automation runner", value: "Mapped", detail: ".123 pilot contract carried into HQ", tone: "blue" },
-  { label: "Cloudflare host", value: "Deployed", detail: "Workers live; workflow token still needed", tone: "green" },
+  { label: "Cloudflare host", value: "Deployed", detail: "Workers live; workflow deploy wiring in place", tone: "green" },
   { label: "Knowledge base", value: "Mapped", detail: "Flow previews and owners drafted", tone: "violet" }
 ];
 
@@ -293,6 +293,109 @@ const operationsSignals = [
   { label: "Evidence", detail: "Logs, screenshots, videos, traces, and summary JSON links." }
 ];
 
+const aiReleaseSnapshot = {
+  state: "Draft intelligence shell",
+  activeBoard: "v3001.124.0",
+  access: "QA Engineer view; QA Admin controls",
+  freshness: "Board artifact plus HQ signals",
+  summary: "SPEC-HQ-07 turns the current release board into an AI-ready briefing surface without posting or mutating Jira automatically. The first version shows the exact inputs, draft outputs, review gates, and evidence expectations before the Worker AI endpoint is connected."
+};
+
+const aiInputSources = [
+  {
+    name: "Release board artifact",
+    source: "dashboard-data.json",
+    coverage: "Tickets, statuses, priorities, assignees, developers, components, parent/subtask links, latest pull"
+  },
+  {
+    name: "Jira detail context",
+    source: "Bridge-backed lookups",
+    coverage: "Descriptions, comments, images, videos, checklist state, and last-comment links when users open ticket details"
+  },
+  {
+    name: "Automation evidence",
+    source: "Playwright job records",
+    coverage: "Screenshots, videos, traces, logs, event stream, run outcome, and failed-step reason"
+  },
+  {
+    name: "Knowledge base",
+    source: "HQ flow registry",
+    coverage: "Reusable test flows, ownership, freshness, tags, and access labels"
+  },
+  {
+    name: "Operations health",
+    source: "Future five-minute probe artifact",
+    coverage: "Freshness, service availability, auth-gated state, latency, and escalation signals"
+  }
+];
+
+const aiInsightCards = [
+  {
+    title: "Release risk brief",
+    state: "Drafted",
+    detail: "Summarize the active board into risk clusters by component, priority, stale work, ownership load, missing evidence, and blocked workflows.",
+    output: "Morning QA standup summary"
+  },
+  {
+    title: "QA focus plan",
+    state: "Drafted",
+    detail: "Turn high-priority tickets, recent changes, and automation failures into a compact test-focus list with recommended next checks.",
+    output: "Daily execution plan"
+  },
+  {
+    title: "Jira-ready notes",
+    state: "Drafted",
+    detail: "Prepare reviewer-approved Jira comments from ticket description, checklist state, automation evidence, and known concerns.",
+    output: "Manual post or bridge-assisted draft"
+  },
+  {
+    title: "Executive rollup",
+    state: "Planned endpoint",
+    detail: "Create a stakeholder-safe release snapshot with counts, movement, top risks, and what changed since the prior board pull.",
+    output: "Read-only summary"
+  }
+];
+
+const aiRiskSignals = [
+  "P0/P1 items without recent evidence",
+  "Main tickets with hidden or stale subtasks",
+  "Component clusters with repeated failures",
+  "Assigned developer mismatch or overloaded owner",
+  "Recent comments that change expected QA scope",
+  "Automation failures, stale pulls, or auth-gated write paths"
+];
+
+const aiDraftOutputs = [
+  {
+    name: "Triage summary",
+    owner: "QA Engineer",
+    action: "Review before sharing in Slack or standup"
+  },
+  {
+    name: "Ticket test plan",
+    owner: "QA Engineer",
+    action: "Attach to the ticket detail modal as a draft"
+  },
+  {
+    name: "Jira comment draft",
+    owner: "QA Engineer",
+    action: "Never auto-post without explicit approval"
+  },
+  {
+    name: "Leadership brief",
+    owner: "Stakeholder Viewer",
+    action: "Use read-only board and operations signals only"
+  }
+];
+
+const aiGovernanceSteps = [
+  "Use cited board, ticket, automation, and knowledge-base sources in every generated summary.",
+  "Keep prompts, model settings, and source selection behind the QA Admin role.",
+  "Treat every AI output as a draft until a named user approves it.",
+  "Do not send Jira comments, Slack messages, or automation runs directly from AI output.",
+  "Log generated summary metadata so stale or uncited summaries can be detected."
+];
+
 const accessRoles = [
   {
     role: "QA Admin",
@@ -350,12 +453,12 @@ const guardedModules = [
 const hqSpecs = [
   { id: "SPEC-HQ-00", title: "Product shell", status: "Implemented", detail: "HQ navigation, workbench layout, module cards." },
   { id: "SPEC-HQ-01", title: "Board registry", status: "Implemented", detail: ".122, .123, .124 board slots and preview panel." },
-  { id: "SPEC-HQ-02", title: "Cloudflare hosting", status: "In progress", detail: "Cloudflare Workers are deployed; GitHub workflow deploy waits on CLOUDFLARE_API_TOKEN." },
+  { id: "SPEC-HQ-02", title: "Cloudflare hosting", status: "In progress", detail: "Cloudflare Workers are deployed; GitHub workflow deploy wiring is in place." },
   { id: "SPEC-HQ-03", title: "Auth and permissions", status: "In progress", detail: "Role model, gated cards, and request-access UI are drafted." },
   { id: "SPEC-HQ-04", title: "Knowledge base", status: "In progress", detail: "Flow cards, source links, ownership, and freshness are drafted." },
   { id: "SPEC-HQ-05", title: "Automation bench", status: "In progress", detail: "Playwright pilot registry, lifecycle, evidence, and runner guards are drafted." },
   { id: "SPEC-HQ-06", title: "Operational status", status: "In progress", detail: "Service health cards, probe cadence, and status publishing contract are drafted." },
-  { id: "SPEC-HQ-07", title: "AI release summary", status: "Planned", detail: "Ticket risk, stale work, QA recommendations." },
+  { id: "SPEC-HQ-07", title: "AI release summary", status: "In progress", detail: "AI-ready source map, draft outputs, risk signals, and review gates are implemented." },
   { id: "SPEC-HQ-08", title: "Admin console", status: "Planned", detail: "Users, roles, sections, and script permissions." }
 ];
 ---
@@ -732,27 +835,102 @@ const hqSpecs = [
         </div>
       </section>
 
-      <section class="module-grid">
-        <article class="module-panel ai-panel" id="ai">
-          <div class="module-heading">
-            <div>
-              <p class="eyebrow">AI summary</p>
-              <h2>Release intelligence</h2>
-            </div>
-            <span class="module-pill locked">Worker API planned</span>
+      <section class="module-panel ai-panel" id="ai">
+        <div class="module-heading">
+          <div>
+            <p class="eyebrow">AI summary</p>
+            <h2>Release intelligence workbench</h2>
           </div>
-          <div class="ai-summary-card">
-            <strong>Current active board summary</strong>
-            <p>Future AI pass will summarize ticket risk, stale work, component concentration, latest comments, media evidence, and recommended QA focus for the selected release.</p>
-            <ul>
-              <li>Summarize ticket intent and risk.</li>
-              <li>Suggest next QA steps and missing checklist items.</li>
-              <li>Draft Jira-ready test notes from evidence.</li>
-            </ul>
-          </div>
-        </article>
+          <span class="module-pill">SPEC-HQ-07 active</span>
+        </div>
 
-        <article class="module-panel access-panel" id="access">
+        <div class="ai-console">
+          <article class="ai-hero-card">
+            <div>
+              <p class="eyebrow">{aiReleaseSnapshot.activeBoard}</p>
+              <h3>{aiReleaseSnapshot.state}</h3>
+              <p>{aiReleaseSnapshot.summary}</p>
+            </div>
+            <dl>
+              <div>
+                <dt>Access</dt>
+                <dd>{aiReleaseSnapshot.access}</dd>
+              </div>
+              <div>
+                <dt>Freshness</dt>
+                <dd>{aiReleaseSnapshot.freshness}</dd>
+              </div>
+              <div>
+                <dt>Output posture</dt>
+                <dd>Drafts only</dd>
+              </div>
+            </dl>
+          </article>
+
+          <div class="ai-source-grid" aria-label="AI release summary source map">
+            {aiInputSources.map((source) => (
+              <article class="ai-source-card">
+                <span>{source.source}</span>
+                <strong>{source.name}</strong>
+                <p>{source.coverage}</p>
+              </article>
+            ))}
+          </div>
+
+          <div class="ai-summary-grid" aria-label="AI summary draft outputs">
+            {aiInsightCards.map((card) => (
+              <article class={card.state.includes("Planned") ? "ai-insight-card planned" : "ai-insight-card"}>
+                <div>
+                  <strong>{card.title}</strong>
+                  <span>{card.state}</span>
+                </div>
+                <p>{card.detail}</p>
+                <em>{card.output}</em>
+              </article>
+            ))}
+          </div>
+
+          <div class="ai-lower-grid">
+            <article class="ai-risk-card">
+              <div>
+                <p class="eyebrow">Risk model</p>
+                <h3>Signals the AI pass must consider</h3>
+              </div>
+              <ul>
+                {aiRiskSignals.map((signal) => <li>{signal}</li>)}
+              </ul>
+            </article>
+
+            <article class="ai-drafts-card">
+              <div>
+                <p class="eyebrow">Draft outputs</p>
+                <h3>What users can ask for first</h3>
+              </div>
+              <div class="ai-draft-grid">
+                {aiDraftOutputs.map((draft) => (
+                  <div>
+                    <strong>{draft.name}</strong>
+                    <span>{draft.owner}</span>
+                    <p>{draft.action}</p>
+                  </div>
+                ))}
+              </div>
+            </article>
+          </div>
+
+          <article class="ai-governance-card">
+            <div>
+              <p class="eyebrow">Safety contract</p>
+              <h3>Review gates before AI touches work systems</h3>
+            </div>
+            <ol>
+              {aiGovernanceSteps.map((step) => <li>{step}</li>)}
+            </ol>
+          </article>
+        </div>
+      </section>
+
+      <section class="module-panel access-panel" id="access">
           <div class="module-heading">
             <div>
               <p class="eyebrow">Access control</p>
@@ -809,7 +987,6 @@ const hqSpecs = [
               </div>
             </div>
           </div>
-        </article>
       </section>
 
       <section class="module-panel specs-panel" id="specs">
@@ -818,7 +995,7 @@ const hqSpecs = [
             <p class="eyebrow">Spec-driven delivery</p>
             <h2>HQ build checklist</h2>
           </div>
-          <span class="module-pill">2 complete / 5 active</span>
+          <span class="module-pill">2 complete / 6 active</span>
         </div>
         <div class="spec-grid">
           {hqSpecs.map((spec) => (
