@@ -345,6 +345,11 @@ function buildDirectQuestionBrief(dashboard, stats, body) {
   const userPrompt = sanitizePrompt(body?.userPrompt);
   const issues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
   const promptLooksLikeLookup = /\b(ticket|tickets|issue|issues|assigned|assignee|developer|owner|component|components|from|with)\b/i.test(userPrompt);
+  const priorityLookup = extractPriorityLookup(userPrompt);
+
+  if (priorityLookup) {
+    return buildPriorityLookupBrief(dashboard, stats, priorityLookup);
+  }
 
   if (promptTemplate === "free_form") {
     return null;
@@ -373,6 +378,7 @@ function buildDirectQuestionBrief(dashboard, stats, body) {
         "Try: What tickets are assigned to Dewan?",
         "Try: Which tickets have Nicole as assignee?",
         "Try: What tickets have Luis as assigned developer?",
+        "Try: How many P0 tickets are there?",
         "Try: Are there any tickets from Reservation?"
       ],
       ticketsToWatch: [],
@@ -385,6 +391,20 @@ function buildDirectQuestionBrief(dashboard, stats, body) {
   return lookup.type === "component"
     ? buildComponentLookupBrief(dashboard, stats, lookup)
     : buildPeopleLookupBrief(dashboard, stats, lookup);
+}
+
+function extractPriorityLookup(userPrompt) {
+  const prompt = sanitizePrompt(userPrompt);
+
+  if (!prompt || !/\b(ticket|tickets|issue|issues|priority|priorities|count|how many|list|show|are there)\b/i.test(prompt)) {
+    return null;
+  }
+
+  const priorities = Array.from(new Set(Array.from(prompt.matchAll(/\bP[0-4]\b/gi)).map((match) => match[0].toUpperCase())));
+
+  return priorities.length === 1
+    ? { type: "priority", priority: priorities[0], displayName: priorities[0] }
+    : null;
 }
 
 function extractComponentLookup(userPrompt, issues) {
@@ -626,6 +646,65 @@ function buildComponentLookupBrief(dashboard, stats, lookup) {
     sourceNotes: [
       "Source: dashboard-data.json from the deployed HQ Worker assets.",
       "This direct lookup is deterministic board data, not model inference.",
+      "No Jira, Slack, or automation mutation was performed."
+    ]
+  };
+}
+
+function buildPriorityLookupBrief(dashboard, stats, lookup) {
+  const issues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
+  const matches = issues
+    .filter((issue) => String(issue.priority || "None").toUpperCase() === lookup.priority)
+    .sort(sortIssuesForLookup);
+  const mainCount = matches.filter((issue) => !issue.isSubtask).length;
+  const subtaskCount = matches.length - mainCount;
+  const release = dashboard.version || "current release";
+  const pulledAt = dashboard.pulledAtDisplay || dashboard.pulledAt || "the latest artifact";
+
+  if (!matches.length) {
+    return {
+      answerType: "priority_lookup",
+      title: `No ${lookup.priority} tickets found`,
+      summary: `No issues in ${release} currently have priority ${lookup.priority} in the dashboard artifact pulled ${pulledAt}.`,
+      topRisks: [
+        `No ${lookup.priority} tickets were found in the current artifact.`,
+        "This answer did not call Jira live; it used the deployed dashboard-data.json."
+      ],
+      qaFocus: Object.entries(stats.priorityCounts).sort(sortCounts).slice(0, 8).map(formatPair),
+      ticketsToWatch: [],
+      componentSignals: Object.entries(stats.componentCounts).sort(sortCounts).slice(0, 8).map(formatPair),
+      reviewGates: [
+        "Refresh the board if the pull timestamp is stale.",
+        "Use Jira search when you need live data beyond the dashboard artifact."
+      ],
+      sourceNotes: ["Source: dashboard-data.json from the deployed HQ Worker assets."]
+    };
+  }
+
+  return {
+    answerType: "priority_lookup",
+    title: `${lookup.priority} tickets in ${release}`,
+    summary: `There ${matches.length === 1 ? "is" : "are"} ${matches.length} ${lookup.priority} issue(s) in ${release}: ${mainCount} main ticket(s) and ${subtaskCount} subtask(s), from the artifact pulled ${pulledAt}.`,
+    topRisks: [
+      `Lookup mode: matched priority ${lookup.priority} only.`,
+      `${matches.length} of ${stats.total} current issue(s) match ${lookup.priority}.`,
+      `${mainCount} main ticket(s) and ${subtaskCount} subtask(s) matched.`,
+      `Current artifact pull: ${pulledAt}.`
+    ],
+    qaFocus: matches.slice(0, 10).map(formatLookupLine),
+    ticketsToWatch: matches.slice(0, 12).map((issue) => ({
+      key: issue.key || "Unknown",
+      reason: formatLookupReason(issue)
+    })),
+    componentSignals: componentSignalsForIssues(matches),
+    reviewGates: [
+      "Open Jira for a ticket before posting status or comments.",
+      "Refresh the board if the pull timestamp is stale.",
+      "Use the ticket detail modal for pulled comments, media, and checklist context."
+    ],
+    sourceNotes: [
+      "Source: dashboard-data.json from the deployed HQ Worker assets.",
+      "This direct lookup is deterministic board data before AI narration.",
       "No Jira, Slack, or automation mutation was performed."
     ]
   };

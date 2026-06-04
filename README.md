@@ -61,7 +61,7 @@ GitHub Pages remains useful as a static fallback. The live AI endpoint only work
 - `/modern/` is the active `.124` release dashboard with ticket cards, table view, assignee actions, Jira search, comments, automation status, and ticket detail surfaces.
 - `/modern/hq/` is the HQ landing route built with Astro and deployed as static assets.
 - `/api/ai/status` reports whether the Cloudflare Worker has the Workers AI binding.
-- `/api/ai/release-summary` reads `dashboard-data.json`, resolves assignee/developer/component ticket lookups from the direct board pull, asks Cloudflare Workers AI to turn those exact matches into human-readable linked analysis, or combines the user's broader prompt with compact ticket context for a draft release brief.
+- `/api/ai/release-summary` reads `dashboard-data.json`, resolves assignee/developer/component/priority ticket lookups from the direct board pull, asks Cloudflare Workers AI to turn those exact matches into human-readable linked analysis, or combines the user's broader prompt with compact ticket context for a draft release brief.
 - GitHub Pages can render the same HQ page but cannot run the AI API. The page tells users to open the Cloudflare URL when the endpoint is unavailable.
 
 ## Architecture
@@ -223,6 +223,16 @@ Component lookup request:
 }
 ```
 
+Priority lookup request:
+
+```json
+{
+  "output": "release_brief",
+  "promptTemplate": "free_form",
+  "userPrompt": "How many P0 tickets are there?"
+}
+```
+
 Ticket test-plan request:
 
 ```json
@@ -233,7 +243,7 @@ Ticket test-plan request:
 }
 ```
 
-Lookup responses use the same renderable brief envelope with `answerType: "assignee_lookup"` or `answerType: "component_lookup"` and matching ticket details sourced from `dashboard-data.json`.
+Lookup responses use the same renderable brief envelope with `answerType: "assignee_lookup"`, `answerType: "component_lookup"`, or `answerType: "priority_lookup"` and matching ticket details sourced from `dashboard-data.json`.
 
 Free Form request:
 
