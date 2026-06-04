@@ -88,34 +88,128 @@ const knowledgeBase = [
 
 const automationScripts = [
   {
-    name: "GolfNow Central smoke check",
+    id: "open-ticket-and-capture",
+    name: "Open Jira ticket and capture evidence",
     kind: "Playwright",
+    board: "v3001.123.0 pilot",
     environment: "DEV",
     cadence: "On demand",
-    status: "Ready",
-    evidence: "Screenshot, video, trace, logs"
+    status: "Ready on .123",
+    permission: "Automation Owner",
+    workflow: "run-playwright-job.yml",
+    summary: "Opens the selected Jira ticket in the authenticated runner session and captures baseline page evidence.",
+    parameters: ["ticketKey", "startUrl"],
+    evidence: ["Screenshot", "Video", "Trace", "Logs", "Summary JSON"],
+    url: "https://dewankabir009.github.io/jira-board-v3001-123-0/playwright-specs/"
   },
   {
+    id: "golfnow-central-smoke",
+    name: "GolfNow Central smoke check",
+    kind: "Playwright",
+    board: "v3001.123.0 pilot",
+    environment: "DEV",
+    cadence: "On demand",
+    status: "Ready on .123",
+    permission: "Automation Owner",
+    workflow: "run-playwright-job.yml",
+    summary: "Runs the approved GolfNow Central smoke path and publishes visual evidence back to the job record.",
+    parameters: ["ticketKey", "startUrl"],
+    evidence: ["Screenshot", "Video", "Trace", "Logs", "Events"],
+    url: "https://dewankabir009.github.io/jira-board-v3001-123-0/playwright-specs/runner-contract.html"
+  },
+  {
+    id: "dashboard-regression-smoke",
+    name: "Dashboard regression smoke",
+    kind: "Playwright",
+    board: "v3001.123.0 pilot",
+    environment: "DEV / STG",
+    cadence: "After UI changes",
+    status: "Ready on .123",
+    permission: "Automation Owner",
+    workflow: "run-playwright-job.yml",
+    summary: "Verifies view toggles, filters, selected ticket panel, Jira links, and evidence modals after dashboard UI changes.",
+    parameters: ["ticketKey", "dashboardUrl"],
+    evidence: ["Screenshot", "Trace", "Logs", "Summary JSON"],
+    url: "https://dewankabir009.github.io/jira-board-v3001-123-0/playwright-specs/dashboard-queue.html"
+  },
+  {
+    id: "core-api-health-probe",
     name: "CORE API health probe",
     kind: "Python API",
+    board: "HQ future service",
     environment: "DEV/STG",
     cadence: "Every 5 min",
     status: "Spec planned",
-    evidence: "JSON response, latency, assertion log"
+    permission: "Automation Owner",
+    workflow: "operations-health.yml planned",
+    summary: "Will feed the operations health cards with API availability, latency, and assertion outcomes.",
+    parameters: ["environment", "service"],
+    evidence: ["JSON response", "Latency", "Assertion log"],
+    url: "#status"
   },
   {
+    id: "release-checkout-regression",
     name: "Release checkout regression",
     kind: "Playwright",
+    board: "HQ future service",
     environment: "STG",
     cadence: "On demand",
     status: "Spec planned",
-    evidence: "Screenshot, video, Jira-ready summary"
+    permission: "Automation Owner",
+    workflow: "run-playwright-job.yml planned",
+    summary: "Will run the larger checkout path against release candidates and publish a Jira-ready result summary.",
+    parameters: ["ticketKey", "release", "startUrl"],
+    evidence: ["Screenshot", "Video", "Trace", "Jira-ready summary"],
+    url: "#automation"
   }
+];
+
+const latestAutomationJob = {
+  id: "core-14440-mpr4ewar-54d72b25",
+  status: "Completed",
+  ticket: "CORE-14440",
+  script: "Open Jira ticket and capture evidence",
+  duration: "6.0s",
+  sourceBoard: "v3001.123.0",
+  resultUrl: "https://dewankabir009.github.io/jira-board-v3001-123-0/playwright-jobs/core-14440-mpr4ewar-54d72b25/",
+  actionsUrl: "https://github.com/DewanKabir009/jira-board-v3001-123-0/actions/runs/26648406633"
+};
+
+const automationLifecycle = [
+  {
+    step: "1",
+    title: "Validate request",
+    detail: "Only approved registry scripts and typed payloads can be dispatched."
+  },
+  {
+    step: "2",
+    title: "Run browser or API",
+    detail: "Playwright and future Python scripts execute in GitHub Actions or the Cloudflare-backed runner."
+  },
+  {
+    step: "3",
+    title: "Publish evidence",
+    detail: "Screenshots, videos, traces, logs, events, and summary JSON are written into the job record."
+  },
+  {
+    step: "4",
+    title: "Notify dashboard",
+    detail: "The dashboard should show ready, failed, and running states without requiring users to open Actions."
+  }
+];
+
+const automationGuards = [
+  "Approved script registry",
+  "Role-gated run controls",
+  "Typed job payload schema",
+  "Failure summaries on dashboard",
+  "Screenshot/video modal viewer",
+  "GitHub Actions fallback path"
 ];
 
 const statusCards = [
   { label: "Jira data pull", value: "Healthy", detail: "5 minute single-shot refresh", tone: "green" },
-  { label: "Automation runner", value: "Ready", detail: "Approved scripts only", tone: "blue" },
+  { label: "Automation runner", value: "Mapped", detail: ".123 pilot contract carried into HQ", tone: "blue" },
   { label: "Cloudflare host", value: "Auth needed", detail: "Dry run passed; deploy token required", tone: "amber" },
   { label: "Knowledge base", value: "Mapped", detail: "Flow previews and owners drafted", tone: "violet" }
 ];
@@ -180,7 +274,7 @@ const hqSpecs = [
   { id: "SPEC-HQ-02", title: "Cloudflare hosting", status: "In progress", detail: "Static Assets config validated; deploy waits on Cloudflare auth." },
   { id: "SPEC-HQ-03", title: "Auth and permissions", status: "In progress", detail: "Role model, gated cards, and request-access UI are drafted." },
   { id: "SPEC-HQ-04", title: "Knowledge base", status: "In progress", detail: "Flow cards, source links, ownership, and freshness are drafted." },
-  { id: "SPEC-HQ-05", title: "Automation bench", status: "Planned", detail: "Playwright and Python API script registry." },
+  { id: "SPEC-HQ-05", title: "Automation bench", status: "In progress", detail: "Playwright pilot registry, lifecycle, evidence, and runner guards are drafted." },
   { id: "SPEC-HQ-06", title: "Operational status", status: "Planned", detail: "5 minute API health results and service cards." },
   { id: "SPEC-HQ-07", title: "AI release summary", status: "Planned", detail: "Ticket risk, stale work, QA recommendations." },
   { id: "SPEC-HQ-08", title: "Admin console", status: "Planned", detail: "Users, roles, sections, and script permissions." }
@@ -364,31 +458,114 @@ const hqSpecs = [
         </div>
       </section>
 
-      <section class="module-grid">
-        <article class="module-panel" id="automation">
-          <div class="module-heading">
-            <div>
-              <p class="eyebrow">Automation bench</p>
-              <h2>Approved run surface</h2>
-            </div>
-            <span class="module-pill">Script registry</span>
+      <section class="module-panel automation-module" id="automation">
+        <div class="module-heading">
+          <div>
+            <p class="eyebrow">Automation bench</p>
+            <h2>Approved run surface</h2>
           </div>
-          <div class="script-list">
-            {automationScripts.map((script) => (
-              <div class="script-row">
-                <div>
-                  <strong>{script.name}</strong>
-                  <span>{script.kind} / {script.environment}</span>
-                </div>
-                <div>
-                  <span>{script.cadence}</span>
-                  <em>{script.status}</em>
-                </div>
-                <p>{script.evidence}</p>
+          <span class="module-pill">SPEC-HQ-05 active</span>
+        </div>
+
+        <div class="automation-console">
+          <article class="automation-status-card">
+            <div>
+              <p class="eyebrow">Runner contract</p>
+              <h3>.123 Playwright pilot is the source of truth</h3>
+              <p>The HQ bench now tracks the approved script registry, permission gates, payload requirements, evidence outputs, and dashboard-notification expectations that will move into the wider app.</p>
+            </div>
+            <dl>
+              <div>
+                <dt>Latest job</dt>
+                <dd>{latestAutomationJob.id}</dd>
               </div>
+              <div>
+                <dt>Status</dt>
+                <dd>{latestAutomationJob.status}</dd>
+              </div>
+              <div>
+                <dt>Duration</dt>
+                <dd>{latestAutomationJob.duration}</dd>
+              </div>
+              <div>
+                <dt>Source board</dt>
+                <dd>{latestAutomationJob.sourceBoard}</dd>
+              </div>
+            </dl>
+            <div class="automation-actions">
+              <a href={latestAutomationJob.resultUrl}>View latest results</a>
+              <a href={latestAutomationJob.actionsUrl}>Actions run</a>
+            </div>
+          </article>
+
+          <div class="automation-lifecycle" aria-label="Automation run lifecycle">
+            {automationLifecycle.map((item) => (
+              <article>
+                <span>{item.step}</span>
+                <strong>{item.title}</strong>
+                <p>{item.detail}</p>
+              </article>
             ))}
           </div>
-        </article>
+
+          <div class="script-list" aria-label="Approved and planned automation scripts">
+            {automationScripts.map((script) => (
+              <article class={script.status.includes("Ready") ? "script-card ready" : "script-card"}>
+                <div class="script-card-top">
+                  <div>
+                    <span>{script.id}</span>
+                    <strong>{script.name}</strong>
+                  </div>
+                  <em>{script.status}</em>
+                </div>
+                <p>{script.summary}</p>
+                <dl>
+                  <div>
+                    <dt>Kind</dt>
+                    <dd>{script.kind}</dd>
+                  </div>
+                  <div>
+                    <dt>Board</dt>
+                    <dd>{script.board}</dd>
+                  </div>
+                  <div>
+                    <dt>Environment</dt>
+                    <dd>{script.environment}</dd>
+                  </div>
+                  <div>
+                    <dt>Cadence</dt>
+                    <dd>{script.cadence}</dd>
+                  </div>
+                  <div>
+                    <dt>Permission</dt>
+                    <dd>{script.permission}</dd>
+                  </div>
+                  <div>
+                    <dt>Workflow</dt>
+                    <dd>{script.workflow}</dd>
+                  </div>
+                </dl>
+                <div class="script-tags" aria-label={`${script.name} required parameters`}>
+                  {script.parameters.map((parameter) => <span>{parameter}</span>)}
+                </div>
+                <div class="evidence-tags" aria-label={`${script.name} evidence outputs`}>
+                  {script.evidence.map((artifact) => <em>{artifact}</em>)}
+                </div>
+                <a class="script-open" href={script.url}>Open runbook</a>
+              </article>
+            ))}
+          </div>
+
+          <article class="automation-guard-card">
+            <div>
+              <p class="eyebrow">Production gates</p>
+              <h3>What must stay true before this becomes a shared HQ runner</h3>
+            </div>
+            <ul>
+              {automationGuards.map((guard) => <li>{guard}</li>)}
+            </ul>
+          </article>
+        </div>
       </section>
 
       <section class="module-grid">
@@ -477,7 +654,7 @@ const hqSpecs = [
             <p class="eyebrow">Spec-driven delivery</p>
             <h2>HQ build checklist</h2>
           </div>
-          <span class="module-pill">2 complete / 3 active</span>
+          <span class="module-pill">2 complete / 4 active</span>
         </div>
         <div class="spec-grid">
           {hqSpecs.map((spec) => (

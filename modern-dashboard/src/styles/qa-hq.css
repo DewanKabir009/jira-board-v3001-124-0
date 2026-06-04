@@ -152,7 +152,9 @@ ul {
 .access-callout a,
 .access-actions a,
 .kb-actions a,
-.kb-open {
+.kb-open,
+.automation-actions a,
+.script-open {
   min-height: 40px;
   border: 1px solid var(--hq-line-strong);
   border-radius: 8px;
@@ -240,7 +242,9 @@ ul {
 .access-callout a,
 .access-actions a,
 .kb-actions a,
-.kb-open {
+.kb-open,
+.automation-actions a,
+.script-open {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -429,7 +433,8 @@ ul {
 
 .kb-console,
 .kb-list,
-.script-list {
+.script-list,
+.automation-console {
   display: grid;
   gap: 10px;
   margin-top: 14px;
@@ -559,6 +564,229 @@ ul {
 .kb-open {
   justify-self: start;
   min-height: 34px;
+}
+
+.automation-module {
+  overflow: hidden;
+}
+
+.automation-console {
+  gap: 12px;
+}
+
+.automation-status-card {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(0, 1.15fr);
+  gap: 14px;
+  border: 1px solid rgba(0, 95, 204, 0.3);
+  border-radius: 8px;
+  background:
+    linear-gradient(126deg, rgba(224, 239, 255, 0.92), rgba(255, 255, 255, 0.98) 54%, rgba(217, 255, 235, 0.82));
+  padding: 16px;
+  box-shadow: 0 18px 42px rgba(0, 95, 204, 0.13);
+}
+
+.automation-status-card h3,
+.automation-guard-card h3 {
+  margin: 5px 0 8px;
+  font-size: 1.35rem;
+  line-height: 1.18;
+}
+
+.automation-status-card p,
+.automation-lifecycle p,
+.script-card p {
+  color: var(--hq-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.automation-status-card dl {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.automation-status-card dl > div,
+.script-card dl > div {
+  border: 1px solid var(--hq-line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.76);
+  padding: 9px;
+}
+
+.automation-status-card dt,
+.script-card dt {
+  color: var(--hq-muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.automation-status-card dd,
+.script-card dd {
+  margin: 3px 0 0;
+  font-weight: 850;
+  overflow-wrap: anywhere;
+}
+
+.automation-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.automation-actions a:first-child,
+.script-card.ready .script-open {
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--hq-blue), var(--hq-green));
+  color: #ffffff;
+  box-shadow: 0 12px 26px rgba(0, 95, 204, 0.2);
+}
+
+.automation-lifecycle {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.automation-lifecycle article {
+  display: grid;
+  gap: 7px;
+  border: 1px solid var(--hq-line);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 12px;
+}
+
+.automation-lifecycle span {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--hq-orange);
+  color: #ffffff;
+  font-weight: 950;
+}
+
+.script-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.script-card {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--hq-line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #ffffff, var(--hq-surface-soft));
+  padding: 14px;
+}
+
+.script-card.ready {
+  border-color: rgba(0, 122, 77, 0.34);
+  box-shadow: inset 5px 0 0 var(--hq-green);
+}
+
+.script-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.script-card-top > div {
+  display: grid;
+  gap: 4px;
+}
+
+.script-card-top span {
+  color: var(--hq-blue);
+  font-size: 0.76rem;
+  font-weight: 950;
+  overflow-wrap: anywhere;
+}
+
+.script-card-top em {
+  border-radius: 999px;
+  background: var(--hq-amber-soft);
+  color: var(--hq-amber);
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 900;
+  padding: 5px 8px;
+  white-space: nowrap;
+}
+
+.script-card.ready .script-card-top em {
+  background: var(--hq-green-soft);
+  color: var(--hq-green);
+}
+
+.script-card dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+
+.script-tags,
+.evidence-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.script-tags span,
+.evidence-tags em,
+.automation-guard-card li {
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 900;
+  padding: 5px 8px;
+}
+
+.script-tags span {
+  background: var(--hq-blue-soft);
+  color: var(--hq-blue);
+}
+
+.evidence-tags em {
+  background: var(--hq-orange-soft);
+  color: #9a3f00;
+  font-style: normal;
+}
+
+.script-open {
+  justify-self: start;
+  min-height: 34px;
+}
+
+.automation-guard-card {
+  display: grid;
+  gap: 12px;
+  border: 1px solid rgba(0, 122, 77, 0.32);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(217, 255, 235, 0.82), rgba(255, 255, 255, 0.96) 58%, rgba(255, 240, 214, 0.62));
+  padding: 15px;
+}
+
+.automation-guard-card ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.automation-guard-card li {
+  background: #ffffff;
+  color: var(--hq-green);
+  border: 1px solid rgba(0, 122, 77, 0.28);
 }
 
 .script-row {
@@ -812,6 +1040,10 @@ ul {
   .status-grid,
   .board-grid,
   .kb-console,
+  .automation-status-card,
+  .automation-lifecycle,
+  .script-list,
+  .script-card dl,
   .role-matrix,
   .guarded-grid,
   .spec-grid {
@@ -838,6 +1070,11 @@ ul {
   .kb-console,
   .kb-spotlight dl,
   .kb-card dl,
+  .automation-status-card,
+  .automation-status-card dl,
+  .automation-lifecycle,
+  .script-list,
+  .script-card dl,
   .module-grid,
   .role-matrix,
   .guarded-grid,
