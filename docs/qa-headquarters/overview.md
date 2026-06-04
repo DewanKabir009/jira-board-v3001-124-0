@@ -1,6 +1,6 @@
 # CORE QA Headquarters
 
-Status: started. SPEC-HQ-02 is ready for Cloudflare Static Assets deployment but blocked on the missing `CLOUDFLARE_API_TOKEN` GitHub secret or refreshed local Wrangler OAuth. The hosted Jira bridge is reachable and Cloudflare Access protected. SPEC-HQ-03, SPEC-HQ-04, SPEC-HQ-05, and SPEC-HQ-06 are in progress.
+Status: started. SPEC-HQ-02 has proven Cloudflare Static Assets deployments for the 123 and 124 HQ Workers through local Wrangler OAuth. The hosted Jira bridge is reachable and Cloudflare Access protected. The GitHub Actions deploy path still needs `CLOUDFLARE_API_TOKEN` in the board repository secrets. SPEC-HQ-03, SPEC-HQ-04, SPEC-HQ-05, and SPEC-HQ-06 are in progress.
 
 ## Purpose
 
@@ -23,7 +23,7 @@ The first implementation is a static Astro route at `/hq/` so it can live beside
 
 - SPEC-HQ-00: Product shell.
 - SPEC-HQ-01: Board registry.
-- SPEC-HQ-02: Cloudflare hosting. Config and dry runs pass with the account id; deploy is blocked on `CLOUDFLARE_API_TOKEN`/Wrangler OAuth.
+- SPEC-HQ-02: Cloudflare hosting. Config, dry runs, and local Worker deploys pass; GitHub workflow deploy is waiting on `CLOUDFLARE_API_TOKEN`.
 - SPEC-HQ-03: Auth and permissions. In progress.
 - SPEC-HQ-04: Knowledge base. In progress.
 - SPEC-HQ-05: Automation bench. In progress.

@@ -1,6 +1,6 @@
 # SPEC-HQ-02: Cloudflare Hosting
 
-Status: in progress. Config validated and the hosted Jira bridge is reachable as a Cloudflare Access protected Worker. Cloudflare Static Assets deployment is still waiting on a valid deploy token or refreshed local Wrangler OAuth.
+Status: in progress. Config validated, the hosted Jira bridge is reachable as a Cloudflare Access protected Worker, and the 123/124 HQ Static Assets Workers are deployed through local Wrangler OAuth. GitHub Actions deployment still needs a valid `CLOUDFLARE_API_TOKEN` repository secret.
 
 ## Intent
 
@@ -25,11 +25,13 @@ Move the CORE QA Headquarters pilot toward Cloudflare Workers Static Assets with
 
 ## Current Validation
 
-- `npx -y wrangler deploy --dry-run -c wrangler.hq.toml` passed for both the 123 pilot and the 124 current board when `CLOUDFLARE_ACCOUNT_ID=b2642b2648a8f477ae5b541efebfcc72` was provided.
+- `npx -y wrangler deploy --dry-run -c wrangler.hq.toml` passed for both the 123 pilot and the 124 current board with the account id embedded in `wrangler.hq.toml`.
+- `npx -y wrangler deploy -c wrangler.hq.toml` deployed `core-qa-headquarters-123` to `https://core-qa-headquarters-123.dfkabir253.workers.dev` with version `9555cb75-c62f-444e-8390-3e833838010a`.
+- `npx -y wrangler deploy -c wrangler.hq.toml` deployed `core-qa-headquarters-124` to `https://core-qa-headquarters-124.dfkabir253.workers.dev` with version `58b151af-9e9c-42cb-a230-bdc52379b658`.
 - `GET https://jira-board-assignee-bridge.dfkabir253.workers.dev/status` returns `302 Found` to Cloudflare Access, which confirms the hosted bridge route is reachable and protected rather than offline.
 - The 123 deploy path stages assets with `scripts/prepare-cloudflare-hq-assets.cjs` so GitHub Pages can keep repository-prefixed asset URLs while Cloudflare receives root-relative asset URLs.
-- Local `wrangler deploy` reaches the Cloudflare API but fails with authentication error `10000` because the local Wrangler OAuth session is expired or insufficient.
-- The manual GitHub deploy workflows for 123 and 124 were triggered and both failed at the explicit token gate because `CLOUDFLARE_API_TOKEN` is not present in repository secrets.
+- Local Wrangler OAuth is valid for direct deploys.
+- The manual GitHub deploy workflows for 123 and 124 previously failed at the explicit token gate because `CLOUDFLARE_API_TOKEN` is not present in repository secrets. The workflow should not be rerun until that secret exists.
 
 ## Deployment Shape
 
@@ -49,4 +51,4 @@ The existing bridge Worker remains responsible for Jira assignment and comments.
 
 ## Notes
 
-Custom domain routing and Cloudflare Access policies will be handled after the first static Worker deployment is proven. The immediate remaining requirement is to add a Workers deploy token as `CLOUDFLARE_API_TOKEN` in each board repo or complete a fresh local `wrangler login` session before running `npx -y wrangler deploy -c wrangler.hq.toml`.
+Custom domain routing and Cloudflare Access policies will be handled after the first static Worker deployment is proven. The immediate remaining requirement is to add a Workers deploy token as `CLOUDFLARE_API_TOKEN` in each board repo so future GitHub Actions deploys can publish without relying on a local Wrangler OAuth session.

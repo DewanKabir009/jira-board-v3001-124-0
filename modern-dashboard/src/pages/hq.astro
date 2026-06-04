@@ -210,7 +210,7 @@ const automationGuards = [
 const statusCards = [
   { label: "Jira data pull", value: "Healthy", detail: "5 minute single-shot refresh", tone: "green" },
   { label: "Automation runner", value: "Mapped", detail: ".123 pilot contract carried into HQ", tone: "blue" },
-  { label: "Cloudflare host", value: "Ready", detail: "Bridge protected; Static deploy needs CLOUDFLARE_API_TOKEN", tone: "amber" },
+  { label: "Cloudflare host", value: "Deployed", detail: "Workers live; workflow token still needed", tone: "green" },
   { label: "Knowledge base", value: "Mapped", detail: "Flow previews and owners drafted", tone: "violet" }
 ];
 
@@ -239,7 +239,7 @@ const operationsServices = [
     cadence: "On every publish",
     source: "pages-build-deployment",
     signal: ".124 and .123 HQ mirrors render from generated Astro output",
-    next: "Continue using Pages as fallback while Cloudflare Static Assets is blocked."
+    next: "Continue using Pages as fallback while Cloudflare custom-domain and workflow deploy paths are hardened."
   },
   {
     name: "Jira write bridge",
@@ -350,7 +350,7 @@ const guardedModules = [
 const hqSpecs = [
   { id: "SPEC-HQ-00", title: "Product shell", status: "Implemented", detail: "HQ navigation, workbench layout, module cards." },
   { id: "SPEC-HQ-01", title: "Board registry", status: "Implemented", detail: ".122, .123, .124 board slots and preview panel." },
-  { id: "SPEC-HQ-02", title: "Cloudflare hosting", status: "In progress", detail: "Bridge protected; Static Assets deploy waits on CLOUDFLARE_API_TOKEN." },
+  { id: "SPEC-HQ-02", title: "Cloudflare hosting", status: "In progress", detail: "Cloudflare Workers are deployed; GitHub workflow deploy waits on CLOUDFLARE_API_TOKEN." },
   { id: "SPEC-HQ-03", title: "Auth and permissions", status: "In progress", detail: "Role model, gated cards, and request-access UI are drafted." },
   { id: "SPEC-HQ-04", title: "Knowledge base", status: "In progress", detail: "Flow cards, source links, ownership, and freshness are drafted." },
   { id: "SPEC-HQ-05", title: "Automation bench", status: "In progress", detail: "Playwright pilot registry, lifecycle, evidence, and runner guards are drafted." },
