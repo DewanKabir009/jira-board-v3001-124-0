@@ -710,12 +710,15 @@ function buildModelContext(dashboard, stats, body, ticketPlanRequest = null) {
       ticketPlanRequest
         ? "For ticket_test_plan, topRisks should be coverage risks, ticketsToWatch should include target and related tickets, and reviewGates should be clarifications or execution gates."
         : "For release_brief, include risks, focus tickets, and review gates.",
+      ticketPlanRequest
+        ? "For ticket_test_plan, do not include unrelated release-board tickets; use only targetIssue and relatedIssues."
+        : "For release_brief, use compact release issues as supporting context.",
       "Keep all Jira/Slack/automation actions as review gates, not completed work."
     ],
     stats,
     targetIssue,
     relatedIssues,
-    issues: compactIssues
+    issues: ticketPlanRequest ? [targetIssue, ...relatedIssues].filter(Boolean) : compactIssues
   };
 }
 
