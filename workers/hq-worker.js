@@ -33,14 +33,15 @@ async function handleReleaseSummary(request, env, url) {
   const ticketPlanRequest = extractTicketPlanRequest(dashboard, body);
   const missingTicketBrief = ticketPlanRequest?.missing ? buildMissingTicketBrief(dashboard, stats, ticketPlanRequest) : null;
   const directBrief = missingTicketBrief || (ticketPlanRequest ? null : buildDirectQuestionBrief(dashboard, stats, body));
+  const promptTemplate = sanitizePrompt(body?.promptTemplate, 80);
 
-  if (directBrief) {
+  if (directBrief && (!env.AI || !Array.isArray(directBrief.ticketsToWatch) || directBrief.ticketsToWatch.length === 0)) {
     return jsonResponse(buildBriefPayload({
       dashboard,
       stats,
       provider: "CORE QA HQ board lookup",
       model: "dashboard-data.json",
-      brief: directBrief,
+      brief: enrichBriefTickets(directBrief, dashboard),
       answerType: directBrief.answerType || "direct_lookup"
     }));
   }
@@ -49,10 +50,11 @@ async function handleReleaseSummary(request, env, url) {
     return jsonResponse({ ok: false, message: "Cloudflare Workers AI binding is not configured." }, 503);
   }
 
-  const context = buildModelContext(dashboard, stats, body, ticketPlanRequest);
-  const fallbackBrief = ticketPlanRequest
+  const context = buildModelContext(dashboard, stats, body, ticketPlanRequest, directBrief);
+  const fallbackBrief = directBrief || (ticketPlanRequest
     ? buildTicketTestPlanBrief(dashboard, stats, ticketPlanRequest)
-    : buildDeterministicBrief(dashboard, stats);
+    : buildDeterministicBrief(dashboard, stats));
+  const answerType = directBrief?.answerType || (ticketPlanRequest ? "ticket_test_plan" : promptTemplate === "free_form" ? "free_form" : undefined);
 
   try {
     const aiResult = await env.AI.run(AI_MODEL, {
@@ -65,6 +67,8 @@ async function handleReleaseSummary(request, env, url) {
             "Use only the provided dashboard context. If evidence is missing, say it is missing.",
             "If a user prompt is present, answer it only when it is supported by the provided dashboard context.",
             "If requestedOutput is ticket_test_plan, create a ticket-specific QA test plan for targetIssue and do not write a release summary.",
+            "If requestedOutput is direct_lookup_analysis, explain the exact matchedIssues from the board pull and keep every matched issue in ticketsToWatch.",
+            "If requestedOutput is free_form_analysis, answer the user's release-board question directly and cite relevant tickets from the provided issue list.",
             "All output is draft-only. Never claim Jira, Slack, or automation actions were performed."
           ].join(" ")
         },
@@ -89,7 +93,16 @@ async function handleReleaseSummary(request, env, url) {
                 type: "object",
                 properties: {
                   key: { type: "string" },
-                  reason: { type: "string" }
+                  reason: { type: "string" },
+                  url: { type: "string" },
+                  summary: { type: "string" },
+                  status: { type: "string" },
+                  priority: { type: "string" },
+                  type: { type: "string" },
+                  assignee: { type: "string" },
+                  assignedDeveloper: { type: "string" },
+                  components: { type: "array", items: { type: "string" } },
+                  parent: { type: "string" }
                 },
                 required: ["key", "reason"]
               }
@@ -103,7 +116,7 @@ async function handleReleaseSummary(request, env, url) {
       }
     });
 
-    const brief = normalizeBrief(parseAiResponse(aiResult), fallbackBrief);
+    const brief = enrichBriefTickets(normalizeBrief(parseAiResponse(aiResult), fallbackBrief), dashboard, fallbackBrief);
 
     return jsonResponse(buildBriefPayload({
       dashboard,
@@ -111,7 +124,7 @@ async function handleReleaseSummary(request, env, url) {
       provider: "Cloudflare Workers AI",
       model: AI_MODEL,
       brief,
-      answerType: ticketPlanRequest ? "ticket_test_plan" : undefined
+      answerType
     }));
   } catch (error) {
     return jsonResponse(buildBriefPayload({
@@ -119,8 +132,8 @@ async function handleReleaseSummary(request, env, url) {
       stats,
       provider: "Cloudflare Workers AI",
       model: AI_MODEL,
-      brief: fallbackBrief,
-      answerType: ticketPlanRequest ? "ticket_test_plan" : undefined,
+      brief: enrichBriefTickets(fallbackBrief, dashboard),
+      answerType,
       warning: `AI model response was not usable, so HQ returned a deterministic draft: ${error.message}`
     }));
   }
@@ -332,6 +345,10 @@ function buildDirectQuestionBrief(dashboard, stats, body) {
   const userPrompt = sanitizePrompt(body?.userPrompt);
   const issues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
   const promptLooksLikeLookup = /\b(ticket|tickets|issue|issues|assigned|assignee|developer|owner|component|components|from|with)\b/i.test(userPrompt);
+
+  if (promptTemplate === "free_form") {
+    return null;
+  }
 
   if (promptTemplate !== "ticket_lookup" && !promptLooksLikeLookup) {
     return null;
@@ -667,10 +684,19 @@ function normalizeName(value) {
     .trim();
 }
 
-function buildModelContext(dashboard, stats, body, ticketPlanRequest = null) {
+function buildModelContext(dashboard, stats, body, ticketPlanRequest = null, directBrief = null) {
   const issues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
   const userPrompt = sanitizePrompt(body?.userPrompt);
-  const requestedOutput = ticketPlanRequest ? "ticket_test_plan" : body?.output || "release_brief";
+  const promptTemplate = sanitizePrompt(body?.promptTemplate, 80);
+  const freeFormMode = promptTemplate === "free_form";
+  const directLookupMode = Boolean(directBrief);
+  const requestedOutput = ticketPlanRequest
+    ? "ticket_test_plan"
+    : directLookupMode
+      ? "direct_lookup_analysis"
+      : freeFormMode
+        ? "free_form_analysis"
+        : body?.output || "release_brief";
   const compactIssues = issues.slice(0, 35).map((issue) => ({
     key: issue.key,
     type: issue.type,
@@ -688,13 +714,23 @@ function buildModelContext(dashboard, stats, body, ticketPlanRequest = null) {
   }));
   const targetIssue = ticketPlanRequest?.issue ? formatIssueForModel(ticketPlanRequest.issue, true) : null;
   const relatedIssues = ticketPlanRequest?.relatedIssues?.map((issue) => formatIssueForModel(issue, false)) || [];
+  const directLookupIssues = directLookupMode
+    ? directBrief.ticketsToWatch
+        .map((ticket) => issues.find((issue) => String(issue.key || "").toUpperCase() === String(ticket.key || "").toUpperCase()))
+        .filter(Boolean)
+        .map((issue) => formatIssueForModel(issue, false))
+    : [];
 
   return {
     task: ticketPlanRequest
       ? "Create a ticket-specific CORE QA test plan for targetIssue."
-      : "Create a draft CORE QA release summary for the HQ dashboard.",
+      : directLookupMode
+        ? "Create a human-readable analysis of directLookup using only the matched board tickets."
+        : freeFormMode
+          ? "Answer the user's free-form question about the current release board using the provided board artifact."
+          : "Create a draft CORE QA release summary for the HQ dashboard.",
     requestedOutput,
-    promptTemplate: ticketPlanRequest ? "ticket_test_plan" : sanitizePrompt(body?.promptTemplate, 80) || "release_triage",
+    promptTemplate: ticketPlanRequest ? "ticket_test_plan" : promptTemplate || "release_triage",
     userPrompt: userPrompt || (ticketPlanRequest
       ? `Create a QA test plan for ${ticketPlanRequest.key}.`
       : "Summarize the current release board for QA, including risks, focus tickets, test focus, and review gates."),
@@ -706,19 +742,75 @@ function buildModelContext(dashboard, stats, body, ticketPlanRequest = null) {
       "Mention missing evidence if comments or media are absent.",
       ticketPlanRequest
         ? "For ticket_test_plan, title the response as a test plan for targetIssue.key and use qaFocus as concrete test scenarios."
+        : directLookupMode
+          ? "For direct_lookup_analysis, analyze directLookup and matchedIssues. Keep every matched ticket in ticketsToWatch with its key and useful human-readable reason."
+          : freeFormMode
+            ? "For free_form_analysis, answer the user's question directly and cite relevant ticket keys in ticketsToWatch when applicable."
         : "For release_brief, summarize the active release board.",
       ticketPlanRequest
         ? "For ticket_test_plan, topRisks should be coverage risks, ticketsToWatch should include target and related tickets, and reviewGates should be clarifications or execution gates."
+        : directLookupMode
+          ? "For direct_lookup_analysis, topRisks should be lookup insights, qaFocus should be the readable list of matched tickets, and reviewGates should be next checks."
+          : freeFormMode
+            ? "For free_form_analysis, organize the response into key findings, answer details, relevant tickets, and next checks."
         : "For release_brief, include risks, focus tickets, and review gates.",
       ticketPlanRequest
         ? "For ticket_test_plan, do not include unrelated release-board tickets; use only targetIssue and relatedIssues."
+        : directLookupMode
+          ? "For direct_lookup_analysis, do not add tickets that are not in matchedIssues."
+          : freeFormMode
+            ? "For free_form_analysis, use only the provided release issue list and stats; state when the artifact does not contain enough data."
         : "For release_brief, use compact release issues as supporting context.",
       "Keep all Jira/Slack/automation actions as review gates, not completed work."
     ],
     stats,
     targetIssue,
     relatedIssues,
-    issues: ticketPlanRequest ? [targetIssue, ...relatedIssues].filter(Boolean) : compactIssues
+    directLookup: directLookupMode ? {
+      answerType: directBrief.answerType || "direct_lookup",
+      title: directBrief.title || "",
+      summary: directBrief.summary || "",
+      matchedCount: directLookupIssues.length,
+      pulledAt: dashboard.pulledAtDisplay || dashboard.pulledAt || ""
+    } : null,
+    matchedIssues: directLookupIssues,
+    issues: ticketPlanRequest
+      ? [targetIssue, ...relatedIssues].filter(Boolean)
+      : directLookupMode
+        ? directLookupIssues
+        : compactIssues
+  };
+}
+
+function enrichBriefTickets(brief, dashboard, fallbackBrief = null) {
+  const issues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
+  const byKey = new Map(issues.map((issue) => [String(issue.key || "").toUpperCase(), issue]));
+  const fallbackTickets = Array.isArray(fallbackBrief?.ticketsToWatch) ? fallbackBrief.ticketsToWatch : [];
+  const fallbackByKey = new Map(fallbackTickets.map((ticket) => [String(ticket.key || "").toUpperCase(), ticket]));
+  const tickets = Array.isArray(brief?.ticketsToWatch) ? brief.ticketsToWatch : [];
+
+  return {
+    ...brief,
+    ticketsToWatch: tickets.map((ticket) => {
+      const key = asString(ticket?.key, "Unknown");
+      const issue = byKey.get(key.toUpperCase());
+      const fallbackTicket = fallbackByKey.get(key.toUpperCase());
+      return {
+        key,
+        reason: asString(ticket?.reason, fallbackTicket?.reason || formatLookupReason(issue || {})),
+        url: asString(ticket?.url, issue?.url || fallbackTicket?.url || ""),
+        summary: asString(ticket?.summary, issue?.summary || fallbackTicket?.summary || ""),
+        status: asString(ticket?.status, issue?.status || fallbackTicket?.status || ""),
+        priority: asString(ticket?.priority, issue?.priority || fallbackTicket?.priority || "None"),
+        type: asString(ticket?.type, issue?.type || fallbackTicket?.type || "Issue"),
+        assignee: asString(ticket?.assignee, issue?.assignee || fallbackTicket?.assignee || "Unassigned"),
+        assignedDeveloper: asString(ticket?.assignedDeveloper, issue?.assignedDeveloper || fallbackTicket?.assignedDeveloper || "Unassigned"),
+        components: Array.isArray(ticket?.components) && ticket.components.length
+          ? ticket.components
+          : issue?.components || fallbackTicket?.components || [],
+        parent: asString(ticket?.parent, issue?.parent?.key || fallbackTicket?.parent || "")
+      };
+    })
   };
 }
 
@@ -807,7 +899,16 @@ function normalizeBrief(candidate, fallbackBrief) {
     ticketsToWatch: Array.isArray(brief.ticketsToWatch) && brief.ticketsToWatch.length
       ? brief.ticketsToWatch.map((ticket) => ({
           key: asString(ticket?.key, "Unknown"),
-          reason: asString(ticket?.reason, "Review release context.")
+          reason: asString(ticket?.reason, "Review release context."),
+          url: asString(ticket?.url, ""),
+          summary: asString(ticket?.summary, ""),
+          status: asString(ticket?.status, ""),
+          priority: asString(ticket?.priority, ""),
+          type: asString(ticket?.type, ""),
+          assignee: asString(ticket?.assignee, ""),
+          assignedDeveloper: asString(ticket?.assignedDeveloper, ""),
+          components: Array.isArray(ticket?.components) ? ticket.components.filter((component) => typeof component === "string" && component.trim()).slice(0, 8) : [],
+          parent: asString(ticket?.parent, "")
         })).slice(0, 8)
       : fallbackBrief.ticketsToWatch,
     componentSignals: asStringArray(brief.componentSignals, fallbackBrief.componentSignals),

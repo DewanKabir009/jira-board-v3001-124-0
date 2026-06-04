@@ -903,6 +903,7 @@ const hqSpecs = [
                 <label class="ai-prompt-template" for="hq-ai-prompt-template">
                   <span>Prompt type</span>
                   <select id="hq-ai-prompt-template">
+                    <option value="free_form">Free form</option>
                     <option value="ticket_lookup">Ticket lookup</option>
                     <option value="release_triage">Release triage brief</option>
                     <option value="qa_focus">QA focus plan</option>
@@ -921,7 +922,13 @@ const hqSpecs = [
             </div>
             <div class="ai-runner-actions">
               <button type="button" id="hq-ai-generate">Generate AI brief</button>
-              <button type="button" id="hq-ai-copy" disabled>Copy brief</button>
+              <button type="button" id="hq-ai-copy" class="copy-response-button" disabled aria-label="Copy AI response">
+                <svg aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                  <rect x="8" y="8" width="11" height="11" rx="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copy response</span>
+              </button>
               <span class="ai-status-line" id="hq-ai-status" role="status">{aiRuntime.mode}</span>
             </div>
             <div class="ai-result-card" id="hq-ai-result" hidden>
@@ -1121,6 +1128,7 @@ const hqSpecs = [
       const promptInput = document.querySelector("#hq-ai-prompt");
       let latestBriefText = "";
       const promptPresets = {
+        free_form: "Ask anything about the current release board. Example: Which tickets look riskiest for QA and why?",
         ticket_lookup: "What tickets are assigned to Dewan? List ticket key, summary, status, priority, type, and parent if applicable.",
         release_triage: "Summarize the current v3001.124.0 board for QA. Call out the biggest risks, tickets to watch, testing focus, and review gates before anyone posts Jira or Slack updates.",
         qa_focus: "Create a QA focus plan for the current release. Prioritize P0/P1 work, parent tickets with subtasks, stale evidence, components with concentration, and what should be tested next.",
@@ -1171,8 +1179,10 @@ const hqSpecs = [
             ? "Draft ready with deterministic fallback."
             : payload.answerType === "ticket_test_plan"
               ? "AI ticket test plan ready for review."
+            : payload.answerType === "free_form"
+              ? "AI free-form analysis ready for review."
             : payload.answerType === "assignee_lookup" || payload.answerType === "component_lookup" || payload.answerType === "ticket_lookup" || payload.answerType === "direct_lookup"
-              ? "Board lookup ready from dashboard-data.json."
+              ? "AI analysis ready from exact board lookup."
             : "AI draft ready for review from your prompt.";
           runner.classList.remove("has-error");
         } catch (error) {
@@ -1209,7 +1219,7 @@ const hqSpecs = [
         resultSummary.textContent = brief.summary || "";
         renderList(riskList, brief.topRisks);
         renderList(focusList, brief.qaFocus);
-        renderList(ticketList, (brief.ticketsToWatch || []).map((ticket) => `${ticket.key}: ${ticket.reason}`));
+        renderTicketList(ticketList, brief.ticketsToWatch || []);
         renderList(gateList, brief.reviewGates);
         latestBriefText = buildBriefText(payload);
         if (copyButton) copyButton.disabled = !latestBriefText;
@@ -1218,11 +1228,12 @@ const hqSpecs = [
       function setResultLabels(answerType) {
         const lookupMode = answerType === "assignee_lookup" || answerType === "component_lookup" || answerType === "ticket_lookup" || answerType === "direct_lookup";
         const testPlanMode = answerType === "ticket_test_plan";
+        const freeFormMode = answerType === "free_form";
 
-        if (riskTitle) riskTitle.textContent = testPlanMode ? "Coverage risks" : lookupMode ? "Lookup notes" : "Top risks";
-        if (focusTitle) focusTitle.textContent = testPlanMode ? "Test scenarios" : lookupMode ? "Matching tickets" : "QA focus";
-        if (ticketTitle) ticketTitle.textContent = testPlanMode ? "Related tickets" : lookupMode ? "Ticket details" : "Tickets to watch";
-        if (gateTitle) gateTitle.textContent = lookupMode ? "Review gates" : "Review gates";
+        if (riskTitle) riskTitle.textContent = testPlanMode ? "Coverage risks" : lookupMode ? "AI lookup insights" : freeFormMode ? "Key findings" : "Top risks";
+        if (focusTitle) focusTitle.textContent = testPlanMode ? "Test scenarios" : lookupMode ? "Matched ticket analysis" : freeFormMode ? "Answer details" : "QA focus";
+        if (ticketTitle) ticketTitle.textContent = testPlanMode ? "Related tickets" : lookupMode ? "Ticket links" : freeFormMode ? "Relevant tickets" : "Tickets to watch";
+        if (gateTitle) gateTitle.textContent = "Review gates";
       }
 
       function renderList(list, items) {
@@ -1237,24 +1248,66 @@ const hqSpecs = [
         });
       }
 
+      function renderTicketList(list, tickets) {
+        if (!list) return;
+        list.textContent = "";
+        const cleanTickets = Array.isArray(tickets) && tickets.length ? tickets : [];
+
+        if (!cleanTickets.length) {
+          const li = document.createElement("li");
+          li.textContent = "No tickets returned.";
+          list.appendChild(li);
+          return;
+        }
+
+        cleanTickets.forEach((ticket) => {
+          const li = document.createElement("li");
+          li.className = "ai-ticket-item";
+          const title = document.createElement(ticket.url ? "a" : "strong");
+          title.textContent = ticket.key || "Unknown";
+
+          if (ticket.url) {
+            title.href = ticket.url;
+            title.target = "_blank";
+            title.rel = "noopener";
+          }
+
+          const detail = document.createElement("span");
+          const summary = ticket.summary ? ` - ${ticket.summary}` : "";
+          const metadata = [
+            ticket.type,
+            ticket.status,
+            ticket.priority,
+            ticket.assignee ? `Assignee: ${ticket.assignee}` : "",
+            ticket.assignedDeveloper ? `Dev: ${ticket.assignedDeveloper}` : "",
+            Array.isArray(ticket.components) && ticket.components.length ? `Components: ${ticket.components.join(", ")}` : "",
+            ticket.parent ? `Parent: ${ticket.parent}` : ""
+          ].filter(Boolean).join(" | ");
+          detail.textContent = `${summary}${metadata ? ` (${metadata})` : ""}${ticket.reason ? ` - ${ticket.reason}` : ""}`;
+          li.append(title, detail);
+          list.appendChild(li);
+        });
+      }
+
       function buildBriefText(payload) {
         const brief = payload.brief || {};
         const answerType = payload.answerType || brief.answerType || "release_brief";
         const lookupMode = answerType === "assignee_lookup" || answerType === "component_lookup" || answerType === "ticket_lookup" || answerType === "direct_lookup";
         const testPlanMode = answerType === "ticket_test_plan";
-        const tickets = (brief.ticketsToWatch || []).map((ticket) => `- ${ticket.key}: ${ticket.reason}`).join("\n");
+        const freeFormMode = answerType === "free_form";
+        const tickets = (brief.ticketsToWatch || []).map(formatTicketForCopy).join("\n");
         return [
           brief.title || "Draft release brief",
           "",
           brief.summary || "",
           "",
-          testPlanMode ? "Coverage risks:" : lookupMode ? "Lookup notes:" : "Top risks:",
+          testPlanMode ? "Coverage risks:" : lookupMode ? "AI lookup insights:" : freeFormMode ? "Key findings:" : "Top risks:",
           toBulletList(brief.topRisks),
           "",
-          testPlanMode ? "Test scenarios:" : lookupMode ? "Matching tickets:" : "QA focus:",
+          testPlanMode ? "Test scenarios:" : lookupMode ? "Matched ticket analysis:" : freeFormMode ? "Answer details:" : "QA focus:",
           toBulletList(brief.qaFocus),
           "",
-          testPlanMode ? "Related tickets:" : lookupMode ? "Ticket details:" : "Tickets to watch:",
+          testPlanMode ? "Related tickets:" : lookupMode ? "Ticket links:" : freeFormMode ? "Relevant tickets:" : "Tickets to watch:",
           tickets || "- No tickets returned.",
           "",
           "Review gates:",
@@ -1266,6 +1319,22 @@ const hqSpecs = [
 
       function toBulletList(items) {
         return Array.isArray(items) && items.length ? items.map((item) => `- ${item}`).join("\n") : "- No items returned.";
+      }
+
+      function formatTicketForCopy(ticket) {
+        const key = ticket.key || "Unknown";
+        const title = ticket.url ? `[${key}](${ticket.url})` : key;
+        const summary = ticket.summary ? ` - ${ticket.summary}` : "";
+        const metadata = [
+          ticket.type,
+          ticket.status,
+          ticket.priority,
+          ticket.assignee ? `Assignee: ${ticket.assignee}` : "",
+          ticket.assignedDeveloper ? `Dev: ${ticket.assignedDeveloper}` : "",
+          Array.isArray(ticket.components) && ticket.components.length ? `Components: ${ticket.components.join(", ")}` : "",
+          ticket.parent ? `Parent: ${ticket.parent}` : ""
+        ].filter(Boolean).join(" | ");
+        return `- ${title}${summary}${metadata ? ` (${metadata})` : ""}${ticket.reason ? ` - ${ticket.reason}` : ""}`;
       }
     })();
   </script>

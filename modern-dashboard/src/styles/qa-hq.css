@@ -1214,6 +1214,10 @@ ul {
 }
 
 .ai-runner-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   min-height: 38px;
   border: 1px solid var(--hq-blue);
   border-radius: 8px;
@@ -1227,6 +1231,14 @@ ul {
 .ai-runner-actions button:nth-of-type(2) {
   background: #ffffff;
   color: var(--hq-blue);
+}
+
+.copy-response-button svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
 }
 
 .ai-runner-actions button:disabled {
@@ -1289,6 +1301,32 @@ ul {
 .ai-result-grid li {
   color: var(--hq-muted);
   line-height: 1.4;
+}
+
+.ai-result-grid .ai-ticket-item {
+  display: grid;
+  gap: 3px;
+  padding: 8px;
+  border: 1px solid rgba(0, 95, 204, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.ai-ticket-item a,
+.ai-ticket-item strong {
+  color: var(--hq-blue);
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.ai-ticket-item a:hover {
+  text-decoration: underline;
+}
+
+.ai-ticket-item span {
+  color: var(--hq-muted);
+  font-size: 0.86rem;
+  line-height: 1.42;
 }
 
 .ai-source-grid {

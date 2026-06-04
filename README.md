@@ -61,7 +61,7 @@ GitHub Pages remains useful as a static fallback. The live AI endpoint only work
 - `/modern/` is the active `.124` release dashboard with ticket cards, table view, assignee actions, Jira search, comments, automation status, and ticket detail surfaces.
 - `/modern/hq/` is the HQ landing route built with Astro and deployed as static assets.
 - `/api/ai/status` reports whether the Cloudflare Worker has the Workers AI binding.
-- `/api/ai/release-summary` reads `dashboard-data.json`, answers direct assignee/developer/component ticket lookups from board data, or combines the user's broader prompt with compact ticket context and Cloudflare Workers AI for a draft release brief.
+- `/api/ai/release-summary` reads `dashboard-data.json`, resolves assignee/developer/component ticket lookups from the direct board pull, asks Cloudflare Workers AI to turn those exact matches into human-readable linked analysis, or combines the user's broader prompt with compact ticket context for a draft release brief.
 - GitHub Pages can render the same HQ page but cannot run the AI API. The page tells users to open the Cloudflare URL when the endpoint is unavailable.
 
 ## Architecture
@@ -97,10 +97,10 @@ The first Workers AI implementation is intentionally focused and review-first:
 - Endpoint: `POST /api/ai/release-summary`.
 - Status check: `GET /api/ai/status`.
 - Source data: the current board's `dashboard-data.json`.
-- User input: visible HQ prompt composer with ticket lookup, release triage, QA focus, Jira-ready notes, and leadership rollup presets.
+- User input: visible HQ prompt composer with Free Form, ticket lookup, release triage, QA focus, Jira-ready notes, and leadership rollup presets.
 - Output shape: structured JSON with executive brief, risks, focus tickets, and review gates.
 - Ticket test plans: prompts like `make test plan for CORE-14427` override the selected preset and send the named ticket's description/comments to Workers AI with `answerType: "ticket_test_plan"`.
-- Safety posture: draft-only, direct board-data lookup for assignment and component questions, deterministic fallback if AI fails, and no Jira mutations from the AI endpoint.
+- Safety posture: draft-only, direct board-data lookup for assignment and component questions before AI narration, deterministic fallback if AI fails, and no Jira mutations from the AI endpoint.
 
 The Worker requests JSON output from the model so the browser can render predictable sections instead of parsing free-form prose.
 
@@ -203,7 +203,7 @@ Request:
 }
 ```
 
-Direct ticket lookup request:
+Direct ticket lookup request. The Worker first performs the exact board-data lookup, then Workers AI turns the matched tickets into readable analysis while the response keeps Jira links and board-owned metadata attached:
 
 ```json
 {
@@ -234,6 +234,18 @@ Ticket test-plan request:
 ```
 
 Lookup responses use the same renderable brief envelope with `answerType: "assignee_lookup"` or `answerType: "component_lookup"` and matching ticket details sourced from `dashboard-data.json`.
+
+Free Form request:
+
+```json
+{
+  "output": "release_brief",
+  "promptTemplate": "free_form",
+  "userPrompt": "Which tickets should QA focus on first and why?"
+}
+```
+
+Free Form responses use `answerType: "free_form"` and ask Workers AI to answer from the current release issue list and stats. Relevant tickets render as links and the copy action exports Markdown-friendly ticket links.
 
 Ticket test-plan responses use `answerType: "ticket_test_plan"` and render coverage risks, test scenarios, related tickets, and review gates from the named ticket context.
 
