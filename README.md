@@ -61,7 +61,7 @@ GitHub Pages remains useful as a static fallback. The live AI endpoint only work
 - `/modern/` is the active `.124` release dashboard with ticket cards, table view, assignee actions, Jira search, comments, automation status, and ticket detail surfaces.
 - `/modern/hq/` is the HQ landing route built with Astro and deployed as static assets.
 - `/api/ai/status` reports whether the Cloudflare Worker has the Workers AI binding.
-- `/api/ai/release-summary` reads `dashboard-data.json`, combines it with the user's prompt, builds compact ticket context, calls Cloudflare Workers AI, and returns a draft release brief.
+- `/api/ai/release-summary` reads `dashboard-data.json`, answers direct assignee/developer ticket lookups from board data, or combines the user's broader prompt with compact ticket context and Cloudflare Workers AI for a draft release brief.
 - GitHub Pages can render the same HQ page but cannot run the AI API. The page tells users to open the Cloudflare URL when the endpoint is unavailable.
 
 ## Architecture
@@ -97,9 +97,9 @@ The first Workers AI implementation is intentionally focused and review-first:
 - Endpoint: `POST /api/ai/release-summary`.
 - Status check: `GET /api/ai/status`.
 - Source data: the current board's `dashboard-data.json`.
-- User input: visible HQ prompt composer with release triage, QA focus, Jira-ready notes, and leadership rollup presets.
+- User input: visible HQ prompt composer with ticket lookup, release triage, QA focus, Jira-ready notes, and leadership rollup presets.
 - Output shape: structured JSON with executive brief, risks, focus tickets, and review gates.
-- Safety posture: draft-only, deterministic fallback if AI fails, and no Jira mutations from the AI endpoint.
+- Safety posture: draft-only, direct board-data lookup for assignment questions, deterministic fallback if AI fails, and no Jira mutations from the AI endpoint.
 
 The Worker requests JSON output from the model so the browser can render predictable sections instead of parsing free-form prose.
 
@@ -201,6 +201,18 @@ Request:
   "userPrompt": "Summarize the current release board for QA and call out risks, tickets to watch, testing focus, and review gates."
 }
 ```
+
+Direct ticket lookup request:
+
+```json
+{
+  "output": "release_brief",
+  "promptTemplate": "ticket_lookup",
+  "userPrompt": "What tickets are assigned to Dewan?"
+}
+```
+
+Lookup responses use the same renderable brief envelope with `answerType: "assignee_lookup"` and matching ticket details sourced from `dashboard-data.json`.
 
 Response:
 

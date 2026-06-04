@@ -27,13 +27,26 @@ export default {
 };
 
 async function handleReleaseSummary(request, env, url) {
+  const body = await safeJson(request);
+  const dashboard = await loadDashboardData(env, url);
+  const stats = buildReleaseStats(dashboard);
+  const directBrief = buildDirectQuestionBrief(dashboard, stats, body);
+
+  if (directBrief) {
+    return jsonResponse(buildBriefPayload({
+      dashboard,
+      stats,
+      provider: "CORE QA HQ board lookup",
+      model: "dashboard-data.json",
+      brief: directBrief,
+      answerType: directBrief.answerType || "direct_lookup"
+    }));
+  }
+
   if (!env.AI) {
     return jsonResponse({ ok: false, message: "Cloudflare Workers AI binding is not configured." }, 503);
   }
 
-  const body = await safeJson(request);
-  const dashboard = await loadDashboardData(env, url);
-  const stats = buildReleaseStats(dashboard);
   const context = buildModelContext(dashboard, stats, body);
   const fallbackBrief = buildDeterministicBrief(dashboard, stats);
 
@@ -87,43 +100,45 @@ async function handleReleaseSummary(request, env, url) {
 
     const brief = normalizeBrief(parseAiResponse(aiResult), fallbackBrief);
 
-    return jsonResponse({
-      ok: true,
+    return jsonResponse(buildBriefPayload({
+      dashboard,
+      stats,
       provider: "Cloudflare Workers AI",
       model: AI_MODEL,
-      generatedAt: new Date().toISOString(),
-      release: dashboard.version || env.RELEASE_VERSION || "v3001.124.0",
-      source: {
-        schemaVersion: dashboard.schemaVersion || "",
-        pulledAt: dashboard.pulledAt || "",
-        pulledAtDisplay: dashboard.pulledAtDisplay || "",
-        total: dashboard.total || stats.total,
-        mainTickets: stats.mainTickets,
-        subtasks: stats.subtasks
-      },
-      stats,
       brief
-    });
+    }));
   } catch (error) {
-    return jsonResponse({
-      ok: true,
+    return jsonResponse(buildBriefPayload({
+      dashboard,
+      stats,
       provider: "Cloudflare Workers AI",
       model: AI_MODEL,
-      generatedAt: new Date().toISOString(),
-      release: dashboard.version || env.RELEASE_VERSION || "v3001.124.0",
-      source: {
-        schemaVersion: dashboard.schemaVersion || "",
-        pulledAt: dashboard.pulledAt || "",
-        pulledAtDisplay: dashboard.pulledAtDisplay || "",
-        total: dashboard.total || stats.total,
-        mainTickets: stats.mainTickets,
-        subtasks: stats.subtasks
-      },
-      stats,
       brief: fallbackBrief,
       warning: `AI model response was not usable, so HQ returned a deterministic draft: ${error.message}`
-    });
+    }));
   }
+}
+
+function buildBriefPayload({ dashboard, stats, provider, model, brief, warning, answerType }) {
+  return {
+    ok: true,
+    provider,
+    model,
+    generatedAt: new Date().toISOString(),
+    release: dashboard.version || "v3001.124.0",
+    answerType: answerType || brief?.answerType || "release_brief",
+    source: {
+      schemaVersion: dashboard.schemaVersion || "",
+      pulledAt: dashboard.pulledAt || "",
+      pulledAtDisplay: dashboard.pulledAtDisplay || "",
+      total: dashboard.total || stats.total,
+      mainTickets: stats.mainTickets,
+      subtasks: stats.subtasks
+    },
+    stats,
+    brief,
+    ...(warning ? { warning } : {})
+  };
 }
 
 async function loadDashboardData(env, url) {
@@ -162,6 +177,209 @@ function buildReleaseStats(dashboard) {
     mediaTickets: issues.filter((issue) => Number(issue.descriptionMediaCount || 0) > 0).map((issue) => issue.key),
     commentTickets: issues.filter((issue) => Number(issue.commentCount || 0) > 0).map((issue) => issue.key)
   };
+}
+
+function buildDirectQuestionBrief(dashboard, stats, body) {
+  const promptTemplate = sanitizePrompt(body?.promptTemplate, 80);
+  const userPrompt = sanitizePrompt(body?.userPrompt);
+  const issues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
+  const promptLooksLikeLookup = /\b(ticket|tickets|issue|issues|assigned|assignee|developer|owner)\b/i.test(userPrompt);
+
+  if (promptTemplate !== "ticket_lookup" && !promptLooksLikeLookup) {
+    return null;
+  }
+
+  const lookup = extractPeopleLookup(userPrompt, issues);
+
+  if (!lookup) {
+    if (promptTemplate !== "ticket_lookup") {
+      return null;
+    }
+
+    return {
+      answerType: "ticket_lookup",
+      title: "Ticket lookup needs a person or field",
+      summary: "Ask the HQ AI for a board-data lookup such as: What tickets are assigned to Dewan?",
+      topRisks: [
+        "No Jira, Slack, or automation action was performed.",
+        "The lookup mode uses the current dashboard artifact only."
+      ],
+      qaFocus: [
+        "Try: What tickets are assigned to Dewan?",
+        "Try: Which tickets have Nicole as assignee?",
+        "Try: What tickets have Luis as assigned developer?"
+      ],
+      ticketsToWatch: [],
+      componentSignals: Object.entries(stats.assigneeCounts).sort(sortCounts).slice(0, 6).map(formatPair),
+      reviewGates: ["Refresh the board if the pull timestamp is stale before relying on the answer."],
+      sourceNotes: ["Source: dashboard-data.json from the deployed HQ Worker assets."]
+    };
+  }
+
+  return buildPeopleLookupBrief(dashboard, stats, lookup);
+}
+
+function extractPeopleLookup(userPrompt, issues) {
+  const prompt = sanitizePrompt(userPrompt);
+
+  if (!prompt) {
+    return null;
+  }
+
+  const targetField = /\b(assigned developer|developer|dev owner|dev)\b/i.test(prompt)
+    ? "assignedDeveloper"
+    : "assignee";
+  const knownNames = Array.from(new Set(issues
+    .map((issue) => issue?.[targetField])
+    .filter((name) => typeof name === "string" && name.trim())))
+    .sort((a, b) => b.length - a.length);
+  const normalizedPrompt = normalizeName(prompt);
+  const knownMatch = knownNames.find((name) => {
+    const normalizedName = normalizeName(name);
+    const nameParts = normalizedName.split(" ").filter((part) => part.length > 2);
+    return normalizedPrompt.includes(normalizedName) || nameParts.some((part) => normalizedPrompt.includes(part));
+  });
+
+  if (knownMatch) {
+    return { field: targetField, query: knownMatch, displayName: knownMatch };
+  }
+
+  const regexes = [
+    /assigned\s+to\s+(.+?)(?:[?.!,;]|$)/i,
+    /assignee\s+(?:is|=|:)?\s*(.+?)(?:[?.!,;]|$)/i,
+    /developer\s+(?:is|=|:)?\s*(.+?)(?:[?.!,;]|$)/i
+  ];
+
+  for (const regex of regexes) {
+    const match = prompt.match(regex);
+    const cleaned = cleanLookupName(match?.[1]);
+
+    if (cleaned) {
+      return { field: targetField, query: cleaned, displayName: cleaned };
+    }
+  }
+
+  return null;
+}
+
+function buildPeopleLookupBrief(dashboard, stats, lookup) {
+  const issues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
+  const normalizedQuery = normalizeName(lookup.query);
+  const matches = issues
+    .filter((issue) => {
+      const value = normalizeName(issue?.[lookup.field] || "");
+      return value && (value.includes(normalizedQuery) || normalizedQuery.includes(value));
+    })
+    .sort(sortIssuesForLookup);
+  const mainCount = matches.filter((issue) => !issue.isSubtask).length;
+  const subtaskCount = matches.length - mainCount;
+  const fieldLabel = lookup.field === "assignedDeveloper" ? "assigned developer" : "assignee";
+  const release = dashboard.version || "current release";
+  const pulledAt = dashboard.pulledAtDisplay || dashboard.pulledAt || "the latest artifact";
+
+  if (!matches.length) {
+    return {
+      answerType: "assignee_lookup",
+      title: `No tickets found for ${lookup.displayName}`,
+      summary: `No issues in ${release} currently have ${fieldLabel} matching ${lookup.displayName} in the dashboard artifact pulled ${pulledAt}.`,
+      topRisks: [
+        "No matching tickets were found in the current artifact.",
+        "This answer did not call Jira live; it used the deployed dashboard-data.json."
+      ],
+      qaFocus: Object.entries(lookup.field === "assignedDeveloper" ? stats.developerCounts : stats.assigneeCounts)
+        .sort(sortCounts)
+        .slice(0, 8)
+        .map(formatPair),
+      ticketsToWatch: [],
+      componentSignals: ["No matching component concentration because there were no matching tickets."],
+      reviewGates: [
+        "Refresh the board if the pull timestamp is stale.",
+        "Use Jira search when you need live data beyond the dashboard artifact."
+      ],
+      sourceNotes: ["Source: dashboard-data.json from the deployed HQ Worker assets."]
+    };
+  }
+
+  return {
+    answerType: "assignee_lookup",
+    title: `Tickets assigned to ${lookup.displayName}`,
+    summary: `Yes. ${matches.length} issue(s) in ${release} have ${fieldLabel} matching ${lookup.displayName}: ${mainCount} main ticket(s) and ${subtaskCount} subtask(s), from the artifact pulled ${pulledAt}.`,
+    topRisks: [
+      `Lookup mode: matched the ${fieldLabel} field only.`,
+      `${matches.length} of ${stats.total} current issue(s) match ${lookup.displayName}.`,
+      `${mainCount} main ticket(s) and ${subtaskCount} subtask(s) matched.`,
+      `Current artifact pull: ${pulledAt}.`
+    ],
+    qaFocus: matches.slice(0, 10).map(formatLookupLine),
+    ticketsToWatch: matches.slice(0, 12).map((issue) => ({
+      key: issue.key || "Unknown",
+      reason: formatLookupReason(issue)
+    })),
+    componentSignals: componentSignalsForIssues(matches),
+    reviewGates: [
+      "Open Jira for a ticket before posting status or comments.",
+      "Refresh the board if the pull timestamp is stale.",
+      "Use the ticket detail modal for pulled comments, media, and checklist context."
+    ],
+    sourceNotes: [
+      "Source: dashboard-data.json from the deployed HQ Worker assets.",
+      "This direct lookup is deterministic board data, not model inference.",
+      "No Jira, Slack, or automation mutation was performed."
+    ]
+  };
+}
+
+function sortIssuesForLookup(a, b) {
+  return Number(Boolean(a.isSubtask)) - Number(Boolean(b.isSubtask))
+    || priorityRank(a.priority) - priorityRank(b.priority)
+    || String(a.key || "").localeCompare(String(b.key || ""));
+}
+
+function formatLookupLine(issue) {
+  const parent = issue.isSubtask && issue.parent?.key ? ` under ${issue.parent.key}` : "";
+  return `${issue.key}: ${issue.summary || "No summary"} (${issue.type || "Issue"}${parent}; ${issue.status || "Unknown"}; ${issue.priority || "None"})`;
+}
+
+function formatLookupReason(issue) {
+  const parts = [
+    issue.summary || "No summary",
+    issue.type || "Issue",
+    issue.isSubtask && issue.parent?.key ? `parent ${issue.parent.key}` : "main ticket",
+    issue.status || "Unknown status",
+    issue.priority || "No priority",
+    issue.assignedDeveloper ? `dev ${issue.assignedDeveloper}` : "dev unassigned",
+    issue.components?.length ? `components ${issue.components.join(", ")}` : "no components"
+  ];
+
+  return parts.filter(Boolean).join(" | ");
+}
+
+function componentSignalsForIssues(issues) {
+  const counts = countBy(issues.flatMap((issue) => issue.components?.length ? issue.components : ["None"]), (component) => component);
+  const signals = Object.entries(counts).sort(sortCounts).slice(0, 6).map(([component, count]) => `${component}: ${count} matching ticket(s)`);
+  return signals.length ? signals : ["No components found on matching tickets."];
+}
+
+function cleanLookupName(value) {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  return value
+    .replace(/\b(on|in|from|for)\s+(the\s+)?(current\s+)?(board|release|dashboard|artifact)\b.*$/i, "")
+    .replace(/\bplease\b.*$/i, "")
+    .replace(/\bshow\b.*$/i, "")
+    .replace(/\blist\b.*$/i, "")
+    .trim();
+}
+
+function normalizeName(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
 }
 
 function buildModelContext(dashboard, stats, body) {

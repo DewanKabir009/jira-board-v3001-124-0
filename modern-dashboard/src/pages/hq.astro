@@ -903,6 +903,7 @@ const hqSpecs = [
                 <label class="ai-prompt-template" for="hq-ai-prompt-template">
                   <span>Prompt type</span>
                   <select id="hq-ai-prompt-template">
+                    <option value="ticket_lookup">Ticket lookup</option>
                     <option value="release_triage">Release triage brief</option>
                     <option value="qa_focus">QA focus plan</option>
                     <option value="jira_notes">Jira-ready notes</option>
@@ -934,19 +935,19 @@ const hqSpecs = [
               <p id="hq-ai-result-summary"></p>
               <div class="ai-result-grid">
                 <section>
-                  <h4>Top risks</h4>
+                  <h4 id="hq-ai-risks-title">Top risks</h4>
                   <ul id="hq-ai-risks"></ul>
                 </section>
                 <section>
-                  <h4>QA focus</h4>
+                  <h4 id="hq-ai-focus-title">QA focus</h4>
                   <ul id="hq-ai-focus"></ul>
                 </section>
                 <section>
-                  <h4>Tickets to watch</h4>
+                  <h4 id="hq-ai-tickets-title">Tickets to watch</h4>
                   <ul id="hq-ai-tickets"></ul>
                 </section>
                 <section>
-                  <h4>Review gates</h4>
+                  <h4 id="hq-ai-gates-title">Review gates</h4>
                   <ul id="hq-ai-gates"></ul>
                 </section>
               </div>
@@ -1112,10 +1113,15 @@ const hqSpecs = [
       const focusList = document.querySelector("#hq-ai-focus");
       const ticketList = document.querySelector("#hq-ai-tickets");
       const gateList = document.querySelector("#hq-ai-gates");
+      const riskTitle = document.querySelector("#hq-ai-risks-title");
+      const focusTitle = document.querySelector("#hq-ai-focus-title");
+      const ticketTitle = document.querySelector("#hq-ai-tickets-title");
+      const gateTitle = document.querySelector("#hq-ai-gates-title");
       const promptTemplate = document.querySelector("#hq-ai-prompt-template");
       const promptInput = document.querySelector("#hq-ai-prompt");
       let latestBriefText = "";
       const promptPresets = {
+        ticket_lookup: "What tickets are assigned to Dewan? List ticket key, summary, status, priority, type, and parent if applicable.",
         release_triage: "Summarize the current v3001.124.0 board for QA. Call out the biggest risks, tickets to watch, testing focus, and review gates before anyone posts Jira or Slack updates.",
         qa_focus: "Create a QA focus plan for the current release. Prioritize P0/P1 work, parent tickets with subtasks, stale evidence, components with concentration, and what should be tested next.",
         jira_notes: "Draft Jira-ready QA notes for the current release. Keep the notes safe for review, cite ticket keys from the board data, and separate findings, concerns, evidence gaps, and next actions.",
@@ -1163,6 +1169,8 @@ const hqSpecs = [
           renderBrief(payload);
           statusLine.textContent = payload.warning
             ? "Draft ready with deterministic fallback."
+            : payload.answerType === "assignee_lookup" || payload.answerType === "ticket_lookup" || payload.answerType === "direct_lookup"
+              ? "Board lookup ready from dashboard-data.json."
             : "AI draft ready for review from your prompt.";
           runner.classList.remove("has-error");
         } catch (error) {
@@ -1190,7 +1198,9 @@ const hqSpecs = [
       function renderBrief(payload) {
         const brief = payload.brief || {};
         const source = payload.source || {};
+        const answerType = payload.answerType || brief.answerType || "release_brief";
         resultCard.hidden = false;
+        setResultLabels(answerType);
         resultTitle.textContent = brief.title || "Draft release brief";
         resultMeta.textContent = `${payload.provider || "Cloudflare Workers AI"} / ${payload.model || "unknown model"}`;
         resultSource.textContent = `${payload.release || "release"} / pulled ${source.pulledAtDisplay || source.pulledAt || "unknown"}`;
@@ -1201,6 +1211,15 @@ const hqSpecs = [
         renderList(gateList, brief.reviewGates);
         latestBriefText = buildBriefText(payload);
         if (copyButton) copyButton.disabled = !latestBriefText;
+      }
+
+      function setResultLabels(answerType) {
+        const lookupMode = answerType === "assignee_lookup" || answerType === "ticket_lookup" || answerType === "direct_lookup";
+
+        if (riskTitle) riskTitle.textContent = lookupMode ? "Lookup notes" : "Top risks";
+        if (focusTitle) focusTitle.textContent = lookupMode ? "Matching tickets" : "QA focus";
+        if (ticketTitle) ticketTitle.textContent = lookupMode ? "Ticket details" : "Tickets to watch";
+        if (gateTitle) gateTitle.textContent = lookupMode ? "Review gates" : "Review gates";
       }
 
       function renderList(list, items) {
@@ -1217,19 +1236,21 @@ const hqSpecs = [
 
       function buildBriefText(payload) {
         const brief = payload.brief || {};
+        const answerType = payload.answerType || brief.answerType || "release_brief";
+        const lookupMode = answerType === "assignee_lookup" || answerType === "ticket_lookup" || answerType === "direct_lookup";
         const tickets = (brief.ticketsToWatch || []).map((ticket) => `- ${ticket.key}: ${ticket.reason}`).join("\n");
         return [
           brief.title || "Draft release brief",
           "",
           brief.summary || "",
           "",
-          "Top risks:",
+          lookupMode ? "Lookup notes:" : "Top risks:",
           toBulletList(brief.topRisks),
           "",
-          "QA focus:",
+          lookupMode ? "Matching tickets:" : "QA focus:",
           toBulletList(brief.qaFocus),
           "",
-          "Tickets to watch:",
+          lookupMode ? "Ticket details:" : "Tickets to watch:",
           tickets || "- No tickets returned.",
           "",
           "Review gates:",
