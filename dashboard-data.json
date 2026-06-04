@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.10.6",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-04T21:02:31.222Z",
-  "pulledAtDisplay": "Jun 4, 2026, 5:02 PM",
+  "pulledAt": "2026-06-04T21:25:42.111Z",
+  "pulledAtDisplay": "Jun 4, 2026, 5:25 PM",
   "total": 7,
   "issues": [
     {
@@ -500,10 +500,10 @@
     }
   ],
   "pullDiff": {
-    "previousPulledAt": "2026-06-04T20:45:44.074Z",
-    "previousPulledAtDisplay": "Jun 4, 2026, 4:45 PM",
-    "currentPulledAt": "2026-06-04T21:02:31.222Z",
-    "currentPulledAtDisplay": "Jun 4, 2026, 5:02 PM",
+    "previousPulledAt": "2026-06-04T21:02:31.222Z",
+    "previousPulledAtDisplay": "Jun 4, 2026, 5:02 PM",
+    "currentPulledAt": "2026-06-04T21:25:42.111Z",
+    "currentPulledAtDisplay": "Jun 4, 2026, 5:25 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -511,6 +511,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-04T21:02:31.222Z",
+      "previousPulledAtDisplay": "Jun 4, 2026, 5:02 PM",
+      "currentPulledAt": "2026-06-04T21:25:42.111Z",
+      "currentPulledAtDisplay": "Jun 4, 2026, 5:25 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-04T20:45:44.074Z",
       "previousPulledAtDisplay": "Jun 4, 2026, 4:45 PM",
