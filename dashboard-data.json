@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.10.6",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-06T17:10:20.430Z",
-  "pulledAtDisplay": "Jun 6, 2026, 1:10 PM",
+  "pulledAt": "2026-06-06T17:35:21.957Z",
+  "pulledAtDisplay": "Jun 6, 2026, 1:35 PM",
   "total": 7,
   "issues": [
     {
@@ -500,10 +500,10 @@
     }
   ],
   "pullDiff": {
-    "previousPulledAt": "2026-06-06T16:48:07.646Z",
-    "previousPulledAtDisplay": "Jun 6, 2026, 12:48 PM",
-    "currentPulledAt": "2026-06-06T17:10:20.430Z",
-    "currentPulledAtDisplay": "Jun 6, 2026, 1:10 PM",
+    "previousPulledAt": "2026-06-06T17:10:20.430Z",
+    "previousPulledAtDisplay": "Jun 6, 2026, 1:10 PM",
+    "currentPulledAt": "2026-06-06T17:35:21.957Z",
+    "currentPulledAtDisplay": "Jun 6, 2026, 1:35 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -511,6 +511,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-06T17:10:20.430Z",
+      "previousPulledAtDisplay": "Jun 6, 2026, 1:10 PM",
+      "currentPulledAt": "2026-06-06T17:35:21.957Z",
+      "currentPulledAtDisplay": "Jun 6, 2026, 1:35 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-06T16:48:07.646Z",
       "previousPulledAtDisplay": "Jun 6, 2026, 12:48 PM",
@@ -2449,17 +2460,6 @@
       "previousPulledAtDisplay": "Jun 3, 2026, 9:00 PM",
       "currentPulledAt": "2026-06-04T01:25:42.904Z",
       "currentPulledAtDisplay": "Jun 3, 2026, 9:25 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-04T00:35:42.954Z",
-      "previousPulledAtDisplay": "Jun 3, 2026, 8:35 PM",
-      "currentPulledAt": "2026-06-04T01:00:45.785Z",
-      "currentPulledAtDisplay": "Jun 3, 2026, 9:00 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
