@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.10.6",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-06T08:40:19.549Z",
-  "pulledAtDisplay": "Jun 6, 2026, 4:40 AM",
+  "pulledAt": "2026-06-06T09:05:21.402Z",
+  "pulledAtDisplay": "Jun 6, 2026, 5:05 AM",
   "total": 7,
   "issues": [
     {
@@ -500,10 +500,10 @@
     }
   ],
   "pullDiff": {
-    "previousPulledAt": "2026-06-06T08:15:22.137Z",
-    "previousPulledAtDisplay": "Jun 6, 2026, 4:15 AM",
-    "currentPulledAt": "2026-06-06T08:40:19.549Z",
-    "currentPulledAtDisplay": "Jun 6, 2026, 4:40 AM",
+    "previousPulledAt": "2026-06-06T08:40:19.549Z",
+    "previousPulledAtDisplay": "Jun 6, 2026, 4:40 AM",
+    "currentPulledAt": "2026-06-06T09:05:21.402Z",
+    "currentPulledAtDisplay": "Jun 6, 2026, 5:05 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -511,6 +511,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-06T08:40:19.549Z",
+      "previousPulledAtDisplay": "Jun 6, 2026, 4:40 AM",
+      "currentPulledAt": "2026-06-06T09:05:21.402Z",
+      "currentPulledAtDisplay": "Jun 6, 2026, 5:05 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-06T08:15:22.137Z",
       "previousPulledAtDisplay": "Jun 6, 2026, 4:15 AM",
@@ -2674,63 +2685,6 @@
           "summary": "Modernize Affiliate API dependencies to remediate security vulnerabilities",
           "before": "Pending Deployment (DEV)",
           "after": "QA Testing (DEV)",
-          "type": "Story",
-          "isSubtask": false,
-          "assignee": "Dewan Kabir",
-          "assignedDeveloper": "Tyler Olechnowicz",
-          "status": "QA Testing (DEV)",
-          "parent": null
-        }
-      ]
-    },
-    {
-      "previousPulledAt": "2026-06-03T16:00:47.595Z",
-      "previousPulledAtDisplay": "Jun 3, 2026, 12:00 PM",
-      "currentPulledAt": "2026-06-03T16:25:39.413Z",
-      "currentPulledAtDisplay": "Jun 3, 2026, 12:25 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [
-        {
-          "key": "CORE-14505",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14505",
-          "summary": "Modernize Affiliate API dependencies to remediate security vulnerabilities",
-          "changes": [
-            {
-              "field": "status",
-              "label": "Status",
-              "before": "Code Review",
-              "after": "Pending Deployment (DEV)"
-            },
-            {
-              "field": "assignee",
-              "label": "Assignee",
-              "before": "Yoel Martin Pardo",
-              "after": "Tyler Olechnowicz"
-            },
-            {
-              "field": "updatedDisplay",
-              "label": "Jira updated",
-              "before": "Jun 2, 2026, 6:03 PM",
-              "after": "Jun 3, 2026, 12:25 PM"
-            }
-          ],
-          "type": "Story",
-          "isSubtask": false,
-          "assignee": "Dewan Kabir",
-          "assignedDeveloper": "Tyler Olechnowicz",
-          "status": "QA Testing (DEV)",
-          "parent": null
-        }
-      ],
-      "statusChanges": [
-        {
-          "key": "CORE-14505",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14505",
-          "summary": "Modernize Affiliate API dependencies to remediate security vulnerabilities",
-          "before": "Code Review",
-          "after": "Pending Deployment (DEV)",
           "type": "Story",
           "isSubtask": false,
           "assignee": "Dewan Kabir",
