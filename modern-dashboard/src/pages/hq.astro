@@ -29,9 +29,10 @@ const releaseBoards = [
     status: "Current",
     state: "Live",
     url: "https://dewankabir009.github.io/jira-board-v3001-124-0/",
-    modernUrl: "https://dewankabir009.github.io/jira-board-v3001-124-0/modern/",
+    modernUrl: "https://core-qa-headquarters-124.dfkabir253.workers.dev/",
+    fallbackModernUrl: "https://dewankabir009.github.io/jira-board-v3001-124-0/modern/",
     repo: "DewanKabir009/jira-board-v3001-124-0",
-    summary: "Current CORE QA release board for v3001.124.0 with hosted bridge defaults and the HQ migration path."
+    summary: "Current CORE QA release board hosted on Cloudflare Workers with GitHub Pages kept as the fallback."
   }
 ];
 
@@ -210,7 +211,7 @@ const automationGuards = [
 const statusCards = [
   { label: "Jira data pull", value: "Healthy", detail: "5 minute single-shot refresh", tone: "green" },
   { label: "Automation runner", value: "Mapped", detail: ".123 pilot contract carried into HQ", tone: "blue" },
-  { label: "Cloudflare host", value: "Deployed", detail: "Workers live; workflow deploy wiring in place", tone: "green" },
+  { label: "Cloudflare host", value: "Deployed", detail: ".124 board and HQ served by Worker Static Assets", tone: "green" },
   { label: "Knowledge base", value: "Mapped", detail: "Flow previews and owners drafted", tone: "violet" }
 ];
 
@@ -238,8 +239,8 @@ const operationsServices = [
     tone: "healthy",
     cadence: "On every publish",
     source: "pages-build-deployment",
-    signal: ".124 and .123 HQ mirrors render from generated Astro output",
-    next: "Continue using Pages as fallback while Cloudflare custom-domain and workflow deploy paths are hardened."
+    signal: ".124 board and HQ render from generated Astro output on Worker Static Assets",
+    next: "Keep GitHub Pages as fallback while future boards inherit the Cloudflare deploy workflow."
   },
   {
     name: "Jira write bridge",
@@ -462,7 +463,7 @@ const guardedModules = [
 const hqSpecs = [
   { id: "SPEC-HQ-00", title: "Product shell", status: "Implemented", detail: "HQ navigation, workbench layout, module cards." },
   { id: "SPEC-HQ-01", title: "Board registry", status: "Implemented", detail: ".122, .123, .124 board slots and preview panel." },
-  { id: "SPEC-HQ-02", title: "Cloudflare hosting", status: "In progress", detail: "Cloudflare Workers are deployed; GitHub workflow deploy wiring is in place." },
+  { id: "SPEC-HQ-02", title: "Cloudflare hosting", status: "Implemented", detail: ".124 board and HQ are Cloudflare-first; the template now carries the future-board deploy workflow." },
   { id: "SPEC-HQ-03", title: "Auth and permissions", status: "In progress", detail: "Role model, gated cards, and request-access UI are drafted." },
   { id: "SPEC-HQ-04", title: "Knowledge base", status: "In progress", detail: "Flow cards, source links, ownership, and freshness are drafted." },
   { id: "SPEC-HQ-05", title: "Automation bench", status: "In progress", detail: "Playwright pilot registry, lifecycle, evidence, and runner guards are drafted." },
@@ -573,9 +574,9 @@ const hqSpecs = [
               <p class="eyebrow">Current preview</p>
               <h3>v3001.124.0 modern dashboard</h3>
             </div>
-            <a href="https://dewankabir009.github.io/jira-board-v3001-124-0/modern/">Open full board</a>
+            <a href="https://core-qa-headquarters-124.dfkabir253.workers.dev/">Open full board</a>
           </div>
-          <iframe title="v3001.124.0 modern board preview" src="https://dewankabir009.github.io/jira-board-v3001-124-0/modern/" loading="lazy"></iframe>
+          <iframe title="v3001.124.0 modern board preview" src="https://core-qa-headquarters-124.dfkabir253.workers.dev/" loading="lazy"></iframe>
         </article>
       </section>
 

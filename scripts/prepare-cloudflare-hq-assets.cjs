@@ -4,8 +4,9 @@ const path = require("node:path");
 const repoRoot = path.resolve(__dirname, "..");
 const sourceDir = path.join(repoRoot, "modern");
 const outputDir = path.join(repoRoot, ".cloudflare-hq-assets");
-const githubAssetPrefix = "/jira-board-v3001-124-0/modern/_astro/";
-const cloudflareAssetPrefix = "/_astro/";
+const repositoryName = process.env.BOARD_REPOSITORY_NAME || path.basename(repoRoot);
+const githubAssetPrefix = process.env.GITHUB_ASSET_PREFIX || `/${repositoryName}/modern/_astro/`;
+const cloudflareAssetPrefix = process.env.CLOUDFLARE_ASSET_PREFIX || "/_astro/";
 
 if (!fs.existsSync(sourceDir)) {
   throw new Error(`Missing modern dashboard output at ${sourceDir}`);
@@ -39,4 +40,4 @@ function rewriteHtmlAssets(dir) {
 }
 
 rewriteHtmlAssets(outputDir);
-console.log(`Prepared Cloudflare HQ assets at ${outputDir}`);
+console.log(`Prepared Cloudflare board and HQ assets at ${outputDir}`);

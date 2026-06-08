@@ -1,5 +1,5 @@
 # v3001.124.0 workflow bootstrap
-name: Deploy Cloudflare HQ
+name: Deploy Cloudflare Board and HQ
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   deploy:
-    name: Deploy static HQ assets
+    name: Deploy static board and HQ assets
     runs-on: ubuntu-latest
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -29,8 +29,8 @@ jobs:
             exit 1
           fi
 
-      - name: Prepare Cloudflare static assets
+      - name: Prepare Cloudflare board and HQ assets
         run: node scripts/prepare-cloudflare-hq-assets.cjs
 
-      - name: Deploy HQ Worker Static Assets
+      - name: Deploy board and HQ Worker Static Assets
         run: npx -y wrangler deploy -c wrangler.hq.toml

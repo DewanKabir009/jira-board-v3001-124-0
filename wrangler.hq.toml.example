@@ -1,4 +1,5 @@
 name = "core-qa-headquarters"
+account_id = "replace-with-cloudflare-account-id"
 compatibility_date = "2026-06-03"
 main = "workers/hq-worker.js"
 workers_dev = true
@@ -15,3 +16,5 @@ binding = "AI"
 [vars]
 HQ_ENVIRONMENT = "template"
 GITHUB_PAGES_FALLBACK_URL = "https://dewankabir009.github.io/jira-board-v3001-123-0/modern/"
+CLOUDFLARE_BOARD_URL = "https://replace-with-worker-name.dfkabir253.workers.dev/"
+CLOUDFLARE_HQ_URL = "https://replace-with-worker-name.dfkabir253.workers.dev/hq/"

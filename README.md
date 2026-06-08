@@ -7,12 +7,13 @@ The hub keeps the existing Jira board usable, then layers in release-board navig
 ## Live Links
 
 - Cloudflare HQ Worker: <https://core-qa-headquarters-124.dfkabir253.workers.dev/hq/>
+- Cloudflare `.124` board: <https://core-qa-headquarters-124.dfkabir253.workers.dev/>
 - GitHub Pages HQ fallback: <https://dewankabir009.github.io/jira-board-v3001-124-0/modern/hq/>
-- Current `.124` board: <https://dewankabir009.github.io/jira-board-v3001-124-0/modern/>
+- GitHub Pages `.124` board fallback: <https://dewankabir009.github.io/jira-board-v3001-124-0/modern/>
 - `.123` board: <https://dewankabir009.github.io/jira-board-v3001-123-0/modern/>
 - `.122` board: <https://dewankabir009.github.io/jira-board-v3001-122-0/modern/>
 
-GitHub Pages remains useful as a static fallback. The live AI endpoint only works on the Cloudflare Worker URL because the Worker owns the `/api/*` routes and the Workers AI binding.
+GitHub Pages remains useful as a static fallback. The `.124` modern board and HQ are now Cloudflare-first. The live AI endpoint only works on the Cloudflare Worker URL because the Worker owns the `/api/*` routes and the Workers AI binding.
 
 ## Version Screenshots
 
@@ -110,7 +111,7 @@ The Worker requests JSON output from the model so the browser can render predict
 | --- | --- | --- | --- |
 | SPEC-HQ-00 | Product shell | Complete | HQ route, navigation, core panels, and visual language are in place. |
 | SPEC-HQ-01 | Board registry | Complete | `.122`, `.123`, and `.124` boards are linked from the HQ. |
-| SPEC-HQ-02 | Cloudflare hosting | In progress | Cloudflare Workers Static Assets deploy path is wired for `.124`; GitHub Pages remains the fallback. |
+| SPEC-HQ-02 | Cloudflare hosting | Complete for `.124` | Cloudflare Workers Static Assets hosts the `.124` modern board at the Worker root and HQ at `/hq/`; the template carries the same deploy path for upcoming boards. |
 | SPEC-HQ-03 | Auth and permissions | In progress | Locked-section pattern is represented; real role policy still needs identity integration. |
 | SPEC-HQ-04 | Knowledge base | In progress | Registry shell is present for test-flow links and previews. |
 | SPEC-HQ-05 | Automation bench | In progress | Approved Playwright job launcher, job status, and result links are represented. |
@@ -130,7 +131,7 @@ The Worker requests JSON output from the model so the browser can render predict
 | Cloudflare Workers AI | Generates the draft release intelligence brief from current board data. |
 | GitHub Actions | Refreshes Jira data, deploys static pages, runs Playwright jobs, and publishes evidence. |
 | GitHub Pages | Keeps static public fallback pages live during the Cloudflare migration. |
-| Wrangler | Builds, validates, and deploys the Cloudflare HQ Worker. |
+| Wrangler | Builds, validates, and deploys the Cloudflare board and HQ Worker. |
 | Playwright | Captures README screenshots and powers approved browser automation jobs. |
 | Jira REST and dashboard artifacts | Provide release ticket data, comments, assignees, subtasks, and checklist context. |
 | Cloudflare assignee bridge | Keeps Jira assignment and checklist comment writes off the user's laptop. |
@@ -149,7 +150,7 @@ Build the HQ and modern dashboard:
 npm run build
 ```
 
-Prepare the Cloudflare HQ asset folder:
+Prepare the Cloudflare board and HQ asset folder:
 
 ```powershell
 node scripts\prepare-cloudflare-hq-assets.cjs
@@ -161,7 +162,7 @@ Validate the Worker and bindings without publishing:
 npx -y wrangler deploy -c wrangler.hq.toml --dry-run
 ```
 
-Deploy from GitHub Actions:
+Deploy the Cloudflare board and HQ from GitHub Actions:
 
 ```powershell
 gh workflow run deploy-cloudflare-hq.yml --ref master
@@ -298,6 +299,8 @@ Response:
 
 - `.124` is the current HQ implementation host.
 - A standalone HQ repo is still a future extraction step; this README documents the current deployed HQ pilot.
-- GitHub Pages should continue to work for static views while Cloudflare owns dynamic routes.
+- The Cloudflare Worker root is the current `.124` modern board; `/hq/` is the HQ route.
+- GitHub Pages should continue to work as a fallback while Cloudflare owns dynamic routes.
+- Upcoming release-board repos should copy `wrangler.hq.toml.example` to `wrangler.hq.toml`, set the release-specific Worker name and URLs, keep `CLOUDFLARE_API_TOKEN` as a repo secret, then run `Deploy Cloudflare Board and HQ`.
 - The AI brief is not a source of truth. It is a fast review aid generated from the current dashboard artifact.
 - Any future Jira writes, comments, or automation runs should stay explicit and user-approved in the UI.

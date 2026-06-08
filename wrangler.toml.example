@@ -3,10 +3,12 @@ main = "workers/assignee-bridge-worker.js"
 compatibility_date = "2026-05-09"
 
 [vars]
-ALLOWED_ORIGINS = "https://dewankabir009.github.io"
+ALLOWED_ORIGINS = "https://dewankabir009.github.io,https://*.dfkabir253.workers.dev"
 ALLOWED_REPOSITORIES = "DewanKabir009/jira-board-v3001-124-0"
 DEFAULT_REPOSITORY = "DewanKabir009/jira-board-v3001-124-0"
 ALLOWED_ASSIGNEES = "Dewan Kabir,Nicole Greer,Alex Mcnay,Anton Yurkevich"
+BOARD_URL = "https://core-qa-headquarters-124.dfkabir253.workers.dev/"
+HQ_URL = "https://core-qa-headquarters-124.dfkabir253.workers.dev/hq/"
 
 # Recommended with Cloudflare Access in front of the Worker.
 # Set this to the email addresses allowed to submit Jira updates from the dashboard.
