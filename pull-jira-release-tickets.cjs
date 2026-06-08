@@ -3,6 +3,7 @@ const path = require("path");
 
 const workspace = __dirname;
 const version = process.argv[2] || process.env.JIRA_FIX_VERSION || "vNEXT.0";
+const sprintName = process.env.JIRA_SPRINT_NAME || "2026.8";
 const siteUrl = process.env.JIRA_SITE_URL || "https://golfnow.atlassian.net";
 const dashboardVersion = "v1.10.6";
 const dashboardDataSchemaVersion = "dashboard-data/v1";
@@ -62,6 +63,7 @@ const fields = [
   "issuetype",
   "priority",
   "assignee",
+  "customfield_10020",
   "customfield_11800",
   "updated",
   "created",
@@ -889,8 +891,40 @@ function newerPullData(left, right) {
   return rightTime > leftTime ? right : left;
 }
 
-async function fetchIssues() {
-  const jql = `fixVersion = "${version}" ORDER BY updated DESC`;
+function escapeJqlString(value) {
+  return String(value || "").replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+}
+
+function issueKeyList(keys) {
+  return keys
+    .filter(Boolean)
+    .map((key) => `"${escapeJqlString(key)}"`)
+    .join(", ");
+}
+
+function rawIssueIsSubtask(issue) {
+  return Boolean(issue?.fields?.issuetype?.subtask);
+}
+
+function rawIssueParentKey(issue) {
+  return issue?.fields?.parent?.key || "";
+}
+
+function mergeRawIssues(...issueGroups) {
+  const byKey = new Map();
+
+  for (const group of issueGroups) {
+    for (const issue of group || []) {
+      if (issue?.key && !byKey.has(issue.key)) {
+        byKey.set(issue.key, issue);
+      }
+    }
+  }
+
+  return [...byKey.values()];
+}
+
+async function fetchIssuesByJql(jql) {
   const endpoint = `https://api.atlassian.com/ex/jira/${cloudId}/rest/api/3/search/jql`;
   const issues = [];
   let nextPageToken;
@@ -924,6 +958,47 @@ async function fetchIssues() {
   return { jql, issues };
 }
 
+async function fetchIssues() {
+  return fetchIssuesByJql(`fixVersion = "${escapeJqlString(version)}" ORDER BY updated DESC`);
+}
+
+async function fetchSprintIssues() {
+  const sprintJql = `Sprint = "${escapeJqlString(sprintName)}" ORDER BY updated DESC`;
+  const sprintResult = await fetchIssuesByJql(sprintJql);
+  const sprintIssues = sprintResult.issues || [];
+  const parentKeys = [
+    ...new Set([
+      ...sprintIssues.filter((issue) => !rawIssueIsSubtask(issue)).map((issue) => issue.key),
+      ...sprintIssues.map(rawIssueParentKey),
+    ].filter(Boolean))
+  ];
+  const existingKeys = new Set(sprintIssues.map((issue) => issue.key));
+  const extraGroups = [];
+
+  for (let index = 0; index < parentKeys.length; index += 50) {
+    const chunk = parentKeys.slice(index, index + 50);
+    const keys = issueKeyList(chunk);
+    if (!keys) {
+      continue;
+    }
+
+    const subtaskResult = await fetchIssuesByJql(`parent in (${keys}) ORDER BY updated DESC`);
+    extraGroups.push(subtaskResult.issues || []);
+
+    const missingParentKeys = chunk.filter((key) => !existingKeys.has(key));
+    const missingKeys = issueKeyList(missingParentKeys);
+    if (missingKeys) {
+      const parentResult = await fetchIssuesByJql(`key in (${missingKeys}) ORDER BY updated DESC`);
+      extraGroups.push(parentResult.issues || []);
+    }
+  }
+
+  return {
+    jql: sprintJql,
+    issues: mergeRawIssues(sprintIssues, ...extraGroups)
+  };
+}
+
 function avatarUrlForJiraUser(user) {
   return user?.avatarUrls?.["32x32"] || user?.avatarUrls?.["48x48"] || user?.avatarUrls?.["24x24"] || user?.avatarUrls?.["16x16"] || "";
 }
@@ -944,6 +1019,38 @@ function normalizeJiraUserField(value) {
   };
 }
 
+function normalizeSprintField(value) {
+  const values = Array.isArray(value) ? value : value ? [value] : [];
+
+  return values
+    .map((item) => {
+      if (!item) {
+        return null;
+      }
+
+      if (typeof item === "string") {
+        const id = item.match(/(?:^|,)id=([^,\]]+)/)?.[1] || "";
+        const name = item.match(/(?:^|,)name=([^,\]]+)/)?.[1] || item;
+        const state = item.match(/(?:^|,)state=([^,\]]+)/)?.[1] || "";
+        return {
+          id: String(id || ""),
+          name: String(name || "").trim(),
+          state: String(state || "")
+        };
+      }
+
+      const id = item.id ?? item.sprintId ?? "";
+      const name = item.name ?? item.value ?? item.label ?? "";
+      const state = item.state ?? "";
+      return {
+        id: String(id || ""),
+        name: String(name || "").trim(),
+        state: String(state || "")
+      };
+    })
+    .filter((item) => item && (item.name || item.id));
+}
+
 async function normalizeIssue(issue) {
   const issueFields = issue.fields || {};
   const issueType = issueFields.issuetype || {};
@@ -955,6 +1062,7 @@ async function normalizeIssue(issue) {
   const testChecklist = await buildTestChecklist(issue.key, isSubtask, attachments, issueComments);
   const parentDescription = descriptionToText(parentFields.description);
   const assignedDeveloper = normalizeJiraUserField(issueFields.customfield_11800);
+  const sprints = normalizeSprintField(issueFields.customfield_10020);
   const serializedComments = await serializeIssueComments(issueComments, issue.key, attachments);
   const latestComment = latestIssueComment(issueComments);
 
@@ -989,6 +1097,8 @@ async function normalizeIssue(issue) {
     createdDisplay: formatDate(issueFields.created),
     components: (issueFields.components || []).map((component) => component.name),
     fixVersions: (issueFields.fixVersions || []).map((fixVersion) => fixVersion.name),
+    sprints,
+    sprintNames: [...new Set(sprints.map((sprint) => sprint.name).filter(Boolean))],
     resolution: issueFields.resolution?.name || "",
     parent: issueFields.parent ? {
       key: issueFields.parent.key,
@@ -1210,7 +1320,25 @@ function buildPullHistory(previousData, currentDiff) {
   return history.slice(0, 168);
 }
 
-function buildJson(issues, jql, previousData) {
+function buildSprintView(issues, jql, pulledAt, pulledAtDisplay) {
+  const mainTotal = issues.filter((issue) => !issue.isSubtask).length;
+  const subtaskTotal = issues.length - mainTotal;
+
+  return {
+    name: sprintName,
+    label: `Sprint ${sprintName}`,
+    jql,
+    jiraFilterUrl: `${siteUrl}/issues/?jql=${encodeURIComponent(jql)}`,
+    pulledAt,
+    pulledAtDisplay,
+    total: issues.length,
+    mainTotal,
+    subtaskTotal,
+    issues,
+  };
+}
+
+function buildJson(issues, jql, previousData, sprintPayload) {
   const pulledAt = new Date().toISOString();
   const pulledAtDisplay = formatDate(pulledAt);
   const issuesByKey = new Map(issues.map((issue) => [issue.key, issue]));
@@ -1229,6 +1357,7 @@ function buildJson(issues, jql, previousData) {
     pulledAtDisplay,
     total: issues.length,
     issues,
+    sprintView: sprintPayload ? buildSprintView(sprintPayload.issues || [], sprintPayload.jql || "", pulledAt, pulledAtDisplay) : null,
     pullDiff,
     pullHistory: buildPullHistory(previousData, pullDiff).map((entry) => enrichPullDiff(entry, issuesByKey)),
   };
@@ -5708,8 +5837,19 @@ async function main() {
   previousData = newerPullData(newerPullData(previousJsonData, previousDashboardData), previousHtmlData);
 
   const { jql, issues: rawIssues } = await fetchIssues();
-  const issues = await Promise.all(rawIssues.map(normalizeIssue));
-  const json = buildJson(issues, jql, previousData);
+  const sprintResult = await fetchSprintIssues();
+  const normalizedByKey = new Map();
+
+  for (const issue of mergeRawIssues(rawIssues, sprintResult.issues)) {
+    normalizedByKey.set(issue.key, await normalizeIssue(issue));
+  }
+
+  const issues = rawIssues.map((issue) => normalizedByKey.get(issue.key)).filter(Boolean);
+  const sprintIssues = (sprintResult.issues || []).map((issue) => normalizedByKey.get(issue.key)).filter(Boolean);
+  const json = buildJson(issues, jql, previousData, {
+    jql: sprintResult.jql,
+    issues: sprintIssues
+  });
   const dashboardData = buildDashboardData(json);
 
   fs.writeFileSync(jsonPath, `${JSON.stringify(json, null, 2)}\n`);
@@ -5719,6 +5859,8 @@ async function main() {
   console.log(JSON.stringify({
     version,
     total: issues.length,
+    sprint: sprintName,
+    sprintTotal: sprintIssues.length,
     jsonPath,
     dashboardDataPath,
     htmlPath,

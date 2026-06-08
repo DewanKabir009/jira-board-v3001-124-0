@@ -69,6 +69,9 @@ type Issue = {
   updated?: string;
   updatedDisplay?: string;
   components?: string[];
+  fixVersions?: string[];
+  sprints?: Array<{ id?: string; name?: string; state?: string }>;
+  sprintNames?: string[];
   parent?: { key?: string; summary?: string } | string | null;
   description?: string;
   descriptionHtml?: string;
@@ -116,6 +119,7 @@ type DashboardData = {
   repositorySlug?: string;
   dashboardUrl?: string;
   siteUrl?: string;
+  jql?: string;
   jiraFilterUrl?: string;
   assigneeDispatchEndpoint?: string;
   assigneeOptions?: string[];
@@ -128,6 +132,18 @@ type DashboardData = {
   pullDiff?: PullDiffEntry;
   pullHistory?: PullDiffEntry[];
   issues?: Issue[];
+  sprintView?: {
+    name?: string;
+    label?: string;
+    jql?: string;
+    jiraFilterUrl?: string;
+    pulledAt?: string;
+    pulledAtDisplay?: string;
+    total?: number;
+    mainTotal?: number;
+    subtaskTotal?: number;
+    issues?: Issue[];
+  } | null;
 };
 
 type BoardRegistryEntry = {
@@ -188,6 +204,8 @@ type FilterOptionSet = {
 type PresetKey = "all" | "qa" | "review" | "moves" | "unassigned";
 
 type ExplorerView = "cards" | "table";
+
+type WorkScope = "fixVersion" | "sprint";
 
 type TicketGroup = {
   issue: Issue;
@@ -503,6 +521,7 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
   const [activePreset, setActivePreset] = useState<PresetKey>("all");
   const [explorerView, setExplorerView] = useState<ExplorerView>("cards");
+  const [activeWorkScope, setActiveWorkScope] = useState<WorkScope>("fixVersion");
   const [openSubtaskParents, setOpenSubtaskParents] = useState<Set<string>>(new Set());
   const [collapsedCardStatuses, setCollapsedCardStatuses] = useState<Set<string>>(new Set());
   const [componentListCopied, setComponentListCopied] = useState(false);
@@ -563,7 +582,9 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
     };
   }, [boardRegistryUrl]);
 
-  const issues = useMemo(() => data?.issues ?? [], [data]);
+  const activeWorkView = useMemo(() => activeWorkViewFor(data, activeWorkScope), [data, activeWorkScope]);
+  const issues = useMemo(() => activeWorkView.issues, [activeWorkView]);
+  const activeSprintName = activeWorkScope === "sprint" ? data?.sprintView?.name || "2026.8" : "";
   const changeSets = useMemo(() => createChangeSets(data), [data]);
   const options = useMemo(() => createFilterOptions(issues), [issues]);
   const operationsHealth = useMemo(() => buildOperationsHealth(data, loadError), [data, loadError]);
@@ -593,6 +614,12 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
 
   function updateIssueAssignee(issueKey: string, assignee: string) {
     const option = assignableAssigneeOptions.find((item) => item.value === assignee);
+    const updateIssues = (items: Issue[] | undefined) => (items || []).map((issue) => issue.key === issueKey ? {
+      ...issue,
+      assignee,
+      assigneeAvatarUrl: option?.avatarUrl || issue.assigneeAvatarUrl
+    } : issue);
+
     setData((current) => {
       if (!current?.issues) {
         return current;
@@ -600,11 +627,11 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
 
       return {
         ...current,
-        issues: current.issues.map((issue) => issue.key === issueKey ? {
-          ...issue,
-          assignee,
-          assigneeAvatarUrl: option?.avatarUrl || issue.assigneeAvatarUrl
-        } : issue)
+        issues: updateIssues(current.issues),
+        sprintView: current.sprintView ? {
+          ...current.sprintView,
+          issues: updateIssues(current.sprintView.issues)
+        } : current.sprintView
       };
     });
   }
@@ -684,7 +711,7 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
           <a className="table-ticket-key" href={row.original.url || "#"} target="_blank" rel="noreferrer">
             {row.original.key || "Ticket"}
           </a>
-          <IssueTypePill issue={row.original} />
+          <TicketMetadataPills issue={row.original} fallbackSprintName={activeSprintName} />
         </div>
       )
     },
@@ -757,7 +784,7 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
         </div>
       )
     }
-  ], [assignableAssigneeOptions, assignmentStateByKey, data]);
+  ], [activeSprintName, assignableAssigneeOptions, assignmentStateByKey, data]);
 
   const table = useReactTable({
     data: filteredIssues,
@@ -827,7 +854,7 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
 
   useEffect(() => {
     setPageIndex(0);
-  }, [filters, pageSize, explorerView]);
+  }, [filters, pageSize, explorerView, activeWorkScope]);
 
   useEffect(() => {
     if (!ticketSearchProject && jiraProjectOptions.length) {
@@ -1041,12 +1068,12 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
           <h1 id="board-title">{data?.version || "Loading board"}</h1>
           <p className="board-summary">
             {data
-              ? `${data.repositorySlug || "Jira release board"} rendered from ${data.dataArtifact?.fileName || "dashboard-data.json"}.`
+              ? `${data.repositorySlug || "Jira release board"} rendered from ${data.dataArtifact?.fileName || "dashboard-data.json"} / ${activeWorkView.label}.`
               : "Reading the published dashboard data artifact."}
           </p>
           <div className="hero-actions" aria-label="Board links">
             <a className="button-link primary" href={data?.dashboardUrl || "../"}>Current board</a>
-            <a className="button-link icon-link" href={data?.jiraFilterUrl || "#"} target="_blank" rel="noreferrer">
+            <a className="button-link icon-link" href={activeWorkView.jiraFilterUrl || data?.jiraFilterUrl || "#"} target="_blank" rel="noreferrer">
               <JiraLogoIcon />
               <span>Jira filter</span>
             </a>
@@ -1062,7 +1089,7 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
         </div>
 
         <dl className="metric-grid" aria-label="Board metadata">
-          <Metric label="Total tickets" value={String(data?.total ?? issues.length)} />
+          <Metric label="Total tickets" value={String(activeWorkView.total ?? issues.length)} />
           <Metric label="Last pull" value={data?.pullDiff?.currentPulledAtDisplay || data?.pulledAtDisplay || "Pending"} />
           <Metric label="Shown now" value={`${filteredIssues.length}`} />
           <Metric label="Changed" value={`${changeSets.any.size}`} />
@@ -1074,6 +1101,7 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
       <ComponentInventory
         components={componentCounts}
         total={issues.length}
+        scopeLabel={activeWorkScope === "sprint" ? data?.sprintView?.label || "Sprint View" : "Fix version"}
         activeComponent={filters.component}
         copied={componentListCopied}
         onSelectComponent={(component) => updateFilter("component", component)}
@@ -1089,6 +1117,13 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
             <h2 id="explorer-heading">Ticket board</h2>
           </div>
           <div className="explorer-toolbar-actions">
+            <WorkScopeToggle
+              value={activeWorkScope}
+              sprintLabel={data?.sprintView?.label || "Sprint View"}
+              fixTotal={data?.issues?.length || 0}
+              sprintTotal={data?.sprintView?.total ?? data?.sprintView?.issues?.length ?? 0}
+              onChange={setActiveWorkScope}
+            />
             <ViewToggle
               value={explorerView}
               onChange={setExplorerView}
@@ -1173,6 +1208,7 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
               <TicketCardView
                 groups={visibleTicketGroups}
                 selectedKey={selectedIssue?.key || ""}
+                fallbackSprintName={activeSprintName}
                 changeSets={changeSets}
                 openSubtaskParents={openSubtaskParents}
                 collapsedStatuses={collapsedCardStatuses}
@@ -1187,6 +1223,7 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
               <TicketTableView
                 groups={visibleTicketGroups}
                 selectedKey={selectedIssue?.key || ""}
+                fallbackSprintName={activeSprintName}
                 changeSets={changeSets}
                 openSubtaskParents={openSubtaskParents}
                 assignmentOptions={assignableAssigneeOptions}
@@ -1207,6 +1244,7 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
           <TicketDetail
             issue={selectedIssue}
             data={data}
+            fallbackSprintName={activeSprintName}
             changeSets={changeSets}
             assignmentOptions={assignableAssigneeOptions}
             assignmentRequest={assignmentStateByKey[selectedIssue?.key || ""]}
@@ -1234,6 +1272,7 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
       <TicketDetailDialog
         issue={dialogIssue}
         data={data}
+        fallbackSprintName={activeSprintName}
         changeSets={changeSets}
         assignmentOptions={assignableAssigneeOptions}
         assignmentRequest={assignmentStateByKey[dialogIssue?.key || ""]}
@@ -1241,6 +1280,46 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
         onClose={closeTicketDialog}
       />
     </main>
+  );
+}
+
+function WorkScopeToggle({
+  value,
+  sprintLabel,
+  fixTotal,
+  sprintTotal,
+  onChange
+}: {
+  value: WorkScope;
+  sprintLabel: string;
+  fixTotal: number;
+  sprintTotal: number;
+  onChange: (value: WorkScope) => void;
+}) {
+  return (
+    <div className="work-scope-toggle" aria-label="Ticket board scope">
+      <span>Board view</span>
+      <div className="work-scope-buttons">
+        <button
+          type="button"
+          className={value === "fixVersion" ? "work-scope-button active" : "work-scope-button"}
+          aria-pressed={value === "fixVersion"}
+          onClick={() => onChange("fixVersion")}
+        >
+          <span>Fix Version View</span>
+          <strong>{fixTotal}</strong>
+        </button>
+        <button
+          type="button"
+          className={value === "sprint" ? "work-scope-button active" : "work-scope-button"}
+          aria-pressed={value === "sprint"}
+          onClick={() => onChange("sprint")}
+        >
+          <span>{sprintLabel || "Sprint View"}</span>
+          <strong>{sprintTotal}</strong>
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -1411,6 +1490,7 @@ function JiraTicketSearch({
 function ComponentInventory({
   components,
   total,
+  scopeLabel,
   activeComponent,
   copied,
   onSelectComponent,
@@ -1418,6 +1498,7 @@ function ComponentInventory({
 }: {
   components: Array<[string, number]>;
   total: number;
+  scopeLabel: string;
   activeComponent: string;
   copied: boolean;
   onSelectComponent: (component: string) => void;
@@ -1427,7 +1508,7 @@ function ComponentInventory({
     <section className="components-panel" aria-labelledby="components-heading">
       <div className="components-heading">
         <div>
-          <p className="eyebrow">Fix version components</p>
+          <p className="eyebrow">{scopeLabel} components</p>
           <h2 id="components-heading">Component inventory</h2>
         </div>
         <button
@@ -1439,7 +1520,7 @@ function ComponentInventory({
           {copied ? "Copied" : "Copy list"}
         </button>
       </div>
-      <div className="component-chip-row" aria-label="Components in this fix version">
+      <div className="component-chip-row" aria-label={`Components in ${scopeLabel}`}>
         <button
           type="button"
           className={!activeComponent ? "component-chip active" : "component-chip"}
@@ -2088,6 +2169,7 @@ function PullStatusChange({ change, index }: { change: PullChange; index: number
 function TicketTableView({
   groups,
   selectedKey,
+  fallbackSprintName,
   changeSets,
   openSubtaskParents,
   assignmentOptions,
@@ -2099,6 +2181,7 @@ function TicketTableView({
 }: {
   groups: TicketGroup[];
   selectedKey: string;
+  fallbackSprintName: string;
   changeSets: ChangeSets;
   openSubtaskParents: Set<string>;
   assignmentOptions: SelectOption[];
@@ -2133,6 +2216,7 @@ function TicketTableView({
           group={group}
           index={index}
           selectedKey={selectedKey}
+          fallbackSprintName={fallbackSprintName}
           changeSets={changeSets}
           openSubtaskParents={openSubtaskParents}
           assignmentOptions={assignmentOptions}
@@ -2152,6 +2236,7 @@ function TicketTableGroup({
   group,
   index,
   selectedKey,
+  fallbackSprintName,
   changeSets,
   openSubtaskParents,
   assignmentOptions,
@@ -2164,6 +2249,7 @@ function TicketTableGroup({
   group: TicketGroup;
   index: number;
   selectedKey: string;
+  fallbackSprintName: string;
   changeSets: ChangeSets;
   openSubtaskParents: Set<string>;
   assignmentOptions: SelectOption[];
@@ -2201,7 +2287,7 @@ function TicketTableGroup({
           <a className="table-ticket-key" href={issue.url || "#"} target="_blank" rel="noreferrer">
             {issue.key || "Ticket"}
           </a>
-          <IssueTypePill issue={issue} />
+          <TicketMetadataPills issue={issue} fallbackSprintName={fallbackSprintName} />
         </div>
         <div className="grouped-table-cell summary-cell" role="cell" data-label="Summary">
           <button
@@ -2267,7 +2353,7 @@ function TicketTableGroup({
                   <a className="table-ticket-key" href={subtask.url || "#"} target="_blank" rel="noreferrer">
                     {subtask.key || "Subtask"}
                   </a>
-                  <IssueTypePill issue={subtask} />
+                  <TicketMetadataPills issue={subtask} fallbackSprintName={fallbackSprintName} />
                 </div>
                 <div className="grouped-table-cell summary-cell" role="cell" data-label="Summary">
                   <button
@@ -2311,6 +2397,7 @@ function TicketTableGroup({
 function TicketCardView({
   groups,
   selectedKey,
+  fallbackSprintName,
   changeSets,
   openSubtaskParents,
   collapsedStatuses,
@@ -2323,6 +2410,7 @@ function TicketCardView({
 }: {
   groups: TicketGroup[];
   selectedKey: string;
+  fallbackSprintName: string;
   changeSets: ChangeSets;
   openSubtaskParents: Set<string>;
   collapsedStatuses: Set<string>;
@@ -2374,6 +2462,7 @@ function TicketCardView({
                         group={group}
                         index={index}
                         selectedKey={selectedKey}
+                        fallbackSprintName={fallbackSprintName}
                         changeSets={changeSets}
                         openSubtaskParents={openSubtaskParents}
                         assignmentOptions={assignmentOptions}
@@ -2476,6 +2565,7 @@ function GroupedTicketCard({
   group,
   index,
   selectedKey,
+  fallbackSprintName,
   changeSets,
   openSubtaskParents,
   assignmentOptions,
@@ -2487,6 +2577,7 @@ function GroupedTicketCard({
   group: TicketGroup;
   index: number;
   selectedKey: string;
+  fallbackSprintName: string;
   changeSets: ChangeSets;
   openSubtaskParents: Set<string>;
   assignmentOptions: SelectOption[];
@@ -2506,7 +2597,7 @@ function GroupedTicketCard({
       <div className="grouped-ticket-topline">
         <div className="grouped-ticket-keyline">
           <TicketKeyCluster issue={issue} />
-          <IssueTypePill issue={issue} />
+          <TicketMetadataPills issue={issue} fallbackSprintName={fallbackSprintName} />
         </div>
         <span className="priority-pill">{issue.priority || "None"}</span>
       </div>
@@ -2580,7 +2671,7 @@ function GroupedTicketCard({
               <div className="subtask-main">
                 <div className="grouped-ticket-keyline subtask-keyline">
                   <TicketKeyCluster issue={subtask} />
-                  <IssueTypePill issue={subtask} />
+                  <TicketMetadataPills issue={subtask} fallbackSprintName={fallbackSprintName} />
                 </div>
                 <button
                   className="summary-button subtask-summary"
@@ -3055,6 +3146,27 @@ function IssueTypePill({ issue }: { issue: Issue }) {
   return (
     <span className={isSubtask ? "issue-type-pill subtask" : "issue-type-pill main"}>
       {label}
+    </span>
+  );
+}
+
+function TicketMetadataPills({ issue, fallbackSprintName = "" }: { issue: Issue; fallbackSprintName?: string }) {
+  const fixVersions = uniqueStrings(issue.fixVersions?.length ? issue.fixVersions : ["No fix version"]);
+  const sprintNames = uniqueStrings(issue.sprintNames?.length ? issue.sprintNames : fallbackSprintName ? [fallbackSprintName] : ["No sprint"]);
+
+  return (
+    <span className="ticket-metadata-pills" aria-label="Ticket metadata">
+      <IssueTypePill issue={issue} />
+      {fixVersions.slice(0, 2).map((fixVersion) => (
+        <span className="issue-meta-pill fix-version" key={`fix-${issue.key || "ticket"}-${fixVersion}`}>
+          Fix {fixVersion}
+        </span>
+      ))}
+      {sprintNames.slice(0, 2).map((sprint) => (
+        <span className="issue-meta-pill sprint" key={`sprint-${issue.key || "ticket"}-${sprint}`}>
+          Sprint {sprint}
+        </span>
+      ))}
     </span>
   );
 }
@@ -3590,6 +3702,7 @@ function uniqueStrings(values: string[]) {
 function TicketDetail({
   issue,
   data,
+  fallbackSprintName,
   changeSets,
   assignmentOptions,
   assignmentRequest,
@@ -3597,6 +3710,7 @@ function TicketDetail({
 }: {
   issue?: Issue;
   data: DashboardData | null;
+  fallbackSprintName?: string;
   changeSets: ChangeSets;
   assignmentOptions: SelectOption[];
   assignmentRequest?: AssignmentRequestState;
@@ -3622,6 +3736,7 @@ function TicketDetail({
         <TicketKeyCluster issue={issue} />
         <span className="priority-pill">{issue.priority || "None"}</span>
       </div>
+      <TicketMetadataPills issue={issue} fallbackSprintName={fallbackSprintName} />
       <h2>{issue.summary || "Untitled ticket"}</h2>
       <AssigneeAssignmentControl
         issue={issue}
@@ -3647,6 +3762,7 @@ function TicketDetail({
 function TicketDetailDialog({
   issue,
   data,
+  fallbackSprintName,
   changeSets,
   assignmentOptions,
   assignmentRequest,
@@ -3655,6 +3771,7 @@ function TicketDetailDialog({
 }: {
   issue?: Issue;
   data: DashboardData | null;
+  fallbackSprintName?: string;
   changeSets: ChangeSets;
   assignmentOptions: SelectOption[];
   assignmentRequest?: AssignmentRequestState;
@@ -3698,6 +3815,7 @@ function TicketDetailDialog({
               <h2 id="ticket-detail-dialog-title">Ticket details</h2>
             </div>
             <p className="ticket-detail-modal-summary">{issue.summary || "Untitled ticket"}</p>
+            <TicketMetadataPills issue={issue} fallbackSprintName={fallbackSprintName} />
             <div className="description-modal-meta" aria-label="Ticket metadata">
               <span>{issue.type || "Ticket"}</span>
               <span>Status: {issue.status || "No status"}</span>
@@ -4578,6 +4696,28 @@ function createFilterOptions(issues: Issue[]): FilterOptionSet {
   };
 }
 
+function activeWorkViewFor(data: DashboardData | null, scope: WorkScope) {
+  if (scope === "sprint" && data?.sprintView) {
+    return {
+      key: "sprint" as const,
+      label: data.sprintView.label || `Sprint ${data.sprintView.name || "2026.8"}`,
+      jql: data.sprintView.jql || "",
+      jiraFilterUrl: data.sprintView.jiraFilterUrl || "",
+      total: data.sprintView.total ?? data.sprintView.issues?.length ?? 0,
+      issues: data.sprintView.issues || []
+    };
+  }
+
+  return {
+    key: "fixVersion" as const,
+    label: data?.version ? `Fix version ${data.version}` : "Fix Version View",
+    jql: data?.jql || "",
+    jiraFilterUrl: data?.jiraFilterUrl || "",
+    total: data?.total ?? data?.issues?.length ?? 0,
+    issues: data?.issues || []
+  };
+}
+
 function matchesFilters(issue: Issue, filters: Filters, changeSets: ChangeSets, activePreset: PresetKey) {
   const searchText = [
     issue.key,
@@ -4587,6 +4727,8 @@ function matchesFilters(issue: Issue, filters: Filters, changeSets: ChangeSets, 
     issue.assignee,
     issue.assignedDeveloper,
     parentLabel(issue),
+    ...(issue.fixVersions || []),
+    ...(issue.sprintNames || []),
     ...(issue.components || [])
   ].filter(Boolean).join(" ").toLowerCase();
   const key = issue.key || "";

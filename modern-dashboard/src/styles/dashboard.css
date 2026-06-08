@@ -2004,6 +2004,81 @@ h3 {
   justify-items: end;
 }
 
+.work-scope-toggle {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid rgba(0, 95, 204, 0.22);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(233, 255, 242, 0.92));
+  box-shadow: 0 12px 24px rgba(0, 95, 204, 0.1);
+  padding: 5px;
+}
+
+.work-scope-toggle > span {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding-left: 5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.work-scope-buttons {
+  display: inline-grid;
+  grid-template-columns: repeat(2, minmax(138px, 1fr));
+  gap: 4px;
+}
+
+.work-scope-button {
+  display: grid;
+  min-height: 40px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 900;
+  padding: 7px 9px;
+  text-align: left;
+}
+
+.work-scope-button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.work-scope-button strong {
+  display: inline-flex;
+  min-width: 28px;
+  min-height: 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: rgba(255, 122, 0, 0.14);
+  color: var(--golfnow-orange);
+  font-size: 0.76rem;
+}
+
+.work-scope-button.active {
+  border-color: var(--golfnow-orange);
+  background: linear-gradient(135deg, var(--golfnow-orange), #d85c00);
+  color: #ffffff;
+  box-shadow: 0 12px 22px rgba(255, 122, 0, 0.24);
+}
+
+.work-scope-button.active strong {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+}
+
 .jira-ticket-search {
   display: grid;
   grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.28fr);
@@ -3235,7 +3310,7 @@ h3 {
   gap: 3px;
 }
 
-.ticket-cell span,
+.ticket-cell > span:not(.ticket-metadata-pills),
 .muted-cell,
 .component-text {
   color: var(--muted);
@@ -3265,6 +3340,36 @@ h3 {
 
 .issue-type-pill.subtask {
   background: linear-gradient(135deg, var(--golfnow-green), #006f3d);
+}
+
+.ticket-metadata-pills {
+  display: inline-flex;
+  max-width: 100%;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+}
+
+.issue-meta-pill {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--golfnow-orange), #d85c00);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 950;
+  line-height: 1;
+  padding: 5px 9px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 7px 14px rgba(255, 122, 0, 0.14);
+}
+
+.issue-meta-pill.sprint {
+  background: linear-gradient(135deg, #ff8f1f, var(--golfnow-orange));
 }
 
 .table-ticket-key {
@@ -4504,6 +4609,7 @@ h3 {
 
   .explorer-toolbar-actions,
   .jira-ticket-search-controls,
+  .work-scope-toggle,
   .view-toggle {
     width: 100%;
   }
@@ -4512,11 +4618,13 @@ h3 {
     grid-template-columns: 1fr;
   }
 
+  .work-scope-toggle,
   .view-toggle {
     align-items: stretch;
     flex-direction: column;
   }
 
+  .work-scope-buttons,
   .view-toggle-buttons {
     width: 100%;
   }

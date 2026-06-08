@@ -44,6 +44,7 @@ jobs:
         id: refresh
         env:
           JIRA_FIX_VERSION: ${{ vars.JIRA_FIX_VERSION }}
+          JIRA_SPRINT_NAME: ${{ vars.JIRA_SPRINT_NAME || '2026.8' }}
           BOARD_OWNER: ${{ github.repository_owner }}
           BOARD_REPOSITORY_NAME: ${{ github.event.repository.name }}
           BOARD_REPOSITORY_SLUG: ${{ github.repository }}
