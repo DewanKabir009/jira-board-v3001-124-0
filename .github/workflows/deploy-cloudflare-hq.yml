@@ -3,6 +3,18 @@ name: Deploy Cloudflare Board and HQ
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - dashboard-data.json
+      - index.html
+      - boards.json
+      - modern/**
+      - workers/**
+      - scripts/prepare-cloudflare-hq-assets.cjs
+      - wrangler.hq.toml
+      - .github/workflows/deploy-cloudflare-hq.yml
 
 permissions:
   contents: read
