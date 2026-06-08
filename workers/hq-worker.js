@@ -35,7 +35,7 @@ async function handleReleaseSummary(request, env, url) {
   const directBrief = missingTicketBrief || (ticketPlanRequest ? null : buildDirectQuestionBrief(dashboard, stats, body));
   const promptTemplate = sanitizePrompt(body?.promptTemplate, 80);
 
-  if (directBrief && (!env.AI || !Array.isArray(directBrief.ticketsToWatch) || directBrief.ticketsToWatch.length === 0)) {
+  if (directBrief && (isExactBoardLookupBrief(directBrief) || !env.AI || !Array.isArray(directBrief.ticketsToWatch) || directBrief.ticketsToWatch.length === 0)) {
     return jsonResponse(buildBriefPayload({
       dashboard,
       stats,
@@ -344,15 +344,11 @@ function buildDirectQuestionBrief(dashboard, stats, body) {
   const promptTemplate = sanitizePrompt(body?.promptTemplate, 80);
   const userPrompt = sanitizePrompt(body?.userPrompt);
   const issues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
-  const promptLooksLikeLookup = /\b(ticket|tickets|issue|issues|assigned|assignee|developer|owner|component|components|from|with)\b/i.test(userPrompt);
+  const promptLooksLikeLookup = /\b(ticket|tickets|issue|issues|assigned|assignee|developer|owner|component|components|priority|priorities|from|with|count|how many|list|show|any|there)\b/i.test(userPrompt);
   const priorityLookup = extractPriorityLookup(userPrompt);
 
   if (priorityLookup) {
     return buildPriorityLookupBrief(dashboard, stats, priorityLookup);
-  }
-
-  if (promptTemplate === "free_form") {
-    return null;
   }
 
   if (promptTemplate !== "ticket_lookup" && !promptLooksLikeLookup) {
@@ -708,6 +704,10 @@ function buildPriorityLookupBrief(dashboard, stats, lookup) {
       "No Jira, Slack, or automation mutation was performed."
     ]
   };
+}
+
+function isExactBoardLookupBrief(brief) {
+  return ["assignee_lookup", "component_lookup", "priority_lookup", "ticket_lookup"].includes(brief?.answerType);
 }
 
 function sortIssuesForLookup(a, b) {
