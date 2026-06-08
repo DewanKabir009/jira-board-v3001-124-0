@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.10.6",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-08T13:06:05.683Z",
-  "pulledAtDisplay": "Jun 8, 2026, 9:06 AM",
+  "pulledAt": "2026-06-08T13:30:24.388Z",
+  "pulledAtDisplay": "Jun 8, 2026, 9:30 AM",
   "total": 7,
   "issues": [
     {
@@ -168,8 +168,8 @@
       "assignedDeveloper": "Luis Vallejo Mursuli",
       "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
       "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-      "updated": "2026-06-08T09:03:54.516-0400",
-      "updatedDisplay": "Jun 8, 2026, 9:03 AM",
+      "updated": "2026-06-08T09:13:21.478-0400",
+      "updatedDisplay": "Jun 8, 2026, 9:13 AM",
       "created": "2026-03-02T15:21:34.425-0500",
       "createdDisplay": "Mar 2, 2026, 3:21 PM",
       "components": [
@@ -500,17 +500,68 @@
     }
   ],
   "pullDiff": {
-    "previousPulledAt": "2026-06-08T13:03:56.858Z",
-    "previousPulledAtDisplay": "Jun 8, 2026, 9:03 AM",
-    "currentPulledAt": "2026-06-08T13:06:05.683Z",
-    "currentPulledAtDisplay": "Jun 8, 2026, 9:06 AM",
+    "previousPulledAt": "2026-06-08T13:06:05.683Z",
+    "previousPulledAtDisplay": "Jun 8, 2026, 9:06 AM",
+    "currentPulledAt": "2026-06-08T13:30:24.388Z",
+    "currentPulledAtDisplay": "Jun 8, 2026, 9:30 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
-    "updated": [],
+    "updated": [
+      {
+        "key": "CORE-14233",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14233",
+        "summary": "Updates to Reservation Confirmation Template",
+        "changes": [
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 8, 2026, 9:03 AM",
+            "after": "Jun 8, 2026, 9:13 AM"
+          }
+        ],
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Nicole Greer",
+        "assignedDeveloper": "Luis Vallejo Mursuli",
+        "status": "QA Testing (DEV)",
+        "parent": null
+      }
+    ],
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-08T13:06:05.683Z",
+      "previousPulledAtDisplay": "Jun 8, 2026, 9:06 AM",
+      "currentPulledAt": "2026-06-08T13:30:24.388Z",
+      "currentPulledAtDisplay": "Jun 8, 2026, 9:30 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14233",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14233",
+          "summary": "Updates to Reservation Confirmation Template",
+          "changes": [
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 8, 2026, 9:03 AM",
+              "after": "Jun 8, 2026, 9:13 AM"
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Nicole Greer",
+          "assignedDeveloper": "Luis Vallejo Mursuli",
+          "status": "QA Testing (DEV)",
+          "parent": null
+        }
+      ],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-08T13:03:56.858Z",
       "previousPulledAtDisplay": "Jun 8, 2026, 9:03 AM",
@@ -2402,17 +2453,6 @@
       "previousPulledAtDisplay": "Jun 5, 2026, 6:53 PM",
       "currentPulledAt": "2026-06-05T23:15:48.540Z",
       "currentPulledAtDisplay": "Jun 5, 2026, 7:15 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-05T22:35:48.841Z",
-      "previousPulledAtDisplay": "Jun 5, 2026, 6:35 PM",
-      "currentPulledAt": "2026-06-05T22:53:00.780Z",
-      "currentPulledAtDisplay": "Jun 5, 2026, 6:53 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
