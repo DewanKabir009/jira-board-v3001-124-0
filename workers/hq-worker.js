@@ -344,11 +344,16 @@ function buildDirectQuestionBrief(dashboard, stats, body) {
   const promptTemplate = sanitizePrompt(body?.promptTemplate, 80);
   const userPrompt = sanitizePrompt(body?.userPrompt);
   const issues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
-  const promptLooksLikeLookup = /\b(ticket|tickets|issue|issues|assigned|assignee|developer|owner|component|components|priority|priorities|from|with|count|how many|list|show|any|there)\b/i.test(userPrompt);
+  const promptLooksLikeLookup = /\b(ticket|tickets|issue|issues|assigned|assignee|developer|owner|component|components|priority|priorities|comment|comments|file|files|attachment|attachments|checklist|markdown|from|with|count|how many|list|show|any|there)\b/i.test(userPrompt);
   const priorityLookup = extractPriorityLookup(userPrompt);
+  const commentFileLookup = extractCommentFileLookup(userPrompt);
 
   if (priorityLookup) {
     return buildPriorityLookupBrief(dashboard, stats, priorityLookup);
+  }
+
+  if (commentFileLookup) {
+    return buildCommentFileLookupBrief(dashboard, stats, commentFileLookup);
   }
 
   if (promptTemplate !== "ticket_lookup" && !promptLooksLikeLookup) {
@@ -471,6 +476,46 @@ function getLookupParts(value) {
     .filter((part) => part.length > 2 && !genericParts.has(part));
 }
 
+function extractCommentFileLookup(userPrompt) {
+  const prompt = sanitizePrompt(userPrompt);
+
+  if (!prompt || !/\b(comment|comments|file|files|attachment|attachments|checklist|markdown|md)\b/i.test(prompt)) {
+    return null;
+  }
+
+  const extension = extractFileExtensionLookup(prompt);
+
+  if (!extension && !/\b(file|files|attachment|attachments|checklist)\b/i.test(prompt)) {
+    return null;
+  }
+
+  return {
+    type: "comment_file",
+    extension,
+    query: extension ? `.${extension}` : "",
+    displayName: extension ? `.${extension} file` : "pulled comment/checklist file"
+  };
+}
+
+function extractFileExtensionLookup(prompt) {
+  const dotMatch = prompt.match(/\.\s*([a-z0-9]{1,12})\b/i);
+
+  if (dotMatch?.[1]) {
+    return dotMatch[1].toLowerCase();
+  }
+
+  if (/\bmarkdown\b/i.test(prompt)) {
+    return "md";
+  }
+
+  const fileTypeMatch = prompt.match(/\b([a-z0-9]{1,12})\s+(?:file|files|attachment|attachments)\b/i);
+  const candidate = fileTypeMatch?.[1]?.toLowerCase() || "";
+
+  return candidate && !["any", "the", "that", "with", "have", "has"].includes(candidate)
+    ? candidate
+    : "";
+}
+
 function extractPeopleLookup(userPrompt, issues) {
   const prompt = sanitizePrompt(userPrompt);
 
@@ -512,6 +557,148 @@ function extractPeopleLookup(userPrompt, issues) {
   }
 
   return null;
+}
+
+function buildCommentFileLookupBrief(dashboard, stats, lookup) {
+  const issues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
+  const records = issues
+    .map((issue) => ({ issue, evidence: collectCommentFileEvidence(issue, lookup) }))
+    .filter((record) => record.evidence.length)
+    .sort((a, b) => sortIssuesForLookup(a.issue, b.issue));
+  const matches = records.map((record) => record.issue);
+  const mainCount = matches.filter((issue) => !issue.isSubtask).length;
+  const subtaskCount = matches.length - mainCount;
+  const release = dashboard.version || "current release";
+  const pulledAt = dashboard.pulledAtDisplay || dashboard.pulledAt || "the latest artifact";
+  const lookupLabel = lookup.displayName || "comment/checklist file";
+
+  if (!records.length) {
+    return {
+      answerType: "comment_file_lookup",
+      title: `No tickets found with ${lookupLabel}`,
+      summary: `No issues in ${release} currently have ${lookupLabel} evidence in pulled comment bodies, checklist file names, or parsed checklist source files from the dashboard artifact pulled ${pulledAt}.`,
+      topRisks: [
+        "No matching file evidence was found in the current artifact.",
+        "This answer did not call Jira live; it used the deployed dashboard-data.json."
+      ],
+      qaFocus: [
+        `${stats.commentTickets.length} ticket(s) in the artifact include pulled comments.`,
+        "Matched fields: issue.comments body/bodyHtml, issue.testChecklist.files filename, and issue.testChecklist.testCases sourceFile."
+      ],
+      ticketsToWatch: [],
+      componentSignals: Object.entries(stats.componentCounts).sort(sortCounts).slice(0, 8).map(formatPair),
+      reviewGates: [
+        "Refresh the board if the pull timestamp is stale.",
+        "Use Jira search when you need live attachments or comments beyond the dashboard artifact."
+      ],
+      sourceNotes: ["Source: dashboard-data.json from the deployed HQ Worker assets."]
+    };
+  }
+
+  return {
+    answerType: "comment_file_lookup",
+    title: `Tickets with ${lookupLabel} evidence`,
+    summary: `Yes. ${records.length} issue(s) in ${release} have ${lookupLabel} evidence in pulled comments or checklist file metadata: ${mainCount} main ticket(s) and ${subtaskCount} subtask(s), from the artifact pulled ${pulledAt}.`,
+    topRisks: [
+      "Lookup mode: matched pulled comment bodies and checklist file metadata only.",
+      `${records.length} of ${stats.total} current issue(s) match ${lookupLabel}.`,
+      `${mainCount} main ticket(s) and ${subtaskCount} subtask(s) matched.`,
+      `Current artifact pull: ${pulledAt}.`
+    ],
+    qaFocus: records.slice(0, 10).map((record) => `${record.issue.key}: ${record.evidence.map((item) => item.label).join("; ")}`),
+    ticketsToWatch: records.slice(0, 12).map((record) => ({
+      key: record.issue.key || "Unknown",
+      reason: formatCommentFileLookupReason(record)
+    })),
+    componentSignals: componentSignalsForIssues(matches),
+    reviewGates: [
+      "Open Jira for the ticket before using attached-file evidence externally.",
+      "Refresh the board if the pull timestamp is stale.",
+      "Use the ticket detail modal for pulled comments, media, checklist file context, and latest-comment links."
+    ],
+    sourceNotes: [
+      "Source: dashboard-data.json from the deployed HQ Worker assets.",
+      "Matched fields: issue.comments body/bodyHtml, issue.testChecklist.files filename, and issue.testChecklist.testCases sourceFile.",
+      "This direct lookup is deterministic board data, not model inference."
+    ]
+  };
+}
+
+function collectCommentFileEvidence(issue, lookup) {
+  const query = String(lookup?.query || "").toLowerCase();
+  const evidence = [];
+  const seen = new Set();
+
+  function addEvidence(source, value, detail = "", url = "") {
+    const text = [value, detail].filter(Boolean).join(" ").toLowerCase();
+
+    if (query && !text.includes(query)) {
+      return;
+    }
+
+    const key = `${source}|${value}|${detail}|${url}`;
+
+    if (seen.has(key)) {
+      return;
+    }
+
+    seen.add(key);
+    evidence.push({
+      source,
+      value,
+      detail,
+      url,
+      label: `${source}: ${value}${detail ? ` (${detail})` : ""}`
+    });
+  }
+
+  for (const file of issue?.testChecklist?.files || []) {
+    addEvidence("Checklist file", file.filename || "Unnamed file", [file.author ? `author ${file.author}` : "", file.created ? `created ${formatDateForEvidence(file.created)}` : ""].filter(Boolean).join("; "), issue.lastCommentUrl || "");
+  }
+
+  const sourceFiles = Array.from(new Set((issue?.testChecklist?.testCases || [])
+    .map((testCase) => testCase?.sourceFile)
+    .filter(Boolean)));
+
+  for (const sourceFile of sourceFiles) {
+    const caseCount = (issue?.testChecklist?.testCases || []).filter((testCase) => testCase?.sourceFile === sourceFile).length;
+    addEvidence("Checklist source", sourceFile, `${caseCount} parsed test case(s)`, issue.lastCommentUrl || "");
+  }
+
+  for (const comment of issue?.comments || []) {
+    const commentText = [comment.body, comment.bodyHtml].filter(Boolean).join(" ");
+
+    if (!query || !commentText.toLowerCase().includes(query)) {
+      continue;
+    }
+
+    addEvidence("Comment text", comment.id ? `comment ${comment.id}` : "comment", [comment.author || "", comment.createdDisplay || "", `contains ${query}`].filter(Boolean).join("; "), comment.url || issue.lastCommentUrl || "");
+  }
+
+  return evidence;
+}
+
+function formatCommentFileLookupReason(record) {
+  const issue = record.issue || {};
+  const evidence = record.evidence || [];
+  const files = Array.from(new Set(evidence.map((item) => item.value).filter(Boolean))).slice(0, 4).join(", ");
+  const latestComment = issue.lastCommentUrl ? `latest comment ${issue.lastCommentUrl}` : "no latest comment link";
+
+  return [
+    issue.summary || "No summary",
+    issue.type || "Issue",
+    issue.isSubtask && issue.parent?.key ? `parent ${issue.parent.key}` : "main ticket",
+    issue.status || "Unknown status",
+    issue.priority || "No priority",
+    files ? `matched ${files}` : "matched pulled comment/checklist evidence",
+    latestComment
+  ].filter(Boolean).join(" | ");
+}
+
+function formatDateForEvidence(value) {
+  const date = new Date(value);
+
+  return Number.isNaN(date.getTime()) ? value : date.toISOString().slice(0, 10);
 }
 
 function buildPeopleLookupBrief(dashboard, stats, lookup) {
@@ -707,7 +894,7 @@ function buildPriorityLookupBrief(dashboard, stats, lookup) {
 }
 
 function isExactBoardLookupBrief(brief) {
-  return ["assignee_lookup", "component_lookup", "priority_lookup", "ticket_lookup"].includes(brief?.answerType);
+  return ["assignee_lookup", "comment_file_lookup", "component_lookup", "priority_lookup", "ticket_lookup"].includes(brief?.answerType);
 }
 
 function sortIssuesForLookup(a, b) {
