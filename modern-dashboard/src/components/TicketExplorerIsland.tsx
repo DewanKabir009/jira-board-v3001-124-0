@@ -3159,16 +3159,28 @@ function TicketMetadataPills({ issue, fallbackSprintName = "" }: { issue: Issue;
       <IssueTypePill issue={issue} />
       {fixVersions.slice(0, 2).map((fixVersion) => (
         <span className="issue-meta-pill fix-version" key={`fix-${issue.key || "ticket"}-${fixVersion}`}>
-          Fix {fixVersion}
+          {fixVersionPillLabel(fixVersion)}
         </span>
       ))}
       {sprintNames.slice(0, 2).map((sprint) => (
         <span className="issue-meta-pill sprint" key={`sprint-${issue.key || "ticket"}-${sprint}`}>
-          Sprint {sprint}
+          {sprintPillLabel(sprint)}
         </span>
       ))}
     </span>
   );
+}
+
+function fixVersionPillLabel(fixVersion: string) {
+  return /^no fix version$/i.test(fixVersion) ? "No fix version" : `Fix ${fixVersion}`;
+}
+
+function sprintPillLabel(sprint: string) {
+  if (/^no sprint$/i.test(sprint) || /^sprint\b/i.test(sprint)) {
+    return sprint;
+  }
+
+  return `Sprint ${sprint}`;
 }
 
 function TicketKeyCluster({ issue }: { issue: Issue }) {

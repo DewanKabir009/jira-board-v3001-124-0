@@ -1338,6 +1338,22 @@ function buildSprintView(issues, jql, pulledAt, pulledAtDisplay) {
   };
 }
 
+function ensureSprintMembership(issue) {
+  if (!issue) {
+    return issue;
+  }
+
+  const sprintNames = [...new Set([...(issue.sprintNames || []), sprintName].filter(Boolean))];
+  const sprints = Array.isArray(issue.sprints) ? issue.sprints : [];
+  const hasSprintObject = sprints.some((sprint) => sprint?.name === sprintName);
+
+  return {
+    ...issue,
+    sprints: hasSprintObject ? sprints : [...sprints, { name: sprintName }],
+    sprintNames,
+  };
+}
+
 function buildJson(issues, jql, previousData, sprintPayload) {
   const pulledAt = new Date().toISOString();
   const pulledAtDisplay = formatDate(pulledAt);
@@ -5842,6 +5858,13 @@ async function main() {
 
   for (const issue of mergeRawIssues(rawIssues, sprintResult.issues)) {
     normalizedByKey.set(issue.key, await normalizeIssue(issue));
+  }
+
+  const sprintIssueKeys = new Set((sprintResult.issues || []).map((issue) => issue.key));
+  for (const [key, issue] of normalizedByKey) {
+    if (sprintIssueKeys.has(key)) {
+      normalizedByKey.set(key, ensureSprintMembership(issue));
+    }
   }
 
   const issues = rawIssues.map((issue) => normalizedByKey.get(issue.key)).filter(Boolean);
