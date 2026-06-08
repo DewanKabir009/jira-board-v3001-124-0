@@ -15,10 +15,14 @@ if (!fs.existsSync(sourceDir)) {
 fs.rmSync(outputDir, { recursive: true, force: true });
 fs.cpSync(sourceDir, outputDir, { recursive: true });
 
-const dashboardDataPath = path.join(repoRoot, "dashboard-data.json");
+const staticArtifactNames = ["dashboard-data.json", "boards.json"];
 
-if (fs.existsSync(dashboardDataPath)) {
-  fs.copyFileSync(dashboardDataPath, path.join(outputDir, "dashboard-data.json"));
+for (const artifactName of staticArtifactNames) {
+  const artifactPath = path.join(repoRoot, artifactName);
+
+  if (fs.existsSync(artifactPath)) {
+    fs.copyFileSync(artifactPath, path.join(outputDir, artifactName));
+  }
 }
 
 function rewriteHtmlAssets(dir) {
