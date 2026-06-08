@@ -65,6 +65,7 @@ jobs:
           REPO_SECRET_SMTP_REJECT_UNAUTHORIZED: ${{ secrets.SMTP_REJECT_UNAUTHORIZED }}
           ASSIGNEE_DISPATCH_ENDPOINT: ${{ vars.ASSIGNEE_DISPATCH_ENDPOINT }}
           TEST_CHECKLIST_COMMENT_ENDPOINT: ${{ vars.TEST_CHECKLIST_COMMENT_ENDPOINT }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
@@ -120,5 +121,11 @@ jobs:
               git commit -m "Refresh Jira board data ${pulled_at}"
               git push origin "HEAD:${GITHUB_REF_NAME}"
               node scripts/send-refresh-notifications.cjs || echo "::warning::Notification send failed; continuing refresh loop."
+              if [ -n "${CLOUDFLARE_API_TOKEN:-}" ]; then
+                node scripts/prepare-cloudflare-hq-assets.cjs
+                npx -y wrangler deploy -c wrangler.hq.toml
+              else
+                echo "::warning::CLOUDFLARE_API_TOKEN is not set; Cloudflare Worker assets were not deployed."
+              fi
             fi
           done
