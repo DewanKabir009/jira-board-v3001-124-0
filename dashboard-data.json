@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.10.6",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-08T02:20:31.621Z",
-  "pulledAtDisplay": "Jun 7, 2026, 10:20 PM",
+  "pulledAt": "2026-06-08T02:39:33.830Z",
+  "pulledAtDisplay": "Jun 7, 2026, 10:39 PM",
   "total": 7,
   "issues": [
     {
@@ -355,126 +355,7 @@
       "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1176866",
       "lastCommentDisplay": "Jun 1, 2026, 10:28 AM",
       "lastCommentAuthor": "Luis Vallejo Mursuli",
-      "testChecklist": {
-        "files": [
-          {
-            "id": "733040",
-            "filename": "QA_Test_Guide_CORE-14233.md",
-            "created": "2026-06-01T10:28:22.922-0400",
-            "author": "Luis Vallejo Mursuli"
-          }
-        ],
-        "commentIds": [
-          "1176866"
-        ],
-        "total": 6,
-        "testCases": [
-          {
-            "id": "A1",
-            "title": "GolfPass+ Member Confirmation Email - ProductId 36",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-A1 Priority: High Test Type: End-to-End Email Validation",
-            "checks": [
-              "Member benefits header is displayed",
-              "All 4 benefit bullet points are present",
-              "\"Earn or redeem GolfPass Points on tee time bookings\" text is correct (NOT \"Extra GolfPass Rewards Points\")",
-              "Phone number 833-465-3847 is displayed twice",
-              "Support contact text is displayed at the end of the section",
-              "No non-member benefits text is displayed"
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "A2",
-            "title": "GolfPass+ Member Confirmation Email - ProductId Variation",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-A2 Priority: High Test Type: End-to-End Email Validation",
-            "checks": [
-              "Email received successfully",
-              "Member benefits section displays correctly",
-              "All 4 benefit bullet points are present and correct",
-              "\"Earn or redeem GolfPass Points on tee time bookings\" text is displayed",
-              "No non-member benefits section visible"
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "B1",
-            "title": "Non-Member Confirmation Email - Standard Non-Member",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-B1 Priority: High Test Type: End-to-End Email Validation",
-            "checks": [
-              "Non-member header is displayed",
-              "Non-member benefits description is present",
-              "All 5 benefit bullet points are present",
-              "\"Earn GolfPass Points on tee time bookings and redeem for a discount on GolfPass+ membership\" text is correct (NOT \"Earn and redeem GolfPass Points…\")",
-              "Peacock benefit states \"Complimentary access to Peacock Premium (up to 12 months)\"",
-              "No \"$40 TaylorMade credit\" is mentioned anywhere",
-              "Call-to-action link to golfpass.com is present and clickable",
-              "No member benefits section is visible"
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "B2",
-            "title": "Non-Member Confirmation Email - Verify Removed Content",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-B2 Priority: High Test Type: Regression Test - Removed Content Validation",
-            "checks": [
-              "Search email for \"TaylorMade\" - should return 0 results",
-              "Search email for \"$40\" - should return 0 results",
-              "Search email for \"Extra GolfPass Rewards Points\" - should return 0 results",
-              "Search email for \"NBCUniversal\" - should return 0 results",
-              "Confirm new Peacock text includes \"Peacock Premium (up to 12 months)\""
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "C1",
-            "title": "ProductId Boundary Validation - ProductId 35 (Non-Member)",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-C1 Priority: Medium Test Type: Boundary Condition Test",
-            "checks": [
-              "Non-member header \"Looking to get even more out of your game?\" is displayed",
-              "Non-member benefits list (5 items) is present",
-              "Member benefits section is NOT visible",
-              "ProductId 35 correctly triggers non-member template (not member template)"
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "C2",
-            "title": "ProductTypeId Requirement Validation",
-            "category": "4. Detailed Test Cases",
-            "blocking": true,
-            "description": "Test ID: TC-CORE14233-C2 Priority: Medium Test Type: Conditional Logic Test",
-            "checks": [
-              "Email received successfully",
-              "GolfPass Value Prop section is NOT present",
-              "No member benefits section visible",
-              "No non-member benefits section visible",
-              "Standard reservation details are displayed correctly",
-              "ProductTypeId = 9 requirement is properly enforced",
-              "Development environment is accessible (https://dev.golfnow.com)",
-              "Test customer accounts are configured with correct ProductIds",
-              "Email inboxes are accessible for all test accounts",
-              "Select 2-3 test facilities with available tee times",
-              "Record facility names and available time slots",
-              "Verify pricing is configured correctly",
-              "Print or have digital copy of test cases ready",
-              "Email client open for quick verification",
-              "Screenshot tool ready for capturing email examples",
-              "Header: \"As a GolfPass+ member, every tee time you book includes exclusive benefits:\""
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          }
-        ]
-      },
+      "testChecklist": null,
       "type": "Story",
       "isSubtask": false,
       "status": "QA Testing (DEV)",
@@ -500,10 +381,10 @@
     }
   ],
   "pullDiff": {
-    "previousPulledAt": "2026-06-08T01:55:26.956Z",
-    "previousPulledAtDisplay": "Jun 7, 2026, 9:55 PM",
-    "currentPulledAt": "2026-06-08T02:20:31.621Z",
-    "currentPulledAtDisplay": "Jun 7, 2026, 10:20 PM",
+    "previousPulledAt": "2026-06-08T02:20:31.621Z",
+    "previousPulledAtDisplay": "Jun 7, 2026, 10:20 PM",
+    "currentPulledAt": "2026-06-08T02:39:33.830Z",
+    "currentPulledAtDisplay": "Jun 7, 2026, 10:39 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -511,6 +392,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-08T02:20:31.621Z",
+      "previousPulledAtDisplay": "Jun 7, 2026, 10:20 PM",
+      "currentPulledAt": "2026-06-08T02:39:33.830Z",
+      "currentPulledAtDisplay": "Jun 7, 2026, 10:39 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-08T01:55:26.956Z",
       "previousPulledAtDisplay": "Jun 7, 2026, 9:55 PM",
@@ -2342,17 +2234,6 @@
       "previousPulledAtDisplay": "Jun 5, 2026, 7:25 AM",
       "currentPulledAt": "2026-06-05T11:50:31.455Z",
       "currentPulledAtDisplay": "Jun 5, 2026, 7:50 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-05T11:00:31.165Z",
-      "previousPulledAtDisplay": "Jun 5, 2026, 7:00 AM",
-      "currentPulledAt": "2026-06-05T11:25:32.393Z",
-      "currentPulledAtDisplay": "Jun 5, 2026, 7:25 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
