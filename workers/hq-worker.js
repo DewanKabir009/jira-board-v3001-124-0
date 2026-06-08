@@ -610,6 +610,7 @@ function buildCommentFileLookupBrief(dashboard, stats, lookup) {
       key: record.issue.key || "Unknown",
       reason: formatCommentFileLookupReason(record)
     })),
+    generatedDocuments: buildGeneratedMarkdownDocuments(records, release, pulledAt),
     componentSignals: componentSignalsForIssues(matches),
     reviewGates: [
       "Open Jira for the ticket before using attached-file evidence externally.",
@@ -699,6 +700,158 @@ function formatDateForEvidence(value) {
   const date = new Date(value);
 
   return Number.isNaN(date.getTime()) ? value : date.toISOString().slice(0, 10);
+}
+
+function buildGeneratedMarkdownDocuments(records, release, pulledAt) {
+  return records.slice(0, 3).map((record) => {
+    const issue = record.issue || {};
+    const checklist = issue.testChecklist || {};
+    const files = Array.isArray(checklist.files) ? checklist.files : [];
+    const testCases = Array.isArray(checklist.testCases) ? checklist.testCases : [];
+    const evidenceFile = record.evidence.find((item) => String(item.value || "").toLowerCase().endsWith(".md"))?.value;
+    const filename = evidenceFile || files.find((file) => String(file.filename || "").toLowerCase().endsWith(".md"))?.filename || `QA_Test_Guide_${issue.key || "ticket"}.md`;
+    const sourceFileCases = testCases.filter((testCase) => !testCase.sourceFile || testCase.sourceFile === filename);
+    const cases = sourceFileCases.length ? sourceFileCases : testCases;
+    const fileMeta = files.find((file) => file.filename === filename) || files[0] || {};
+    const title = `QA Test Guide - ${issue.key || "Ticket"}`;
+    const subtitle = issue.summary || "Generated QA checklist";
+    const author = fileMeta.author || issue.lastCommentAuthor || "CORE QA";
+    const updated = issue.updatedDisplay || pulledAt;
+    const markdown = renderGeneratedMarkdownDocument({
+      issue,
+      title,
+      subtitle,
+      filename,
+      author,
+      updated,
+      release,
+      pulledAt,
+      cases
+    });
+
+    return {
+      title,
+      subtitle,
+      ticketKey: issue.key || "",
+      ticketUrl: issue.url || "",
+      filename,
+      source: "Parsed .md checklist artifact",
+      caseCount: cases.length,
+      markdown
+    };
+  });
+}
+
+function renderGeneratedMarkdownDocument({ issue, title, subtitle, filename, author, updated, release, pulledAt, cases }) {
+  const overview = buildDocumentOverview(issue);
+  const lines = [
+    `# ${title}`,
+    `## ${subtitle}`,
+    "",
+    `**Document Version:** 1.0`,
+    `**Last Updated:** ${updated}`,
+    `**Jira Ticket:** ${issue.key || "Unknown"}`,
+    `**Release:** ${release}`,
+    `**Author:** ${author}`,
+    `**Source File:** ${filename}`,
+    "",
+    "---",
+    "",
+    "## Table of Contents",
+    "",
+    "1. [Overview](#overview)",
+    "2. [Ticket Context](#ticket-context)",
+    "3. [Generated Test Cases](#generated-test-cases)",
+    "4. [Evidence Source](#evidence-source)",
+    "5. [Test Sign-Off Checklist](#test-sign-off-checklist)",
+    "",
+    "---",
+    "",
+    "## 1. Overview",
+    "",
+    "### What Was the Problem?",
+    "",
+    overview.problem,
+    "",
+    "### Business Impact",
+    "",
+    ...overview.impact.map((item) => `- ${item}`),
+    "",
+    "## 2. Ticket Context",
+    "",
+    `**Status:** ${issue.status || "Unknown"}`,
+    `**Priority:** ${issue.priority || "None"}`,
+    `**Assignee:** ${issue.assignee || "Unassigned"}`,
+    `**Assigned Developer:** ${issue.assignedDeveloper || "Unassigned"}`,
+    `**Components:** ${Array.isArray(issue.components) && issue.components.length ? issue.components.join(", ") : "None"}`,
+    issue.url ? `**Jira Link:** [${issue.key}](${issue.url})` : "",
+    "",
+    "## 3. Generated Test Cases",
+    "",
+    ...renderGeneratedTestCases(cases),
+    "",
+    "## 4. Evidence Source",
+    "",
+    `- Parsed source file: ${filename}`,
+    `- Parsed checklist cases: ${cases.length}`,
+    issue.lastCommentUrl ? `- Latest Jira comment: ${issue.lastCommentUrl}` : "- Latest Jira comment: Not available in the artifact",
+    `- Dashboard artifact pull: ${pulledAt}`,
+    "",
+    "## 5. Test Sign-Off Checklist",
+    "",
+    "- Confirm each generated test case has current DEV/STG evidence.",
+    "- Add screenshots, videos, logs, or API payload evidence for any failed or risky scenario.",
+    "- Confirm the ticket description and latest Jira comment do not change the expected QA scope.",
+    "- Post final findings to Jira only after human review.",
+    "- Refresh the board before using this generated guide for final release status."
+  ];
+
+  return lines.filter((line) => line !== null && line !== undefined).join("\n");
+}
+
+function buildDocumentOverview(issue) {
+  const description = truncateText(String(issue.description || "").replace(/\r/g, "").trim(), 1200);
+  const paragraphs = description
+    .split(/\n{2,}/)
+    .map((paragraph) => paragraph.replace(/\s+/g, " ").trim())
+    .filter(Boolean);
+  const problem = paragraphs[0] || issue.summary || "No pulled ticket description was available in the dashboard artifact.";
+  const impact = paragraphs.slice(1, 4);
+
+  return {
+    problem,
+    impact: impact.length ? impact : [
+      `Validate ${issue.key || "the ticket"} against the pulled Jira description.`,
+      "Confirm implementation behavior with current release data.",
+      "Capture evidence before release sign-off."
+    ]
+  };
+}
+
+function renderGeneratedTestCases(cases) {
+  if (!cases.length) {
+    return ["No parsed test cases were available from the markdown artifact."];
+  }
+
+  return cases.flatMap((testCase, index) => {
+    const heading = `### ${testCase.id || `TC-${index + 1}`}. ${testCase.title || "Generated test case"}`;
+    const checks = Array.isArray(testCase.checks) && testCase.checks.length
+      ? testCase.checks.map((check) => `- ${check}`)
+      : ["- Confirm expected behavior and capture evidence."];
+
+    return [
+      heading,
+      "",
+      `**Category:** ${testCase.category || "General"}`,
+      `**Blocking:** ${testCase.blocking ? "Yes" : "No"}`,
+      testCase.description ? `**Description:** ${testCase.description}` : "",
+      "",
+      "**Checks**",
+      "",
+      ...checks,
+      ""
+    ];
+  });
 }
 
 function buildPeopleLookupBrief(dashboard, stats, lookup) {

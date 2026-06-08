@@ -959,6 +959,7 @@ const hqSpecs = [
                   <ul id="hq-ai-gates"></ul>
                 </section>
               </div>
+              <div class="ai-generated-documents" id="hq-ai-documents" hidden></div>
             </div>
           </article>
 
@@ -1125,6 +1126,7 @@ const hqSpecs = [
       const focusTitle = document.querySelector("#hq-ai-focus-title");
       const ticketTitle = document.querySelector("#hq-ai-tickets-title");
       const gateTitle = document.querySelector("#hq-ai-gates-title");
+      const documentsPanel = document.querySelector("#hq-ai-documents");
       const promptTemplate = document.querySelector("#hq-ai-prompt-template");
       const promptInput = document.querySelector("#hq-ai-prompt");
       let latestBriefText = "";
@@ -1222,6 +1224,7 @@ const hqSpecs = [
         renderList(focusList, brief.qaFocus);
         renderTicketList(ticketList, brief.ticketsToWatch || []);
         renderList(gateList, brief.reviewGates);
+        renderGeneratedDocuments(documentsPanel, brief.generatedDocuments || []);
         latestBriefText = buildBriefText(payload);
         if (copyButton) copyButton.disabled = !latestBriefText;
       }
@@ -1290,6 +1293,132 @@ const hqSpecs = [
         });
       }
 
+      function renderGeneratedDocuments(panel, documents) {
+        if (!panel) return;
+        panel.textContent = "";
+        const cleanDocuments = Array.isArray(documents) ? documents.filter((document) => document?.markdown) : [];
+        panel.hidden = !cleanDocuments.length;
+
+        cleanDocuments.forEach((generatedDoc) => {
+          const article = document.createElement("article");
+          article.className = "ai-generated-document";
+
+          const header = document.createElement("div");
+          header.className = "generated-document-heading";
+
+          const titleWrap = document.createElement("div");
+          const eyebrow = document.createElement("p");
+          eyebrow.className = "eyebrow";
+          eyebrow.textContent = generatedDoc.filename || "Generated markdown file";
+          const title = document.createElement("h4");
+          title.textContent = generatedDoc.title || "Generated file preview";
+          const subtitle = document.createElement("p");
+          subtitle.textContent = generatedDoc.subtitle || "Rendered from parsed markdown checklist data.";
+          titleWrap.append(eyebrow, title, subtitle);
+
+          const meta = document.createElement("span");
+          meta.textContent = `${generatedDoc.ticketKey || "Ticket"} / ${generatedDoc.caseCount || 0} cases`;
+          header.append(titleWrap, meta);
+
+          const body = document.createElement("div");
+          body.className = "generated-markdown-body";
+          renderMarkdownPreview(body, generatedDoc.markdown);
+
+          article.append(header, body);
+          panel.appendChild(article);
+        });
+      }
+
+      function renderMarkdownPreview(container, markdown) {
+        container.textContent = "";
+        let list = null;
+        let listType = "";
+
+        const closeList = () => {
+          list = null;
+          listType = "";
+        };
+
+        String(markdown || "").split(/\r?\n/).forEach((line) => {
+          const trimmed = line.trim();
+
+          if (!trimmed) {
+            closeList();
+            return;
+          }
+
+          if (/^-{3,}$/.test(trimmed)) {
+            closeList();
+            container.appendChild(document.createElement("hr"));
+            return;
+          }
+
+          const heading = trimmed.match(/^(#{1,4})\s+(.+)$/);
+          if (heading) {
+            closeList();
+            const level = Math.min(heading[1].length + 1, 5);
+            const element = document.createElement(`h${level}`);
+            appendInlineMarkdown(element, heading[2]);
+            container.appendChild(element);
+            return;
+          }
+
+          const bullet = trimmed.match(/^[-*]\s+(.+)$/);
+          const numbered = trimmed.match(/^\d+\.\s+(.+)$/);
+          if (bullet || numbered) {
+            const nextType = bullet ? "ul" : "ol";
+            if (!list || listType !== nextType) {
+              list = document.createElement(nextType);
+              listType = nextType;
+              container.appendChild(list);
+            }
+
+            const li = document.createElement("li");
+            appendInlineMarkdown(li, bullet ? bullet[1] : numbered[1]);
+            list.appendChild(li);
+            return;
+          }
+
+          closeList();
+          const paragraph = document.createElement("p");
+          appendInlineMarkdown(paragraph, trimmed);
+          container.appendChild(paragraph);
+        });
+      }
+
+      function appendInlineMarkdown(element, text) {
+        const source = String(text || "");
+        const pattern = /(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g;
+        let index = 0;
+
+        source.replace(pattern, (match, _token, offset) => {
+          if (offset > index) {
+            element.appendChild(document.createTextNode(source.slice(index, offset)));
+          }
+
+          if (match.startsWith("**")) {
+            const strong = document.createElement("strong");
+            strong.textContent = match.slice(2, -2);
+            element.appendChild(strong);
+          } else {
+            const linkMatch = match.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+            const link = document.createElement("a");
+            link.textContent = linkMatch?.[1] || match;
+            link.href = linkMatch?.[2] || "#";
+            link.target = "_blank";
+            link.rel = "noopener";
+            element.appendChild(link);
+          }
+
+          index = offset + match.length;
+          return match;
+        });
+
+        if (index < source.length) {
+          element.appendChild(document.createTextNode(source.slice(index)));
+        }
+      }
+
       function buildBriefText(payload) {
         const brief = payload.brief || {};
         const answerType = payload.answerType || brief.answerType || "release_brief";
@@ -1297,6 +1426,9 @@ const hqSpecs = [
         const testPlanMode = answerType === "ticket_test_plan";
         const freeFormMode = answerType === "free_form";
         const tickets = (brief.ticketsToWatch || []).map(formatTicketForCopy).join("\n");
+        const documents = Array.isArray(brief.generatedDocuments) && brief.generatedDocuments.length
+          ? brief.generatedDocuments.map((document) => document.markdown).join("\n\n---\n\n")
+          : "";
         return [
           brief.title || "Draft release brief",
           "",
@@ -1313,6 +1445,8 @@ const hqSpecs = [
           "",
           "Review gates:",
           toBulletList(brief.reviewGates),
+          documents ? "\nGenerated file preview:" : "",
+          documents,
           "",
           `Source: ${payload.release || "release"} / ${payload.source?.pulledAtDisplay || payload.source?.pulledAt || "unknown pull"}`
         ].join("\n");
