@@ -4,10 +4,74 @@
   "dashboardVersion": "v1.10.6",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-08T12:35:23.849Z",
-  "pulledAtDisplay": "Jun 8, 2026, 8:35 AM",
+  "pulledAt": "2026-06-08T13:00:27.127Z",
+  "pulledAtDisplay": "Jun 8, 2026, 9:00 AM",
   "total": 7,
   "issues": [
+    {
+      "key": "CORE-14494",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+      "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+      "description": "Our current logic for Apple Pay matches the payment type of Apple Pay to the the processor that has a matching CurrencyCode. The concern is that the some Currency Codes have multiple processors so it could choose the wrong one.\n\nExample:\n\n- CurrencyCode: EUR\n\n- Processor: GNEU-EUR\n\n- Processor: GP-EUR\n\nExpectation:\n\n- For an Apple Pay transaction, we should choose the processor that matches the facility of the tee time\n\n- Scenario:\n\n- FID - 19631\n\n- Book an Apple Pay tee time\n\n- Use the GNEU-EUR processor since that is what is configured at the facility\n\n- Scenario:\n\n- FID - 1951\n\n- Book an Apple Pay tee times\n\n- Use the GP-EUR processor since that is what is configured at the facility\n\nTesting:\n\n- Need to do full regression of Apple Pay\n\n- Hot Deals\n\n- $0 due online course time with payfac for reservations\n\n- $0 due online course time without payfac for reservations\n\n- $ due online course time with payfac for reservations\n\n- $ due online course time without payfac for reservations\n\n- Prepaid course times with and without payfac\n\n- GolfPass Paid\n\n- GolfPass Free\n\n- Renewals\n\n- No Shows\n\n- Specifically test EUR and AUD currency as those were reported with issues in prod\n\n- Find an Apple Pay transaction with one of the old ChargeBys for Apple Pay → Make sure you can refund that after the data cleanup script is run\n\n- Work with Yoel to set up test data\n\n- Do a no show with and old ChargeBy as well",
+      "descriptionHtml": "<p>Our current logic for Apple Pay matches the payment type of Apple Pay to the the processor that has a matching CurrencyCode. The concern is that the some Currency Codes have multiple processors so it could choose the wrong one. </p><p>Example: </p><ul><li><p>CurrencyCode: EUR</p></li><li><p>Processor: GNEU-EUR</p></li><li><p>Processor: GP-EUR</p></li></ul><p>Expectation:</p><ul><li><p>For an Apple Pay transaction, we should choose the processor that matches the facility of the tee time</p></li><li><p>Scenario:</p><ul><li><p>FID - 19631</p></li><li><p>Book an Apple Pay tee time</p></li><li><p>Use the GNEU-EUR processor since that is what is configured at the facility</p></li></ul></li><li><p>Scenario:</p><ul><li><p>FID - 1951</p></li><li><p>Book an Apple Pay tee times</p></li><li><p>Use the GP-EUR processor since that is what is configured at the facility</p></li></ul></li></ul><p>Testing:</p><ul><li><p>Need to do full regression of Apple Pay</p><ul><li><p>Hot Deals</p></li><li><p>$0 due online course time with payfac for reservations</p></li><li><p>$0 due online course time without payfac for reservations</p></li><li><p>$ due online course time with payfac for reservations</p></li><li><p>$ due online course time without payfac for reservations</p></li><li><p>Prepaid course times with and without payfac</p></li><li><p>GolfPass Paid</p></li><li><p>GolfPass Free</p></li><li><p>Renewals</p></li><li><p>No Shows</p></li><li><p>Specifically test EUR and AUD currency as those were reported with issues in prod</p></li></ul></li><li><p>Find an Apple Pay transaction with one of the old ChargeBys for Apple Pay → Make sure you can refund that after the data cleanup script is run</p><ul><li><p>Work with Yoel to set up test data</p></li><li><p>Do a no show with and old ChargeBy as well</p></li></ul></li></ul>",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 1,
+      "comments": [
+        {
+          "id": "1177667",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14494?focusedCommentId=1177667",
+          "author": "Yoel Martin Pardo",
+          "authorAccountId": "625571809e7380006fb29599",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+          "created": "2026-06-02T14:35:18.237-0400",
+          "createdDisplay": "Jun 2, 2026, 2:35 PM",
+          "updated": "2026-06-02T14:35:18.237-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "QA: We will need to test refunds with previous Subscriptions, reservations and noshows. Also we will need to do regression on everything again to make sure that everything is working properly. Previous records using chargeBy ApplePay, they should be using GP processors now.",
+          "bodyHtml": "<p>QA: We will need to test refunds with previous Subscriptions, reservations and noshows. Also we will need to do regression on everything again to make sure that everything is working properly. Previous records using chargeBy ApplePay, they should be using GP processors now.</p>"
+        }
+      ],
+      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14494?focusedCommentId=1177667",
+      "lastCommentDisplay": "Jun 2, 2026, 2:35 PM",
+      "lastCommentAuthor": "Yoel Martin Pardo",
+      "testChecklist": null,
+      "type": "Story",
+      "isSubtask": false,
+      "status": "QA Testing (DEV)",
+      "priority": "P1",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+      "assignedDeveloper": "Yoel Martin Pardo",
+      "assignedDeveloperAccountId": "625571809e7380006fb29599",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+      "updated": "2026-06-08T08:59:30.053-0400",
+      "updatedDisplay": "Jun 8, 2026, 8:59 AM",
+      "created": "2026-05-21T10:53:10.905-0400",
+      "createdDisplay": "May 21, 2026, 10:53 AM",
+      "components": [
+        "Database",
+        "GolfNow.Services.Reservation",
+        "GolfNowAPI"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "resolution": "",
+      "parent": {
+        "key": "B2C-68",
+        "url": "https://golfnow.atlassian.net/browse/B2C-68",
+        "summary": "Apple Pay 2026",
+        "description": "",
+        "type": "Epic",
+        "status": "Backlog",
+        "priority": "None"
+      }
+    },
     {
       "key": "CORE-14506",
       "url": "https://golfnow.atlassian.net/browse/CORE-14506",
@@ -111,70 +175,6 @@
         "description": "",
         "type": "Epic",
         "status": "Planning",
-        "priority": "None"
-      }
-    },
-    {
-      "key": "CORE-14494",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14494",
-      "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
-      "description": "Our current logic for Apple Pay matches the payment type of Apple Pay to the the processor that has a matching CurrencyCode. The concern is that the some Currency Codes have multiple processors so it could choose the wrong one.\n\nExample:\n\n- CurrencyCode: EUR\n\n- Processor: GNEU-EUR\n\n- Processor: GP-EUR\n\nExpectation:\n\n- For an Apple Pay transaction, we should choose the processor that matches the facility of the tee time\n\n- Scenario:\n\n- FID - 19631\n\n- Book an Apple Pay tee time\n\n- Use the GNEU-EUR processor since that is what is configured at the facility\n\n- Scenario:\n\n- FID - 1951\n\n- Book an Apple Pay tee times\n\n- Use the GP-EUR processor since that is what is configured at the facility\n\nTesting:\n\n- Need to do full regression of Apple Pay\n\n- Hot Deals\n\n- $0 due online course time with payfac for reservations\n\n- $0 due online course time without payfac for reservations\n\n- $ due online course time with payfac for reservations\n\n- $ due online course time without payfac for reservations\n\n- Prepaid course times with and without payfac\n\n- GolfPass Paid\n\n- GolfPass Free\n\n- Renewals\n\n- No Shows\n\n- Find an Apple Pay transaction with one of the old ChargeBys for Apple Pay → Make sure you can refund that after the data cleanup script is run\n\n- Work with Yoel to set up test data\n\n- Do a no show with and old ChargeBy as well",
-      "descriptionHtml": "<p>Our current logic for Apple Pay matches the payment type of Apple Pay to the the processor that has a matching CurrencyCode. The concern is that the some Currency Codes have multiple processors so it could choose the wrong one. </p><p>Example: </p><ul><li><p>CurrencyCode: EUR</p></li><li><p>Processor: GNEU-EUR</p></li><li><p>Processor: GP-EUR</p></li></ul><p>Expectation:</p><ul><li><p>For an Apple Pay transaction, we should choose the processor that matches the facility of the tee time</p></li><li><p>Scenario:</p><ul><li><p>FID - 19631</p></li><li><p>Book an Apple Pay tee time</p></li><li><p>Use the GNEU-EUR processor since that is what is configured at the facility</p></li></ul></li><li><p>Scenario:</p><ul><li><p>FID - 1951</p></li><li><p>Book an Apple Pay tee times</p></li><li><p>Use the GP-EUR processor since that is what is configured at the facility</p></li></ul></li></ul><p>Testing:</p><ul><li><p>Need to do full regression of Apple Pay</p><ul><li><p>Hot Deals</p></li><li><p>$0 due online course time with payfac for reservations</p></li><li><p>$0 due online course time without payfac for reservations</p></li><li><p>$ due online course time with payfac for reservations</p></li><li><p>$ due online course time without payfac for reservations</p></li><li><p>Prepaid course times with and without payfac</p></li><li><p>GolfPass Paid</p></li><li><p>GolfPass Free</p></li><li><p>Renewals</p></li><li><p>No Shows</p></li></ul></li><li><p>Find an Apple Pay transaction with one of the old ChargeBys for Apple Pay → Make sure you can refund that after the data cleanup script is run</p><ul><li><p>Work with Yoel to set up test data</p></li><li><p>Do a no show with and old ChargeBy as well</p></li></ul></li></ul>",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 1,
-      "comments": [
-        {
-          "id": "1177667",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14494?focusedCommentId=1177667",
-          "author": "Yoel Martin Pardo",
-          "authorAccountId": "625571809e7380006fb29599",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-          "created": "2026-06-02T14:35:18.237-0400",
-          "createdDisplay": "Jun 2, 2026, 2:35 PM",
-          "updated": "2026-06-02T14:35:18.237-0400",
-          "updatedDisplay": "",
-          "hasMedia": false,
-          "mediaCount": 0,
-          "body": "QA: We will need to test refunds with previous Subscriptions, reservations and noshows. Also we will need to do regression on everything again to make sure that everything is working properly. Previous records using chargeBy ApplePay, they should be using GP processors now.",
-          "bodyHtml": "<p>QA: We will need to test refunds with previous Subscriptions, reservations and noshows. Also we will need to do regression on everything again to make sure that everything is working properly. Previous records using chargeBy ApplePay, they should be using GP processors now.</p>"
-        }
-      ],
-      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14494?focusedCommentId=1177667",
-      "lastCommentDisplay": "Jun 2, 2026, 2:35 PM",
-      "lastCommentAuthor": "Yoel Martin Pardo",
-      "testChecklist": null,
-      "type": "Story",
-      "isSubtask": false,
-      "status": "QA Testing (DEV)",
-      "priority": "P1",
-      "assignee": "Dewan Kabir",
-      "assigneeAccountId": "630fb06bb433b060db559bdb",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-      "assignedDeveloper": "Yoel Martin Pardo",
-      "assignedDeveloperAccountId": "625571809e7380006fb29599",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-      "updated": "2026-06-03T13:10:49.948-0400",
-      "updatedDisplay": "Jun 3, 2026, 1:10 PM",
-      "created": "2026-05-21T10:53:10.905-0400",
-      "createdDisplay": "May 21, 2026, 10:53 AM",
-      "components": [
-        "Database",
-        "GolfNow.Services.Reservation",
-        "GolfNowAPI"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "resolution": "",
-      "parent": {
-        "key": "B2C-68",
-        "url": "https://golfnow.atlassian.net/browse/B2C-68",
-        "summary": "Apple Pay 2026",
-        "description": "",
-        "type": "Epic",
-        "status": "Backlog",
         "priority": "None"
       }
     },
@@ -500,17 +500,96 @@
     }
   ],
   "pullDiff": {
-    "previousPulledAt": "2026-06-08T12:11:25.491Z",
-    "previousPulledAtDisplay": "Jun 8, 2026, 8:11 AM",
-    "currentPulledAt": "2026-06-08T12:35:23.849Z",
-    "currentPulledAtDisplay": "Jun 8, 2026, 8:35 AM",
+    "previousPulledAt": "2026-06-08T12:35:23.849Z",
+    "previousPulledAtDisplay": "Jun 8, 2026, 8:35 AM",
+    "currentPulledAt": "2026-06-08T13:00:27.127Z",
+    "currentPulledAtDisplay": "Jun 8, 2026, 9:00 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
-    "updated": [],
+    "updated": [
+      {
+        "key": "CORE-14494",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+        "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+        "changes": [
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 3, 2026, 1:10 PM",
+            "after": "Jun 8, 2026, 8:59 AM"
+          },
+          {
+            "field": "description",
+            "label": "Description",
+            "before": "Our current logic for Apple Pay matches the payment type of Apple Pay to the the processor that has a matching CurrencyCode. The concern ...",
+            "after": "Our current logic for Apple Pay matches the payment type of Apple Pay to the the processor that has a matching CurrencyCode. The concern ..."
+          }
+        ],
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "status": "QA Testing (DEV)",
+        "parent": {
+          "key": "B2C-68",
+          "url": "https://golfnow.atlassian.net/browse/B2C-68",
+          "summary": "Apple Pay 2026",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      }
+    ],
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-08T12:35:23.849Z",
+      "previousPulledAtDisplay": "Jun 8, 2026, 8:35 AM",
+      "currentPulledAt": "2026-06-08T13:00:27.127Z",
+      "currentPulledAtDisplay": "Jun 8, 2026, 9:00 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14494",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+          "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+          "changes": [
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 3, 2026, 1:10 PM",
+              "after": "Jun 8, 2026, 8:59 AM"
+            },
+            {
+              "field": "description",
+              "label": "Description",
+              "before": "Our current logic for Apple Pay matches the payment type of Apple Pay to the the processor that has a matching CurrencyCode. The concern ...",
+              "after": "Our current logic for Apple Pay matches the payment type of Apple Pay to the the processor that has a matching CurrencyCode. The concern ..."
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Yoel Martin Pardo",
+          "status": "QA Testing (DEV)",
+          "parent": {
+            "key": "B2C-68",
+            "url": "https://golfnow.atlassian.net/browse/B2C-68",
+            "summary": "Apple Pay 2026",
+            "description": "",
+            "type": "Epic",
+            "status": "Backlog",
+            "priority": "None"
+          }
+        }
+      ],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-08T12:11:25.491Z",
       "previousPulledAtDisplay": "Jun 8, 2026, 8:11 AM",
@@ -2342,17 +2421,6 @@
       "previousPulledAtDisplay": "Jun 5, 2026, 5:49 PM",
       "currentPulledAt": "2026-06-05T22:10:49.954Z",
       "currentPulledAtDisplay": "Jun 5, 2026, 6:10 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-05T21:30:48.932Z",
-      "previousPulledAtDisplay": "Jun 5, 2026, 5:30 PM",
-      "currentPulledAt": "2026-06-05T21:49:59.606Z",
-      "currentPulledAtDisplay": "Jun 5, 2026, 5:49 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
