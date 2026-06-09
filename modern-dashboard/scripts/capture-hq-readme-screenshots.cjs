@@ -5,6 +5,8 @@ const { chromium } = require("playwright");
 
 const repoRoot = path.resolve(__dirname, "..", "..");
 const workspaceRoot = path.resolve(repoRoot, "..");
+const outerWorkspaceRoot = path.resolve(repoRoot, "..", "..");
+const repoName = path.basename(repoRoot);
 const outputDir = path.join(repoRoot, "docs", "qa-headquarters", "screenshots");
 const port = 4179;
 const baseUrl = `http://127.0.0.1:${port}/jira-board-v3001-124-0/modern/hq/`;
@@ -62,15 +64,13 @@ const server = http.createServer((request, response) => {
   }
 
   const pathname = decodeURIComponent(requestUrl.pathname).replace(/^\/+/, "");
-  let filePath = pathname.startsWith("_astro/")
-    ? path.join(repoRoot, "modern", pathname)
-    : path.join(workspaceRoot, pathname);
+  let filePath = resolveLocalPath(pathname);
 
   if (requestUrl.pathname.endsWith("/")) {
-    filePath = path.join(workspaceRoot, pathname, "index.html");
+    filePath = resolveLocalPath(path.join(pathname, "index.html"));
   }
 
-  if (!filePath.startsWith(workspaceRoot) || !fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
+  if (!filePath || !fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) {
     response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
     response.end("Not found");
     return;
@@ -79,6 +79,24 @@ const server = http.createServer((request, response) => {
   response.writeHead(200, { "content-type": contentType(filePath) });
   fs.createReadStream(filePath).pipe(response);
 });
+
+function resolveLocalPath(pathname) {
+  const normalizedPath = pathname.replaceAll("\\", "/");
+  const withoutRepoPrefix = normalizedPath.startsWith(`${repoName}/`)
+    ? normalizedPath.slice(repoName.length + 1)
+    : normalizedPath;
+  const candidates = [
+    path.join(repoRoot, withoutRepoPrefix),
+    path.join(repoRoot, "modern", normalizedPath),
+    path.join(workspaceRoot, normalizedPath),
+    path.join(outerWorkspaceRoot, normalizedPath)
+  ];
+  return candidates.find((candidate) => {
+    const resolved = path.resolve(candidate);
+    const allowedRoots = [repoRoot, workspaceRoot, outerWorkspaceRoot];
+    return allowedRoots.some((root) => resolved.startsWith(root)) && fs.existsSync(resolved);
+  });
+}
 
 server.listen(port, "127.0.0.1", async () => {
   const browser = await chromium.launch();
