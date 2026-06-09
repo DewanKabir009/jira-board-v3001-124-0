@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-09T19:55:37.417Z",
-  "pulledAtDisplay": "Jun 9, 2026, 3:55 PM",
+  "pulledAt": "2026-06-09T20:00:25.554Z",
+  "pulledAtDisplay": "Jun 9, 2026, 4:00 PM",
   "total": 10,
   "issues": [
     {
@@ -212,14 +212,8 @@
       "fixVersions": [
         "v3001.124.0"
       ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
+      "sprints": [],
+      "sprintNames": [],
       "resolution": "",
       "parent": {
         "key": "CORE-14479",
@@ -313,14 +307,8 @@
       "fixVersions": [
         "v3001.124.0"
       ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
+      "sprints": [],
+      "sprintNames": [],
       "resolution": "",
       "parent": {
         "key": "CORE-14427",
@@ -621,14 +609,8 @@
       "fixVersions": [
         "v3001.124.0"
       ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
+      "sprints": [],
+      "sprintNames": [],
       "resolution": "",
       "parent": {
         "key": "CORE-14494",
@@ -675,14 +657,8 @@
       "fixVersions": [
         "v3001.124.0"
       ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
+      "sprints": [],
+      "sprintNames": [],
       "resolution": "",
       "parent": {
         "key": "CORE-14494",
@@ -773,16 +749,16 @@
     "sprintStartDate": "2026-06-01T14:23:42.721Z",
     "sprintEndDate": "2026-06-22T05:00:00.000Z",
     "backlogParity": true,
-    "backlogIssueCount": 119,
+    "backlogIssueCount": 94,
     "backlogWarning": "",
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-09T19:55:37.417Z",
-    "pulledAtDisplay": "Jun 9, 2026, 3:55 PM",
-    "total": 119,
+    "pulledAt": "2026-06-09T20:00:25.554Z",
+    "pulledAtDisplay": "Jun 9, 2026, 4:00 PM",
+    "total": 94,
     "mainTotal": 94,
-    "subtaskTotal": 25,
+    "subtaskTotal": 0,
     "issues": [
       {
         "key": "CORE-14230",
@@ -970,76 +946,6 @@
         }
       },
       {
-        "key": "CORE-14302",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14302",
-        "summary": "Golf.OpenAI Changes",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1145470",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14302?focusedCommentId=1145470",
-            "author": "Dewan Kabir",
-            "authorAccountId": "630fb06bb433b060db559bdb",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-            "created": "2026-03-31T09:52:51.125-0400",
-            "createdDisplay": "Mar 31, 2026, 9:52 AM",
-            "updated": "2026-03-31T09:52:51.125-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "This was hold off on Deployment for v3001.120.0 release .",
-            "bodyHtml": "<p>This was hold off on Deployment for v3001.120.0 release .</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14302?focusedCommentId=1145470",
-        "lastCommentDisplay": "Mar 31, 2026, 9:52 AM",
-        "lastCommentAuthor": "Dewan Kabir",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "QA Testing (DEV)",
-        "priority": "None",
-        "assignee": "Harrison Lai",
-        "assigneeAccountId": "557058:fe36373e-8f71-47ae-852e-6aa5c698eb3d",
-        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/9a3f2b6008501e118fd5907fd5c64bb2?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FHL-1.png",
-        "assignedDeveloper": "Raghav Kancherla",
-        "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "updated": "2026-03-31T11:59:57.354-0400",
-        "updatedDisplay": "Mar 31, 2026, 11:59 AM",
-        "created": "2026-03-16T12:05:33.834-0400",
-        "createdDisplay": "Mar 16, 2026, 12:05 PM",
-        "components": [
-          "GolfNowAPI"
-        ],
-        "fixVersions": [
-          "v3001.120.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14244",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14244",
-          "summary": "ChatGPT MVP Follow Ups",
-          "description": "",
-          "type": "Story",
-          "status": "QA Testing (DEV)",
-          "priority": "P1"
-        }
-      },
-      {
         "key": "CORE-13962",
         "url": "https://golfnow.atlassian.net/browse/CORE-13962",
         "summary": "(USGA-Blocking) strokeAdjustment update for Compete playerRound",
@@ -1136,89 +1042,6 @@
           "description": "",
           "type": "Epic",
           "status": "Backlog",
-          "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14029",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14029",
-        "summary": "gn-svc-scorecard: Scoring Engine Changes",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 2,
-        "comments": [
-          {
-            "id": "1112958",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14029?focusedCommentId=1112958",
-            "author": "Alex McNay",
-            "authorAccountId": "61f80648f51e85007087aef1",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/61f80648f51e85007087aef1/be5ebe22-4108-4f10-97f0-4a02825274ee/32",
-            "created": "2026-01-20T08:57:37.829-0500",
-            "createdDisplay": "Jan 20, 2026, 8:57 AM",
-            "updated": "2026-01-20T08:57:37.829-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "parent ticket was moved back last week but moving this subtask back as well to keep project in sync. Issues are documented on parent ticket",
-            "bodyHtml": "<p>parent ticket was moved back last week but moving this subtask back as well to keep project in sync. Issues are documented on parent ticket</p>"
-          },
-          {
-            "id": "1180736",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14029?focusedCommentId=1180736",
-            "author": "Allen Shoup",
-            "authorAccountId": "6283defef0302e0068bd49f8",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/6283defef0302e0068bd49f8/849b74d6-ead2-47cd-a381-883ce4836eb2/32",
-            "created": "2026-06-09T11:09:07.973-0400",
-            "createdDisplay": "Jun 9, 2026, 11:09 AM",
-            "updated": "2026-06-09T11:09:07.973-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Testing will be done in https://golfnow.atlassian.net/browse/CORE-13962",
-            "bodyHtml": "<p>Testing will be done in <a href=\"https://golfnow.atlassian.net/browse/CORE-13962\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/CORE-13962</a> </p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14029?focusedCommentId=1180736",
-        "lastCommentDisplay": "Jun 9, 2026, 11:09 AM",
-        "lastCommentAuthor": "Allen Shoup",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "Closed",
-        "priority": "None",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Daniel McNaughton",
-        "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-        "updated": "2026-06-09T11:09:08.056-0400",
-        "updatedDisplay": "Jun 9, 2026, 11:09 AM",
-        "created": "2025-12-31T10:00:27.145-0500",
-        "createdDisplay": "Dec 31, 2025, 10:00 AM",
-        "components": [
-          "GolfNow.Services.Scorecard"
-        ],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "Done",
-        "parent": {
-          "key": "CORE-13962",
-          "url": "https://golfnow.atlassian.net/browse/CORE-13962",
-          "summary": "(USGA-Blocking) strokeAdjustment update for Compete playerRound",
-          "description": "",
-          "type": "Task",
-          "status": "QA Testing (DEV)",
           "priority": "P1"
         }
       },
@@ -1343,115 +1166,6 @@
         }
       },
       {
-        "key": "CORE-14495",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14495",
-        "summary": "Code changes.",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "QA Testing (DEV)",
-        "priority": "None",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-06-03T13:09:43.436-0400",
-        "updatedDisplay": "Jun 3, 2026, 1:09 PM",
-        "created": "2026-05-21T12:22:31.101-0400",
-        "createdDisplay": "May 21, 2026, 12:22 PM",
-        "components": [
-          "GolfNow.Services.Reservation",
-          "GolfNowAPI"
-        ],
-        "fixVersions": [
-          "v3001.124.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14494",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14494",
-          "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
-          "description": "",
-          "type": "Story",
-          "status": "QA Testing (DEV)",
-          "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14496",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14496",
-        "summary": "Database changes.",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "QA Testing (DEV)",
-        "priority": "None",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-06-03T13:08:21.497-0400",
-        "updatedDisplay": "Jun 3, 2026, 1:08 PM",
-        "created": "2026-05-21T12:22:42.122-0400",
-        "createdDisplay": "May 21, 2026, 12:22 PM",
-        "components": [
-          "Database"
-        ],
-        "fixVersions": [
-          "v3001.124.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14494",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14494",
-          "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
-          "description": "",
-          "type": "Story",
-          "status": "QA Testing (DEV)",
-          "priority": "P1"
-        }
-      },
-      {
         "key": "CORE-14429",
         "url": "https://golfnow.atlassian.net/browse/CORE-14429",
         "summary": "TPO - Trade Price Optimization v2 Floor Violations Bug",
@@ -1555,61 +1269,6 @@
         ],
         "resolution": "",
         "parent": null
-      },
-      {
-        "key": "CORE-14507",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14507",
-        "summary": "Code Changes",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "QA Testing (DEV)",
-        "priority": "None",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Tyler Olechnowicz",
-        "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-        "updated": "2026-06-09T10:22:36.078-0400",
-        "updatedDisplay": "Jun 9, 2026, 10:22 AM",
-        "created": "2026-06-08T17:33:11.790-0400",
-        "createdDisplay": "Jun 8, 2026, 5:33 PM",
-        "components": [
-          "GolfNow.Services.Reservation",
-          "GolfNow.Services.TeeSheet"
-        ],
-        "fixVersions": [
-          "v3001.124.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14479",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14479",
-          "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
-          "description": "",
-          "type": "Story",
-          "status": "Pending Deployment (DEV)",
-          "priority": "P1"
-        }
       },
       {
         "key": "CORE-14365",
@@ -1890,106 +1549,6 @@
         "parent": null
       },
       {
-        "key": "CORE-14315",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14315",
-        "summary": "Code Changes",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "Pre Planning",
-        "priority": "None",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-05-26T09:40:03.564-0400",
-        "updatedDisplay": "May 26, 2026, 9:40 AM",
-        "created": "2026-03-19T09:55:55.637-0400",
-        "createdDisplay": "Mar 19, 2026, 9:55 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-13978",
-          "url": "https://golfnow.atlassian.net/browse/CORE-13978",
-          "summary": "Update SFMC Confirmation Email APIs",
-          "description": "",
-          "type": "Story",
-          "status": "Planning",
-          "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14316",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14316",
-        "summary": "DB Changes",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "Pre Planning",
-        "priority": "None",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-05-26T09:40:03.958-0400",
-        "updatedDisplay": "May 26, 2026, 9:40 AM",
-        "created": "2026-03-19T09:56:05.927-0400",
-        "createdDisplay": "Mar 19, 2026, 9:56 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-13978",
-          "url": "https://golfnow.atlassian.net/browse/CORE-13978",
-          "summary": "Update SFMC Confirmation Email APIs",
-          "description": "",
-          "type": "Story",
-          "status": "Planning",
-          "priority": "P1"
-        }
-      },
-      {
         "key": "CORE-14273",
         "url": "https://golfnow.atlassian.net/browse/CORE-14273",
         "summary": "Update EZ Legacy API Call (AddConfirmationNote) to Include Param5 – SponsorID",
@@ -2084,114 +1643,6 @@
           "type": "Epic",
           "status": "Planning",
           "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14484",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14484",
-        "summary": "gn-main changes",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "Closed",
-        "priority": "P1",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-09T10:54:20.653-0400",
-        "updatedDisplay": "Jun 9, 2026, 10:54 AM",
-        "created": "2026-05-19T08:51:48.885-0400",
-        "createdDisplay": "May 19, 2026, 8:51 AM",
-        "components": [
-          "GolfNowAPI"
-        ],
-        "fixVersions": [
-          "v3001.123.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "Force Closed",
-        "parent": {
-          "key": "CORE-14397",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14397",
-          "summary": "CLONE - Update to allow No Payment Methods when $0 due now for BE",
-          "description": "",
-          "type": "Story",
-          "status": "Planning",
-          "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14485",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14485",
-        "summary": "gn-svc-commerceproxy changes",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "Closed",
-        "priority": "P1",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-09T10:54:21.078-0400",
-        "updatedDisplay": "Jun 9, 2026, 10:54 AM",
-        "created": "2026-05-19T09:01:33.296-0400",
-        "createdDisplay": "May 19, 2026, 9:01 AM",
-        "components": [
-          "GolfNow.Services.CommerceProxy"
-        ],
-        "fixVersions": [
-          "v3001.123.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "Force Closed",
-        "parent": {
-          "key": "CORE-14397",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14397",
-          "summary": "CLONE - Update to allow No Payment Methods when $0 due now for BE",
-          "description": "",
-          "type": "Story",
-          "status": "Planning",
-          "priority": "P1"
         }
       },
       {
@@ -2568,114 +2019,6 @@
         }
       },
       {
-        "key": "CORE-14305",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14305",
-        "summary": "Database changes.",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "Pending Deployment (STG)",
-        "priority": "None",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-03-31T12:00:27.664-0400",
-        "updatedDisplay": "Mar 31, 2026, 12:00 PM",
-        "created": "2026-03-17T09:37:10.721-0400",
-        "createdDisplay": "Mar 17, 2026, 9:37 AM",
-        "components": [
-          "Database"
-        ],
-        "fixVersions": [
-          "v3001.120.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14239",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14239",
-          "summary": "Configure CertificateGuid to retrieve Apple Pay Payment Method Key.",
-          "description": "",
-          "type": "Task",
-          "status": "Pending Deployment (STG)",
-          "priority": "P2"
-        }
-      },
-      {
-        "key": "CORE-14306",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14306",
-        "summary": "Code changes.",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "Regression Testing (STG)",
-        "priority": "None",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-04-01T08:10:11.490-0400",
-        "updatedDisplay": "Apr 1, 2026, 8:10 AM",
-        "created": "2026-03-17T10:28:34.228-0400",
-        "createdDisplay": "Mar 17, 2026, 10:28 AM",
-        "components": [
-          "GolfNowAPI"
-        ],
-        "fixVersions": [
-          "v3001.120.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14239",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14239",
-          "summary": "Configure CertificateGuid to retrieve Apple Pay Payment Method Key.",
-          "description": "",
-          "type": "Task",
-          "status": "Pending Deployment (STG)",
-          "priority": "P2"
-        }
-      },
-      {
         "key": "CORE-14208",
         "url": "https://golfnow.atlassian.net/browse/CORE-14208",
         "summary": "CLONE - [Commerce] Issue with displaying and making a reservation when tax is inclusive",
@@ -2829,115 +2172,6 @@
         }
       },
       {
-        "key": "CORE-14488",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14488",
-        "summary": "Code changes for [CORE - 14427]",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "Development",
-        "priority": "P1",
-        "assignee": "Luis Vallejo Mursuli",
-        "assigneeAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
-        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-06-08T22:59:48.407-0400",
-        "updatedDisplay": "Jun 8, 2026, 10:59 PM",
-        "created": "2026-05-19T19:23:19.189-0400",
-        "createdDisplay": "May 19, 2026, 7:23 PM",
-        "components": [
-          "GolfNow.Services.Reservation",
-          "GolfNowAPI"
-        ],
-        "fixVersions": [
-          "v3001.123.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14427",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14427",
-          "summary": "Home Course Selection/Management",
-          "description": "",
-          "type": "Story",
-          "status": "Development",
-          "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14506",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14506",
-        "summary": "SQL code changes for [CORE - 14427]",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "Development",
-        "priority": "P1",
-        "assignee": "Luis Vallejo Mursuli",
-        "assigneeAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
-        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-06-08T22:58:49.994-0400",
-        "updatedDisplay": "Jun 8, 2026, 10:58 PM",
-        "created": "2026-06-04T10:22:05.148-0400",
-        "createdDisplay": "Jun 4, 2026, 10:22 AM",
-        "components": [
-          "Database"
-        ],
-        "fixVersions": [
-          "v3001.124.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14427",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14427",
-          "summary": "Home Course Selection/Management",
-          "description": "",
-          "type": "Story",
-          "status": "Development",
-          "priority": "P1"
-        }
-      },
-      {
         "key": "CORE-14271",
         "url": "https://golfnow.atlassian.net/browse/CORE-14271",
         "summary": "Support Product Refunds",
@@ -3038,114 +2272,6 @@
         }
       },
       {
-        "key": "CORE-14430",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14430",
-        "summary": "Code changes",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "PO Review",
-        "priority": "None",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Raghav Kancherla",
-        "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "updated": "2026-05-14T09:52:28.063-0400",
-        "updatedDisplay": "May 14, 2026, 9:52 AM",
-        "created": "2026-04-30T12:33:59.678-0400",
-        "createdDisplay": "Apr 30, 2026, 12:33 PM",
-        "components": [
-          "GolfNowAPI"
-        ],
-        "fixVersions": [
-          "v3001.122.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14271",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14271",
-          "summary": "Support Product Refunds",
-          "description": "",
-          "type": "Story",
-          "status": "Closed",
-          "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14435",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14435",
-        "summary": "SQL changes",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "PO Review",
-        "priority": "None",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Raghav Kancherla",
-        "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "updated": "2026-05-14T09:54:24.028-0400",
-        "updatedDisplay": "May 14, 2026, 9:54 AM",
-        "created": "2026-04-30T18:05:07.770-0400",
-        "createdDisplay": "Apr 30, 2026, 6:05 PM",
-        "components": [
-          "Database"
-        ],
-        "fixVersions": [
-          "v3001.122.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14271",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14271",
-          "summary": "Support Product Refunds",
-          "description": "",
-          "type": "Story",
-          "status": "Closed",
-          "priority": "P1"
-        }
-      },
-      {
         "key": "CORE-14272",
         "url": "https://golfnow.atlassian.net/browse/CORE-14272",
         "summary": "Create endpoint to validate cancellation eligibility for Products",
@@ -3229,116 +2355,6 @@
           "type": "Epic",
           "status": "Backlog",
           "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14425",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14425",
-        "summary": "SQL changes",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "PO Review",
-        "priority": "None",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Raghav Kancherla",
-        "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "updated": "2026-05-14T09:51:52.603-0400",
-        "updatedDisplay": "May 14, 2026, 9:51 AM",
-        "created": "2026-04-30T06:21:55.485-0400",
-        "createdDisplay": "Apr 30, 2026, 6:21 AM",
-        "components": [
-          "Database"
-        ],
-        "fixVersions": [
-          "v3001.122.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14272",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14272",
-          "summary": "Create endpoint to validate cancellation eligibility for Products",
-          "description": "",
-          "type": "Story",
-          "status": "Closed",
-          "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14426",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14426",
-        "summary": "Code Changes",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "PO Review",
-        "priority": "None",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Raghav Kancherla",
-        "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "updated": "2026-05-14T09:52:14.959-0400",
-        "updatedDisplay": "May 14, 2026, 9:52 AM",
-        "created": "2026-04-30T06:22:27.620-0400",
-        "createdDisplay": "Apr 30, 2026, 6:22 AM",
-        "components": [
-          "GolfNow.API.TR",
-          "GolfNow.Services.Product",
-          "GolfNowAPI"
-        ],
-        "fixVersions": [
-          "v3001.122.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14272",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14272",
-          "summary": "Create endpoint to validate cancellation eligibility for Products",
-          "description": "",
-          "type": "Story",
-          "status": "Closed",
-          "priority": "P1"
         }
       },
       {
@@ -4670,60 +3686,6 @@
           "type": "Epic",
           "status": "Planning",
           "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14179",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14179",
-        "summary": "Code Changes",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "QA Testing (DEV)",
-        "priority": "None",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Raghav Kancherla",
-        "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "updated": "2026-03-23T21:32:50.156-0400",
-        "updatedDisplay": "Mar 23, 2026, 9:32 PM",
-        "created": "2026-02-18T10:38:25.099-0500",
-        "createdDisplay": "Feb 18, 2026, 10:38 AM",
-        "components": [
-          "N/A"
-        ],
-        "fixVersions": [
-          "v3001.119.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14099",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14099",
-          "summary": "OpenAI Apps - MCP Server",
-          "description": "",
-          "type": "Story",
-          "status": "QA Testing (DEV)",
-          "priority": "P1"
         }
       },
       {
@@ -6059,147 +5021,6 @@
         }
       },
       {
-        "key": "CORE-14388",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14388",
-        "summary": "Database changes.",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1152541",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14388?focusedCommentId=1152541",
-            "author": "Yoel Martin Pardo",
-            "authorAccountId": "625571809e7380006fb29599",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-            "created": "2026-04-16T10:19:16.906-0400",
-            "createdDisplay": "Apr 16, 2026, 10:19 AM",
-            "updated": "2026-04-16T10:19:16.906-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "PR: https://github.com/GolfNowEng/gn-main-db/pull/614",
-            "bodyHtml": "<p>PR: <a href=\"https://github.com/GolfNowEng/gn-main-db/pull/614\" target=\"_blank\" rel=\"noopener\">https://github.com/GolfNowEng/gn-main-db/pull/614</a> </p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14388?focusedCommentId=1152541",
-        "lastCommentDisplay": "Apr 16, 2026, 10:19 AM",
-        "lastCommentAuthor": "Yoel Martin Pardo",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "QA Testing (DEV)",
-        "priority": "None",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-04-21T14:12:38.114-0400",
-        "updatedDisplay": "Apr 21, 2026, 2:12 PM",
-        "created": "2026-04-16T08:55:12.410-0400",
-        "createdDisplay": "Apr 16, 2026, 8:55 AM",
-        "components": [
-          "Database"
-        ],
-        "fixVersions": [
-          "v3001.121.1"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14381",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14381",
-          "summary": "Apple Pay Multi Merchant Support",
-          "description": "",
-          "type": "Task",
-          "status": "QA Testing (DEV)",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14389",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14389",
-        "summary": "Code changes.",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1152532",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14389?focusedCommentId=1152532",
-            "author": "Yoel Martin Pardo",
-            "authorAccountId": "625571809e7380006fb29599",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-            "created": "2026-04-16T10:12:32.748-0400",
-            "createdDisplay": "Apr 16, 2026, 10:12 AM",
-            "updated": "2026-04-16T10:12:32.748-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "PR: https://github.com/GolfNowEng/gn-main/pull/2098",
-            "bodyHtml": "<p>PR: <a href=\"https://github.com/GolfNowEng/gn-main/pull/2098\" target=\"_blank\" rel=\"noopener\">https://github.com/GolfNowEng/gn-main/pull/2098</a> </p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14389?focusedCommentId=1152532",
-        "lastCommentDisplay": "Apr 16, 2026, 10:12 AM",
-        "lastCommentAuthor": "Yoel Martin Pardo",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "QA Testing (DEV)",
-        "priority": "None",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-04-21T14:12:45.626-0400",
-        "updatedDisplay": "Apr 21, 2026, 2:12 PM",
-        "created": "2026-04-16T08:55:21.783-0400",
-        "createdDisplay": "Apr 16, 2026, 8:55 AM",
-        "components": [
-          "GolfNow.API.Customer",
-          "GolfNowAPI"
-        ],
-        "fixVersions": [
-          "v3001.121.1"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14381",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14381",
-          "summary": "Apple Pay Multi Merchant Support",
-          "description": "",
-          "type": "Task",
-          "status": "QA Testing (DEV)",
-          "priority": "None"
-        }
-      },
-      {
         "key": "CORE-14387",
         "url": "https://golfnow.atlassian.net/browse/CORE-14387",
         "summary": "ATP - Create Ability for Region Specific Default ATP Matrix",
@@ -6777,58 +5598,6 @@
           "description": "",
           "type": "Epic",
           "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14042",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14042",
-        "summary": "gn-main-db: Database Changes",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "Development",
-        "priority": "None",
-        "assignee": "Daniel McNaughton",
-        "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-        "assignedDeveloper": "Daniel McNaughton",
-        "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-        "updated": "2026-05-26T03:06:49.243-0400",
-        "updatedDisplay": "May 26, 2026, 3:06 AM",
-        "created": "2026-01-07T09:37:11.644-0500",
-        "createdDisplay": "Jan 7, 2026, 9:37 AM",
-        "components": [
-          "Database"
-        ],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14041",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14041",
-          "summary": "Order Processing API Setup",
-          "description": "",
-          "type": "Story",
-          "status": "Development",
           "priority": "None"
         }
       },
@@ -7450,106 +6219,6 @@
         }
       },
       {
-        "key": "CORE-14362",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14362",
-        "summary": "gn-svc-platform - Platform API Changes",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "Pre Planning",
-        "priority": "None",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-05-26T03:09:34.402-0400",
-        "updatedDisplay": "May 26, 2026, 3:09 AM",
-        "created": "2026-04-03T13:21:08.116-0400",
-        "createdDisplay": "Apr 3, 2026, 1:21 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14361",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14361",
-          "summary": "Merchant & Payment Processor Configuration",
-          "description": "",
-          "type": "Story",
-          "status": "Development",
-          "priority": "P2"
-        }
-      },
-      {
-        "key": "CORE-14363",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14363",
-        "summary": "gn-app-gnc - GNC 2.1 Changes",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "Pre Planning",
-        "priority": "None",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-05-26T03:09:34.779-0400",
-        "updatedDisplay": "May 26, 2026, 3:09 AM",
-        "created": "2026-04-03T13:21:17.317-0400",
-        "createdDisplay": "Apr 3, 2026, 1:21 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14361",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14361",
-          "summary": "Merchant & Payment Processor Configuration",
-          "description": "",
-          "type": "Story",
-          "status": "Development",
-          "priority": "P2"
-        }
-      },
-      {
         "key": "CORE-14369",
         "url": "https://golfnow.atlassian.net/browse/CORE-14369",
         "summary": "Geosearch2.0 : optimization",
@@ -7590,56 +6259,6 @@
         ],
         "resolution": "",
         "parent": null
-      },
-      {
-        "key": "CORE-14402",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14402",
-        "summary": "Code Changes for Tasks 1,3, and 5",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "Pre Planning",
-        "priority": "None",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-05-26T03:09:35.670-0400",
-        "updatedDisplay": "May 26, 2026, 3:09 AM",
-        "created": "2026-04-22T14:22:31.785-0400",
-        "createdDisplay": "Apr 22, 2026, 2:22 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14369",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14369",
-          "summary": "Geosearch2.0 : optimization",
-          "description": "",
-          "type": "Task",
-          "status": "Development",
-          "priority": "None"
-        }
       },
       {
         "key": "CORE-14386",
@@ -7715,74 +6334,6 @@
         ],
         "resolution": "",
         "parent": null
-      },
-      {
-        "key": "CORE-14391",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14391",
-        "summary": "Code changes for [CORE - 14386]",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1155925",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14391?focusedCommentId=1155925",
-            "author": "Luis Vallejo Mursuli",
-            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-            "created": "2026-04-23T19:11:32.164-0400",
-            "createdDisplay": "Apr 23, 2026, 7:11 PM",
-            "updated": "2026-04-23T19:11:32.164-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Daniel provided a solution for that.",
-            "bodyHtml": "<p>Daniel provided a solution for that.</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14391?focusedCommentId=1155925",
-        "lastCommentDisplay": "Apr 23, 2026, 7:11 PM",
-        "lastCommentAuthor": "Luis Vallejo Mursuli",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "Closed",
-        "priority": "P1",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
-        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-05-26T03:09:36.507-0400",
-        "updatedDisplay": "May 26, 2026, 3:09 AM",
-        "created": "2026-04-16T17:33:20.119-0400",
-        "createdDisplay": "Apr 16, 2026, 5:33 PM",
-        "components": [],
-        "fixVersions": [
-          "v3001.122.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "Completed",
-        "parent": {
-          "key": "CORE-14386",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14386",
-          "summary": "Premier Card Miami - Subscriptions Being Created Despite Purchase Errors",
-          "description": "",
-          "type": "Bug",
-          "status": "Analysis",
-          "priority": "P1"
-        }
       },
       {
         "key": "CORE-14500",
@@ -7995,13 +6546,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-09T19:55:12.008Z",
-    "pulledAtDisplay": "Jun 9, 2026, 3:55 PM",
+    "pulledAt": "2026-06-09T20:00:03.322Z",
+    "pulledAtDisplay": "Jun 9, 2026, 4:00 PM",
     "window": {
-      "start": "2026-04-25T19:55:12.007Z",
-      "end": "2026-12-06T19:55:12.007Z",
-      "startDisplay": "Apr 25, 2026, 3:55 PM",
-      "endDisplay": "Dec 6, 2026, 2:55 PM"
+      "start": "2026-04-25T20:00:03.322Z",
+      "end": "2026-12-06T20:00:03.322Z",
+      "startDisplay": "Apr 25, 2026, 4:00 PM",
+      "endDisplay": "Dec 6, 2026, 3:00 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -8014,7 +6565,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-09T19:55:14.357Z",
+        "pulledAt": "2026-06-09T20:00:05.528Z",
         "eventCount": 91,
         "events": [
           {
@@ -8288,21 +6839,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Spring Bank Holiday (UK)",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDisplay": "May 24, 2026, 8:00 PM",
-            "endDisplay": "May 25, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8313,6 +6849,21 @@
             "endDisplay": "May 25, 2026, 8:00 PM",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Spring Bank Holiday (UK)",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDisplay": "May 24, 2026, 8:00 PM",
+            "endDisplay": "May 25, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8768,6 +7319,21 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.57",
+            "start": "2026-07-14T00:00:00.000Z",
+            "end": "2026-07-15T00:00:00.000Z",
+            "startDisplay": "Jul 13, 2026, 8:00 PM",
+            "endDisplay": "Jul 14, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221527Z-1432222737@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8793,21 +7359,6 @@
             "endDisplay": "Jul 14, 2026, 8:00 PM",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.57",
-            "start": "2026-07-14T00:00:00.000Z",
-            "end": "2026-07-15T00:00:00.000Z",
-            "startDisplay": "Jul 13, 2026, 8:00 PM",
-            "endDisplay": "Jul 14, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9068,21 +7619,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Summer Bank Holiday (UK)",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-01T00:00:00.000Z",
-            "startDisplay": "Aug 30, 2026, 8:00 PM",
-            "endDisplay": "Aug 31, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9093,6 +7629,21 @@
             "endDisplay": "Sep 7, 2026, 8:00 PM",
             "allDay": true,
             "type": "Golf Freeze",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Summer Bank Holiday (UK)",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-01T00:00:00.000Z",
+            "startDisplay": "Aug 30, 2026, 8:00 PM",
+            "endDisplay": "Aug 31, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9143,6 +7694,21 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.59",
+            "start": "2026-09-15T00:00:00.000Z",
+            "end": "2026-09-16T00:00:00.000Z",
+            "startDisplay": "Sep 14, 2026, 8:00 PM",
+            "endDisplay": "Sep 15, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221627Z-1916149808@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9168,21 +7734,6 @@
             "endDisplay": "Sep 15, 2026, 8:00 PM",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.59",
-            "start": "2026-09-15T00:00:00.000Z",
-            "end": "2026-09-16T00:00:00.000Z",
-            "startDisplay": "Sep 14, 2026, 8:00 PM",
-            "endDisplay": "Sep 15, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9388,10 +7939,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-09T19:50:05.369Z",
-    "previousPulledAtDisplay": "Jun 9, 2026, 3:50 PM",
-    "currentPulledAt": "2026-06-09T19:55:37.417Z",
-    "currentPulledAtDisplay": "Jun 9, 2026, 3:55 PM",
+    "previousPulledAt": "2026-06-09T19:55:37.417Z",
+    "previousPulledAtDisplay": "Jun 9, 2026, 3:55 PM",
+    "currentPulledAt": "2026-06-09T20:00:25.554Z",
+    "currentPulledAtDisplay": "Jun 9, 2026, 4:00 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -9399,6 +7950,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-09T19:55:37.417Z",
+      "previousPulledAtDisplay": "Jun 9, 2026, 3:55 PM",
+      "currentPulledAt": "2026-06-09T20:00:25.554Z",
+      "currentPulledAtDisplay": "Jun 9, 2026, 4:00 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-09T19:50:05.369Z",
       "previousPulledAtDisplay": "Jun 9, 2026, 3:50 PM",
@@ -11989,17 +10551,6 @@
       "previousPulledAtDisplay": "Jun 7, 2026, 2:10 AM",
       "currentPulledAt": "2026-06-07T06:35:19.768Z",
       "currentPulledAtDisplay": "Jun 7, 2026, 2:35 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-07T05:45:20.941Z",
-      "previousPulledAtDisplay": "Jun 7, 2026, 1:45 AM",
-      "currentPulledAt": "2026-06-07T06:10:19.431Z",
-      "currentPulledAtDisplay": "Jun 7, 2026, 2:10 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
