@@ -74,6 +74,12 @@ The workspace generates a Jira comment preview before submission. Submissions us
 
 SPEC-HQ-09 adds the HQ Calendar Menu at `/modern/hq/#calendar`. The page reads `dashboard-data.json.calendarMenu`, then renders the Confluence GN Releases calendar in a calendar grid or upcoming-list view. The grid defaults to the current month with Previous, Today, and Next controls, while the upcoming list groups events into collapsible month sections. The refresh workflow updates the calendar payload every 5 minutes alongside the Jira board data, and the client refreshes the calendar section while the HQ page remains open.
 
+## HQ Slack Notifier
+
+The HQ Operations Status module includes a Worker-backed Slack notifier panel for the installed CORE JIRA NOTIFIER AGENT bot. The browser checks `GET /api/slack/status`, enables posting only when `canPost` is true, and sends reviewed messages through `POST /api/slack/send`.
+
+The Worker requires `SLACK_BOT_TOKEN` as a Cloudflare secret. `SLACK_CHANNEL_ID` or `SLACK_DEFAULT_CHANNEL_ID` is preferred, with `SLACK_DEFAULT_CHANNEL_NAME=core-qa-dream-team` as the fallback.
+
 ## Migration Rule
 
 Do not replace the current generated board until the Astro shell has parity for ticket scanning, filters, Jira links, assignee writes, checklist comments, media, and release-board navigation.

@@ -69,6 +69,8 @@ GitHub Pages remains useful as a static fallback. The `.124` modern board and HQ
 - `/modern/hq/#calendar` is the Calendar Menu. It reads the Confluence GN Releases Team Calendar payload from `dashboard-data.json`, opens on the current month, provides month navigation, and groups the Upcoming list into collapsible month sections.
 - `/api/ai/status` reports whether the Cloudflare Worker has the Workers AI binding.
 - `/api/ai/release-summary` reads `dashboard-data.json`, resolves assignee/developer/component/priority ticket lookups from the direct board pull, asks Cloudflare Workers AI to turn those exact matches into human-readable linked analysis, or combines the user's broader prompt with compact ticket context for a draft release brief.
+- `/api/slack/status` reports whether the HQ Worker can post through the installed CORE JIRA NOTIFIER AGENT Slack bot.
+- `/api/slack/send` posts a manually reviewed HQ message to the configured CORE QA Slack channel when `SLACK_BOT_TOKEN` is present as a Worker secret.
 - GitHub Pages can render the same HQ page but cannot run the AI API. The page tells users to open the Cloudflare URL when the endpoint is unavailable.
 
 ## Architecture
@@ -82,14 +84,15 @@ Jira fixVersion data
   -> Cloudflare Worker Static Assets
   -> /api/* Worker routes
   -> Cloudflare Workers AI release summary
+  -> Slack Web API notifier for reviewed HQ updates
 ```
 
-The HQ Worker uses Cloudflare's Static Assets binding for the built Astro files and routes `/api/*` through the Worker first. The AI service is server-side only, so no model credentials or secrets are exposed in browser JavaScript.
+The HQ Worker uses Cloudflare's Static Assets binding for the built Astro files and routes `/api/*` through the Worker first. The AI and Slack services are server-side only, so model bindings, Slack tokens, and other secrets are not exposed in browser JavaScript.
 
 Relevant files:
 
 - `wrangler.hq.toml`: Cloudflare Worker, static assets, and Workers AI binding.
-- `workers/hq-worker.js`: API routes for AI status and release summary.
+- `workers/hq-worker.js`: API routes for AI status, release summary, Slack status, and Slack message posting.
 - `modern-dashboard/src/pages/hq.astro`: HQ UI route and browser-side AI runner.
 - `modern-dashboard/src/styles/qa-hq.css`: HQ design system and responsive styling.
 - `modern-dashboard/scripts/capture-hq-readme-screenshots.cjs`: README screenshot capture harness.
@@ -111,6 +114,33 @@ The first Workers AI implementation is intentionally focused and review-first:
 - Safety posture: draft-only, direct board-data lookup for assignment and component questions before AI narration, deterministic fallback if AI fails, and no Jira mutations from the AI endpoint.
 
 The Worker requests JSON output from the model so the browser can render predictable sections instead of parsing free-form prose.
+
+## Slack Notifier
+
+The HQ Slack notifier is the Worker-backed path for the installed CORE JIRA NOTIFIER AGENT bot.
+
+- Provider: Slack Web API.
+- Endpoint: `GET /api/slack/status`.
+- Endpoint: `POST /api/slack/send`.
+- Default channel: `#core-qa-dream-team`.
+- Bot name: `CORE JIRA NOTIFIER AGENT`.
+- Secret required: `SLACK_BOT_TOKEN`.
+- Optional channel override: `SLACK_CHANNEL_ID` or `SLACK_DEFAULT_CHANNEL_ID`.
+- UI surface: `/modern/hq/#status`, inside the Operations Status module.
+
+The browser only enables the Send to Slack button when the Worker reports `canPost: true`. If the token is missing, the status panel shows that state instead of pretending the bot can post.
+
+Recommended secret setup:
+
+```powershell
+npx -y wrangler secret put SLACK_BOT_TOKEN -c wrangler.hq.toml
+```
+
+The `Deploy Cloudflare Board and HQ` GitHub workflow also syncs `SLACK_BOT_TOKEN` and `SLACK_CHANNEL_ID` from repository secrets into Worker secrets before deployment. Today this repo has `CLOUDFLARE_API_TOKEN` configured, but not `SLACK_BOT_TOKEN`, so the live endpoint correctly reports `mode: "missing-token"` until that Slack secret is added.
+
+Channel IDs are preferred for Slack reliability. If `SLACK_CHANNEL_ID` is not configured, the Worker falls back to `core-qa-dream-team`.
+
+Direct Codex Slack posting is a separate option from the HQ Worker. The Slack connector tools are available, but the current connector auth returned `token_expired`; reconnecting the Codex Slack integration is required before Codex can post directly through the app connector.
 
 ## Calendar Menu
 
@@ -162,6 +192,7 @@ Calendar environment overrides:
 | Cloudflare Workers | Hosts the HQ as a Worker-backed web app and owns same-origin `/api/*` routes. |
 | Cloudflare Workers Static Assets | Serves the built HQ and dashboard assets through the Worker. |
 | Cloudflare Workers AI | Generates the draft release intelligence brief from current board data. |
+| Slack Web API | Posts reviewed HQ notifications through the installed CORE JIRA NOTIFIER AGENT bot. |
 | GitHub Actions | Refreshes Jira data, deploys static pages, runs Playwright jobs, and publishes evidence. |
 | Confluence Team Calendars | Feeds the HQ Calendar Menu through the 5-minute board refresh artifact. |
 | GitHub Pages | Keeps static public fallback pages live during the Cloudflare migration. |
@@ -314,6 +345,52 @@ Response:
     "focusTickets": [],
     "reviewGates": []
   }
+}
+```
+
+### `GET /api/slack/status`
+
+Returns the Slack notifier configuration state without posting a message.
+
+```json
+{
+  "ok": true,
+  "provider": "Slack Web API",
+  "bot": "CORE JIRA NOTIFIER AGENT",
+  "channel": "core-qa-dream-team",
+  "tokenConfigured": true,
+  "channelConfigured": true,
+  "mode": "ready",
+  "canPost": true
+}
+```
+
+### `POST /api/slack/send`
+
+Posts a reviewed message through the Slack bot. This endpoint returns `503` when the Worker secret is missing and returns Slack API error details when Slack rejects the channel or token.
+
+Request:
+
+```json
+{
+  "message": "CORE QA HQ smoke check: notifier route is ready.",
+  "context": {
+    "source": "core-qa-hq",
+    "release": "v3001.124.0"
+  }
+}
+```
+
+Response:
+
+```json
+{
+  "ok": true,
+  "provider": "Slack Web API",
+  "bot": "CORE JIRA NOTIFIER AGENT",
+  "channel": "C0123456789",
+  "ts": "1781012345.000000",
+  "message": "Slack message posted through CORE JIRA NOTIFIER AGENT."
 }
 ```
 

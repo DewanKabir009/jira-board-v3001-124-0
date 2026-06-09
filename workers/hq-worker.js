@@ -22,9 +22,166 @@ export default {
       return handleReleaseSummary(request, env, url);
     }
 
+    if (url.pathname === "/api/slack/status") {
+      return handleSlackStatus(env);
+    }
+
+    if (url.pathname === "/api/slack/send") {
+      if (request.method !== "POST") {
+        return jsonResponse({ ok: false, message: "Use POST for Slack messages." }, 405);
+      }
+
+      return handleSlackSend(request, env);
+    }
+
     return env.ASSETS.fetch(request);
   }
 };
+
+function handleSlackStatus(env) {
+  const config = getSlackConfig(env);
+  return jsonResponse({
+    ok: true,
+    provider: "Slack Web API",
+    bot: config.botName,
+    channel: config.channel,
+    channelName: config.channelName,
+    tokenConfigured: config.tokenConfigured,
+    channelConfigured: config.channelConfigured,
+    mode: config.tokenConfigured ? "ready" : "missing-token",
+    canPost: config.canPost,
+    message: config.canPost
+      ? "Slack notifier is ready to post through the CORE JIRA NOTIFIER AGENT."
+      : "Configure the SLACK_BOT_TOKEN Worker secret before posting from HQ."
+  });
+}
+
+async function handleSlackSend(request, env) {
+  const body = await safeJson(request);
+  const config = getSlackConfig(env, body);
+  const message = sanitizeSlackMessage(body?.message);
+  const dryRun = Boolean(body?.dryRun);
+
+  if (!message) {
+    return jsonResponse({ ok: false, message: "Slack message is required." }, 400);
+  }
+
+  if (!config.channelConfigured) {
+    return jsonResponse({
+      ok: false,
+      message: "Slack channel is not configured. Set SLACK_CHANNEL_ID or SLACK_DEFAULT_CHANNEL_ID, or keep SLACK_DEFAULT_CHANNEL_NAME configured."
+    }, 400);
+  }
+
+  if (!config.tokenConfigured) {
+    return jsonResponse({
+      ok: false,
+      mode: "missing-token",
+      message: "SLACK_BOT_TOKEN Worker secret is not configured, so HQ cannot post through the Slack bot yet.",
+      channel: config.channel,
+      bot: config.botName
+    }, 503);
+  }
+
+  if (dryRun) {
+    return jsonResponse({
+      ok: true,
+      mode: "dry-run",
+      provider: "Slack Web API",
+      bot: config.botName,
+      channel: config.channel,
+      message: "Dry run only; no Slack message was posted.",
+      preview: message
+    });
+  }
+
+  const slackPayload = {
+    channel: config.channel,
+    text: message,
+    unfurl_links: false,
+    unfurl_media: false
+  };
+
+  const response = await fetch("https://slack.com/api/chat.postMessage", {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${env.SLACK_BOT_TOKEN}`,
+      "content-type": "application/json; charset=utf-8"
+    },
+    body: JSON.stringify(slackPayload)
+  });
+
+  let payload = {};
+  try {
+    payload = await response.json();
+  } catch {
+    payload = {};
+  }
+
+  if (!response.ok || !payload.ok) {
+    return jsonResponse({
+      ok: false,
+      provider: "Slack Web API",
+      bot: config.botName,
+      channel: config.channel,
+      status: response.status,
+      slackError: payload.error || "unknown_error",
+      message: formatSlackError(payload.error, response.status)
+    }, 502);
+  }
+
+  return jsonResponse({
+    ok: true,
+    provider: "Slack Web API",
+    bot: config.botName,
+    channel: payload.channel || config.channel,
+    ts: payload.ts || "",
+    message: "Slack message posted through CORE JIRA NOTIFIER AGENT."
+  });
+}
+
+function getSlackConfig(env, body = {}) {
+  const channelName = sanitizeSlackChannel(body?.channelName || env.SLACK_DEFAULT_CHANNEL_NAME || "core-qa-dream-team");
+  const channel = sanitizeSlackChannel(
+    body?.channelId ||
+    env.SLACK_CHANNEL_ID ||
+    env.SLACK_DEFAULT_CHANNEL_ID ||
+    channelName
+  );
+  const tokenConfigured = Boolean(env.SLACK_BOT_TOKEN);
+  const channelConfigured = Boolean(channel);
+
+  return {
+    botName: env.SLACK_BOT_NAME || "CORE JIRA NOTIFIER AGENT",
+    channel,
+    channelName,
+    tokenConfigured,
+    channelConfigured,
+    canPost: tokenConfigured && channelConfigured
+  };
+}
+
+function sanitizeSlackMessage(value) {
+  return String(value || "").replace(/\r\n/g, "\n").trim().slice(0, 3500);
+}
+
+function sanitizeSlackChannel(value) {
+  return String(value || "").trim().replace(/^#/, "").slice(0, 120);
+}
+
+function formatSlackError(error, status) {
+  const code = error || "unknown_error";
+  const known = {
+    channel_not_found: "Slack could not find the configured channel. Set SLACK_CHANNEL_ID to the channel ID for #core-qa-dream-team.",
+    not_in_channel: "The Slack bot is not in the configured channel. Invite CORE JIRA NOTIFIER AGENT to the channel and retry.",
+    invalid_auth: "The Slack bot token is invalid. Refresh the SLACK_BOT_TOKEN Worker secret.",
+    token_revoked: "The Slack bot token was revoked. Create a new bot token and update SLACK_BOT_TOKEN.",
+    missing_scope: "The Slack bot token is missing the chat:write scope.",
+    account_inactive: "Slack reports the bot account is inactive."
+  };
+
+  return known[code] || `Slack post failed with ${code}${status ? ` (HTTP ${status})` : ""}.`;
+}
 
 async function handleReleaseSummary(request, env, url) {
   const body = await safeJson(request);

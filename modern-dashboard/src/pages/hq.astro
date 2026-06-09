@@ -272,12 +272,12 @@ const operationsServices = [
   },
   {
     name: "Slack notification pipeline",
-    state: "Planned",
-    tone: "planned",
+    state: "Worker route",
+    tone: "healthy",
     cadence: "On failure and assignment change",
-    source: "Workflow or Worker notifier",
-    signal: "Delivery state, channel, assignee mention, and failure summary",
-    next: "Connect automation and data-pull failures to dashboard-visible alerts first."
+    source: "HQ Worker /api/slack/*",
+    signal: "Bot token, channel target, delivery status, and Slack API error state",
+    next: "Use the notifier panel below for manual verification, then connect failures and assignment changes to this route."
   }
 ];
 
@@ -310,6 +310,15 @@ const aiRuntime = {
   provider: "Cloudflare Workers AI",
   mode: "Draft-only response",
   source: "dashboard-data.json from Worker assets"
+};
+
+const slackRuntime = {
+  statusEndpoint: "/api/slack/status",
+  sendEndpoint: "/api/slack/send",
+  provider: "Slack Web API",
+  bot: "CORE JIRA NOTIFIER AGENT",
+  channel: "#core-qa-dream-team",
+  mode: "Manual post check"
 };
 
 const aiInputSources = [
@@ -468,7 +477,7 @@ const hqSpecs = [
   { id: "SPEC-HQ-03", title: "Auth and permissions", status: "In progress", detail: "Role model, gated cards, and request-access UI are drafted." },
   { id: "SPEC-HQ-04", title: "Knowledge base", status: "In progress", detail: "Flow cards, source links, ownership, and freshness are drafted." },
   { id: "SPEC-HQ-05", title: "Automation bench", status: "In progress", detail: "Playwright pilot registry, lifecycle, evidence, and runner guards are drafted." },
-  { id: "SPEC-HQ-06", title: "Operational status", status: "In progress", detail: "Service health cards, probe cadence, and status publishing contract are drafted." },
+  { id: "SPEC-HQ-06", title: "Operational status", status: "In progress", detail: "Service health cards, probe cadence, Slack notifier route, and status publishing contract are drafted." },
   { id: "SPEC-HQ-07", title: "AI release summary", status: "In progress", detail: "Cloudflare Workers AI endpoint, source map, draft outputs, risk signals, and review gates are implemented." },
   { id: "SPEC-HQ-08", title: "Admin console", status: "Planned", detail: "Users, roles, sections, and script permissions." },
   { id: "SPEC-HQ-09", title: "Calendar menu", status: "Implemented", detail: "Confluence GN Releases calendar data is pulled into dashboard-data.json and rendered in HQ with calendar/list views." }
@@ -890,6 +899,46 @@ const hqSpecs = [
               </article>
             ))}
           </div>
+
+          <article
+            class="slack-runner-card"
+            data-slack-status-endpoint={slackRuntime.statusEndpoint}
+            data-slack-send-endpoint={slackRuntime.sendEndpoint}
+            data-slack-channel={slackRuntime.channel}
+          >
+            <div class="slack-runner-top">
+              <div>
+                <p class="eyebrow">Option 2 / Worker notifier</p>
+                <h3>CORE JIRA NOTIFIER AGENT</h3>
+                <p>Post controlled HQ updates through the installed Slack bot in the CORE QA channel, with token and channel readiness visible before anyone sends.</p>
+              </div>
+              <div class="slack-runtime-facts" aria-label="Slack runtime facts">
+                <span>{slackRuntime.provider}</span>
+                <span>{slackRuntime.bot}</span>
+                <span>{slackRuntime.channel}</span>
+              </div>
+            </div>
+
+            <div class="slack-status-strip">
+              <div>
+                <span class="slack-status-dot" id="hq-slack-dot" aria-hidden="true"></span>
+                <strong id="hq-slack-mode">{slackRuntime.mode}</strong>
+              </div>
+              <p id="hq-slack-status" role="status">Checking Slack Worker route...</p>
+            </div>
+
+            <div class="slack-compose-panel">
+              <label for="hq-slack-message">
+                <span>Message</span>
+                <textarea id="hq-slack-message" rows="5">CORE QA HQ smoke check: the Cloudflare Worker Slack notifier is connected to the CORE JIRA NOTIFIER AGENT route.</textarea>
+              </label>
+              <div class="slack-runner-actions">
+                <button type="button" id="hq-slack-refresh">Check status</button>
+                <button type="button" id="hq-slack-send" disabled>Send to Slack</button>
+                <span class="slack-action-note">Posts to {slackRuntime.channel} only when the Worker token is configured.</span>
+              </div>
+            </div>
+          </article>
 
           <div class="ops-cadence-grid" aria-label="Operational status lifecycle">
             {operationsCadence.map((item) => (
@@ -1543,6 +1592,114 @@ const hqSpecs = [
           ticket.parent ? `Parent: ${ticket.parent}` : ""
         ].filter(Boolean).join(" | ");
         return `- ${title}${summary}${metadata ? ` (${metadata})` : ""}${ticket.reason ? ` - ${ticket.reason}` : ""}`;
+      }
+    })();
+  </script>
+
+  <script is:inline>
+    (() => {
+      const runner = document.querySelector(".slack-runner-card");
+      if (!runner) return;
+
+      const statusEndpoint = runner.dataset.slackStatusEndpoint || "/api/slack/status";
+      const sendEndpoint = runner.dataset.slackSendEndpoint || "/api/slack/send";
+      const statusText = document.querySelector("#hq-slack-status");
+      const modeText = document.querySelector("#hq-slack-mode");
+      const dot = document.querySelector("#hq-slack-dot");
+      const refreshButton = document.querySelector("#hq-slack-refresh");
+      const sendButton = document.querySelector("#hq-slack-send");
+      const messageInput = document.querySelector("#hq-slack-message");
+      let latestStatus = null;
+
+      checkSlackStatus();
+
+      refreshButton?.addEventListener("click", checkSlackStatus);
+      sendButton?.addEventListener("click", sendSlackMessage);
+
+      async function checkSlackStatus() {
+        setSlackBusy("Checking Slack Worker route...");
+
+        try {
+          const response = await fetch(statusEndpoint, { cache: "no-store" });
+          const payload = await response.json();
+
+          if (!response.ok || !payload.ok) {
+            throw new Error(payload.message || `Slack status failed with HTTP ${response.status}`);
+          }
+
+          latestStatus = payload;
+          const channel = payload.channelName ? `#${payload.channelName.replace(/^#/, "")}` : payload.channel || runner.dataset.slackChannel || "Slack channel";
+          if (payload.canPost) {
+            setSlackState("ready", "Ready", `Slack bot route is ready for ${channel}.`);
+          } else if (payload.tokenConfigured === false) {
+            setSlackState("missing", "Token missing", "Add the SLACK_BOT_TOKEN Worker secret before posting from HQ.");
+          } else {
+            setSlackState("missing", "Config missing", payload.message || "Slack notifier needs Worker configuration before posting.");
+          }
+        } catch (error) {
+          latestStatus = null;
+          setSlackState("error", "Unavailable", `Slack Worker route unavailable: ${error.message}. Use the Cloudflare HQ URL for live /api/slack routes.`);
+        }
+      }
+
+      async function sendSlackMessage() {
+        const message = messageInput?.value?.trim() || "";
+        if (!message) {
+          setSlackState("error", "Message needed", "Write a Slack message before sending.");
+          return;
+        }
+
+        if (!latestStatus?.canPost) {
+          await checkSlackStatus();
+          if (!latestStatus?.canPost) return;
+        }
+
+        sendButton.disabled = true;
+        setSlackBusy("Posting through CORE JIRA NOTIFIER AGENT...");
+
+        try {
+          const response = await fetch(sendEndpoint, {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+              message,
+              context: {
+                source: "core-qa-hq",
+                release: "v3001.124.0",
+                channel: runner.dataset.slackChannel || "#core-qa-dream-team"
+              }
+            })
+          });
+          const payload = await response.json();
+
+          if (!response.ok || !payload.ok) {
+            throw new Error(payload.message || payload.slackError || `Slack post failed with HTTP ${response.status}`);
+          }
+
+          setSlackState("ready", "Posted", `Slack message posted at ${payload.ts || "the latest timestamp"}.`);
+        } catch (error) {
+          setSlackState("error", "Post failed", error.message);
+        } finally {
+          sendButton.disabled = !latestStatus?.canPost;
+        }
+      }
+
+      function setSlackBusy(message) {
+        if (statusText) statusText.textContent = message;
+        if (modeText) modeText.textContent = "Checking";
+        runner.classList.remove("is-ready", "is-missing", "has-error");
+        runner.classList.add("is-loading");
+        if (sendButton) sendButton.disabled = true;
+        if (dot) dot.setAttribute("data-state", "loading");
+      }
+
+      function setSlackState(state, mode, message) {
+        runner.classList.remove("is-loading", "is-ready", "is-missing", "has-error");
+        runner.classList.add(state === "ready" ? "is-ready" : state === "missing" ? "is-missing" : "has-error");
+        if (modeText) modeText.textContent = mode;
+        if (statusText) statusText.textContent = message;
+        if (sendButton) sendButton.disabled = state !== "ready";
+        if (dot) dot.setAttribute("data-state", state);
       }
     })();
   </script>
