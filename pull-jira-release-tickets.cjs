@@ -1441,7 +1441,8 @@ async function fetchSprintIssuesFromBoard() {
   if (sprintBacklogParityEnabled) {
     try {
       backlogIssueKeys = await fetchBacklogSprintIssueKeys(board.id, sprint.id);
-      sprintIssues = await fetchIssuesByKeys(backlogIssueKeys);
+      sprintIssues = (await fetchIssuesByKeys(backlogIssueKeys)).filter((issue) => !rawIssueIsSubtask(issue));
+      backlogIssueKeys = sprintIssues.map((issue) => issue.key);
       source = "jira-backlog-sprint";
       backlogParity = true;
     } catch (error) {
