@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-09T22:31:05.599Z",
-  "pulledAtDisplay": "Jun 9, 2026, 6:31 PM",
+  "pulledAt": "2026-06-09T22:56:30.483Z",
+  "pulledAtDisplay": "Jun 9, 2026, 6:56 PM",
   "total": 11,
   "issues": [
     {
@@ -816,8 +816,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-09T22:31:05.599Z",
-    "pulledAtDisplay": "Jun 9, 2026, 6:31 PM",
+    "pulledAt": "2026-06-09T22:56:30.483Z",
+    "pulledAtDisplay": "Jun 9, 2026, 6:56 PM",
     "total": 94,
     "mainTotal": 94,
     "subtaskTotal": 0,
@@ -1236,7 +1236,7 @@
         "descriptionImageCount": 0,
         "descriptionVideoCount": 0,
         "descriptionMediaCount": 0,
-        "commentCount": 1,
+        "commentCount": 2,
         "comments": [
           {
             "id": "1179199",
@@ -1252,10 +1252,25 @@
             "mediaCount": 0,
             "body": "Example provided by @Joshua Marquess :\n\nApr 15 2026 7:35:25:667PM (UTC) - Tee Time (13691677) was update in 'GNC' by Niamh Doyle (33837).\n'Player Rule' was: 14, new value is 0\n'Status' was: VACANCY, new value is NOVACANCY\nApr 15 2026 7:32:13:433PM (UTC) - Tee Time (13691677) was update in 'GNC' by Jeremy Myers (30801).\n'Online Rate' was: 40.99, new value is 46.00\n04/15/2026 7:05 PM: TPO v2 online rate was: 46.00 new rate: 40.99 min course: 50.00\nApr 15 2026 6:50:22:070PM (UTC) - Tee Time (13691677) was update in 'GNC' by Jeremy Myers (30801).\n'Online Rate' was: 40.99, new value is 46.00\n04/15/2026 3:10 PM: TPO v2 online rate was: 45.99 new rate: 40.99 min course: 50.00\nApr 15 2026 1:40:01:067PM (UTC) - Tee Time (13691677) was update in 'GNC' by Jeremy Myers (30801).\n'Online Rate' was: 40.99, new value is 45.99\n04/15/2026 11:02 AM: TPO v2 online rate was: 41.99 new rate: 40.99 min course: 50.00\n04/14/2026 5:09 PM: TPO v2 online rate was: 46.00 new rate: 41.99 min course: 50.00\nApr 14 2026 3:28:27:343PM (UTC) - Tee Time (13691677) was update in 'GNC' by Niamh Doyle (33837).\n'Online Rate' was: 41.99, new value is 46.00\n'Initial Rate' was: 41.99, new value is 46.00\nTee time inserted by system based on TeeTimeID: 12167901\n\nInternal note: We have been looking into this issue and we have found that the system updated the online rate from 46.00 to 41.99 and from 46.00 to 40.99 because it is reading some data from these two tables RateRecOverrideRateSet and RateRecDaysOutOverrideRateSet. The stored procedure CRMTeeTimeRateRecUpdateRateSet is looking into table RateRecOverrideRateSet to get the to OverrideFloorRate and if we have that info that will be our FloorRate instead the one that we can see on the Trade Price Matrix, and also looking into RateRecDaysOutOverrideRateSet to get the Rate and use that to determine what the MatrixAdjustment will be.  This is searched by PlayDate, RateSetID, DaysOut, TBID, DWID and TeeTimeRule. This will override the regular configuration that we see on the Trade Price matrix page on GNC. There is history table where we stored data that was used to calculated the new Online Rate, example of the table below:\n\nSELECT * FROM CRMTeeTimeRateRecHistory WITH (NOLOCK) WHERE TTTeeTimeID = 13691677\nORDER BY ModifiedDate desc\n\nWe do not really know where on GNC we can see the data inserted into those tables, but we have found that these stored procedures are the one inserted data into those tables:\n\nStored procedures:\n\n[dbo].[RateRecDemandProcessRateSetBatch]\n[dbo].[RateRecDemandProcessRateSet]\n[dbo].[RateRecDemandProcess_v2]\n\nThe last person that updated stored procedure CRMTeeTimeRateRecUpdateRateSet  was Bryan Geiger. Our guess is that he would be familiarized with this process and we would like to understand the used of these tables in order to provide a prover fix for this issue.\n\nFor the example above we found that OverrideFloorRate was $36 and the Rate was 16% and 19%, that was why the Online rate resulted on 41.99 and 40.99 instead of using the floor configured on the Trade Price Matrix that is $46 and the Adjustment Rate that are between 13% and 8%.\n\nWe requested some information to DS team to see from where those SPs are begin triggered. We will provide that info once we get it from them.",
             "bodyHtml": "<p>Example provided by @Joshua Marquess :</p><pre><code>Apr 15 2026 7:35:25:667PM (UTC) - Tee Time (13691677) was update in 'GNC' by Niamh Doyle (33837).\n      'Player Rule' was: 14, new value is 0\n      'Status' was: VACANCY, new value is NOVACANCY\nApr 15 2026 7:32:13:433PM (UTC) - Tee Time (13691677) was update in 'GNC' by Jeremy Myers (30801).\n      'Online Rate' was: 40.99, new value is 46.00\n04/15/2026 7:05 PM: TPO v2 online rate was: 46.00 new rate: 40.99 min course: 50.00\nApr 15 2026 6:50:22:070PM (UTC) - Tee Time (13691677) was update in 'GNC' by Jeremy Myers (30801).\n      'Online Rate' was: 40.99, new value is 46.00\n04/15/2026 3:10 PM: TPO v2 online rate was: 45.99 new rate: 40.99 min course: 50.00\nApr 15 2026 1:40:01:067PM (UTC) - Tee Time (13691677) was update in 'GNC' by Jeremy Myers (30801).\n      'Online Rate' was: 40.99, new value is 45.99\n04/15/2026 11:02 AM: TPO v2 online rate was: 41.99 new rate: 40.99 min course: 50.00\n04/14/2026 5:09 PM: TPO v2 online rate was: 46.00 new rate: 41.99 min course: 50.00\nApr 14 2026 3:28:27:343PM (UTC) - Tee Time (13691677) was update in 'GNC' by Niamh Doyle (33837).\n      'Online Rate' was: 41.99, new value is 46.00\n      'Initial Rate' was: 41.99, new value is 46.00\nTee time inserted by system based on TeeTimeID: 12167901</code></pre><p>Internal note: We have been looking into this issue and we have found that the system updated the online rate from 46.00 to 41.99 and from 46.00 to 40.99 because it is reading some data from these two tables RateRecOverrideRateSet and RateRecDaysOutOverrideRateSet. The stored procedure CRMTeeTimeRateRecUpdateRateSet is looking into table RateRecOverrideRateSet to get the to OverrideFloorRate and if we have that info that will be our FloorRate instead the one that we can see on the Trade Price Matrix, and also looking into RateRecDaysOutOverrideRateSet to get the Rate and use that to determine what the MatrixAdjustment will be.  This is searched by PlayDate, RateSetID, DaysOut, TBID, DWID and TeeTimeRule. This will override the regular configuration that we see on the Trade Price matrix page on GNC. There is history table where we stored data that was used to calculated the new Online Rate, example of the table below:</p><pre><code>SELECT * FROM CRMTeeTimeRateRecHistory WITH (NOLOCK) WHERE TTTeeTimeID = 13691677\nORDER BY ModifiedDate desc</code></pre><p>We do not really know where on GNC we can see the data inserted into those tables, but we have found that these stored procedures are the one inserted data into those tables:</p><p>Stored procedures:</p><pre><code>[dbo].[RateRecDemandProcessRateSetBatch]\n[dbo].[RateRecDemandProcessRateSet]\n[dbo].[RateRecDemandProcess_v2]</code></pre><p>The last person that updated stored procedure CRMTeeTimeRateRecUpdateRateSet  was Bryan Geiger. Our guess is that he would be familiarized with this process and we would like to understand the used of these tables in order to provide a prover fix for this issue.</p><p>For the example above we found that OverrideFloorRate was $36 and the Rate was 16% and 19%, that was why the Online rate resulted on 41.99 and 40.99 instead of using the floor configured on the Trade Price Matrix that is $46 and the Adjustment Rate that are between 13% and 8%.</p><p>We requested some information to DS team to see from where those SPs are begin triggered. We will provide that info once we get it from them.</p>"
+          },
+          {
+            "id": "1181125",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14429?focusedCommentId=1181125",
+            "author": "Yoel Martin Pardo",
+            "authorAccountId": "625571809e7380006fb29599",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+            "created": "2026-06-09T18:39:44.361-0400",
+            "createdDisplay": "Jun 9, 2026, 6:39 PM",
+            "updated": "2026-06-09T18:39:44.361-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Internal note: @Joshua Marquess found that records on RateRecOverrideRateSet had wrong floorRate because Saturdays and Sundays should have $46, but Saturdays has $36 while Sundays and Mondays has $46. We took another look at those stored procedures and we found that RateRecDemandProcessRateSetBatch stored procedure is always update the setting the DATEFIRST to be 1 even before the merge (this will update RateRecOverrideRateSet  table or insert new records. Here is the issue) while RateRecDemandProcess_v2 stored procedure updates that to 7 before the merge. Setting that to 1 before the merge is going to cause this issue since it is specifying that the first day of the week is Monday while in the configuration we have it as Sunday.",
+            "bodyHtml": "<p>Internal note: @Joshua Marquess found that records on RateRecOverrideRateSet had wrong floorRate because Saturdays and Sundays should have $46, but Saturdays has $36 while Sundays and Mondays has $46. We took another look at those stored procedures and we found that <code>RateRecDemandProcessRateSetBatch</code> stored procedure is always update the setting the DATEFIRST to be 1 even before the merge (this will update RateRecOverrideRateSet  table or insert new records. Here is the issue) while <code>RateRecDemandProcess_v2</code> stored procedure updates that to 7 before the merge. Setting that to 1 before the merge is going to cause this issue since it is specifying that the first day of the week is Monday while in the configuration we have it as Sunday.</p>"
           }
         ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14429?focusedCommentId=1179199",
-        "lastCommentDisplay": "Jun 4, 2026, 3:39 PM",
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14429?focusedCommentId=1181125",
+        "lastCommentDisplay": "Jun 9, 2026, 6:39 PM",
         "lastCommentAuthor": "Yoel Martin Pardo",
         "testChecklist": null,
         "type": "Bug",
@@ -1268,8 +1283,8 @@
         "assignedDeveloper": "Yoel Martin Pardo",
         "assignedDeveloperAccountId": "625571809e7380006fb29599",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-06-08T11:57:10.975-0400",
-        "updatedDisplay": "Jun 8, 2026, 11:57 AM",
+        "updated": "2026-06-09T18:39:44.361-0400",
+        "updatedDisplay": "Jun 9, 2026, 6:39 PM",
         "created": "2026-04-30T12:02:28.873-0400",
         "createdDisplay": "Apr 30, 2026, 12:02 PM",
         "components": [],
@@ -6626,13 +6641,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-09T22:30:44.456Z",
-    "pulledAtDisplay": "Jun 9, 2026, 6:30 PM",
+    "pulledAt": "2026-06-09T22:55:55.549Z",
+    "pulledAtDisplay": "Jun 9, 2026, 6:55 PM",
     "window": {
-      "start": "2026-04-25T22:30:44.455Z",
-      "end": "2026-12-06T22:30:44.455Z",
-      "startDisplay": "Apr 25, 2026, 6:30 PM",
-      "endDisplay": "Dec 6, 2026, 5:30 PM"
+      "start": "2026-04-25T22:55:55.549Z",
+      "end": "2026-12-06T22:55:55.549Z",
+      "startDisplay": "Apr 25, 2026, 6:55 PM",
+      "endDisplay": "Dec 6, 2026, 5:55 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -6645,7 +6660,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-09T22:30:46.718Z",
+        "pulledAt": "2026-06-09T22:56:01.216Z",
         "eventCount": 91,
         "events": [
           {
@@ -8019,10 +8034,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-09T22:09:02.581Z",
-    "previousPulledAtDisplay": "Jun 9, 2026, 6:09 PM",
-    "currentPulledAt": "2026-06-09T22:31:05.599Z",
-    "currentPulledAtDisplay": "Jun 9, 2026, 6:31 PM",
+    "previousPulledAt": "2026-06-09T22:31:05.599Z",
+    "previousPulledAtDisplay": "Jun 9, 2026, 6:31 PM",
+    "currentPulledAt": "2026-06-09T22:56:30.483Z",
+    "currentPulledAtDisplay": "Jun 9, 2026, 6:56 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -8030,6 +8045,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-09T22:31:05.599Z",
+      "previousPulledAtDisplay": "Jun 9, 2026, 6:31 PM",
+      "currentPulledAt": "2026-06-09T22:56:30.483Z",
+      "currentPulledAtDisplay": "Jun 9, 2026, 6:56 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-09T22:09:02.581Z",
       "previousPulledAtDisplay": "Jun 9, 2026, 6:09 PM",
@@ -10687,17 +10713,6 @@
       "previousPulledAtDisplay": "Jun 7, 2026, 5:35 AM",
       "currentPulledAt": "2026-06-07T09:50:31.740Z",
       "currentPulledAtDisplay": "Jun 7, 2026, 5:50 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-07T09:10:20.814Z",
-      "previousPulledAtDisplay": "Jun 7, 2026, 5:10 AM",
-      "currentPulledAt": "2026-06-07T09:35:22.273Z",
-      "currentPulledAtDisplay": "Jun 7, 2026, 5:35 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
