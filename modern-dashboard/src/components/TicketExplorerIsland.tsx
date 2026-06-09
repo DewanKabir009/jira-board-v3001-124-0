@@ -135,8 +135,19 @@ type DashboardData = {
   sprintView?: {
     name?: string;
     label?: string;
+    source?: string;
+    scopeLabel?: string;
     projectKey?: string;
     projectLabel?: string;
+    boardName?: string;
+    boardId?: string;
+    boardLocation?: string;
+    boardUrl?: string;
+    sprintId?: string;
+    sprintState?: string;
+    sprintStartDate?: string;
+    sprintEndDate?: string;
+    queryDescription?: string;
     jql?: string;
     jiraFilterUrl?: string;
     pulledAt?: string;

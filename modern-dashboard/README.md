@@ -62,6 +62,8 @@ SPEC-05 adds a React island powered by TanStack Table. The island loads `dashboa
 
 Rows link directly to Jira, while the detail panel keeps a current-board action link available so assignee and checklist workflows can stay on the proven generated dashboard until parity is complete.
 
+Sprint View reads `dashboard-data.json.sprintView`, which is generated from the Jira Agile board named `GN Core Platform` for sprint `2026.8`. The `CORE` project key remains a ticket-key/search constraint, but the sprint ticket list is scoped by the board/space so other CORE sprint work is excluded.
+
 ## Checklist Workspace
 
 SPEC-06 adds an editable QA workspace to the selected-ticket detail panel. Imported checklist cases are loaded from `dashboard-data.json`, manual cases can be added, and ticket-level evidence and concerns are saved in browser storage.

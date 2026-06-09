@@ -64,6 +64,7 @@ GitHub Pages remains useful as a static fallback. The `.124` modern board and HQ
 ## What Is Implemented Now
 
 - `/modern/` is the active `.124` release dashboard with ticket cards, table view, assignee actions, Jira search, comments, automation status, and ticket detail surfaces.
+- Sprint View pulls sprint `2026.8` from the Jira Agile board `GN Core Platform` so it matches the board/space scope instead of every `CORE` project issue in the sprint.
 - `/modern/hq/` is the HQ landing route built with Astro and deployed as static assets.
 - `/modern/hq/#calendar` is the Calendar Menu. It reads the Confluence GN Releases Team Calendar payload from `dashboard-data.json`, opens on the current month, provides month navigation, and groups the Upcoming list into collapsible month sections.
 - `/api/ai/status` reports whether the Cloudflare Worker has the Workers AI binding.

@@ -6,8 +6,10 @@ const version = process.argv[2] || process.env.JIRA_FIX_VERSION || "vNEXT.0";
 const sprintName = process.env.JIRA_SPRINT_NAME || "2026.8";
 const sprintProjectKey = process.env.JIRA_SPRINT_PROJECT_KEY || "CORE";
 const sprintProjectLabel = process.env.JIRA_SPRINT_PROJECT_LABEL || "B2C CORE Platforms";
+const sprintBoardName = process.env.JIRA_SPRINT_BOARD_NAME || "GN Core Platform";
+const sprintBoardLocationLabel = process.env.JIRA_SPRINT_BOARD_LOCATION_LABEL || "B2C Core Platforms";
 const siteUrl = process.env.JIRA_SITE_URL || "https://golfnow.atlassian.net";
-const dashboardVersion = "v1.11.1";
+const dashboardVersion = "v1.11.2";
 const dashboardDataSchemaVersion = "dashboard-data/v1";
 const dashboardDataFileName = "dashboard-data.json";
 const calendarRefreshSeconds = Number(process.env.HQ_CALENDAR_REFRESH_SECONDS || 300);
@@ -1033,10 +1035,157 @@ async function fetchIssues() {
   return fetchIssuesByJql(`fixVersion = "${escapeJqlString(version)}" ORDER BY updated DESC`);
 }
 
+async function fetchAgileJson(apiPath, params = {}) {
+  const url = new URL(`https://api.atlassian.com/ex/jira/${cloudId}/rest/agile/1.0${apiPath}`);
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined && value !== null && value !== "") {
+      url.searchParams.set(key, String(value));
+    }
+  }
+
+  const response = await fetch(url, {
+    headers: {
+      Authorization: authHeader,
+      Accept: "application/json",
+    },
+  });
+
+  const text = await response.text();
+  if (!response.ok) {
+    throw new Error(`Jira Agile API failed: HTTP ${response.status} ${response.statusText}\n${text}`);
+  }
+
+  return text ? JSON.parse(text) : {};
+}
+
+async function fetchAgilePages(apiPath, params = {}, itemKey = "values") {
+  const items = [];
+  let startAt = 0;
+  const maxResults = Number(params.maxResults || 100);
+
+  while (true) {
+    const payload = await fetchAgileJson(apiPath, {
+      ...params,
+      startAt,
+      maxResults,
+    });
+    const pageItems = Array.isArray(payload[itemKey]) ? payload[itemKey] : [];
+    items.push(...pageItems);
+
+    const payloadStart = Number(payload.startAt ?? startAt);
+    const payloadMax = Number(payload.maxResults ?? maxResults);
+    const total = Number(payload.total ?? items.length);
+
+    if (payload.isLast === true || pageItems.length === 0 || payloadStart + payloadMax >= total) {
+      break;
+    }
+
+    startAt = payloadStart + payloadMax;
+  }
+
+  return items;
+}
+
+function normalizedText(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
+function sprintBoardLocation(board) {
+  const location = board?.location || {};
+  return location.displayName || location.projectName || location.name || location.projectKey || "";
+}
+
+async function findSprintBoard() {
+  if (!sprintBoardName) {
+    return null;
+  }
+
+  const boards = await fetchAgilePages("/board", {
+    name: sprintBoardName,
+    type: "scrum",
+  });
+  const targetName = normalizedText(sprintBoardName);
+  const targetLocation = normalizedText(sprintBoardLocationLabel);
+  const exactNameMatches = boards.filter((board) => normalizedText(board.name) === targetName);
+  const candidates = exactNameMatches.length ? exactNameMatches : boards;
+
+  return candidates.find((board) => normalizedText(sprintBoardLocation(board)).includes(targetLocation)) ||
+    candidates.find((board) => board?.location?.projectKey === sprintProjectKey) ||
+    candidates[0] ||
+    null;
+}
+
+async function findBoardSprint(boardId) {
+  const sprints = await fetchAgilePages(`/board/${encodeURIComponent(boardId)}/sprint`, {
+    state: "active,future,closed",
+  });
+  const targetName = normalizedText(sprintName);
+
+  return sprints.find((sprint) => normalizedText(sprint.name) === targetName) ||
+    sprints.find((sprint) => normalizedText(sprint.name).includes(targetName)) ||
+    null;
+}
+
+async function fetchSprintIssuesFromBoard() {
+  const board = await findSprintBoard();
+  if (!board?.id) {
+    throw new Error(`Jira sprint board "${sprintBoardName}" was not found.`);
+  }
+
+  const sprint = await findBoardSprint(board.id);
+  if (!sprint?.id) {
+    throw new Error(`Sprint "${sprintName}" was not found on Jira board "${board.name || sprintBoardName}".`);
+  }
+
+  const boardJql = sprintProjectKey ? `project = "${escapeJqlString(sprintProjectKey)}"` : "";
+  const sprintIssues = await fetchAgilePages(`/board/${encodeURIComponent(board.id)}/sprint/${encodeURIComponent(sprint.id)}/issue`, {
+    fields: fields.join(","),
+    jql: boardJql,
+  }, "issues");
+  const jql = [
+    boardJql,
+    `Sprint = "${escapeJqlString(sprintName)}"`,
+  ].filter(Boolean).join(" AND ");
+
+  return {
+    source: "jira-agile-board",
+    boardId: board.id,
+    boardName: board.name || sprintBoardName,
+    boardUrl: sprintProjectKey ? `${siteUrl}/jira/software/c/projects/${sprintProjectKey}/boards/${board.id}` : "",
+    boardLocation: sprintBoardLocation(board),
+    sprintId: sprint.id,
+    sprintState: sprint.state || "",
+    sprintStartDate: sprint.startDate || "",
+    sprintEndDate: sprint.endDate || "",
+    jql,
+    queryDescription: `Jira board "${board.name || sprintBoardName}" sprint "${sprint.name || sprintName}"`,
+    issues: sprintIssues,
+  };
+}
+
 async function fetchSprintIssues() {
-  const sprintProjectClause = sprintProjectKey ? `project = "${escapeJqlString(sprintProjectKey)}" AND ` : "";
-  const sprintJql = `${sprintProjectClause}Sprint = "${escapeJqlString(sprintName)}" ORDER BY updated DESC`;
-  const sprintResult = await fetchIssuesByJql(sprintJql);
+  let sprintResult;
+
+  if (sprintBoardName) {
+    try {
+      sprintResult = await fetchSprintIssuesFromBoard();
+    } catch (error) {
+      console.warn(`Unable to pull Sprint View from Jira board "${sprintBoardName}"; falling back to JQL. ${error.message}`);
+    }
+  }
+
+  if (!sprintResult) {
+    const sprintProjectClause = sprintProjectKey ? `project = "${escapeJqlString(sprintProjectKey)}" AND ` : "";
+    const sprintJql = `${sprintProjectClause}Sprint = "${escapeJqlString(sprintName)}" ORDER BY updated DESC`;
+    sprintResult = {
+      source: "jira-jql",
+      scopeLabel: sprintProjectLabel || sprintProjectKey || "Jira project fallback",
+      jql: sprintJql,
+      issues: (await fetchIssuesByJql(sprintJql)).issues || [],
+    };
+  }
+
   const sprintIssues = sprintResult.issues || [];
   const parentKeys = [
     ...new Set([
@@ -1066,7 +1215,7 @@ async function fetchSprintIssues() {
   }
 
   return {
-    jql: sprintJql,
+    ...sprintResult,
     issues: mergeRawIssues(sprintIssues, ...extraGroups)
   };
 }
@@ -1392,18 +1541,32 @@ function buildPullHistory(previousData, currentDiff) {
   return history.slice(0, 168);
 }
 
-function buildSprintView(issues, jql, pulledAt, pulledAtDisplay) {
+function buildSprintView(issues, sprintSource, pulledAt, pulledAtDisplay) {
+  const source = typeof sprintSource === "string" ? { jql: sprintSource } : sprintSource || {};
   const mainTotal = issues.filter((issue) => !issue.isSubtask).length;
   const subtaskTotal = issues.length - mainTotal;
-  const projectSuffix = sprintProjectLabel ? ` - ${sprintProjectLabel}` : "";
+  const scopeLabel = source.boardName || source.scopeLabel || sprintProjectLabel;
+  const projectSuffix = scopeLabel ? ` - ${scopeLabel}` : "";
+  const jql = source.jql || "";
 
   return {
     name: sprintName,
     label: `Sprint ${sprintName}${projectSuffix}`,
+    source: source.source || (source.boardName ? "jira-agile-board" : "jira-jql"),
+    scopeLabel,
     projectKey: sprintProjectKey,
     projectLabel: sprintProjectLabel,
+    boardName: source.boardName || sprintBoardName,
+    boardId: source.boardId || "",
+    boardLocation: source.boardLocation || sprintBoardLocationLabel,
+    boardUrl: source.boardUrl || "",
+    sprintId: source.sprintId || "",
+    sprintState: source.sprintState || "",
+    sprintStartDate: source.sprintStartDate || "",
+    sprintEndDate: source.sprintEndDate || "",
+    queryDescription: source.queryDescription || "",
     jql,
-    jiraFilterUrl: `${siteUrl}/issues/?jql=${encodeURIComponent(jql)}`,
+    jiraFilterUrl: source.boardUrl || (jql ? `${siteUrl}/issues/?jql=${encodeURIComponent(jql)}` : ""),
     pulledAt,
     pulledAtDisplay,
     total: issues.length,
@@ -1764,7 +1927,7 @@ function buildJson(issues, jql, previousData, sprintPayload, calendarMenu) {
     pulledAtDisplay,
     total: issues.length,
     issues,
-    sprintView: sprintPayload ? buildSprintView(sprintPayload.issues || [], sprintPayload.jql || "", pulledAt, pulledAtDisplay) : null,
+    sprintView: sprintPayload ? buildSprintView(sprintPayload.issues || [], sprintPayload, pulledAt, pulledAtDisplay) : null,
     calendarMenu: calendarMenu || null,
     pullDiff,
     pullHistory: buildPullHistory(previousData, pullDiff).map((entry) => enrichPullDiff(entry, issuesByKey)),
@@ -6264,7 +6427,7 @@ async function main() {
   const sprintIssues = (sprintResult.issues || []).map((issue) => normalizedByKey.get(issue.key)).filter(Boolean);
   const calendarMenu = await calendarMenuPromise;
   const json = buildJson(issues, jql, previousData, {
-    jql: sprintResult.jql,
+    ...sprintResult,
     issues: sprintIssues
   }, calendarMenu);
   const dashboardData = buildDashboardData(json);
@@ -6278,6 +6441,9 @@ async function main() {
     total: issues.length,
     sprint: sprintName,
     sprintProject: sprintProjectKey,
+    sprintBoard: sprintResult.boardName || "",
+    sprintBoardId: sprintResult.boardId || "",
+    sprintSource: sprintResult.source || "",
     sprintTotal: sprintIssues.length,
     calendarSources: calendarMenu.sources.length,
     calendarEvents: calendarMenu.sources.reduce((total, source) => total + Number(source.eventCount || 0), 0),
