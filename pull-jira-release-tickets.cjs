@@ -8,8 +8,9 @@ const sprintProjectKey = process.env.JIRA_SPRINT_PROJECT_KEY || "CORE";
 const sprintProjectLabel = process.env.JIRA_SPRINT_PROJECT_LABEL || "B2C CORE Platforms";
 const sprintBoardName = process.env.JIRA_SPRINT_BOARD_NAME || "GN Core Platform";
 const sprintBoardLocationLabel = process.env.JIRA_SPRINT_BOARD_LOCATION_LABEL || "B2C Core Platforms";
+const sprintBacklogParityEnabled = process.env.JIRA_SPRINT_BACKLOG_PARITY !== "false";
 const siteUrl = process.env.JIRA_SITE_URL || "https://golfnow.atlassian.net";
-const dashboardVersion = "v1.11.2";
+const dashboardVersion = "v1.11.3";
 const dashboardDataSchemaVersion = "dashboard-data/v1";
 const dashboardDataFileName = "dashboard-data.json";
 const calendarRefreshSeconds = Number(process.env.HQ_CALENDAR_REFRESH_SECONDS || 300);
@@ -975,6 +976,19 @@ function issueKeyList(keys) {
     .join(", ");
 }
 
+function issueKeySortMap(keys) {
+  return new Map((keys || []).map((key, index) => [key, index]));
+}
+
+function sortIssuesByKeyOrder(issues, orderedKeys) {
+  const order = issueKeySortMap(orderedKeys);
+  return [...(issues || [])].sort((left, right) => {
+    const leftIndex = order.has(left.key) ? order.get(left.key) : Number.MAX_SAFE_INTEGER;
+    const rightIndex = order.has(right.key) ? order.get(right.key) : Number.MAX_SAFE_INTEGER;
+    return leftIndex - rightIndex;
+  });
+}
+
 function rawIssueIsSubtask(issue) {
   return Boolean(issue?.fields?.issuetype?.subtask);
 }
@@ -1035,6 +1049,23 @@ async function fetchIssues() {
   return fetchIssuesByJql(`fixVersion = "${escapeJqlString(version)}" ORDER BY updated DESC`);
 }
 
+async function fetchIssuesByKeys(orderedKeys) {
+  const issues = [];
+
+  for (let index = 0; index < orderedKeys.length; index += 50) {
+    const chunk = orderedKeys.slice(index, index + 50);
+    const keys = issueKeyList(chunk);
+    if (!keys) {
+      continue;
+    }
+
+    const result = await fetchIssuesByJql(`key in (${keys})`);
+    issues.push(...(result.issues || []));
+  }
+
+  return sortIssuesByKeyOrder(mergeRawIssues(issues), orderedKeys);
+}
+
 async function fetchAgileJson(apiPath, params = {}) {
   const url = new URL(`https://api.atlassian.com/ex/jira/${cloudId}/rest/agile/1.0${apiPath}`);
 
@@ -1054,6 +1085,30 @@ async function fetchAgileJson(apiPath, params = {}) {
   const text = await response.text();
   if (!response.ok) {
     throw new Error(`Jira Agile API failed: HTTP ${response.status} ${response.statusText}\n${text}`);
+  }
+
+  return text ? JSON.parse(text) : {};
+}
+
+async function fetchJiraJsonFromPath(apiPath, params = {}) {
+  const url = new URL(`https://api.atlassian.com/ex/jira/${cloudId}${apiPath}`);
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value !== undefined && value !== null && value !== "") {
+      url.searchParams.set(key, String(value));
+    }
+  }
+
+  const response = await fetch(url, {
+    headers: {
+      Authorization: authHeader,
+      Accept: "application/json",
+    },
+  });
+
+  const text = await response.text();
+  if (!response.ok) {
+    throw new Error(`Jira API path failed: HTTP ${response.status} ${response.statusText}\n${text}`);
   }
 
   return text ? JSON.parse(text) : {};
@@ -1094,6 +1149,146 @@ function normalizedText(value) {
 function sprintBoardLocation(board) {
   const location = board?.location || {};
   return location.displayName || location.projectName || location.name || location.projectKey || "";
+}
+
+function addBacklogIssueKey(keys, seen, value) {
+  if (!value) {
+    return;
+  }
+
+  const key = typeof value === "string"
+    ? value
+    : value.key || value.issueKey || value.issuekey || value.issue?.key || value.issue?.issueKey || "";
+
+  if (/^[A-Z][A-Z0-9]+-\d+$/.test(String(key)) && !seen.has(String(key))) {
+    seen.add(String(key));
+    keys.push(String(key));
+  }
+}
+
+function addBacklogIssueKeysFromValue(keys, seen, value) {
+  if (!value) {
+    return;
+  }
+
+  if (Array.isArray(value)) {
+    value.forEach((item) => addBacklogIssueKeysFromValue(keys, seen, item));
+    return;
+  }
+
+  if (typeof value === "string") {
+    addBacklogIssueKey(keys, seen, value);
+    return;
+  }
+
+  if (typeof value !== "object") {
+    return;
+  }
+
+  addBacklogIssueKey(keys, seen, value);
+  Object.values(value).forEach((item) => addBacklogIssueKeysFromValue(keys, seen, item));
+}
+
+function extractIssueKeysFromBacklogSprint(sprint) {
+  const keys = [];
+  const seen = new Set();
+  const candidateFields = [
+    "issues",
+    "issueKeys",
+    "issuekeys",
+    "issueIds",
+    "items",
+    "contents",
+    "workItems",
+    "workItemKeys",
+  ];
+
+  for (const field of candidateFields) {
+    addBacklogIssueKeysFromValue(keys, seen, sprint?.[field]);
+  }
+
+  return keys;
+}
+
+function findBacklogSprintNodes(payload) {
+  const matches = [];
+  const seen = new Set();
+  const targetName = normalizedText(sprintName);
+
+  function visit(value) {
+    if (!value || typeof value !== "object") {
+      return;
+    }
+
+    if (seen.has(value)) {
+      return;
+    }
+    seen.add(value);
+
+    const nodeName = normalizedText(value.name || value.sprintName || value.label || value.title);
+    if (nodeName === targetName || nodeName.startsWith(`${targetName} `)) {
+      matches.push(value);
+    }
+
+    if (Array.isArray(value)) {
+      value.forEach(visit);
+      return;
+    }
+
+    Object.values(value).forEach(visit);
+  }
+
+  visit(payload);
+  return matches;
+}
+
+async function fetchBacklogSprintIssueKeys(boardId, sprintId) {
+  if (!sprintBacklogParityEnabled) {
+    return [];
+  }
+
+  const params = {
+    rapidViewId: boardId,
+    selectedProjectKey: sprintProjectKey,
+  };
+  const endpoints = [
+    "/rest/greenhopper/1.0/xboard/plan/backlog/data.json",
+    "/rest/greenhopper/1.0/xboard/plan/backlog/data",
+  ];
+  let payload = null;
+  let lastError = null;
+
+  for (const endpoint of endpoints) {
+    try {
+      payload = await fetchJiraJsonFromPath(endpoint, params);
+      break;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  if (!payload) {
+    throw lastError || new Error("Jira backlog payload could not be loaded.");
+  }
+
+  const sprintCandidates = findBacklogSprintNodes(payload);
+  const candidateResults = sprintCandidates
+    .filter((candidate) => !sprintId || String(candidate.id || candidate.sprintId || "") === String(sprintId) || normalizedText(candidate.name || candidate.sprintName || candidate.label || candidate.title).startsWith(normalizedText(sprintName)))
+    .map((candidate) => ({
+      candidate,
+      keys: extractIssueKeysFromBacklogSprint(candidate),
+    }))
+    .filter((result) => result.keys.length > 0)
+    .sort((left, right) => right.keys.length - left.keys.length);
+  const selected = candidateResults[0] || null;
+  const keys = selected?.keys || [];
+
+  if (!keys.length) {
+    const topLevelKeys = Object.keys(payload || {}).slice(0, 20).join(", ");
+    throw new Error(`Jira backlog payload did not expose visible issue keys for sprint "${sprintName}". Candidate nodes: ${sprintCandidates.length}. Top-level keys: ${topLevelKeys}`);
+  }
+
+  return keys;
 }
 
 async function findSprintBoard() {
@@ -1139,17 +1334,37 @@ async function fetchSprintIssuesFromBoard() {
   }
 
   const boardJql = sprintProjectKey ? `project = "${escapeJqlString(sprintProjectKey)}"` : "";
-  const sprintIssues = await fetchAgilePages(`/board/${encodeURIComponent(board.id)}/sprint/${encodeURIComponent(sprint.id)}/issue`, {
-    fields: fields.join(","),
-    jql: boardJql,
-  }, "issues");
   const jql = [
     boardJql,
     `Sprint = "${escapeJqlString(sprintName)}"`,
   ].filter(Boolean).join(" AND ");
+  let sprintIssues = [];
+  let backlogIssueKeys = [];
+  let source = "jira-agile-board";
+  let backlogParity = false;
+  let backlogWarning = "";
+
+  if (sprintBacklogParityEnabled) {
+    try {
+      backlogIssueKeys = await fetchBacklogSprintIssueKeys(board.id, sprint.id);
+      sprintIssues = await fetchIssuesByKeys(backlogIssueKeys);
+      source = "jira-backlog-sprint";
+      backlogParity = true;
+    } catch (error) {
+      backlogWarning = error.message;
+      console.warn(`Unable to pull Sprint View from Jira backlog data for board "${board.name || sprintBoardName}"; falling back to Agile sprint endpoint. ${error.message}`);
+    }
+  }
+
+  if (!sprintIssues.length) {
+    sprintIssues = await fetchAgilePages(`/board/${encodeURIComponent(board.id)}/sprint/${encodeURIComponent(sprint.id)}/issue`, {
+      fields: fields.join(","),
+      jql: boardJql,
+    }, "issues");
+  }
 
   return {
-    source: "jira-agile-board",
+    source,
     boardId: board.id,
     boardName: board.name || sprintBoardName,
     boardUrl: sprintProjectKey ? `${siteUrl}/jira/software/c/projects/${sprintProjectKey}/boards/${board.id}` : "",
@@ -1158,8 +1373,13 @@ async function fetchSprintIssuesFromBoard() {
     sprintState: sprint.state || "",
     sprintStartDate: sprint.startDate || "",
     sprintEndDate: sprint.endDate || "",
+    backlogParity,
+    backlogIssueCount: backlogIssueKeys.length,
+    backlogWarning,
     jql,
-    queryDescription: `Jira board "${board.name || sprintBoardName}" sprint "${sprint.name || sprintName}"`,
+    queryDescription: backlogParity
+      ? `Jira backlog sprint "${sprint.name || sprintName}" on board "${board.name || sprintBoardName}"`
+      : `Jira board "${board.name || sprintBoardName}" sprint "${sprint.name || sprintName}"`,
     issues: sprintIssues,
   };
 }
@@ -1187,6 +1407,13 @@ async function fetchSprintIssues() {
   }
 
   const sprintIssues = sprintResult.issues || [];
+  if (sprintResult.backlogParity) {
+    return {
+      ...sprintResult,
+      issues: sprintIssues,
+    };
+  }
+
   const parentKeys = [
     ...new Set([
       ...sprintIssues.filter((issue) => !rawIssueIsSubtask(issue)).map((issue) => issue.key),
@@ -1564,6 +1791,9 @@ function buildSprintView(issues, sprintSource, pulledAt, pulledAtDisplay) {
     sprintState: source.sprintState || "",
     sprintStartDate: source.sprintStartDate || "",
     sprintEndDate: source.sprintEndDate || "",
+    backlogParity: Boolean(source.backlogParity),
+    backlogIssueCount: Number(source.backlogIssueCount || 0),
+    backlogWarning: source.backlogWarning || "",
     queryDescription: source.queryDescription || "",
     jql,
     jiraFilterUrl: source.boardUrl || (jql ? `${siteUrl}/issues/?jql=${encodeURIComponent(jql)}` : ""),
@@ -6444,6 +6674,8 @@ async function main() {
     sprintBoard: sprintResult.boardName || "",
     sprintBoardId: sprintResult.boardId || "",
     sprintSource: sprintResult.source || "",
+    sprintBacklogParity: Boolean(sprintResult.backlogParity),
+    sprintBacklogIssueCount: Number(sprintResult.backlogIssueCount || 0),
     sprintTotal: sprintIssues.length,
     calendarSources: calendarMenu.sources.length,
     calendarEvents: calendarMenu.sources.reduce((total, source) => total + Number(source.eventCount || 0), 0),

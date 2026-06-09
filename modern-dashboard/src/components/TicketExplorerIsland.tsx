@@ -147,6 +147,9 @@ type DashboardData = {
     sprintState?: string;
     sprintStartDate?: string;
     sprintEndDate?: string;
+    backlogParity?: boolean;
+    backlogIssueCount?: number;
+    backlogWarning?: string;
     queryDescription?: string;
     jql?: string;
     jiraFilterUrl?: string;
