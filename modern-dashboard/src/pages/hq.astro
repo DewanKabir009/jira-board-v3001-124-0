@@ -488,12 +488,12 @@ const hqSpecs = [
 
       <nav class="hq-nav" aria-label="HQ modules">
         <a class="active" href="#boards">Release boards</a>
-        <a href="#calendar">Calendar menu</a>
         <a href="#kb">Knowledge base</a>
         <a href="#automation">Automation bench</a>
         <a href="#ai">AI summary</a>
         <a href="#status">Operations status</a>
         <a href="#access">Access control</a>
+        <a href="#calendar">Calendar menu</a>
       </nav>
 
       <div class="side-status">
@@ -616,12 +616,6 @@ const hqSpecs = [
           </article>
 
           <div class="calendar-toolbar" aria-label="Calendar controls">
-            <label class="calendar-select" for="calendar-source-select">
-              <span>View</span>
-              <select id="calendar-source-select">
-                <option>Loading calendars</option>
-              </select>
-            </label>
             <div class="calendar-view-tabs" role="tablist" aria-label="Calendar display">
               <button class="active" type="button" data-calendar-view="calendar">Calendar</button>
               <button type="button" data-calendar-view="upcoming">Upcoming</button>
@@ -633,8 +627,15 @@ const hqSpecs = [
 
           <div class="calendar-month" id="calendar-month-view" aria-live="polite">
             <div class="calendar-month-heading">
-              <strong id="calendar-month-title">Release calendar</strong>
-              <span id="calendar-event-count">0 events</span>
+              <div>
+                <strong id="calendar-month-title">Release calendar</strong>
+                <span class="calendar-month-count" id="calendar-event-count">0 events</span>
+              </div>
+              <div class="calendar-month-controls" aria-label="Calendar month navigation">
+                <button type="button" data-calendar-month="previous" aria-label="Previous month">Prev</button>
+                <button type="button" data-calendar-month="today">Today</button>
+                <button type="button" data-calendar-month="next" aria-label="Next month">Next</button>
+              </div>
             </div>
             <div class="calendar-weekdays" aria-hidden="true">
               <span>Sun</span>
@@ -1552,7 +1553,6 @@ const hqSpecs = [
       if (!calendarConsole) return;
 
       const dataUrl = calendarConsole.getAttribute("data-calendar-data-url") || "/dashboard-data.json";
-      const sourceSelect = document.querySelector("#calendar-source-select");
       const openSourceLink = document.querySelector("#calendar-open-source");
       const activeTitle = document.querySelector("#calendar-active-title");
       const activeSummary = document.querySelector("#calendar-active-summary");
@@ -1566,10 +1566,12 @@ const hqSpecs = [
       const eventCount = document.querySelector("#calendar-event-count");
       const calendarGrid = document.querySelector("#calendar-grid");
       const viewButtons = Array.from(document.querySelectorAll("[data-calendar-view]"));
+      const monthButtons = Array.from(document.querySelectorAll("[data-calendar-month]"));
 
       let calendarData = null;
       let activeSourceId = "";
       let activeView = "calendar";
+      let visibleMonthDate = startOfMonth(new Date());
       let refreshTimer = 0;
 
       function cacheBustedDataUrl() {
@@ -1617,19 +1619,15 @@ const hqSpecs = [
           return;
         }
 
-        renderSourceOptions();
         activeTitle.textContent = source.name || "Release calendar";
         activeSummary.textContent = source.description || "Events are pulled from the Confluence Team Calendar during the board refresh.";
         cadenceLabel.textContent = `Every ${Math.round(Number(calendarData.refreshSeconds || 300) / 60)} min`;
         lastPullLabel.textContent = `${calendarData.pulledAtDisplay || calendarData.pulledAt || "Unknown"} ET`;
         windowLabel.textContent = `${calendarData.window?.startDisplay || "start"} - ${calendarData.window?.endDisplay || "end"} ET`;
         openSourceLink.href = source.url || "#";
-        eventCount.textContent = `${source.eventCount || 0} event${Number(source.eventCount || 0) === 1 ? "" : "s"}`;
 
         if (source.status === "error") {
           showCalendarError(`${source.name || "Calendar"} needs attention: ${source.error || "Confluence did not return events."}`);
-        } else if (calendarData.duplicateSourceUrls) {
-          showCalendarInfo(calendarData.note || "Both calendar views currently use the same source URL.");
         } else {
           hideCalendarAlert();
         }
@@ -1639,18 +1637,6 @@ const hqSpecs = [
         renderList(source);
         monthView.hidden = activeView !== "calendar";
         listView.hidden = activeView !== "upcoming";
-      }
-
-      function renderSourceOptions() {
-        const sources = Array.isArray(calendarData.sources) ? calendarData.sources : [];
-        sourceSelect.textContent = "";
-        sources.forEach((source) => {
-          const option = document.createElement("option");
-          option.value = source.id;
-          option.textContent = source.name || source.id;
-          option.selected = source.id === activeSourceId;
-          sourceSelect.appendChild(option);
-        });
       }
 
       function renderViewButtons() {
@@ -1678,8 +1664,7 @@ const hqSpecs = [
 
       function renderMonth(source) {
         const events = Array.isArray(source.events) ? source.events : [];
-        const basis = events.find((event) => event.start)?.start || new Date().toISOString();
-        const basisDate = new Date(basis);
+        const basisDate = visibleMonthDate || startOfMonth(new Date());
         const year = basisDate.getFullYear();
         const month = basisDate.getMonth();
         const firstOfMonth = new Date(year, month, 1);
@@ -1687,7 +1672,13 @@ const hqSpecs = [
         start.setDate(firstOfMonth.getDate() - firstOfMonth.getDay());
         const todayKey = dayKey(new Date());
 
+        const monthEvents = events.filter((event) => {
+          const eventDate = new Date(event.start || 0);
+          return eventDate.getFullYear() === year && eventDate.getMonth() === month;
+        });
+
         monthTitle.textContent = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric" }).format(firstOfMonth);
+        eventCount.textContent = `${monthEvents.length} event${monthEvents.length === 1 ? "" : "s"} this month`;
         calendarGrid.textContent = "";
 
         for (let index = 0; index < 42; index += 1) {
@@ -1723,7 +1714,9 @@ const hqSpecs = [
       }
 
       function renderList(source) {
-        const events = Array.isArray(source.events) ? source.events : [];
+        const events = Array.isArray(source.events)
+          ? source.events.slice().sort((a, b) => new Date(a.start || 0) - new Date(b.start || 0))
+          : [];
         listView.textContent = "";
 
         if (!events.length) {
@@ -1736,7 +1729,51 @@ const hqSpecs = [
           return;
         }
 
+        const groups = new Map();
         events.forEach((event) => {
+          const date = new Date(event.start || 0);
+          const key = monthKey(date);
+          if (!groups.has(key)) {
+            groups.set(key, {
+              key,
+              label: new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric" }).format(date),
+              events: [],
+            });
+          }
+          groups.get(key).events.push(event);
+        });
+
+        const currentMonthKey = monthKey(new Date());
+        let openedGroup = false;
+
+        Array.from(groups.values()).forEach((group, index) => {
+          const details = document.createElement("details");
+          details.className = "calendar-month-group";
+          if (!openedGroup && group.key >= currentMonthKey) {
+            details.open = true;
+            openedGroup = true;
+          }
+          if (!openedGroup && index === groups.size - 1) {
+            details.open = true;
+          }
+
+          const summary = document.createElement("summary");
+          const label = document.createElement("strong");
+          label.textContent = group.label;
+          const count = document.createElement("span");
+          count.textContent = `${group.events.length} event${group.events.length === 1 ? "" : "s"}`;
+          summary.append(label, count);
+          details.appendChild(summary);
+
+          group.events.forEach((event) => {
+            details.appendChild(renderListEventCard(event, source));
+          });
+
+          listView.appendChild(details);
+        });
+      }
+
+      function renderListEventCard(event, source) {
           const card = document.createElement("article");
           card.className = "calendar-list-card";
 
@@ -1762,8 +1799,7 @@ const hqSpecs = [
           open.textContent = "Open";
 
           card.append(time, body, open);
-          listView.appendChild(card);
-        });
+          return card;
       }
 
       function dayKey(date) {
@@ -1784,14 +1820,38 @@ const hqSpecs = [
         }).format(new Date(input));
       }
 
-      sourceSelect.addEventListener("change", () => {
-        activeSourceId = sourceSelect.value;
-        renderCalendar();
-      });
+      function startOfMonth(date) {
+        return new Date(date.getFullYear(), date.getMonth(), 1);
+      }
+
+      function addMonths(date, delta) {
+        return new Date(date.getFullYear(), date.getMonth() + delta, 1);
+      }
+
+      function monthKey(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        return `${year}-${month}`;
+      }
 
       viewButtons.forEach((button) => {
         button.addEventListener("click", () => {
           activeView = button.getAttribute("data-calendar-view") || "calendar";
+          renderCalendar();
+        });
+      });
+
+      monthButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const action = button.getAttribute("data-calendar-month");
+          if (action === "previous") {
+            visibleMonthDate = addMonths(visibleMonthDate, -1);
+          } else if (action === "next") {
+            visibleMonthDate = addMonths(visibleMonthDate, 1);
+          } else {
+            visibleMonthDate = startOfMonth(new Date());
+          }
+          activeView = "calendar";
           renderCalendar();
         });
       });

@@ -7,7 +7,7 @@ const sprintName = process.env.JIRA_SPRINT_NAME || "2026.8";
 const sprintProjectKey = process.env.JIRA_SPRINT_PROJECT_KEY || "CORE";
 const sprintProjectLabel = process.env.JIRA_SPRINT_PROJECT_LABEL || "B2C CORE Platforms";
 const siteUrl = process.env.JIRA_SITE_URL || "https://golfnow.atlassian.net";
-const dashboardVersion = "v1.11.0";
+const dashboardVersion = "v1.11.1";
 const dashboardDataSchemaVersion = "dashboard-data/v1";
 const dashboardDataFileName = "dashboard-data.json";
 const calendarRefreshSeconds = Number(process.env.HQ_CALENDAR_REFRESH_SECONDS || 300);
@@ -59,7 +59,7 @@ function parseCalendarSources() {
     try {
       const configuredSources = JSON.parse(process.env.HQ_CALENDAR_SOURCES_JSON);
       if (Array.isArray(configuredSources) && configuredSources.length) {
-        return configuredSources.map(normalizeCalendarSource).filter(Boolean);
+        return configuredSources.map(normalizeCalendarSource).filter(Boolean).slice(0, 1);
       }
     } catch (error) {
       console.warn(`Unable to parse HQ_CALENDAR_SOURCES_JSON: ${error.message}`);
@@ -67,7 +67,6 @@ function parseCalendarSources() {
   }
 
   const primaryUrl = process.env.HQ_CALENDAR_URL || defaultCalendarUrl;
-  const secondaryUrl = process.env.HQ_SECONDARY_CALENDAR_URL || defaultCalendarUrl;
 
   return [
     normalizeCalendarSource({
@@ -75,12 +74,6 @@ function parseCalendarSources() {
       name: process.env.HQ_CALENDAR_NAME || "GN Releases",
       url: primaryUrl,
       description: "Default GN Releases Confluence Team Calendar.",
-    }),
-    normalizeCalendarSource({
-      id: "gn-releases-alt",
-      name: process.env.HQ_SECONDARY_CALENDAR_NAME || "GN Releases alternate",
-      url: secondaryUrl,
-      description: "Second calendar slot. Currently configured to the same GN Releases source until a second calendar URL is supplied.",
     }),
   ].filter(Boolean);
 }

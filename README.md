@@ -65,7 +65,7 @@ GitHub Pages remains useful as a static fallback. The `.124` modern board and HQ
 
 - `/modern/` is the active `.124` release dashboard with ticket cards, table view, assignee actions, Jira search, comments, automation status, and ticket detail surfaces.
 - `/modern/hq/` is the HQ landing route built with Astro and deployed as static assets.
-- `/modern/hq/#calendar` is the Calendar Menu. It reads the Confluence GN Releases Team Calendar payload from `dashboard-data.json`, provides Calendar and Upcoming tabs, and supports a View selector for two configured calendar sources.
+- `/modern/hq/#calendar` is the Calendar Menu. It reads the Confluence GN Releases Team Calendar payload from `dashboard-data.json`, opens on the current month, provides month navigation, and groups the Upcoming list into collapsible month sections.
 - `/api/ai/status` reports whether the Cloudflare Worker has the Workers AI binding.
 - `/api/ai/release-summary` reads `dashboard-data.json`, resolves assignee/developer/component/priority ticket lookups from the direct board pull, asks Cloudflare Workers AI to turn those exact matches into human-readable linked analysis, or combines the user's broader prompt with compact ticket context for a draft release brief.
 - GitHub Pages can render the same HQ page but cannot run the AI API. The page tells users to open the Cloudflare URL when the endpoint is unavailable.
@@ -120,7 +120,9 @@ The HQ Calendar Menu is a Confluence-backed release calendar module.
 - Refresh cadence: coupled to `refresh-jira-board.yml`, which runs every 5 minutes and on demand.
 - Data contract: `dashboard-data.json.calendarMenu`.
 - Views: Calendar grid and Upcoming list.
-- View selector: two calendar source slots are supported. The two links provided for this first implementation were identical, so both slots currently point at the same GN Releases calendar until a second unique calendar URL is supplied through `HQ_SECONDARY_CALENDAR_URL` or `HQ_CALENDAR_SOURCES_JSON`.
+- Calendar navigation: the grid defaults to the current month instead of the oldest pulled event month, with Previous, Today, and Next controls.
+- Upcoming organization: events are grouped under collapsible month sections so long maintenance/release lists stay scannable.
+- Calendar source: one active GN Releases calendar is shown for now. `HQ_CALENDAR_SOURCES_JSON` is still parsed for future expansion, but the current HQ UI and data pull use the first configured source only.
 - Failure behavior: Jira refreshes continue if Confluence calendar access fails; the dashboard artifact stores the calendar error and the HQ page shows a readable warning.
 
 Calendar environment overrides:
@@ -129,9 +131,7 @@ Calendar environment overrides:
 | --- | --- |
 | `HQ_CALENDAR_URL` | Primary Confluence Team Calendar URL. |
 | `HQ_CALENDAR_NAME` | Primary display name. |
-| `HQ_SECONDARY_CALENDAR_URL` | Second calendar source URL for the View selector. |
-| `HQ_SECONDARY_CALENDAR_NAME` | Second calendar display name. |
-| `HQ_CALENDAR_SOURCES_JSON` | Full source override array for future calendars. |
+| `HQ_CALENDAR_SOURCES_JSON` | Full source override array for future calendars; current HQ uses the first source only. |
 | `HQ_CALENDAR_REFRESH_SECONDS` | Dashboard client refresh interval; default `300`. |
 | `HQ_CALENDAR_LOOKBACK_DAYS` | Calendar pull window lookback; default `45`. |
 | `HQ_CALENDAR_LOOKAHEAD_DAYS` | Calendar pull window lookahead; default `180`. |
