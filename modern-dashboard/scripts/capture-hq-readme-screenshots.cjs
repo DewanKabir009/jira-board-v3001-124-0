@@ -89,6 +89,7 @@ server.listen(port, "127.0.0.1", async () => {
     await page.screenshot({ path: path.join(outputDir, "hq-overview-desktop.png"), fullPage: false });
 
     await captureSection(page, "#boards", "hq-board-registry.png");
+    await captureSection(page, "#calendar", "hq-calendar-menu.png");
     await captureSection(page, "#automation", "hq-automation-bench.png");
     await captureSection(page, "#ai", "hq-ai-workers-ai-ready.png");
     await page.locator("#hq-ai-generate").click();

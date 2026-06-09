@@ -68,6 +68,10 @@ SPEC-06 adds an editable QA workspace to the selected-ticket detail panel. Impor
 
 The workspace generates a Jira comment preview before submission. Submissions use the existing `testChecklistCommentEndpoint` or the hosted `/comment-checklist` route derived from the Cloudflare bridge endpoint, preserving the current workflow-dispatch posting path.
 
+## HQ Calendar Menu
+
+SPEC-HQ-09 adds the HQ Calendar Menu at `/modern/hq/#calendar`. The page reads `dashboard-data.json.calendarMenu`, then renders the Confluence GN Releases calendar in a calendar grid or upcoming-list view. The refresh workflow updates the calendar payload every 5 minutes alongside the Jira board data, and the client refreshes the calendar section while the HQ page remains open.
+
 ## Migration Rule
 
 Do not replace the current generated board until the Astro shell has parity for ticket scanning, filters, Jira links, assignee writes, checklist comments, media, and release-board navigation.

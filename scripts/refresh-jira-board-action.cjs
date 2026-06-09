@@ -65,6 +65,10 @@ const updated = diff.updated || [];
 const statusChanges = diff.statusChanges || [];
 const removed = diff.removed || [];
 const jiraChanged = hasChanges(diff);
+const calendarMenu = data.calendarMenu || {};
+const calendarSources = Array.isArray(calendarMenu.sources) ? calendarMenu.sources : [];
+const calendarEvents = calendarSources.reduce((count, source) => count + Number(source.eventCount || 0), 0);
+const calendarErrors = calendarSources.filter((source) => source.status === "error");
 const previousIndex = fs.existsSync(indexPath) ? fs.readFileSync(indexPath, "utf8") : "";
 const previousDashboardData = fs.existsSync(dashboardDataPath) ? fs.readFileSync(dashboardDataPath, "utf8") : "";
 
@@ -88,6 +92,8 @@ const lines = [
   `- Updated: ${updated.length}`,
   `- Status moves: ${statusChanges.length}`,
   `- Removed: ${removed.length}`,
+  `- Calendar sources: ${calendarSources.length}`,
+  `- Calendar events: ${calendarEvents}`,
   "- Data artifact: dashboard-data.json",
   `- Dashboard: ${dashboardUrl || "Not configured"}`,
 ];
@@ -109,6 +115,13 @@ if (statusChanges.length) {
 
 if (removed.length) {
   lines.push("", `Removed tickets: ${listKeys(removed).join(", ")}`);
+}
+
+if (calendarErrors.length) {
+  lines.push("", "Calendar pull warnings:");
+  for (const source of calendarErrors) {
+    lines.push(`- ${source.name || source.id}: ${source.error || "Calendar source could not be loaded."}`);
+  }
 }
 
 if (!jiraChanged) {

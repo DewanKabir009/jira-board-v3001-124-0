@@ -12,6 +12,7 @@ CORE QA Headquarters turns the standalone release dashboard into a broader proje
 - Knowledge-base registry with external page links and preview metadata.
 - Automation bench registry for Playwright and Python API scripts.
 - AI release intelligence workbench for the active dashboard, backed by the .124 Cloudflare Workers AI endpoint.
+- Calendar Menu for Confluence GN Releases dates, refreshed with the five-minute board artifact.
 - Operations status cards fed by future API automation.
 - Permission-aware locked section pattern.
 
@@ -30,3 +31,4 @@ The first implementation is a static Astro route at `/hq/` so it can live beside
 - SPEC-HQ-06: Operational status. In progress.
 - SPEC-HQ-07: AI release summary. Cloudflare Workers AI endpoint, source map, draft outputs, risk signals, and review gates are in progress.
 - SPEC-HQ-08: Admin console.
+- SPEC-HQ-09: Calendar menu. Implemented for the .124 HQ pilot.

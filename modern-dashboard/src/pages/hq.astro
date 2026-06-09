@@ -210,6 +210,7 @@ const automationGuards = [
 
 const statusCards = [
   { label: "Jira data pull", value: "Healthy", detail: "5 minute single-shot refresh", tone: "green" },
+  { label: "Release calendar", value: "Connected", detail: "Confluence calendar view refreshes with the board artifact", tone: "blue" },
   { label: "Automation runner", value: "Mapped", detail: ".123 pilot contract carried into HQ", tone: "blue" },
   { label: "Cloudflare host", value: "Deployed", detail: ".124 board and HQ served by Worker Static Assets", tone: "green" },
   { label: "Knowledge base", value: "Mapped", detail: "Flow previews and owners drafted", tone: "violet" }
@@ -469,7 +470,8 @@ const hqSpecs = [
   { id: "SPEC-HQ-05", title: "Automation bench", status: "In progress", detail: "Playwright pilot registry, lifecycle, evidence, and runner guards are drafted." },
   { id: "SPEC-HQ-06", title: "Operational status", status: "In progress", detail: "Service health cards, probe cadence, and status publishing contract are drafted." },
   { id: "SPEC-HQ-07", title: "AI release summary", status: "In progress", detail: "Cloudflare Workers AI endpoint, source map, draft outputs, risk signals, and review gates are implemented." },
-  { id: "SPEC-HQ-08", title: "Admin console", status: "Planned", detail: "Users, roles, sections, and script permissions." }
+  { id: "SPEC-HQ-08", title: "Admin console", status: "Planned", detail: "Users, roles, sections, and script permissions." },
+  { id: "SPEC-HQ-09", title: "Calendar menu", status: "Implemented", detail: "Confluence GN Releases calendar data is pulled into dashboard-data.json and rendered in HQ with calendar/list views." }
 ];
 ---
 
@@ -486,6 +488,7 @@ const hqSpecs = [
 
       <nav class="hq-nav" aria-label="HQ modules">
         <a class="active" href="#boards">Release boards</a>
+        <a href="#calendar">Calendar menu</a>
         <a href="#kb">Knowledge base</a>
         <a href="#automation">Automation bench</a>
         <a href="#ai">AI summary</a>
@@ -578,6 +581,75 @@ const hqSpecs = [
           </div>
           <iframe title="v3001.124.0 modern board preview" src="https://core-qa-headquarters-124.dfkabir253.workers.dev/" loading="lazy"></iframe>
         </article>
+      </section>
+
+      <section class="module-panel calendar-module" id="calendar">
+        <div class="module-heading">
+          <div>
+            <p class="eyebrow">Calendar menu</p>
+            <h2>Release calendar command view</h2>
+          </div>
+          <span class="module-pill">SPEC-HQ-09 live</span>
+        </div>
+
+        <div class="calendar-console" data-calendar-data-url="../../dashboard-data.json">
+          <article class="calendar-hero">
+            <div>
+              <p class="eyebrow">Confluence Team Calendars</p>
+              <h3 id="calendar-active-title">GN Releases</h3>
+              <p id="calendar-active-summary">Loading release calendar events from the deployed dashboard artifact.</p>
+            </div>
+            <dl>
+              <div>
+                <dt>Refresh</dt>
+                <dd id="calendar-refresh-cadence">Every 5 min</dd>
+              </div>
+              <div>
+                <dt>Last pull</dt>
+                <dd id="calendar-last-pull">Loading</dd>
+              </div>
+              <div>
+                <dt>Window</dt>
+                <dd id="calendar-window">Loading</dd>
+              </div>
+            </dl>
+          </article>
+
+          <div class="calendar-toolbar" aria-label="Calendar controls">
+            <label class="calendar-select" for="calendar-source-select">
+              <span>View</span>
+              <select id="calendar-source-select">
+                <option>Loading calendars</option>
+              </select>
+            </label>
+            <div class="calendar-view-tabs" role="tablist" aria-label="Calendar display">
+              <button class="active" type="button" data-calendar-view="calendar">Calendar</button>
+              <button type="button" data-calendar-view="upcoming">Upcoming</button>
+            </div>
+            <a id="calendar-open-source" class="calendar-open-source" href="https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases">Open Confluence calendar</a>
+          </div>
+
+          <div class="calendar-alert" id="calendar-alert" hidden></div>
+
+          <div class="calendar-month" id="calendar-month-view" aria-live="polite">
+            <div class="calendar-month-heading">
+              <strong id="calendar-month-title">Release calendar</strong>
+              <span id="calendar-event-count">0 events</span>
+            </div>
+            <div class="calendar-weekdays" aria-hidden="true">
+              <span>Sun</span>
+              <span>Mon</span>
+              <span>Tue</span>
+              <span>Wed</span>
+              <span>Thu</span>
+              <span>Fri</span>
+              <span>Sat</span>
+            </div>
+            <div class="calendar-grid" id="calendar-grid"></div>
+          </div>
+
+          <div class="calendar-list" id="calendar-list-view" hidden aria-live="polite"></div>
+        </div>
       </section>
 
       <section class="module-panel kb-module" id="kb">
@@ -1091,7 +1163,7 @@ const hqSpecs = [
             <p class="eyebrow">Spec-driven delivery</p>
             <h2>HQ build checklist</h2>
           </div>
-          <span class="module-pill">2 complete / 6 active</span>
+          <span class="module-pill">4 complete / 5 active / 1 planned</span>
         </div>
         <div class="spec-grid">
           {hqSpecs.map((spec) => (
@@ -1471,6 +1543,260 @@ const hqSpecs = [
         ].filter(Boolean).join(" | ");
         return `- ${title}${summary}${metadata ? ` (${metadata})` : ""}${ticket.reason ? ` - ${ticket.reason}` : ""}`;
       }
+    })();
+  </script>
+
+  <script is:inline>
+    (() => {
+      const calendarConsole = document.querySelector(".calendar-console");
+      if (!calendarConsole) return;
+
+      const dataUrl = calendarConsole.getAttribute("data-calendar-data-url") || "/dashboard-data.json";
+      const sourceSelect = document.querySelector("#calendar-source-select");
+      const openSourceLink = document.querySelector("#calendar-open-source");
+      const activeTitle = document.querySelector("#calendar-active-title");
+      const activeSummary = document.querySelector("#calendar-active-summary");
+      const cadenceLabel = document.querySelector("#calendar-refresh-cadence");
+      const lastPullLabel = document.querySelector("#calendar-last-pull");
+      const windowLabel = document.querySelector("#calendar-window");
+      const alertBox = document.querySelector("#calendar-alert");
+      const monthView = document.querySelector("#calendar-month-view");
+      const listView = document.querySelector("#calendar-list-view");
+      const monthTitle = document.querySelector("#calendar-month-title");
+      const eventCount = document.querySelector("#calendar-event-count");
+      const calendarGrid = document.querySelector("#calendar-grid");
+      const viewButtons = Array.from(document.querySelectorAll("[data-calendar-view]"));
+
+      let calendarData = null;
+      let activeSourceId = "";
+      let activeView = "calendar";
+      let refreshTimer = 0;
+
+      function cacheBustedDataUrl() {
+        const url = new URL(dataUrl, window.location.href);
+        url.searchParams.set("calendarRefresh", Date.now().toString());
+        return url.toString();
+      }
+
+      async function loadCalendarData() {
+        try {
+          const response = await fetch(cacheBustedDataUrl(), { cache: "no-store" });
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status} loading dashboard-data.json`);
+          }
+          const dashboard = await response.json();
+          calendarData = dashboard.calendarMenu || null;
+          if (!calendarData) {
+            throw new Error("The deployed dashboard artifact does not include calendarMenu yet.");
+          }
+          if (!activeSourceId) {
+            activeSourceId = calendarData.defaultSourceId || calendarData.sources?.[0]?.id || "";
+          }
+          renderCalendar();
+          scheduleCalendarRefresh();
+        } catch (error) {
+          showCalendarError(`Calendar data could not be loaded: ${error.message}`);
+        }
+      }
+
+      function scheduleCalendarRefresh() {
+        window.clearTimeout(refreshTimer);
+        const seconds = Math.max(60, Number(calendarData?.refreshSeconds || 300));
+        refreshTimer = window.setTimeout(loadCalendarData, seconds * 1000);
+      }
+
+      function getActiveSource() {
+        const sources = Array.isArray(calendarData?.sources) ? calendarData.sources : [];
+        return sources.find((source) => source.id === activeSourceId) || sources[0] || null;
+      }
+
+      function renderCalendar() {
+        const source = getActiveSource();
+        if (!source) {
+          showCalendarError("No calendar sources are configured.");
+          return;
+        }
+
+        renderSourceOptions();
+        activeTitle.textContent = source.name || "Release calendar";
+        activeSummary.textContent = source.description || "Events are pulled from the Confluence Team Calendar during the board refresh.";
+        cadenceLabel.textContent = `Every ${Math.round(Number(calendarData.refreshSeconds || 300) / 60)} min`;
+        lastPullLabel.textContent = `${calendarData.pulledAtDisplay || calendarData.pulledAt || "Unknown"} ET`;
+        windowLabel.textContent = `${calendarData.window?.startDisplay || "start"} - ${calendarData.window?.endDisplay || "end"} ET`;
+        openSourceLink.href = source.url || "#";
+        eventCount.textContent = `${source.eventCount || 0} event${Number(source.eventCount || 0) === 1 ? "" : "s"}`;
+
+        if (source.status === "error") {
+          showCalendarError(`${source.name || "Calendar"} needs attention: ${source.error || "Confluence did not return events."}`);
+        } else if (calendarData.duplicateSourceUrls) {
+          showCalendarInfo(calendarData.note || "Both calendar views currently use the same source URL.");
+        } else {
+          hideCalendarAlert();
+        }
+
+        renderViewButtons();
+        renderMonth(source);
+        renderList(source);
+        monthView.hidden = activeView !== "calendar";
+        listView.hidden = activeView !== "upcoming";
+      }
+
+      function renderSourceOptions() {
+        const sources = Array.isArray(calendarData.sources) ? calendarData.sources : [];
+        sourceSelect.textContent = "";
+        sources.forEach((source) => {
+          const option = document.createElement("option");
+          option.value = source.id;
+          option.textContent = source.name || source.id;
+          option.selected = source.id === activeSourceId;
+          sourceSelect.appendChild(option);
+        });
+      }
+
+      function renderViewButtons() {
+        viewButtons.forEach((button) => {
+          const selected = button.getAttribute("data-calendar-view") === activeView;
+          button.classList.toggle("active", selected);
+          button.setAttribute("aria-selected", selected ? "true" : "false");
+        });
+      }
+
+      function showCalendarError(message) {
+        alertBox.hidden = false;
+        alertBox.textContent = message;
+      }
+
+      function showCalendarInfo(message) {
+        alertBox.hidden = false;
+        alertBox.textContent = message;
+      }
+
+      function hideCalendarAlert() {
+        alertBox.hidden = true;
+        alertBox.textContent = "";
+      }
+
+      function renderMonth(source) {
+        const events = Array.isArray(source.events) ? source.events : [];
+        const basis = events.find((event) => event.start)?.start || new Date().toISOString();
+        const basisDate = new Date(basis);
+        const year = basisDate.getFullYear();
+        const month = basisDate.getMonth();
+        const firstOfMonth = new Date(year, month, 1);
+        const start = new Date(firstOfMonth);
+        start.setDate(firstOfMonth.getDate() - firstOfMonth.getDay());
+        const todayKey = dayKey(new Date());
+
+        monthTitle.textContent = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric" }).format(firstOfMonth);
+        calendarGrid.textContent = "";
+
+        for (let index = 0; index < 42; index += 1) {
+          const day = new Date(start);
+          day.setDate(start.getDate() + index);
+          const key = dayKey(day);
+          const cell = document.createElement("article");
+          cell.className = "calendar-day";
+          if (day.getMonth() !== month) cell.classList.add("muted");
+          if (key === todayKey) cell.classList.add("today");
+
+          const number = document.createElement("span");
+          number.className = "calendar-day-number";
+          number.textContent = String(day.getDate());
+          cell.appendChild(number);
+
+          events.filter((event) => dayKey(new Date(event.start || 0)) === key).slice(0, 3).forEach((event) => {
+            const link = document.createElement("a");
+            link.className = "calendar-event-pill";
+            link.href = event.url || source.url || "#";
+            link.target = "_blank";
+            link.rel = "noopener";
+            const title = document.createElement("strong");
+            title.textContent = event.title || "Release event";
+            const time = document.createElement("span");
+            time.textContent = event.allDay ? "All day" : formatCalendarTime(event.start);
+            link.append(title, time);
+            cell.appendChild(link);
+          });
+
+          calendarGrid.appendChild(cell);
+        }
+      }
+
+      function renderList(source) {
+        const events = Array.isArray(source.events) ? source.events : [];
+        listView.textContent = "";
+
+        if (!events.length) {
+          const empty = document.createElement("div");
+          empty.className = "calendar-empty";
+          empty.textContent = source.status === "error"
+            ? "No events are available because the calendar pull needs attention."
+            : "No release calendar events were returned for the configured window.";
+          listView.appendChild(empty);
+          return;
+        }
+
+        events.forEach((event) => {
+          const card = document.createElement("article");
+          card.className = "calendar-list-card";
+
+          const time = document.createElement("time");
+          time.dateTime = event.start || "";
+          time.textContent = event.startDisplay || event.start || "Date pending";
+
+          const body = document.createElement("div");
+          const title = document.createElement("h4");
+          title.textContent = event.title || "Release event";
+          const detail = document.createElement("p");
+          detail.textContent = [
+            event.type,
+            event.location,
+            event.description,
+          ].filter(Boolean).join(" / ") || "No additional event notes were returned.";
+          body.append(title, detail);
+
+          const open = document.createElement("a");
+          open.href = event.url || source.url || "#";
+          open.target = "_blank";
+          open.rel = "noopener";
+          open.textContent = "Open";
+
+          card.append(time, body, open);
+          listView.appendChild(card);
+        });
+      }
+
+      function dayKey(date) {
+        return new Intl.DateTimeFormat("en-CA", {
+          timeZone: "America/New_York",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        }).format(date);
+      }
+
+      function formatCalendarTime(input) {
+        if (!input) return "";
+        return new Intl.DateTimeFormat("en-US", {
+          timeZone: "America/New_York",
+          hour: "numeric",
+          minute: "2-digit",
+        }).format(new Date(input));
+      }
+
+      sourceSelect.addEventListener("change", () => {
+        activeSourceId = sourceSelect.value;
+        renderCalendar();
+      });
+
+      viewButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          activeView = button.getAttribute("data-calendar-view") || "calendar";
+          renderCalendar();
+        });
+      });
+
+      loadCalendarData();
     })();
   </script>
 </QaHqLayout>

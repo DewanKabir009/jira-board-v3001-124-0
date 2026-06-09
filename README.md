@@ -33,6 +33,10 @@ GitHub Pages remains useful as a static fallback. The `.124` modern board and HQ
 
 ![Workers AI ready](docs/qa-headquarters/screenshots/hq-ai-workers-ai-ready.png)
 
+### Release Calendar Menu
+
+![Calendar menu](docs/qa-headquarters/screenshots/hq-calendar-menu.png)
+
 ### Generated AI Release Brief
 
 ![Workers AI generated brief](docs/qa-headquarters/screenshots/hq-ai-generated-brief.png)
@@ -61,6 +65,7 @@ GitHub Pages remains useful as a static fallback. The `.124` modern board and HQ
 
 - `/modern/` is the active `.124` release dashboard with ticket cards, table view, assignee actions, Jira search, comments, automation status, and ticket detail surfaces.
 - `/modern/hq/` is the HQ landing route built with Astro and deployed as static assets.
+- `/modern/hq/#calendar` is the Calendar Menu. It reads the Confluence GN Releases Team Calendar payload from `dashboard-data.json`, provides Calendar and Upcoming tabs, and supports a View selector for two configured calendar sources.
 - `/api/ai/status` reports whether the Cloudflare Worker has the Workers AI binding.
 - `/api/ai/release-summary` reads `dashboard-data.json`, resolves assignee/developer/component/priority ticket lookups from the direct board pull, asks Cloudflare Workers AI to turn those exact matches into human-readable linked analysis, or combines the user's broader prompt with compact ticket context for a draft release brief.
 - GitHub Pages can render the same HQ page but cannot run the AI API. The page tells users to open the Cloudflare URL when the endpoint is unavailable.
@@ -70,6 +75,7 @@ GitHub Pages remains useful as a static fallback. The `.124` modern board and HQ
 ```text
 Jira fixVersion data
   -> GitHub Action refresh
+  -> Confluence Team Calendar pull
   -> dashboard-data.json
   -> Astro modern dashboard and HQ shell
   -> Cloudflare Worker Static Assets
@@ -105,6 +111,31 @@ The first Workers AI implementation is intentionally focused and review-first:
 
 The Worker requests JSON output from the model so the browser can render predictable sections instead of parsing free-form prose.
 
+## Calendar Menu
+
+The HQ Calendar Menu is a Confluence-backed release calendar module.
+
+- Source: Confluence Team Calendar `GN Releases`.
+- Default URL: <https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases>.
+- Refresh cadence: coupled to `refresh-jira-board.yml`, which runs every 5 minutes and on demand.
+- Data contract: `dashboard-data.json.calendarMenu`.
+- Views: Calendar grid and Upcoming list.
+- View selector: two calendar source slots are supported. The two links provided for this first implementation were identical, so both slots currently point at the same GN Releases calendar until a second unique calendar URL is supplied through `HQ_SECONDARY_CALENDAR_URL` or `HQ_CALENDAR_SOURCES_JSON`.
+- Failure behavior: Jira refreshes continue if Confluence calendar access fails; the dashboard artifact stores the calendar error and the HQ page shows a readable warning.
+
+Calendar environment overrides:
+
+| Variable | Purpose |
+| --- | --- |
+| `HQ_CALENDAR_URL` | Primary Confluence Team Calendar URL. |
+| `HQ_CALENDAR_NAME` | Primary display name. |
+| `HQ_SECONDARY_CALENDAR_URL` | Second calendar source URL for the View selector. |
+| `HQ_SECONDARY_CALENDAR_NAME` | Second calendar display name. |
+| `HQ_CALENDAR_SOURCES_JSON` | Full source override array for future calendars. |
+| `HQ_CALENDAR_REFRESH_SECONDS` | Dashboard client refresh interval; default `300`. |
+| `HQ_CALENDAR_LOOKBACK_DAYS` | Calendar pull window lookback; default `45`. |
+| `HQ_CALENDAR_LOOKAHEAD_DAYS` | Calendar pull window lookahead; default `180`. |
+
 ## Spec Status
 
 | Spec | Focus | Status | Notes |
@@ -118,6 +149,7 @@ The Worker requests JSON output from the model so the browser can render predict
 | SPEC-HQ-06 | Operational status | In progress | Status cards are modeled for future 5-minute API automation feeds. |
 | SPEC-HQ-07 | AI release summary | In progress | First Cloudflare Workers AI endpoint and UI runner are implemented. |
 | SPEC-HQ-08 | Admin console | Planned | Future user, permission, and section management surface. |
+| SPEC-HQ-09 | Calendar menu | Complete | Confluence GN Releases calendar data is pulled into `dashboard-data.json` and rendered in HQ with Calendar and Upcoming tabs. |
 
 ## Technology Stack
 
@@ -130,6 +162,7 @@ The Worker requests JSON output from the model so the browser can render predict
 | Cloudflare Workers Static Assets | Serves the built HQ and dashboard assets through the Worker. |
 | Cloudflare Workers AI | Generates the draft release intelligence brief from current board data. |
 | GitHub Actions | Refreshes Jira data, deploys static pages, runs Playwright jobs, and publishes evidence. |
+| Confluence Team Calendars | Feeds the HQ Calendar Menu through the 5-minute board refresh artifact. |
 | GitHub Pages | Keeps static public fallback pages live during the Cloudflare migration. |
 | Wrangler | Builds, validates, and deploys the Cloudflare board and HQ Worker. |
 | Playwright | Captures README screenshots and powers approved browser automation jobs. |

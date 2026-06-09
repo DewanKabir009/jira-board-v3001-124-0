@@ -7,9 +7,15 @@ const sprintName = process.env.JIRA_SPRINT_NAME || "2026.8";
 const sprintProjectKey = process.env.JIRA_SPRINT_PROJECT_KEY || "CORE";
 const sprintProjectLabel = process.env.JIRA_SPRINT_PROJECT_LABEL || "B2C CORE Platforms";
 const siteUrl = process.env.JIRA_SITE_URL || "https://golfnow.atlassian.net";
-const dashboardVersion = "v1.10.6";
+const dashboardVersion = "v1.11.0";
 const dashboardDataSchemaVersion = "dashboard-data/v1";
 const dashboardDataFileName = "dashboard-data.json";
+const calendarRefreshSeconds = Number(process.env.HQ_CALENDAR_REFRESH_SECONDS || 300);
+const calendarLookbackDays = Number(process.env.HQ_CALENDAR_LOOKBACK_DAYS || 45);
+const calendarLookaheadDays = Number(process.env.HQ_CALENDAR_LOOKAHEAD_DAYS || 180);
+const defaultCalendarUrl =
+  "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases";
+const calendarSources = parseCalendarSources();
 const boardOwner = process.env.BOARD_OWNER || process.env.GITHUB_REPOSITORY_OWNER || "DewanKabir009";
 const boardRepositoryName =
   process.env.BOARD_REPOSITORY_NAME ||
@@ -46,6 +52,76 @@ function versionToRepoName(input) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
   return `jira-board-${safeVersion || "release"}`;
+}
+
+function parseCalendarSources() {
+  if (process.env.HQ_CALENDAR_SOURCES_JSON) {
+    try {
+      const configuredSources = JSON.parse(process.env.HQ_CALENDAR_SOURCES_JSON);
+      if (Array.isArray(configuredSources) && configuredSources.length) {
+        return configuredSources.map(normalizeCalendarSource).filter(Boolean);
+      }
+    } catch (error) {
+      console.warn(`Unable to parse HQ_CALENDAR_SOURCES_JSON: ${error.message}`);
+    }
+  }
+
+  const primaryUrl = process.env.HQ_CALENDAR_URL || defaultCalendarUrl;
+  const secondaryUrl = process.env.HQ_SECONDARY_CALENDAR_URL || defaultCalendarUrl;
+
+  return [
+    normalizeCalendarSource({
+      id: "gn-releases",
+      name: process.env.HQ_CALENDAR_NAME || "GN Releases",
+      url: primaryUrl,
+      description: "Default GN Releases Confluence Team Calendar.",
+    }),
+    normalizeCalendarSource({
+      id: "gn-releases-alt",
+      name: process.env.HQ_SECONDARY_CALENDAR_NAME || "GN Releases alternate",
+      url: secondaryUrl,
+      description: "Second calendar slot. Currently configured to the same GN Releases source until a second calendar URL is supplied.",
+    }),
+  ].filter(Boolean);
+}
+
+function normalizeCalendarSource(source, index = 0) {
+  if (!source) {
+    return null;
+  }
+
+  const url = String(source.url || source.href || defaultCalendarUrl);
+  const calendarId = source.calendarId || source.subCalendarId || extractCalendarIdFromUrl(url);
+  const name = String(source.name || source.calendarName || extractCalendarNameFromUrl(url) || `Calendar ${index + 1}`);
+
+  if (!calendarId) {
+    return null;
+  }
+
+  return {
+    id: String(source.id || name)
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || `calendar-${index + 1}`,
+    name,
+    calendarId,
+    url,
+    description: source.description || "",
+  };
+}
+
+function extractCalendarIdFromUrl(input) {
+  const match = String(input || "").match(/\/calendar\/([a-f0-9-]{20,})/i);
+  return match ? match[1] : "";
+}
+
+function extractCalendarNameFromUrl(input) {
+  try {
+    const url = new URL(input);
+    return url.searchParams.get("calendarName") || "";
+  } catch {
+    return "";
+  }
 }
 
 if (!token) {
@@ -1360,7 +1436,323 @@ function ensureSprintMembership(issue) {
   };
 }
 
-function buildJson(issues, jql, previousData, sprintPayload) {
+function addDays(input, days) {
+  const date = new Date(input);
+  date.setDate(date.getDate() + days);
+  return date;
+}
+
+function dateOnly(input) {
+  return new Date(input).toISOString().slice(0, 10);
+}
+
+function calendarBaseUrl() {
+  return siteUrl.replace(/\/$/, "");
+}
+
+function calendarWindow() {
+  const now = new Date();
+  const start = addDays(now, -calendarLookbackDays);
+  const end = addDays(now, calendarLookaheadDays);
+  return {
+    start: start.toISOString(),
+    end: end.toISOString(),
+    startDate: dateOnly(start),
+    endDate: dateOnly(end),
+    startMs: start.getTime(),
+    endMs: end.getTime(),
+  };
+}
+
+function calendarEventEndpoints(source, window) {
+  const encodedId = encodeURIComponent(source.calendarId);
+  const timezone = encodeURIComponent("America/New_York");
+  const base = calendarBaseUrl();
+  return [
+    `${base}/wiki/rest/calendar-services/1.0/calendar/events.json?subCalendarId=${encodedId}&userTimeZoneId=${timezone}&start=${encodeURIComponent(window.startDate)}&end=${encodeURIComponent(window.endDate)}`,
+    `${base}/wiki/rest/calendar-services/1.0/calendar/events.json?subCalendarId=${encodedId}&userTimeZoneId=${timezone}&start=${encodeURIComponent(window.start)}&end=${encodeURIComponent(window.end)}`,
+    `${base}/wiki/rest/calendar-services/1.0/calendar/events.json?subCalendarId=${encodedId}&userTimeZoneId=${timezone}&start=${window.startMs}&end=${window.endMs}`,
+  ];
+}
+
+function calendarIcsEndpoints(source) {
+  const encodedId = encodeURIComponent(source.calendarId);
+  const base = calendarBaseUrl();
+  return [
+    `${base}/wiki/rest/calendar-services/1.0/calendar/export/subcalendar/${encodedId}.ics`,
+    `${base}/wiki/rest/calendar-services/1.0/calendar/export/subcalendar/private/${encodedId}.ics`,
+  ];
+}
+
+async function fetchCalendarUrl(url, accept) {
+  const response = await fetch(url, {
+    headers: {
+      Authorization: authHeader,
+      Accept: accept,
+    },
+  });
+  const text = await response.text();
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status} from ${url}`);
+  }
+
+  return text;
+}
+
+async function fetchCalendarSource(source, window) {
+  const errors = [];
+
+  for (const endpoint of calendarEventEndpoints(source, window)) {
+    try {
+      const text = await fetchCalendarUrl(endpoint, "application/json");
+      const payload = JSON.parse(text);
+      const events = normalizeCalendarEvents(payload, source)
+        .filter((event) => eventWithinWindow(event, window))
+        .sort(sortCalendarEvents);
+      return {
+        ...source,
+        status: "loaded",
+        pulledAt: new Date().toISOString(),
+        eventCount: events.length,
+        events,
+        sourceType: "team-calendar-json",
+      };
+    } catch (error) {
+      errors.push(error.message);
+    }
+  }
+
+  for (const endpoint of calendarIcsEndpoints(source)) {
+    try {
+      const text = await fetchCalendarUrl(endpoint, "text/calendar,*/*");
+      const events = parseIcsEvents(text, source)
+        .filter((event) => eventWithinWindow(event, window))
+        .sort(sortCalendarEvents);
+      return {
+        ...source,
+        status: "loaded",
+        pulledAt: new Date().toISOString(),
+        eventCount: events.length,
+        events,
+        sourceType: "ics-export",
+      };
+    } catch (error) {
+      errors.push(error.message);
+    }
+  }
+
+  return {
+    ...source,
+    status: "error",
+    pulledAt: new Date().toISOString(),
+    eventCount: 0,
+    events: [],
+    error: errors.slice(-2).join(" | ") || "Calendar source could not be loaded.",
+  };
+}
+
+async function buildCalendarData() {
+  const window = calendarWindow();
+  const pulledAt = new Date().toISOString();
+  const sources = await Promise.all(calendarSources.map((source) => fetchCalendarSource(source, window)));
+  const duplicateSourceUrls = new Set(calendarSources.map((source) => source.url)).size < calendarSources.length;
+
+  return {
+    schemaVersion: "hq-calendar/v1",
+    refreshSeconds: calendarRefreshSeconds,
+    pulledAt,
+    pulledAtDisplay: formatDate(pulledAt),
+    window: {
+      start: window.start,
+      end: window.end,
+      startDisplay: formatDate(window.start),
+      endDisplay: formatDate(window.end),
+    },
+    defaultSourceId: sources[0]?.id || "",
+    duplicateSourceUrls,
+    note: duplicateSourceUrls
+      ? "Both configured calendar views currently point at the same Confluence Team Calendar URL."
+      : "",
+    sources,
+  };
+}
+
+function normalizeCalendarEvents(payload, source) {
+  const events = Array.isArray(payload)
+    ? payload
+    : Array.isArray(payload?.events)
+      ? payload.events
+      : Array.isArray(payload?.payload?.events)
+        ? payload.payload.events
+        : Array.isArray(payload?.calendarEvents)
+          ? payload.calendarEvents
+          : Array.isArray(payload?.results)
+            ? payload.results
+            : [];
+
+  return events.map((event, index) => normalizeCalendarEvent(event, source, index)).filter(Boolean);
+}
+
+function normalizeCalendarEvent(event, source, index) {
+  const start = coerceCalendarDate(event.start || event.startDate || event.startTime || event.from || event.date || event.when);
+  const end = coerceCalendarDate(event.end || event.endDate || event.endTime || event.to || event.until);
+  const title = event.title || event.name || event.what || event.summary || "Untitled release event";
+
+  if (!start && !title) {
+    return null;
+  }
+
+  return {
+    id: String(event.id || event.uid || event.eventId || `${source.id}-${index}`),
+    calendarId: source.id,
+    calendarName: source.name,
+    title: String(title),
+    start,
+    end,
+    startDisplay: start ? formatDate(start) : "",
+    endDisplay: end ? formatDate(end) : "",
+    allDay: Boolean(event.allDay || event.isAllDay || event.isAllDayEvent),
+    type: String(event.eventType || event.type || event.eventTypeName || "Release"),
+    location: String(event.location || event.where || ""),
+    description: normalizeCalendarDescription(event.description || event.notes || event.comment || ""),
+    url: String(event.url || event.href || event.link || source.url),
+  };
+}
+
+function coerceCalendarDate(value) {
+  if (!value) {
+    return "";
+  }
+
+  if (typeof value === "number") {
+    return new Date(value).toISOString();
+  }
+
+  if (typeof value === "object") {
+    return coerceCalendarDate(value.dateTime || value.date || value.time || value.value);
+  }
+
+  const text = String(value).trim();
+  if (!text) {
+    return "";
+  }
+
+  const parsed = new Date(text);
+  return Number.isNaN(parsed.getTime()) ? "" : parsed.toISOString();
+}
+
+function normalizeCalendarDescription(value) {
+  return String(value || "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function eventWithinWindow(event, window) {
+  if (!event.start) {
+    return true;
+  }
+
+  const start = new Date(event.start).getTime();
+  if (Number.isNaN(start)) {
+    return true;
+  }
+
+  return start >= window.startMs && start <= window.endMs;
+}
+
+function sortCalendarEvents(a, b) {
+  return new Date(a.start || 0).getTime() - new Date(b.start || 0).getTime();
+}
+
+function parseIcsEvents(text, source) {
+  if (!String(text || "").includes("BEGIN:VCALENDAR")) {
+    throw new Error("ICS export did not return a calendar.");
+  }
+
+  const unfolded = String(text)
+    .replace(/\r\n[ \t]/g, "")
+    .replace(/\n[ \t]/g, "")
+    .split(/\r?\n/);
+  const events = [];
+  let current = null;
+
+  for (const line of unfolded) {
+    if (line === "BEGIN:VEVENT") {
+      current = {};
+      continue;
+    }
+
+    if (line === "END:VEVENT") {
+      if (current) {
+        events.push(current);
+      }
+      current = null;
+      continue;
+    }
+
+    if (!current) {
+      continue;
+    }
+
+    const delimiter = line.indexOf(":");
+    if (delimiter < 0) {
+      continue;
+    }
+
+    const name = line.slice(0, delimiter).split(";")[0].toUpperCase();
+    const value = decodeIcsValue(line.slice(delimiter + 1));
+    current[name] = value;
+  }
+
+  return events.map((event, index) => ({
+    id: event.UID || `${source.id}-ics-${index}`,
+    calendarId: source.id,
+    calendarName: source.name,
+    title: event.SUMMARY || "Untitled release event",
+    start: parseIcsDate(event.DTSTART),
+    end: parseIcsDate(event.DTEND),
+    startDisplay: parseIcsDate(event.DTSTART) ? formatDate(parseIcsDate(event.DTSTART)) : "",
+    endDisplay: parseIcsDate(event.DTEND) ? formatDate(parseIcsDate(event.DTEND)) : "",
+    allDay: /^\d{8}$/.test(event.DTSTART || ""),
+    type: event.CATEGORIES || "Release",
+    location: event.LOCATION || "",
+    description: normalizeCalendarDescription(event.DESCRIPTION || ""),
+    url: event.URL || source.url,
+  }));
+}
+
+function decodeIcsValue(value) {
+  return String(value || "")
+    .replace(/\\n/g, "\n")
+    .replace(/\\,/g, ",")
+    .replace(/\\;/g, ";")
+    .replace(/\\\\/g, "\\")
+    .trim();
+}
+
+function parseIcsDate(value) {
+  const text = String(value || "").trim();
+  if (!text) {
+    return "";
+  }
+
+  const dateOnlyMatch = text.match(/^(\d{4})(\d{2})(\d{2})$/);
+  if (dateOnlyMatch) {
+    return `${dateOnlyMatch[1]}-${dateOnlyMatch[2]}-${dateOnlyMatch[3]}T00:00:00.000Z`;
+  }
+
+  const dateTimeMatch = text.match(/^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z?$/);
+  if (dateTimeMatch) {
+    const [, year, month, day, hour, minute, second] = dateTimeMatch;
+    return `${year}-${month}-${day}T${hour}:${minute}:${second}.000Z`;
+  }
+
+  return coerceCalendarDate(text);
+}
+
+function buildJson(issues, jql, previousData, sprintPayload, calendarMenu) {
   const pulledAt = new Date().toISOString();
   const pulledAtDisplay = formatDate(pulledAt);
   const issuesByKey = new Map(issues.map((issue) => [issue.key, issue]));
@@ -1380,6 +1772,7 @@ function buildJson(issues, jql, previousData, sprintPayload) {
     total: issues.length,
     issues,
     sprintView: sprintPayload ? buildSprintView(sprintPayload.issues || [], sprintPayload.jql || "", pulledAt, pulledAtDisplay) : null,
+    calendarMenu: calendarMenu || null,
     pullDiff,
     pullHistory: buildPullHistory(previousData, pullDiff).map((entry) => enrichPullDiff(entry, issuesByKey)),
   };
@@ -5858,6 +6251,7 @@ async function main() {
   const previousHtmlData = readDataFromHtml(indexPath);
   previousData = newerPullData(newerPullData(previousJsonData, previousDashboardData), previousHtmlData);
 
+  const calendarMenuPromise = buildCalendarData();
   const { jql, issues: rawIssues } = await fetchIssues();
   const sprintResult = await fetchSprintIssues();
   const normalizedByKey = new Map();
@@ -5875,10 +6269,11 @@ async function main() {
 
   const issues = rawIssues.map((issue) => normalizedByKey.get(issue.key)).filter(Boolean);
   const sprintIssues = (sprintResult.issues || []).map((issue) => normalizedByKey.get(issue.key)).filter(Boolean);
+  const calendarMenu = await calendarMenuPromise;
   const json = buildJson(issues, jql, previousData, {
     jql: sprintResult.jql,
     issues: sprintIssues
-  });
+  }, calendarMenu);
   const dashboardData = buildDashboardData(json);
 
   fs.writeFileSync(jsonPath, `${JSON.stringify(json, null, 2)}\n`);
@@ -5891,6 +6286,8 @@ async function main() {
     sprint: sprintName,
     sprintProject: sprintProjectKey,
     sprintTotal: sprintIssues.length,
+    calendarSources: calendarMenu.sources.length,
+    calendarEvents: calendarMenu.sources.reduce((total, source) => total + Number(source.eventCount || 0), 0),
     jsonPath,
     dashboardDataPath,
     htmlPath,
