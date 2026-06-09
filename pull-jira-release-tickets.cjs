@@ -4,6 +4,8 @@ const path = require("path");
 const workspace = __dirname;
 const version = process.argv[2] || process.env.JIRA_FIX_VERSION || "vNEXT.0";
 const sprintName = process.env.JIRA_SPRINT_NAME || "2026.8";
+const sprintProjectKey = process.env.JIRA_SPRINT_PROJECT_KEY || "CORE";
+const sprintProjectLabel = process.env.JIRA_SPRINT_PROJECT_LABEL || "B2C CORE Platforms";
 const siteUrl = process.env.JIRA_SITE_URL || "https://golfnow.atlassian.net";
 const dashboardVersion = "v1.10.6";
 const dashboardDataSchemaVersion = "dashboard-data/v1";
@@ -963,7 +965,8 @@ async function fetchIssues() {
 }
 
 async function fetchSprintIssues() {
-  const sprintJql = `Sprint = "${escapeJqlString(sprintName)}" ORDER BY updated DESC`;
+  const sprintProjectClause = sprintProjectKey ? `project = "${escapeJqlString(sprintProjectKey)}" AND ` : "";
+  const sprintJql = `${sprintProjectClause}Sprint = "${escapeJqlString(sprintName)}" ORDER BY updated DESC`;
   const sprintResult = await fetchIssuesByJql(sprintJql);
   const sprintIssues = sprintResult.issues || [];
   const parentKeys = [
@@ -1323,10 +1326,13 @@ function buildPullHistory(previousData, currentDiff) {
 function buildSprintView(issues, jql, pulledAt, pulledAtDisplay) {
   const mainTotal = issues.filter((issue) => !issue.isSubtask).length;
   const subtaskTotal = issues.length - mainTotal;
+  const projectSuffix = sprintProjectLabel ? ` - ${sprintProjectLabel}` : "";
 
   return {
     name: sprintName,
-    label: `Sprint ${sprintName}`,
+    label: `Sprint ${sprintName}${projectSuffix}`,
+    projectKey: sprintProjectKey,
+    projectLabel: sprintProjectLabel,
     jql,
     jiraFilterUrl: `${siteUrl}/issues/?jql=${encodeURIComponent(jql)}`,
     pulledAt,
@@ -5883,6 +5889,7 @@ async function main() {
     version,
     total: issues.length,
     sprint: sprintName,
+    sprintProject: sprintProjectKey,
     sprintTotal: sprintIssues.length,
     jsonPath,
     dashboardDataPath,

@@ -135,6 +135,8 @@ type DashboardData = {
   sprintView?: {
     name?: string;
     label?: string;
+    projectKey?: string;
+    projectLabel?: string;
     jql?: string;
     jiraFilterUrl?: string;
     pulledAt?: string;
