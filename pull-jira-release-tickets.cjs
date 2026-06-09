@@ -1166,6 +1166,21 @@ function addBacklogIssueKey(keys, seen, value) {
   }
 }
 
+function addBacklogIssueId(ids, seen, value) {
+  if (value === undefined || value === null || value === "") {
+    return;
+  }
+
+  const id = typeof value === "string" || typeof value === "number"
+    ? value
+    : value.id || value.issueId || value.issueID || value.issue?.id || "";
+
+  if (/^\d+$/.test(String(id)) && !seen.has(String(id))) {
+    seen.add(String(id));
+    ids.push(String(id));
+  }
+}
+
 function addBacklogIssueKeysFromValue(keys, seen, value) {
   if (!value) {
     return;
@@ -1189,6 +1204,29 @@ function addBacklogIssueKeysFromValue(keys, seen, value) {
   Object.values(value).forEach((item) => addBacklogIssueKeysFromValue(keys, seen, item));
 }
 
+function addBacklogIssueIdsFromValue(ids, seen, value) {
+  if (!value) {
+    return;
+  }
+
+  if (Array.isArray(value)) {
+    value.forEach((item) => addBacklogIssueIdsFromValue(ids, seen, item));
+    return;
+  }
+
+  if (typeof value === "string" || typeof value === "number") {
+    addBacklogIssueId(ids, seen, value);
+    return;
+  }
+
+  if (typeof value !== "object") {
+    return;
+  }
+
+  addBacklogIssueId(ids, seen, value);
+  Object.values(value).forEach((item) => addBacklogIssueIdsFromValue(ids, seen, item));
+}
+
 function extractIssueKeysFromBacklogSprint(sprint) {
   const keys = [];
   const seen = new Set();
@@ -1197,6 +1235,8 @@ function extractIssueKeysFromBacklogSprint(sprint) {
     "issueKeys",
     "issuekeys",
     "issueIds",
+    "issuesIds",
+    "issueIDs",
     "items",
     "contents",
     "workItems",
@@ -1205,6 +1245,54 @@ function extractIssueKeysFromBacklogSprint(sprint) {
 
   for (const field of candidateFields) {
     addBacklogIssueKeysFromValue(keys, seen, sprint?.[field]);
+  }
+
+  return keys;
+}
+
+function extractIssueIdsFromBacklogSprint(sprint) {
+  const ids = [];
+  const seen = new Set();
+  const candidateFields = [
+    "issueIds",
+    "issuesIds",
+    "issueIDs",
+    "issues",
+    "items",
+    "contents",
+    "workItems",
+  ];
+
+  for (const field of candidateFields) {
+    addBacklogIssueIdsFromValue(ids, seen, sprint?.[field]);
+  }
+
+  return ids;
+}
+
+function backlogIssueKeyById(payload) {
+  const byId = new Map();
+  const issues = Array.isArray(payload?.issues) ? payload.issues : [];
+
+  for (const issue of issues) {
+    if (issue?.id && issue?.key) {
+      byId.set(String(issue.id), issue.key);
+    }
+  }
+
+  return byId;
+}
+
+function backlogIssueKeysFromIds(ids, issueKeyById) {
+  const keys = [];
+  const seen = new Set();
+
+  for (const id of ids || []) {
+    const key = issueKeyById.get(String(id));
+    if (key && !seen.has(key)) {
+      seen.add(key);
+      keys.push(key);
+    }
   }
 
   return keys;
@@ -1271,12 +1359,18 @@ async function fetchBacklogSprintIssueKeys(boardId, sprintId) {
     throw lastError || new Error("Jira backlog payload could not be loaded.");
   }
 
+  const issueKeyById = backlogIssueKeyById(payload);
   const sprintCandidates = findBacklogSprintNodes(payload);
   const candidateResults = sprintCandidates
     .filter((candidate) => !sprintId || String(candidate.id || candidate.sprintId || "") === String(sprintId) || normalizedText(candidate.name || candidate.sprintName || candidate.label || candidate.title).startsWith(normalizedText(sprintName)))
     .map((candidate) => ({
       candidate,
       keys: extractIssueKeysFromBacklogSprint(candidate),
+      ids: extractIssueIdsFromBacklogSprint(candidate),
+    }))
+    .map((result) => ({
+      ...result,
+      keys: result.keys.length ? result.keys : backlogIssueKeysFromIds(result.ids, issueKeyById),
     }))
     .filter((result) => result.keys.length > 0)
     .sort((left, right) => right.keys.length - left.keys.length);
