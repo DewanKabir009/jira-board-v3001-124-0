@@ -2026,7 +2026,8 @@ ul {
 
 .ai-ticket-table {
   width: 100%;
-  min-width: 720px;
+  min-width: 860px;
+  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
   overflow: hidden;
@@ -2035,12 +2036,34 @@ ul {
   background: #ffffff;
 }
 
+.ai-ticket-col-ticket {
+  width: 12%;
+}
+
+.ai-ticket-col-summary {
+  width: 41%;
+}
+
+.ai-ticket-col-status {
+  width: 13%;
+}
+
+.ai-ticket-col-priority {
+  width: 8%;
+}
+
+.ai-ticket-col-assignee,
+.ai-ticket-col-developer {
+  width: 13%;
+}
+
 .ai-ticket-table th,
 .ai-ticket-table td {
   border-bottom: 1px solid rgba(0, 95, 204, 0.12);
   padding: 9px 10px;
   text-align: left;
   vertical-align: top;
+  overflow-wrap: anywhere;
 }
 
 .ai-ticket-table th {
@@ -2059,23 +2082,8 @@ ul {
   background: rgba(230, 246, 255, 0.34);
 }
 
-.ai-ticket-table td:first-child,
-.ai-ticket-table td:nth-child(2) {
-  display: grid;
-  gap: 4px;
-}
-
-.ai-ticket-table td:first-child {
-  min-width: 112px;
-}
-
-.ai-ticket-table td:nth-child(2) {
-  min-width: 220px;
-}
-
 .ai-ticket-table td:nth-child(5),
 .ai-ticket-table td:nth-child(6) {
-  min-width: 118px;
   color: var(--hq-ink);
   font-weight: 850;
 }
@@ -2093,14 +2101,18 @@ ul {
 
 .ai-ticket-table td:first-child span,
 .ai-ticket-table td:nth-child(2) span {
+  display: block;
+  margin-top: 4px;
   color: var(--hq-muted);
   font-size: 0.86rem;
   line-height: 1.42;
 }
 
 .ai-ticket-table td:nth-child(2) strong {
+  display: block;
   color: var(--hq-ink);
   font-weight: 850;
+  line-height: 1.35;
 }
 
 .ai-ticket-pill {

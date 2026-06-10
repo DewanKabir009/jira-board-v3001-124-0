@@ -1459,6 +1459,13 @@ const hqSpecs = [
         const table = document.createElement("table");
         table.className = "ai-ticket-table";
 
+        const colgroup = document.createElement("colgroup");
+        ["ticket", "summary", "status", "priority", "assignee", "developer"].forEach((name) => {
+          const col = document.createElement("col");
+          col.className = `ai-ticket-col-${name}`;
+          colgroup.appendChild(col);
+        });
+
         const thead = document.createElement("thead");
         const headerRow = document.createElement("tr");
         ["Ticket", "Summary", "Status", "Priority", "Assignee", "Assigned developer"].forEach((label) => {
@@ -1513,7 +1520,7 @@ const hqSpecs = [
           tbody.appendChild(tr);
         });
 
-        table.append(thead, tbody);
+        table.append(colgroup, thead, tbody);
         list.appendChild(table);
       }
 
