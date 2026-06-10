@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-10T11:51:43.176Z",
-  "pulledAtDisplay": "Jun 10, 2026, 7:51 AM",
+  "pulledAt": "2026-06-10T12:16:31.188Z",
+  "pulledAtDisplay": "Jun 10, 2026, 8:16 AM",
   "total": 11,
   "issues": [
     {
@@ -832,8 +832,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-10T11:51:43.176Z",
-    "pulledAtDisplay": "Jun 10, 2026, 7:51 AM",
+    "pulledAt": "2026-06-10T12:16:31.188Z",
+    "pulledAtDisplay": "Jun 10, 2026, 8:16 AM",
     "total": 94,
     "mainTotal": 94,
     "subtaskTotal": 0,
@@ -1299,8 +1299,8 @@
         "assignedDeveloper": "Yoel Martin Pardo",
         "assignedDeveloperAccountId": "625571809e7380006fb29599",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-06-09T18:39:44.361-0400",
-        "updatedDisplay": "Jun 9, 2026, 6:39 PM",
+        "updated": "2026-06-10T08:07:31.191-0400",
+        "updatedDisplay": "Jun 10, 2026, 8:07 AM",
         "created": "2026-04-30T12:02:28.873-0400",
         "createdDisplay": "Apr 30, 2026, 12:02 PM",
         "components": [],
@@ -1388,7 +1388,7 @@
         "descriptionImageCount": 0,
         "descriptionVideoCount": 0,
         "descriptionMediaCount": 0,
-        "commentCount": 1,
+        "commentCount": 2,
         "comments": [
           {
             "id": "1180936",
@@ -1404,24 +1404,39 @@
             "mediaCount": 2,
             "body": "Hi @Allen Shoup / @Alex McNay The issue on this ticket was just that the service that consume the messages from the queue was not running on AWS DEV. We started the service and it started consuming messages and update records on the database. Below are examples of the query that we were running on AWS DEV to make sure that records are being processed:\n\nafter few seconds we ran the query again and it was displaying less records:\n\nWe should be good on this ticket.",
             "bodyHtml": "<p>Hi @Allen Shoup / @Alex McNay The issue on this ticket was just that the service that consume the messages from the queue was not running on AWS DEV. We started the service and it started consuming messages and update records on the database. Below are examples of the query that we were running on AWS DEV to make sure that records are being processed:</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14365/comments/1180936/736239-image-20260609-181832.png\" alt=\"image-20260609-181832.png\" loading=\"lazy\"><figcaption>image-20260609-181832.png</figcaption></figure></div><p>after few seconds we ran the query again and it was displaying less records:</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14365/comments/1180936/736238-image-20260609-181856.png\" alt=\"image-20260609-181856.png\" loading=\"lazy\"><figcaption>image-20260609-181856.png</figcaption></figure></div><p>We should be good on this ticket.</p>"
+          },
+          {
+            "id": "1181249",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14365?focusedCommentId=1181249",
+            "author": "Yoel Martin Pardo",
+            "authorAccountId": "625571809e7380006fb29599",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+            "created": "2026-06-10T08:15:05.812-0400",
+            "createdDisplay": "Jun 10, 2026, 8:15 AM",
+            "updated": "2026-06-10T08:15:05.812-0400",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 1,
+            "body": "There are just 5 records that we tried to processed, but we are having issues with because they are missing some data on mongodb (like holes) and that makes the process to fail for them. All the other records were processed successful.",
+            "bodyHtml": "<p>There are just 5 records that we tried to processed, but we are having issues with because they are missing some data on mongodb (like holes) and that makes the process to fail for them. All the other records were processed successful.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14365/comments/1181249/736456-image-20260610-121412.png\" alt=\"image-20260610-121412.png\" loading=\"lazy\"><figcaption>image-20260610-121412.png</figcaption></figure></div>"
           }
         ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14365?focusedCommentId=1180936",
-        "lastCommentDisplay": "Jun 9, 2026, 2:19 PM",
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14365?focusedCommentId=1181249",
+        "lastCommentDisplay": "Jun 10, 2026, 8:15 AM",
         "lastCommentAuthor": "Yoel Martin Pardo",
         "testChecklist": null,
         "type": "Bug",
         "isSubtask": false,
         "status": "Planning",
         "priority": "P1",
-        "assignee": "Yoel Martin Pardo",
-        "assigneeAccountId": "625571809e7380006fb29599",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "assignee": "Alex McNay",
+        "assigneeAccountId": "61f80648f51e85007087aef1",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/61f80648f51e85007087aef1/be5ebe22-4108-4f10-97f0-4a02825274ee/32",
         "assignedDeveloper": "Matthew Heins",
         "assignedDeveloperAccountId": "5cf16e9db143850fbd7a8e16",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5cf16e9db143850fbd7a8e16/0f619c69-7194-4226-b8b2-5a4147088c2b/32",
-        "updated": "2026-06-09T14:20:53.823-0400",
-        "updatedDisplay": "Jun 9, 2026, 2:20 PM",
+        "updated": "2026-06-10T08:15:12.098-0400",
+        "updatedDisplay": "Jun 10, 2026, 8:15 AM",
         "created": "2026-04-07T10:05:32.927-0400",
         "createdDisplay": "Apr 7, 2026, 10:05 AM",
         "components": [],
@@ -6673,13 +6688,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-10T11:51:11.021Z",
-    "pulledAtDisplay": "Jun 10, 2026, 7:51 AM",
+    "pulledAt": "2026-06-10T12:16:05.536Z",
+    "pulledAtDisplay": "Jun 10, 2026, 8:16 AM",
     "window": {
-      "start": "2026-04-26T11:51:11.021Z",
-      "end": "2026-12-07T11:51:11.021Z",
-      "startDisplay": "Apr 26, 2026, 7:51 AM",
-      "endDisplay": "Dec 7, 2026, 6:51 AM"
+      "start": "2026-04-26T12:16:05.536Z",
+      "end": "2026-12-07T12:16:05.536Z",
+      "startDisplay": "Apr 26, 2026, 8:16 AM",
+      "endDisplay": "Dec 7, 2026, 7:16 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -6692,7 +6707,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-10T11:51:14.268Z",
+        "pulledAt": "2026-06-10T12:16:07.960Z",
         "eventCount": 91,
         "events": [
           {
@@ -6966,21 +6981,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Memorial Day - (US) Company Holiday",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDisplay": "May 24, 2026, 8:00 PM",
-            "endDisplay": "May 25, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -6991,6 +6991,21 @@
             "endDisplay": "May 25, 2026, 8:00 PM",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Memorial Day - (US) Company Holiday",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDisplay": "May 24, 2026, 8:00 PM",
+            "endDisplay": "May 25, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -7011,21 +7026,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Oak Brook Monthly Production Server Patching May 2026: Slack:\n#itops_patching_communications",
-            "start": "2026-05-26T18:00:00.000Z",
-            "end": "2026-05-27T19:55:00.000Z",
-            "startDisplay": "May 26, 2026, 2:00 PM",
-            "endDisplay": "May 27, 2026, 3:55 PM",
-            "allDay": false,
-            "type": "Patching",
-            "location": "https://golfnow.atlassian.net/browse/OPS-54241",
-            "description": "Slack: #itops_patching_communications",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -7038,6 +7038,21 @@
             "type": "Scheduled Maintenance",
             "location": "https://golfnow.atlassian.net/browse/OPS-54736",
             "description": "Slack: #itops_deployments",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Oak Brook Monthly Production Server Patching May 2026: Slack:\n#itops_patching_communications",
+            "start": "2026-05-26T18:00:00.000Z",
+            "end": "2026-05-27T19:55:00.000Z",
+            "startDisplay": "May 26, 2026, 2:00 PM",
+            "endDisplay": "May 27, 2026, 3:55 PM",
+            "allDay": false,
+            "type": "Patching",
+            "location": "https://golfnow.atlassian.net/browse/OPS-54241",
+            "description": "Slack: #itops_patching_communications",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
@@ -7746,21 +7761,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Holiday Freeze",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-08T00:00:00.000Z",
-            "startDisplay": "Aug 30, 2026, 8:00 PM",
-            "endDisplay": "Sep 7, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Golf Freeze",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -7771,6 +7771,21 @@
             "endDisplay": "Aug 31, 2026, 8:00 PM",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Holiday Freeze",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-08T00:00:00.000Z",
+            "startDisplay": "Aug 30, 2026, 8:00 PM",
+            "endDisplay": "Sep 7, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Golf Freeze",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8066,10 +8081,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-10T11:26:33.562Z",
-    "previousPulledAtDisplay": "Jun 10, 2026, 7:26 AM",
-    "currentPulledAt": "2026-06-10T11:51:43.176Z",
-    "currentPulledAtDisplay": "Jun 10, 2026, 7:51 AM",
+    "previousPulledAt": "2026-06-10T11:51:43.176Z",
+    "previousPulledAtDisplay": "Jun 10, 2026, 7:51 AM",
+    "currentPulledAt": "2026-06-10T12:16:31.188Z",
+    "currentPulledAtDisplay": "Jun 10, 2026, 8:16 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -8077,6 +8092,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-10T11:51:43.176Z",
+      "previousPulledAtDisplay": "Jun 10, 2026, 7:51 AM",
+      "currentPulledAt": "2026-06-10T12:16:31.188Z",
+      "currentPulledAtDisplay": "Jun 10, 2026, 8:16 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-10T11:26:33.562Z",
       "previousPulledAtDisplay": "Jun 10, 2026, 7:26 AM",
@@ -10835,17 +10861,6 @@
       "previousPulledAtDisplay": "Jun 7, 2026, 6:05 PM",
       "currentPulledAt": "2026-06-07T22:30:25.514Z",
       "currentPulledAtDisplay": "Jun 7, 2026, 6:30 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-07T21:41:26.610Z",
-      "previousPulledAtDisplay": "Jun 7, 2026, 5:41 PM",
-      "currentPulledAt": "2026-06-07T22:05:28.058Z",
-      "currentPulledAtDisplay": "Jun 7, 2026, 6:05 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
