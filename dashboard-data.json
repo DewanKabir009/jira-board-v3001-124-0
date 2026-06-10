@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-10T14:00:53.509Z",
-  "pulledAtDisplay": "Jun 10, 2026, 10:00 AM",
+  "pulledAt": "2026-06-10T14:27:03.382Z",
+  "pulledAtDisplay": "Jun 10, 2026, 10:27 AM",
   "total": 13,
   "issues": [
     {
@@ -41,16 +41,16 @@
       "testChecklist": null,
       "type": "Story",
       "isSubtask": false,
-      "status": "Pending Deployment (DEV)",
+      "status": "QA Testing (DEV)",
       "priority": "P2",
-      "assignee": "Tyler Olechnowicz",
-      "assigneeAccountId": "5d2396c1ea26c40c2043fc92",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
       "assignedDeveloper": "Tyler Olechnowicz",
       "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
       "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-      "updated": "2026-06-10T09:51:04.936-0400",
-      "updatedDisplay": "Jun 10, 2026, 9:51 AM",
+      "updated": "2026-06-10T10:20:36.801-0400",
+      "updatedDisplay": "Jun 10, 2026, 10:20 AM",
       "created": "2026-03-09T09:24:15.283-0400",
       "createdDisplay": "Mar 9, 2026, 9:24 AM",
       "components": [
@@ -88,16 +88,16 @@
       "testChecklist": null,
       "type": "Developer Task (sub task)",
       "isSubtask": true,
-      "status": "Pending Deployment (DEV)",
+      "status": "QA Testing (DEV)",
       "priority": "None",
-      "assignee": "Tyler Olechnowicz",
-      "assigneeAccountId": "5d2396c1ea26c40c2043fc92",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+      "assignee": "Unassigned",
+      "assigneeAccountId": "",
+      "assigneeAvatarUrl": "",
       "assignedDeveloper": "Tyler Olechnowicz",
       "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
       "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-      "updated": "2026-06-10T09:50:42.953-0400",
-      "updatedDisplay": "Jun 10, 2026, 9:50 AM",
+      "updated": "2026-06-10T10:09:14.031-0400",
+      "updatedDisplay": "Jun 10, 2026, 10:09 AM",
       "created": "2026-06-10T09:35:04.165-0400",
       "createdDisplay": "Jun 10, 2026, 9:35 AM",
       "components": [
@@ -116,7 +116,7 @@
         "summary": "Update EZ Legacy API Call (AddConfirmationNote) to Include Param5 – SponsorID",
         "description": "",
         "type": "Story",
-        "status": "Pending Deployment (DEV)",
+        "status": "QA Testing (DEV)",
         "priority": "P2"
       }
     },
@@ -959,8 +959,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-10T14:00:53.509Z",
-    "pulledAtDisplay": "Jun 10, 2026, 10:00 AM",
+    "pulledAt": "2026-06-10T14:27:03.382Z",
+    "pulledAtDisplay": "Jun 10, 2026, 10:27 AM",
     "total": 94,
     "mainTotal": 94,
     "subtaskTotal": 0,
@@ -1847,16 +1847,16 @@
         "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
-        "status": "Pending Deployment (DEV)",
+        "status": "QA Testing (DEV)",
         "priority": "P2",
-        "assignee": "Tyler Olechnowicz",
-        "assigneeAccountId": "5d2396c1ea26c40c2043fc92",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
         "assignedDeveloper": "Tyler Olechnowicz",
         "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-        "updated": "2026-06-10T09:51:04.936-0400",
-        "updatedDisplay": "Jun 10, 2026, 9:51 AM",
+        "updated": "2026-06-10T10:20:36.801-0400",
+        "updatedDisplay": "Jun 10, 2026, 10:20 AM",
         "created": "2026-03-09T09:24:15.283-0400",
         "createdDisplay": "Mar 9, 2026, 9:24 AM",
         "components": [
@@ -4224,16 +4224,16 @@
         "testChecklist": null,
         "type": "Task",
         "isSubtask": false,
-        "status": "Pending Deployment (DEV)",
+        "status": "Closed",
         "priority": "P1",
-        "assignee": "Yu-Sheng Tu",
-        "assigneeAccountId": "60d0cfa7d5dde8007174dd0b",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60d0cfa7d5dde8007174dd0b/25cdd204-3aea-49fd-97fb-2f563849c2ed/32",
+        "assignee": "Unassigned",
+        "assigneeAccountId": "",
+        "assigneeAvatarUrl": "",
         "assignedDeveloper": "Yu-Sheng Tu",
         "assignedDeveloperAccountId": "60d0cfa7d5dde8007174dd0b",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60d0cfa7d5dde8007174dd0b/25cdd204-3aea-49fd-97fb-2f563849c2ed/32",
-        "updated": "2026-06-03T11:40:25.523-0400",
-        "updatedDisplay": "Jun 3, 2026, 11:40 AM",
+        "updated": "2026-06-10T10:26:07.937-0400",
+        "updatedDisplay": "Jun 10, 2026, 10:26 AM",
         "created": "2026-01-21T10:12:49.892-0500",
         "createdDisplay": "Jan 21, 2026, 10:12 AM",
         "components": [
@@ -5268,16 +5268,16 @@
         "testChecklist": null,
         "type": "Task",
         "isSubtask": false,
-        "status": "QA Testing (DEV)",
+        "status": "Closed",
         "priority": "None",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignee": "Unassigned",
+        "assigneeAccountId": "",
+        "assigneeAvatarUrl": "",
         "assignedDeveloper": "Yoel Martin Pardo",
         "assignedDeveloperAccountId": "625571809e7380006fb29599",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-06-03T11:40:27.481-0400",
-        "updatedDisplay": "Jun 3, 2026, 11:40 AM",
+        "updated": "2026-06-10T10:23:17.586-0400",
+        "updatedDisplay": "Jun 10, 2026, 10:23 AM",
         "created": "2026-04-14T11:08:41.377-0400",
         "createdDisplay": "Apr 14, 2026, 11:08 AM",
         "components": [
@@ -5296,7 +5296,7 @@
         "sprintNames": [
           "2026.8"
         ],
-        "resolution": "",
+        "resolution": "Done",
         "parent": {
           "key": "B2C-68",
           "url": "https://golfnow.atlassian.net/browse/B2C-68",
@@ -6851,13 +6851,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-10T14:00:30.458Z",
-    "pulledAtDisplay": "Jun 10, 2026, 10:00 AM",
+    "pulledAt": "2026-06-10T14:26:27.242Z",
+    "pulledAtDisplay": "Jun 10, 2026, 10:26 AM",
     "window": {
-      "start": "2026-04-26T14:00:30.457Z",
-      "end": "2026-12-07T14:00:30.457Z",
-      "startDisplay": "Apr 26, 2026, 10:00 AM",
-      "endDisplay": "Dec 7, 2026, 9:00 AM"
+      "start": "2026-04-26T14:26:27.241Z",
+      "end": "2026-12-07T14:26:27.241Z",
+      "startDisplay": "Apr 26, 2026, 10:26 AM",
+      "endDisplay": "Dec 7, 2026, 9:26 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -6870,7 +6870,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-10T14:00:33.210Z",
+        "pulledAt": "2026-06-10T14:26:30.397Z",
         "eventCount": 91,
         "events": [
           {
@@ -7144,21 +7144,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Spring Bank Holiday (UK)",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDisplay": "May 24, 2026, 8:00 PM",
-            "endDisplay": "May 25, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -7169,6 +7154,21 @@
             "endDisplay": "May 25, 2026, 8:00 PM",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Spring Bank Holiday (UK)",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDisplay": "May 24, 2026, 8:00 PM",
+            "endDisplay": "May 25, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -7924,21 +7924,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Summer Bank Holiday (UK)",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-01T00:00:00.000Z",
-            "startDisplay": "Aug 30, 2026, 8:00 PM",
-            "endDisplay": "Aug 31, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -7949,6 +7934,21 @@
             "endDisplay": "Sep 7, 2026, 8:00 PM",
             "allDay": true,
             "type": "Golf Freeze",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Summer Bank Holiday (UK)",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-01T00:00:00.000Z",
+            "startDisplay": "Aug 30, 2026, 8:00 PM",
+            "endDisplay": "Aug 31, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8244,17 +8244,240 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-10T13:56:30.665Z",
-    "previousPulledAtDisplay": "Jun 10, 2026, 9:56 AM",
-    "currentPulledAt": "2026-06-10T14:00:53.509Z",
-    "currentPulledAtDisplay": "Jun 10, 2026, 10:00 AM",
+    "previousPulledAt": "2026-06-10T14:00:53.509Z",
+    "previousPulledAtDisplay": "Jun 10, 2026, 10:00 AM",
+    "currentPulledAt": "2026-06-10T14:27:03.382Z",
+    "currentPulledAtDisplay": "Jun 10, 2026, 10:27 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
-    "updated": [],
-    "statusChanges": []
+    "updated": [
+      {
+        "key": "CORE-14273",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14273",
+        "summary": "Update EZ Legacy API Call (AddConfirmationNote) to Include Param5 – SponsorID",
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "Pending Deployment (DEV)",
+            "after": "QA Testing (DEV)"
+          },
+          {
+            "field": "assignee",
+            "label": "Assignee",
+            "before": "Tyler Olechnowicz",
+            "after": "Dewan Kabir"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 10, 2026, 9:51 AM",
+            "after": "Jun 10, 2026, 10:20 AM"
+          }
+        ],
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "status": "QA Testing (DEV)",
+        "parent": null
+      },
+      {
+        "key": "CORE-14511",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14511",
+        "summary": "Code Changes",
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "Pending Deployment (DEV)",
+            "after": "QA Testing (DEV)"
+          },
+          {
+            "field": "assignee",
+            "label": "Assignee",
+            "before": "Tyler Olechnowicz",
+            "after": "Unassigned"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 10, 2026, 9:50 AM",
+            "after": "Jun 10, 2026, 10:09 AM"
+          }
+        ],
+        "type": "Developer Task (sub task)",
+        "isSubtask": true,
+        "assignee": "Unassigned",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "status": "QA Testing (DEV)",
+        "parent": {
+          "key": "CORE-14273",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14273",
+          "summary": "Update EZ Legacy API Call (AddConfirmationNote) to Include Param5 – SponsorID",
+          "description": "",
+          "type": "Story",
+          "status": "QA Testing (DEV)",
+          "priority": "P2"
+        }
+      }
+    ],
+    "statusChanges": [
+      {
+        "key": "CORE-14273",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14273",
+        "summary": "Update EZ Legacy API Call (AddConfirmationNote) to Include Param5 – SponsorID",
+        "before": "Pending Deployment (DEV)",
+        "after": "QA Testing (DEV)",
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "status": "QA Testing (DEV)",
+        "parent": null
+      },
+      {
+        "key": "CORE-14511",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14511",
+        "summary": "Code Changes",
+        "before": "Pending Deployment (DEV)",
+        "after": "QA Testing (DEV)",
+        "type": "Developer Task (sub task)",
+        "isSubtask": true,
+        "assignee": "Unassigned",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "status": "QA Testing (DEV)",
+        "parent": {
+          "key": "CORE-14273",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14273",
+          "summary": "Update EZ Legacy API Call (AddConfirmationNote) to Include Param5 – SponsorID",
+          "description": "",
+          "type": "Story",
+          "status": "QA Testing (DEV)",
+          "priority": "P2"
+        }
+      }
+    ]
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-10T14:00:53.509Z",
+      "previousPulledAtDisplay": "Jun 10, 2026, 10:00 AM",
+      "currentPulledAt": "2026-06-10T14:27:03.382Z",
+      "currentPulledAtDisplay": "Jun 10, 2026, 10:27 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14273",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14273",
+          "summary": "Update EZ Legacy API Call (AddConfirmationNote) to Include Param5 – SponsorID",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "Pending Deployment (DEV)",
+              "after": "QA Testing (DEV)"
+            },
+            {
+              "field": "assignee",
+              "label": "Assignee",
+              "before": "Tyler Olechnowicz",
+              "after": "Dewan Kabir"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 10, 2026, 9:51 AM",
+              "after": "Jun 10, 2026, 10:20 AM"
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Tyler Olechnowicz",
+          "status": "QA Testing (DEV)",
+          "parent": null
+        },
+        {
+          "key": "CORE-14511",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14511",
+          "summary": "Code Changes",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "Pending Deployment (DEV)",
+              "after": "QA Testing (DEV)"
+            },
+            {
+              "field": "assignee",
+              "label": "Assignee",
+              "before": "Tyler Olechnowicz",
+              "after": "Unassigned"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 10, 2026, 9:50 AM",
+              "after": "Jun 10, 2026, 10:09 AM"
+            }
+          ],
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Unassigned",
+          "assignedDeveloper": "Tyler Olechnowicz",
+          "status": "QA Testing (DEV)",
+          "parent": {
+            "key": "CORE-14273",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14273",
+            "summary": "Update EZ Legacy API Call (AddConfirmationNote) to Include Param5 – SponsorID",
+            "description": "",
+            "type": "Story",
+            "status": "QA Testing (DEV)",
+            "priority": "P2"
+          }
+        }
+      ],
+      "statusChanges": [
+        {
+          "key": "CORE-14273",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14273",
+          "summary": "Update EZ Legacy API Call (AddConfirmationNote) to Include Param5 – SponsorID",
+          "before": "Pending Deployment (DEV)",
+          "after": "QA Testing (DEV)",
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Tyler Olechnowicz",
+          "status": "QA Testing (DEV)",
+          "parent": null
+        },
+        {
+          "key": "CORE-14511",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14511",
+          "summary": "Code Changes",
+          "before": "Pending Deployment (DEV)",
+          "after": "QA Testing (DEV)",
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Unassigned",
+          "assignedDeveloper": "Tyler Olechnowicz",
+          "status": "QA Testing (DEV)",
+          "parent": {
+            "key": "CORE-14273",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14273",
+            "summary": "Update EZ Legacy API Call (AddConfirmationNote) to Include Param5 – SponsorID",
+            "description": "",
+            "type": "Story",
+            "status": "QA Testing (DEV)",
+            "priority": "P2"
+          }
+        }
+      ]
+    },
     {
       "previousPulledAt": "2026-06-10T13:56:30.665Z",
       "previousPulledAtDisplay": "Jun 10, 2026, 9:56 AM",
@@ -8306,9 +8529,9 @@
           "testChecklist": null,
           "type": "Story",
           "isSubtask": false,
-          "status": "Pending Deployment (DEV)",
+          "status": "QA Testing (DEV)",
           "priority": "P2",
-          "assignee": "Tyler Olechnowicz",
+          "assignee": "Dewan Kabir",
           "assigneeAccountId": "5d2396c1ea26c40c2043fc92",
           "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
           "assignedDeveloper": "Tyler Olechnowicz",
@@ -8353,9 +8576,9 @@
           "testChecklist": null,
           "type": "Developer Task (sub task)",
           "isSubtask": true,
-          "status": "Pending Deployment (DEV)",
+          "status": "QA Testing (DEV)",
           "priority": "None",
-          "assignee": "Tyler Olechnowicz",
+          "assignee": "Unassigned",
           "assigneeAccountId": "5d2396c1ea26c40c2043fc92",
           "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
           "assignedDeveloper": "Tyler Olechnowicz",
@@ -8381,7 +8604,7 @@
             "summary": "Update EZ Legacy API Call (AddConfirmationNote) to Include Param5 – SponsorID",
             "description": "",
             "type": "Story",
-            "status": "Pending Deployment (DEV)",
+            "status": "QA Testing (DEV)",
             "priority": "P2"
           }
         }
@@ -11146,17 +11369,6 @@
       "previousPulledAtDisplay": "Jun 7, 2026, 8:15 PM",
       "currentPulledAt": "2026-06-08T00:40:26.892Z",
       "currentPulledAtDisplay": "Jun 7, 2026, 8:40 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-07T23:51:59.472Z",
-      "previousPulledAtDisplay": "Jun 7, 2026, 7:51 PM",
-      "currentPulledAt": "2026-06-08T00:15:27.979Z",
-      "currentPulledAtDisplay": "Jun 7, 2026, 8:15 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
