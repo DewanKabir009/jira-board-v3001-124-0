@@ -1,6 +1,6 @@
 # CORE QA Headquarters
 
-Status: started. SPEC-HQ-02 has proven Cloudflare Static Assets deployments for the 123 and 124 HQ Workers through local Wrangler OAuth and GitHub workflow deploys. The hosted Jira bridge is reachable and Cloudflare Access protected. SPEC-HQ-03, SPEC-HQ-04, SPEC-HQ-05, SPEC-HQ-06, and SPEC-HQ-07 are in progress.
+Status: started. SPEC-HQ-02 has proven Cloudflare Static Assets deployments for the 123 and 124 HQ Workers through local Wrangler OAuth and GitHub workflow deploys. The hosted Jira bridge is reachable and Cloudflare Access protected. SPEC-HQ-03, SPEC-HQ-04, SPEC-HQ-05, SPEC-HQ-06, SPEC-HQ-07, and SPEC-HQ-10 are in progress.
 
 ## Purpose
 
@@ -32,3 +32,4 @@ The first implementation is a static Astro route at `/hq/` so it can live beside
 - SPEC-HQ-07: AI release summary. Cloudflare Workers AI endpoint, source map, draft outputs, risk signals, and review gates are in progress.
 - SPEC-HQ-08: Admin console.
 - SPEC-HQ-09: Calendar menu. Implemented for the .124 HQ pilot.
+- SPEC-HQ-10: Slack two-way bridge. Outbound bot posts, signed inbound routes, slash commands, Events API callbacks, interactivity callbacks, and the HQ activity panel are implemented; live inbound still needs Slack app Request URL configuration.

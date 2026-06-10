@@ -315,11 +315,19 @@ const aiRuntime = {
 const slackRuntime = {
   statusEndpoint: "/api/slack/status",
   sendEndpoint: "/api/slack/send",
+  activityEndpoint: "/api/slack/activity",
   provider: "Slack Web API",
   bot: "CORE JIRA NOTIFIER AGENT",
   channel: "#core-qa-dream-team",
-  mode: "Manual post check"
+  mode: "Two-way bridge check"
 };
+
+const slackCommandExamples = [
+  "/qa-hq p0 tickets",
+  "/qa-hq tickets assigned to Nicole",
+  "/qa-hq tickets from Reservation",
+  "@CORE JIRA NOTIFIER AGENT status"
+];
 
 const aiInputSources = [
   {
@@ -480,7 +488,8 @@ const hqSpecs = [
   { id: "SPEC-HQ-06", title: "Operational status", status: "In progress", detail: "Service health cards, probe cadence, Slack notifier route, and status publishing contract are drafted." },
   { id: "SPEC-HQ-07", title: "AI release summary", status: "In progress", detail: "Cloudflare Workers AI endpoint, source map, draft outputs, risk signals, and review gates are implemented." },
   { id: "SPEC-HQ-08", title: "Admin console", status: "Planned", detail: "Users, roles, sections, and script permissions." },
-  { id: "SPEC-HQ-09", title: "Calendar menu", status: "Implemented", detail: "Confluence GN Releases calendar data is pulled into dashboard-data.json and rendered in HQ with calendar/list views." }
+  { id: "SPEC-HQ-09", title: "Calendar menu", status: "Implemented", detail: "Confluence GN Releases calendar data is pulled into dashboard-data.json and rendered in HQ with calendar/list views." },
+  { id: "SPEC-HQ-10", title: "Slack two-way bridge", status: "In progress", detail: "Worker routes now cover HQ posts, slash commands, Events API mentions, interactive callbacks, and an HQ activity panel; live inbound needs SLACK_SIGNING_SECRET and Slack app Request URLs." }
 ];
 ---
 
@@ -904,6 +913,7 @@ const hqSpecs = [
             class="slack-runner-card"
             data-slack-status-endpoint={slackRuntime.statusEndpoint}
             data-slack-send-endpoint={slackRuntime.sendEndpoint}
+            data-slack-activity-endpoint={slackRuntime.activityEndpoint}
             data-slack-channel={slackRuntime.channel}
           >
             <div class="slack-runner-top">
@@ -927,6 +937,45 @@ const hqSpecs = [
               <p id="hq-slack-status" role="status">Checking Slack Worker route...</p>
             </div>
 
+            <div class="slack-bridge-grid" aria-label="Slack bridge readiness">
+              <article>
+                <span>Outbound</span>
+                <strong id="hq-slack-outbound">Checking</strong>
+                <p id="hq-slack-outbound-detail">HQ to Slack posts use the bot token.</p>
+              </article>
+              <article>
+                <span>Inbound</span>
+                <strong id="hq-slack-inbound">Checking</strong>
+                <p id="hq-slack-inbound-detail">Slack to HQ callbacks require signed request verification.</p>
+              </article>
+            </div>
+
+            <div class="slack-inbound-panel">
+              <div>
+                <p class="eyebrow">Slack app request URLs</p>
+                <h4>Wire Slack callbacks into HQ</h4>
+              </div>
+              <dl>
+                <div>
+                  <dt>Slash command</dt>
+                  <dd><code id="hq-slack-url-command">/api/slack/commands</code></dd>
+                </div>
+                <div>
+                  <dt>Events API</dt>
+                  <dd><code id="hq-slack-url-events">/api/slack/events</code></dd>
+                </div>
+                <div>
+                  <dt>Interactivity</dt>
+                  <dd><code id="hq-slack-url-actions">/api/slack/actions</code></dd>
+                </div>
+              </dl>
+              <div class="slack-command-examples" aria-label="Slack command examples">
+                {slackCommandExamples.map((example) => (
+                  <code>{example}</code>
+                ))}
+              </div>
+            </div>
+
             <div class="slack-compose-panel">
               <label for="hq-slack-message">
                 <span>Message</span>
@@ -937,6 +986,19 @@ const hqSpecs = [
                 <button type="button" id="hq-slack-send" disabled>Send to Slack</button>
                 <span class="slack-action-note">Posts to {slackRuntime.channel} only when the Worker token is configured.</span>
               </div>
+            </div>
+
+            <div class="slack-activity-panel">
+              <div class="slack-activity-heading">
+                <div>
+                  <p class="eyebrow">Slack to HQ activity</p>
+                  <h4>Latest callbacks</h4>
+                </div>
+                <button type="button" id="hq-slack-activity-refresh">Refresh activity</button>
+              </div>
+              <ol id="hq-slack-activity-list">
+                <li>No inbound Slack activity has been recorded in this Worker instance yet.</li>
+              </ol>
             </div>
           </article>
 
@@ -1603,18 +1665,31 @@ const hqSpecs = [
 
       const statusEndpoint = runner.dataset.slackStatusEndpoint || "/api/slack/status";
       const sendEndpoint = runner.dataset.slackSendEndpoint || "/api/slack/send";
+      const activityEndpoint = runner.dataset.slackActivityEndpoint || "/api/slack/activity";
       const statusText = document.querySelector("#hq-slack-status");
       const modeText = document.querySelector("#hq-slack-mode");
       const dot = document.querySelector("#hq-slack-dot");
       const refreshButton = document.querySelector("#hq-slack-refresh");
       const sendButton = document.querySelector("#hq-slack-send");
       const messageInput = document.querySelector("#hq-slack-message");
+      const outboundLabel = document.querySelector("#hq-slack-outbound");
+      const outboundDetail = document.querySelector("#hq-slack-outbound-detail");
+      const inboundLabel = document.querySelector("#hq-slack-inbound");
+      const inboundDetail = document.querySelector("#hq-slack-inbound-detail");
+      const commandUrl = document.querySelector("#hq-slack-url-command");
+      const eventsUrl = document.querySelector("#hq-slack-url-events");
+      const actionsUrl = document.querySelector("#hq-slack-url-actions");
+      const activityRefreshButton = document.querySelector("#hq-slack-activity-refresh");
+      const activityList = document.querySelector("#hq-slack-activity-list");
       let latestStatus = null;
 
       checkSlackStatus();
+      loadSlackActivity();
 
       refreshButton?.addEventListener("click", checkSlackStatus);
       sendButton?.addEventListener("click", sendSlackMessage);
+      activityRefreshButton?.addEventListener("click", loadSlackActivity);
+      window.setInterval(loadSlackActivity, 45000);
 
       async function checkSlackStatus() {
         setSlackBusy("Checking Slack Worker route...");
@@ -1629,23 +1704,26 @@ const hqSpecs = [
 
           latestStatus = payload;
           const channel = payload.channelName ? `#${payload.channelName.replace(/^#/, "")}` : payload.channel || runner.dataset.slackChannel || "Slack channel";
-          if (payload.canPost) {
-            setSlackState("ready", "Ready", `Slack bot route is ready for ${channel}.`);
+          updateSlackFacts(payload, channel);
+          if (payload.canPost && payload.canReceive) {
+            setSlackState("ready", "Two-way ready", `Slack bot route can post to ${channel} and receive verified Slack callbacks.`, true);
+          } else if (payload.canPost) {
+            setSlackState("missing", "Outbound ready", `Posting to ${channel} works. Add SLACK_SIGNING_SECRET and Slack Request URLs to enable inbound callbacks.`, true);
           } else if (payload.tokenConfigured === false) {
-            setSlackState("missing", "Token missing", "Add the SLACK_BOT_TOKEN Worker secret before posting from HQ.");
+            setSlackState("missing", "Token missing", "Add the SLACK_BOT_TOKEN Worker secret before posting from HQ.", false);
           } else {
-            setSlackState("missing", "Config missing", payload.message || "Slack notifier needs Worker configuration before posting.");
+            setSlackState("missing", "Config missing", payload.message || "Slack notifier needs Worker configuration before posting.", false);
           }
         } catch (error) {
           latestStatus = null;
-          setSlackState("error", "Unavailable", `Slack Worker route unavailable: ${error.message}. Use the Cloudflare HQ URL for live /api/slack routes.`);
+          setSlackState("error", "Unavailable", `Slack Worker route unavailable: ${error.message}. Use the Cloudflare HQ URL for live /api/slack routes.`, false);
         }
       }
 
       async function sendSlackMessage() {
         const message = messageInput?.value?.trim() || "";
         if (!message) {
-          setSlackState("error", "Message needed", "Write a Slack message before sending.");
+          setSlackState("error", "Message needed", "Write a Slack message before sending.", false);
           return;
         }
 
@@ -1676,9 +1754,10 @@ const hqSpecs = [
             throw new Error(payload.message || payload.slackError || `Slack post failed with HTTP ${response.status}`);
           }
 
-          setSlackState("ready", "Posted", `Slack message posted at ${payload.ts || "the latest timestamp"}.`);
+          setSlackState("ready", "Posted", `Slack message posted at ${payload.ts || "the latest timestamp"}.`, true);
+          loadSlackActivity();
         } catch (error) {
-          setSlackState("error", "Post failed", error.message);
+          setSlackState("error", "Post failed", error.message, true);
         } finally {
           sendButton.disabled = !latestStatus?.canPost;
         }
@@ -1693,13 +1772,84 @@ const hqSpecs = [
         if (dot) dot.setAttribute("data-state", "loading");
       }
 
-      function setSlackState(state, mode, message) {
+      function setSlackState(state, mode, message, canSend = state === "ready") {
         runner.classList.remove("is-loading", "is-ready", "is-missing", "has-error");
         runner.classList.add(state === "ready" ? "is-ready" : state === "missing" ? "is-missing" : "has-error");
         if (modeText) modeText.textContent = mode;
         if (statusText) statusText.textContent = message;
-        if (sendButton) sendButton.disabled = state !== "ready";
+        if (sendButton) sendButton.disabled = !canSend;
         if (dot) dot.setAttribute("data-state", state);
+      }
+
+      function updateSlackFacts(payload, channel) {
+        setText(outboundLabel, payload.canPost ? "Ready" : "Not ready");
+        setText(outboundDetail, payload.canPost
+          ? `HQ can post reviewed updates to ${channel}.`
+          : payload.tokenConfigured === false
+            ? "SLACK_BOT_TOKEN is missing."
+            : "Slack channel or token configuration needs review.");
+        setText(inboundLabel, payload.canReceive ? "Ready" : "Setup needed");
+        setText(inboundDetail, payload.canReceive
+          ? "Slack callbacks can be verified with SLACK_SIGNING_SECRET."
+          : "Add SLACK_SIGNING_SECRET, then paste these Request URLs into the Slack app.");
+
+        setText(commandUrl, payload.requestUrls?.slashCommand || "/api/slack/commands");
+        setText(eventsUrl, payload.requestUrls?.events || "/api/slack/events");
+        setText(actionsUrl, payload.requestUrls?.interactivity || "/api/slack/actions");
+      }
+
+      async function loadSlackActivity() {
+        if (!activityList) return;
+
+        try {
+          const response = await fetch(activityEndpoint, { cache: "no-store" });
+          const payload = await response.json();
+
+          if (!response.ok || !payload.ok) {
+            throw new Error(payload.message || `Slack activity failed with HTTP ${response.status}`);
+          }
+
+          renderSlackActivity(Array.isArray(payload.events) ? payload.events : []);
+        } catch (error) {
+          activityList.innerHTML = `<li>Slack activity unavailable: ${escapeHtml(error.message)}</li>`;
+        }
+      }
+
+      function renderSlackActivity(events) {
+        if (!activityList) return;
+
+        if (!events.length) {
+          activityList.innerHTML = "<li>No inbound Slack activity has been recorded in this Worker instance yet.</li>";
+          return;
+        }
+
+        activityList.innerHTML = events.map((event) => {
+          const label = [event.type, event.status].filter(Boolean).join(" / ");
+          const meta = [formatActivityTime(event.at), event.user, event.channel].filter(Boolean).join(" · ");
+          const text = event.text ? `<p>${escapeHtml(event.text)}</p>` : "";
+          const detail = event.detail ? `<small>${escapeHtml(event.detail)}</small>` : "";
+          return `<li><strong>${escapeHtml(label)}</strong><span>${escapeHtml(meta)}</span>${text}${detail}</li>`;
+        }).join("");
+      }
+
+      function setText(element, value) {
+        if (element) element.textContent = value;
+      }
+
+      function formatActivityTime(value) {
+        if (!value) return "";
+        const date = new Date(value);
+        return Number.isNaN(date.getTime()) ? value : date.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+      }
+
+      function escapeHtml(value) {
+        return String(value || "").replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          "\"": "&quot;",
+          "'": "&#39;"
+        }[char]));
       }
     })();
   </script>

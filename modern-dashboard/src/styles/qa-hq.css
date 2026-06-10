@@ -1384,6 +1384,95 @@ ul {
   box-shadow: 0 0 0 4px rgba(199, 73, 0, 0.14);
 }
 
+.slack-bridge-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.slack-bridge-grid article,
+.slack-inbound-panel,
+.slack-activity-panel {
+  border: 1px solid rgba(0, 95, 204, 0.22);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 12px;
+}
+
+.slack-bridge-grid span,
+.slack-inbound-panel dt {
+  color: var(--hq-muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.slack-bridge-grid strong {
+  display: block;
+  margin-top: 5px;
+  color: var(--hq-blue);
+  font-size: 1.05rem;
+}
+
+.slack-bridge-grid p {
+  color: var(--hq-muted);
+  font-size: 0.9rem;
+  line-height: 1.45;
+  margin: 6px 0 0;
+}
+
+.slack-inbound-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.slack-inbound-panel h4,
+.slack-activity-heading h4 {
+  margin: 4px 0 0;
+  font-size: 1.05rem;
+}
+
+.slack-inbound-panel dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  margin: 0;
+}
+
+.slack-inbound-panel dl > div {
+  border: 1px solid var(--hq-line);
+  border-radius: 8px;
+  background: rgba(240, 249, 255, 0.82);
+  padding: 9px;
+  min-width: 0;
+}
+
+.slack-inbound-panel dd {
+  margin: 5px 0 0;
+}
+
+.slack-inbound-panel code,
+.slack-command-examples code {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  border: 1px solid rgba(0, 95, 204, 0.18);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--hq-blue);
+  font-size: 0.76rem;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+  padding: 6px 8px;
+  white-space: normal;
+}
+
+.slack-command-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
 .slack-compose-panel {
   display: grid;
   gap: 10px;
@@ -1461,6 +1550,62 @@ ul {
 .slack-action-note {
   font-size: 0.85rem;
   font-weight: 800;
+}
+
+.slack-activity-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.slack-activity-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.slack-activity-heading button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  border: 1px solid var(--hq-blue);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--hq-blue);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 900;
+  padding: 0 12px;
+}
+
+.slack-activity-panel ol {
+  display: grid;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.slack-activity-panel li {
+  border: 1px solid rgba(0, 122, 77, 0.2);
+  border-radius: 8px;
+  background: rgba(240, 255, 248, 0.72);
+  color: var(--hq-ink);
+  font-weight: 800;
+  padding: 9px;
+}
+
+.slack-activity-panel li span,
+.slack-activity-panel li small,
+.slack-activity-panel li p {
+  display: block;
+  color: var(--hq-muted);
+  font-size: 0.85rem;
+  font-weight: 750;
+  line-height: 1.45;
+  margin: 4px 0 0;
 }
 
 .ops-cadence-grid {
@@ -2337,6 +2482,8 @@ ul {
   .ops-service-grid,
   .ops-cadence-grid,
   .ops-signal-grid,
+  .slack-bridge-grid,
+  .slack-inbound-panel dl,
   .ai-hero-card,
   .ai-source-grid,
   .ai-summary-grid,
@@ -2388,6 +2535,8 @@ ul {
   .ops-service-grid,
   .ops-cadence-grid,
   .ops-signal-grid,
+  .slack-bridge-grid,
+  .slack-inbound-panel dl,
   .ai-hero-card,
   .ai-hero-card dl,
   .ai-source-grid,

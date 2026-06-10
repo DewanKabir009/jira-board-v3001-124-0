@@ -1,6 +1,6 @@
 # SPEC-HQ-06: Operational Status
 
-Status: in progress. The HQ route now includes an operational status command panel with service cards, run cadence, and the expected five-minute health artifact contract. The live API probe feed is not connected yet.
+Status: in progress. The HQ route now includes an operational status command panel with service cards, run cadence, the expected five-minute health artifact contract, and a Worker-backed Slack bridge status panel. The live API probe feed is not connected yet.
 
 ## Intent
 
@@ -29,7 +29,7 @@ Give CORE QA Headquarters a single place to see whether the systems that power t
 - Jira data pull and GitHub Pages deployment are represented as current hosted signals.
 - The Jira write bridge is represented as auth-gated because Cloudflare Access can protect write routes even when the static dashboard renders.
 - Playwright evidence publishing is represented from the v3001.123.0 pilot workflow.
-- CORE API probes and Slack operational notification delivery are represented as planned connections.
+- CORE API probes are represented as planned connections. Slack operational notification delivery now has Worker routes for outbound posts and signed inbound callbacks, with live inbound gated by Slack app configuration.
 
 ## Health Artifact Contract
 

@@ -27,6 +27,7 @@ jobs:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+      SLACK_SIGNING_SECRET: ${{ secrets.SLACK_SIGNING_SECRET }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -59,6 +60,12 @@ jobs:
             printf '%s' "$SLACK_CHANNEL_ID" | npx -y wrangler secret put SLACK_CHANNEL_ID -c wrangler.hq.toml
           else
             echo "::notice::SLACK_CHANNEL_ID is not set; HQ Slack notifier will use SLACK_DEFAULT_CHANNEL_NAME."
+          fi
+
+          if [ -n "${SLACK_SIGNING_SECRET:-}" ]; then
+            printf '%s' "$SLACK_SIGNING_SECRET" | npx -y wrangler secret put SLACK_SIGNING_SECRET -c wrangler.hq.toml
+          else
+            echo "::notice::SLACK_SIGNING_SECRET is not set; Slack-to-HQ callbacks will report inbound setup needed."
           fi
 
       - name: Deploy board and HQ Worker Static Assets

@@ -1,7 +1,8 @@
 const AI_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast";
+const SLACK_ACTIVITY_LIMIT = 12;
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
     if (url.pathname === "/api/ai/status") {
@@ -23,7 +24,11 @@ export default {
     }
 
     if (url.pathname === "/api/slack/status") {
-      return handleSlackStatus(env);
+      return handleSlackStatus(env, url);
+    }
+
+    if (url.pathname === "/api/slack/activity") {
+      return handleSlackActivity();
     }
 
     if (url.pathname === "/api/slack/send") {
@@ -34,12 +39,45 @@ export default {
       return handleSlackSend(request, env);
     }
 
+    if (url.pathname === "/api/slack/commands") {
+      if (request.method !== "POST") {
+        return slackJsonResponse({ response_type: "ephemeral", text: "Use POST for Slack slash commands." }, 405);
+      }
+
+      return handleSlackCommand(request, env, url);
+    }
+
+    if (url.pathname === "/api/slack/events") {
+      if (request.method !== "POST") {
+        return jsonResponse({ ok: false, message: "Use POST for Slack Events API callbacks." }, 405);
+      }
+
+      return handleSlackEvent(request, env, url, ctx);
+    }
+
+    if (url.pathname === "/api/slack/actions") {
+      if (request.method !== "POST") {
+        return slackJsonResponse({ response_type: "ephemeral", text: "Use POST for Slack interactivity callbacks." }, 405);
+      }
+
+      return handleSlackAction(request, env, url, ctx);
+    }
+
     return env.ASSETS.fetch(request);
   }
 };
 
-function handleSlackStatus(env) {
+function handleSlackStatus(env, url) {
   const config = getSlackConfig(env);
+  const requestUrls = buildSlackRequestUrls(url);
+  const mode = config.canPost && config.canReceive
+    ? "two-way-ready"
+    : config.canPost
+      ? "outbound-ready"
+      : config.tokenConfigured
+        ? "receive-only-pending"
+        : "missing-token";
+
   return jsonResponse({
     ok: true,
     provider: "Slack Web API",
@@ -48,11 +86,19 @@ function handleSlackStatus(env) {
     channelName: config.channelName,
     tokenConfigured: config.tokenConfigured,
     channelConfigured: config.channelConfigured,
-    mode: config.tokenConfigured ? "ready" : "missing-token",
+    signingSecretConfigured: config.signingSecretConfigured,
+    inboundConfigured: config.signingSecretConfigured,
+    requestUrls,
+    mode,
     canPost: config.canPost,
-    message: config.canPost
-      ? "Slack notifier is ready to post through the CORE JIRA NOTIFIER AGENT."
-      : "Configure the SLACK_BOT_TOKEN Worker secret before posting from HQ."
+    canReceive: config.canReceive,
+    canInteract: config.canReceive,
+    activityMode: "ephemeral-worker-memory",
+    message: config.canPost && config.canReceive
+      ? "Slack two-way bridge is ready for outbound posts and inbound Slack callbacks."
+      : config.canPost
+        ? "Outbound Slack posting is ready. Add SLACK_SIGNING_SECRET and configure Slack Request URLs to enable Slack-to-HQ callbacks."
+        : "Configure the SLACK_BOT_TOKEN Worker secret before posting from HQ."
   });
 }
 
@@ -102,21 +148,7 @@ async function handleSlackSend(request, env) {
     unfurl_media: false
   };
 
-  const response = await fetch("https://slack.com/api/chat.postMessage", {
-    method: "POST",
-    headers: {
-      authorization: `Bearer ${env.SLACK_BOT_TOKEN}`,
-      "content-type": "application/json; charset=utf-8"
-    },
-    body: JSON.stringify(slackPayload)
-  });
-
-  let payload = {};
-  try {
-    payload = await response.json();
-  } catch {
-    payload = {};
-  }
+  const { response, payload } = await postSlackMessage(env, slackPayload);
 
   if (!response.ok || !payload.ok) {
     return jsonResponse({
@@ -140,6 +172,175 @@ async function handleSlackSend(request, env) {
   });
 }
 
+async function handleSlackCommand(request, env, url) {
+  const rawBody = await request.text();
+  const verification = await verifySlackRequest(request, rawBody, env);
+
+  if (!verification.ok) {
+    recordSlackActivity({
+      type: "slash_command",
+      status: "rejected",
+      detail: verification.message
+    });
+    return slackJsonResponse({ response_type: "ephemeral", text: verification.message }, verification.status);
+  }
+
+  const form = new URLSearchParams(rawBody);
+  const command = sanitizeSlackMessage(form.get("command") || "/qa-hq");
+  const userName = sanitizeSlackMessage(form.get("user_name") || "Slack user");
+  const channelName = sanitizeSlackChannel(form.get("channel_name") || "");
+  const channelId = sanitizeSlackChannel(form.get("channel_id") || "");
+  const text = sanitizePrompt(form.get("text") || "", 900);
+  const dashboard = await loadDashboardData(env, url);
+  const payload = buildSlackCommandPayload(dashboard, text, {
+    command,
+    userName,
+    channelName,
+    channelId,
+    requestUrls: buildSlackRequestUrls(url)
+  });
+
+  recordSlackActivity({
+    type: "slash_command",
+    status: "responded",
+    user: userName,
+    channel: channelName || channelId,
+    text: text || "help",
+    detail: payload.text
+  });
+
+  return slackJsonResponse(payload);
+}
+
+async function handleSlackEvent(request, env, url, ctx) {
+  const rawBody = await request.text();
+  const verification = await verifySlackRequest(request, rawBody, env);
+
+  if (!verification.ok) {
+    recordSlackActivity({
+      type: "event_callback",
+      status: "rejected",
+      detail: verification.message
+    });
+    return jsonResponse({ ok: false, message: verification.message }, verification.status);
+  }
+
+  let payload = {};
+  try {
+    payload = JSON.parse(rawBody);
+  } catch {
+    return jsonResponse({ ok: false, message: "Slack event payload was not valid JSON." }, 400);
+  }
+
+  if (payload.type === "url_verification") {
+    recordSlackActivity({
+      type: "url_verification",
+      status: "verified",
+      detail: "Slack Events API challenge completed."
+    });
+    return new Response(payload.challenge || "", {
+      headers: {
+        "content-type": "text/plain; charset=utf-8",
+        "cache-control": "no-store"
+      }
+    });
+  }
+
+  if (payload.type === "event_callback") {
+    const event = payload.event || {};
+
+    if (event.bot_id) {
+      return jsonResponse({ ok: true, ignored: "bot_event" });
+    }
+
+    recordSlackActivity({
+      type: event.type || "event_callback",
+      status: "received",
+      user: event.user || "",
+      channel: event.channel || "",
+      text: stripSlackMentions(event.text || ""),
+      detail: "Slack event acknowledged by HQ Worker."
+    });
+
+    if (event.type === "app_mention") {
+      ctx?.waitUntil(replyToSlackMention(env, url, event));
+    }
+
+    return jsonResponse({ ok: true });
+  }
+
+  recordSlackActivity({
+    type: payload.type || "event",
+    status: "ignored",
+    detail: "Slack event type was acknowledged but not processed."
+  });
+
+  return jsonResponse({ ok: true, ignored: payload.type || "unknown" });
+}
+
+async function handleSlackAction(request, env, url, ctx) {
+  const rawBody = await request.text();
+  const verification = await verifySlackRequest(request, rawBody, env);
+
+  if (!verification.ok) {
+    recordSlackActivity({
+      type: "interactive_action",
+      status: "rejected",
+      detail: verification.message
+    });
+    return slackJsonResponse({ response_type: "ephemeral", text: verification.message }, verification.status);
+  }
+
+  const form = new URLSearchParams(rawBody);
+  let payload = {};
+  try {
+    payload = JSON.parse(form.get("payload") || "{}");
+  } catch {
+    return slackJsonResponse({ response_type: "ephemeral", text: "Slack action payload was not valid JSON." }, 400);
+  }
+
+  const action = Array.isArray(payload.actions) ? payload.actions[0] : null;
+  const actionId = sanitizePrompt(action?.action_id || action?.name || "slack_action", 120);
+  const userName = sanitizeSlackMessage(payload.user?.username || payload.user?.name || payload.user?.id || "Slack user");
+  const sourceText = sanitizePrompt(action?.value || payload.message?.text || "", 900);
+
+  recordSlackActivity({
+    type: "interactive_action",
+    status: "received",
+    user: userName,
+    channel: payload.channel?.name || payload.channel?.id || "",
+    text: actionId,
+    detail: sourceText || "Slack interactive action acknowledged by HQ Worker."
+  });
+
+  if (payload.response_url) {
+    ctx?.waitUntil(fetch(payload.response_url, {
+      method: "POST",
+      headers: { "content-type": "application/json; charset=utf-8" },
+      body: JSON.stringify({
+        response_type: "ephemeral",
+        replace_original: false,
+        text: `HQ received \`${actionId}\`. Open the HQ Operations Status panel for the current bridge state.`
+      })
+    }));
+  }
+
+  return slackJsonResponse({
+    response_type: "ephemeral",
+    text: `HQ received \`${actionId}\`. This action is logged in the HQ Slack activity panel.`
+  });
+}
+
+function handleSlackActivity() {
+  return jsonResponse({
+    ok: true,
+    mode: "ephemeral-worker-memory",
+    durable: false,
+    message: "Recent Slack callback activity is kept in Worker memory for this MVP. Add KV or D1 for durable cross-isolate history.",
+    events: getSlackActivity()
+  });
+}
+
 function getSlackConfig(env, body = {}) {
   const channelName = sanitizeSlackChannel(body?.channelName || env.SLACK_DEFAULT_CHANNEL_NAME || "core-qa-dream-team");
   const channel = sanitizeSlackChannel(
@@ -150,6 +351,7 @@ function getSlackConfig(env, body = {}) {
   );
   const tokenConfigured = Boolean(env.SLACK_BOT_TOKEN);
   const channelConfigured = Boolean(channel);
+  const signingSecretConfigured = Boolean(env.SLACK_SIGNING_SECRET);
 
   return {
     botName: env.SLACK_BOT_NAME || "CORE JIRA NOTIFIER AGENT",
@@ -157,7 +359,9 @@ function getSlackConfig(env, body = {}) {
     channelName,
     tokenConfigured,
     channelConfigured,
-    canPost: tokenConfigured && channelConfigured
+    signingSecretConfigured,
+    canPost: tokenConfigured && channelConfigured,
+    canReceive: signingSecretConfigured
   };
 }
 
@@ -181,6 +385,254 @@ function formatSlackError(error, status) {
   };
 
   return known[code] || `Slack post failed with ${code}${status ? ` (HTTP ${status})` : ""}.`;
+}
+
+async function verifySlackRequest(request, rawBody, env) {
+  if (!env.SLACK_SIGNING_SECRET) {
+    return {
+      ok: false,
+      status: 503,
+      message: "SLACK_SIGNING_SECRET is not configured, so HQ cannot verify inbound Slack callbacks yet."
+    };
+  }
+
+  const timestamp = request.headers.get("x-slack-request-timestamp") || "";
+  const signature = request.headers.get("x-slack-signature") || "";
+  const timestampSeconds = Number(timestamp);
+  const nowSeconds = Math.floor(Date.now() / 1000);
+
+  if (!timestamp || !signature || !Number.isFinite(timestampSeconds)) {
+    return { ok: false, status: 401, message: "Slack signature headers are missing." };
+  }
+
+  if (Math.abs(nowSeconds - timestampSeconds) > 300) {
+    return { ok: false, status: 401, message: "Slack request timestamp is outside the accepted replay window." };
+  }
+
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(env.SLACK_SIGNING_SECRET),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const signed = await crypto.subtle.sign("HMAC", key, encoder.encode(`v0:${timestamp}:${rawBody}`));
+  const expected = `v0=${bytesToHex(new Uint8Array(signed))}`;
+
+  if (!constantTimeEqual(expected, signature)) {
+    return { ok: false, status: 401, message: "Slack request signature did not match." };
+  }
+
+  return { ok: true };
+}
+
+function buildSlackRequestUrls(url) {
+  const origin = url?.origin || "https://core-qa-headquarters-124.dfkabir253.workers.dev";
+  return {
+    slashCommand: `${origin}/api/slack/commands`,
+    events: `${origin}/api/slack/events`,
+    interactivity: `${origin}/api/slack/actions`
+  };
+}
+
+function buildSlackCommandPayload(dashboard, text, context = {}) {
+  const trimmed = sanitizePrompt(text, 900);
+  const stats = buildReleaseStats(dashboard);
+  const release = dashboard.version || "v3001.124.0";
+
+  if (!trimmed || /\b(help|commands?|examples?)\b/i.test(trimmed)) {
+    return {
+      response_type: "ephemeral",
+      text: [
+        `*CORE QA HQ* is connected to ${release}.`,
+        "Try:",
+        "• `/qa-hq p0 tickets`",
+        "• `/qa-hq tickets assigned to Nicole`",
+        "• `/qa-hq tickets from Reservation`",
+        "• `/qa-hq status`",
+        "",
+        `Request URLs: commands ${context.requestUrls?.slashCommand || "/api/slack/commands"}, events ${context.requestUrls?.events || "/api/slack/events"}, actions ${context.requestUrls?.interactivity || "/api/slack/actions"}`
+      ].join("\n")
+    };
+  }
+
+  if (/\b(status|health|bridge|ready)\b/i.test(trimmed)) {
+    return {
+      response_type: "ephemeral",
+      text: [
+        `*CORE QA HQ status for ${release}*`,
+        `• Current pull: ${dashboard.pulledAtDisplay || dashboard.pulledAt || "unknown"}`,
+        `• Tickets: ${stats.mainTickets} main / ${stats.subtasks} subtasks`,
+        `• Top priority mix: ${Object.entries(stats.priorityCounts).sort(sortCounts).slice(0, 4).map(formatPair).join(", ") || "none"}`,
+        `• Top status mix: ${Object.entries(stats.statusCounts).sort(sortCounts).slice(0, 4).map(formatPair).join(", ") || "none"}`
+      ].join("\n")
+    };
+  }
+
+  const directBrief = buildDirectQuestionBrief(dashboard, stats, {
+    userPrompt: trimmed,
+    promptTemplate: "ticket_lookup"
+  }) || buildDeterministicBrief(dashboard, stats);
+
+  return {
+    response_type: "ephemeral",
+    text: formatBriefForSlack(enrichBriefTickets(directBrief, dashboard), dashboard, stats)
+  };
+}
+
+async function replyToSlackMention(env, url, event) {
+  const config = getSlackConfig(env);
+
+  if (!config.canPost || !event.channel) {
+    recordSlackActivity({
+      type: "app_mention",
+      status: "reply_failed",
+      user: event.user || "",
+      channel: event.channel || "",
+      detail: "Slack mention was received, but the bot token or channel is not configured for replies."
+    });
+    return;
+  }
+
+  try {
+    const dashboard = await loadDashboardData(env, url);
+    const prompt = stripSlackMentions(event.text || "");
+    const payload = buildSlackCommandPayload(dashboard, prompt, { command: "@CORE JIRA NOTIFIER AGENT" });
+    const slackPayload = {
+      channel: event.channel,
+      text: payload.text,
+      thread_ts: event.thread_ts || event.ts,
+      unfurl_links: false,
+      unfurl_media: false
+    };
+    const { response, payload: slackResponse } = await postSlackMessage(env, slackPayload);
+
+    recordSlackActivity({
+      type: "app_mention",
+      status: response.ok && slackResponse.ok ? "replied" : "reply_failed",
+      user: event.user || "",
+      channel: event.channel || "",
+      text: prompt,
+      detail: response.ok && slackResponse.ok
+        ? "Slack mention reply posted in thread."
+        : formatSlackError(slackResponse.error, response.status)
+    });
+  } catch (error) {
+    recordSlackActivity({
+      type: "app_mention",
+      status: "reply_failed",
+      user: event.user || "",
+      channel: event.channel || "",
+      text: stripSlackMentions(event.text || ""),
+      detail: error.message
+    });
+  }
+}
+
+async function postSlackMessage(env, slackPayload) {
+  const response = await fetch("https://slack.com/api/chat.postMessage", {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${env.SLACK_BOT_TOKEN}`,
+      "content-type": "application/json; charset=utf-8"
+    },
+    body: JSON.stringify(slackPayload)
+  });
+
+  let payload = {};
+  try {
+    payload = await response.json();
+  } catch {
+    payload = {};
+  }
+
+  return { response, payload };
+}
+
+function formatBriefForSlack(brief, dashboard, stats) {
+  const title = brief?.title || `${dashboard.version || "Current release"} QA board lookup`;
+  const summary = brief?.summary || "";
+  const tickets = Array.isArray(brief?.ticketsToWatch) ? brief.ticketsToWatch : [];
+  const issueLines = tickets.slice(0, 8).map((ticket) => {
+    const key = ticket.key || "Unknown";
+    const link = ticket.url ? `<${ticket.url}|${key}>` : key;
+    const metadata = [
+      ticket.status || "",
+      ticket.priority || "",
+      ticket.assignee ? `assignee ${ticket.assignee}` : "",
+      ticket.assignedDeveloper ? `dev ${ticket.assignedDeveloper}` : "",
+      Array.isArray(ticket.components) && ticket.components.length ? ticket.components.slice(0, 3).join(", ") : ""
+    ].filter(Boolean).join(" | ");
+
+    return `• ${link}: ${ticket.summary || ticket.reason || "No summary"}${metadata ? ` (${metadata})` : ""}`;
+  });
+  const riskLines = asStringArray(brief?.topRisks, []).slice(0, 4).map((item) => `• ${item}`);
+  const gateLines = asStringArray(brief?.reviewGates, []).slice(0, 3).map((item) => `• ${item}`);
+  const fallbackLine = tickets.length
+    ? ""
+    : `• No matching tickets were returned. Current board has ${stats.mainTickets} main tickets and ${stats.subtasks} subtasks.`;
+  const sections = [
+    `*${title}*`,
+    summary,
+    issueLines.length || fallbackLine ? ["*Relevant tickets*", ...issueLines, fallbackLine].filter(Boolean).join("\n") : "",
+    riskLines.length ? ["*Key findings*", ...riskLines].join("\n") : "",
+    gateLines.length ? ["*Review gates*", ...gateLines].join("\n") : "",
+    `_Source: ${dashboard.version || "current board"} pulled ${dashboard.pulledAtDisplay || dashboard.pulledAt || "unknown"}._`
+  ].filter(Boolean);
+
+  return truncateText(sections.join("\n\n"), 2900);
+}
+
+function stripSlackMentions(text) {
+  return sanitizePrompt(String(text || "").replace(/<@[A-Z0-9]+>/gi, " ").replace(/\s+/g, " "), 900);
+}
+
+function getSlackActivityStore() {
+  const root = globalThis;
+  if (!Array.isArray(root.__HQ_SLACK_ACTIVITY__)) {
+    root.__HQ_SLACK_ACTIVITY__ = [];
+  }
+  return root.__HQ_SLACK_ACTIVITY__;
+}
+
+function recordSlackActivity(event) {
+  const store = getSlackActivityStore();
+  store.unshift({
+    id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
+    at: new Date().toISOString(),
+    type: sanitizePrompt(event.type || "slack", 80),
+    status: sanitizePrompt(event.status || "received", 80),
+    user: sanitizePrompt(event.user || "", 120),
+    channel: sanitizePrompt(event.channel || "", 120),
+    text: sanitizePrompt(event.text || "", 500),
+    detail: sanitizePrompt(event.detail || "", 800)
+  });
+  store.splice(SLACK_ACTIVITY_LIMIT);
+}
+
+function getSlackActivity() {
+  return getSlackActivityStore().slice(0, SLACK_ACTIVITY_LIMIT);
+}
+
+function bytesToHex(bytes) {
+  return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
+function constantTimeEqual(a, b) {
+  const left = String(a || "");
+  const right = String(b || "");
+
+  if (left.length !== right.length) {
+    return false;
+  }
+
+  let result = 0;
+  for (let index = 0; index < left.length; index += 1) {
+    result |= left.charCodeAt(index) ^ right.charCodeAt(index);
+  }
+
+  return result === 0;
 }
 
 async function handleReleaseSummary(request, env, url) {
@@ -1561,6 +2013,16 @@ function sanitizePrompt(value, maxLength = 900) {
 
 function jsonResponse(payload, status = 200) {
   return new Response(JSON.stringify(payload, null, 2), {
+    status,
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      "cache-control": "no-store"
+    }
+  });
+}
+
+function slackJsonResponse(payload, status = 200) {
+  return new Response(JSON.stringify(payload), {
     status,
     headers: {
       "content-type": "application/json; charset=utf-8",

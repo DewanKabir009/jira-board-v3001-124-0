@@ -78,7 +78,14 @@ SPEC-HQ-09 adds the HQ Calendar Menu at `/modern/hq/#calendar`. The page reads `
 
 The HQ Operations Status module includes a Worker-backed Slack notifier panel for the installed CORE JIRA NOTIFIER AGENT bot. The browser checks `GET /api/slack/status`, enables posting only when `canPost` is true, and sends reviewed messages through `POST /api/slack/send`.
 
-The Worker requires `SLACK_BOT_TOKEN` as a Cloudflare secret. `SLACK_CHANNEL_ID` or `SLACK_DEFAULT_CHANNEL_ID` is preferred, with `SLACK_DEFAULT_CHANNEL_NAME=core-qa-dream-team` as the fallback.
+SPEC-HQ-10 turns the notifier into a two-way bridge. The same panel now shows outbound readiness, inbound readiness, Slack app Request URLs, command examples, and recent Slack callback activity. Inbound routes are:
+
+- `POST /api/slack/commands`
+- `POST /api/slack/events`
+- `POST /api/slack/actions`
+- `GET /api/slack/activity`
+
+The Worker requires `SLACK_BOT_TOKEN` as a Cloudflare secret for outbound posting and `SLACK_SIGNING_SECRET` for inbound Slack request verification. `SLACK_CHANNEL_ID` or `SLACK_DEFAULT_CHANNEL_ID` is preferred, with `SLACK_DEFAULT_CHANNEL_NAME=core-qa-dream-team` as the fallback.
 
 ## Migration Rule
 
