@@ -2613,7 +2613,6 @@ function GroupedTicketCard({
       <div className="grouped-ticket-topline">
         <div className="grouped-ticket-keyline">
           <TicketKeyCluster issue={issue} />
-          <TicketMetadataPills issue={issue} fallbackSprintName={fallbackSprintName} />
         </div>
         <span className="priority-pill">{issue.priority || "None"}</span>
       </div>
@@ -2626,6 +2625,8 @@ function GroupedTicketCard({
       >
         {issue.summary || "Untitled ticket"}
       </button>
+
+      <TicketMetadataPills issue={issue} fallbackSprintName={fallbackSprintName} />
 
       <dl className="ticket-card-meta">
         <div>
@@ -3764,8 +3765,8 @@ function TicketDetail({
         <TicketKeyCluster issue={issue} />
         <span className="priority-pill">{issue.priority || "None"}</span>
       </div>
-      <TicketMetadataPills issue={issue} fallbackSprintName={fallbackSprintName} />
       <h2>{issue.summary || "Untitled ticket"}</h2>
+      <TicketMetadataPills issue={issue} fallbackSprintName={fallbackSprintName} />
       <AssigneeAssignmentControl
         issue={issue}
         options={assignmentOptions}
