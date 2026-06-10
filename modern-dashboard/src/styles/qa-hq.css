@@ -97,6 +97,24 @@ a {
   padding: 18px;
 }
 
+.hq-logo-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 96px;
+  padding: 12px 10px;
+  border: 1px solid rgba(0, 97, 184, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.hq-logo-panel img {
+  display: block;
+  width: min(100%, 218px);
+  height: auto;
+  object-fit: contain;
+}
+
 .hq-brand {
   display: flex;
   gap: 12px;
@@ -2467,6 +2485,15 @@ ul {
   .hq-sidebar {
     position: static;
     min-height: 0;
+  }
+
+  .hq-logo-panel {
+    min-height: 76px;
+    padding: 10px;
+  }
+
+  .hq-logo-panel img {
+    width: min(76vw, 220px);
   }
 
   .hq-nav,
