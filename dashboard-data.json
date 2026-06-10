@@ -4,10 +4,103 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-10T17:51:28.477Z",
-  "pulledAtDisplay": "Jun 10, 2026, 1:51 PM",
-  "total": 13,
+  "pulledAt": "2026-06-10T18:16:27.150Z",
+  "pulledAtDisplay": "Jun 10, 2026, 2:16 PM",
+  "total": 14,
   "issues": [
+    {
+      "key": "CORE-14396",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14396",
+      "summary": "Add IsCaddyRequested parameter support to EZL/EZLRTS tee sheet interface",
+      "description": "Background\n\nIn 2023, we added support for passing the IsCaddyRequested parameter as a pass-through to BRS and BRSG1 tee sheet interfaces to support ClubUp (caddy service) integrations. However, this parameter was not added to the EZL tee sheet interface.\n\nCurrent State\n\n- ✅ BRS tee sheet: Passes IsCaddyRequested parameter (line 163 in BRSTeeSheet.cs)\n\n- ✅ BRSG1 tee sheet: Passes IsCaddyRequested parameter (line 199 in BRSG1TeeSheet.cs)\n\n- ❌ EZL tee sheet: Does NOT pass IsCaddyRequested parameter\n\nIssue\n\nThe EZL tee sheet (code: \"EZL\") does not handle the IsCaddyRequested parameter when making reservations. This means courses using EZLRTS tee sheet systems cannot indicate caddy requests through our booking flow, creating an inconsistent experience across different tee sheet providers.\n\nExpected Behavior\n\nWhen a booking is made through the EZL tee sheet interface with IsCaddyRequested = true, the caddie request should be submitted to the EZLinks Integrators API via the dedicated Caddie Request endpoint (see RTS-2163), similar to how BRS and BRSG handle it through their respective interfaces.\n\n---\nTechnical Details\n\nImportant Update (per Viitalii Slobodianyk): A completely new endpoint was added in RTS-2163 to support caddie requests for EZL/EZRTS. The EZL implementation should use this dedicated endpoint rather than adding a parameter to the existing booking payload.\n\n⚠️ BRS/BRSG1 must remain untouched. BRS and BRSG1 are still using the old method (passing IsCaddyRequested directly in the booking payload). Do NOT modify BRS/BRSG1 — only EZL will use the new Caddie Request API endpoint.\n\nNew Caddie Request Endpoint (from RTS-2163):\n\n- Type: POST\n\n- URL path: Under the \"Tee Time\" path in the Integrators API\n\n- GrantArea: APIReservationSystem\n\n- Input Parameters:\n\n- SponsorID (required)\n\n- ConfirmID (required)\n\n- Caddie-Requested (required, Boolean)\n\n- Behavior: Writes value to ETNv4.dbo.TTQuick.QuickEntryCaddy (False = 0, True = 1)\n\n- Response: Indicates success or failure\n\n- Failure reasons: missing parameters, SponsorID lacks access to course, ConfirmID doesn't exist\n\nFile to modify: Framework/GolfNow.Framework.TeeSheets/Interfaces/EZL/EZLinksTeeSheet.cs\n\nMethod to update: BookTeeTimeAsync (starting around line 2208)\n\nWhat's needed: After a successful booking, if request.TeeTime.IsCaddyRequested is true, call the Caddie Request POST endpoint with the SponsorID and the ConfirmID from the booking response.\n\nReference implementations:\n\n- BRSTeeSheet.cs:163 (old method — DO NOT CHANGE)\n\n- BRSG1TeeSheet.cs:199 (old method — DO NOT CHANGE)\n\n- RTS-2163 — Caddie Request endpoint spec (EZL uses this)\n\n---\nAcceptance Criteria\n\n- After a successful EZL booking with IsCaddyRequested = true, the Caddie Request endpoint is called with the appropriate SponsorID and ConfirmID\n\n- Parameter defaults to false/0 when not explicitly set (no endpoint call needed)\n\n- BRS and BRSG1 implementations remain unchanged (they use the existing pass-through method)\n\n- Existing EZL bookings continue to work without regression\n\n- Handles endpoint failure gracefully (booking should not fail if caddie request fails)\n\n---\nAdditional Notes: The parameter is already available in the TR API (Reservation.IsCaddyRequested) and flows through to the MakeReservationRequest object, so the plumbing exists—we just need to call the new Caddie Request endpoint after a successful EZL booking when the flag is set.",
+      "descriptionHtml": "<h3>Background</h3><p>In 2023, we added support for passing the <code>IsCaddyRequested</code> parameter as a pass-through to BRS and BRSG1 tee sheet interfaces to support ClubUp (caddy service) integrations. However, this parameter was <strong>not added to the EZL tee sheet interface</strong>.</p><h3>Current State</h3><p>  - ✅ <strong>BRS</strong> tee sheet: Passes <code>IsCaddyRequested</code> parameter (line 163 in BRSTeeSheet.cs)</p><p>  - ✅ <strong>BRSG1</strong> tee sheet: Passes <code>IsCaddyRequested</code> parameter (line 199 in BRSG1TeeSheet.cs)</p><p>  - ❌ <strong>EZL</strong> tee sheet: Does NOT pass <code>IsCaddyRequested</code> parameter</p><h3>Issue</h3><p>The EZL tee sheet (code: &quot;EZL&quot;) does not handle the <code>IsCaddyRequested</code> parameter when making reservations. This means courses using EZLRTS tee sheet systems cannot indicate caddy requests through our booking flow, creating an inconsistent experience across different tee sheet providers.</p><h3>Expected Behavior</h3><p>When a booking is made through the EZL tee sheet interface with <code>IsCaddyRequested = true</code>, the caddie request should be submitted to the EZLinks Integrators API via the dedicated Caddie Request endpoint (see RTS-2163), similar to how BRS and BRSG handle it through their respective interfaces.</p><hr><h3><strong>Technical Details</strong></h3><p><strong>Important Update (per Viitalii Slobodianyk):</strong> A completely new endpoint was added in <a href=\"https://golfnow.atlassian.net/browse/RTS-2163\" target=\"_blank\" rel=\"noopener\">RTS-2163</a> to support caddie requests for EZL/EZRTS. The EZL implementation should use this dedicated endpoint rather than adding a parameter to the existing booking payload.</p><p><strong>⚠️ BRS/BRSG1 must remain untouched.</strong> BRS and BRSG1 are still using the old method (passing <code>IsCaddyRequested</code> directly in the booking payload). Do NOT modify BRS/BRSG1 — only EZL will use the new Caddie Request API endpoint.</p><p><strong>New Caddie Request Endpoint (from RTS-2163):</strong></p><ul><li><p>Type: POST</p></li><li><p>URL path: Under the &quot;Tee Time&quot; path in the Integrators API</p></li><li><p>GrantArea: API<em>Reservation</em>System</p></li><li><p>Input Parameters:</p></li></ul><p>  - <code>SponsorID</code> (required)</p><p>  - <code>ConfirmID</code> (required)</p><p>  - <code>Caddie-Requested</code> (required, Boolean)</p><ul><li><p>Behavior: Writes value to <code>ETNv4.dbo.TTQuick.QuickEntryCaddy</code> (False = 0, True = 1)</p></li><li><p>Response: Indicates success or failure</p></li></ul><p>  - Failure reasons: missing parameters, SponsorID lacks access to course, ConfirmID doesn't exist</p><p><strong>File to modify:</strong> <code>Framework/GolfNow.Framework.TeeSheets/Interfaces/EZL/EZLinksTeeSheet.cs</code></p><p><strong>Method to update:</strong> <code>BookTeeTimeAsync</code> (starting around line 2208)</p><p><strong>What's needed:</strong> After a successful booking, if <code>request.TeeTime.IsCaddyRequested</code> is <code>true</code>, call the Caddie Request POST endpoint with the SponsorID and the ConfirmID from the booking response.</p><p><strong>Reference implementations:</strong></p><ul><li><p>BRSTeeSheet.cs:163 (old method — DO NOT CHANGE)</p></li><li><p>BRSG1TeeSheet.cs:199 (old method — DO NOT CHANGE)</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-2163\" target=\"_blank\" rel=\"noopener\">RTS-2163</a> — Caddie Request endpoint spec (EZL uses this)</p></li></ul><hr><h3><strong>Acceptance Criteria</strong></h3><ul><li><p>After a successful EZL booking with <code>IsCaddyRequested = true</code>, the Caddie Request endpoint is called with the appropriate SponsorID and ConfirmID</p></li><li><p>Parameter defaults to <code>false</code>/<code>0</code> when not explicitly set (no endpoint call needed)</p></li><li><p>BRS and BRSG1 implementations remain unchanged (they use the existing pass-through method)</p></li><li><p>Existing EZL bookings continue to work without regression</p></li><li><p>Handles endpoint failure gracefully (booking should not fail if caddie request fails)</p></li></ul><hr><p><strong>Additional Notes:</strong> The parameter is already available in the TR API (<code>Reservation.IsCaddyRequested</code>) and flows through to the <code>MakeReservationRequest</code> object, so the plumbing exists—we just need to call the new Caddie Request endpoint after a successful EZL booking when the flag is set.</p>",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 3,
+      "comments": [
+        {
+          "id": "1179160",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1179160",
+          "author": "Viitalii Slobodianyk",
+          "authorAccountId": "712020:b881aa16-5548-4bf1-a846-79d06ad8ef2b",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:b881aa16-5548-4bf1-a846-79d06ad8ef2b/3d1ec60c-b90a-471e-a225-46c1ad4d0d81/32",
+          "created": "2026-06-04T13:44:58.800-0400",
+          "createdDisplay": "Jun 4, 2026, 1:44 PM",
+          "updated": "2026-06-04T13:44:58.800-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "@Andrew Horvat\nCompletely new endpoint was added to support caddie requests in https://golfnow.atlassian.net/browse/RTS-2163\nSo part of the AC : What's needed: Add the IsCaddyRequested parameter to the tee time booking request JSON payload sent to the EZLinks REST API.\nneeds to be updated.\n\nCC: @Sarah Wolfkiel  @Jeff Sykes",
+          "bodyHtml": "<p>@Andrew Horvat <br>Completely new endpoint was added to support caddie requests in <a href=\"https://golfnow.atlassian.net/browse/RTS-2163\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-2163</a> <br>So part of the AC : <code>What's needed: Add the IsCaddyRequested parameter to the tee time booking request JSON payload sent to the EZLinks REST API.</code><br>needs to be updated.<br><br>CC: @Sarah Wolfkiel  @Jeff Sykes </p>"
+        },
+        {
+          "id": "1179194",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1179194",
+          "author": "Sarah Wolfkiel ",
+          "authorAccountId": "557058:b88eea94-1c5d-4349-a5a9-584440729b21",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/557058:b88eea94-1c5d-4349-a5a9-584440729b21/42029b3c-b753-44d3-a7e8-3b387b3eac67/32",
+          "created": "2026-06-04T15:26:34.698-0400",
+          "createdDisplay": "Jun 4, 2026, 3:26 PM",
+          "updated": "2026-06-04T15:26:34.698-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "CC @Brian Pugh  @Joshua Marquess",
+          "bodyHtml": "<p>CC @Brian Pugh  @Joshua Marquess  </p>"
+        },
+        {
+          "id": "1181392",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1181392",
+          "author": "Yoel Martin Pardo",
+          "authorAccountId": "625571809e7380006fb29599",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+          "created": "2026-06-10T11:18:16.193-0400",
+          "createdDisplay": "Jun 10, 2026, 11:18 AM",
+          "updated": "2026-06-10T11:18:16.193-0400",
+          "updatedDisplay": "",
+          "hasMedia": true,
+          "mediaCount": 1,
+          "body": "Validated result with Sarah Wolfkiel:",
+          "bodyHtml": "<p>Validated result with Sarah Wolfkiel:</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14396/comments/1181392/736558-image-20260610-151547.png\" alt=\"image-20260610-151547.png\" loading=\"lazy\"><figcaption>image-20260610-151547.png</figcaption></figure></div>"
+        }
+      ],
+      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1181392",
+      "lastCommentDisplay": "Jun 10, 2026, 11:18 AM",
+      "lastCommentAuthor": "Yoel Martin Pardo",
+      "testChecklist": null,
+      "type": "Story",
+      "isSubtask": false,
+      "status": "Code Review",
+      "priority": "P2",
+      "assignee": "Tyler Olechnowicz",
+      "assigneeAccountId": "5d2396c1ea26c40c2043fc92",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+      "assignedDeveloper": "Yoel Martin Pardo",
+      "assignedDeveloperAccountId": "625571809e7380006fb29599",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+      "updated": "2026-06-10T14:08:10.757-0400",
+      "updatedDisplay": "Jun 10, 2026, 2:08 PM",
+      "created": "2026-04-21T13:51:19.069-0400",
+      "createdDisplay": "Apr 21, 2026, 1:51 PM",
+      "components": [
+        "GolfNow.Services.Reservation",
+        "GolfNow.Services.TeeSheet"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [
+        {
+          "name": "2026.8"
+        }
+      ],
+      "sprintNames": [
+        "2026.8"
+      ],
+      "resolution": "",
+      "parent": null
+    },
     {
       "key": "CORE-14273",
       "url": "https://golfnow.atlassian.net/browse/CORE-14273",
@@ -959,8 +1052,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-10T17:51:28.477Z",
-    "pulledAtDisplay": "Jun 10, 2026, 1:51 PM",
+    "pulledAt": "2026-06-10T18:16:27.150Z",
+    "pulledAtDisplay": "Jun 10, 2026, 2:16 PM",
     "total": 94,
     "mainTotal": 94,
     "subtaskTotal": 0,
@@ -1995,20 +2088,25 @@
         "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
-        "status": "Development",
+        "status": "Code Review",
         "priority": "P2",
-        "assignee": "Yoel Martin Pardo",
-        "assigneeAccountId": "625571809e7380006fb29599",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "assignee": "Tyler Olechnowicz",
+        "assigneeAccountId": "5d2396c1ea26c40c2043fc92",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
         "assignedDeveloper": "Yoel Martin Pardo",
         "assignedDeveloperAccountId": "625571809e7380006fb29599",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-06-10T11:18:16.251-0400",
-        "updatedDisplay": "Jun 10, 2026, 11:18 AM",
+        "updated": "2026-06-10T14:08:10.757-0400",
+        "updatedDisplay": "Jun 10, 2026, 2:08 PM",
         "created": "2026-04-21T13:51:19.069-0400",
         "createdDisplay": "Apr 21, 2026, 1:51 PM",
-        "components": [],
-        "fixVersions": [],
+        "components": [
+          "GolfNow.Services.Reservation",
+          "GolfNow.Services.TeeSheet"
+        ],
+        "fixVersions": [
+          "v3001.124.0"
+        ],
         "sprints": [
           {
             "name": "2026.8"
@@ -6866,13 +6964,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-10T17:51:01.996Z",
-    "pulledAtDisplay": "Jun 10, 2026, 1:51 PM",
+    "pulledAt": "2026-06-10T18:16:03.954Z",
+    "pulledAtDisplay": "Jun 10, 2026, 2:16 PM",
     "window": {
-      "start": "2026-04-26T17:51:01.995Z",
-      "end": "2026-12-07T17:51:01.995Z",
-      "startDisplay": "Apr 26, 2026, 1:51 PM",
-      "endDisplay": "Dec 7, 2026, 12:51 PM"
+      "start": "2026-04-26T18:16:03.953Z",
+      "end": "2026-12-07T18:16:03.953Z",
+      "startDisplay": "Apr 26, 2026, 2:16 PM",
+      "endDisplay": "Dec 7, 2026, 1:16 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -6885,7 +6983,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-10T17:51:04.408Z",
+        "pulledAt": "2026-06-10T18:16:06.094Z",
         "eventCount": 91,
         "events": [
           {
@@ -7204,21 +7302,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
-            "start": "2026-05-26T18:00:00.000Z",
-            "end": "2026-05-26T19:55:00.000Z",
-            "startDisplay": "May 26, 2026, 2:00 PM",
-            "endDisplay": "May 26, 2026, 3:55 PM",
-            "allDay": false,
-            "type": "Scheduled Maintenance",
-            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
-            "description": "Slack: #itops_deployments",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -7231,6 +7314,21 @@
             "type": "Patching",
             "location": "https://golfnow.atlassian.net/browse/OPS-54241",
             "description": "Slack: #itops_patching_communications",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
+            "start": "2026-05-26T18:00:00.000Z",
+            "end": "2026-05-26T19:55:00.000Z",
+            "startDisplay": "May 26, 2026, 2:00 PM",
+            "endDisplay": "May 26, 2026, 3:55 PM",
+            "allDay": false,
+            "type": "Scheduled Maintenance",
+            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
+            "description": "Slack: #itops_deployments",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
@@ -7639,21 +7737,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.57",
-            "start": "2026-07-14T00:00:00.000Z",
-            "end": "2026-07-15T00:00:00.000Z",
-            "startDisplay": "Jul 13, 2026, 8:00 PM",
-            "endDisplay": "Jul 14, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221527Z-1432222737@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -7679,6 +7762,21 @@
             "endDisplay": "Jul 14, 2026, 8:00 PM",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.57",
+            "start": "2026-07-14T00:00:00.000Z",
+            "end": "2026-07-15T00:00:00.000Z",
+            "startDisplay": "Jul 13, 2026, 8:00 PM",
+            "endDisplay": "Jul 14, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8014,21 +8112,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.59",
-            "start": "2026-09-15T00:00:00.000Z",
-            "end": "2026-09-16T00:00:00.000Z",
-            "startDisplay": "Sep 14, 2026, 8:00 PM",
-            "endDisplay": "Sep 15, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221627Z-1916149808@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8054,6 +8137,21 @@
             "endDisplay": "Sep 15, 2026, 8:00 PM",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.59",
+            "start": "2026-09-15T00:00:00.000Z",
+            "end": "2026-09-16T00:00:00.000Z",
+            "startDisplay": "Sep 14, 2026, 8:00 PM",
+            "endDisplay": "Sep 15, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8259,17 +8357,216 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-10T17:29:47.280Z",
-    "previousPulledAtDisplay": "Jun 10, 2026, 1:29 PM",
-    "currentPulledAt": "2026-06-10T17:51:28.477Z",
-    "currentPulledAtDisplay": "Jun 10, 2026, 1:51 PM",
+    "previousPulledAt": "2026-06-10T17:51:28.477Z",
+    "previousPulledAtDisplay": "Jun 10, 2026, 1:51 PM",
+    "currentPulledAt": "2026-06-10T18:16:27.150Z",
+    "currentPulledAtDisplay": "Jun 10, 2026, 2:16 PM",
     "isBaseline": false,
-    "added": [],
+    "added": [
+      {
+        "key": "CORE-14396",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14396",
+        "summary": "Add IsCaddyRequested parameter support to EZL/EZLRTS tee sheet interface",
+        "description": "Background\n\nIn 2023, we added support for passing the IsCaddyRequested parameter as a pass-through to BRS and BRSG1 tee sheet interfaces to support ClubUp (caddy service) integrations. However, this parameter was not added to the EZL tee sheet interface.\n\nCurrent State\n\n- ✅ BRS tee sheet: Passes IsCaddyRequested parameter (line 163 in BRSTeeSheet.cs)\n\n- ✅ BRSG1 tee sheet: Passes IsCaddyRequested parameter (line 199 in BRSG1TeeSheet.cs)\n\n- ❌ EZL tee sheet: Does NOT pass IsCaddyRequested parameter\n\nIssue\n\nThe EZL tee sheet (code: \"EZL\") does not handle the IsCaddyRequested parameter when making reservations. This means courses using EZLRTS tee sheet systems cannot indicate caddy requests through our booking flow, creating an inconsistent experience across different tee sheet providers.\n\nExpected Behavior\n\nWhen a booking is made through the EZL tee sheet interface with IsCaddyRequested = true, the caddie request should be submitted to the EZLinks Integrators API via the dedicated Caddie Request endpoint (see RTS-2163), similar to how BRS and BRSG handle it through their respective interfaces.\n\n---\nTechnical Details\n\nImportant Update (per Viitalii Slobodianyk): A completely new endpoint was added in RTS-2163 to support caddie requests for EZL/EZRTS. The EZL implementation should use this dedicated endpoint rather than adding a parameter to the existing booking payload.\n\n⚠️ BRS/BRSG1 must remain untouched. BRS and BRSG1 are still using the old method (passing IsCaddyRequested directly in the booking payload). Do NOT modify BRS/BRSG1 — only EZL will use the new Caddie Request API endpoint.\n\nNew Caddie Request Endpoint (from RTS-2163):\n\n- Type: POST\n\n- URL path: Under the \"Tee Time\" path in the Integrators API\n\n- GrantArea: APIReservationSystem\n\n- Input Parameters:\n\n- SponsorID (required)\n\n- ConfirmID (required)\n\n- Caddie-Requested (required, Boolean)\n\n- Behavior: Writes value to ETNv4.dbo.TTQuick.QuickEntryCaddy (False = 0, True = 1)\n\n- Response: Indicates success or failure\n\n- Failure reasons: missing parameters, SponsorID lacks access to course, ConfirmID doesn't exist\n\nFile to modify: Framework/GolfNow.Framework.TeeSheets/Interfaces/EZL/EZLinksTeeSheet.cs\n\nMethod to update: BookTeeTimeAsync (starting around line 2208)\n\nWhat's needed: After a successful booking, if request.TeeTime.IsCaddyRequested is true, call the Caddie Request POST endpoint with the SponsorID and the ConfirmID from the booking response.\n\nReference implementations:\n\n- BRSTeeSheet.cs:163 (old method — DO NOT CHANGE)\n\n- BRSG1TeeSheet.cs:199 (old method — DO NOT CHANGE)\n\n- RTS-2163 — Caddie Request endpoint spec (EZL uses this)\n\n---\nAcceptance Criteria\n\n- After a successful EZL booking with IsCaddyRequested = true, the Caddie Request endpoint is called with the appropriate SponsorID and ConfirmID\n\n- Parameter defaults to false/0 when not explicitly set (no endpoint call needed)\n\n- BRS and BRSG1 implementations remain unchanged (they use the existing pass-through method)\n\n- Existing EZL bookings continue to work without regression\n\n- Handles endpoint failure gracefully (booking should not fail if caddie request fails)\n\n---\nAdditional Notes: The parameter is already available in the TR API (Reservation.IsCaddyRequested) and flows through to the MakeReservationRequest object, so the plumbing exists—we just need to call the new Caddie Request endpoint after a successful EZL booking when the flag is set.",
+        "descriptionHtml": "<h3>Background</h3><p>In 2023, we added support for passing the <code>IsCaddyRequested</code> parameter as a pass-through to BRS and BRSG1 tee sheet interfaces to support ClubUp (caddy service) integrations. However, this parameter was <strong>not added to the EZL tee sheet interface</strong>.</p><h3>Current State</h3><p>  - ✅ <strong>BRS</strong> tee sheet: Passes <code>IsCaddyRequested</code> parameter (line 163 in BRSTeeSheet.cs)</p><p>  - ✅ <strong>BRSG1</strong> tee sheet: Passes <code>IsCaddyRequested</code> parameter (line 199 in BRSG1TeeSheet.cs)</p><p>  - ❌ <strong>EZL</strong> tee sheet: Does NOT pass <code>IsCaddyRequested</code> parameter</p><h3>Issue</h3><p>The EZL tee sheet (code: &quot;EZL&quot;) does not handle the <code>IsCaddyRequested</code> parameter when making reservations. This means courses using EZLRTS tee sheet systems cannot indicate caddy requests through our booking flow, creating an inconsistent experience across different tee sheet providers.</p><h3>Expected Behavior</h3><p>When a booking is made through the EZL tee sheet interface with <code>IsCaddyRequested = true</code>, the caddie request should be submitted to the EZLinks Integrators API via the dedicated Caddie Request endpoint (see RTS-2163), similar to how BRS and BRSG handle it through their respective interfaces.</p><hr><h3><strong>Technical Details</strong></h3><p><strong>Important Update (per Viitalii Slobodianyk):</strong> A completely new endpoint was added in <a href=\"https://golfnow.atlassian.net/browse/RTS-2163\" target=\"_blank\" rel=\"noopener\">RTS-2163</a> to support caddie requests for EZL/EZRTS. The EZL implementation should use this dedicated endpoint rather than adding a parameter to the existing booking payload.</p><p><strong>⚠️ BRS/BRSG1 must remain untouched.</strong> BRS and BRSG1 are still using the old method (passing <code>IsCaddyRequested</code> directly in the booking payload). Do NOT modify BRS/BRSG1 — only EZL will use the new Caddie Request API endpoint.</p><p><strong>New Caddie Request Endpoint (from RTS-2163):</strong></p><ul><li><p>Type: POST</p></li><li><p>URL path: Under the &quot;Tee Time&quot; path in the Integrators API</p></li><li><p>GrantArea: API<em>Reservation</em>System</p></li><li><p>Input Parameters:</p></li></ul><p>  - <code>SponsorID</code> (required)</p><p>  - <code>ConfirmID</code> (required)</p><p>  - <code>Caddie-Requested</code> (required, Boolean)</p><ul><li><p>Behavior: Writes value to <code>ETNv4.dbo.TTQuick.QuickEntryCaddy</code> (False = 0, True = 1)</p></li><li><p>Response: Indicates success or failure</p></li></ul><p>  - Failure reasons: missing parameters, SponsorID lacks access to course, ConfirmID doesn't exist</p><p><strong>File to modify:</strong> <code>Framework/GolfNow.Framework.TeeSheets/Interfaces/EZL/EZLinksTeeSheet.cs</code></p><p><strong>Method to update:</strong> <code>BookTeeTimeAsync</code> (starting around line 2208)</p><p><strong>What's needed:</strong> After a successful booking, if <code>request.TeeTime.IsCaddyRequested</code> is <code>true</code>, call the Caddie Request POST endpoint with the SponsorID and the ConfirmID from the booking response.</p><p><strong>Reference implementations:</strong></p><ul><li><p>BRSTeeSheet.cs:163 (old method — DO NOT CHANGE)</p></li><li><p>BRSG1TeeSheet.cs:199 (old method — DO NOT CHANGE)</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-2163\" target=\"_blank\" rel=\"noopener\">RTS-2163</a> — Caddie Request endpoint spec (EZL uses this)</p></li></ul><hr><h3><strong>Acceptance Criteria</strong></h3><ul><li><p>After a successful EZL booking with <code>IsCaddyRequested = true</code>, the Caddie Request endpoint is called with the appropriate SponsorID and ConfirmID</p></li><li><p>Parameter defaults to <code>false</code>/<code>0</code> when not explicitly set (no endpoint call needed)</p></li><li><p>BRS and BRSG1 implementations remain unchanged (they use the existing pass-through method)</p></li><li><p>Existing EZL bookings continue to work without regression</p></li><li><p>Handles endpoint failure gracefully (booking should not fail if caddie request fails)</p></li></ul><hr><p><strong>Additional Notes:</strong> The parameter is already available in the TR API (<code>Reservation.IsCaddyRequested</code>) and flows through to the <code>MakeReservationRequest</code> object, so the plumbing exists—we just need to call the new Caddie Request endpoint after a successful EZL booking when the flag is set.</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 3,
+        "comments": [
+          {
+            "id": "1179160",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1179160",
+            "author": "Viitalii Slobodianyk",
+            "authorAccountId": "712020:b881aa16-5548-4bf1-a846-79d06ad8ef2b",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:b881aa16-5548-4bf1-a846-79d06ad8ef2b/3d1ec60c-b90a-471e-a225-46c1ad4d0d81/32",
+            "created": "2026-06-04T13:44:58.800-0400",
+            "createdDisplay": "Jun 4, 2026, 1:44 PM",
+            "updated": "2026-06-04T13:44:58.800-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "@Andrew Horvat\nCompletely new endpoint was added to support caddie requests in https://golfnow.atlassian.net/browse/RTS-2163\nSo part of the AC : What's needed: Add the IsCaddyRequested parameter to the tee time booking request JSON payload sent to the EZLinks REST API.\nneeds to be updated.\n\nCC: @Sarah Wolfkiel  @Jeff Sykes",
+            "bodyHtml": "<p>@Andrew Horvat <br>Completely new endpoint was added to support caddie requests in <a href=\"https://golfnow.atlassian.net/browse/RTS-2163\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-2163</a> <br>So part of the AC : <code>What's needed: Add the IsCaddyRequested parameter to the tee time booking request JSON payload sent to the EZLinks REST API.</code><br>needs to be updated.<br><br>CC: @Sarah Wolfkiel  @Jeff Sykes </p>"
+          },
+          {
+            "id": "1179194",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1179194",
+            "author": "Sarah Wolfkiel ",
+            "authorAccountId": "557058:b88eea94-1c5d-4349-a5a9-584440729b21",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/557058:b88eea94-1c5d-4349-a5a9-584440729b21/42029b3c-b753-44d3-a7e8-3b387b3eac67/32",
+            "created": "2026-06-04T15:26:34.698-0400",
+            "createdDisplay": "Jun 4, 2026, 3:26 PM",
+            "updated": "2026-06-04T15:26:34.698-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "CC @Brian Pugh  @Joshua Marquess",
+            "bodyHtml": "<p>CC @Brian Pugh  @Joshua Marquess  </p>"
+          },
+          {
+            "id": "1181392",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1181392",
+            "author": "Yoel Martin Pardo",
+            "authorAccountId": "625571809e7380006fb29599",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+            "created": "2026-06-10T11:18:16.193-0400",
+            "createdDisplay": "Jun 10, 2026, 11:18 AM",
+            "updated": "2026-06-10T11:18:16.193-0400",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 1,
+            "body": "Validated result with Sarah Wolfkiel:",
+            "bodyHtml": "<p>Validated result with Sarah Wolfkiel:</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14396/comments/1181392/736558-image-20260610-151547.png\" alt=\"image-20260610-151547.png\" loading=\"lazy\"><figcaption>image-20260610-151547.png</figcaption></figure></div>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1181392",
+        "lastCommentDisplay": "Jun 10, 2026, 11:18 AM",
+        "lastCommentAuthor": "Yoel Martin Pardo",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Code Review",
+        "priority": "P2",
+        "assignee": "Tyler Olechnowicz",
+        "assigneeAccountId": "5d2396c1ea26c40c2043fc92",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "assignedDeveloperAccountId": "625571809e7380006fb29599",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "updated": "2026-06-10T14:08:10.757-0400",
+        "updatedDisplay": "Jun 10, 2026, 2:08 PM",
+        "created": "2026-04-21T13:51:19.069-0400",
+        "createdDisplay": "Apr 21, 2026, 1:51 PM",
+        "components": [
+          "GolfNow.Services.Reservation",
+          "GolfNow.Services.TeeSheet"
+        ],
+        "fixVersions": [
+          "v3001.124.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": null
+      }
+    ],
     "removed": [],
     "updated": [],
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-10T17:51:28.477Z",
+      "previousPulledAtDisplay": "Jun 10, 2026, 1:51 PM",
+      "currentPulledAt": "2026-06-10T18:16:27.150Z",
+      "currentPulledAtDisplay": "Jun 10, 2026, 2:16 PM",
+      "isBaseline": false,
+      "added": [
+        {
+          "key": "CORE-14396",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14396",
+          "summary": "Add IsCaddyRequested parameter support to EZL/EZLRTS tee sheet interface",
+          "description": "Background\n\nIn 2023, we added support for passing the IsCaddyRequested parameter as a pass-through to BRS and BRSG1 tee sheet interfaces to support ClubUp (caddy service) integrations. However, this parameter was not added to the EZL tee sheet interface.\n\nCurrent State\n\n- ✅ BRS tee sheet: Passes IsCaddyRequested parameter (line 163 in BRSTeeSheet.cs)\n\n- ✅ BRSG1 tee sheet: Passes IsCaddyRequested parameter (line 199 in BRSG1TeeSheet.cs)\n\n- ❌ EZL tee sheet: Does NOT pass IsCaddyRequested parameter\n\nIssue\n\nThe EZL tee sheet (code: \"EZL\") does not handle the IsCaddyRequested parameter when making reservations. This means courses using EZLRTS tee sheet systems cannot indicate caddy requests through our booking flow, creating an inconsistent experience across different tee sheet providers.\n\nExpected Behavior\n\nWhen a booking is made through the EZL tee sheet interface with IsCaddyRequested = true, the caddie request should be submitted to the EZLinks Integrators API via the dedicated Caddie Request endpoint (see RTS-2163), similar to how BRS and BRSG handle it through their respective interfaces.\n\n---\nTechnical Details\n\nImportant Update (per Viitalii Slobodianyk): A completely new endpoint was added in RTS-2163 to support caddie requests for EZL/EZRTS. The EZL implementation should use this dedicated endpoint rather than adding a parameter to the existing booking payload.\n\n⚠️ BRS/BRSG1 must remain untouched. BRS and BRSG1 are still using the old method (passing IsCaddyRequested directly in the booking payload). Do NOT modify BRS/BRSG1 — only EZL will use the new Caddie Request API endpoint.\n\nNew Caddie Request Endpoint (from RTS-2163):\n\n- Type: POST\n\n- URL path: Under the \"Tee Time\" path in the Integrators API\n\n- GrantArea: APIReservationSystem\n\n- Input Parameters:\n\n- SponsorID (required)\n\n- ConfirmID (required)\n\n- Caddie-Requested (required, Boolean)\n\n- Behavior: Writes value to ETNv4.dbo.TTQuick.QuickEntryCaddy (False = 0, True = 1)\n\n- Response: Indicates success or failure\n\n- Failure reasons: missing parameters, SponsorID lacks access to course, ConfirmID doesn't exist\n\nFile to modify: Framework/GolfNow.Framework.TeeSheets/Interfaces/EZL/EZLinksTeeSheet.cs\n\nMethod to update: BookTeeTimeAsync (starting around line 2208)\n\nWhat's needed: After a successful booking, if request.TeeTime.IsCaddyRequested is true, call the Caddie Request POST endpoint with the SponsorID and the ConfirmID from the booking response.\n\nReference implementations:\n\n- BRSTeeSheet.cs:163 (old method — DO NOT CHANGE)\n\n- BRSG1TeeSheet.cs:199 (old method — DO NOT CHANGE)\n\n- RTS-2163 — Caddie Request endpoint spec (EZL uses this)\n\n---\nAcceptance Criteria\n\n- After a successful EZL booking with IsCaddyRequested = true, the Caddie Request endpoint is called with the appropriate SponsorID and ConfirmID\n\n- Parameter defaults to false/0 when not explicitly set (no endpoint call needed)\n\n- BRS and BRSG1 implementations remain unchanged (they use the existing pass-through method)\n\n- Existing EZL bookings continue to work without regression\n\n- Handles endpoint failure gracefully (booking should not fail if caddie request fails)\n\n---\nAdditional Notes: The parameter is already available in the TR API (Reservation.IsCaddyRequested) and flows through to the MakeReservationRequest object, so the plumbing exists—we just need to call the new Caddie Request endpoint after a successful EZL booking when the flag is set.",
+          "descriptionHtml": "<h3>Background</h3><p>In 2023, we added support for passing the <code>IsCaddyRequested</code> parameter as a pass-through to BRS and BRSG1 tee sheet interfaces to support ClubUp (caddy service) integrations. However, this parameter was <strong>not added to the EZL tee sheet interface</strong>.</p><h3>Current State</h3><p>  - ✅ <strong>BRS</strong> tee sheet: Passes <code>IsCaddyRequested</code> parameter (line 163 in BRSTeeSheet.cs)</p><p>  - ✅ <strong>BRSG1</strong> tee sheet: Passes <code>IsCaddyRequested</code> parameter (line 199 in BRSG1TeeSheet.cs)</p><p>  - ❌ <strong>EZL</strong> tee sheet: Does NOT pass <code>IsCaddyRequested</code> parameter</p><h3>Issue</h3><p>The EZL tee sheet (code: &quot;EZL&quot;) does not handle the <code>IsCaddyRequested</code> parameter when making reservations. This means courses using EZLRTS tee sheet systems cannot indicate caddy requests through our booking flow, creating an inconsistent experience across different tee sheet providers.</p><h3>Expected Behavior</h3><p>When a booking is made through the EZL tee sheet interface with <code>IsCaddyRequested = true</code>, the caddie request should be submitted to the EZLinks Integrators API via the dedicated Caddie Request endpoint (see RTS-2163), similar to how BRS and BRSG handle it through their respective interfaces.</p><hr><h3><strong>Technical Details</strong></h3><p><strong>Important Update (per Viitalii Slobodianyk):</strong> A completely new endpoint was added in <a href=\"https://golfnow.atlassian.net/browse/RTS-2163\" target=\"_blank\" rel=\"noopener\">RTS-2163</a> to support caddie requests for EZL/EZRTS. The EZL implementation should use this dedicated endpoint rather than adding a parameter to the existing booking payload.</p><p><strong>⚠️ BRS/BRSG1 must remain untouched.</strong> BRS and BRSG1 are still using the old method (passing <code>IsCaddyRequested</code> directly in the booking payload). Do NOT modify BRS/BRSG1 — only EZL will use the new Caddie Request API endpoint.</p><p><strong>New Caddie Request Endpoint (from RTS-2163):</strong></p><ul><li><p>Type: POST</p></li><li><p>URL path: Under the &quot;Tee Time&quot; path in the Integrators API</p></li><li><p>GrantArea: API<em>Reservation</em>System</p></li><li><p>Input Parameters:</p></li></ul><p>  - <code>SponsorID</code> (required)</p><p>  - <code>ConfirmID</code> (required)</p><p>  - <code>Caddie-Requested</code> (required, Boolean)</p><ul><li><p>Behavior: Writes value to <code>ETNv4.dbo.TTQuick.QuickEntryCaddy</code> (False = 0, True = 1)</p></li><li><p>Response: Indicates success or failure</p></li></ul><p>  - Failure reasons: missing parameters, SponsorID lacks access to course, ConfirmID doesn't exist</p><p><strong>File to modify:</strong> <code>Framework/GolfNow.Framework.TeeSheets/Interfaces/EZL/EZLinksTeeSheet.cs</code></p><p><strong>Method to update:</strong> <code>BookTeeTimeAsync</code> (starting around line 2208)</p><p><strong>What's needed:</strong> After a successful booking, if <code>request.TeeTime.IsCaddyRequested</code> is <code>true</code>, call the Caddie Request POST endpoint with the SponsorID and the ConfirmID from the booking response.</p><p><strong>Reference implementations:</strong></p><ul><li><p>BRSTeeSheet.cs:163 (old method — DO NOT CHANGE)</p></li><li><p>BRSG1TeeSheet.cs:199 (old method — DO NOT CHANGE)</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-2163\" target=\"_blank\" rel=\"noopener\">RTS-2163</a> — Caddie Request endpoint spec (EZL uses this)</p></li></ul><hr><h3><strong>Acceptance Criteria</strong></h3><ul><li><p>After a successful EZL booking with <code>IsCaddyRequested = true</code>, the Caddie Request endpoint is called with the appropriate SponsorID and ConfirmID</p></li><li><p>Parameter defaults to <code>false</code>/<code>0</code> when not explicitly set (no endpoint call needed)</p></li><li><p>BRS and BRSG1 implementations remain unchanged (they use the existing pass-through method)</p></li><li><p>Existing EZL bookings continue to work without regression</p></li><li><p>Handles endpoint failure gracefully (booking should not fail if caddie request fails)</p></li></ul><hr><p><strong>Additional Notes:</strong> The parameter is already available in the TR API (<code>Reservation.IsCaddyRequested</code>) and flows through to the <code>MakeReservationRequest</code> object, so the plumbing exists—we just need to call the new Caddie Request endpoint after a successful EZL booking when the flag is set.</p>",
+          "descriptionImageCount": 0,
+          "descriptionVideoCount": 0,
+          "descriptionMediaCount": 0,
+          "commentCount": 3,
+          "comments": [
+            {
+              "id": "1179160",
+              "url": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1179160",
+              "author": "Viitalii Slobodianyk",
+              "authorAccountId": "712020:b881aa16-5548-4bf1-a846-79d06ad8ef2b",
+              "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:b881aa16-5548-4bf1-a846-79d06ad8ef2b/3d1ec60c-b90a-471e-a225-46c1ad4d0d81/32",
+              "created": "2026-06-04T13:44:58.800-0400",
+              "createdDisplay": "Jun 4, 2026, 1:44 PM",
+              "updated": "2026-06-04T13:44:58.800-0400",
+              "updatedDisplay": "",
+              "hasMedia": false,
+              "mediaCount": 0,
+              "body": "@Andrew Horvat\nCompletely new endpoint was added to support caddie requests in https://golfnow.atlassian.net/browse/RTS-2163\nSo part of the AC : What's needed: Add the IsCaddyRequested parameter to the tee time booking request JSON payload sent to the EZLinks REST API.\nneeds to be updated.\n\nCC: @Sarah Wolfkiel  @Jeff Sykes",
+              "bodyHtml": "<p>@Andrew Horvat <br>Completely new endpoint was added to support caddie requests in <a href=\"https://golfnow.atlassian.net/browse/RTS-2163\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-2163</a> <br>So part of the AC : <code>What's needed: Add the IsCaddyRequested parameter to the tee time booking request JSON payload sent to the EZLinks REST API.</code><br>needs to be updated.<br><br>CC: @Sarah Wolfkiel  @Jeff Sykes </p>"
+            },
+            {
+              "id": "1179194",
+              "url": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1179194",
+              "author": "Sarah Wolfkiel ",
+              "authorAccountId": "557058:b88eea94-1c5d-4349-a5a9-584440729b21",
+              "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/557058:b88eea94-1c5d-4349-a5a9-584440729b21/42029b3c-b753-44d3-a7e8-3b387b3eac67/32",
+              "created": "2026-06-04T15:26:34.698-0400",
+              "createdDisplay": "Jun 4, 2026, 3:26 PM",
+              "updated": "2026-06-04T15:26:34.698-0400",
+              "updatedDisplay": "",
+              "hasMedia": false,
+              "mediaCount": 0,
+              "body": "CC @Brian Pugh  @Joshua Marquess",
+              "bodyHtml": "<p>CC @Brian Pugh  @Joshua Marquess  </p>"
+            },
+            {
+              "id": "1181392",
+              "url": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1181392",
+              "author": "Yoel Martin Pardo",
+              "authorAccountId": "625571809e7380006fb29599",
+              "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+              "created": "2026-06-10T11:18:16.193-0400",
+              "createdDisplay": "Jun 10, 2026, 11:18 AM",
+              "updated": "2026-06-10T11:18:16.193-0400",
+              "updatedDisplay": "",
+              "hasMedia": true,
+              "mediaCount": 1,
+              "body": "Validated result with Sarah Wolfkiel:",
+              "bodyHtml": "<p>Validated result with Sarah Wolfkiel:</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14396/comments/1181392/736558-image-20260610-151547.png\" alt=\"image-20260610-151547.png\" loading=\"lazy\"><figcaption>image-20260610-151547.png</figcaption></figure></div>"
+            }
+          ],
+          "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1181392",
+          "lastCommentDisplay": "Jun 10, 2026, 11:18 AM",
+          "lastCommentAuthor": "Yoel Martin Pardo",
+          "testChecklist": null,
+          "type": "Story",
+          "isSubtask": false,
+          "status": "Code Review",
+          "priority": "P2",
+          "assignee": "Tyler Olechnowicz",
+          "assigneeAccountId": "5d2396c1ea26c40c2043fc92",
+          "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+          "assignedDeveloper": "Yoel Martin Pardo",
+          "assignedDeveloperAccountId": "625571809e7380006fb29599",
+          "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+          "updated": "2026-06-10T14:08:10.757-0400",
+          "updatedDisplay": "Jun 10, 2026, 2:08 PM",
+          "created": "2026-04-21T13:51:19.069-0400",
+          "createdDisplay": "Apr 21, 2026, 1:51 PM",
+          "components": [
+            "GolfNow.Services.Reservation",
+            "GolfNow.Services.TeeSheet"
+          ],
+          "fixVersions": [
+            "v3001.124.0"
+          ],
+          "sprints": [
+            {
+              "name": "2026.8"
+            }
+          ],
+          "sprintNames": [
+            "2026.8"
+          ],
+          "resolution": "",
+          "parent": null
+        }
+      ],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-10T17:29:47.280Z",
       "previousPulledAtDisplay": "Jun 10, 2026, 1:29 PM",
@@ -11267,17 +11564,6 @@
       "previousPulledAtDisplay": "Jun 8, 2026, 12:15 AM",
       "currentPulledAt": "2026-06-08T04:40:26.288Z",
       "currentPulledAtDisplay": "Jun 8, 2026, 12:40 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-08T03:50:33.587Z",
-      "previousPulledAtDisplay": "Jun 7, 2026, 11:50 PM",
-      "currentPulledAt": "2026-06-08T04:15:27.515Z",
-      "currentPulledAtDisplay": "Jun 8, 2026, 12:15 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
