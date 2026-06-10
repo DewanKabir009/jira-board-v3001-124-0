@@ -965,6 +965,10 @@ function buildDirectQuestionBrief(dashboard, stats, body) {
     return buildCommentFileLookupBrief(dashboard, stats, commentFileLookup);
   }
 
+  if (isMainTicketRundownPrompt(userPrompt, promptTemplate)) {
+    return buildMainTicketRundownBrief(dashboard, stats);
+  }
+
   if (promptTemplate !== "ticket_lookup" && !promptLooksLikeLookup) {
     return null;
   }
@@ -1001,6 +1005,82 @@ function buildDirectQuestionBrief(dashboard, stats, body) {
   return lookup.type === "component"
     ? buildComponentLookupBrief(dashboard, stats, lookup)
     : buildPeopleLookupBrief(dashboard, stats, lookup);
+}
+
+function isMainTicketRundownPrompt(userPrompt, promptTemplate) {
+  const prompt = sanitizePrompt(userPrompt);
+
+  if (!prompt) {
+    return false;
+  }
+
+  const broadRundown = /\b(run\s*down|rundown|summary|summarize|overview|rollup|leadership|all\s+(?:the\s+)?tickets|all\s+(?:the\s+)?issues|main\s+tickets)\b/i.test(prompt);
+  const asksForTickets = /\b(ticket|tickets|issue|issues|work\s*items?)\b/i.test(prompt);
+  const specificLookup = /\b(assigned|assignee|developer|dev|owner|component|components|priority|priorities|comment|comments|file|files|attachment|attachments|checklist|markdown|from|with|P[0-4])\b/i.test(prompt);
+
+  return asksForTickets && broadRundown && !specificLookup
+    || promptTemplate === "leadership" && asksForTickets && !specificLookup;
+}
+
+function buildMainTicketRundownBrief(dashboard, stats) {
+  const issues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
+  const mainTickets = issues
+    .filter((issue) => !issue.isSubtask)
+    .sort(sortIssuesForLookup);
+  const release = dashboard.version || "current release";
+  const pulledAt = dashboard.pulledAtDisplay || dashboard.pulledAt || "the latest artifact";
+  const priorityPairs = Object.entries(countBy(mainTickets, (issue) => issue.priority || "None")).sort(sortCounts);
+  const statusPairs = Object.entries(countBy(mainTickets, (issue) => issue.status || "Unknown")).sort(sortCounts);
+  const assigneePairs = Object.entries(countBy(mainTickets, (issue) => issue.assignee || "Unassigned")).sort(sortCounts);
+  const highPriorityCount = mainTickets.filter((issue) => ["P0", "P1"].includes(String(issue.priority || "").toUpperCase())).length;
+
+  if (!mainTickets.length) {
+    return {
+      answerType: "main_ticket_rundown",
+      title: `No main tickets found for ${release}`,
+      summary: `No main tickets were present in the ${release} dashboard artifact pulled ${pulledAt}.`,
+      topRisks: [
+        "No leadership ticket rundown can be generated until the board artifact includes main tickets.",
+        "Refresh the board before sharing status externally."
+      ],
+      qaFocus: ["Use the Jira search panel when live data is needed beyond the dashboard artifact."],
+      ticketsToWatch: [],
+      componentSignals: Object.entries(stats.componentCounts).sort(sortCounts).slice(0, 8).map(formatPair),
+      reviewGates: ["Refresh board data if the artifact is stale before relying on this summary."],
+      sourceNotes: ["Source: dashboard-data.json from the deployed HQ Worker assets."]
+    };
+  }
+
+  return {
+    answerType: "main_ticket_rundown",
+    title: `Leadership main-ticket rundown for ${release}`,
+    summary: `${mainTickets.length} main ticket(s) are in ${release} from the dashboard artifact pulled ${pulledAt}. Subtasks are excluded from this leadership summary so the list stays focused on parent work items.`,
+    topRisks: [
+      `${highPriorityCount} main ticket(s) are P0/P1.`,
+      `Priority mix: ${priorityPairs.map(formatPair).join(", ") || "none found"}.`,
+      `Status mix: ${statusPairs.map(formatPair).join(", ") || "none found"}.`
+    ],
+    qaFocus: [
+      `Primary owners: ${assigneePairs.slice(0, 5).map(formatPair).join(", ") || "none found"}.`,
+      "Use the main-ticket table for leadership updates; open Jira for comments, images, video, or checklist evidence.",
+      "Subtasks are intentionally excluded here and remain attached under their parent tickets in the board views."
+    ],
+    ticketsToWatch: mainTickets.map((issue) => ({
+      key: issue.key || "Unknown",
+      reason: `${issue.status || "Unknown status"} | ${issue.priority || "No priority"} | ${issue.assignee || "Unassigned"}`
+    })),
+    componentSignals: componentSignalsForIssues(mainTickets),
+    reviewGates: [
+      "Refresh the board if the pull timestamp is stale before sharing this externally.",
+      "Confirm P0/P1 status and ownership in Jira before committing dates or release health.",
+      "Use this as a leadership-ready draft; no Jira, Slack, or automation mutation was performed."
+    ],
+    sourceNotes: [
+      "Source: dashboard-data.json from the deployed HQ Worker assets.",
+      "This direct lookup is deterministic board data, not model inference.",
+      "No Jira, Slack, or automation mutation was performed."
+    ]
+  };
 }
 
 function extractPriorityLookup(userPrompt) {
@@ -1656,7 +1736,7 @@ function buildPriorityLookupBrief(dashboard, stats, lookup) {
 }
 
 function isExactBoardLookupBrief(brief) {
-  return ["assignee_lookup", "comment_file_lookup", "component_lookup", "priority_lookup", "ticket_lookup"].includes(brief?.answerType);
+  return ["assignee_lookup", "comment_file_lookup", "component_lookup", "priority_lookup", "ticket_lookup", "main_ticket_rundown"].includes(brief?.answerType);
 }
 
 function sortIssuesForLookup(a, b) {
