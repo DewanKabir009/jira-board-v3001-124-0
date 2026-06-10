@@ -1070,7 +1070,7 @@ const hqSpecs = [
                 </section>
                 <section>
                   <h4 id="hq-ai-tickets-title">Tickets to watch</h4>
-                  <ul id="hq-ai-tickets"></ul>
+                  <div class="ai-ticket-table-wrap" id="hq-ai-tickets"></div>
                 </section>
                 <section>
                   <h4 id="hq-ai-gates-title">Review gates</h4>
@@ -1449,15 +1449,30 @@ const hqSpecs = [
         const cleanTickets = Array.isArray(tickets) && tickets.length ? tickets : [];
 
         if (!cleanTickets.length) {
-          const li = document.createElement("li");
-          li.textContent = "No tickets returned.";
-          list.appendChild(li);
+          const empty = document.createElement("p");
+          empty.className = "ai-ticket-empty";
+          empty.textContent = "No tickets returned.";
+          list.appendChild(empty);
           return;
         }
 
+        const table = document.createElement("table");
+        table.className = "ai-ticket-table";
+
+        const thead = document.createElement("thead");
+        const headerRow = document.createElement("tr");
+        ["Ticket", "Summary", "Status", "Priority", "Assignee", "Assigned developer"].forEach((label) => {
+          const th = document.createElement("th");
+          th.scope = "col";
+          th.textContent = label;
+          headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+
+        const tbody = document.createElement("tbody");
         cleanTickets.forEach((ticket) => {
-          const li = document.createElement("li");
-          li.className = "ai-ticket-item";
+          const tr = document.createElement("tr");
+          const ticketCell = document.createElement("td");
           const title = document.createElement(ticket.url ? "a" : "strong");
           title.textContent = ticket.key || "Unknown";
 
@@ -1467,21 +1482,46 @@ const hqSpecs = [
             title.rel = "noopener";
           }
 
-          const detail = document.createElement("span");
-          const summary = ticket.summary ? ` - ${ticket.summary}` : "";
-          const metadata = [
-            ticket.type,
-            ticket.status,
-            ticket.priority,
-            ticket.assignee ? `Assignee: ${ticket.assignee}` : "",
-            ticket.assignedDeveloper ? `Dev: ${ticket.assignedDeveloper}` : "",
-            Array.isArray(ticket.components) && ticket.components.length ? `Components: ${ticket.components.join(", ")}` : "",
-            ticket.parent ? `Parent: ${ticket.parent}` : ""
-          ].filter(Boolean).join(" | ");
-          detail.textContent = `${summary}${metadata ? ` (${metadata})` : ""}${ticket.reason ? ` - ${ticket.reason}` : ""}`;
-          li.append(title, detail);
-          list.appendChild(li);
+          const type = document.createElement("span");
+          type.textContent = ticket.type || (ticket.parent ? "Subtask" : "Ticket");
+          ticketCell.append(title, type);
+
+          const summaryCell = document.createElement("td");
+          const summaryText = document.createElement("strong");
+          summaryText.textContent = ticket.summary || "No summary";
+          summaryCell.appendChild(summaryText);
+
+          if (Array.isArray(ticket.components) && ticket.components.length) {
+            const components = document.createElement("span");
+            components.textContent = ticket.components.join(", ");
+            summaryCell.appendChild(components);
+          }
+
+          const statusCell = document.createElement("td");
+          statusCell.appendChild(buildAiTicketPill(ticket.status || "Unknown", "status"));
+
+          const priorityCell = document.createElement("td");
+          priorityCell.appendChild(buildAiTicketPill(ticket.priority || "None", "priority"));
+
+          const assigneeCell = document.createElement("td");
+          assigneeCell.textContent = ticket.assignee || "Unassigned";
+
+          const developerCell = document.createElement("td");
+          developerCell.textContent = ticket.assignedDeveloper || "Unassigned";
+
+          tr.append(ticketCell, summaryCell, statusCell, priorityCell, assigneeCell, developerCell);
+          tbody.appendChild(tr);
         });
+
+        table.append(thead, tbody);
+        list.appendChild(table);
+      }
+
+      function buildAiTicketPill(label, type) {
+        const pill = document.createElement("span");
+        pill.className = `ai-ticket-pill ${type}`;
+        pill.textContent = label;
+        return pill;
       }
 
       function renderGeneratedDocuments(panel, documents) {

@@ -1977,27 +1977,35 @@ ul {
 
 .ai-result-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: 1fr;
+  gap: 12px;
 }
 
 .ai-result-grid section {
   border: 1px solid var(--hq-line);
   border-radius: 8px;
   background:
-    linear-gradient(135deg, rgba(247, 251, 255, 0.95), rgba(255, 255, 255, 0.98));
-  padding: 12px;
+    linear-gradient(135deg, rgba(247, 251, 255, 0.98), rgba(255, 255, 255, 0.99));
+  overflow: hidden;
 }
 
 .ai-result-grid h4 {
-  margin: 0 0 8px;
+  margin: 0;
+  border-bottom: 1px solid rgba(0, 95, 204, 0.16);
+  background:
+    linear-gradient(135deg, rgba(0, 95, 204, 0.1), rgba(217, 255, 235, 0.52));
+  color: var(--hq-blue);
+  font-size: 0.86rem;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  padding: 10px 12px;
 }
 
 .ai-result-grid ul {
   display: grid;
   gap: 6px;
   margin: 0;
-  padding-left: 18px;
+  padding: 12px 14px 12px 30px;
 }
 
 .ai-result-grid li {
@@ -2005,30 +2013,114 @@ ul {
   line-height: 1.4;
 }
 
-.ai-result-grid .ai-ticket-item {
-  display: grid;
-  gap: 3px;
-  padding: 8px;
-  border: 1px solid rgba(0, 95, 204, 0.16);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.72);
+.ai-ticket-table-wrap {
+  overflow-x: auto;
+  padding: 10px;
 }
 
-.ai-ticket-item a,
-.ai-ticket-item strong {
+.ai-ticket-empty {
+  margin: 0;
+  color: var(--hq-muted);
+  font-weight: 850;
+}
+
+.ai-ticket-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border: 1px solid rgba(0, 95, 204, 0.18);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.ai-ticket-table th,
+.ai-ticket-table td {
+  border-bottom: 1px solid rgba(0, 95, 204, 0.12);
+  padding: 9px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.ai-ticket-table th {
+  background: linear-gradient(135deg, rgba(0, 95, 204, 0.12), rgba(217, 255, 235, 0.55));
+  color: #21445f;
+  font-size: 0.76rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.ai-ticket-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.ai-ticket-table tbody tr:nth-child(even) {
+  background: rgba(230, 246, 255, 0.34);
+}
+
+.ai-ticket-table td:first-child,
+.ai-ticket-table td:nth-child(2) {
+  display: grid;
+  gap: 4px;
+}
+
+.ai-ticket-table td:first-child {
+  min-width: 112px;
+}
+
+.ai-ticket-table td:nth-child(2) {
+  min-width: 220px;
+}
+
+.ai-ticket-table td:nth-child(5),
+.ai-ticket-table td:nth-child(6) {
+  min-width: 118px;
+  color: var(--hq-ink);
+  font-weight: 850;
+}
+
+.ai-ticket-table a,
+.ai-ticket-table td:first-child strong {
   color: var(--hq-blue);
   font-weight: 900;
   text-decoration: none;
 }
 
-.ai-ticket-item a:hover {
+.ai-ticket-table a:hover {
   text-decoration: underline;
 }
 
-.ai-ticket-item span {
+.ai-ticket-table td:first-child span,
+.ai-ticket-table td:nth-child(2) span {
   color: var(--hq-muted);
   font-size: 0.86rem;
   line-height: 1.42;
+}
+
+.ai-ticket-table td:nth-child(2) strong {
+  color: var(--hq-ink);
+  font-weight: 850;
+}
+
+.ai-ticket-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 950;
+  padding: 4px 9px;
+}
+
+.ai-ticket-pill.status {
+  background: var(--hq-green-soft);
+  color: var(--hq-green);
+}
+
+.ai-ticket-pill.priority {
+  background: rgba(255, 122, 24, 0.16);
+  color: var(--hq-orange);
 }
 
 .ai-generated-documents {
@@ -2516,7 +2608,6 @@ ul {
   .ai-summary-grid,
   .ai-lower-grid,
   .ai-draft-grid,
-  .ai-result-grid,
   .script-list,
   .script-card dl,
   .role-matrix,
