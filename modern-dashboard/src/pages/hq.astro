@@ -601,76 +601,6 @@ const hqSpecs = [
         </article>
       </section>
 
-      <section class="module-panel calendar-module" id="calendar">
-        <div class="module-heading">
-          <div>
-            <p class="eyebrow">Calendar menu</p>
-            <h2>Release calendar command view</h2>
-          </div>
-          <span class="module-pill">SPEC-HQ-09 live</span>
-        </div>
-
-        <div class="calendar-console" data-calendar-data-url="../../dashboard-data.json">
-          <article class="calendar-hero">
-            <div>
-              <p class="eyebrow">Confluence Team Calendars</p>
-              <h3 id="calendar-active-title">GN Releases</h3>
-              <p id="calendar-active-summary">Loading release calendar events from the deployed dashboard artifact.</p>
-            </div>
-            <dl>
-              <div>
-                <dt>Refresh</dt>
-                <dd id="calendar-refresh-cadence">Every 5 min</dd>
-              </div>
-              <div>
-                <dt>Last pull</dt>
-                <dd id="calendar-last-pull">Loading</dd>
-              </div>
-              <div>
-                <dt>Window</dt>
-                <dd id="calendar-window">Loading</dd>
-              </div>
-            </dl>
-          </article>
-
-          <div class="calendar-toolbar" aria-label="Calendar controls">
-            <div class="calendar-view-tabs" role="tablist" aria-label="Calendar display">
-              <button class="active" type="button" data-calendar-view="calendar">Calendar</button>
-              <button type="button" data-calendar-view="upcoming">Upcoming</button>
-            </div>
-            <a id="calendar-open-source" class="calendar-open-source" href="https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases">Open Confluence calendar</a>
-          </div>
-
-          <div class="calendar-alert" id="calendar-alert" hidden></div>
-
-          <div class="calendar-month" id="calendar-month-view" aria-live="polite">
-            <div class="calendar-month-heading">
-              <div>
-                <strong id="calendar-month-title">Release calendar</strong>
-                <span class="calendar-month-count" id="calendar-event-count">0 events</span>
-              </div>
-              <div class="calendar-month-controls" aria-label="Calendar month navigation">
-                <button type="button" data-calendar-month="previous" aria-label="Previous month">Prev</button>
-                <button type="button" data-calendar-month="today">Today</button>
-                <button type="button" data-calendar-month="next" aria-label="Next month">Next</button>
-              </div>
-            </div>
-            <div class="calendar-weekdays" aria-hidden="true">
-              <span>Sun</span>
-              <span>Mon</span>
-              <span>Tue</span>
-              <span>Wed</span>
-              <span>Thu</span>
-              <span>Fri</span>
-              <span>Sat</span>
-            </div>
-            <div class="calendar-grid" id="calendar-grid"></div>
-          </div>
-
-          <div class="calendar-list" id="calendar-list-view" hidden aria-live="polite"></div>
-        </div>
-      </section>
-
       <section class="module-panel kb-module" id="kb">
         <div class="module-heading">
           <div>
@@ -1267,6 +1197,76 @@ const hqSpecs = [
               </div>
             </div>
           </div>
+      </section>
+
+      <section class="module-panel calendar-module" id="calendar">
+        <div class="module-heading">
+          <div>
+            <p class="eyebrow">Calendar menu</p>
+            <h2>Release calendar command view</h2>
+          </div>
+          <span class="module-pill">SPEC-HQ-09 live</span>
+        </div>
+
+        <div class="calendar-console" data-calendar-data-url="../../dashboard-data.json">
+          <article class="calendar-hero">
+            <div>
+              <p class="eyebrow">Confluence Team Calendars</p>
+              <h3 id="calendar-active-title">GN Releases</h3>
+              <p id="calendar-active-summary">Loading release calendar events from the deployed dashboard artifact.</p>
+            </div>
+            <dl>
+              <div>
+                <dt>Refresh</dt>
+                <dd id="calendar-refresh-cadence">Every 5 min</dd>
+              </div>
+              <div>
+                <dt>Last pull</dt>
+                <dd id="calendar-last-pull">Loading</dd>
+              </div>
+              <div>
+                <dt>Window</dt>
+                <dd id="calendar-window">Loading</dd>
+              </div>
+            </dl>
+          </article>
+
+          <div class="calendar-toolbar" aria-label="Calendar controls">
+            <div class="calendar-view-tabs" role="tablist" aria-label="Calendar display">
+              <button class="active" type="button" data-calendar-view="calendar">Calendar</button>
+              <button type="button" data-calendar-view="upcoming">Upcoming</button>
+            </div>
+            <a id="calendar-open-source" class="calendar-open-source" href="https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases">Open Confluence calendar</a>
+          </div>
+
+          <div class="calendar-alert" id="calendar-alert" hidden></div>
+
+          <div class="calendar-month" id="calendar-month-view" aria-live="polite">
+            <div class="calendar-month-heading">
+              <div>
+                <strong id="calendar-month-title">Release calendar</strong>
+                <span class="calendar-month-count" id="calendar-event-count">0 events</span>
+              </div>
+              <div class="calendar-month-controls" aria-label="Calendar month navigation">
+                <button type="button" data-calendar-month="previous" aria-label="Previous month">Prev</button>
+                <button type="button" data-calendar-month="today">Today</button>
+                <button type="button" data-calendar-month="next" aria-label="Next month">Next</button>
+              </div>
+            </div>
+            <div class="calendar-weekdays" aria-hidden="true">
+              <span>Sun</span>
+              <span>Mon</span>
+              <span>Tue</span>
+              <span>Wed</span>
+              <span>Thu</span>
+              <span>Fri</span>
+              <span>Sat</span>
+            </div>
+            <div class="calendar-grid" id="calendar-grid"></div>
+          </div>
+
+          <div class="calendar-list" id="calendar-list-view" hidden aria-live="polite"></div>
+        </div>
       </section>
 
       <section class="module-panel specs-panel" id="specs">
@@ -2050,19 +2050,9 @@ const hqSpecs = [
           groups.get(key).events.push(event);
         });
 
-        const currentMonthKey = monthKey(new Date());
-        let openedGroup = false;
-
-        Array.from(groups.values()).forEach((group, index) => {
+        Array.from(groups.values()).forEach((group) => {
           const details = document.createElement("details");
           details.className = "calendar-month-group";
-          if (!openedGroup && group.key >= currentMonthKey) {
-            details.open = true;
-            openedGroup = true;
-          }
-          if (!openedGroup && index === groups.size - 1) {
-            details.open = true;
-          }
 
           const summary = document.createElement("summary");
           const label = document.createElement("strong");
