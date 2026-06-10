@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-10T19:56:10.699Z",
-  "pulledAtDisplay": "Jun 10, 2026, 3:56 PM",
+  "pulledAt": "2026-06-10T20:21:48.130Z",
+  "pulledAtDisplay": "Jun 10, 2026, 4:21 PM",
   "total": 14,
   "issues": [
     {
@@ -1052,8 +1052,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-10T19:56:10.699Z",
-    "pulledAtDisplay": "Jun 10, 2026, 3:56 PM",
+    "pulledAt": "2026-06-10T20:21:48.130Z",
+    "pulledAtDisplay": "Jun 10, 2026, 4:21 PM",
     "total": 94,
     "mainTotal": 94,
     "subtaskTotal": 0,
@@ -6964,13 +6964,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-10T19:55:42.530Z",
-    "pulledAtDisplay": "Jun 10, 2026, 3:55 PM",
+    "pulledAt": "2026-06-10T20:21:11.758Z",
+    "pulledAtDisplay": "Jun 10, 2026, 4:21 PM",
     "window": {
-      "start": "2026-04-26T19:55:42.530Z",
-      "end": "2026-12-07T19:55:42.530Z",
-      "startDisplay": "Apr 26, 2026, 3:55 PM",
-      "endDisplay": "Dec 7, 2026, 2:55 PM"
+      "start": "2026-04-26T20:21:11.758Z",
+      "end": "2026-12-07T20:21:11.758Z",
+      "startDisplay": "Apr 26, 2026, 4:21 PM",
+      "endDisplay": "Dec 7, 2026, 3:21 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -6983,7 +6983,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-10T19:55:47.574Z",
+        "pulledAt": "2026-06-10T20:21:15.143Z",
         "eventCount": 91,
         "events": [
           {
@@ -7302,21 +7302,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
-            "start": "2026-05-26T18:00:00.000Z",
-            "end": "2026-05-26T19:55:00.000Z",
-            "startDisplay": "May 26, 2026, 2:00 PM",
-            "endDisplay": "May 26, 2026, 3:55 PM",
-            "allDay": false,
-            "type": "Scheduled Maintenance",
-            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
-            "description": "Slack: #itops_deployments",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -7329,6 +7314,21 @@
             "type": "Patching",
             "location": "https://golfnow.atlassian.net/browse/OPS-54241",
             "description": "Slack: #itops_patching_communications",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
+            "start": "2026-05-26T18:00:00.000Z",
+            "end": "2026-05-26T19:55:00.000Z",
+            "startDisplay": "May 26, 2026, 2:00 PM",
+            "endDisplay": "May 26, 2026, 3:55 PM",
+            "allDay": false,
+            "type": "Scheduled Maintenance",
+            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
+            "description": "Slack: #itops_deployments",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
@@ -8357,63 +8357,28 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-10T19:31:45.177Z",
-    "previousPulledAtDisplay": "Jun 10, 2026, 3:31 PM",
-    "currentPulledAt": "2026-06-10T19:56:10.699Z",
-    "currentPulledAtDisplay": "Jun 10, 2026, 3:56 PM",
+    "previousPulledAt": "2026-06-10T19:56:10.699Z",
+    "previousPulledAtDisplay": "Jun 10, 2026, 3:56 PM",
+    "currentPulledAt": "2026-06-10T20:21:48.130Z",
+    "currentPulledAtDisplay": "Jun 10, 2026, 4:21 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
-    "updated": [
-      {
-        "key": "CORE-14500",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14500",
-        "summary": "Update Geo Search configuration ",
-        "changes": [
-          {
-            "field": "status",
-            "label": "Status",
-            "before": "Pending Deployment (DEV)",
-            "after": "QA Testing (DEV)"
-          },
-          {
-            "field": "assignee",
-            "label": "Assignee",
-            "before": "Yu-Sheng Tu",
-            "after": "Lara Golovachenko"
-          },
-          {
-            "field": "updatedDisplay",
-            "label": "Jira updated",
-            "before": "Jun 10, 2026, 3:19 PM",
-            "after": "Jun 10, 2026, 3:47 PM"
-          }
-        ],
-        "type": "Task",
-        "isSubtask": false,
-        "assignee": "Lara Golovachenko",
-        "assignedDeveloper": "Sebastian Calzadilla Gonzalez",
-        "status": "QA Testing (DEV)",
-        "parent": null
-      }
-    ],
-    "statusChanges": [
-      {
-        "key": "CORE-14500",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14500",
-        "summary": "Update Geo Search configuration ",
-        "before": "Pending Deployment (DEV)",
-        "after": "QA Testing (DEV)",
-        "type": "Task",
-        "isSubtask": false,
-        "assignee": "Lara Golovachenko",
-        "assignedDeveloper": "Sebastian Calzadilla Gonzalez",
-        "status": "QA Testing (DEV)",
-        "parent": null
-      }
-    ]
+    "updated": [],
+    "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-10T19:56:10.699Z",
+      "previousPulledAtDisplay": "Jun 10, 2026, 3:56 PM",
+      "currentPulledAt": "2026-06-10T20:21:48.130Z",
+      "currentPulledAtDisplay": "Jun 10, 2026, 4:21 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-10T19:31:45.177Z",
       "previousPulledAtDisplay": "Jun 10, 2026, 3:31 PM",
@@ -11591,17 +11556,6 @@
       "previousPulledAtDisplay": "Jun 8, 2026, 2:20 AM",
       "currentPulledAt": "2026-06-08T06:45:27.000Z",
       "currentPulledAtDisplay": "Jun 8, 2026, 2:45 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-08T05:55:29.802Z",
-      "previousPulledAtDisplay": "Jun 8, 2026, 1:55 AM",
-      "currentPulledAt": "2026-06-08T06:20:28.811Z",
-      "currentPulledAtDisplay": "Jun 8, 2026, 2:20 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
