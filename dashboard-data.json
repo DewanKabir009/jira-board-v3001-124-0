@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-10T20:46:45.283Z",
-  "pulledAtDisplay": "Jun 10, 2026, 4:46 PM",
+  "pulledAt": "2026-06-10T21:15:09.152Z",
+  "pulledAtDisplay": "Jun 10, 2026, 5:15 PM",
   "total": 15,
   "issues": [
     {
@@ -71,16 +71,16 @@
       "testChecklist": null,
       "type": "Story",
       "isSubtask": false,
-      "status": "Pending Deployment (DEV)",
+      "status": "QA Testing (DEV)",
       "priority": "P2",
-      "assignee": "Yoel Martin Pardo",
-      "assigneeAccountId": "625571809e7380006fb29599",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
       "assignedDeveloper": "Yoel Martin Pardo",
       "assignedDeveloperAccountId": "625571809e7380006fb29599",
       "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-      "updated": "2026-06-10T16:38:37.619-0400",
-      "updatedDisplay": "Jun 10, 2026, 4:38 PM",
+      "updated": "2026-06-10T16:56:48.950-0400",
+      "updatedDisplay": "Jun 10, 2026, 4:56 PM",
       "created": "2026-04-21T13:51:19.069-0400",
       "createdDisplay": "Apr 21, 2026, 1:51 PM",
       "components": [
@@ -1101,8 +1101,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-10T20:46:45.283Z",
-    "pulledAtDisplay": "Jun 10, 2026, 4:46 PM",
+    "pulledAt": "2026-06-10T21:15:09.152Z",
+    "pulledAtDisplay": "Jun 10, 2026, 5:15 PM",
     "total": 94,
     "mainTotal": 94,
     "subtaskTotal": 0,
@@ -2137,16 +2137,16 @@
         "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
-        "status": "Pending Deployment (DEV)",
+        "status": "QA Testing (DEV)",
         "priority": "P2",
-        "assignee": "Yoel Martin Pardo",
-        "assigneeAccountId": "625571809e7380006fb29599",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
         "assignedDeveloper": "Yoel Martin Pardo",
         "assignedDeveloperAccountId": "625571809e7380006fb29599",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-06-10T16:38:37.619-0400",
-        "updatedDisplay": "Jun 10, 2026, 4:38 PM",
+        "updated": "2026-06-10T16:56:48.950-0400",
+        "updatedDisplay": "Jun 10, 2026, 4:56 PM",
         "created": "2026-04-21T13:51:19.069-0400",
         "createdDisplay": "Apr 21, 2026, 1:51 PM",
         "components": [
@@ -7013,13 +7013,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-10T20:46:16.073Z",
-    "pulledAtDisplay": "Jun 10, 2026, 4:46 PM",
+    "pulledAt": "2026-06-10T21:14:38.329Z",
+    "pulledAtDisplay": "Jun 10, 2026, 5:14 PM",
     "window": {
-      "start": "2026-04-26T20:46:16.073Z",
-      "end": "2026-12-07T20:46:16.073Z",
-      "startDisplay": "Apr 26, 2026, 4:46 PM",
-      "endDisplay": "Dec 7, 2026, 3:46 PM"
+      "start": "2026-04-26T21:14:38.328Z",
+      "end": "2026-12-07T21:14:38.328Z",
+      "startDisplay": "Apr 26, 2026, 5:14 PM",
+      "endDisplay": "Dec 7, 2026, 4:14 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7032,7 +7032,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-10T20:46:18.296Z",
+        "pulledAt": "2026-06-10T21:14:43.714Z",
         "eventCount": 91,
         "events": [
           {
@@ -8086,21 +8086,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Summer Bank Holiday (UK)",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-01T00:00:00.000Z",
-            "startDisplay": "Aug 30, 2026, 8:00 PM",
-            "endDisplay": "Aug 31, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8111,6 +8096,21 @@
             "endDisplay": "Sep 7, 2026, 8:00 PM",
             "allDay": true,
             "type": "Golf Freeze",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Summer Bank Holiday (UK)",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-01T00:00:00.000Z",
+            "startDisplay": "Aug 30, 2026, 8:00 PM",
+            "endDisplay": "Aug 31, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8406,62 +8406,12 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-10T20:21:48.130Z",
-    "previousPulledAtDisplay": "Jun 10, 2026, 4:21 PM",
-    "currentPulledAt": "2026-06-10T20:46:45.283Z",
-    "currentPulledAtDisplay": "Jun 10, 2026, 4:46 PM",
+    "previousPulledAt": "2026-06-10T20:46:45.283Z",
+    "previousPulledAtDisplay": "Jun 10, 2026, 4:46 PM",
+    "currentPulledAt": "2026-06-10T21:15:09.152Z",
+    "currentPulledAtDisplay": "Jun 10, 2026, 5:15 PM",
     "isBaseline": false,
-    "added": [
-      {
-        "key": "CORE-14488",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14488",
-        "summary": "Code changes for [CORE - 14427]",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "status": "Development",
-        "priority": "P1",
-        "assignee": "Luis Vallejo Mursuli",
-        "assigneeAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
-        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-06-10T16:27:23.662-0400",
-        "updatedDisplay": "Jun 10, 2026, 4:27 PM",
-        "created": "2026-05-19T19:23:19.189-0400",
-        "createdDisplay": "May 19, 2026, 7:23 PM",
-        "components": [
-          "GolfNow.Services.Reservation",
-          "GolfNowAPI"
-        ],
-        "fixVersions": [
-          "v3001.124.0"
-        ],
-        "sprints": [],
-        "sprintNames": [],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14427",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14427",
-          "summary": "Home Course Selection/Management",
-          "description": "",
-          "type": "Story",
-          "status": "Development",
-          "priority": "P1"
-        }
-      }
-    ],
+    "added": [],
     "removed": [],
     "updated": [
       {
@@ -8472,27 +8422,27 @@
           {
             "field": "status",
             "label": "Status",
-            "before": "Code Review",
-            "after": "Pending Deployment (DEV)"
+            "before": "Pending Deployment (DEV)",
+            "after": "QA Testing (DEV)"
           },
           {
             "field": "assignee",
             "label": "Assignee",
-            "before": "Tyler Olechnowicz",
-            "after": "Yoel Martin Pardo"
+            "before": "Yoel Martin Pardo",
+            "after": "Dewan Kabir"
           },
           {
             "field": "updatedDisplay",
             "label": "Jira updated",
-            "before": "Jun 10, 2026, 2:08 PM",
-            "after": "Jun 10, 2026, 4:38 PM"
+            "before": "Jun 10, 2026, 4:38 PM",
+            "after": "Jun 10, 2026, 4:56 PM"
           }
         ],
         "type": "Story",
         "isSubtask": false,
-        "assignee": "Yoel Martin Pardo",
+        "assignee": "Dewan Kabir",
         "assignedDeveloper": "Yoel Martin Pardo",
-        "status": "Pending Deployment (DEV)",
+        "status": "QA Testing (DEV)",
         "parent": null
       }
     ],
@@ -8501,18 +8451,75 @@
         "key": "CORE-14396",
         "url": "https://golfnow.atlassian.net/browse/CORE-14396",
         "summary": "Add IsCaddyRequested parameter support to EZL/EZLRTS tee sheet interface",
-        "before": "Code Review",
-        "after": "Pending Deployment (DEV)",
+        "before": "Pending Deployment (DEV)",
+        "after": "QA Testing (DEV)",
         "type": "Story",
         "isSubtask": false,
-        "assignee": "Yoel Martin Pardo",
+        "assignee": "Dewan Kabir",
         "assignedDeveloper": "Yoel Martin Pardo",
-        "status": "Pending Deployment (DEV)",
+        "status": "QA Testing (DEV)",
         "parent": null
       }
     ]
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-10T20:46:45.283Z",
+      "previousPulledAtDisplay": "Jun 10, 2026, 4:46 PM",
+      "currentPulledAt": "2026-06-10T21:15:09.152Z",
+      "currentPulledAtDisplay": "Jun 10, 2026, 5:15 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14396",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14396",
+          "summary": "Add IsCaddyRequested parameter support to EZL/EZLRTS tee sheet interface",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "Pending Deployment (DEV)",
+              "after": "QA Testing (DEV)"
+            },
+            {
+              "field": "assignee",
+              "label": "Assignee",
+              "before": "Yoel Martin Pardo",
+              "after": "Dewan Kabir"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 10, 2026, 4:38 PM",
+              "after": "Jun 10, 2026, 4:56 PM"
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Yoel Martin Pardo",
+          "status": "QA Testing (DEV)",
+          "parent": null
+        }
+      ],
+      "statusChanges": [
+        {
+          "key": "CORE-14396",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14396",
+          "summary": "Add IsCaddyRequested parameter support to EZL/EZLRTS tee sheet interface",
+          "before": "Pending Deployment (DEV)",
+          "after": "QA Testing (DEV)",
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Yoel Martin Pardo",
+          "status": "QA Testing (DEV)",
+          "parent": null
+        }
+      ]
+    },
     {
       "previousPulledAt": "2026-06-10T20:21:48.130Z",
       "previousPulledAtDisplay": "Jun 10, 2026, 4:21 PM",
@@ -8598,9 +8605,9 @@
           ],
           "type": "Story",
           "isSubtask": false,
-          "assignee": "Yoel Martin Pardo",
+          "assignee": "Dewan Kabir",
           "assignedDeveloper": "Yoel Martin Pardo",
-          "status": "Pending Deployment (DEV)",
+          "status": "QA Testing (DEV)",
           "parent": null
         }
       ],
@@ -8613,9 +8620,9 @@
           "after": "Pending Deployment (DEV)",
           "type": "Story",
           "isSubtask": false,
-          "assignee": "Yoel Martin Pardo",
+          "assignee": "Dewan Kabir",
           "assignedDeveloper": "Yoel Martin Pardo",
-          "status": "Pending Deployment (DEV)",
+          "status": "QA Testing (DEV)",
           "parent": null
         }
       ]
@@ -8831,9 +8838,9 @@
           "testChecklist": null,
           "type": "Story",
           "isSubtask": false,
-          "status": "Pending Deployment (DEV)",
+          "status": "QA Testing (DEV)",
           "priority": "P2",
-          "assignee": "Yoel Martin Pardo",
+          "assignee": "Dewan Kabir",
           "assigneeAccountId": "5d2396c1ea26c40c2043fc92",
           "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
           "assignedDeveloper": "Yoel Martin Pardo",
@@ -11786,17 +11793,6 @@
       "previousPulledAtDisplay": "Jun 8, 2026, 3:10 AM",
       "currentPulledAt": "2026-06-08T07:16:44.261Z",
       "currentPulledAtDisplay": "Jun 8, 2026, 3:16 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-08T06:45:27.000Z",
-      "previousPulledAtDisplay": "Jun 8, 2026, 2:45 AM",
-      "currentPulledAt": "2026-06-08T07:10:32.605Z",
-      "currentPulledAtDisplay": "Jun 8, 2026, 3:10 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
