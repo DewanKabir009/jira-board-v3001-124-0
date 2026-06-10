@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-10T13:06:36.611Z",
-  "pulledAtDisplay": "Jun 10, 2026, 9:06 AM",
+  "pulledAt": "2026-06-10T13:31:29.382Z",
+  "pulledAtDisplay": "Jun 10, 2026, 9:31 AM",
   "total": 11,
   "issues": [
     {
@@ -114,7 +114,7 @@
       "descriptionImageCount": 0,
       "descriptionVideoCount": 0,
       "descriptionMediaCount": 0,
-      "commentCount": 1,
+      "commentCount": 2,
       "comments": [
         {
           "id": "1181127",
@@ -130,10 +130,25 @@
           "mediaCount": 0,
           "body": "QA Test Instructions\n\n- Book a tee time reservation using a rate set configured for the EZL tee sheet and the new EZL API.\n\n- Verify the reservation is created successfully.\n\n- Coordinate with the EZL team to review the tee-time/book request received by EZL.\n\n- Confirm the new prepaid_and_tax fields are present and populated as expected by EZL.\n\n- Repeat the test with:\n\n- A tax-exclusive tee time.\n\n- A tax-inclusive tee time.\n\n- For both scenarios, validate with the EZL team that the fee, tax, and tax-inclusion values received by EZL match the expected reservation pricing.",
           "bodyHtml": "<h3>QA Test Instructions</h3><ol><li><p>Book a tee time reservation using a rate set configured for the EZL tee sheet and the new EZL API.</p></li><li><p>Verify the reservation is created successfully.</p></li><li><p>Coordinate with the EZL team to review the <code>tee-time/book</code> request received by EZL.</p></li><li><p>Confirm the new <code>prepaid_and_tax</code> fields are present and populated as expected by EZL.</p></li><li><p>Repeat the test with:</p><ul><li><p>A tax-exclusive tee time.</p></li><li><p>A tax-inclusive tee time.</p></li></ul></li><li><p>For both scenarios, validate with the EZL team that the fee, tax, and tax-inclusion values received by EZL match the expected reservation pricing.</p></li></ol>"
+        },
+        {
+          "id": "1181313",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181313",
+          "author": "Tyler Olechnowicz",
+          "authorAccountId": "5d2396c1ea26c40c2043fc92",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+          "created": "2026-06-10T09:30:38.815-0400",
+          "createdDisplay": "Jun 10, 2026, 9:30 AM",
+          "updated": "2026-06-10T09:30:38.815-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "Note: No changes were made to the existing green_fee payload. Per EZL guidance, these amounts should continue to include both greens fee and cart fee values. Cart fee and tax breakdowns are now provided separately in the prepaid_and_tax object.",
+          "bodyHtml": "<p>Note: No changes were made to the existing <code>green_fee</code> payload. Per EZL guidance, these amounts should continue to include both greens fee and cart fee values. Cart fee and tax breakdowns are now provided separately in the <code>prepaid_and_tax</code> object.</p>"
         }
       ],
-      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181127",
-      "lastCommentDisplay": "Jun 9, 2026, 7:13 PM",
+      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181313",
+      "lastCommentDisplay": "Jun 10, 2026, 9:30 AM",
       "lastCommentAuthor": "Tyler Olechnowicz",
       "testChecklist": null,
       "type": "Story",
@@ -146,8 +161,8 @@
       "assignedDeveloper": "Tyler Olechnowicz",
       "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
       "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-      "updated": "2026-06-09T19:15:53.378-0400",
-      "updatedDisplay": "Jun 9, 2026, 7:15 PM",
+      "updated": "2026-06-10T09:30:38.815-0400",
+      "updatedDisplay": "Jun 10, 2026, 9:30 AM",
       "created": "2026-05-18T12:36:39.447-0400",
       "createdDisplay": "May 18, 2026, 12:36 PM",
       "components": [
@@ -832,8 +847,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-10T13:06:36.611Z",
-    "pulledAtDisplay": "Jun 10, 2026, 9:06 AM",
+    "pulledAt": "2026-06-10T13:31:29.382Z",
+    "pulledAtDisplay": "Jun 10, 2026, 9:31 AM",
     "total": 94,
     "mainTotal": 94,
     "subtaskTotal": 0,
@@ -1325,7 +1340,7 @@
         "descriptionImageCount": 0,
         "descriptionVideoCount": 0,
         "descriptionMediaCount": 0,
-        "commentCount": 1,
+        "commentCount": 2,
         "comments": [
           {
             "id": "1181127",
@@ -1341,10 +1356,25 @@
             "mediaCount": 0,
             "body": "QA Test Instructions\n\n- Book a tee time reservation using a rate set configured for the EZL tee sheet and the new EZL API.\n\n- Verify the reservation is created successfully.\n\n- Coordinate with the EZL team to review the tee-time/book request received by EZL.\n\n- Confirm the new prepaid_and_tax fields are present and populated as expected by EZL.\n\n- Repeat the test with:\n\n- A tax-exclusive tee time.\n\n- A tax-inclusive tee time.\n\n- For both scenarios, validate with the EZL team that the fee, tax, and tax-inclusion values received by EZL match the expected reservation pricing.",
             "bodyHtml": "<h3>QA Test Instructions</h3><ol><li><p>Book a tee time reservation using a rate set configured for the EZL tee sheet and the new EZL API.</p></li><li><p>Verify the reservation is created successfully.</p></li><li><p>Coordinate with the EZL team to review the <code>tee-time/book</code> request received by EZL.</p></li><li><p>Confirm the new <code>prepaid_and_tax</code> fields are present and populated as expected by EZL.</p></li><li><p>Repeat the test with:</p><ul><li><p>A tax-exclusive tee time.</p></li><li><p>A tax-inclusive tee time.</p></li></ul></li><li><p>For both scenarios, validate with the EZL team that the fee, tax, and tax-inclusion values received by EZL match the expected reservation pricing.</p></li></ol>"
+          },
+          {
+            "id": "1181313",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181313",
+            "author": "Tyler Olechnowicz",
+            "authorAccountId": "5d2396c1ea26c40c2043fc92",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+            "created": "2026-06-10T09:30:38.815-0400",
+            "createdDisplay": "Jun 10, 2026, 9:30 AM",
+            "updated": "2026-06-10T09:30:38.815-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Note: No changes were made to the existing green_fee payload. Per EZL guidance, these amounts should continue to include both greens fee and cart fee values. Cart fee and tax breakdowns are now provided separately in the prepaid_and_tax object.",
+            "bodyHtml": "<p>Note: No changes were made to the existing <code>green_fee</code> payload. Per EZL guidance, these amounts should continue to include both greens fee and cart fee values. Cart fee and tax breakdowns are now provided separately in the <code>prepaid_and_tax</code> object.</p>"
           }
         ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181127",
-        "lastCommentDisplay": "Jun 9, 2026, 7:13 PM",
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181313",
+        "lastCommentDisplay": "Jun 10, 2026, 9:30 AM",
         "lastCommentAuthor": "Tyler Olechnowicz",
         "testChecklist": null,
         "type": "Story",
@@ -1357,8 +1387,8 @@
         "assignedDeveloper": "Tyler Olechnowicz",
         "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-        "updated": "2026-06-09T19:15:53.378-0400",
-        "updatedDisplay": "Jun 9, 2026, 7:15 PM",
+        "updated": "2026-06-10T09:30:38.815-0400",
+        "updatedDisplay": "Jun 10, 2026, 9:30 AM",
         "created": "2026-05-18T12:36:39.447-0400",
         "createdDisplay": "May 18, 2026, 12:36 PM",
         "components": [
@@ -1817,16 +1847,16 @@
         "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
-        "status": "Planning",
+        "status": "Development",
         "priority": "P2",
-        "assignee": "Andrew Horvat",
-        "assigneeAccountId": "712020:d714b2a6-3491-46da-89f1-9777e2d1ab70",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:d714b2a6-3491-46da-89f1-9777e2d1ab70/25dedc4a-09d9-4ec9-945c-34d31d771711/32",
-        "assignedDeveloper": "Andrew Horvat",
-        "assignedDeveloperAccountId": "712020:d714b2a6-3491-46da-89f1-9777e2d1ab70",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:d714b2a6-3491-46da-89f1-9777e2d1ab70/25dedc4a-09d9-4ec9-945c-34d31d771711/32",
-        "updated": "2026-06-09T09:44:15.795-0400",
-        "updatedDisplay": "Jun 9, 2026, 9:44 AM",
+        "assignee": "Yoel Martin Pardo",
+        "assigneeAccountId": "625571809e7380006fb29599",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "assignedDeveloperAccountId": "625571809e7380006fb29599",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "updated": "2026-06-10T09:27:53.930-0400",
+        "updatedDisplay": "Jun 10, 2026, 9:27 AM",
         "created": "2026-04-21T13:51:19.069-0400",
         "createdDisplay": "Apr 21, 2026, 1:51 PM",
         "components": [],
@@ -6688,13 +6718,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-10T13:06:06.674Z",
-    "pulledAtDisplay": "Jun 10, 2026, 9:06 AM",
+    "pulledAt": "2026-06-10T13:31:04.922Z",
+    "pulledAtDisplay": "Jun 10, 2026, 9:31 AM",
     "window": {
-      "start": "2026-04-26T13:06:06.674Z",
-      "end": "2026-12-07T13:06:06.674Z",
-      "startDisplay": "Apr 26, 2026, 9:06 AM",
-      "endDisplay": "Dec 7, 2026, 8:06 AM"
+      "start": "2026-04-26T13:31:04.922Z",
+      "end": "2026-12-07T13:31:04.922Z",
+      "startDisplay": "Apr 26, 2026, 9:31 AM",
+      "endDisplay": "Dec 7, 2026, 8:31 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -6707,7 +6737,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-10T13:06:09.262Z",
+        "pulledAt": "2026-06-10T13:31:07.188Z",
         "eventCount": 91,
         "events": [
           {
@@ -8081,17 +8111,68 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-10T12:41:50.101Z",
-    "previousPulledAtDisplay": "Jun 10, 2026, 8:41 AM",
-    "currentPulledAt": "2026-06-10T13:06:36.611Z",
-    "currentPulledAtDisplay": "Jun 10, 2026, 9:06 AM",
+    "previousPulledAt": "2026-06-10T13:06:36.611Z",
+    "previousPulledAtDisplay": "Jun 10, 2026, 9:06 AM",
+    "currentPulledAt": "2026-06-10T13:31:29.382Z",
+    "currentPulledAtDisplay": "Jun 10, 2026, 9:31 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
-    "updated": [],
+    "updated": [
+      {
+        "key": "CORE-14479",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14479",
+        "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
+        "changes": [
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 9, 2026, 7:15 PM",
+            "after": "Jun 10, 2026, 9:30 AM"
+          }
+        ],
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "status": "QA Testing (DEV)",
+        "parent": null
+      }
+    ],
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-10T13:06:36.611Z",
+      "previousPulledAtDisplay": "Jun 10, 2026, 9:06 AM",
+      "currentPulledAt": "2026-06-10T13:31:29.382Z",
+      "currentPulledAtDisplay": "Jun 10, 2026, 9:31 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14479",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14479",
+          "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
+          "changes": [
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 9, 2026, 7:15 PM",
+              "after": "Jun 10, 2026, 9:30 AM"
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Tyler Olechnowicz",
+          "status": "QA Testing (DEV)",
+          "parent": null
+        }
+      ],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-10T12:41:50.101Z",
       "previousPulledAtDisplay": "Jun 10, 2026, 8:41 AM",
@@ -10850,17 +10931,6 @@
       "previousPulledAtDisplay": "Jun 7, 2026, 7:10 PM",
       "currentPulledAt": "2026-06-07T23:35:25.849Z",
       "currentPulledAtDisplay": "Jun 7, 2026, 7:35 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-07T22:46:27.368Z",
-      "previousPulledAtDisplay": "Jun 7, 2026, 6:46 PM",
-      "currentPulledAt": "2026-06-07T23:10:29.870Z",
-      "currentPulledAtDisplay": "Jun 7, 2026, 7:10 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
