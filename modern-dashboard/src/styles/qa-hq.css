@@ -2041,20 +2041,23 @@ ul {
 }
 
 .ai-ticket-col-summary {
-  width: 41%;
+  width: 38%;
 }
 
 .ai-ticket-col-status {
-  width: 13%;
+  width: 12%;
 }
 
 .ai-ticket-col-priority {
-  width: 8%;
+  width: 9%;
 }
 
-.ai-ticket-col-assignee,
+.ai-ticket-col-assignee {
+  width: 14%;
+}
+
 .ai-ticket-col-developer {
-  width: 13%;
+  width: 15%;
 }
 
 .ai-ticket-table th,
@@ -2072,6 +2075,8 @@ ul {
   font-size: 0.76rem;
   font-weight: 950;
   text-transform: uppercase;
+  overflow-wrap: normal;
+  word-break: normal;
 }
 
 .ai-ticket-table tbody tr:last-child td {
@@ -2137,17 +2142,21 @@ ul {
 
 .ai-chat-card {
   display: grid;
-  gap: 12px;
-  border: 1px solid rgba(0, 122, 77, 0.34);
-  border-radius: 8px;
+  gap: 14px;
+  border: 1px solid rgba(0, 95, 204, 0.28);
+  border-radius: 14px;
   background:
-    radial-gradient(circle at 8% 0%, rgba(0, 95, 204, 0.13), transparent 28%),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(232, 255, 243, 0.86));
-  padding: 14px;
+    radial-gradient(circle at 10% -10%, rgba(0, 100, 255, 0.18), transparent 28%),
+    radial-gradient(circle at 95% 0%, rgba(0, 164, 73, 0.2), transparent 30%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(238, 251, 255, 0.94));
+  padding: 16px;
+  box-shadow: 0 20px 50px rgba(0, 34, 64, 0.1);
 }
 
 .ai-chat-card.is-loading {
-  box-shadow: inset 0 0 0 2px rgba(0, 122, 77, 0.16);
+  box-shadow:
+    inset 0 0 0 2px rgba(0, 122, 77, 0.18),
+    0 20px 50px rgba(0, 34, 64, 0.1);
 }
 
 .ai-chat-top {
@@ -2159,6 +2168,7 @@ ul {
 
 .ai-chat-top h3 {
   margin: 4px 0 7px;
+  font-size: clamp(1.25rem, 1.8vw, 1.7rem);
 }
 
 .ai-chat-top p {
@@ -2199,23 +2209,24 @@ ul {
 .ai-chat-log {
   display: grid;
   gap: 12px;
-  max-height: 620px;
+  max-height: 760px;
   overflow-y: auto;
   border: 1px solid rgba(0, 95, 204, 0.2);
-  border-radius: 8px;
+  border-radius: 14px;
   background:
-    linear-gradient(135deg, rgba(247, 251, 255, 0.9), rgba(255, 255, 255, 0.96));
-  padding: 12px;
+    radial-gradient(circle at 0% 0%, rgba(0, 95, 204, 0.1), transparent 22%),
+    linear-gradient(135deg, rgba(248, 252, 255, 0.94), rgba(255, 255, 255, 0.98));
+  padding: 14px;
 }
 
 .ai-chat-message {
   display: grid;
-  gap: 10px;
-  max-width: min(1160px, 94%);
+  gap: 12px;
+  max-width: min(1280px, 98%);
   border: 1px solid rgba(0, 95, 204, 0.18);
-  border-radius: 8px;
+  border-radius: 14px;
   background: #ffffff;
-  padding: 12px;
+  padding: 14px;
   box-shadow: 0 12px 26px rgba(0, 34, 64, 0.06);
 }
 
@@ -2228,6 +2239,7 @@ ul {
 
 .ai-chat-message.assistant {
   justify-self: start;
+  width: 100%;
 }
 
 .ai-chat-message.has-error {
@@ -2261,14 +2273,78 @@ ul {
   line-height: 1.55;
 }
 
+.ai-chat-response-shell {
+  display: grid;
+  gap: 12px;
+}
+
+.ai-chat-response-hero {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  overflow: hidden;
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 92% 12%, rgba(42, 224, 125, 0.28), transparent 30%),
+    linear-gradient(135deg, #062b49 0%, #005fcc 52%, #007a4d 100%);
+  color: #ffffff;
+  padding: 18px;
+  box-shadow: 0 18px 42px rgba(0, 95, 204, 0.22);
+}
+
+.ai-chat-response-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  font-size: 1.3rem;
+}
+
+.ai-chat-eyebrow {
+  display: inline-flex;
+  margin-bottom: 6px;
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 0.75rem;
+  font-weight: 950;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.ai-chat-response-hero h4 {
+  margin: 0 0 8px;
+  color: #ffffff;
+  font-size: clamp(1.1rem, 1.7vw, 1.55rem);
+  font-weight: 950;
+}
+
+.ai-chat-response-hero p {
+  margin: 0;
+  max-width: 980px;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1rem;
+  font-weight: 750;
+  line-height: 1.55;
+}
+
+.ai-chat-response-hero strong {
+  color: #ffffff;
+  font-weight: 950;
+}
+
 .ai-chat-section {
   display: grid;
   gap: 8px;
-  border: 1px solid rgba(0, 95, 204, 0.14);
-  border-radius: 8px;
+  border: 1px solid rgba(0, 95, 204, 0.16);
+  border-radius: 12px;
   background:
     linear-gradient(135deg, rgba(247, 251, 255, 0.98), rgba(255, 255, 255, 0.99));
-  padding: 10px;
+  padding: 12px;
 }
 
 .ai-chat-section h4 {
@@ -2277,6 +2353,45 @@ ul {
   font-size: 0.8rem;
   font-weight: 950;
   text-transform: uppercase;
+}
+
+.ai-chat-insight-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ai-chat-insight-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  min-height: 86px;
+  border: 1px solid rgba(0, 122, 77, 0.18);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(232, 255, 243, 0.92), rgba(255, 255, 255, 0.98));
+  padding: 12px;
+}
+
+.ai-chat-insight-card span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--hq-blue), var(--hq-green));
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 950;
+}
+
+.ai-chat-insight-card p {
+  margin: 0;
+  color: var(--hq-ink);
+  font-weight: 800;
+  line-height: 1.42;
 }
 
 .ai-chat-section ul {
@@ -2299,9 +2414,11 @@ ul {
 }
 
 .ai-chat-sprint-section dl div {
-  border-radius: 8px;
-  background: rgba(230, 246, 255, 0.68);
-  padding: 8px;
+  border: 1px solid rgba(0, 95, 204, 0.14);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(230, 246, 255, 0.88), rgba(255, 255, 255, 0.98));
+  padding: 10px;
 }
 
 .ai-chat-sprint-section dt {
@@ -2333,6 +2450,13 @@ ul {
   padding: 0 11px;
 }
 
+.ai-chat-followups button {
+  border-color: rgba(0, 122, 77, 0.32);
+  background:
+    linear-gradient(135deg, rgba(232, 255, 243, 0.92), rgba(255, 255, 255, 0.98));
+  color: var(--hq-green);
+}
+
 .ai-chat-prompts button:hover,
 .ai-chat-followups button:hover,
 .ai-chat-message-actions button:hover {
@@ -2345,6 +2469,15 @@ ul {
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 10px;
   align-items: stretch;
+  position: sticky;
+  bottom: 10px;
+  z-index: 2;
+  border: 1px solid rgba(0, 95, 204, 0.16);
+  border-radius: 14px;
+  background:
+    linear-gradient(135deg, rgba(247, 251, 255, 0.98), rgba(232, 255, 243, 0.96));
+  padding: 10px;
+  box-shadow: 0 12px 34px rgba(0, 34, 64, 0.12);
 }
 
 .ai-chat-form textarea {
@@ -2392,6 +2525,35 @@ ul {
 
 .ai-chat-ticket-section .ai-ticket-table-wrap {
   padding: 0;
+}
+
+.ai-chat-ticket-section .ai-ticket-table {
+  min-width: 0;
+}
+
+.ai-chat-sources {
+  border: 1px dashed rgba(0, 95, 204, 0.26);
+  border-radius: 12px;
+  background: rgba(247, 251, 255, 0.78);
+  padding: 10px 12px;
+}
+
+.ai-chat-sources summary {
+  color: var(--hq-blue);
+  cursor: pointer;
+  font-weight: 950;
+}
+
+.ai-chat-sources ul {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0 0;
+  padding-left: 20px;
+}
+
+.ai-chat-sources li {
+  color: var(--hq-muted);
+  line-height: 1.42;
 }
 
 .sr-only {
@@ -2884,6 +3046,7 @@ ul {
   .slack-bridge-grid,
   .slack-inbound-panel dl,
   .ai-hero-card,
+  .ai-chat-insight-grid,
   .ai-chat-sprint-section dl,
   .ai-source-grid,
   .ai-summary-grid,
@@ -2914,6 +3077,7 @@ ul {
   .slack-runner-actions,
   .ai-prompt-heading,
   .ai-result-heading,
+  .ai-chat-response-hero,
   .ai-chat-form,
   .generated-document-heading {
     align-items: flex-start;
@@ -2940,6 +3104,8 @@ ul {
   .slack-inbound-panel dl,
   .ai-hero-card,
   .ai-hero-card dl,
+  .ai-chat-response-hero,
+  .ai-chat-insight-grid,
   .ai-chat-form,
   .ai-chat-sprint-section dl,
   .ai-source-grid,

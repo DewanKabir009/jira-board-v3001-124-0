@@ -107,14 +107,14 @@ Relevant files:
 The first Workers AI implementation is intentionally focused and review-first:
 
 - Provider: Cloudflare Workers AI.
-- Model: `@cf/meta/llama-3.1-8b-instruct-fast`.
+- Model: `@cf/zai-org/glm-4.7-flash`, selected for a more conversational QA assistant tone while keeping exact ticket matching deterministic.
 - Endpoint: `POST /api/ai/release-summary`.
 - Chat endpoint: `POST /api/ai/chat`.
 - Status check: `GET /api/ai/status`.
 - Source data: the current board's `dashboard-data.json`.
 - User input: visible HQ prompt composer with Free Form, ticket lookup, release triage, QA focus, Jira-ready notes, and leadership rollup presets, plus a conversational AI release-agent chat surface.
 - Output shape: structured JSON with executive brief, risks, focus tickets, and review gates.
-- Chat output: answer text, highlights, sprint context, linked ticket table, follow-up prompts, and copy-ready output.
+- Chat output: answer hero, visual highlights, sprint context tiles, linked ticket table, follow-up prompt chips, collapsed source notes, and copy-ready output.
 - Sprint awareness: prompts containing `sprint`, `2026.8`, `backlog`, or `GN Core Platform` use `dashboard-data.json.sprintView.issues`; other ticket questions default to the active release artifact.
 - Ticket test plans: prompts like `make test plan for CORE-14427` override the selected preset and send the named ticket's description/comments to Workers AI with `answerType: "ticket_test_plan"`.
 - Safety posture: draft-only, direct board-data lookup for assignment and component questions before AI narration, deterministic fallback if AI fails, and no Jira mutations from the AI endpoint.
@@ -269,8 +269,9 @@ Returns the AI runtime status.
 {
   "ok": true,
   "provider": "Cloudflare Workers AI",
-  "model": "@cf/meta/llama-3.1-8b-instruct-fast",
-  "hasBinding": true
+  "model": "@cf/zai-org/glm-4.7-flash",
+  "modelProfile": "dialogue-first Workers AI model for conversational ticket and sprint analysis",
+  "mode": "ready"
 }
 ```
 
@@ -350,7 +351,7 @@ Response:
 {
   "ok": true,
   "provider": "Cloudflare Workers AI",
-  "model": "@cf/meta/llama-3.1-8b-instruct-fast",
+  "model": "@cf/zai-org/glm-4.7-flash",
   "release": "v3001.124.0",
   "stats": {
     "total": 30,

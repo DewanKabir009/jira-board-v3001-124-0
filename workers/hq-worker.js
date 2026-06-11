@@ -1,4 +1,5 @@
-const AI_MODEL = "@cf/meta/llama-3.1-8b-instruct-fast";
+const AI_MODEL = "@cf/zai-org/glm-4.7-flash";
+const AI_MODEL_PROFILE = "dialogue-first Workers AI model for conversational ticket and sprint analysis";
 const SLACK_ACTIVITY_LIMIT = 12;
 
 export default {
@@ -10,6 +11,7 @@ export default {
         ok: true,
         provider: "Cloudflare Workers AI",
         model: AI_MODEL,
+        modelProfile: AI_MODEL_PROFILE,
         release: env.RELEASE_VERSION || "v3001.124.0",
         mode: env.AI ? "ready" : "missing-ai-binding"
       });
@@ -787,13 +789,17 @@ async function handleAiChat(request, env, url) {
         {
           role: "system",
           content: [
-            "You are the CORE QA Headquarters ticket and sprint chat agent.",
+            "You are the CORE QA Headquarters ticket and sprint chat agent for a QA team.",
             "Return only valid JSON. Do not include Markdown.",
+            "Write in a warm, useful, conversational tone. Make answers feel like a helpful QA teammate, not a database dump.",
             "Use only the provided dashboard context, exactMatches, release issues, and sprint issues.",
+            "If conversationIntent is greeting, help, or thanks, respond naturally and do not summarize the board unless the user asked for board facts.",
             "If exactLookup is present, answer that exact question and do not invent additional matching tickets.",
             "If the user asks about sprint, use sprintContext first. If the user does not mention sprint, use releaseContext first.",
             "Always include useful ticket keys, Jira links, status, priority, assignee, and assigned developer when tickets are relevant.",
             "If the answer is a count, state the exact count and the scope used.",
+            "For leadership-style prompts, use a crisp executive summary and keep the ticket list easy to copy.",
+            "For followUps, suggest short natural follow-up questions the user can click.",
             "All output is draft-only. Never claim Jira, Slack, or automation actions were performed."
           ].join(" ")
         },
@@ -859,13 +865,16 @@ async function handleAiChat(request, env, url) {
       model: AI_MODEL
     }));
   } catch (error) {
+    const warning = context.exactLookup || context.conversationIntent
+      ? ""
+      : `AI chat response was not usable, so HQ returned a deterministic board-data answer: ${error.message}`;
     return jsonResponse(buildChatPayload({
       dashboard,
       context,
       answer: fallback,
       provider: "Cloudflare Workers AI",
       model: AI_MODEL,
-      warning: `AI chat response was not usable, so HQ returned a deterministic board-data answer: ${error.message}`
+      warning
     }));
   }
 }
@@ -1210,9 +1219,11 @@ function buildChatPayload({ dashboard, context, answer, provider, model, warning
     ok: true,
     provider,
     model,
+    modelProfile: model === AI_MODEL ? AI_MODEL_PROFILE : "",
     generatedAt: new Date().toISOString(),
     release: dashboard.version || "v3001.124.0",
     scope: context.scope,
+    conversationIntent: context.conversationIntent || "",
     exactLookup: context.exactLookup ? {
       type: context.exactLookup.type,
       label: context.exactLookup.label,
@@ -1955,14 +1966,40 @@ function normalizeChatHistory(value) {
     .filter((entry) => entry.content);
 }
 
+function detectChatConversationIntent(message) {
+  const prompt = String(message || "").trim().toLowerCase();
+  const compact = prompt.replace(/[\s!.?,;:]+/g, " ").trim();
+
+  if (!compact) {
+    return "";
+  }
+
+  if (/^(hi|hello|hey|hey there|hiya|yo|good morning|good afternoon|good evening)$/.test(compact)) {
+    return "greeting";
+  }
+
+  if (/^(thanks|thank you|thx|ok|okay|cool|awesome|got it|perfect)$/.test(compact)) {
+    return "thanks";
+  }
+
+  if (/\b(what can you do|how do i use|how can i use|help me|help|who are you|what are you)\b/.test(prompt)) {
+    return "help";
+  }
+
+  return "";
+}
+
 function buildAiChatContext(dashboard, stats, message, history) {
   const releaseIssues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
   const sprintIssues = Array.isArray(dashboard.sprintView?.issues) ? dashboard.sprintView.issues : [];
+  const conversationIntent = detectChatConversationIntent(message);
   const scopeKind = chooseChatScope(message);
   const scopeIssues = scopeKind === "sprint" && sprintIssues.length ? sprintIssues : releaseIssues;
   const scope = buildChatScope(dashboard, scopeKind, scopeIssues);
-  const exactLookup = buildChatExactLookup(message, scopeIssues, scope, dashboard);
-  const relevantIssues = exactLookup
+  const exactLookup = conversationIntent ? null : buildChatExactLookup(message, scopeIssues, scope, dashboard);
+  const relevantIssues = conversationIntent
+    ? []
+    : exactLookup
     ? exactLookup.matches
     : buildChatRelevantIssues(message, scopeIssues).slice(0, 14);
   const releaseContext = buildIssueCollectionContext({
@@ -1978,8 +2015,11 @@ function buildAiChatContext(dashboard, stats, message, history) {
   });
 
   return {
-    task: "Answer a conversational CORE QA HQ question about release tickets or sprint tickets.",
+    task: conversationIntent
+      ? "Answer a short conversational CORE QA HQ chat message without forcing a board report."
+      : "Answer a conversational CORE QA HQ question about release tickets or sprint tickets.",
     userMessage: message,
+    conversationIntent,
     history,
     scope,
     exactLookup: exactLookup ? {
@@ -1994,6 +2034,7 @@ function buildAiChatContext(dashboard, stats, message, history) {
     relevantIssues: relevantIssues.slice(0, 18).map((issue) => formatIssueForChat(issue, "Relevant to the current question.")),
     sourceRules: [
       "Answer from dashboard-data.json only.",
+      "If conversationIntent is greeting/help/thanks, do not invent ticket analysis; explain what the HQ AI can do and invite the next ticket or sprint question.",
       "Use releaseContext for release/fix-version questions.",
       "Use sprintContext for sprint/backlog/2026.8/GN Core Platform questions.",
       "If exactLookup exists, use exactLookup.matchedIssues as the authoritative ticket list and exactLookup.count as the authoritative count.",
@@ -2266,15 +2307,22 @@ function buildDeterministicChatAnswer(context, dashboard) {
   const exact = context.exactLookup;
   const sprint = buildChatSprintSummary(context.sprintContext);
 
+  if (context.conversationIntent) {
+    return buildConversationalChatAnswer(context, dashboard);
+  }
+
   if (exact) {
     const tickets = exact.matchedIssues || [];
     const count = Number(exact.count || 0);
     const previewLimit = 100;
     const visibleTickets = tickets.slice(0, previewLimit);
+    const firstTicket = visibleTickets[0];
 
     return {
-      answer: count
-        ? `I found ${count} matching ticket${count === 1 ? "" : "s"} for ${exact.label} in ${scope.label}.`
+      answer: count === 1 && firstTicket
+        ? `I found 1 matching ticket for ${exact.label} in ${scope.label}: ${firstTicket.key} - ${firstTicket.summary}. It is ${firstTicket.priority || "unprioritized"} in ${firstTicket.status || "Unknown"}, assigned to ${firstTicket.assignee || "Unassigned"}, with ${firstTicket.assignedDeveloper || "Unassigned"} as assigned developer.`
+        : count
+        ? `I found ${count} matching ticket${count === 1 ? "" : "s"} for ${exact.label} in ${scope.label}. The linked table below is filtered directly from the board artifact.`
         : `I did not find any matching tickets for ${exact.label} in ${scope.label}.`,
       highlights: [
         `Scope used: ${scope.label}.`,
@@ -2307,6 +2355,57 @@ function buildDeterministicChatAnswer(context, dashboard) {
     sourceNotes: [
       "Source: dashboard-data.json from the deployed HQ Worker assets.",
       "Ask a narrower question for an exact ticket table.",
+      "No Jira, Slack, or automation mutation was performed."
+    ]
+  };
+}
+
+function buildConversationalChatAnswer(context, dashboard) {
+  const release = context.releaseContext || {};
+  const sprint = context.sprintContext || {};
+  const pulledAt = context.scope?.pulledAt || dashboard.pulledAtDisplay || dashboard.pulledAt || "the latest deployed artifact";
+  const samples = [
+    "How many P0 tickets are in the current release?",
+    "Give me a leadership-ready rundown of the main tickets.",
+    "Which Sprint 2026.8 tickets are assigned to Nicole?",
+    "Show Reservation component tickets with status and priority."
+  ];
+
+  if (context.conversationIntent === "thanks") {
+    return {
+      answer: "You got it. I am here when you need the next ticket, sprint, component, or leadership summary.",
+      highlights: [
+        `Current release context: ${release.label || "release"} has ${release.mainTickets || 0} main tickets.`,
+        `Sprint context: ${sprint.label || "Sprint 2026.8"} has ${sprint.total || 0} work items.`,
+        `Latest artifact pull: ${pulledAt}.`
+      ],
+      tickets: [],
+      sprint: buildChatSprintSummary(context.sprintContext),
+      followUps: samples,
+      sourceNotes: [
+        "Source: dashboard-data.json from the deployed HQ Worker assets.",
+        "No Jira, Slack, or automation mutation was performed."
+      ]
+    };
+  }
+
+  const answer = context.conversationIntent === "help"
+    ? "I can answer questions about release tickets, Sprint 2026.8, priorities, assignees, assigned developers, components, statuses, and leadership-ready summaries from the deployed board artifact."
+    : "Hi. I am the CORE QA HQ assistant. Ask me about the active release, Sprint 2026.8, ticket ownership, priorities, components, or anything you need turned into a copy-ready QA summary.";
+
+  return {
+    answer,
+    highlights: [
+      `Release data loaded: ${release.label || dashboard.version || "current release"} with ${release.mainTickets || 0} main tickets and ${release.subtasks || 0} subtasks.`,
+      `Sprint data loaded: ${sprint.label || "Sprint view"} with ${sprint.total || 0} work items.`,
+      `Latest artifact pull: ${pulledAt}.`
+    ],
+    tickets: [],
+    sprint: buildChatSprintSummary(context.sprintContext),
+    followUps: samples,
+    sourceNotes: [
+      "Source: dashboard-data.json from the deployed HQ Worker assets.",
+      "Ask a ticket, priority, assignee, component, status, or sprint question for a linked ticket table.",
       "No Jira, Slack, or automation mutation was performed."
     ]
   };
@@ -2651,10 +2750,14 @@ function normalizeBrief(candidate, fallbackBrief) {
 }
 
 function parseAiResponse(aiResult) {
-  const value = aiResult?.response ?? aiResult?.result ?? aiResult;
+  const value = aiResult?.response
+    ?? aiResult?.result
+    ?? aiResult?.choices?.[0]?.message?.content
+    ?? aiResult?.choices?.[0]?.text
+    ?? aiResult;
 
   if (typeof value === "string") {
-    return JSON.parse(value);
+    return JSON.parse(extractJsonPayload(value));
   }
 
   if (value && typeof value === "object") {
@@ -2662,6 +2765,27 @@ function parseAiResponse(aiResult) {
   }
 
   throw new Error("Cloudflare Workers AI returned an empty response.");
+}
+
+function extractJsonPayload(value) {
+  const text = String(value || "").trim();
+
+  if (!text) {
+    return text;
+  }
+
+  const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if (fenced?.[1]) {
+    return fenced[1].trim();
+  }
+
+  const firstObject = text.indexOf("{");
+  const lastObject = text.lastIndexOf("}");
+  if (firstObject >= 0 && lastObject > firstObject) {
+    return text.slice(firstObject, lastObject + 1);
+  }
+
+  return text;
 }
 
 function countBy(items, selector) {

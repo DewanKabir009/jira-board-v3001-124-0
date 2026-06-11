@@ -76,7 +76,7 @@ SPEC-HQ-09 adds the HQ Calendar Menu at `/modern/hq/#calendar`. The page reads `
 
 ## HQ AI Chat
 
-The HQ AI Summary section now includes a conversational release-agent chat surface backed by `POST /api/ai/chat`. The Worker loads the same deployed `dashboard-data.json` artifact as the board, detects release versus Sprint `2026.8` scope, filters exact matches for ticket key, assignee, assigned developer, component, status, priority, and markdown evidence questions, then asks Cloudflare Workers AI to narrate the result. Responses render as readable answer sections with highlights, sprint context, fixed-layout linked ticket tables, follow-up prompts, and copy-ready output.
+The HQ AI Summary section now includes a conversational release-agent chat surface backed by `POST /api/ai/chat` and the Cloudflare Workers AI `@cf/zai-org/glm-4.7-flash` model. The Worker loads the same deployed `dashboard-data.json` artifact as the board, detects release versus Sprint `2026.8` scope, filters exact matches for ticket key, assignee, assigned developer, component, status, priority, and markdown evidence questions, then asks Workers AI to narrate the result. Responses render as a polished answer hero with visual highlights, sprint context tiles, fixed-layout linked ticket tables, follow-up prompt chips, collapsed source notes, and copy-ready output.
 
 ## HQ Slack Notifier
 

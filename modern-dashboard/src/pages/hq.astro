@@ -307,7 +307,7 @@ const aiRuntime = {
   endpoint: "/api/ai/release-summary",
   chatEndpoint: "/api/ai/chat",
   statusEndpoint: "/api/ai/status",
-  model: "@cf/meta/llama-3.1-8b-instruct-fast",
+  model: "@cf/zai-org/glm-4.7-flash",
   provider: "Cloudflare Workers AI",
   mode: "Draft-only response",
   source: "dashboard-data.json from Worker assets"
@@ -1454,11 +1454,11 @@ const hqSpecs = [
         }
 
         appendChatMessage("assistant", {
-          answer: "I can answer questions about the current release board and Sprint 2026.8. Ask for counts, ticket lists, ownership, priority, status, components, or a copy-ready leadership summary.",
+          answer: "Hi, I am the CORE QA HQ assistant. I can turn the current release and Sprint 2026.8 board data into readable answers, ticket tables, and copy-ready leadership notes.",
           highlights: [
-            "Use the word sprint or 2026.8 when you want sprint scope.",
-            "Ask for a ticket key when you want one specific issue.",
-            "Exact lookups are filtered from dashboard-data.json before AI narration."
+            "Use sprint or 2026.8 when you want backlog scope.",
+            "Ask for a ticket key, assignee, priority, status, or component when you want an exact linked table.",
+            "Exact matches are filtered from dashboard-data.json before AI turns them into a readable answer."
           ],
           tickets: [],
           sprint: null,
@@ -1571,11 +1571,45 @@ const hqSpecs = [
         chatLog.scrollTop = chatLog.scrollHeight;
       }
 
+      function appendInlineAiText(target, value) {
+        const text = String(value || "");
+        const segments = text.split(/(\*\*[^*]+\*\*)/g);
+
+        segments.forEach((segment) => {
+          if (!segment) return;
+          const boldMatch = segment.match(/^\*\*([^*]+)\*\*$/);
+
+          if (boldMatch) {
+            const strong = document.createElement("strong");
+            strong.textContent = boldMatch[1];
+            target.appendChild(strong);
+          } else {
+            target.appendChild(document.createTextNode(segment));
+          }
+        });
+      }
+
       function renderChatAnswer(bubble, answer, payload) {
         const answerText = answer.answer || "No answer returned.";
+        const shell = document.createElement("section");
+        shell.className = "ai-chat-response-shell";
+
+        const hero = document.createElement("div");
+        hero.className = "ai-chat-response-hero";
+        const icon = document.createElement("span");
+        icon.className = "ai-chat-response-icon";
+        icon.textContent = "✨";
+        const heroBody = document.createElement("div");
+        const eyebrow = document.createElement("span");
+        eyebrow.className = "ai-chat-eyebrow";
+        eyebrow.textContent = `${payload?.provider || "Cloudflare Workers AI"} · ${payload?.model || "HQ model"}`;
+        const answerHeading = document.createElement("h4");
+        answerHeading.textContent = "HQ AI answer";
         const answerParagraph = document.createElement("p");
-        answerParagraph.textContent = answerText;
-        bubble.appendChild(answerParagraph);
+        appendInlineAiText(answerParagraph, answerText);
+        heroBody.append(eyebrow, answerHeading, answerParagraph);
+        hero.append(icon, heroBody);
+        shell.appendChild(hero);
 
         const facts = document.createElement("div");
         facts.className = "ai-chat-facts";
@@ -1588,26 +1622,31 @@ const hqSpecs = [
           facts.appendChild(span);
         });
         if (facts.children.length) {
-          bubble.appendChild(facts);
+          shell.appendChild(facts);
         }
 
-        renderChatListSection(bubble, "Highlights", answer.highlights);
-        renderChatSprintSection(bubble, answer.sprint);
+        renderChatInsightGrid(shell, answer.highlights);
+
+        const shouldShowSprint = payload?.scope?.kind === "sprint"
+          || (!payload?.exactLookup && !payload?.conversationIntent && answer.sprint?.total);
+        if (shouldShowSprint) {
+          renderChatSprintSection(shell, answer.sprint);
+        }
 
         if (Array.isArray(answer.tickets) && answer.tickets.length) {
           const ticketSection = document.createElement("section");
           ticketSection.className = "ai-chat-section ai-chat-ticket-section";
           const heading = document.createElement("h4");
-          heading.textContent = "Tickets";
+          heading.textContent = `📌 Ticket table (${answer.tickets.length})`;
           const tableWrap = document.createElement("div");
           tableWrap.className = "ai-ticket-table-wrap";
           renderTicketList(tableWrap, answer.tickets);
           ticketSection.append(heading, tableWrap);
-          bubble.appendChild(ticketSection);
+          shell.appendChild(ticketSection);
         }
 
-        renderChatListSection(bubble, "Follow-ups", answer.followUps, true);
-        renderChatListSection(bubble, "Source notes", answer.sourceNotes);
+        renderChatListSection(shell, "💡 Try next", answer.followUps, true);
+        renderChatSourceNotes(shell, answer.sourceNotes, payload);
 
         const actions = document.createElement("div");
         actions.className = "ai-chat-message-actions";
@@ -1623,10 +1662,37 @@ const hqSpecs = [
           }
         });
         actions.appendChild(copy);
-        bubble.appendChild(actions);
+        shell.appendChild(actions);
+        bubble.appendChild(shell);
       }
 
-      function renderChatListSection(bubble, title, items, asPromptButtons = false) {
+      function renderChatInsightGrid(container, items) {
+        const cleanItems = Array.isArray(items) ? items.filter(Boolean) : [];
+        if (!cleanItems.length) return;
+
+        const section = document.createElement("section");
+        section.className = "ai-chat-section ai-chat-insight-section";
+        const heading = document.createElement("h4");
+        heading.textContent = "🎯 Highlights";
+        const grid = document.createElement("div");
+        grid.className = "ai-chat-insight-grid";
+
+        cleanItems.slice(0, 6).forEach((item, index) => {
+          const card = document.createElement("article");
+          card.className = "ai-chat-insight-card";
+          const badge = document.createElement("span");
+          badge.textContent = String(index + 1);
+          const text = document.createElement("p");
+          appendInlineAiText(text, item);
+          card.append(badge, text);
+          grid.appendChild(card);
+        });
+
+        section.append(heading, grid);
+        container.appendChild(section);
+      }
+
+      function renderChatListSection(container, title, items, asPromptButtons = false) {
         const cleanItems = Array.isArray(items) ? items.filter(Boolean) : [];
         if (!cleanItems.length) return;
 
@@ -1655,16 +1721,16 @@ const hqSpecs = [
           const list = document.createElement("ul");
           cleanItems.slice(0, 8).forEach((item) => {
             const li = document.createElement("li");
-            li.textContent = item;
+            appendInlineAiText(li, item);
             list.appendChild(li);
           });
           section.appendChild(list);
         }
 
-        bubble.appendChild(section);
+        container.appendChild(section);
       }
 
-      function renderChatSprintSection(bubble, sprint) {
+      function renderChatSprintSection(container, sprint) {
         if (!sprint || (!sprint.total && !sprint.name && !sprint.label)) {
           return;
         }
@@ -1672,7 +1738,7 @@ const hqSpecs = [
         const section = document.createElement("section");
         section.className = "ai-chat-section ai-chat-sprint-section";
         const heading = document.createElement("h4");
-        heading.textContent = "Sprint context";
+        heading.textContent = "🧭 Sprint context";
         const dl = document.createElement("dl");
         [
           ["Sprint", sprint.label || sprint.name || "Sprint view"],
@@ -1690,7 +1756,28 @@ const hqSpecs = [
           dl.appendChild(div);
         });
         section.append(heading, dl);
-        bubble.appendChild(section);
+        container.appendChild(section);
+      }
+
+      function renderChatSourceNotes(container, items, payload) {
+        const cleanItems = Array.isArray(items) ? items.filter(Boolean) : [];
+        const warning = payload?.warning || "";
+        if (!cleanItems.length && !warning) return;
+
+        const details = document.createElement("details");
+        details.className = "ai-chat-sources";
+        const summary = document.createElement("summary");
+        summary.textContent = "🔎 Sources and guardrails";
+        const list = document.createElement("ul");
+
+        [...cleanItems, warning].filter(Boolean).slice(0, 8).forEach((item) => {
+          const li = document.createElement("li");
+          appendInlineAiText(li, item);
+          list.appendChild(li);
+        });
+
+        details.append(summary, list);
+        container.appendChild(details);
       }
 
       function buildChatCopyText(answer, payload) {
