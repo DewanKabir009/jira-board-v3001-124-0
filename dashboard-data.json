@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-11T15:24:14.208Z",
-  "pulledAtDisplay": "Jun 11, 2026, 11:24 AM",
+  "pulledAt": "2026-06-11T15:46:35.279Z",
+  "pulledAtDisplay": "Jun 11, 2026, 11:46 AM",
   "total": 16,
   "issues": [
     {
@@ -1187,8 +1187,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-11T15:24:14.208Z",
-    "pulledAtDisplay": "Jun 11, 2026, 11:24 AM",
+    "pulledAt": "2026-06-11T15:46:35.279Z",
+    "pulledAtDisplay": "Jun 11, 2026, 11:46 AM",
     "total": 94,
     "mainTotal": 94,
     "subtaskTotal": 0,
@@ -7095,13 +7095,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-11T15:23:40.466Z",
-    "pulledAtDisplay": "Jun 11, 2026, 11:23 AM",
+    "pulledAt": "2026-06-11T15:46:09.804Z",
+    "pulledAtDisplay": "Jun 11, 2026, 11:46 AM",
     "window": {
-      "start": "2026-04-27T15:23:40.466Z",
-      "end": "2026-12-08T15:23:40.466Z",
-      "startDisplay": "Apr 27, 2026, 11:23 AM",
-      "endDisplay": "Dec 8, 2026, 10:23 AM"
+      "start": "2026-04-27T15:46:09.804Z",
+      "end": "2026-12-08T15:46:09.804Z",
+      "startDisplay": "Apr 27, 2026, 11:46 AM",
+      "endDisplay": "Dec 8, 2026, 10:46 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7114,7 +7114,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-11T15:23:43.724Z",
+        "pulledAt": "2026-06-11T15:46:12.300Z",
         "eventCount": 94,
         "events": [
           {
@@ -7388,21 +7388,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Spring Bank Holiday (UK)",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDisplay": "May 24, 2026, 8:00 PM",
-            "endDisplay": "May 25, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -7413,6 +7398,21 @@
             "endDisplay": "May 25, 2026, 8:00 PM",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Spring Bank Holiday (UK)",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDisplay": "May 24, 2026, 8:00 PM",
+            "endDisplay": "May 25, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -7868,6 +7868,21 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.57",
+            "start": "2026-07-14T00:00:00.000Z",
+            "end": "2026-07-15T00:00:00.000Z",
+            "startDisplay": "Jul 13, 2026, 8:00 PM",
+            "endDisplay": "Jul 14, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221527Z-1432222737@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -7893,21 +7908,6 @@
             "endDisplay": "Jul 14, 2026, 8:00 PM",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.57",
-            "start": "2026-07-14T00:00:00.000Z",
-            "end": "2026-07-15T00:00:00.000Z",
-            "startDisplay": "Jul 13, 2026, 8:00 PM",
-            "endDisplay": "Jul 14, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8168,21 +8168,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Summer Bank Holiday (UK)",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-01T00:00:00.000Z",
-            "startDisplay": "Aug 30, 2026, 8:00 PM",
-            "endDisplay": "Aug 31, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8193,6 +8178,21 @@
             "endDisplay": "Sep 7, 2026, 8:00 PM",
             "allDay": true,
             "type": "Golf Freeze",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Summer Bank Holiday (UK)",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-01T00:00:00.000Z",
+            "startDisplay": "Aug 30, 2026, 8:00 PM",
+            "endDisplay": "Aug 31, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8243,6 +8243,21 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.59",
+            "start": "2026-09-15T00:00:00.000Z",
+            "end": "2026-09-16T00:00:00.000Z",
+            "startDisplay": "Sep 14, 2026, 8:00 PM",
+            "endDisplay": "Sep 15, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221627Z-1916149808@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8268,21 +8283,6 @@
             "endDisplay": "Sep 15, 2026, 8:00 PM",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.59",
-            "start": "2026-09-15T00:00:00.000Z",
-            "end": "2026-09-16T00:00:00.000Z",
-            "startDisplay": "Sep 14, 2026, 8:00 PM",
-            "endDisplay": "Sep 15, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8483,6 +8483,21 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDisplay": "Dec 7, 2026, 7:00 PM",
+            "endDisplay": "Dec 8, 2026, 7:00 PM",
+            "allDay": true,
+            "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221750Z-1404075373@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8511,21 +8526,6 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDisplay": "Dec 7, 2026, 7:00 PM",
-            "endDisplay": "Dec 8, 2026, 7:00 PM",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -8533,104 +8533,28 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-11T15:11:43.460Z",
-    "previousPulledAtDisplay": "Jun 11, 2026, 11:11 AM",
-    "currentPulledAt": "2026-06-11T15:24:14.208Z",
-    "currentPulledAtDisplay": "Jun 11, 2026, 11:24 AM",
+    "previousPulledAt": "2026-06-11T15:24:14.208Z",
+    "previousPulledAtDisplay": "Jun 11, 2026, 11:24 AM",
+    "currentPulledAt": "2026-06-11T15:46:35.279Z",
+    "currentPulledAtDisplay": "Jun 11, 2026, 11:46 AM",
     "isBaseline": false,
-    "added": [
-      {
-        "key": "CORE-14215",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14215",
-        "summary": "Cannot Add Account Balance Due to 'Missing' Wallet Option",
-        "description": "Member Cares has tried adding account balances to some customer accounts, but they get the following error: “The wallet has reported a successful add but a corresponding wallet option could not be found.”, but the customer has a wallet option.\n\nCustomers:\n\narmandoalmazan12@gmail.com\n\ndarrenpopito@gmail.com\n\nNote: Have not been able to find stacktrace in support site or db yet",
-        "descriptionHtml": "<p>Member Cares has tried adding account balances to some customer accounts, but they get the following error: <em>“The wallet has reported a successful add but a corresponding wallet option could not be found.”, </em>but the customer has a wallet option.</p><p>Customers:</p><p><a href=\"mailto:armandoalmazan12@gmail.com\" target=\"_blank\" rel=\"noopener\">armandoalmazan12@gmail.com</a></p><p><a href=\"mailto:darrenpopito@gmail.com\" target=\"_blank\" rel=\"noopener\">darrenpopito@gmail.com</a></p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14215/696209-Screenshot-2026-01-26-102004.png\" alt=\"Screenshot 2026-01-26 102004.png\" loading=\"lazy\"><figcaption>Screenshot 2026-01-26 102004.png</figcaption></figure></div><p><strong>Note: </strong>Have not been able to find stacktrace in support site or db yet</p>",
-        "descriptionImageCount": 1,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 3,
-        "comments": [
-          {
-            "id": "1151585",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14215?focusedCommentId=1151585",
-            "author": "Sebastian Calzadilla Gonzalez",
-            "authorAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
-            "created": "2026-04-14T15:54:27.123-0400",
-            "createdDisplay": "Apr 14, 2026, 3:54 PM",
-            "updated": "2026-04-14T15:54:27.123-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "As discussed with Daniel, there should be another ticket that will tackle duplication of Wallets in the DB and perform a data clean up. Currently able to see the issue in dev by running the following query\n\nSELECT top 100 CustomerNumber, String_agg(WalletType, ', ') as WalletTypes\nFROM [dbo].[Wallet] w\n--where w.WalletType = 1\ngroup by w.CustomerNumber\nhaving count(1) > 1",
-            "bodyHtml": "<p>As discussed with Daniel, there should be another ticket that will tackle duplication of Wallets in the DB and perform a data clean up. Currently able to see the issue in dev by running the following query </p><pre><code>SELECT top 100 CustomerNumber, String_agg(WalletType, ', ') as WalletTypes\nFROM [dbo].[Wallet] w\n--where w.WalletType = 1\ngroup by w.CustomerNumber\nhaving count(1) &gt; 1</code></pre>"
-          },
-          {
-            "id": "1151868",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14215?focusedCommentId=1151868",
-            "author": "Sebastian Calzadilla Gonzalez",
-            "authorAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
-            "created": "2026-04-15T09:16:27.789-0400",
-            "createdDisplay": "Apr 15, 2026, 9:16 AM",
-            "updated": "2026-04-15T09:16:27.789-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "QA Notes: try adding a balance on the View customer page in GNC, under the balance tab, to either of the users mentioned on the ticket description and it should successfully add the balance. Also, try with another user and it should be able to add balance as before.\n\nPS: There is known issue mentioned on below comment that is outside of the scope of this ticket. If the customer you’re testing with has multiple wallets of the same type, the error shown on description will still be present. A data fix will be done so this separate issue stops from happening.",
-            "bodyHtml": "<p>QA Notes: try adding a balance on the View customer page in GNC, under the balance tab, to either of the users mentioned on the ticket description and it should successfully add the balance. Also, try with another user and it should be able to add balance as before. </p><p>PS: There is known issue mentioned on below comment that is outside of the scope of this ticket. If the customer you’re testing with has multiple wallets of the same type, the error shown on description will still be present. A data fix will be done so this separate issue stops from happening.</p>"
-          },
-          {
-            "id": "1153346",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14215?focusedCommentId=1153346",
-            "author": "Dewan Kabir",
-            "authorAccountId": "630fb06bb433b060db559bdb",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-            "created": "2026-04-19T14:42:24.114-0400",
-            "createdDisplay": "Apr 19, 2026, 2:42 PM",
-            "updated": "2026-04-19T14:42:24.114-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "The code for this ticket ahs been reverted , as it was causing issues with Guest Checkout flows .\n\n@Corrie Thomas @Sebastian Calzadilla GonzalezPlease reprioritize this ticket for a Off-Cycle  / Hot Fix ( Fast Follow )  or upcoming regular release . Thank You !",
-            "bodyHtml": "<p>The code for this ticket ahs been reverted , as it was causing issues with Guest Checkout flows . <br><br>@Corrie Thomas @Sebastian Calzadilla GonzalezPlease reprioritize this ticket for a Off-Cycle  / Hot Fix ( Fast Follow )  or upcoming regular release . Thank You ! </p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14215?focusedCommentId=1153346",
-        "lastCommentDisplay": "Apr 19, 2026, 2:42 PM",
-        "lastCommentAuthor": "Dewan Kabir",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "Blocked",
-        "priority": "P3",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Sebastian Calzadilla Gonzalez",
-        "assignedDeveloperAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
-        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
-        "updated": "2026-06-11T11:13:54.422-0400",
-        "updatedDisplay": "Jun 11, 2026, 11:13 AM",
-        "created": "2026-02-25T17:27:56.678-0500",
-        "createdDisplay": "Feb 25, 2026, 5:27 PM",
-        "components": [
-          "GolfNowCentral"
-        ],
-        "fixVersions": [
-          "v3001.124.0"
-        ],
-        "sprints": [],
-        "sprintNames": [],
-        "resolution": "",
-        "parent": null
-      }
-    ],
+    "added": [],
     "removed": [],
     "updated": [],
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-11T15:24:14.208Z",
+      "previousPulledAtDisplay": "Jun 11, 2026, 11:24 AM",
+      "currentPulledAt": "2026-06-11T15:46:35.279Z",
+      "currentPulledAtDisplay": "Jun 11, 2026, 11:46 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-11T15:11:43.460Z",
       "previousPulledAtDisplay": "Jun 11, 2026, 11:11 AM",
@@ -11809,17 +11733,6 @@
       "previousPulledAtDisplay": "Jun 8, 2026, 7:18 PM",
       "currentPulledAt": "2026-06-08T23:43:41.091Z",
       "currentPulledAtDisplay": "Jun 8, 2026, 7:43 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-08T22:49:42.722Z",
-      "previousPulledAtDisplay": "Jun 8, 2026, 6:49 PM",
-      "currentPulledAt": "2026-06-08T23:18:43.821Z",
-      "currentPulledAtDisplay": "Jun 8, 2026, 7:18 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
