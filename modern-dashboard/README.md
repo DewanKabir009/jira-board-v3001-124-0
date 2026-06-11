@@ -74,6 +74,10 @@ The workspace generates a Jira comment preview before submission. Submissions us
 
 SPEC-HQ-09 adds the HQ Calendar Menu at `/modern/hq/#calendar`. The page reads `dashboard-data.json.calendarMenu`, then renders the Confluence GN Releases calendar in a calendar grid or upcoming-list view. The grid defaults to the current month with Previous, Today, and Next controls, while the upcoming list groups events into collapsible month sections. The refresh workflow updates the calendar payload every 5 minutes alongside the Jira board data, and the client refreshes the calendar section while the HQ page remains open.
 
+## HQ AI Chat
+
+The HQ AI Summary section now includes a conversational release-agent chat surface backed by `POST /api/ai/chat`. The Worker loads the same deployed `dashboard-data.json` artifact as the board, detects release versus Sprint `2026.8` scope, filters exact matches for ticket key, assignee, assigned developer, component, status, priority, and markdown evidence questions, then asks Cloudflare Workers AI to narrate the result. Responses render as readable answer sections with highlights, sprint context, fixed-layout linked ticket tables, follow-up prompts, and copy-ready output.
+
 ## HQ Slack Notifier
 
 The HQ Operations Status module includes a Worker-backed Slack notifier panel for the installed CORE JIRA NOTIFIER AGENT bot. The browser checks `GET /api/slack/status`, enables posting only when `canPost` is true, and sends reviewed messages through `POST /api/slack/send`.

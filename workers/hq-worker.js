@@ -23,6 +23,14 @@ export default {
       return handleReleaseSummary(request, env, url);
     }
 
+    if (url.pathname === "/api/ai/chat") {
+      if (request.method !== "POST") {
+        return jsonResponse({ ok: false, message: "Use POST for AI chat." }, 405);
+      }
+
+      return handleAiChat(request, env, url);
+    }
+
     if (url.pathname === "/api/slack/status") {
       return handleSlackStatus(env, url);
     }
@@ -748,6 +756,120 @@ async function handleReleaseSummary(request, env, url) {
   }
 }
 
+async function handleAiChat(request, env, url) {
+  const body = await safeJson(request);
+  const dashboard = await loadDashboardData(env, url);
+  const stats = buildReleaseStats(dashboard);
+  const message = sanitizePrompt(body?.message, 1200);
+
+  if (!message) {
+    return jsonResponse({ ok: false, message: "Ask the HQ AI a ticket or sprint question first." }, 400);
+  }
+
+  const history = normalizeChatHistory(body?.history);
+  const context = buildAiChatContext(dashboard, stats, message, history);
+  const fallback = buildDeterministicChatAnswer(context, dashboard);
+
+  if (!env.AI) {
+    return jsonResponse(buildChatPayload({
+      dashboard,
+      context,
+      answer: fallback,
+      provider: "CORE QA HQ board lookup",
+      model: "dashboard-data.json",
+      warning: "Cloudflare Workers AI binding is not configured, so HQ returned a deterministic board-data answer."
+    }));
+  }
+
+  try {
+    const aiResult = await env.AI.run(AI_MODEL, {
+      messages: [
+        {
+          role: "system",
+          content: [
+            "You are the CORE QA Headquarters ticket and sprint chat agent.",
+            "Return only valid JSON. Do not include Markdown.",
+            "Use only the provided dashboard context, exactMatches, release issues, and sprint issues.",
+            "If exactLookup is present, answer that exact question and do not invent additional matching tickets.",
+            "If the user asks about sprint, use sprintContext first. If the user does not mention sprint, use releaseContext first.",
+            "Always include useful ticket keys, Jira links, status, priority, assignee, and assigned developer when tickets are relevant.",
+            "If the answer is a count, state the exact count and the scope used.",
+            "All output is draft-only. Never claim Jira, Slack, or automation actions were performed."
+          ].join(" ")
+        },
+        {
+          role: "user",
+          content: JSON.stringify(context)
+        }
+      ],
+      max_tokens: 1800,
+      response_format: {
+        type: "json_schema",
+        json_schema: {
+          type: "object",
+          properties: {
+            answer: { type: "string" },
+            highlights: { type: "array", items: { type: "string" } },
+            tickets: {
+              type: "array",
+              items: {
+                type: "object",
+                properties: {
+                  key: { type: "string" },
+                  url: { type: "string" },
+                  summary: { type: "string" },
+                  status: { type: "string" },
+                  priority: { type: "string" },
+                  type: { type: "string" },
+                  assignee: { type: "string" },
+                  assignedDeveloper: { type: "string" },
+                  components: { type: "array", items: { type: "string" } },
+                  fixVersions: { type: "array", items: { type: "string" } },
+                  sprintNames: { type: "array", items: { type: "string" } },
+                  parent: { type: "string" },
+                  reason: { type: "string" }
+                },
+                required: ["key", "summary", "status", "priority"]
+              }
+            },
+            sprint: {
+              type: "object",
+              properties: {
+                name: { type: "string" },
+                label: { type: "string" },
+                total: { type: "number" },
+                statusMix: { type: "array", items: { type: "string" } },
+                priorityMix: { type: "array", items: { type: "string" } },
+                dateWindow: { type: "string" }
+              }
+            },
+            followUps: { type: "array", items: { type: "string" } },
+            sourceNotes: { type: "array", items: { type: "string" } }
+          },
+          required: ["answer", "highlights", "tickets", "sprint", "followUps", "sourceNotes"]
+        }
+      }
+    });
+
+    return jsonResponse(buildChatPayload({
+      dashboard,
+      context,
+      answer: normalizeChatAnswer(parseAiResponse(aiResult), fallback, context, dashboard),
+      provider: "Cloudflare Workers AI",
+      model: AI_MODEL
+    }));
+  } catch (error) {
+    return jsonResponse(buildChatPayload({
+      dashboard,
+      context,
+      answer: fallback,
+      provider: "Cloudflare Workers AI",
+      model: AI_MODEL,
+      warning: `AI chat response was not usable, so HQ returned a deterministic board-data answer: ${error.message}`
+    }));
+  }
+}
+
 function buildBriefPayload({ dashboard, stats, provider, model, brief, warning, answerType }) {
   return {
     ok: true,
@@ -1080,6 +1202,33 @@ function buildMainTicketRundownBrief(dashboard, stats) {
       "This direct lookup is deterministic board data, not model inference.",
       "No Jira, Slack, or automation mutation was performed."
     ]
+  };
+}
+
+function buildChatPayload({ dashboard, context, answer, provider, model, warning }) {
+  return {
+    ok: true,
+    provider,
+    model,
+    generatedAt: new Date().toISOString(),
+    release: dashboard.version || "v3001.124.0",
+    scope: context.scope,
+    exactLookup: context.exactLookup ? {
+      type: context.exactLookup.type,
+      label: context.exactLookup.label,
+      count: context.exactLookup.count
+    } : null,
+    source: {
+      schemaVersion: dashboard.schemaVersion || "",
+      pulledAt: dashboard.pulledAt || "",
+      pulledAtDisplay: dashboard.pulledAtDisplay || "",
+      sprintPulledAt: dashboard.sprintView?.pulledAt || "",
+      sprintPulledAtDisplay: dashboard.sprintView?.pulledAtDisplay || "",
+      releaseTickets: context.releaseContext.total,
+      sprintTickets: context.sprintContext.total
+    },
+    answer,
+    ...(warning ? { warning } : {})
   };
 }
 
@@ -1790,6 +1939,482 @@ function normalizeName(value) {
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^a-z0-9]+/g, " ")
     .trim();
+}
+
+function normalizeChatHistory(value) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .slice(-8)
+    .map((entry) => ({
+      role: entry?.role === "assistant" ? "assistant" : "user",
+      content: sanitizePrompt(entry?.content, 900)
+    }))
+    .filter((entry) => entry.content);
+}
+
+function buildAiChatContext(dashboard, stats, message, history) {
+  const releaseIssues = Array.isArray(dashboard.issues) ? dashboard.issues : [];
+  const sprintIssues = Array.isArray(dashboard.sprintView?.issues) ? dashboard.sprintView.issues : [];
+  const scopeKind = chooseChatScope(message);
+  const scopeIssues = scopeKind === "sprint" && sprintIssues.length ? sprintIssues : releaseIssues;
+  const scope = buildChatScope(dashboard, scopeKind, scopeIssues);
+  const exactLookup = buildChatExactLookup(message, scopeIssues, scope, dashboard);
+  const relevantIssues = exactLookup
+    ? exactLookup.matches
+    : buildChatRelevantIssues(message, scopeIssues).slice(0, 14);
+  const releaseContext = buildIssueCollectionContext({
+    label: dashboard.version || "Current release",
+    pulledAt: dashboard.pulledAtDisplay || dashboard.pulledAt || "",
+    issues: releaseIssues
+  });
+  const sprintContext = buildIssueCollectionContext({
+    label: dashboard.sprintView?.label || dashboard.sprintView?.name || "Sprint view",
+    pulledAt: dashboard.sprintView?.pulledAtDisplay || dashboard.sprintView?.pulledAt || "",
+    issues: sprintIssues,
+    sprint: dashboard.sprintView || null
+  });
+
+  return {
+    task: "Answer a conversational CORE QA HQ question about release tickets or sprint tickets.",
+    userMessage: message,
+    history,
+    scope,
+    exactLookup: exactLookup ? {
+      type: exactLookup.type,
+      label: exactLookup.label,
+      count: exactLookup.matches.length,
+      matchedIssues: exactLookup.matches.slice(0, 100).map((issue) => formatIssueForChat(issue, exactLookup.reasonForIssue?.(issue) || "Matched the user's question."))
+    } : null,
+    releaseContext,
+    sprintContext,
+    stats,
+    relevantIssues: relevantIssues.slice(0, 18).map((issue) => formatIssueForChat(issue, "Relevant to the current question.")),
+    sourceRules: [
+      "Answer from dashboard-data.json only.",
+      "Use releaseContext for release/fix-version questions.",
+      "Use sprintContext for sprint/backlog/2026.8/GN Core Platform questions.",
+      "If exactLookup exists, use exactLookup.matchedIssues as the authoritative ticket list and exactLookup.count as the authoritative count.",
+      "Do not say a Jira/Slack/automation action was performed.",
+      "Keep responses concise enough to copy into Slack or leadership notes."
+    ]
+  };
+}
+
+function chooseChatScope(message) {
+  return /\b(sprint|2026\.8|backlog|gn\s+core\s+platform|core\s+platform\s+board|active\s+sprint)\b/i.test(message)
+    ? "sprint"
+    : "release";
+}
+
+function buildChatScope(dashboard, scopeKind, issues) {
+  const sprint = dashboard.sprintView || {};
+
+  if (scopeKind === "sprint") {
+    return {
+      kind: "sprint",
+      label: sprint.label || sprint.name || "Sprint view",
+      total: issues.length,
+      pulledAt: sprint.pulledAtDisplay || sprint.pulledAt || "",
+      jiraUrl: sprint.jiraFilterUrl || sprint.boardUrl || ""
+    };
+  }
+
+  return {
+    kind: "release",
+    label: dashboard.version || "Current release",
+    total: issues.length,
+    pulledAt: dashboard.pulledAtDisplay || dashboard.pulledAt || "",
+    jiraUrl: dashboard.jiraFilterUrl || dashboard.dashboardUrl || ""
+  };
+}
+
+function buildIssueCollectionContext({ label, pulledAt, issues, sprint = null }) {
+  const cleanIssues = Array.isArray(issues) ? issues : [];
+  const mainTickets = cleanIssues.filter((issue) => !issue.isSubtask);
+  const subtasks = cleanIssues.length - mainTickets.length;
+  const statusPairs = Object.entries(countBy(cleanIssues, (issue) => issue.status || "Unknown")).sort(sortCounts);
+  const priorityPairs = Object.entries(countBy(cleanIssues, (issue) => issue.priority || "None")).sort(sortCounts);
+  const assigneePairs = Object.entries(countBy(cleanIssues, (issue) => issue.assignee || "Unassigned")).sort(sortCounts);
+  const componentPairs = Object.entries(countBy(cleanIssues.flatMap((issue) => issue.components?.length ? issue.components : ["None"]), (component) => component)).sort(sortCounts);
+
+  return {
+    label,
+    pulledAt,
+    total: cleanIssues.length,
+    mainTickets: mainTickets.length,
+    subtasks,
+    statusMix: statusPairs.slice(0, 10).map(formatPair),
+    priorityMix: priorityPairs.slice(0, 8).map(formatPair),
+    assigneeLoad: assigneePairs.slice(0, 10).map(formatPair),
+    componentMix: componentPairs.slice(0, 10).map(formatPair),
+    sprint: sprint ? {
+      name: sprint.name || "",
+      label: sprint.label || "",
+      state: sprint.sprintState || "",
+      start: sprint.sprintStartDate || "",
+      end: sprint.sprintEndDate || "",
+      backlogIssueCount: sprint.backlogIssueCount || sprint.total || cleanIssues.length,
+      backlogParity: Boolean(sprint.backlogParity),
+      boardName: sprint.boardName || "",
+      boardUrl: sprint.boardUrl || sprint.jiraFilterUrl || ""
+    } : null,
+    topTickets: cleanIssues
+      .filter((issue) => !issue.isSubtask)
+      .sort(sortIssuesForLookup)
+      .slice(0, 15)
+      .map((issue) => formatIssueForChat(issue, "High-priority or early board item."))
+  };
+}
+
+function buildChatExactLookup(message, issues, scope, dashboard) {
+  const cleanIssues = Array.isArray(issues) ? issues : [];
+  const issueKeys = extractIssueKeyLookup(message);
+
+  if (issueKeys.length) {
+    const keys = new Set(issueKeys.map((key) => key.toUpperCase()));
+    return buildExactLookupResult({
+      type: "ticket_key",
+      label: `ticket key ${issueKeys.join(", ")}`,
+      matches: cleanIssues.filter((issue) => keys.has(String(issue.key || "").toUpperCase())),
+      scope,
+      reasonForIssue: (issue) => `${issue.key} was explicitly requested.`
+    });
+  }
+
+  const priorityLookup = extractPriorityLookup(message);
+
+  if (priorityLookup) {
+    return buildExactLookupResult({
+      type: "priority",
+      label: `${priorityLookup.priority} tickets`,
+      matches: cleanIssues.filter((issue) => String(issue.priority || "None").toUpperCase() === priorityLookup.priority),
+      scope,
+      reasonForIssue: (issue) => `${issue.key} is ${priorityLookup.priority}.`
+    });
+  }
+
+  const commentFileLookup = extractCommentFileLookup(message);
+
+  if (commentFileLookup && scope.kind === "release") {
+    const records = cleanIssues
+      .map((issue) => ({ issue, evidence: collectCommentFileEvidence(issue, commentFileLookup) }))
+      .filter((record) => record.evidence.length)
+      .sort((a, b) => sortIssuesForLookup(a.issue, b.issue));
+
+    return buildExactLookupResult({
+      type: "comment_file",
+      label: `tickets with ${commentFileLookup.displayName}`,
+      matches: records.map((record) => record.issue),
+      scope,
+      reasonForIssue: (issue) => {
+        const record = records.find((item) => item.issue.key === issue.key);
+        return record ? formatCommentFileLookupReason(record) : "Matched pulled comment or checklist evidence.";
+      }
+    });
+  }
+
+  const componentLookup = extractComponentLookup(message, cleanIssues);
+
+  if (componentLookup) {
+    const normalizedQuery = normalizeName(componentLookup.query);
+    return buildExactLookupResult({
+      type: "component",
+      label: `${componentLookup.displayName} component tickets`,
+      matches: cleanIssues.filter((issue) => (issue.components || []).some((component) => {
+        const normalizedComponent = normalizeName(component);
+        return normalizedComponent.includes(normalizedQuery) || normalizedQuery.includes(normalizedComponent);
+      })),
+      scope,
+      reasonForIssue: (issue) => `${issue.key} includes ${issue.components?.join(", ") || "matching component data"}.`
+    });
+  }
+
+  const peopleLookup = extractPeopleLookup(message, cleanIssues);
+
+  if (peopleLookup) {
+    const normalizedQuery = normalizeName(peopleLookup.query);
+    const fieldLabel = peopleLookup.field === "assignedDeveloper" ? "assigned developer" : "assignee";
+    return buildExactLookupResult({
+      type: peopleLookup.field,
+      label: `${fieldLabel} ${peopleLookup.displayName}`,
+      matches: cleanIssues.filter((issue) => {
+        const value = normalizeName(issue?.[peopleLookup.field] || "");
+        return value && (value.includes(normalizedQuery) || normalizedQuery.includes(value));
+      }),
+      scope,
+      reasonForIssue: (issue) => `${issue.key} has ${fieldLabel} ${issue?.[peopleLookup.field] || "matching user"}.`
+    });
+  }
+
+  const statusLookup = extractStatusLookup(message, cleanIssues);
+
+  if (statusLookup) {
+    const normalizedStatus = normalizeName(statusLookup.status);
+    return buildExactLookupResult({
+      type: "status",
+      label: `${statusLookup.status} tickets`,
+      matches: cleanIssues.filter((issue) => normalizeName(issue.status || "") === normalizedStatus),
+      scope,
+      reasonForIssue: (issue) => `${issue.key} is in ${issue.status || "matching status"}.`
+    });
+  }
+
+  if (isMainTicketRundownPrompt(message, "") || /\b(all\s+(?:main\s+)?(?:tickets|issues|work\s*items)|ticket\s+rundown|run\s*down)\b/i.test(message)) {
+    return buildExactLookupResult({
+      type: "rundown",
+      label: `${scope.label} main ticket rundown`,
+      matches: cleanIssues.filter((issue) => !issue.isSubtask).sort(sortIssuesForLookup),
+      scope,
+      reasonForIssue: (issue) => `${issue.key} is a main ticket in ${scope.label}.`
+    });
+  }
+
+  return null;
+}
+
+function buildExactLookupResult({ type, label, matches, scope, reasonForIssue }) {
+  const sortedMatches = (Array.isArray(matches) ? matches : []).sort(sortIssuesForLookup);
+
+  return {
+    type,
+    label,
+    scope,
+    matches: sortedMatches,
+    count: sortedMatches.length,
+    reasonForIssue
+  };
+}
+
+function extractIssueKeyLookup(message) {
+  return Array.from(new Set(Array.from(String(message || "").matchAll(/\b[A-Z][A-Z0-9]+-\d+\b/g)).map((match) => match[0].toUpperCase())));
+}
+
+function extractStatusLookup(message, issues) {
+  if (!/\b(status|state|column|in)\b/i.test(message)) {
+    return null;
+  }
+
+  const prompt = normalizeName(message);
+  const statuses = Array.from(new Set((issues || []).map((issue) => issue.status).filter(Boolean))).sort((a, b) => b.length - a.length);
+  const match = statuses.find((status) => prompt.includes(normalizeName(status)));
+
+  return match ? { status: match } : null;
+}
+
+function buildChatRelevantIssues(message, issues) {
+  const cleanIssues = Array.isArray(issues) ? issues : [];
+  const tokens = getChatSearchTokens(message);
+
+  if (!tokens.length) {
+    return cleanIssues.filter((issue) => !issue.isSubtask).sort(sortIssuesForLookup);
+  }
+
+  const scored = cleanIssues.map((issue) => {
+    const haystack = normalizeName([
+      issue.key,
+      issue.summary,
+      issue.status,
+      issue.priority,
+      issue.assignee,
+      issue.assignedDeveloper,
+      ...(issue.components || []),
+      ...(issue.fixVersions || []),
+      ...(issue.sprintNames || [])
+    ].filter(Boolean).join(" "));
+    const score = tokens.reduce((total, token) => total + (haystack.includes(token) ? 1 : 0), 0);
+    return { issue, score };
+  });
+
+  const matches = scored
+    .filter((item) => item.score > 0)
+    .sort((a, b) => b.score - a.score || sortIssuesForLookup(a.issue, b.issue))
+    .map((item) => item.issue);
+
+  return matches.length ? matches : cleanIssues.filter((issue) => !issue.isSubtask).sort(sortIssuesForLookup);
+}
+
+function getChatSearchTokens(message) {
+  const stopWords = new Set(["about", "above", "after", "again", "against", "assigned", "before", "board", "can", "could", "current", "does", "from", "give", "have", "into", "list", "many", "need", "release", "show", "sprint", "tell", "that", "the", "there", "ticket", "tickets", "what", "when", "where", "which", "with"]);
+  return Array.from(new Set(normalizeName(message)
+    .split(" ")
+    .filter((token) => token.length > 2 && !stopWords.has(token))));
+}
+
+function formatIssueForChat(issue, reason = "") {
+  return {
+    key: issue.key || "Unknown",
+    url: issue.url || "",
+    summary: issue.summary || "No summary",
+    status: issue.status || "Unknown",
+    priority: issue.priority || "None",
+    type: issue.type || "Issue",
+    assignee: issue.assignee || "Unassigned",
+    assignedDeveloper: issue.assignedDeveloper || "Unassigned",
+    components: Array.isArray(issue.components) ? issue.components : [],
+    fixVersions: Array.isArray(issue.fixVersions) ? issue.fixVersions : [],
+    sprintNames: Array.isArray(issue.sprintNames) ? issue.sprintNames : [],
+    parent: issue.parent?.key || "",
+    reason
+  };
+}
+
+function buildDeterministicChatAnswer(context, dashboard) {
+  const scope = context.scope;
+  const exact = context.exactLookup;
+  const sprint = buildChatSprintSummary(context.sprintContext);
+
+  if (exact) {
+    const tickets = exact.matchedIssues || [];
+    const count = Number(exact.count || 0);
+    const previewLimit = 100;
+    const visibleTickets = tickets.slice(0, previewLimit);
+
+    return {
+      answer: count
+        ? `I found ${count} matching ticket${count === 1 ? "" : "s"} for ${exact.label} in ${scope.label}.`
+        : `I did not find any matching tickets for ${exact.label} in ${scope.label}.`,
+      highlights: [
+        `Scope used: ${scope.label}.`,
+        `Exact match count: ${count}.`,
+        count > previewLimit ? `Showing the first ${previewLimit} tickets in the table.` : "The ticket table reflects the matching board artifact data.",
+        `Artifact pull: ${scope.pulledAt || dashboard.pulledAtDisplay || "unknown pull time"}.`
+      ],
+      tickets: visibleTickets,
+      sprint,
+      followUps: buildChatFollowUps(scope.kind),
+      sourceNotes: [
+        "Source: dashboard-data.json from the deployed HQ Worker assets.",
+        "Ticket matches were filtered deterministically before AI narration.",
+        "No Jira, Slack, or automation mutation was performed."
+      ]
+    };
+  }
+
+  return {
+    answer: `Here is what I found for ${scope.label}. Ask for a specific assignee, priority, component, status, ticket key, or sprint detail to narrow the answer.`,
+    highlights: [
+      `${context.releaseContext.label}: ${context.releaseContext.mainTickets} main tickets and ${context.releaseContext.subtasks} subtasks.`,
+      `${context.sprintContext.label}: ${context.sprintContext.total} work items.`,
+      `Release priority mix: ${context.releaseContext.priorityMix.join(", ") || "none available"}.`,
+      `Sprint status mix: ${context.sprintContext.statusMix.slice(0, 5).join(", ") || "none available"}.`
+    ],
+    tickets: context.relevantIssues || [],
+    sprint,
+    followUps: buildChatFollowUps(scope.kind),
+    sourceNotes: [
+      "Source: dashboard-data.json from the deployed HQ Worker assets.",
+      "Ask a narrower question for an exact ticket table.",
+      "No Jira, Slack, or automation mutation was performed."
+    ]
+  };
+}
+
+function normalizeChatAnswer(candidate, fallback, context, dashboard) {
+  const answer = candidate && typeof candidate === "object" ? candidate : {};
+  const exactTickets = context.exactLookup?.matchedIssues || null;
+  const rawAnswer = String(answer.answer || "").trim();
+  const exactAnswerTooThin = Boolean(exactTickets) && (!rawAnswer || /^\d+$/.test(rawAnswer) || rawAnswer.length < 24);
+  const ticketPool = buildChatIssuePool(dashboard);
+  const aiTickets = Array.isArray(answer.tickets) ? answer.tickets : [];
+  const normalizedAiTickets = aiTickets
+    .map((ticket) => enrichChatTicket(ticket, ticketPool))
+    .filter((ticket) => ticket.key && ticket.key !== "Unknown");
+
+  return {
+    answer: exactAnswerTooThin ? fallback.answer : asString(answer.answer, fallback.answer),
+    highlights: asStringArray(answer.highlights, fallback.highlights),
+    tickets: exactTickets
+      ? exactTickets.slice(0, 100)
+      : normalizedAiTickets.length
+        ? normalizedAiTickets.slice(0, 30)
+        : fallback.tickets,
+    sprint: normalizeChatSprint(answer.sprint, fallback.sprint),
+    followUps: asStringArray(answer.followUps, fallback.followUps),
+    sourceNotes: asStringArray(answer.sourceNotes, fallback.sourceNotes)
+  };
+}
+
+function buildChatIssuePool(dashboard) {
+  const pool = new Map();
+  const issues = [
+    ...(Array.isArray(dashboard.issues) ? dashboard.issues : []),
+    ...(Array.isArray(dashboard.sprintView?.issues) ? dashboard.sprintView.issues : [])
+  ];
+
+  for (const issue of issues) {
+    const key = String(issue.key || "").toUpperCase();
+    if (key && !pool.has(key)) {
+      pool.set(key, issue);
+    }
+  }
+
+  return pool;
+}
+
+function enrichChatTicket(ticket, ticketPool) {
+  const key = asString(ticket?.key, "Unknown");
+  const issue = ticketPool.get(key.toUpperCase());
+  const base = issue ? formatIssueForChat(issue, ticket?.reason || "Relevant to the chat answer.") : {};
+
+  return {
+    key,
+    url: asString(ticket?.url, base.url || ""),
+    summary: asString(ticket?.summary, base.summary || ""),
+    status: asString(ticket?.status, base.status || "Unknown"),
+    priority: asString(ticket?.priority, base.priority || "None"),
+    type: asString(ticket?.type, base.type || "Issue"),
+    assignee: asString(ticket?.assignee, base.assignee || "Unassigned"),
+    assignedDeveloper: asString(ticket?.assignedDeveloper, base.assignedDeveloper || "Unassigned"),
+    components: Array.isArray(ticket?.components) && ticket.components.length ? ticket.components : base.components || [],
+    fixVersions: Array.isArray(ticket?.fixVersions) && ticket.fixVersions.length ? ticket.fixVersions : base.fixVersions || [],
+    sprintNames: Array.isArray(ticket?.sprintNames) && ticket.sprintNames.length ? ticket.sprintNames : base.sprintNames || [],
+    parent: asString(ticket?.parent, base.parent || ""),
+    reason: asString(ticket?.reason, base.reason || "")
+  };
+}
+
+function buildChatSprintSummary(sprintContext) {
+  const sprint = sprintContext?.sprint || {};
+  return {
+    name: sprint.name || "",
+    label: sprint.label || sprintContext?.label || "Sprint view",
+    total: Number(sprintContext?.total || sprint.backlogIssueCount || 0),
+    statusMix: sprintContext?.statusMix || [],
+    priorityMix: sprintContext?.priorityMix || [],
+    dateWindow: [sprint.start, sprint.end].filter(Boolean).join(" - ")
+  };
+}
+
+function normalizeChatSprint(candidate, fallback) {
+  const sprint = candidate && typeof candidate === "object" ? candidate : {};
+
+  return {
+    name: asString(sprint.name, fallback.name || ""),
+    label: asString(sprint.label, fallback.label || "Sprint view"),
+    total: Number.isFinite(Number(sprint.total)) ? Number(sprint.total) : fallback.total || 0,
+    statusMix: asStringArray(sprint.statusMix, fallback.statusMix || []),
+    priorityMix: asStringArray(sprint.priorityMix, fallback.priorityMix || []),
+    dateWindow: asString(sprint.dateWindow, fallback.dateWindow || "")
+  };
+}
+
+function buildChatFollowUps(scopeKind) {
+  return scopeKind === "sprint"
+    ? [
+        "Summarize sprint 2026.8 by status.",
+        "Which sprint tickets are P0 or P1?",
+        "Which sprint tickets are assigned to Nicole?",
+        "Which sprint tickets have Reservation components?"
+      ]
+    : [
+        "Which release tickets are P0?",
+        "Summarize the main release tickets for leadership.",
+        "Which tickets are assigned to Dewan?",
+        "What sprint 2026.8 tickets are in QA Testing?"
+      ];
 }
 
 function buildModelContext(dashboard, stats, body, ticketPlanRequest = null, directBrief = null) {

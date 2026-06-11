@@ -69,6 +69,7 @@ GitHub Pages remains useful as a static fallback. The `.124` modern board and HQ
 - `/modern/hq/#calendar` is the Calendar Menu. It reads the Confluence GN Releases Team Calendar payload from `dashboard-data.json`, opens on the current month, provides month navigation, and groups the Upcoming list into collapsible month sections.
 - `/api/ai/status` reports whether the Cloudflare Worker has the Workers AI binding.
 - `/api/ai/release-summary` reads `dashboard-data.json`, resolves assignee/developer/component/priority ticket lookups from the direct board pull, asks Cloudflare Workers AI to turn those exact matches into human-readable linked analysis, or combines the user's broader prompt with compact ticket context for a draft release brief.
+- `/api/ai/chat` powers the HQ AI release agent. It keeps short chat history, detects whether the user is asking about the active release or Sprint `2026.8`, filters exact ticket matches from `dashboard-data.json`, and asks Workers AI to turn those results into a readable response with linked ticket tables.
 - `/api/slack/status` reports whether the HQ Worker can post through the installed CORE JIRA NOTIFIER AGENT Slack bot and whether inbound Slack callbacks can be verified.
 - `/api/slack/activity` shows recent Slack-to-HQ callback activity from the Worker MVP memory store.
 - `/api/slack/send` posts a manually reviewed HQ message to the configured CORE QA Slack channel when `SLACK_BOT_TOKEN` is present as a Worker secret.
@@ -108,10 +109,13 @@ The first Workers AI implementation is intentionally focused and review-first:
 - Provider: Cloudflare Workers AI.
 - Model: `@cf/meta/llama-3.1-8b-instruct-fast`.
 - Endpoint: `POST /api/ai/release-summary`.
+- Chat endpoint: `POST /api/ai/chat`.
 - Status check: `GET /api/ai/status`.
 - Source data: the current board's `dashboard-data.json`.
-- User input: visible HQ prompt composer with Free Form, ticket lookup, release triage, QA focus, Jira-ready notes, and leadership rollup presets.
+- User input: visible HQ prompt composer with Free Form, ticket lookup, release triage, QA focus, Jira-ready notes, and leadership rollup presets, plus a conversational AI release-agent chat surface.
 - Output shape: structured JSON with executive brief, risks, focus tickets, and review gates.
+- Chat output: answer text, highlights, sprint context, linked ticket table, follow-up prompts, and copy-ready output.
+- Sprint awareness: prompts containing `sprint`, `2026.8`, `backlog`, or `GN Core Platform` use `dashboard-data.json.sprintView.issues`; other ticket questions default to the active release artifact.
 - Ticket test plans: prompts like `make test plan for CORE-14427` override the selected preset and send the named ticket's description/comments to Workers AI with `answerType: "ticket_test_plan"`.
 - Safety posture: draft-only, direct board-data lookup for assignment and component questions before AI narration, deterministic fallback if AI fails, and no Jira mutations from the AI endpoint.
 

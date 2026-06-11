@@ -296,15 +296,16 @@ const operationsSignals = [
 ];
 
 const aiReleaseSnapshot = {
-  state: "Workers AI draft endpoint",
+  state: "Workers AI chat and draft endpoint",
   activeBoard: "v3001.124.0",
   access: "QA Engineer view; QA Admin controls",
   freshness: "Live dashboard-data.json",
-  summary: "SPEC-HQ-07 now has a Cloudflare Workers AI endpoint that turns the current release artifact into a draft QA intelligence brief. It uses the deployed board JSON, returns structured output, and keeps Jira, Slack, and automation actions behind human review gates."
+  summary: "SPEC-HQ-07 now has Cloudflare Workers AI endpoints that turn the current release and sprint artifacts into draft QA intelligence. The chat agent answers ticket and sprint questions from deployed board JSON while Jira, Slack, and automation actions stay behind human review gates."
 };
 
 const aiRuntime = {
   endpoint: "/api/ai/release-summary",
+  chatEndpoint: "/api/ai/chat",
   statusEndpoint: "/api/ai/status",
   model: "@cf/meta/llama-3.1-8b-instruct-fast",
   provider: "Cloudflare Workers AI",
@@ -1081,6 +1082,43 @@ const hqSpecs = [
             </div>
           </article>
 
+          <article
+            class="ai-chat-card"
+            data-ai-chat-endpoint={aiRuntime.chatEndpoint}
+            data-ai-release={aiReleaseSnapshot.activeBoard}
+          >
+            <div class="ai-chat-top">
+              <div>
+                <p class="eyebrow">AI release agent</p>
+                <h3>Chat with HQ about tickets and sprint work</h3>
+                <p>Ask about assignees, priority, components, ticket status, or Sprint 2026.8. The agent answers from the deployed release and sprint artifacts and keeps a short chat history for follow-up questions.</p>
+              </div>
+              <div class="ai-chat-scope">
+                <span>Release {aiReleaseSnapshot.activeBoard}</span>
+                <span>Sprint 2026.8</span>
+                <span>Draft-only</span>
+              </div>
+            </div>
+            <div class="ai-chat-log" id="hq-ai-chat-log" role="log" aria-live="polite" aria-label="HQ AI chat transcript"></div>
+            <div class="ai-chat-prompts" aria-label="Suggested HQ AI questions">
+              <button type="button" data-ai-chat-prompt="How many P0 tickets are in the current release?">P0 release tickets</button>
+              <button type="button" data-ai-chat-prompt="Summarize Sprint 2026.8 by status and priority.">Sprint status summary</button>
+              <button type="button" data-ai-chat-prompt="Which sprint tickets are assigned to Nicole?">Nicole sprint work</button>
+              <button type="button" data-ai-chat-prompt="Give me a leadership-ready rundown of the main tickets.">Leadership rundown</button>
+            </div>
+            <form class="ai-chat-form" id="hq-ai-chat-form">
+              <label class="sr-only" for="hq-ai-chat-input">Ask HQ AI about tickets or sprint work</label>
+              <textarea
+                id="hq-ai-chat-input"
+                rows="3"
+                maxlength="1200"
+                placeholder="Ask about tickets, priorities, assignees, components, or Sprint 2026.8..."
+              ></textarea>
+              <button type="submit" id="hq-ai-chat-send">Ask AI</button>
+            </form>
+            <p class="ai-chat-status" id="hq-ai-chat-status" role="status">Ready for ticket and sprint questions.</p>
+          </article>
+
           <div class="ai-source-grid" aria-label="AI release summary source map">
             {aiInputSources.map((source) => (
               <article class="ai-source-card">
@@ -1317,7 +1355,15 @@ const hqSpecs = [
       const documentsPanel = document.querySelector("#hq-ai-documents");
       const promptTemplate = document.querySelector("#hq-ai-prompt-template");
       const promptInput = document.querySelector("#hq-ai-prompt");
+      const chatCard = document.querySelector(".ai-chat-card");
+      const chatLog = document.querySelector("#hq-ai-chat-log");
+      const chatForm = document.querySelector("#hq-ai-chat-form");
+      const chatInput = document.querySelector("#hq-ai-chat-input");
+      const chatSend = document.querySelector("#hq-ai-chat-send");
+      const chatStatus = document.querySelector("#hq-ai-chat-status");
+      const chatPromptButtons = Array.from(document.querySelectorAll("[data-ai-chat-prompt]"));
       let latestBriefText = "";
+      const chatHistory = [];
       const promptPresets = {
         free_form: "Ask anything about the current release board. Example: Which tickets look riskiest for QA and why?",
         ticket_lookup: "What tickets are assigned to Dewan? List ticket key, summary, status, priority, type, and parent if applicable.",
@@ -1339,6 +1385,8 @@ const hqSpecs = [
           }
         });
       }
+
+      initChatAgent();
 
       generateButton.addEventListener("click", async () => {
         const userPrompt = promptInput?.value?.trim() || promptPresets.release_triage;
@@ -1398,6 +1446,271 @@ const hqSpecs = [
             statusLine.textContent = "Copy failed. Select the brief text manually.";
           }
         });
+      }
+
+      function initChatAgent() {
+        if (!chatCard || !chatLog || !chatForm || !chatInput || !chatSend || !chatStatus) {
+          return;
+        }
+
+        appendChatMessage("assistant", {
+          answer: "I can answer questions about the current release board and Sprint 2026.8. Ask for counts, ticket lists, ownership, priority, status, components, or a copy-ready leadership summary.",
+          highlights: [
+            "Use the word sprint or 2026.8 when you want sprint scope.",
+            "Ask for a ticket key when you want one specific issue.",
+            "Exact lookups are filtered from dashboard-data.json before AI narration."
+          ],
+          tickets: [],
+          sprint: null,
+          followUps: [
+            "How many P0 tickets are in the current release?",
+            "Summarize Sprint 2026.8 by status.",
+            "Which tickets are assigned to Dewan?"
+          ],
+          sourceNotes: ["Ready. No AI request has been sent yet."]
+        }, { recordHistory: false, intro: true });
+
+        chatPromptButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            chatInput.value = button.getAttribute("data-ai-chat-prompt") || "";
+            chatInput.focus();
+          });
+        });
+
+        chatForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const message = chatInput.value.trim();
+
+          if (!message) {
+            chatStatus.textContent = "Type a ticket or sprint question first.";
+            return;
+          }
+
+          appendChatMessage("user", message);
+          chatInput.value = "";
+          setChatBusy(true, "Thinking through the board artifact...");
+
+          try {
+            const response = await fetch(chatCard.dataset.aiChatEndpoint || "/api/ai/chat", {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({
+                release: chatCard.dataset.aiRelease,
+                message,
+                history: chatHistory.slice(-8)
+              })
+            });
+            const payload = await response.json();
+
+            if (!response.ok || !payload.ok) {
+              throw new Error(payload.message || `AI chat failed with HTTP ${response.status}`);
+            }
+
+            appendChatMessage("assistant", payload.answer, { payload });
+            chatStatus.textContent = payload.warning
+              ? "Answer ready from deterministic board data fallback."
+              : `Answer ready from ${payload.provider || "HQ AI"}.`;
+          } catch (error) {
+            appendChatMessage("assistant", {
+              answer: `I could not reach the HQ AI chat endpoint: ${error.message}. Open the Cloudflare HQ URL and try again.`,
+              highlights: ["No Jira, Slack, or automation action was performed."],
+              tickets: [],
+              sprint: null,
+              followUps: ["Try again after refreshing the Cloudflare HQ page."],
+              sourceNotes: ["The chat endpoint did not return a usable response."]
+            }, { recordHistory: false, error: true });
+            chatStatus.textContent = "AI chat endpoint unavailable.";
+          } finally {
+            setChatBusy(false);
+          }
+        });
+      }
+
+      function setChatBusy(isBusy, message = "") {
+        if (!chatCard || !chatSend || !chatInput || !chatStatus) return;
+        chatCard.classList.toggle("is-loading", isBusy);
+        chatSend.disabled = isBusy;
+        chatInput.disabled = isBusy;
+        if (message) {
+          chatStatus.textContent = message;
+        }
+      }
+
+      function appendChatMessage(role, content, options = {}) {
+        if (!chatLog) return;
+        const isUser = role === "user";
+        const bubble = document.createElement("article");
+        bubble.className = `ai-chat-message ${isUser ? "user" : "assistant"}${options.error ? " has-error" : ""}`;
+
+        const header = document.createElement("div");
+        header.className = "ai-chat-message-heading";
+        const title = document.createElement("strong");
+        title.textContent = isUser ? "You" : options.intro ? "HQ AI agent" : "HQ AI";
+        const meta = document.createElement("span");
+        meta.textContent = isUser ? "Question" : options.payload?.provider || "Board-aware assistant";
+        header.append(title, meta);
+        bubble.appendChild(header);
+
+        if (isUser) {
+          const p = document.createElement("p");
+          p.textContent = content;
+          bubble.appendChild(p);
+          chatHistory.push({ role: "user", content });
+        } else {
+          renderChatAnswer(bubble, content || {}, options.payload || null);
+          if (options.recordHistory !== false) {
+            chatHistory.push({ role: "assistant", content: buildChatCopyText(content || {}, options.payload || null) });
+          }
+        }
+
+        while (chatHistory.length > 10) {
+          chatHistory.shift();
+        }
+
+        chatLog.appendChild(bubble);
+        chatLog.scrollTop = chatLog.scrollHeight;
+      }
+
+      function renderChatAnswer(bubble, answer, payload) {
+        const answerText = answer.answer || "No answer returned.";
+        const answerParagraph = document.createElement("p");
+        answerParagraph.textContent = answerText;
+        bubble.appendChild(answerParagraph);
+
+        const facts = document.createElement("div");
+        facts.className = "ai-chat-facts";
+        const scopeLabel = payload?.scope?.label || "";
+        const pullLabel = payload?.scope?.pulledAt || payload?.source?.pulledAtDisplay || "";
+        const countLabel = payload?.exactLookup ? `${payload.exactLookup.count} matched` : "";
+        [scopeLabel, pullLabel, countLabel].filter(Boolean).forEach((fact) => {
+          const span = document.createElement("span");
+          span.textContent = fact;
+          facts.appendChild(span);
+        });
+        if (facts.children.length) {
+          bubble.appendChild(facts);
+        }
+
+        renderChatListSection(bubble, "Highlights", answer.highlights);
+        renderChatSprintSection(bubble, answer.sprint);
+
+        if (Array.isArray(answer.tickets) && answer.tickets.length) {
+          const ticketSection = document.createElement("section");
+          ticketSection.className = "ai-chat-section ai-chat-ticket-section";
+          const heading = document.createElement("h4");
+          heading.textContent = "Tickets";
+          const tableWrap = document.createElement("div");
+          tableWrap.className = "ai-ticket-table-wrap";
+          renderTicketList(tableWrap, answer.tickets);
+          ticketSection.append(heading, tableWrap);
+          bubble.appendChild(ticketSection);
+        }
+
+        renderChatListSection(bubble, "Follow-ups", answer.followUps, true);
+        renderChatListSection(bubble, "Source notes", answer.sourceNotes);
+
+        const actions = document.createElement("div");
+        actions.className = "ai-chat-message-actions";
+        const copy = document.createElement("button");
+        copy.type = "button";
+        copy.textContent = "Copy answer";
+        copy.addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(buildChatCopyText(answer, payload));
+            chatStatus.textContent = "Chat answer copied.";
+          } catch {
+            chatStatus.textContent = "Copy failed. Select the answer manually.";
+          }
+        });
+        actions.appendChild(copy);
+        bubble.appendChild(actions);
+      }
+
+      function renderChatListSection(bubble, title, items, asPromptButtons = false) {
+        const cleanItems = Array.isArray(items) ? items.filter(Boolean) : [];
+        if (!cleanItems.length) return;
+
+        const section = document.createElement("section");
+        section.className = "ai-chat-section";
+        const heading = document.createElement("h4");
+        heading.textContent = title;
+        section.appendChild(heading);
+
+        if (asPromptButtons) {
+          const promptWrap = document.createElement("div");
+          promptWrap.className = "ai-chat-followups";
+          cleanItems.slice(0, 5).forEach((item) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.textContent = item;
+            button.addEventListener("click", () => {
+              if (!chatInput) return;
+              chatInput.value = item;
+              chatInput.focus();
+            });
+            promptWrap.appendChild(button);
+          });
+          section.appendChild(promptWrap);
+        } else {
+          const list = document.createElement("ul");
+          cleanItems.slice(0, 8).forEach((item) => {
+            const li = document.createElement("li");
+            li.textContent = item;
+            list.appendChild(li);
+          });
+          section.appendChild(list);
+        }
+
+        bubble.appendChild(section);
+      }
+
+      function renderChatSprintSection(bubble, sprint) {
+        if (!sprint || (!sprint.total && !sprint.name && !sprint.label)) {
+          return;
+        }
+
+        const section = document.createElement("section");
+        section.className = "ai-chat-section ai-chat-sprint-section";
+        const heading = document.createElement("h4");
+        heading.textContent = "Sprint context";
+        const dl = document.createElement("dl");
+        [
+          ["Sprint", sprint.label || sprint.name || "Sprint view"],
+          ["Work items", sprint.total ? String(sprint.total) : ""],
+          ["Priority mix", Array.isArray(sprint.priorityMix) ? sprint.priorityMix.join(", ") : ""],
+          ["Status mix", Array.isArray(sprint.statusMix) ? sprint.statusMix.slice(0, 5).join(", ") : ""],
+          ["Window", sprint.dateWindow || ""]
+        ].filter(([, value]) => value).forEach(([label, value]) => {
+          const div = document.createElement("div");
+          const dt = document.createElement("dt");
+          const dd = document.createElement("dd");
+          dt.textContent = label;
+          dd.textContent = value;
+          div.append(dt, dd);
+          dl.appendChild(div);
+        });
+        section.append(heading, dl);
+        bubble.appendChild(section);
+      }
+
+      function buildChatCopyText(answer, payload) {
+        const lines = [
+          answer.answer || "HQ AI answer",
+          "",
+          payload?.scope?.label ? `Scope: ${payload.scope.label}` : "",
+          payload?.scope?.pulledAt ? `Artifact pull: ${payload.scope.pulledAt}` : "",
+          "",
+          Array.isArray(answer.highlights) && answer.highlights.length ? "Highlights:" : "",
+          Array.isArray(answer.highlights) && answer.highlights.length ? toBulletList(answer.highlights) : "",
+          "",
+          Array.isArray(answer.tickets) && answer.tickets.length ? "Tickets:" : "",
+          Array.isArray(answer.tickets) && answer.tickets.length ? buildLeadershipTicketTable(answer.tickets) : "",
+          "",
+          Array.isArray(answer.followUps) && answer.followUps.length ? "Follow-ups:" : "",
+          Array.isArray(answer.followUps) && answer.followUps.length ? toBulletList(answer.followUps) : ""
+        ];
+
+        return lines.filter((line, index, source) => line || source[index - 1]).join("\n").trim();
       }
 
       function renderBrief(payload) {
@@ -1498,10 +1811,17 @@ const hqSpecs = [
           summaryText.textContent = ticket.summary || "No summary";
           summaryCell.appendChild(summaryText);
 
-          if (Array.isArray(ticket.components) && ticket.components.length) {
-            const components = document.createElement("span");
-            components.textContent = ticket.components.join(", ");
-            summaryCell.appendChild(components);
+          const metadata = [
+            Array.isArray(ticket.components) && ticket.components.length ? `Components: ${ticket.components.join(", ")}` : "",
+            Array.isArray(ticket.fixVersions) && ticket.fixVersions.length ? `Fix: ${ticket.fixVersions.join(", ")}` : "",
+            Array.isArray(ticket.sprintNames) && ticket.sprintNames.length ? `Sprint: ${ticket.sprintNames.join(", ")}` : "",
+            ticket.parent ? `Parent: ${ticket.parent}` : ""
+          ].filter(Boolean);
+
+          if (metadata.length) {
+            const meta = document.createElement("span");
+            meta.textContent = metadata.join(" | ");
+            summaryCell.appendChild(meta);
           }
 
           const statusCell = document.createElement("td");
@@ -1763,6 +2083,8 @@ const hqSpecs = [
           ticket.assignee ? `Assignee: ${ticket.assignee}` : "",
           ticket.assignedDeveloper ? `Dev: ${ticket.assignedDeveloper}` : "",
           Array.isArray(ticket.components) && ticket.components.length ? `Components: ${ticket.components.join(", ")}` : "",
+          Array.isArray(ticket.fixVersions) && ticket.fixVersions.length ? `Fix: ${ticket.fixVersions.join(", ")}` : "",
+          Array.isArray(ticket.sprintNames) && ticket.sprintNames.length ? `Sprint: ${ticket.sprintNames.join(", ")}` : "",
           ticket.parent ? `Parent: ${ticket.parent}` : ""
         ].filter(Boolean).join(" | ");
         return `- ${title}${summary}${metadata ? ` (${metadata})` : ""}${ticket.reason ? ` - ${ticket.reason}` : ""}`;
