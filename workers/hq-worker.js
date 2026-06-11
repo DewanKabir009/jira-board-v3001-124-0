@@ -2233,6 +2233,19 @@ function buildChatExactLookup(message, issues, scope, dashboard) {
     });
   }
 
+  const topicLookup = extractTopicLookup(message);
+
+  if (topicLookup) {
+    const matches = findTopicMatches(cleanIssues, topicLookup);
+    return buildExactLookupResult({
+      type: "topic",
+      label: `${topicLookup.displayName} related tickets`,
+      matches,
+      scope,
+      reasonForIssue: (issue) => formatTopicMatchReason(issue, topicLookup)
+    });
+  }
+
   if (isMainTicketRundownPrompt(message, "") || /\b(all\s+(?:main\s+)?(?:tickets|issues|work\s*items)|ticket\s+rundown|run\s*down)\b/i.test(message)) {
     return buildExactLookupResult({
       type: "rundown",
@@ -2275,6 +2288,96 @@ function extractStatusLookup(message, issues) {
   return match ? { status: match } : null;
 }
 
+function extractTopicLookup(message) {
+  const tokens = getChatSearchTokens(message);
+
+  if (!tokens.length) {
+    return null;
+  }
+
+  if (tokens.length === 1 && tokens[0].length < 4) {
+    return null;
+  }
+
+  return {
+    type: "topic",
+    query: tokens.join(" "),
+    tokens,
+    displayName: formatTopicDisplayName(tokens)
+  };
+}
+
+function findTopicMatches(issues, topicLookup) {
+  const tokens = topicLookup?.tokens || [];
+  const normalizedQuery = topicLookup?.query || "";
+  const requiredTokenMatches = tokens.length <= 2
+    ? tokens.length
+    : Math.max(2, Math.ceil(tokens.length * 0.66));
+
+  return (Array.isArray(issues) ? issues : [])
+    .map((issue) => {
+      const haystack = buildTopicHaystack(issue);
+      const tokenMatches = tokens.filter((token) => haystack.includes(token));
+      const phraseMatch = normalizedQuery && haystack.includes(normalizedQuery);
+      const score = tokenMatches.length + (phraseMatch ? tokens.length + 2 : 0);
+
+      return {
+        issue,
+        score,
+        tokenMatches: tokenMatches.length
+      };
+    })
+    .filter((record) => record.score > 0 && (record.tokenMatches >= requiredTokenMatches || record.score > tokens.length))
+    .sort((a, b) => b.score - a.score || sortIssuesForLookup(a.issue, b.issue))
+    .map((record) => record.issue);
+}
+
+function buildTopicHaystack(issue) {
+  return normalizeName([
+    issue.key,
+    issue.summary,
+    issue.description,
+    issue.status,
+    issue.priority,
+    issue.assignee,
+    issue.assignedDeveloper,
+    issue.type,
+    ...(issue.components || []),
+    ...(issue.fixVersions || []),
+    ...getIssueSprintNames(issue),
+    ...(issue.comments || []).map((comment) => comment?.body || comment?.text || "")
+  ].filter(Boolean).join(" "));
+}
+
+function formatTopicMatchReason(issue, topicLookup) {
+  const fields = [];
+  const normalizedQuery = topicLookup?.query || "";
+  const tokens = topicLookup?.tokens || [];
+  const matchesField = (value) => {
+    const normalized = normalizeName(value);
+    return normalizedQuery && normalized.includes(normalizedQuery)
+      || tokens.length && tokens.every((token) => normalized.includes(token));
+  };
+
+  if (matchesField(issue.summary)) fields.push("summary");
+  if (matchesField(issue.description)) fields.push("description");
+  if ((issue.components || []).some(matchesField)) fields.push("components");
+  if ((issue.comments || []).some((comment) => matchesField(comment?.body || comment?.text || ""))) fields.push("comments");
+
+  return `${issue.key} matched ${topicLookup.displayName} in ${fields.length ? fields.join(", ") : "ticket text"}.`;
+}
+
+function formatTopicDisplayName(tokens) {
+  const acronyms = new Set(["api", "qa", "ui", "id", "gn", "ez", "etl", "ssl"]);
+  return tokens.map((token) => {
+    if (acronyms.has(token)) {
+      return token.toUpperCase();
+    }
+
+    return token.charAt(0).toUpperCase() + token.slice(1);
+  }).join(" ");
+}
+
 function buildChatRelevantIssues(message, issues) {
   const cleanIssues = Array.isArray(issues) ? issues : [];
   const tokens = getChatSearchTokens(message);
@@ -2293,7 +2396,7 @@ function buildChatRelevantIssues(message, issues) {
       issue.assignedDeveloper,
       ...(issue.components || []),
       ...(issue.fixVersions || []),
-      ...(issue.sprintNames || [])
+      ...getIssueSprintNames(issue)
     ].filter(Boolean).join(" "));
     const score = tokens.reduce((total, token) => total + (haystack.includes(token) ? 1 : 0), 0);
     return { issue, score };
@@ -2308,10 +2411,19 @@ function buildChatRelevantIssues(message, issues) {
 }
 
 function getChatSearchTokens(message) {
-  const stopWords = new Set(["about", "above", "after", "again", "against", "assigned", "before", "board", "can", "could", "current", "does", "from", "give", "have", "into", "list", "many", "need", "release", "show", "sprint", "tell", "that", "the", "there", "ticket", "tickets", "what", "when", "where", "which", "with"]);
+  const stopWords = new Set(["about", "above", "active", "after", "again", "against", "all", "any", "are", "assigned", "assignee", "backlog", "before", "board", "can", "component", "components", "could", "count", "current", "developer", "does", "find", "for", "from", "give", "have", "has", "how", "into", "issue", "issues", "item", "items", "jira", "list", "many", "need", "number", "please", "priorities", "priority", "pull", "qa", "related", "release", "show", "sprint", "status", "statuses", "summarize", "summary", "tell", "that", "the", "there", "this", "ticket", "tickets", "what", "when", "where", "which", "with", "work"]);
   return Array.from(new Set(normalizeName(message)
     .split(" ")
     .filter((token) => token.length > 2 && !stopWords.has(token))));
+}
+
+function getIssueSprintNames(issue) {
+  const names = [
+    ...(Array.isArray(issue?.sprintNames) ? issue.sprintNames : []),
+    ...(Array.isArray(issue?.sprints) ? issue.sprints.map((sprint) => sprint?.name || sprint?.label || "") : [])
+  ];
+
+  return Array.from(new Set(names.filter((name) => typeof name === "string" && name.trim()).map((name) => name.trim())));
 }
 
 function formatIssueForChat(issue, reason = "") {
@@ -2326,7 +2438,7 @@ function formatIssueForChat(issue, reason = "") {
     assignedDeveloper: issue.assignedDeveloper || "Unassigned",
     components: Array.isArray(issue.components) ? issue.components : [],
     fixVersions: Array.isArray(issue.fixVersions) ? issue.fixVersions : [],
-    sprintNames: Array.isArray(issue.sprintNames) ? issue.sprintNames : [],
+    sprintNames: getIssueSprintNames(issue),
     parent: issue.parent?.key || "",
     reason
   };
@@ -2451,9 +2563,11 @@ function normalizeChatAnswer(candidate, fallback, context, dashboard) {
   const normalizedAiTickets = aiTickets
     .map((ticket) => enrichChatTicket(ticket, ticketPool))
     .filter((ticket) => ticket.key && ticket.key !== "Unknown");
+  const exactAnswerMissesTickets = Boolean(exactTickets?.length)
+    && !exactTickets.slice(0, 5).some((ticket) => rawAnswer.toUpperCase().includes(String(ticket.key || "").toUpperCase()));
 
   return {
-    answer: exactAnswerTooThin ? fallback.answer : asString(answer.answer, fallback.answer),
+    answer: exactAnswerTooThin || exactAnswerMissesTickets ? fallback.answer : asString(answer.answer, fallback.answer),
     highlights: asStringArray(answer.highlights, fallback.highlights),
     tickets: exactTickets
       ? exactTickets.slice(0, 100)
