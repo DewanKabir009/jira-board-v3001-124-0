@@ -73,9 +73,39 @@ export default {
       return handleSlackAction(request, env, url, ctx);
     }
 
-    return env.ASSETS.fetch(request);
+    return serveFreshAsset(request, env);
   }
 };
+
+async function serveFreshAsset(request, env) {
+  const response = await env.ASSETS.fetch(request);
+  const url = new URL(request.url);
+  const headers = new Headers(response.headers);
+
+  if (shouldBypassAssetCache(url.pathname)) {
+    headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
+    headers.set("pragma", "no-cache");
+    headers.set("expires", "0");
+    headers.set("x-core-qa-cache-policy", "live-artifact");
+  }
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers
+  });
+}
+
+function shouldBypassAssetCache(pathname) {
+  return (
+    pathname === "/" ||
+    pathname === "/hq" ||
+    pathname === "/hq/" ||
+    pathname.endsWith(".html") ||
+    pathname.endsWith("/dashboard-data.json") ||
+    pathname.endsWith("/boards.json")
+  );
+}
 
 function handleSlackStatus(env, url) {
   const config = getSlackConfig(env);
