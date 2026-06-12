@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-12T03:11:22.054Z",
-  "pulledAtDisplay": "Jun 11, 2026, 11:11 PM",
+  "pulledAt": "2026-06-12T03:36:36.762Z",
+  "pulledAtDisplay": "Jun 11, 2026, 11:36 PM",
   "total": 17,
   "issues": [
     {
@@ -33,8 +33,8 @@
       "assignedDeveloper": "Luis Vallejo Mursuli",
       "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
       "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-      "updated": "2026-06-11T23:09:02.060-0400",
-      "updatedDisplay": "Jun 11, 2026, 11:09 PM",
+      "updated": "2026-06-11T23:13:15.520-0400",
+      "updatedDisplay": "Jun 11, 2026, 11:13 PM",
       "created": "2026-06-04T10:22:05.148-0400",
       "createdDisplay": "Jun 4, 2026, 10:22 AM",
       "components": [
@@ -1242,8 +1242,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-12T03:11:22.054Z",
-    "pulledAtDisplay": "Jun 11, 2026, 11:11 PM",
+    "pulledAt": "2026-06-12T03:36:36.762Z",
+    "pulledAtDisplay": "Jun 11, 2026, 11:36 PM",
     "total": 95,
     "mainTotal": 95,
     "subtaskTotal": 0,
@@ -7205,13 +7205,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-12T03:11:01.823Z",
-    "pulledAtDisplay": "Jun 11, 2026, 11:11 PM",
+    "pulledAt": "2026-06-12T03:36:02.281Z",
+    "pulledAtDisplay": "Jun 11, 2026, 11:36 PM",
     "window": {
-      "start": "2026-04-28T03:11:01.823Z",
-      "end": "2026-12-09T03:11:01.823Z",
-      "startDisplay": "Apr 27, 2026, 11:11 PM",
-      "endDisplay": "Dec 8, 2026, 10:11 PM"
+      "start": "2026-04-28T03:36:02.280Z",
+      "end": "2026-12-09T03:36:02.280Z",
+      "startDisplay": "Apr 27, 2026, 11:36 PM",
+      "endDisplay": "Dec 8, 2026, 10:36 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7224,7 +7224,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-12T03:11:06.298Z",
+        "pulledAt": "2026-06-12T03:36:05.367Z",
         "eventCount": 91,
         "events": [
           {
@@ -8598,10 +8598,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-12T02:46:35.938Z",
-    "previousPulledAtDisplay": "Jun 11, 2026, 10:46 PM",
-    "currentPulledAt": "2026-06-12T03:11:22.054Z",
-    "currentPulledAtDisplay": "Jun 11, 2026, 11:11 PM",
+    "previousPulledAt": "2026-06-12T03:11:22.054Z",
+    "previousPulledAtDisplay": "Jun 11, 2026, 11:11 PM",
+    "currentPulledAt": "2026-06-12T03:36:36.762Z",
+    "currentPulledAtDisplay": "Jun 11, 2026, 11:36 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -8614,35 +8614,8 @@
           {
             "field": "updatedDisplay",
             "label": "Jira updated",
-            "before": "Jun 10, 2026, 11:13 PM",
-            "after": "Jun 11, 2026, 11:09 PM"
-          }
-        ],
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "assignee": "Luis Vallejo Mursuli",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
-        "status": "Development",
-        "parent": {
-          "key": "CORE-14427",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14427",
-          "summary": "Home Course Selection/Management",
-          "description": "",
-          "type": "Story",
-          "status": "Development",
-          "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14488",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14488",
-        "summary": "Code changes for [CORE - 14427]",
-        "changes": [
-          {
-            "field": "updatedDisplay",
-            "label": "Jira updated",
-            "before": "Jun 10, 2026, 11:14 PM",
-            "after": "Jun 11, 2026, 11:08 PM"
+            "before": "Jun 11, 2026, 11:09 PM",
+            "after": "Jun 11, 2026, 11:13 PM"
           }
         ],
         "type": "Developer Task (sub task)",
@@ -8664,6 +8637,45 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-12T03:11:22.054Z",
+      "previousPulledAtDisplay": "Jun 11, 2026, 11:11 PM",
+      "currentPulledAt": "2026-06-12T03:36:36.762Z",
+      "currentPulledAtDisplay": "Jun 11, 2026, 11:36 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14506",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14506",
+          "summary": "SQL code changes for [CORE - 14427]",
+          "changes": [
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 11, 2026, 11:09 PM",
+              "after": "Jun 11, 2026, 11:13 PM"
+            }
+          ],
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Luis Vallejo Mursuli",
+          "assignedDeveloper": "Luis Vallejo Mursuli",
+          "status": "Development",
+          "parent": {
+            "key": "CORE-14427",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14427",
+            "summary": "Home Course Selection/Management",
+            "description": "",
+            "type": "Story",
+            "status": "Development",
+            "priority": "P1"
+          }
+        }
+      ],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-12T02:46:35.938Z",
       "previousPulledAtDisplay": "Jun 11, 2026, 10:46 PM",
@@ -11842,17 +11854,6 @@
       "previousPulledAtDisplay": "Jun 9, 2026, 7:17 AM",
       "currentPulledAt": "2026-06-09T11:42:45.894Z",
       "currentPulledAtDisplay": "Jun 9, 2026, 7:42 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-09T10:52:28.722Z",
-      "previousPulledAtDisplay": "Jun 9, 2026, 6:52 AM",
-      "currentPulledAt": "2026-06-09T11:17:44.941Z",
-      "currentPulledAtDisplay": "Jun 9, 2026, 7:17 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
