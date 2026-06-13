@@ -323,6 +323,17 @@ const slackRuntime = {
   mode: "Two-way bridge check"
 };
 
+const asanaRuntime = {
+  statusEndpoint: "/api/asana/status",
+  intakeEndpoint: "/api/asana/intake",
+  provider: "Asana API",
+  workspaceName: "versantmedia.com",
+  workspaceGid: "1211388543961903",
+  projectName: "GN CORE QA HQ",
+  projectGid: "1215683271714250",
+  slackChannel: "#core-qa-dream-team"
+};
+
 const slackCommandExamples = [
   "/qa-hq p0 tickets",
   "/qa-hq tickets assigned to Nicole",
@@ -490,7 +501,8 @@ const hqSpecs = [
   { id: "SPEC-HQ-07", title: "AI release summary", status: "In progress", detail: "Cloudflare Workers AI endpoint, source map, draft outputs, risk signals, and review gates are implemented." },
   { id: "SPEC-HQ-08", title: "Admin console", status: "Planned", detail: "Users, roles, sections, and script permissions." },
   { id: "SPEC-HQ-09", title: "Calendar menu", status: "Implemented", detail: "Confluence GN Releases calendar data is pulled into dashboard-data.json and rendered in HQ with calendar/list views." },
-  { id: "SPEC-HQ-10", title: "Slack two-way bridge", status: "In progress", detail: "Worker routes now cover HQ posts, slash commands, Events API mentions, interactive callbacks, and an HQ activity panel; live inbound needs SLACK_SIGNING_SECRET and Slack app Request URLs." }
+  { id: "SPEC-HQ-10", title: "Slack two-way bridge", status: "In progress", detail: "Worker routes now cover HQ posts, slash commands, Events API mentions, interactive callbacks, and an HQ activity panel; live inbound needs SLACK_SIGNING_SECRET and Slack app Request URLs." },
+  { id: "SPEC-HQ-11", title: "Asana intake", status: "Implemented", detail: "HQ can open requests in the GN CORE QA HQ Asana project, notify Slack, and prepare or create Jira handoff records based on Worker credentials." }
 ];
 ---
 
@@ -714,6 +726,86 @@ const hqSpecs = [
               <a href={latestAutomationJob.resultUrl}>View latest results</a>
               <a href={latestAutomationJob.actionsUrl}>Actions run</a>
             </div>
+          </article>
+
+          <article
+            class="asana-intake-card"
+            data-asana-status-endpoint={asanaRuntime.statusEndpoint}
+            data-asana-intake-endpoint={asanaRuntime.intakeEndpoint}
+          >
+            <div class="asana-intake-top">
+              <div>
+                <p class="eyebrow">Asana intake</p>
+                <h3>Open a CORE QA HQ request</h3>
+                <p>Creates an Asana task in the HQ intake project, notifies the CORE QA Slack channel, and returns the Jira handoff state in one reviewed flow.</p>
+              </div>
+              <div class="asana-runtime-facts" aria-label="Asana runtime facts">
+                <span>{asanaRuntime.provider}</span>
+                <span>{asanaRuntime.projectName}</span>
+                <span>{asanaRuntime.projectGid}</span>
+              </div>
+            </div>
+
+            <div class="asana-status-strip">
+              <div>
+                <span class="asana-status-dot" id="hq-asana-dot" aria-hidden="true"></span>
+                <strong id="hq-asana-mode">Checking</strong>
+              </div>
+              <p id="hq-asana-status" role="status">Checking Asana intake route...</p>
+            </div>
+
+            <form class="asana-intake-form" id="hq-asana-form">
+              <label for="hq-asana-summary">
+                <span>Request summary</span>
+                <input id="hq-asana-summary" name="summary" type="text" maxlength="180" placeholder="Short title for the Asana request" required>
+              </label>
+
+              <div class="asana-form-grid">
+                <label for="hq-asana-request-type">
+                  <span>Request type</span>
+                  <select id="hq-asana-request-type" name="requestType">
+                    <option>QA support request</option>
+                    <option>Automation request</option>
+                    <option>Release risk follow-up</option>
+                    <option>Test data request</option>
+                    <option>Access request</option>
+                  </select>
+                </label>
+
+                <label for="hq-asana-priority">
+                  <span>Priority</span>
+                  <select id="hq-asana-priority" name="priority">
+                    <option>Normal</option>
+                    <option>High</option>
+                    <option>Urgent</option>
+                    <option>Low</option>
+                  </select>
+                </label>
+
+                <label for="hq-asana-ticket">
+                  <span>Related ticket</span>
+                  <input id="hq-asana-ticket" name="relatedTicket" type="text" maxlength="80" placeholder="CORE-12345">
+                </label>
+
+                <label for="hq-asana-source">
+                  <span>Source URL</span>
+                  <input id="hq-asana-source" name="sourceUrl" type="url" maxlength="500" placeholder="Jira, dashboard, Slack, or evidence link">
+                </label>
+              </div>
+
+              <label for="hq-asana-details">
+                <span>Details</span>
+                <textarea id="hq-asana-details" name="details" rows="5" placeholder="What does QA need, who is impacted, and what should the first follow-up be?"></textarea>
+              </label>
+
+              <div class="asana-runner-actions">
+                <button type="button" id="hq-asana-refresh">Check status</button>
+                <button type="submit" id="hq-asana-submit" disabled>Open Asana ticket</button>
+                <span class="asana-action-note">Targets {asanaRuntime.projectName}; Slack posts to {asanaRuntime.slackChannel} when the bot token is ready.</span>
+              </div>
+            </form>
+
+            <div class="asana-intake-result" id="hq-asana-result" hidden></div>
           </article>
 
           <div class="automation-lifecycle" aria-label="Automation run lifecycle">
@@ -1317,7 +1409,7 @@ const hqSpecs = [
             <p class="eyebrow">Spec-driven delivery</p>
             <h2>HQ build checklist</h2>
           </div>
-          <span class="module-pill">4 complete / 5 active / 1 planned</span>
+          <span class="module-pill">5 complete / 6 active / 1 planned</span>
         </div>
         <div class="spec-grid">
           {hqSpecs.map((spec) => (
@@ -2175,6 +2267,166 @@ const hqSpecs = [
           ticket.parent ? `Parent: ${ticket.parent}` : ""
         ].filter(Boolean).join(" | ");
         return `- ${title}${summary}${metadata ? ` (${metadata})` : ""}${ticket.reason ? ` - ${ticket.reason}` : ""}`;
+      }
+    })();
+  </script>
+
+  <script is:inline>
+    (() => {
+      const card = document.querySelector(".asana-intake-card");
+      if (!card) return;
+
+      const statusEndpoint = card.dataset.asanaStatusEndpoint || "/api/asana/status";
+      const intakeEndpoint = card.dataset.asanaIntakeEndpoint || "/api/asana/intake";
+      const form = document.querySelector("#hq-asana-form");
+      const refreshButton = document.querySelector("#hq-asana-refresh");
+      const submitButton = document.querySelector("#hq-asana-submit");
+      const statusText = document.querySelector("#hq-asana-status");
+      const modeText = document.querySelector("#hq-asana-mode");
+      const dot = document.querySelector("#hq-asana-dot");
+      const result = document.querySelector("#hq-asana-result");
+      let latestStatus = null;
+
+      checkAsanaStatus();
+      refreshButton?.addEventListener("click", checkAsanaStatus);
+      form?.addEventListener("submit", submitAsanaIntake);
+
+      async function checkAsanaStatus() {
+        setAsanaBusy("Checking Asana intake route...");
+
+        try {
+          const response = await fetch(statusEndpoint, { cache: "no-store" });
+          const payload = await response.json();
+
+          if (!response.ok || !payload.ok) {
+            throw new Error(payload.message || `Asana status failed with HTTP ${response.status}`);
+          }
+
+          latestStatus = payload;
+          if (payload.canCreate) {
+            const jiraMode = payload.jira?.canCreate ? "Jira direct create ready" : "Jira handoff mode";
+            const slackMode = payload.slack?.canPost ? "Slack ready" : "Slack notification pending config";
+            setAsanaState("ready", "Ready", `${payload.message} ${slackMode}; ${jiraMode}.`, true);
+          } else if (payload.tokenConfigured === false) {
+            setAsanaState("missing", "Token missing", "ASANA_ACCESS_TOKEN is not configured as a Worker secret.", false);
+          } else {
+            setAsanaState("missing", "Config missing", payload.message || "Asana workspace or project configuration needs review.", false);
+          }
+        } catch (error) {
+          latestStatus = null;
+          setAsanaState("error", "Unavailable", `Asana intake route unavailable: ${error.message}. Use the Cloudflare HQ URL for live /api/asana routes.`, false);
+        }
+      }
+
+      async function submitAsanaIntake(event) {
+        event.preventDefault();
+        if (!form) return;
+
+        const formData = new FormData(form);
+        const body = {
+          summary: String(formData.get("summary") || "").trim(),
+          requestType: String(formData.get("requestType") || "").trim(),
+          priority: String(formData.get("priority") || "").trim(),
+          relatedTicket: String(formData.get("relatedTicket") || "").trim(),
+          sourceUrl: String(formData.get("sourceUrl") || "").trim(),
+          details: String(formData.get("details") || "").trim(),
+          requester: "HQ dashboard user"
+        };
+
+        if (!body.summary) {
+          renderAsanaResult({
+            ok: false,
+            message: "Add a short request summary before opening an Asana ticket."
+          });
+          return;
+        }
+
+        if (!latestStatus?.canCreate) {
+          await checkAsanaStatus();
+          if (!latestStatus?.canCreate) return;
+        }
+
+        if (submitButton) submitButton.disabled = true;
+        setAsanaBusy("Opening Asana ticket and sending downstream handoffs...");
+
+        try {
+          const response = await fetch(intakeEndpoint, {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(body)
+          });
+          const payload = await response.json();
+
+          if (!response.ok || !payload.ok) {
+            throw new Error(payload.message || `Asana intake failed with HTTP ${response.status}`);
+          }
+
+          renderAsanaResult(payload);
+          setAsanaState(payload.warnings?.length ? "missing" : "ready", payload.warnings?.length ? "Opened with warnings" : "Opened", payload.message, true);
+          form.reset();
+        } catch (error) {
+          renderAsanaResult({ ok: false, message: error.message });
+          setAsanaState("error", "Failed", error.message, true);
+        } finally {
+          if (submitButton) submitButton.disabled = !latestStatus?.canCreate;
+        }
+      }
+
+      function setAsanaBusy(message) {
+        if (statusText) statusText.textContent = message;
+        if (modeText) modeText.textContent = "Checking";
+        if (submitButton) submitButton.disabled = true;
+        dot?.setAttribute("data-state", "loading");
+      }
+
+      function setAsanaState(state, mode, message, canSubmit) {
+        if (modeText) modeText.textContent = mode;
+        if (statusText) statusText.textContent = message;
+        if (submitButton) submitButton.disabled = !canSubmit;
+        dot?.setAttribute("data-state", state);
+      }
+
+      function renderAsanaResult(payload) {
+        if (!result) return;
+
+        const warnings = Array.isArray(payload.warnings) ? payload.warnings : [];
+        const asana = payload.asana || {};
+        const jira = payload.jira || {};
+        const slack = payload.slack || {};
+        const links = [
+          asana.url ? `<a href="${escapeHtml(asana.url)}" target="_blank" rel="noreferrer">Open Asana task</a>` : "",
+          jira.url ? `<a href="${escapeHtml(jira.url)}" target="_blank" rel="noreferrer">${jira.key ? "Open Jira ticket" : "Open Jira handoff"}</a>` : ""
+        ].filter(Boolean).join("");
+        const warningList = warnings.length
+          ? `<ul>${warnings.map((warning) => `<li>${escapeHtml(warning)}</li>`).join("")}</ul>`
+          : "";
+
+        result.hidden = false;
+        result.innerHTML = payload.ok
+          ? `
+              <strong>${escapeHtml(payload.message || "Asana intake completed.")}</strong>
+              <p>${escapeHtml(asana.name || "Asana task opened.")}</p>
+              <div class="asana-intake-result-links">${links}</div>
+              <div class="asana-runtime-facts">
+                <em>Slack: ${escapeHtml(slack.ok ? "notified" : "needs review")}</em>
+                <em>Jira: ${escapeHtml(jira.mode || "handoff")}</em>
+              </div>
+              ${warningList}
+            `
+          : `
+              <strong>Asana intake did not complete.</strong>
+              <p>${escapeHtml(payload.message || "Review the Worker response and try again.")}</p>
+            `;
+      }
+
+      function escapeHtml(value) {
+        return String(value || "").replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          "\"": "&quot;",
+          "'": "&#39;"
+        }[char]));
       }
     })();
   </script>

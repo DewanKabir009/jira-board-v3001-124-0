@@ -74,6 +74,7 @@ GitHub Pages remains useful as a static fallback. The `.124` modern board and HQ
 - `/api/slack/activity` shows recent Slack-to-HQ callback activity from the Worker MVP memory store.
 - `/api/slack/send` posts a manually reviewed HQ message to the configured CORE QA Slack channel when `SLACK_BOT_TOKEN` is present as a Worker secret.
 - `/api/slack/commands`, `/api/slack/events`, and `/api/slack/actions` are the Slack-to-HQ request URLs for slash commands, Events API, and interactive callbacks.
+- `/api/asana/status` and `/api/asana/intake` power the HQ Asana intake form. Requests create tasks in Asana project `GN CORE QA HQ` (`1215683271714250`), notify Slack when the bot token is ready, and either create Jira directly when Jira Worker credentials exist or return a copy-ready Jira handoff.
 - GitHub Pages can render the same HQ page but cannot run the AI API. The page tells users to open the Cloudflare URL when the endpoint is unavailable.
 
 ## Architecture
@@ -88,14 +89,15 @@ Jira fixVersion data
   -> /api/* Worker routes
   -> Cloudflare Workers AI release summary
   -> Slack Web API notifier and signed Slack callback bridge
+  -> Asana intake and Jira handoff/create workflow
 ```
 
 The HQ Worker uses Cloudflare's Static Assets binding for the built Astro files and routes `/api/*` through the Worker first. The AI and Slack services are server-side only, so model bindings, Slack tokens, signing secrets, and other secrets are not exposed in browser JavaScript.
 
 Relevant files:
 
-- `wrangler.hq.toml`: Cloudflare Worker, static assets, and Workers AI binding.
-- `workers/hq-worker.js`: API routes for AI status, release summary, Slack status, Slack message posting, slash commands, Events API callbacks, interactive callbacks, and callback activity.
+- `wrangler.hq.toml`: Cloudflare Worker, static assets, Workers AI binding, and public Asana/Jira intake config.
+- `workers/hq-worker.js`: API routes for AI status, release summary, Slack status, Slack message posting, slash commands, Events API callbacks, interactive callbacks, callback activity, and Asana intake.
 - `modern-dashboard/src/pages/hq.astro`: HQ UI route and browser-side AI runner.
 - `modern-dashboard/src/styles/qa-hq.css`: HQ design system and responsive styling.
 - `modern-dashboard/scripts/capture-hq-readme-screenshots.cjs`: README screenshot capture harness.
@@ -160,6 +162,28 @@ Slack app Request URLs for the live Cloudflare Worker:
 
 Direct Codex Slack posting is a separate option from the HQ Worker. The Slack connector tools are available, but the current connector auth returned `token_expired`; reconnecting the Codex Slack integration is required before Codex can post directly through the app connector.
 
+## Asana Intake
+
+SPEC-HQ-11 adds a reviewed intake path for opening CORE QA HQ work from the web app.
+
+- Provider: Asana REST API.
+- Workspace: `versantmedia.com` (`1211388543961903`).
+- Project: `GN CORE QA HQ` (`1215683271714250`).
+- Endpoint: `GET /api/asana/status`.
+- Endpoint: `POST /api/asana/intake`.
+- Secret required: `ASANA_ACCESS_TOKEN`.
+- Slack handoff: uses the existing `SLACK_BOT_TOKEN` and channel config to notify `#core-qa-dream-team`.
+- Jira handoff: creates a Jira issue only when `JIRA_SITE_URL`, `JIRA_EMAIL`, and `JIRA_MCP_TOKEN` or `JIRA_API_TOKEN` are configured on the Worker. Otherwise the response includes a copy-ready Jira payload and the CORE project link.
+- UI surface: `/modern/hq/#automation`, inside the Automation Bench module.
+
+Asana project and workspace IDs are Worker vars because they are routing configuration, not secrets. The access token stays in the Worker secret store:
+
+```powershell
+npx -y wrangler secret put ASANA_ACCESS_TOKEN -c wrangler.hq.toml
+```
+
+The Slack mention text is controlled by `ASANA_INTAKE_SLACK_MENTION`. Set it to a Slack user mention such as `<@USERID>` when the exact user ID is available; otherwise the Worker falls back to the readable name configured in `wrangler.hq.toml`.
+
 ## Calendar Menu
 
 The HQ Calendar Menu is a Confluence-backed release calendar module.
@@ -200,6 +224,7 @@ Calendar environment overrides:
 | SPEC-HQ-08 | Admin console | Planned | Future user, permission, and section management surface. |
 | SPEC-HQ-09 | Calendar menu | Complete | Confluence GN Releases calendar data is pulled into `dashboard-data.json` and rendered in HQ with Calendar and Upcoming tabs. |
 | SPEC-HQ-10 | Slack two-way bridge | In progress | Outbound bot posts are ready; signed slash commands, Events API callbacks, interactive callbacks, and HQ activity UI are implemented. Live inbound requires `SLACK_SIGNING_SECRET` and Slack app Request URLs. |
+| SPEC-HQ-11 | Asana intake | Complete | HQ opens requests in Asana project `GN CORE QA HQ`, notifies Slack when available, and returns Jira direct-create or manual handoff state. |
 
 ## Technology Stack
 
@@ -212,6 +237,7 @@ Calendar environment overrides:
 | Cloudflare Workers Static Assets | Serves the built HQ and dashboard assets through the Worker. |
 | Cloudflare Workers AI | Generates the draft release intelligence brief from current board data. |
 | Slack Web API | Posts reviewed HQ notifications through the installed CORE JIRA NOTIFIER AGENT bot and receives verified slash commands, app mentions, and interactive callbacks. |
+| Asana REST API | Creates HQ intake tasks in the `GN CORE QA HQ` project from the Automation Bench form. |
 | GitHub Actions | Refreshes Jira data, deploys static pages, runs Playwright jobs, and publishes evidence. |
 | Confluence Team Calendars | Feeds the HQ Calendar Menu through the 5-minute board refresh artifact. |
 | GitHub Pages | Keeps static public fallback pages live during the Cloudflare migration. |
@@ -368,6 +394,72 @@ Response:
 }
 ```
 
+### `GET /api/asana/status`
+
+Returns Asana intake readiness without creating a task.
+
+```json
+{
+  "ok": true,
+  "provider": "Asana API",
+  "workspaceGid": "1211388543961903",
+  "workspaceName": "versantmedia.com",
+  "projectGid": "1215683271714250",
+  "projectName": "GN CORE QA HQ",
+  "tokenConfigured": true,
+  "canCreate": true,
+  "jira": {
+    "mode": "manual-handoff",
+    "projectKey": "CORE",
+    "issueType": "Task",
+    "canCreate": false
+  }
+}
+```
+
+### `POST /api/asana/intake`
+
+Creates the Asana intake task, posts the Slack notification when the bot token is configured, and returns Jira handoff state. Add `"dryRun": true` to validate routing without creating Asana, Slack, or Jira records.
+
+Request:
+
+```json
+{
+  "summary": "Need QA review for new checkout flow",
+  "requestType": "QA support request",
+  "priority": "High",
+  "relatedTicket": "CORE-14505",
+  "sourceUrl": "https://golfnow.atlassian.net/browse/CORE-14505",
+  "details": "Please review the release risk and create the first QA follow-up.",
+  "requester": "HQ dashboard user"
+}
+```
+
+Response:
+
+```json
+{
+  "ok": true,
+  "provider": "CORE QA HQ intake",
+  "asana": {
+    "gid": "121...",
+    "name": "Need QA review for new checkout flow",
+    "url": "https://app.asana.com/0/1215683271714250/..."
+  },
+  "jira": {
+    "mode": "manual-handoff",
+    "projectKey": "CORE",
+    "issueType": "Task",
+    "url": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/issues"
+  },
+  "slack": {
+    "ok": true,
+    "channel": "C...",
+    "ts": "..."
+  }
+}
+```
+
 ### `GET /api/slack/status`
 
 Returns the Slack notifier and inbound callback configuration state without posting a message.
@@ -467,6 +559,7 @@ Response:
 - `docs/qa-headquarters/spec-hq-06-operational-status.md`: service health and API automation status.
 - `docs/qa-headquarters/spec-hq-07-ai-release-summary.md`: Workers AI release intelligence.
 - `docs/qa-headquarters/spec-hq-10-slack-two-way-bridge.md`: two-way Slack bridge.
+- `docs/qa-headquarters/spec-hq-11-asana-intake.md`: Asana intake with Slack and Jira handoff.
 
 ## Current Migration Notes
 

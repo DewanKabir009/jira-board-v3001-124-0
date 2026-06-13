@@ -33,6 +33,18 @@ export default {
       return handleAiChat(request, env, url);
     }
 
+    if (url.pathname === "/api/asana/status") {
+      return handleAsanaStatus(env);
+    }
+
+    if (url.pathname === "/api/asana/intake") {
+      if (request.method !== "POST") {
+        return jsonResponse({ ok: false, message: "Use POST for Asana intake requests." }, 405);
+      }
+
+      return handleAsanaIntake(request, env, url);
+    }
+
     if (url.pathname === "/api/slack/status") {
       return handleSlackStatus(env, url);
     }
@@ -105,6 +117,439 @@ function shouldBypassAssetCache(pathname) {
     pathname.endsWith("/dashboard-data.json") ||
     pathname.endsWith("/boards.json")
   );
+}
+
+function handleAsanaStatus(env) {
+  const config = getAsanaConfig(env);
+  const jira = getJiraIntakeConfig(env);
+  const slack = getSlackConfig(env);
+
+  return jsonResponse({
+    ok: true,
+    provider: "Asana API",
+    workspaceGid: config.workspaceGid,
+    workspaceName: config.workspaceName,
+    projectGid: config.projectGid,
+    projectName: config.projectName,
+    tokenConfigured: config.tokenConfigured,
+    canCreate: config.canCreate,
+    slack: {
+      channel: slack.channel,
+      channelName: slack.channelName,
+      canPost: slack.canPost,
+      tokenConfigured: slack.tokenConfigured
+    },
+    jira: {
+      mode: jira.canCreate ? "direct-create" : "manual-handoff",
+      siteUrl: jira.siteUrl,
+      projectKey: jira.projectKey,
+      issueType: jira.issueType,
+      canCreate: jira.canCreate
+    },
+    message: config.canCreate
+      ? `Asana intake is ready for ${config.projectName}.`
+      : "Set ASANA_ACCESS_TOKEN, ASANA_WORKSPACE_GID, and ASANA_PROJECT_GID before creating Asana tickets."
+  });
+}
+
+async function handleAsanaIntake(request, env, url) {
+  const body = await safeJson(request);
+  const config = getAsanaConfig(env);
+  const intake = sanitizeAsanaIntake(body);
+  const dryRun = Boolean(body?.dryRun);
+
+  if (!intake.summary) {
+    return jsonResponse({ ok: false, message: "Summary is required before HQ can open an Asana intake ticket." }, 400);
+  }
+
+  if (!config.workspaceGid || !config.projectGid) {
+    return jsonResponse({
+      ok: false,
+      message: "Asana workspace or project configuration is missing.",
+      workspaceGid: config.workspaceGid,
+      projectGid: config.projectGid
+    }, 503);
+  }
+
+  const jiraHandoff = buildJiraHandoff(env, intake);
+
+  if (dryRun) {
+    return jsonResponse({
+      ok: true,
+      mode: "dry-run",
+      provider: "Asana API",
+      projectName: config.projectName,
+      projectGid: config.projectGid,
+      message: "Dry run only; no Asana, Slack, or Jira write was performed.",
+      preview: {
+        asana: buildAsanaTaskPayload(config, intake, jiraHandoff).data,
+        slack: buildAsanaSlackMessage(env, intake, {
+          url: "https://app.asana.com/0/" + config.projectGid,
+          name: intake.summary
+        }, jiraHandoff),
+        jira: jiraHandoff
+      }
+    });
+  }
+
+  if (!config.tokenConfigured) {
+    return jsonResponse({
+      ok: false,
+      mode: "missing-token",
+      provider: "Asana API",
+      projectName: config.projectName,
+      message: "ASANA_ACCESS_TOKEN is not configured as a Cloudflare Worker secret."
+    }, 503);
+  }
+
+  let asanaTask;
+  try {
+    asanaTask = await createAsanaTask(env, config, intake, jiraHandoff);
+  } catch (error) {
+    return jsonResponse({
+      ok: false,
+      provider: "Asana API",
+      projectName: config.projectName,
+      message: error.message
+    }, 502);
+  }
+
+  const jiraResult = await createJiraIntakeIfConfigured(env, intake, asanaTask);
+  const slackResult = await notifyAsanaIntakeSlack(env, intake, asanaTask, jiraResult.issue || jiraHandoff);
+  const warnings = [
+    jiraResult.warning,
+    slackResult.warning
+  ].filter(Boolean);
+
+  return jsonResponse({
+    ok: true,
+    provider: "CORE QA HQ intake",
+    message: warnings.length
+      ? "Asana ticket was opened. Review handoff warnings before assuming all downstream systems were updated."
+      : "Asana ticket opened and downstream notifications completed.",
+    asana: asanaTask,
+    jira: jiraResult.issue || jiraHandoff,
+    slack: slackResult,
+    warnings
+  });
+}
+
+function getAsanaConfig(env) {
+  const workspaceGid = sanitizeExternalId(env.ASANA_WORKSPACE_GID || "");
+  const projectGid = sanitizeExternalId(env.ASANA_PROJECT_GID || "");
+  const workspaceName = sanitizePlainText(env.ASANA_WORKSPACE_NAME || "versantmedia.com", 120);
+  const projectName = sanitizePlainText(env.ASANA_PROJECT_NAME || "GN CORE QA HQ", 160);
+  const tokenConfigured = Boolean(env.ASANA_ACCESS_TOKEN);
+
+  return {
+    workspaceGid,
+    workspaceName,
+    projectGid,
+    projectName,
+    tokenConfigured,
+    canCreate: tokenConfigured && Boolean(workspaceGid) && Boolean(projectGid)
+  };
+}
+
+function sanitizeAsanaIntake(body = {}) {
+  const relatedTicket = sanitizePrompt(body.relatedTicket || body.ticket || "", 80).toUpperCase();
+  const sourceUrl = sanitizeUrl(body.sourceUrl || body.url || "");
+  const requestType = sanitizePlainText(body.requestType || "QA support request", 80);
+  const priority = sanitizePlainText(body.priority || "Normal", 40);
+  const requester = sanitizePlainText(body.requester || "HQ user", 120);
+  const summary = sanitizePlainText(body.summary || body.title || "", 180);
+  const details = sanitizePlainText(body.details || body.description || "", 4000);
+
+  return {
+    summary,
+    details,
+    requestType,
+    priority,
+    requester,
+    relatedTicket,
+    sourceUrl
+  };
+}
+
+function buildAsanaTaskPayload(config, intake, jiraHandoff) {
+  return {
+    data: {
+      workspace: config.workspaceGid,
+      projects: [config.projectGid],
+      name: intake.summary,
+      notes: buildAsanaNotes(config, intake, jiraHandoff)
+    }
+  };
+}
+
+function buildAsanaNotes(config, intake, jiraHandoff) {
+  return [
+    "CORE QA HQ intake",
+    "",
+    `Project: ${config.projectName} (${config.projectGid})`,
+    `Requester: ${intake.requester}`,
+    `Request type: ${intake.requestType}`,
+    `Priority: ${intake.priority}`,
+    intake.relatedTicket ? `Related ticket: ${intake.relatedTicket}` : "",
+    intake.sourceUrl ? `Source URL: ${intake.sourceUrl}` : "",
+    "",
+    "Jira handoff:",
+    jiraHandoff.canCreate
+      ? "HQ is configured for direct Jira issue creation."
+      : "HQ prepared a manual Jira handoff because Jira Worker credentials are not configured.",
+    jiraHandoff.url ? `Jira URL: ${jiraHandoff.url}` : "",
+    "",
+    "Details:",
+    intake.details || "No additional details were provided."
+  ].filter((line) => line !== "").join("\n");
+}
+
+async function createAsanaTask(env, config, intake, jiraHandoff) {
+  const response = await fetch("https://app.asana.com/api/1.0/tasks?opt_fields=gid,name,permalink_url,created_at", {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${env.ASANA_ACCESS_TOKEN}`,
+      "content-type": "application/json; charset=utf-8"
+    },
+    body: JSON.stringify(buildAsanaTaskPayload(config, intake, jiraHandoff))
+  });
+
+  let payload = {};
+  try {
+    payload = await response.json();
+  } catch {
+    payload = {};
+  }
+
+  if (!response.ok || payload.errors) {
+    const detail = Array.isArray(payload.errors)
+      ? payload.errors.map((error) => error.message).filter(Boolean).join("; ")
+      : "";
+    throw new Error(`Asana task creation failed with HTTP ${response.status}${detail ? `: ${detail}` : ""}.`);
+  }
+
+  return {
+    gid: payload.data?.gid || "",
+    name: payload.data?.name || intake.summary,
+    url: payload.data?.permalink_url || `https://app.asana.com/0/${config.projectGid}`,
+    projectName: config.projectName,
+    projectGid: config.projectGid
+  };
+}
+
+function getJiraIntakeConfig(env) {
+  const siteUrl = sanitizeUrl(env.JIRA_SITE_URL || "https://golfnow.atlassian.net").replace(/\/$/, "");
+  const projectKey = sanitizePrompt(env.JIRA_INTAKE_PROJECT_KEY || env.JIRA_PROJECT_KEY || "CORE", 24).toUpperCase();
+  const issueType = sanitizePlainText(env.JIRA_INTAKE_ISSUE_TYPE || "Task", 60);
+  const email = sanitizePlainText(env.JIRA_EMAIL || "", 160);
+  const token = env.JIRA_MCP_TOKEN || env.JIRA_API_TOKEN || "";
+
+  return {
+    siteUrl,
+    projectKey,
+    issueType,
+    email,
+    token,
+    canCreate: Boolean(siteUrl && projectKey && issueType && email && token)
+  };
+}
+
+function buildJiraHandoff(env, intake) {
+  const jira = getJiraIntakeConfig(env);
+  const summary = `[HQ Intake] ${intake.summary}`;
+  const description = [
+    `Asana/HQ intake request from ${intake.requester}.`,
+    "",
+    `Type: ${intake.requestType}`,
+    `Priority: ${intake.priority}`,
+    intake.relatedTicket ? `Related ticket: ${intake.relatedTicket}` : "",
+    intake.sourceUrl ? `Source URL: ${intake.sourceUrl}` : "",
+    "",
+    intake.details || "No additional details were provided."
+  ].filter((line) => line !== "").join("\n");
+
+  return {
+    mode: jira.canCreate ? "direct-create" : "manual-handoff",
+    canCreate: jira.canCreate,
+    projectKey: jira.projectKey,
+    issueType: jira.issueType,
+    summary,
+    description,
+    url: `${jira.siteUrl}/jira/software/c/projects/${encodeURIComponent(jira.projectKey)}/issues`,
+    message: jira.canCreate
+      ? "HQ will attempt to create a Jira issue with configured Worker Jira credentials."
+      : "Jira Worker credentials are not configured; HQ returns this copy-ready Jira handoff."
+  };
+}
+
+async function createJiraIntakeIfConfigured(env, intake, asanaTask) {
+  const jira = getJiraIntakeConfig(env);
+
+  if (!jira.canCreate) {
+    return {
+      issue: null,
+      warning: "Jira direct create is not configured on the HQ Worker. Use the Jira handoff link/payload returned by this request."
+    };
+  }
+
+  const summary = `[HQ Intake] ${intake.summary}`;
+  const lines = [
+    `Asana task: ${asanaTask.url || asanaTask.name}`,
+    `Requester: ${intake.requester}`,
+    `Request type: ${intake.requestType}`,
+    `Priority: ${intake.priority}`,
+    intake.relatedTicket ? `Related ticket: ${intake.relatedTicket}` : "",
+    intake.sourceUrl ? `Source URL: ${intake.sourceUrl}` : "",
+    "",
+    intake.details || "No additional details were provided."
+  ].filter((line) => line !== "");
+
+  try {
+    const response = await fetch(`${jira.siteUrl}/rest/api/3/issue`, {
+      method: "POST",
+      headers: {
+        authorization: `Basic ${btoa(`${jira.email}:${jira.token}`)}`,
+        accept: "application/json",
+        "content-type": "application/json; charset=utf-8"
+      },
+      body: JSON.stringify({
+        fields: {
+          project: { key: jira.projectKey },
+          issuetype: { name: jira.issueType },
+          summary,
+          description: buildJiraAdf(lines),
+          labels: ["core-qa-hq", "asana-intake"]
+        }
+      })
+    });
+    const payload = await response.json().catch(() => ({}));
+
+    if (!response.ok || payload.errors) {
+      const detail = payload.errorMessages?.join("; ") || Object.values(payload.errors || {}).join("; ") || payload.message || "unknown Jira error";
+      return {
+        issue: null,
+        warning: `Jira direct create failed with HTTP ${response.status}: ${detail}`
+      };
+    }
+
+    const key = payload.key || "";
+    return {
+      issue: {
+        mode: "direct-create",
+        key,
+        url: key ? `${jira.siteUrl}/browse/${key}` : `${jira.siteUrl}/jira/software/c/projects/${encodeURIComponent(jira.projectKey)}/issues`,
+        projectKey: jira.projectKey,
+        issueType: jira.issueType,
+        summary
+      },
+      warning: ""
+    };
+  } catch (error) {
+    return {
+      issue: null,
+      warning: `Jira direct create failed: ${error.message}`
+    };
+  }
+}
+
+function buildJiraAdf(lines) {
+  return {
+    type: "doc",
+    version: 1,
+    content: lines.map((line) => ({
+      type: "paragraph",
+      content: line
+        ? [{ type: "text", text: line }]
+        : []
+    }))
+  };
+}
+
+async function notifyAsanaIntakeSlack(env, intake, asanaTask, jiraResult) {
+  const config = getSlackConfig(env);
+
+  if (!config.channelConfigured) {
+    return {
+      ok: false,
+      warning: "Slack channel is not configured for Asana intake notifications."
+    };
+  }
+
+  if (!config.tokenConfigured) {
+    return {
+      ok: false,
+      warning: "SLACK_BOT_TOKEN is not configured, so the Asana intake Slack notification was skipped."
+    };
+  }
+
+  const slackPayload = {
+    channel: config.channel,
+    text: buildAsanaSlackMessage(env, intake, asanaTask, jiraResult),
+    unfurl_links: false,
+    unfurl_media: false
+  };
+  const { response, payload } = await postSlackMessage(env, slackPayload);
+
+  if (!response.ok || !payload.ok) {
+    return {
+      ok: false,
+      status: response.status,
+      slackError: payload.error || "unknown_error",
+      warning: formatSlackError(payload.error, response.status)
+    };
+  }
+
+  return {
+    ok: true,
+    channel: payload.channel || config.channel,
+    ts: payload.ts || "",
+    warning: ""
+  };
+}
+
+function buildAsanaSlackMessage(env, intake, asanaTask, jiraResult) {
+  const mention = sanitizeSlackMessage(env.ASANA_INTAKE_SLACK_MENTION || "Dewan Kabir");
+  const asanaLink = asanaTask?.url ? `<${asanaTask.url}|${asanaTask.name || "Asana task"}>` : (asanaTask?.name || "Asana task");
+  const jiraLink = jiraResult?.url ? `<${jiraResult.url}|${jiraResult.key || jiraResult.projectKey || "Jira handoff"}>` : "Jira handoff not configured";
+  const related = intake.relatedTicket ? `\n*Related ticket:* ${intake.relatedTicket}` : "";
+  const source = intake.sourceUrl ? `\n*Source:* ${intake.sourceUrl}` : "";
+
+  return [
+    "*CORE QA HQ intake opened*",
+    mention ? `*Notify:* ${mention}` : "",
+    `*Summary:* ${intake.summary}`,
+    `*Type:* ${intake.requestType}`,
+    `*Priority:* ${intake.priority}`,
+    related.trim(),
+    source.trim(),
+    `*Asana:* ${asanaLink}`,
+    `*Jira:* ${jiraLink}`,
+    intake.details ? `*Details:* ${truncateText(intake.details, 650)}` : ""
+  ].filter(Boolean).join("\n");
+}
+
+function sanitizeExternalId(value) {
+  return String(value || "").trim().replace(/[^\w:-]/g, "").slice(0, 140);
+}
+
+function sanitizePlainText(value, maxLength = 1000) {
+  return String(value || "")
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .trim()
+    .slice(0, maxLength);
+}
+
+function sanitizeUrl(value) {
+  const text = String(value || "").trim().slice(0, 500);
+  if (!text) return "";
+
+  try {
+    const url = new URL(text);
+    return url.protocol === "http:" || url.protocol === "https:" ? url.toString() : "";
+  } catch {
+    return "";
+  }
 }
 
 function handleSlackStatus(env, url) {

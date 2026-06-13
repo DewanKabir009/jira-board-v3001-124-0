@@ -91,6 +91,12 @@ SPEC-HQ-10 turns the notifier into a two-way bridge. The same panel now shows ou
 
 The Worker requires `SLACK_BOT_TOKEN` as a Cloudflare secret for outbound posting and `SLACK_SIGNING_SECRET` for inbound Slack request verification. `SLACK_CHANNEL_ID` or `SLACK_DEFAULT_CHANNEL_ID` is preferred, with `SLACK_DEFAULT_CHANNEL_NAME=core-qa-dream-team` as the fallback.
 
+## HQ Asana Intake
+
+SPEC-HQ-11 adds an Asana intake form to `/modern/hq/#automation`. The browser checks `GET /api/asana/status`, then sends reviewed requests to `POST /api/asana/intake`.
+
+The Worker creates tasks in Asana workspace `versantmedia.com` and project `GN CORE QA HQ` (`1215683271714250`) using the `ASANA_ACCESS_TOKEN` secret. After the Asana task is created, the same Worker attempts the Slack notification through the CORE JIRA NOTIFIER AGENT route and returns either a direct Jira issue link or a manual Jira handoff payload depending on whether Jira Worker credentials are configured.
+
 ## Migration Rule
 
 Do not replace the current generated board until the Astro shell has parity for ticket scanning, filters, Jira links, assignee writes, checklist comments, media, and release-board navigation.
