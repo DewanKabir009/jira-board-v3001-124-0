@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-13T14:51:33.241Z",
-  "pulledAtDisplay": "Jun 13, 2026, 10:51 AM",
+  "pulledAt": "2026-06-13T15:10:22.031Z",
+  "pulledAtDisplay": "Jun 13, 2026, 11:10 AM",
   "total": 17,
   "issues": [
     {
@@ -1242,8 +1242,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-13T14:51:33.241Z",
-    "pulledAtDisplay": "Jun 13, 2026, 10:51 AM",
+    "pulledAt": "2026-06-13T15:10:22.031Z",
+    "pulledAtDisplay": "Jun 13, 2026, 11:10 AM",
     "total": 95,
     "mainTotal": 95,
     "subtaskTotal": 0,
@@ -7205,13 +7205,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-13T14:51:04.390Z",
-    "pulledAtDisplay": "Jun 13, 2026, 10:51 AM",
+    "pulledAt": "2026-06-13T15:09:49.085Z",
+    "pulledAtDisplay": "Jun 13, 2026, 11:09 AM",
     "window": {
-      "start": "2026-04-29T14:51:04.390Z",
-      "end": "2026-12-10T14:51:04.390Z",
-      "startDisplay": "Apr 29, 2026, 10:51 AM",
-      "endDisplay": "Dec 10, 2026, 9:51 AM"
+      "start": "2026-04-29T15:09:49.084Z",
+      "end": "2026-12-10T15:09:49.084Z",
+      "startDisplay": "Apr 29, 2026, 11:09 AM",
+      "endDisplay": "Dec 10, 2026, 10:09 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7224,7 +7224,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-13T14:51:06.901Z",
+        "pulledAt": "2026-06-13T15:09:51.442Z",
         "eventCount": 90,
         "events": [
           {
@@ -8218,21 +8218,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Holiday Freeze",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-08T00:00:00.000Z",
-            "startDisplay": "Aug 30, 2026, 8:00 PM",
-            "endDisplay": "Sep 7, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Golf Freeze",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8243,6 +8228,21 @@
             "endDisplay": "Aug 31, 2026, 8:00 PM",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Holiday Freeze",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-08T00:00:00.000Z",
+            "startDisplay": "Aug 30, 2026, 8:00 PM",
+            "endDisplay": "Sep 7, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Golf Freeze",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8533,21 +8533,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDisplay": "Dec 7, 2026, 7:00 PM",
-            "endDisplay": "Dec 8, 2026, 7:00 PM",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221750Z-1404075373@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8576,6 +8561,21 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDisplay": "Dec 7, 2026, 7:00 PM",
+            "endDisplay": "Dec 8, 2026, 7:00 PM",
+            "allDay": true,
+            "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -8583,10 +8583,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-13T14:26:25.290Z",
-    "previousPulledAtDisplay": "Jun 13, 2026, 10:26 AM",
-    "currentPulledAt": "2026-06-13T14:51:33.241Z",
-    "currentPulledAtDisplay": "Jun 13, 2026, 10:51 AM",
+    "previousPulledAt": "2026-06-13T14:51:33.241Z",
+    "previousPulledAtDisplay": "Jun 13, 2026, 10:51 AM",
+    "currentPulledAt": "2026-06-13T15:10:22.031Z",
+    "currentPulledAtDisplay": "Jun 13, 2026, 11:10 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -8594,6 +8594,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-13T14:51:33.241Z",
+      "previousPulledAtDisplay": "Jun 13, 2026, 10:51 AM",
+      "currentPulledAt": "2026-06-13T15:10:22.031Z",
+      "currentPulledAtDisplay": "Jun 13, 2026, 11:10 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-13T14:26:25.290Z",
       "previousPulledAtDisplay": "Jun 13, 2026, 10:26 AM",
@@ -10749,113 +10760,6 @@
           "summary": "Add IsCaddyRequested parameter support to EZL/EZLRTS tee sheet interface",
           "before": "Pending Deployment (DEV)",
           "after": "QA Testing (DEV)",
-          "type": "Story",
-          "isSubtask": false,
-          "assignee": "Dewan Kabir",
-          "assignedDeveloper": "Yoel Martin Pardo",
-          "status": "QA Testing (DEV)",
-          "parent": null
-        }
-      ]
-    },
-    {
-      "previousPulledAt": "2026-06-10T20:21:48.130Z",
-      "previousPulledAtDisplay": "Jun 10, 2026, 4:21 PM",
-      "currentPulledAt": "2026-06-10T20:46:45.283Z",
-      "currentPulledAtDisplay": "Jun 10, 2026, 4:46 PM",
-      "isBaseline": false,
-      "added": [
-        {
-          "key": "CORE-14488",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14488",
-          "summary": "Code changes for [CORE - 14427]",
-          "description": "",
-          "descriptionHtml": "",
-          "descriptionImageCount": 0,
-          "descriptionVideoCount": 0,
-          "descriptionMediaCount": 0,
-          "commentCount": 0,
-          "comments": [],
-          "lastCommentUrl": "",
-          "lastCommentDisplay": "",
-          "lastCommentAuthor": "",
-          "testChecklist": null,
-          "type": "Developer Task (sub task)",
-          "isSubtask": true,
-          "status": "Development",
-          "priority": "P1",
-          "assignee": "Luis Vallejo Mursuli",
-          "assigneeAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-          "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-          "assignedDeveloper": "Luis Vallejo Mursuli",
-          "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-          "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-          "updated": "2026-06-10T16:27:23.662-0400",
-          "updatedDisplay": "Jun 10, 2026, 4:27 PM",
-          "created": "2026-05-19T19:23:19.189-0400",
-          "createdDisplay": "May 19, 2026, 7:23 PM",
-          "components": [
-            "GolfNow.Services.Reservation",
-            "GolfNowAPI"
-          ],
-          "fixVersions": [
-            "v3001.124.0"
-          ],
-          "sprints": [],
-          "sprintNames": [],
-          "resolution": "",
-          "parent": {
-            "key": "CORE-14427",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14427",
-            "summary": "Home Course Selection/Management",
-            "description": "",
-            "type": "Story",
-            "status": "Development",
-            "priority": "P1"
-          }
-        }
-      ],
-      "removed": [],
-      "updated": [
-        {
-          "key": "CORE-14396",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14396",
-          "summary": "Add IsCaddyRequested parameter support to EZL/EZLRTS tee sheet interface",
-          "changes": [
-            {
-              "field": "status",
-              "label": "Status",
-              "before": "Code Review",
-              "after": "Pending Deployment (DEV)"
-            },
-            {
-              "field": "assignee",
-              "label": "Assignee",
-              "before": "Tyler Olechnowicz",
-              "after": "Yoel Martin Pardo"
-            },
-            {
-              "field": "updatedDisplay",
-              "label": "Jira updated",
-              "before": "Jun 10, 2026, 2:08 PM",
-              "after": "Jun 10, 2026, 4:38 PM"
-            }
-          ],
-          "type": "Story",
-          "isSubtask": false,
-          "assignee": "Dewan Kabir",
-          "assignedDeveloper": "Yoel Martin Pardo",
-          "status": "QA Testing (DEV)",
-          "parent": null
-        }
-      ],
-      "statusChanges": [
-        {
-          "key": "CORE-14396",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14396",
-          "summary": "Add IsCaddyRequested parameter support to EZL/EZLRTS tee sheet interface",
-          "before": "Code Review",
-          "after": "Pending Deployment (DEV)",
           "type": "Story",
           "isSubtask": false,
           "assignee": "Dewan Kabir",
