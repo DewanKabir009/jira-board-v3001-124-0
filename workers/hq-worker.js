@@ -119,20 +119,27 @@ function shouldBypassAssetCache(pathname) {
   );
 }
 
-function handleAsanaStatus(env) {
+async function handleAsanaStatus(env) {
   const config = getAsanaConfig(env);
+  const validation = await validateAsanaProject(env, config);
   const jira = getJiraIntakeConfig(env);
   const slack = getSlackConfig(env);
+  const workspaceName = validation.workspaceName || config.workspaceName;
+  const projectName = validation.projectName || config.projectName;
+  const canCreate = config.canCreate && validation.ok;
 
   return jsonResponse({
     ok: true,
     provider: "Asana API",
     workspaceGid: config.workspaceGid,
-    workspaceName: config.workspaceName,
+    workspaceName,
     projectGid: config.projectGid,
-    projectName: config.projectName,
+    projectName,
     tokenConfigured: config.tokenConfigured,
-    canCreate: config.canCreate,
+    canCreate,
+    apiValidated: validation.attempted,
+    apiReachable: validation.ok,
+    validationMessage: validation.message,
     slack: {
       channel: slack.channel,
       channelName: slack.channelName,
@@ -146,9 +153,12 @@ function handleAsanaStatus(env) {
       issueType: jira.issueType,
       canCreate: jira.canCreate
     },
-    message: config.canCreate
-      ? `Asana intake is ready for ${config.projectName}.`
-      : "Set ASANA_ACCESS_TOKEN, ASANA_WORKSPACE_GID, and ASANA_PROJECT_GID before creating Asana tickets."
+    message: canCreate
+      ? `Asana intake is ready for ${projectName}.`
+      : validation.message ||
+        (config.canCreate
+          ? `Asana intake is configured, but HQ could not validate ${config.projectName}.`
+          : "Set ASANA_ACCESS_TOKEN, ASANA_WORKSPACE_GID, and ASANA_PROJECT_GID before creating Asana tickets.")
   });
 }
 
@@ -249,6 +259,75 @@ function getAsanaConfig(env) {
     tokenConfigured,
     canCreate: tokenConfigured && Boolean(workspaceGid) && Boolean(projectGid)
   };
+}
+
+async function validateAsanaProject(env, config) {
+  if (!config.tokenConfigured || !config.projectGid) {
+    return {
+      attempted: false,
+      ok: false,
+      message: "Set ASANA_ACCESS_TOKEN and ASANA_PROJECT_GID before HQ can validate Asana."
+    };
+  }
+
+  try {
+    const response = await fetch(
+      `https://app.asana.com/api/1.0/projects/${config.projectGid}?opt_fields=gid,name,workspace.gid,workspace.name`,
+      {
+        headers: {
+          authorization: `Bearer ${env.ASANA_ACCESS_TOKEN}`,
+          accept: "application/json"
+        }
+      }
+    );
+
+    let payload = {};
+    try {
+      payload = await response.json();
+    } catch {
+      payload = {};
+    }
+
+    if (!response.ok || payload.errors) {
+      const detail = Array.isArray(payload.errors)
+        ? payload.errors.map((error) => error.message).filter(Boolean).join("; ")
+        : "";
+      return {
+        attempted: true,
+        ok: false,
+        status: response.status,
+        message: `Asana validation failed with HTTP ${response.status}${detail ? `: ${detail}` : ""}.`
+      };
+    }
+
+    const project = payload.data || {};
+    const workspace = project.workspace || {};
+    if (config.workspaceGid && workspace.gid && workspace.gid !== config.workspaceGid) {
+      return {
+        attempted: true,
+        ok: false,
+        status: response.status,
+        projectName: sanitizePlainText(project.name || config.projectName, 160),
+        workspaceName: sanitizePlainText(workspace.name || config.workspaceName, 120),
+        message: `Asana project ${config.projectGid} belongs to workspace ${workspace.gid}, not ${config.workspaceGid}.`
+      };
+    }
+
+    return {
+      attempted: true,
+      ok: true,
+      status: response.status,
+      projectName: sanitizePlainText(project.name || config.projectName, 160),
+      workspaceName: sanitizePlainText(workspace.name || config.workspaceName, 120),
+      message: `Asana project ${project.name || config.projectName} validated.`
+    };
+  } catch (error) {
+    return {
+      attempted: true,
+      ok: false,
+      message: `Asana validation request failed: ${sanitizePlainText(error?.message || "unknown error", 240)}.`
+    };
+  }
 }
 
 function sanitizeAsanaIntake(body = {}) {
