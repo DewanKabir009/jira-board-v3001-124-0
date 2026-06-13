@@ -1020,14 +1020,28 @@ ul {
 }
 
 .asana-intake-card {
+  order: -1;
+  scroll-margin-top: 16px;
   display: grid;
   gap: 12px;
-  border: 1px solid rgba(0, 122, 77, 0.28);
+  border: 2px solid rgba(0, 122, 77, 0.42);
   border-radius: 8px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(224, 239, 255, 0.86) 48%, rgba(217, 255, 235, 0.86));
-  box-shadow: 0 18px 38px rgba(0, 122, 77, 0.12);
+    linear-gradient(135deg, rgba(255, 247, 235, 0.98), rgba(255, 255, 255, 0.98) 40%, rgba(217, 255, 235, 0.9));
+  box-shadow: 0 20px 42px rgba(0, 122, 77, 0.16);
   padding: 16px;
+}
+
+.asana-intake-card::before {
+  content: "HQ REQUEST INTAKE";
+  justify-self: start;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--hq-orange), var(--hq-green));
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 950;
+  letter-spacing: 0;
+  padding: 6px 10px;
 }
 
 .asana-intake-top,

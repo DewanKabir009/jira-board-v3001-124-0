@@ -524,7 +524,7 @@ const hqSpecs = [
       <nav class="hq-nav" aria-label="HQ modules">
         <a class="active" href="#boards">Release boards</a>
         <a href="#kb">Knowledge base</a>
-        <a href="#automation">Automation bench</a>
+        <a href="#automation">Automation + Asana intake</a>
         <a href="#ai">AI summary</a>
         <a href="#status">Operations status</a>
         <a href="#access">Access control</a>
@@ -547,6 +547,7 @@ const hqSpecs = [
         </div>
         <div class="command-actions" aria-label="HQ quick links">
           <a href="#boards">Boards</a>
+          <a href="#asana-intake">Open request</a>
           <a href="#automation">Runbook</a>
           <a href="#specs">Specs</a>
         </div>
@@ -697,9 +698,9 @@ const hqSpecs = [
         <div class="module-heading">
           <div>
             <p class="eyebrow">Automation bench</p>
-            <h2>Approved run surface</h2>
+            <h2>Asana intake and approved runs</h2>
           </div>
-          <span class="module-pill">SPEC-HQ-05 active</span>
+          <span class="module-pill">SPEC-HQ-05 + SPEC-HQ-11 active</span>
         </div>
 
         <div class="automation-console">
@@ -734,6 +735,7 @@ const hqSpecs = [
           </article>
 
           <article
+            id="asana-intake"
             class="asana-intake-card"
             data-asana-status-endpoint={asanaRuntime.statusEndpoint}
             data-asana-intake-endpoint={asanaRuntime.intakeEndpoint}
