@@ -4665,10 +4665,17 @@ function ChecklistWorkspace({ issue, data }: { issue: Issue; data: DashboardData
   );
 }
 
+function withLiveArtifactCacheBust(candidateUrl: string, artifactName: string): string {
+  const url = new URL(candidateUrl);
+  url.searchParams.set("hqArtifact", artifactName);
+  url.searchParams.set("hqCacheBust", `${Date.now()}`);
+  return url.toString();
+}
+
 async function fetchDashboardData(requestedUrl: string): Promise<DashboardData> {
   const candidates = [...new Set([requestedUrl, "dashboard-data.json", "../dashboard-data.json"])]
     .filter(Boolean)
-    .map((value) => new URL(value, window.location.href).toString());
+    .map((value) => withLiveArtifactCacheBust(new URL(value, window.location.href).toString(), "dashboard-data"));
 
   let lastError = "";
 
@@ -4691,7 +4698,7 @@ async function fetchDashboardData(requestedUrl: string): Promise<DashboardData> 
 async function fetchBoardRegistry(requestedUrl: string): Promise<BoardRegistry> {
   const candidates = [...new Set([requestedUrl, "../boards.json", "boards.json"])]
     .filter(Boolean)
-    .map((value) => new URL(value, window.location.href).toString());
+    .map((value) => withLiveArtifactCacheBust(new URL(value, window.location.href).toString(), "boards"));
 
   let lastError = "";
 

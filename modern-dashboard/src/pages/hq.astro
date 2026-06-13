@@ -606,15 +606,20 @@ const hqSpecs = [
           ))}
         </div>
 
-        <article class="board-preview">
+        <article
+          class="board-preview"
+          data-board-preview
+          data-board-url="https://core-qa-headquarters-124.dfkabir253.workers.dev/"
+          data-board-data-url="/dashboard-data.json"
+        >
           <div class="preview-heading">
             <div>
               <p class="eyebrow">Current preview</p>
               <h3>v3001.124.0 modern dashboard</h3>
             </div>
-            <a href="https://core-qa-headquarters-124.dfkabir253.workers.dev/">Open full board</a>
+            <a id="current-board-full-link" href="https://core-qa-headquarters-124.dfkabir253.workers.dev/">Open full board</a>
           </div>
-          <iframe title="v3001.124.0 modern board preview" src="https://core-qa-headquarters-124.dfkabir253.workers.dev/" loading="lazy"></iframe>
+          <iframe id="current-board-preview-frame" title="v3001.124.0 modern board preview" src="https://core-qa-headquarters-124.dfkabir253.workers.dev/" loading="lazy"></iframe>
         </article>
       </section>
 
@@ -1424,6 +1429,51 @@ const hqSpecs = [
       </section>
     </section>
   </main>
+
+  <script is:inline>
+    (() => {
+      const preview = document.querySelector("[data-board-preview]");
+      if (!preview) return;
+
+      const boardUrl = preview.getAttribute("data-board-url") || "/";
+      const dataUrl = preview.getAttribute("data-board-data-url") || "/dashboard-data.json";
+      const fullLink = document.querySelector("#current-board-full-link");
+      const frame = document.querySelector("#current-board-preview-frame");
+
+      const withFreshnessToken = (url, token) => {
+        try {
+          const nextUrl = new URL(url, window.location.href);
+          nextUrl.searchParams.set("boardPull", token);
+          return nextUrl.toString();
+        } catch {
+          return url;
+        }
+      };
+
+      const applyFreshBoardUrl = (token) => {
+        const freshUrl = withFreshnessToken(boardUrl, token || Date.now().toString());
+        if (fullLink) {
+          fullLink.setAttribute("href", freshUrl);
+        }
+        if (frame && frame.getAttribute("src") !== freshUrl) {
+          frame.setAttribute("src", freshUrl);
+        }
+      };
+
+      fetch(dataUrl, { cache: "no-store" })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          const token = data?.pulledAt || data?.pullDiff?.currentPulledAt || data?.dataArtifact?.generatedAt || Date.now().toString();
+          applyFreshBoardUrl(token);
+        })
+        .catch(() => applyFreshBoardUrl(Date.now().toString()));
+    })();
+  </script>
 
   <script is:inline>
     (() => {
