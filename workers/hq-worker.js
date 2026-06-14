@@ -204,7 +204,7 @@ async function handleAsanaStatus(env, url) {
     }
   }
 
-  const canCreate = config.canCreate && validation.ok && (!ticketType.attempted || ticketType.resolved);
+  const canCreate = config.canCreate && validation.ok;
 
   return jsonResponse({
     ok: true,
@@ -237,8 +237,6 @@ async function handleAsanaStatus(env, url) {
     },
     message: canCreate
       ? `Asana intake is ready for ${projectName}.`
-      : ticketType.attempted && !ticketType.resolved
-        ? ticketType.warning || `Asana intake needs the ${config.ticketTypeName} custom type before tickets can be opened.`
       : validation.message ||
         (config.canCreate
           ? `Asana intake is configured, but HQ could not validate ${config.projectName}.`
@@ -270,11 +268,9 @@ async function handleAsanaIntake(request, env, url) {
   if (dryRun) {
     let previewRouting = null;
     let previewAssignee = null;
-    let previewTicketType = null;
     if (config.tokenConfigured) {
       previewRouting = await ensureAsanaRouting(env, config, { ensure: false }).catch(() => null);
       previewAssignee = await resolveAsanaAssignee(env, config).catch(() => null);
-      previewTicketType = await resolveAsanaTicketType(env, config).catch(() => null);
     }
 
     return jsonResponse({
@@ -285,7 +281,7 @@ async function handleAsanaIntake(request, env, url) {
       projectGid: config.projectGid,
       message: "Dry run only; no Asana, Slack, or Jira write was performed.",
       preview: {
-        asana: buildAsanaTaskPayload(config, intake, jiraHandoff, previewRouting, previewAssignee, previewTicketType).data,
+        asana: buildAsanaTaskPayload(config, intake, jiraHandoff, previewRouting, previewAssignee).data,
         slack: buildAsanaSlackMessage(env, intake, {
           url: "https://app.asana.com/0/" + config.projectGid,
           name: intake.summary
@@ -949,12 +945,25 @@ function buildAsanaNotes(config, intake, jiraHandoff) {
 async function createAsanaTask(env, config, intake, jiraHandoff) {
   const routing = await ensureAsanaRouting(env, config, { ensure: true });
   const assignee = await resolveAsanaAssignee(env, config);
-  const ticketType = await resolveAsanaTicketType(env, config);
-  if (!ticketType.gid) {
-    throw new Error(ticketType.warning || `Asana custom type ${config.ticketTypeName || "Ticket"} was not found for ${config.projectName}.`);
+  let ticketType = {
+    name: config.ticketTypeName || "Ticket",
+    gid: "",
+    resolved: false,
+    attempted: false
+  };
+  try {
+    ticketType = await resolveAsanaTicketType(env, config);
+  } catch (error) {
+    ticketType = {
+      name: config.ticketTypeName || "Ticket",
+      gid: "",
+      resolved: false,
+      attempted: true,
+      warning: sanitizePlainText(error?.message || "Asana ticket type lookup failed.", 260)
+    };
   }
-  const requestPayload = buildAsanaTaskPayload(config, intake, jiraHandoff, routing, assignee, ticketType);
-  const response = await fetch("https://app.asana.com/api/1.0/tasks?opt_fields=gid,name,permalink_url,created_at,custom_type.gid,custom_type.name", {
+  const requestPayload = buildAsanaTaskPayload(config, intake, jiraHandoff, routing, assignee);
+  const response = await fetch("https://app.asana.com/api/1.0/tasks?opt_fields=gid,name,permalink_url,created_at", {
     method: "POST",
     headers: {
       authorization: `Bearer ${env.ASANA_ACCESS_TOKEN}`,
@@ -983,7 +992,6 @@ async function createAsanaTask(env, config, intake, jiraHandoff) {
     : { ok: false, warning: `Asana ticket could not be placed in ${config.defaultSectionName} because the section was not resolved.` };
   const warnings = [
     ...(routing.warnings || []),
-    ticketType.warning,
     assignee.warning,
     sectionPlacement.warning
   ].filter(Boolean);
@@ -996,9 +1004,12 @@ async function createAsanaTask(env, config, intake, jiraHandoff) {
     projectGid: config.projectGid,
     section: routing.section,
     ticketType: {
-      gid: payload.data?.custom_type?.gid || ticketType.gid || "",
-      name: payload.data?.custom_type?.name || ticketType.name || config.ticketTypeName,
-      resolved: Boolean(payload.data?.custom_type?.gid || ticketType.gid)
+      gid: ticketType.gid || "",
+      name: ticketType.name || config.ticketTypeName,
+      resolved: Boolean(ticketType.gid),
+      applied: false,
+      mode: "project-section-fallback",
+      message: "Asana's task-create API rejected native custom_type on this route, so HQ creates the item normally and places it in the New ticket section."
     },
     statusField: routing.statusField,
     defaultAssignee: assignee,
