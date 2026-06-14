@@ -170,12 +170,12 @@ SPEC-HQ-11 adds a reviewed intake path for opening CORE QA HQ work from the web 
 - Workspace: `versantmedia.com` (`1211388543961903`).
 - Project: `GN CORE QA HQ` (`1215683271714250`).
 - Endpoint: `GET /api/asana/status`.
-- Schema repair endpoint: `GET /api/asana/status?ensure=1` verifies the `New` intake placement, resolves Dewan Kabir, and creates or attaches the `Status`, `Request Type`, `Entity`, and `Environment` enum fields when missing.
+- Schema repair endpoint: `GET /api/asana/status?ensure=1` verifies the `New` intake placement, resolves Dewan Kabir, resolves the Asana `Ticket` custom type, and creates or attaches the editable `Request Type`, `Entity`, and `Environment` enum fields when missing.
 - Endpoint: `POST /api/asana/intake`.
 - Secret required: `ASANA_ACCESS_TOKEN`.
-- Default intake placement: project section `New`; HQ also sets `Status = New` when Asana exposes or allows that enum field.
+- Default intake type and placement: Asana custom type `Ticket`, project section `New`.
 - Default intake assignee: `Dewan Kabir`.
-- Enum fields: `Status`, `Request Type`, `Entity`, and `Environment`.
+- Enum fields managed by HQ: `Request Type`, `Entity`, and `Environment`. The Asana-built Status-style field is left alone unless it is already editable and attached, because Asana-created system fields can reject API edits.
 - Slack handoff: uses the existing `SLACK_BOT_TOKEN` and channel config to notify `#core-qa-dream-team`.
 - Jira handoff: creates a Jira issue only when `JIRA_SITE_URL`, `JIRA_EMAIL`, and `JIRA_MCP_TOKEN` or `JIRA_API_TOKEN` are configured on the Worker. Otherwise the response includes a copy-ready Jira payload and the CORE project link.
 - UI surface: `/hq/#automation`, inside the Automation Bench module.
@@ -423,7 +423,7 @@ Returns Asana intake readiness without creating a task.
 
 ### `POST /api/asana/intake`
 
-Creates the Asana intake task, posts the Slack notification when the bot token is configured, and returns Jira handoff state. Add `"dryRun": true` to validate routing without creating Asana, Slack, or Jira records.
+Creates the Asana intake ticket, posts the Slack notification when the bot token is configured, and returns Jira handoff state. Add `"dryRun": true` to validate routing without creating Asana, Slack, or Jira records.
 
 Request:
 
@@ -450,7 +450,11 @@ Response:
   "asana": {
     "gid": "121...",
     "name": "Need QA review for new checkout flow",
-    "url": "https://app.asana.com/0/1215683271714250/..."
+    "url": "https://app.asana.com/0/1215683271714250/...",
+    "ticketType": {
+      "name": "Ticket",
+      "resolved": true
+    }
   },
   "jira": {
     "mode": "manual-handoff",

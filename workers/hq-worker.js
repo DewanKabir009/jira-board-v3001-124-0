@@ -167,6 +167,12 @@ async function handleAsanaStatus(env, url) {
     gid: config.defaultAssigneeGid,
     resolved: Boolean(config.defaultAssigneeGid)
   };
+  let ticketType = {
+    name: config.ticketTypeName,
+    gid: "",
+    resolved: false,
+    attempted: false
+  };
 
   if (config.canCreate && validation.ok) {
     try {
@@ -184,9 +190,21 @@ async function handleAsanaStatus(env, url) {
     } catch (error) {
       assignee.warning = sanitizePlainText(error?.message || "Default Asana assignee lookup failed.", 260);
     }
+
+    try {
+      ticketType = await resolveAsanaTicketType(env, config);
+    } catch (error) {
+      ticketType = {
+        name: config.ticketTypeName,
+        gid: "",
+        resolved: false,
+        attempted: true,
+        warning: sanitizePlainText(error?.message || "Asana ticket type lookup failed.", 260)
+      };
+    }
   }
 
-  const canCreate = config.canCreate && validation.ok;
+  const canCreate = config.canCreate && validation.ok && (!ticketType.attempted || ticketType.resolved);
 
   return jsonResponse({
     ok: true,
@@ -203,6 +221,7 @@ async function handleAsanaStatus(env, url) {
     schemaEnsured: shouldEnsure,
     routing,
     defaultAssignee: assignee,
+    ticketType,
     slack: {
       channel: slack.channel,
       channelName: slack.channelName,
@@ -218,6 +237,8 @@ async function handleAsanaStatus(env, url) {
     },
     message: canCreate
       ? `Asana intake is ready for ${projectName}.`
+      : ticketType.attempted && !ticketType.resolved
+        ? ticketType.warning || `Asana intake needs the ${config.ticketTypeName} custom type before tickets can be opened.`
       : validation.message ||
         (config.canCreate
           ? `Asana intake is configured, but HQ could not validate ${config.projectName}.`
@@ -247,6 +268,15 @@ async function handleAsanaIntake(request, env, url) {
   const jiraHandoff = buildJiraHandoff(env, intake);
 
   if (dryRun) {
+    let previewRouting = null;
+    let previewAssignee = null;
+    let previewTicketType = null;
+    if (config.tokenConfigured) {
+      previewRouting = await ensureAsanaRouting(env, config, { ensure: false }).catch(() => null);
+      previewAssignee = await resolveAsanaAssignee(env, config).catch(() => null);
+      previewTicketType = await resolveAsanaTicketType(env, config).catch(() => null);
+    }
+
     return jsonResponse({
       ok: true,
       mode: "dry-run",
@@ -255,7 +285,7 @@ async function handleAsanaIntake(request, env, url) {
       projectGid: config.projectGid,
       message: "Dry run only; no Asana, Slack, or Jira write was performed.",
       preview: {
-        asana: buildAsanaTaskPayload(config, intake, jiraHandoff).data,
+        asana: buildAsanaTaskPayload(config, intake, jiraHandoff, previewRouting, previewAssignee, previewTicketType).data,
         slack: buildAsanaSlackMessage(env, intake, {
           url: "https://app.asana.com/0/" + config.projectGid,
           name: intake.summary
@@ -299,7 +329,7 @@ async function handleAsanaIntake(request, env, url) {
     ok: true,
     provider: "CORE QA HQ intake",
     message: warnings.length
-      ? "Asana ticket was opened. Review handoff warnings before assuming all downstream systems were updated."
+      ? "Asana ticket was opened. Review warnings before assuming all downstream systems were updated."
       : "Asana ticket opened and downstream notifications completed.",
     asana: asanaTask,
     jira: jiraResult.issue || jiraHandoff,
@@ -315,6 +345,7 @@ function getAsanaConfig(env) {
   const projectName = sanitizePlainText(env.ASANA_PROJECT_NAME || "GN CORE QA HQ", 160);
   const defaultSectionName = sanitizePlainText(env.ASANA_DEFAULT_SECTION_NAME || "New", 80);
   const defaultStatusName = sanitizePlainText(env.ASANA_DEFAULT_STATUS_NAME || "New", 80);
+  const ticketTypeName = sanitizePlainText(env.ASANA_TASK_TYPE_NAME || env.ASANA_CUSTOM_TYPE_NAME || "Ticket", 80);
   const defaultAssigneeName = sanitizePlainText(env.ASANA_DEFAULT_ASSIGNEE_NAME || "Dewan Kabir", 120);
   const defaultAssigneeEmail = sanitizePlainText(env.ASANA_DEFAULT_ASSIGNEE_EMAIL || "dewan.kabir@versantmedia.com", 180);
   const defaultAssigneeGid = sanitizeExternalId(env.ASANA_DEFAULT_ASSIGNEE_GID || "");
@@ -327,6 +358,7 @@ function getAsanaConfig(env) {
     projectName,
     defaultSectionName,
     defaultStatusName,
+    ticketTypeName,
     defaultAssigneeName,
     defaultAssigneeEmail,
     defaultAssigneeGid,
@@ -437,7 +469,7 @@ async function ensureAsanaRouting(env, config, { ensure = false } = {}) {
     }
   }
 
-  if (!statusField.gid && ensure) {
+  if (!statusField.gid && ensure && !section?.gid) {
     try {
       statusField = await ensureAsanaStatusField(env, config, projectFieldSettings, workspaceFields);
     } catch (error) {
@@ -449,7 +481,7 @@ async function ensureAsanaRouting(env, config, { ensure = false } = {}) {
     warnings.push(`No Asana project section named ${config.defaultSectionName} was found.`);
   }
 
-  if (!statusField.gid || !statusField.optionGid) {
+  if (!section?.gid && (!statusField.gid || !statusField.optionGid)) {
     warnings.push(`No Asana enum field with a ${config.defaultStatusName} option was found.`);
   }
 
@@ -700,6 +732,40 @@ function normalizeAsanaName(value) {
   return String(value || "").trim().toLowerCase();
 }
 
+async function resolveAsanaTicketType(env, config) {
+  const customTypes = await listAsanaCustomTypes(env, config);
+  const target = normalizeAsanaName(config.ticketTypeName || "Ticket");
+  const type = customTypes.find((item) => normalizeAsanaName(item?.name) === target) || null;
+
+  return {
+    name: type?.name || config.ticketTypeName || "Ticket",
+    gid: type?.gid || "",
+    resolved: Boolean(type?.gid),
+    attempted: true,
+    warning: type?.gid ? "" : `No Asana custom type named ${config.ticketTypeName || "Ticket"} was found for ${config.projectName}.`
+  };
+}
+
+async function listAsanaCustomTypes(env, config) {
+  if (!config.projectGid) return [];
+
+  const paths = [
+    `/custom_types?project=${encodeURIComponent(config.projectGid)}&opt_fields=gid,name,enabled,resource_subtype&limit=100`,
+    `/projects/${encodeURIComponent(config.projectGid)}/custom_types?opt_fields=gid,name,enabled,resource_subtype&limit=100`
+  ];
+  const errors = [];
+
+  for (const path of paths) {
+    try {
+      return await asanaRequest(env, path);
+    } catch (error) {
+      errors.push(sanitizePlainText(error?.message || "unknown error", 180));
+    }
+  }
+
+  throw new Error(`Asana custom type lookup failed: ${errors.join(" | ")}`);
+}
+
 async function resolveAsanaAssignee(env, config) {
   if (config.defaultAssigneeGid) {
     return {
@@ -805,7 +871,7 @@ function pickAsanaOption(value, options, fallback) {
   return options.find((option) => normalizeAsanaName(option) === normalized) || fallback;
 }
 
-function buildAsanaTaskPayload(config, intake, jiraHandoff, routing = null, assignee = null) {
+function buildAsanaTaskPayload(config, intake, jiraHandoff, routing = null, assignee = null, ticketType = null) {
   const customFields = buildAsanaCustomFieldValues(config, intake, routing);
   const assigneeId = assignee?.gid || config.defaultAssigneeGid;
   const data = {
@@ -817,6 +883,10 @@ function buildAsanaTaskPayload(config, intake, jiraHandoff, routing = null, assi
 
   if (assigneeId) {
     data.assignee = assigneeId;
+  }
+
+  if (ticketType?.gid) {
+    data.custom_type = ticketType.gid;
   }
 
   if (Object.keys(customFields).length) {
@@ -879,8 +949,12 @@ function buildAsanaNotes(config, intake, jiraHandoff) {
 async function createAsanaTask(env, config, intake, jiraHandoff) {
   const routing = await ensureAsanaRouting(env, config, { ensure: true });
   const assignee = await resolveAsanaAssignee(env, config);
-  const requestPayload = buildAsanaTaskPayload(config, intake, jiraHandoff, routing, assignee);
-  const response = await fetch("https://app.asana.com/api/1.0/tasks?opt_fields=gid,name,permalink_url,created_at", {
+  const ticketType = await resolveAsanaTicketType(env, config);
+  if (!ticketType.gid) {
+    throw new Error(ticketType.warning || `Asana custom type ${config.ticketTypeName || "Ticket"} was not found for ${config.projectName}.`);
+  }
+  const requestPayload = buildAsanaTaskPayload(config, intake, jiraHandoff, routing, assignee, ticketType);
+  const response = await fetch("https://app.asana.com/api/1.0/tasks?opt_fields=gid,name,permalink_url,created_at,custom_type.gid,custom_type.name", {
     method: "POST",
     headers: {
       authorization: `Bearer ${env.ASANA_ACCESS_TOKEN}`,
@@ -900,15 +974,16 @@ async function createAsanaTask(env, config, intake, jiraHandoff) {
     const detail = Array.isArray(payload.errors)
       ? payload.errors.map((error) => error.message).filter(Boolean).join("; ")
       : "";
-    throw new Error(`Asana task creation failed with HTTP ${response.status}${detail ? `: ${detail}` : ""}.`);
+    throw new Error(`Asana ticket creation failed with HTTP ${response.status}${detail ? `: ${detail}` : ""}.`);
   }
 
   const taskGid = payload.data?.gid || "";
   const sectionPlacement = taskGid && routing.section?.gid
     ? await placeAsanaTaskInSection(env, routing.section.gid, taskGid)
-    : { ok: false, warning: `Asana task could not be placed in ${config.defaultSectionName} because the section was not resolved.` };
+    : { ok: false, warning: `Asana ticket could not be placed in ${config.defaultSectionName} because the section was not resolved.` };
   const warnings = [
     ...(routing.warnings || []),
+    ticketType.warning,
     assignee.warning,
     sectionPlacement.warning
   ].filter(Boolean);
@@ -920,6 +995,11 @@ async function createAsanaTask(env, config, intake, jiraHandoff) {
     projectName: config.projectName,
     projectGid: config.projectGid,
     section: routing.section,
+    ticketType: {
+      gid: payload.data?.custom_type?.gid || ticketType.gid || "",
+      name: payload.data?.custom_type?.name || ticketType.name || config.ticketTypeName,
+      resolved: Boolean(payload.data?.custom_type?.gid || ticketType.gid)
+    },
     statusField: routing.statusField,
     defaultAssignee: assignee,
     customFieldsApplied: summarizeAsanaAppliedFields(config, intake, routing),
@@ -1017,13 +1097,13 @@ async function createJiraIntakeIfConfigured(env, intake, asanaTask) {
   if (!jira.canCreate) {
     return {
       issue: null,
-      warning: "Jira direct create is not configured on the HQ Worker. Use the Jira handoff link/payload returned by this request."
+      warning: ""
     };
   }
 
   const summary = `[HQ Intake] ${intake.summary}`;
   const lines = [
-    `Asana task: ${asanaTask.url || asanaTask.name}`,
+    `Asana ticket: ${asanaTask.url || asanaTask.name}`,
     `Requester: ${intake.requester}`,
     `Request type: ${intake.requestType}`,
     `Entity: ${intake.entity}`,
@@ -1140,7 +1220,7 @@ async function notifyAsanaIntakeSlack(env, intake, asanaTask, jiraResult) {
 
 function buildAsanaSlackMessage(env, intake, asanaTask, jiraResult) {
   const mention = sanitizeSlackMessage(env.ASANA_INTAKE_SLACK_MENTION || "Dewan Kabir");
-  const asanaLink = asanaTask?.url ? `<${asanaTask.url}|${asanaTask.name || "Asana task"}>` : (asanaTask?.name || "Asana task");
+  const asanaLink = asanaTask?.url ? `<${asanaTask.url}|${asanaTask.name || "Asana ticket"}>` : (asanaTask?.name || "Asana ticket");
   const jiraLink = jiraResult?.url ? `<${jiraResult.url}|${jiraResult.key || jiraResult.projectKey || "Jira handoff"}>` : "Jira handoff not configured";
   const related = intake.relatedTicket ? `\n*Related ticket:* ${intake.relatedTicket}` : "";
   const source = intake.sourceUrl ? `\n*Source:* ${intake.sourceUrl}` : "";

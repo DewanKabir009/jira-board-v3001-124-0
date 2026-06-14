@@ -746,7 +746,7 @@ const hqSpecs = [
               <div>
                 <p class="eyebrow">Asana intake</p>
                 <h3>Open a CORE QA HQ request</h3>
-                <p>Creates an Asana task in the HQ intake project, notifies the CORE QA Slack channel, and returns the Jira handoff state in one reviewed flow.</p>
+                <p>Creates an Asana ticket in the HQ intake project, notifies the CORE QA Slack channel, and returns the Jira handoff state in one reviewed flow.</p>
               </div>
               <div class="asana-runtime-facts" aria-label="Asana runtime facts">
                 <span>{asanaRuntime.provider}</span>
@@ -2388,7 +2388,8 @@ const hqSpecs = [
             const slackMode = payload.slack?.canPost ? "Slack ready" : "Slack notification pending config";
             const sectionMode = payload.routing?.section?.name ? `Asana section: ${payload.routing.section.name}` : "Asana section: New";
             const assigneeMode = payload.defaultAssignee?.name ? `default assignee: ${payload.defaultAssignee.name}` : "default assignee: Dewan Kabir";
-            setAsanaState("ready", "Ready", `${payload.message} ${sectionMode}; ${assigneeMode}; ${slackMode}; ${jiraMode}.`, true);
+            const ticketMode = payload.ticketType?.resolved ? `ticket type: ${payload.ticketType.name}` : "ticket type: needs review";
+            setAsanaState("ready", "Ready", `${payload.message} ${sectionMode}; ${assigneeMode}; ${ticketMode}; ${slackMode}; ${jiraMode}.`, true);
           } else if (payload.tokenConfigured === false) {
             setAsanaState("missing", "Token missing", "ASANA_ACCESS_TOKEN is not configured as a Worker secret.", false);
           } else {
@@ -2479,8 +2480,9 @@ const hqSpecs = [
         const slack = payload.slack || {};
         const section = asana.section?.name || "New";
         const assignee = asana.defaultAssignee?.name || "Dewan Kabir";
+        const ticketType = asana.ticketType?.name || "Ticket";
         const links = [
-          asana.url ? `<a href="${escapeHtml(asana.url)}" target="_blank" rel="noreferrer">Open Asana task</a>` : "",
+          asana.url ? `<a href="${escapeHtml(asana.url)}" target="_blank" rel="noreferrer">Open Asana ticket</a>` : "",
           jira.url ? `<a href="${escapeHtml(jira.url)}" target="_blank" rel="noreferrer">${jira.key ? "Open Jira ticket" : "Open Jira handoff"}</a>` : ""
         ].filter(Boolean).join("");
         const warningList = warnings.length
@@ -2491,9 +2493,10 @@ const hqSpecs = [
         result.innerHTML = payload.ok
           ? `
               <strong>${escapeHtml(payload.message || "Asana intake completed.")}</strong>
-              <p>${escapeHtml(asana.name || "Asana task opened.")}</p>
+              <p>${escapeHtml(asana.name || "Asana ticket opened.")}</p>
               <div class="asana-intake-result-links">${links}</div>
               <div class="asana-runtime-facts">
+                <em>Type: ${escapeHtml(ticketType)}</em>
                 <em>Section: ${escapeHtml(section)}</em>
                 <em>Assignee: ${escapeHtml(assignee)}</em>
                 <em>Slack: ${escapeHtml(slack.ok ? "notified" : "needs review")}</em>
