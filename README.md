@@ -74,7 +74,7 @@ GitHub Pages remains useful as a static fallback. The `.124` modern board and HQ
 - `/api/slack/activity` shows recent Slack-to-HQ callback activity from the Worker MVP memory store.
 - `/api/slack/send` posts a manually reviewed HQ message to the configured CORE QA Slack channel when `SLACK_BOT_TOKEN` is present as a Worker secret.
 - `/api/slack/commands`, `/api/slack/events`, and `/api/slack/actions` are the Slack-to-HQ request URLs for slash commands, Events API, and interactive callbacks.
-- `/api/asana/status` and `/api/asana/intake` power the HQ Asana intake form. Requests create tasks in Asana project `GN CORE QA HQ` (`1215683271714250`), notify Slack when the bot token is ready, and either create Jira directly when Jira Worker credentials exist or return a copy-ready Jira handoff.
+- `/api/asana/status` and `/api/asana/intake` power the HQ Asana intake form. Requests create tickets in Asana project `GN CORE QA HQ` (`1215683271714250`), notify Slack when the bot token is ready, and either create Jira directly when Jira Worker credentials exist or return a copy-ready Jira handoff.
 - GitHub Pages can render the same HQ page but cannot run the AI API. The page tells users to open the Cloudflare URL when the endpoint is unavailable.
 
 ## Architecture
@@ -241,7 +241,7 @@ Calendar environment overrides:
 | Cloudflare Workers Static Assets | Serves the built HQ and dashboard assets through the Worker. |
 | Cloudflare Workers AI | Generates the draft release intelligence brief from current board data. |
 | Slack Web API | Posts reviewed HQ notifications through the installed CORE JIRA NOTIFIER AGENT bot and receives verified slash commands, app mentions, and interactive callbacks. |
-| Asana REST API | Creates HQ intake tasks in the `GN CORE QA HQ` project from the Automation Bench form. |
+| Asana REST API | Creates HQ intake tickets in the `GN CORE QA HQ` project from the Automation Bench form. |
 | GitHub Actions | Refreshes Jira data, deploys static pages, runs Playwright jobs, and publishes evidence. |
 | Confluence Team Calendars | Feeds the HQ Calendar Menu through the 5-minute board refresh artifact. |
 | GitHub Pages | Keeps static public fallback pages live during the Cloudflare migration. |
@@ -400,7 +400,7 @@ Response:
 
 ### `GET /api/asana/status`
 
-Returns Asana intake readiness without creating a task.
+Returns Asana intake readiness without creating a ticket.
 
 ```json
 {
