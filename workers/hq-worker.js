@@ -732,13 +732,41 @@ async function resolveAsanaTicketType(env, config) {
   const customTypes = await listAsanaCustomTypes(env, config);
   const target = normalizeAsanaName(config.ticketTypeName || "Ticket");
   const type = customTypes.find((item) => normalizeAsanaName(item?.name) === target) || null;
+  const detail = type?.gid ? await getAsanaCustomTypeDetail(env, type.gid).catch(() => null) : null;
+  const statusOption = findAsanaCustomTypeStatusOption(detail || type, config.defaultStatusName);
 
   return {
     name: type?.name || config.ticketTypeName || "Ticket",
     gid: type?.gid || "",
     resolved: Boolean(type?.gid),
+    statusOptionName: statusOption.name,
+    statusOptionGid: statusOption.gid,
     attempted: true,
     warning: type?.gid ? "" : `No Asana custom type named ${config.ticketTypeName || "Ticket"} was found for ${config.projectName}.`
+  };
+}
+
+async function getAsanaCustomTypeDetail(env, customTypeGid) {
+  return asanaRequest(env, `/custom_types/${encodeURIComponent(customTypeGid)}?opt_fields=gid,name,resource_subtype,status_field.gid,status_field.name,status_field.enum_options.gid,status_field.enum_options.name,custom_type_status_options.gid,custom_type_status_options.name,status_options.gid,status_options.name,fields.gid,fields.name,fields.enum_options.gid,fields.enum_options.name`);
+}
+
+function findAsanaCustomTypeStatusOption(type, statusName) {
+  const target = normalizeAsanaName(statusName || "New");
+  const statusField = type?.status_field || {};
+  const fields = Array.isArray(type?.fields) ? type.fields : [];
+  const namedStatusField = fields.find((field) => normalizeAsanaName(field?.name) === "status") || null;
+  const buckets = [
+    type?.custom_type_status_options,
+    type?.status_options,
+    statusField.enum_options,
+    namedStatusField?.enum_options
+  ];
+  const options = buckets.flatMap((bucket) => Array.isArray(bucket) ? bucket : []);
+  const option = options.find((item) => normalizeAsanaName(item?.name) === target) || null;
+
+  return {
+    name: option?.name || statusName || "New",
+    gid: option?.gid || ""
   };
 }
 
@@ -867,7 +895,7 @@ function pickAsanaOption(value, options, fallback) {
   return options.find((option) => normalizeAsanaName(option) === normalized) || fallback;
 }
 
-function buildAsanaTaskPayload(config, intake, jiraHandoff, routing = null, assignee = null, ticketType = null) {
+function buildAsanaTaskPayload(config, intake, jiraHandoff, routing = null, assignee = null, ticketType = null, options = {}) {
   const customFields = buildAsanaCustomFieldValues(config, intake, routing);
   const assigneeId = assignee?.gid || config.defaultAssigneeGid;
   const data = {
@@ -881,8 +909,12 @@ function buildAsanaTaskPayload(config, intake, jiraHandoff, routing = null, assi
     data.assignee = assigneeId;
   }
 
-  if (ticketType?.gid) {
+  if (options.createNativeTicket && ticketType?.gid) {
+    data.resource_subtype = "custom";
     data.custom_type = ticketType.gid;
+    if (ticketType.statusOptionGid) {
+      data.custom_type_status_option = ticketType.statusOptionGid;
+    }
   }
 
   if (Object.keys(customFields).length) {
@@ -962,7 +994,112 @@ async function createAsanaTask(env, config, intake, jiraHandoff) {
       warning: sanitizePlainText(error?.message || "Asana ticket type lookup failed.", 260)
     };
   }
+  let payload = {};
+  let createMode = "project-section-fallback";
+  let nativeTicketWarning = "";
+
   const requestPayload = buildAsanaTaskPayload(config, intake, jiraHandoff, routing, assignee);
+  payload = await postAsanaTask(env, requestPayload);
+
+  if (ticketType.gid && payload.data?.gid) {
+    try {
+      await convertAsanaTaskToNativeTicket(env, payload.data.gid, ticketType);
+      createMode = "native-ticket-converted";
+      nativeTicketWarning = "";
+    } catch (error) {
+      nativeTicketWarning = `Asana native Ticket conversion failed: ${sanitizePlainText(error?.message || "unknown error", 260)}`;
+    }
+  }
+
+  const taskGid = payload.data?.gid || "";
+  const sectionPlacement = taskGid && routing.section?.gid
+    ? await placeAsanaTaskInSection(env, routing.section.gid, taskGid)
+    : { ok: false, warning: `Asana ticket could not be placed in ${config.defaultSectionName} because the section was not resolved.` };
+  const warnings = [
+    ...(routing.warnings || []),
+    nativeTicketWarning,
+    assignee.warning,
+    sectionPlacement.warning
+  ].filter(Boolean);
+
+  return {
+    gid: payload.data?.gid || "",
+    name: payload.data?.name || intake.summary,
+    url: payload.data?.permalink_url || `https://app.asana.com/0/${config.projectGid}`,
+    projectName: config.projectName,
+    projectGid: config.projectGid,
+    section: routing.section,
+    ticketType: {
+      gid: ticketType.gid || "",
+      name: ticketType.name || config.ticketTypeName,
+      resolved: Boolean(ticketType.gid),
+      statusOptionName: ticketType.statusOptionName || config.defaultStatusName,
+      statusOptionGid: ticketType.statusOptionGid || "",
+      applied: createMode === "native-ticket" || createMode === "native-ticket-converted",
+      mode: createMode,
+      message: createMode === "native-ticket" || createMode === "native-ticket-converted"
+        ? "Created with Asana's native Ticket custom type so the item should appear in the visible New ticket grouping."
+        : "Asana rejected native Ticket creation on this route, so HQ created the item normally and placed it in the New project section."
+    },
+    statusField: routing.statusField,
+    defaultAssignee: assignee,
+    customFieldsApplied: summarizeAsanaAppliedFields(config, intake, routing),
+    warnings
+  };
+}
+
+async function convertAsanaTaskToNativeTicket(env, taskGid, ticketType) {
+  const baseData = {
+    resource_subtype: "custom",
+    custom_type: ticketType.gid
+  };
+  const attempts = ticketType.statusOptionGid
+    ? [
+        { ...baseData, custom_type_status_option: ticketType.statusOptionGid },
+        baseData
+      ]
+    : [baseData];
+  const errors = [];
+
+  for (const data of attempts) {
+    try {
+      return await updateAsanaTask(env, taskGid, { data });
+    } catch (error) {
+      errors.push(sanitizePlainText(error?.message || "unknown error", 220));
+    }
+  }
+
+  throw new Error(errors.join(" | "));
+}
+
+async function updateAsanaTask(env, taskGid, requestPayload) {
+  const response = await fetch(`https://app.asana.com/api/1.0/tasks/${encodeURIComponent(taskGid)}?opt_fields=gid,name,permalink_url,created_at`, {
+    method: "PUT",
+    headers: {
+      authorization: `Bearer ${env.ASANA_ACCESS_TOKEN}`,
+      "content-type": "application/json; charset=utf-8"
+    },
+    body: JSON.stringify(requestPayload)
+  });
+
+  let payload = {};
+  try {
+    payload = await response.json();
+  } catch {
+    payload = {};
+  }
+
+  if (!response.ok || payload.errors) {
+    const detail = Array.isArray(payload.errors)
+      ? payload.errors.map((error) => error.message).filter(Boolean).join("; ")
+      : "";
+    throw new Error(`Asana task update failed with HTTP ${response.status}${detail ? `: ${detail}` : ""}.`);
+  }
+
+  return payload;
+}
+
+async function postAsanaTask(env, requestPayload) {
   const response = await fetch("https://app.asana.com/api/1.0/tasks?opt_fields=gid,name,permalink_url,created_at", {
     method: "POST",
     headers: {
@@ -986,36 +1123,7 @@ async function createAsanaTask(env, config, intake, jiraHandoff) {
     throw new Error(`Asana ticket creation failed with HTTP ${response.status}${detail ? `: ${detail}` : ""}.`);
   }
 
-  const taskGid = payload.data?.gid || "";
-  const sectionPlacement = taskGid && routing.section?.gid
-    ? await placeAsanaTaskInSection(env, routing.section.gid, taskGid)
-    : { ok: false, warning: `Asana ticket could not be placed in ${config.defaultSectionName} because the section was not resolved.` };
-  const warnings = [
-    ...(routing.warnings || []),
-    assignee.warning,
-    sectionPlacement.warning
-  ].filter(Boolean);
-
-  return {
-    gid: payload.data?.gid || "",
-    name: payload.data?.name || intake.summary,
-    url: payload.data?.permalink_url || `https://app.asana.com/0/${config.projectGid}`,
-    projectName: config.projectName,
-    projectGid: config.projectGid,
-    section: routing.section,
-    ticketType: {
-      gid: ticketType.gid || "",
-      name: ticketType.name || config.ticketTypeName,
-      resolved: Boolean(ticketType.gid),
-      applied: false,
-      mode: "project-section-fallback",
-      message: "Asana's task-create API rejected native custom_type on this route, so HQ creates the item normally and places it in the New ticket section."
-    },
-    statusField: routing.statusField,
-    defaultAssignee: assignee,
-    customFieldsApplied: summarizeAsanaAppliedFields(config, intake, routing),
-    warnings
-  };
+  return payload;
 }
 
 async function placeAsanaTaskInSection(env, sectionGid, taskGid) {
