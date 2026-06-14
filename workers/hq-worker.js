@@ -1,6 +1,35 @@
 const AI_MODEL = "@cf/zai-org/glm-4.7-flash";
 const AI_MODEL_PROFILE = "dialogue-first Workers AI model for conversational ticket and sprint analysis";
 const SLACK_ACTIVITY_LIMIT = 12;
+const ASANA_REQUEST_TYPE_OPTIONS = [
+  "QA support request",
+  "Automation request",
+  "Release risk follow-up",
+  "Test data request",
+  "Access request"
+];
+const ASANA_ENTITY_OPTIONS = [
+  "GolfNow CORE",
+  "GolfNow Web",
+  "G1 - Pure",
+  "EZL -Pure",
+  "EZRTS",
+  "Other"
+];
+const ASANA_ENVIRONMENT_OPTIONS = [
+  "DEV TN000",
+  "DEV TN001",
+  "STG TN000",
+  "STG TN001",
+  "EZL QA",
+  "EZL STAGE"
+];
+const ASANA_STATUS_OPTIONS = [
+  "New",
+  "In progress",
+  "Pending",
+  "Closed"
+];
 
 export default {
   async fetch(request, env, ctx) {
@@ -34,7 +63,7 @@ export default {
     }
 
     if (url.pathname === "/api/asana/status") {
-      return handleAsanaStatus(env);
+      return handleAsanaStatus(env, url);
     }
 
     if (url.pathname === "/api/asana/intake") {
@@ -119,13 +148,44 @@ function shouldBypassAssetCache(pathname) {
   );
 }
 
-async function handleAsanaStatus(env) {
+async function handleAsanaStatus(env, url) {
   const config = getAsanaConfig(env);
   const validation = await validateAsanaProject(env, config);
   const jira = getJiraIntakeConfig(env);
   const slack = getSlackConfig(env);
   const workspaceName = validation.workspaceName || config.workspaceName;
   const projectName = validation.projectName || config.projectName;
+  const shouldEnsure = url.searchParams.get("ensure") === "1" || url.searchParams.get("ensure") === "true";
+  let routing = {
+    attempted: false,
+    ok: false,
+    message: "Asana project schema was not inspected."
+  };
+  let assignee = {
+    name: config.defaultAssigneeName,
+    email: config.defaultAssigneeEmail,
+    gid: config.defaultAssigneeGid,
+    resolved: Boolean(config.defaultAssigneeGid)
+  };
+
+  if (config.canCreate && validation.ok) {
+    try {
+      routing = await ensureAsanaRouting(env, config, { ensure: shouldEnsure });
+    } catch (error) {
+      routing = {
+        attempted: true,
+        ok: false,
+        message: sanitizePlainText(error?.message || "Asana routing inspection failed.", 260)
+      };
+    }
+
+    try {
+      assignee = await resolveAsanaAssignee(env, config);
+    } catch (error) {
+      assignee.warning = sanitizePlainText(error?.message || "Default Asana assignee lookup failed.", 260);
+    }
+  }
+
   const canCreate = config.canCreate && validation.ok;
 
   return jsonResponse({
@@ -140,6 +200,9 @@ async function handleAsanaStatus(env) {
     apiValidated: validation.attempted,
     apiReachable: validation.ok,
     validationMessage: validation.message,
+    schemaEnsured: shouldEnsure,
+    routing,
+    defaultAssignee: assignee,
     slack: {
       channel: slack.channel,
       channelName: slack.channelName,
@@ -227,6 +290,7 @@ async function handleAsanaIntake(request, env, url) {
   const jiraResult = await createJiraIntakeIfConfigured(env, intake, asanaTask);
   const slackResult = await notifyAsanaIntakeSlack(env, intake, asanaTask, jiraResult.issue || jiraHandoff);
   const warnings = [
+    ...(asanaTask.warnings || []),
     jiraResult.warning,
     slackResult.warning
   ].filter(Boolean);
@@ -249,6 +313,11 @@ function getAsanaConfig(env) {
   const projectGid = sanitizeExternalId(env.ASANA_PROJECT_GID || "");
   const workspaceName = sanitizePlainText(env.ASANA_WORKSPACE_NAME || "versantmedia.com", 120);
   const projectName = sanitizePlainText(env.ASANA_PROJECT_NAME || "GN CORE QA HQ", 160);
+  const defaultSectionName = sanitizePlainText(env.ASANA_DEFAULT_SECTION_NAME || "New", 80);
+  const defaultStatusName = sanitizePlainText(env.ASANA_DEFAULT_STATUS_NAME || "New", 80);
+  const defaultAssigneeName = sanitizePlainText(env.ASANA_DEFAULT_ASSIGNEE_NAME || "Dewan Kabir", 120);
+  const defaultAssigneeEmail = sanitizePlainText(env.ASANA_DEFAULT_ASSIGNEE_EMAIL || "dewan.kabir@versantmedia.com", 180);
+  const defaultAssigneeGid = sanitizeExternalId(env.ASANA_DEFAULT_ASSIGNEE_GID || "");
   const tokenConfigured = Boolean(env.ASANA_ACCESS_TOKEN);
 
   return {
@@ -256,6 +325,17 @@ function getAsanaConfig(env) {
     workspaceName,
     projectGid,
     projectName,
+    defaultSectionName,
+    defaultStatusName,
+    defaultAssigneeName,
+    defaultAssigneeEmail,
+    defaultAssigneeGid,
+    fieldNames: {
+      requestType: sanitizePlainText(env.ASANA_REQUEST_TYPE_FIELD_NAME || "Request Type", 80),
+      entity: sanitizePlainText(env.ASANA_ENTITY_FIELD_NAME || "Entity", 80),
+      environment: sanitizePlainText(env.ASANA_ENVIRONMENT_FIELD_NAME || "Environment", 80),
+      status: sanitizePlainText(env.ASANA_STATUS_FIELD_NAME || "Status", 80)
+    },
     tokenConfigured,
     canCreate: tokenConfigured && Boolean(workspaceGid) && Boolean(projectGid)
   };
@@ -330,10 +410,378 @@ async function validateAsanaProject(env, config) {
   }
 }
 
+async function ensureAsanaRouting(env, config, { ensure = false } = {}) {
+  if (!config.tokenConfigured || !config.projectGid) {
+    return {
+      attempted: false,
+      ok: false,
+      message: "Asana routing was not inspected because the token or project GID is missing."
+    };
+  }
+
+  const warnings = [];
+  const [sections, projectFieldSettings] = await Promise.all([
+    listAsanaProjectSections(env, config),
+    listAsanaProjectCustomFieldSettings(env, config)
+  ]);
+  let section = findAsanaNamedItem(sections, config.defaultSectionName);
+  const workspaceFields = ensure ? await listAsanaWorkspaceCustomFields(env, config) : [];
+  let statusField = findAsanaStatusField(projectFieldSettings, config.defaultStatusName, config.fieldNames.status);
+  const intakeFields = {};
+
+  if (!section && ensure) {
+    try {
+      section = await createAsanaProjectSection(env, config, config.defaultSectionName);
+    } catch (error) {
+      warnings.push(`Could not create Asana section ${config.defaultSectionName}: ${sanitizePlainText(error?.message || "unknown error", 220)}`);
+    }
+  }
+
+  if (!statusField.gid && ensure) {
+    try {
+      statusField = await ensureAsanaStatusField(env, config, projectFieldSettings, workspaceFields);
+    } catch (error) {
+      warnings.push(`Could not ensure Asana ${config.fieldNames.status} field: ${sanitizePlainText(error?.message || "unknown error", 220)}`);
+    }
+  }
+
+  if (!section) {
+    warnings.push(`No Asana project section named ${config.defaultSectionName} was found.`);
+  }
+
+  if (!statusField.gid || !statusField.optionGid) {
+    warnings.push(`No Asana enum field with a ${config.defaultStatusName} option was found.`);
+  }
+
+  for (const definition of getAsanaIntakeFieldDefinitions(config)) {
+    const projectField = findAsanaField(projectFieldSettings, definition.name);
+    let field = projectField.field || findAsanaField(workspaceFields, definition.name).field;
+    let attached = Boolean(projectField.field);
+    let created = false;
+
+    if (!field && ensure) {
+      field = await createAsanaEnumField(env, config, definition);
+      created = true;
+    }
+
+    if (field && ensure) {
+      field = await ensureAsanaEnumOptions(env, field, definition.options);
+      if (!attached) {
+        await addAsanaCustomFieldToProject(env, config, field.gid);
+        attached = true;
+      }
+    }
+
+    const options = mapAsanaEnumOptions(field?.enum_options || field?.enumOptions || []);
+    const missingOptions = definition.options.filter((option) => !options[normalizeAsanaName(option)]);
+    if (field && missingOptions.length) {
+      warnings.push(`${definition.name} is missing option(s): ${missingOptions.join(", ")}.`);
+    }
+    if (!field) {
+      warnings.push(`${definition.name} is not attached to the Asana project.`);
+    }
+
+    intakeFields[definition.key] = {
+      name: definition.name,
+      gid: field?.gid || "",
+      attached,
+      created,
+      options: definition.options.map((option) => ({
+        name: option,
+        gid: options[normalizeAsanaName(option)] || ""
+      }))
+    };
+  }
+
+  const fieldReady = Object.values(intakeFields).every((field) =>
+    field.gid && field.attached && field.options.every((option) => option.gid)
+  );
+
+  return {
+    attempted: true,
+    ensured: ensure,
+    ok: Boolean(section?.gid || (statusField.gid && statusField.optionGid)) && fieldReady,
+    section: section
+      ? { gid: section.gid, name: section.name }
+      : { gid: "", name: config.defaultSectionName },
+    statusField,
+    intakeFields,
+    warnings,
+    message: ensure
+      ? "Asana routing schema was ensured for the HQ intake form."
+      : "Asana routing schema was inspected for the HQ intake form."
+  };
+}
+
+function getAsanaIntakeFieldDefinitions(config) {
+  return [
+    {
+      key: "requestType",
+      name: config.fieldNames.requestType,
+      options: ASANA_REQUEST_TYPE_OPTIONS
+    },
+    {
+      key: "entity",
+      name: config.fieldNames.entity,
+      options: ASANA_ENTITY_OPTIONS
+    },
+    {
+      key: "environment",
+      name: config.fieldNames.environment,
+      options: ASANA_ENVIRONMENT_OPTIONS
+    }
+  ];
+}
+
+async function listAsanaProjectSections(env, config) {
+  return asanaRequest(env, `/projects/${config.projectGid}/sections?opt_fields=gid,name&limit=100`);
+}
+
+async function createAsanaProjectSection(env, config, name) {
+  return asanaRequest(env, `/projects/${config.projectGid}/sections`, {
+    method: "POST",
+    body: JSON.stringify({ data: { name } })
+  });
+}
+
+async function listAsanaProjectCustomFieldSettings(env, config) {
+  return asanaRequest(env, `/projects/${config.projectGid}/custom_field_settings?opt_fields=custom_field.gid,custom_field.name,custom_field.resource_subtype,custom_field.type,custom_field.enum_options.gid,custom_field.enum_options.name,is_important&limit=100`);
+}
+
+async function listAsanaWorkspaceCustomFields(env, config) {
+  if (!config.workspaceGid) return [];
+  return asanaRequest(env, `/workspaces/${config.workspaceGid}/custom_fields?opt_fields=gid,name,resource_subtype,type,enum_options.gid,enum_options.name&limit=100`);
+}
+
+async function createAsanaEnumField(env, config, definition) {
+  return asanaRequest(env, "/custom_fields", {
+    method: "POST",
+    body: JSON.stringify({
+      data: {
+        workspace: config.workspaceGid,
+        name: definition.name,
+        resource_subtype: "enum",
+        enum_options: definition.options.map((option) => ({ name: option }))
+      }
+    })
+  });
+}
+
+async function ensureAsanaEnumOptions(env, field, requiredOptions) {
+  const existing = mapAsanaEnumOptions(field.enum_options || []);
+  const enumOptions = Array.isArray(field.enum_options) ? [...field.enum_options] : [];
+
+  for (const option of requiredOptions) {
+    if (existing[normalizeAsanaName(option)]) continue;
+    const created = await asanaRequest(env, `/custom_fields/${field.gid}/enum_options`, {
+      method: "POST",
+      body: JSON.stringify({ data: { name: option } })
+    });
+    enumOptions.push(created);
+    existing[normalizeAsanaName(option)] = created?.gid || "";
+  }
+
+  return { ...field, enum_options: enumOptions };
+}
+
+async function ensureAsanaStatusField(env, config, projectFieldSettings, workspaceFields) {
+  const definition = {
+    key: "status",
+    name: config.fieldNames.status,
+    options: ASANA_STATUS_OPTIONS
+  };
+  const projectField = findAsanaField(projectFieldSettings, definition.name);
+  let field = projectField.field || findAsanaField(workspaceFields, definition.name).field;
+  let attached = Boolean(projectField.field);
+  let created = false;
+
+  if (!field) {
+    field = await createAsanaEnumField(env, config, definition);
+    created = true;
+  }
+
+  field = await ensureAsanaEnumOptions(env, field, definition.options);
+
+  if (!attached) {
+    await addAsanaCustomFieldToProject(env, config, field.gid);
+    attached = true;
+  }
+
+  const options = mapAsanaEnumOptions(field.enum_options || []);
+  return {
+    gid: field.gid || "",
+    name: field.name || definition.name,
+    optionName: config.defaultStatusName,
+    optionGid: options[normalizeAsanaName(config.defaultStatusName)] || "",
+    attached,
+    created
+  };
+}
+
+async function addAsanaCustomFieldToProject(env, config, fieldGid) {
+  await asanaRequest(env, `/projects/${config.projectGid}/addCustomFieldSetting`, {
+    method: "POST",
+    body: JSON.stringify({
+      data: {
+        custom_field: fieldGid,
+        is_important: true
+      }
+    })
+  });
+}
+
+function findAsanaField(collection, name) {
+  const target = normalizeAsanaName(name);
+  for (const item of collection || []) {
+    const field = item?.custom_field || item;
+    if (normalizeAsanaName(field?.name) === target) {
+      return { field, setting: item?.custom_field ? item : null };
+    }
+  }
+  return { field: null, setting: null };
+}
+
+function findAsanaNamedItem(collection, name) {
+  const target = normalizeAsanaName(name);
+  return (collection || []).find((item) => normalizeAsanaName(item?.name) === target) || null;
+}
+
+function findAsanaStatusField(projectFieldSettings, statusName, fieldName = "") {
+  const target = normalizeAsanaName(statusName);
+  const namedField = fieldName ? findAsanaField(projectFieldSettings, fieldName).field : null;
+  if (namedField) {
+    const options = mapAsanaEnumOptions(namedField.enum_options || []);
+    if (options[target]) {
+      return {
+        gid: namedField.gid || "",
+        name: namedField.name || fieldName,
+        optionName: statusName,
+        optionGid: options[target],
+        attached: true,
+        created: false
+      };
+    }
+  }
+
+  for (const item of projectFieldSettings || []) {
+    const field = item?.custom_field || item;
+    const options = mapAsanaEnumOptions(field?.enum_options || []);
+    if (options[target]) {
+      return {
+        gid: field.gid || "",
+        name: field.name || "Status",
+        optionName: statusName,
+        optionGid: options[target],
+        attached: true,
+        created: false
+      };
+    }
+  }
+
+  return {
+    gid: "",
+    name: "",
+    optionName: statusName,
+    optionGid: "",
+    attached: false,
+    created: false
+  };
+}
+
+function mapAsanaEnumOptions(options) {
+  return (options || []).reduce((map, option) => {
+    const name = normalizeAsanaName(option?.name);
+    if (name && option?.gid) map[name] = option.gid;
+    return map;
+  }, {});
+}
+
+function normalizeAsanaName(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
+async function resolveAsanaAssignee(env, config) {
+  if (config.defaultAssigneeGid) {
+    return {
+      gid: config.defaultAssigneeGid,
+      name: config.defaultAssigneeName,
+      email: config.defaultAssigneeEmail,
+      resolved: true
+    };
+  }
+
+  const users = await listAsanaWorkspaceUsers(env, config);
+  const emailTarget = normalizeAsanaName(config.defaultAssigneeEmail);
+  const nameTarget = normalizeAsanaName(config.defaultAssigneeName);
+  const user = users.find((item) => normalizeAsanaName(item.email) === emailTarget)
+    || users.find((item) => normalizeAsanaName(item.name) === nameTarget);
+
+  return {
+    gid: user?.gid || "",
+    name: user?.name || config.defaultAssigneeName,
+    email: user?.email || config.defaultAssigneeEmail,
+    resolved: Boolean(user?.gid),
+    warning: user?.gid ? "" : `Could not resolve ${config.defaultAssigneeName} in Asana workspace users.`
+  };
+}
+
+async function listAsanaWorkspaceUsers(env, config) {
+  if (!config.workspaceGid) return [];
+
+  const users = [];
+  let path = `/workspaces/${config.workspaceGid}/users?opt_fields=gid,name,email&limit=100`;
+  for (let page = 0; page < 8 && path; page += 1) {
+    const payload = await asanaFetchJson(env, path);
+    users.push(...(payload.data || []));
+    path = payload.next_page?.path || "";
+  }
+  return users;
+}
+
+async function asanaRequest(env, path, options = {}) {
+  const payload = await asanaFetchJson(env, path, options);
+  return payload.data || [];
+}
+
+async function asanaFetchJson(env, path, options = {}) {
+  const response = await fetch(asanaApiUrl(path), {
+    method: options.method || "GET",
+    headers: {
+      authorization: `Bearer ${env.ASANA_ACCESS_TOKEN}`,
+      accept: "application/json",
+      ...(options.body ? { "content-type": "application/json; charset=utf-8" } : {})
+    },
+    body: options.body
+  });
+
+  const payload = await response.json().catch(() => ({}));
+
+  if (!response.ok || payload.errors) {
+    throw new Error(formatAsanaApiError(response, payload));
+  }
+
+  return payload;
+}
+
+function asanaApiUrl(path) {
+  if (/^https?:\/\//i.test(path)) return path;
+  if (path.startsWith("/api/1.0/")) return `https://app.asana.com${path}`;
+  return `https://app.asana.com/api/1.0${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+function formatAsanaApiError(response, payload) {
+  const detail = Array.isArray(payload.errors)
+    ? payload.errors.map((error) => error.message).filter(Boolean).join("; ")
+    : payload.message || "";
+  return `Asana API failed with HTTP ${response.status}${detail ? `: ${detail}` : ""}.`;
+}
+
 function sanitizeAsanaIntake(body = {}) {
   const relatedTicket = sanitizePrompt(body.relatedTicket || body.ticket || "", 80).toUpperCase();
   const sourceUrl = sanitizeUrl(body.sourceUrl || body.url || "");
-  const requestType = sanitizePlainText(body.requestType || "QA support request", 80);
+  const requestType = pickAsanaOption(body.requestType, ASANA_REQUEST_TYPE_OPTIONS, "QA support request");
+  const entity = pickAsanaOption(body.entity, ASANA_ENTITY_OPTIONS, "GolfNow CORE");
+  const environment = pickAsanaOption(body.environment || body.env, ASANA_ENVIRONMENT_OPTIONS, "DEV TN000");
   const priority = sanitizePlainText(body.priority || "Normal", 40);
   const requester = sanitizePlainText(body.requester || "HQ user", 120);
   const summary = sanitizePlainText(body.summary || body.title || "", 180);
@@ -343,6 +791,8 @@ function sanitizeAsanaIntake(body = {}) {
     summary,
     details,
     requestType,
+    entity,
+    environment,
     priority,
     requester,
     relatedTicket,
@@ -350,15 +800,54 @@ function sanitizeAsanaIntake(body = {}) {
   };
 }
 
-function buildAsanaTaskPayload(config, intake, jiraHandoff) {
-  return {
-    data: {
-      workspace: config.workspaceGid,
-      projects: [config.projectGid],
-      name: intake.summary,
-      notes: buildAsanaNotes(config, intake, jiraHandoff)
-    }
+function pickAsanaOption(value, options, fallback) {
+  const normalized = normalizeAsanaName(value);
+  return options.find((option) => normalizeAsanaName(option) === normalized) || fallback;
+}
+
+function buildAsanaTaskPayload(config, intake, jiraHandoff, routing = null, assignee = null) {
+  const customFields = buildAsanaCustomFieldValues(config, intake, routing);
+  const assigneeId = assignee?.gid || config.defaultAssigneeGid;
+  const data = {
+    workspace: config.workspaceGid,
+    projects: [config.projectGid],
+    name: intake.summary,
+    notes: buildAsanaNotes(config, intake, jiraHandoff)
   };
+
+  if (assigneeId) {
+    data.assignee = assigneeId;
+  }
+
+  if (Object.keys(customFields).length) {
+    data.custom_fields = customFields;
+  }
+
+  return {
+    data
+  };
+}
+
+function buildAsanaCustomFieldValues(config, intake, routing) {
+  const fields = {};
+  if (!routing) return fields;
+
+  if (routing.statusField?.gid && routing.statusField?.optionGid) {
+    fields[routing.statusField.gid] = routing.statusField.optionGid;
+  }
+
+  for (const definition of getAsanaIntakeFieldDefinitions(config)) {
+    const field = routing.intakeFields?.[definition.key];
+    const selected = intake[definition.key];
+    const option = (field?.options || []).find((item) =>
+      normalizeAsanaName(item.name) === normalizeAsanaName(selected)
+    );
+    if (field?.gid && option?.gid) {
+      fields[field.gid] = option.gid;
+    }
+  }
+
+  return fields;
 }
 
 function buildAsanaNotes(config, intake, jiraHandoff) {
@@ -368,7 +857,11 @@ function buildAsanaNotes(config, intake, jiraHandoff) {
     `Project: ${config.projectName} (${config.projectGid})`,
     `Requester: ${intake.requester}`,
     `Request type: ${intake.requestType}`,
+    `Entity: ${intake.entity}`,
+    `Environment: ${intake.environment}`,
     `Priority: ${intake.priority}`,
+    `Default assignee: ${config.defaultAssigneeName}`,
+    `Default section: ${config.defaultSectionName}`,
     intake.relatedTicket ? `Related ticket: ${intake.relatedTicket}` : "",
     intake.sourceUrl ? `Source URL: ${intake.sourceUrl}` : "",
     "",
@@ -384,13 +877,16 @@ function buildAsanaNotes(config, intake, jiraHandoff) {
 }
 
 async function createAsanaTask(env, config, intake, jiraHandoff) {
+  const routing = await ensureAsanaRouting(env, config, { ensure: true });
+  const assignee = await resolveAsanaAssignee(env, config);
+  const requestPayload = buildAsanaTaskPayload(config, intake, jiraHandoff, routing, assignee);
   const response = await fetch("https://app.asana.com/api/1.0/tasks?opt_fields=gid,name,permalink_url,created_at", {
     method: "POST",
     headers: {
       authorization: `Bearer ${env.ASANA_ACCESS_TOKEN}`,
       "content-type": "application/json; charset=utf-8"
     },
-    body: JSON.stringify(buildAsanaTaskPayload(config, intake, jiraHandoff))
+    body: JSON.stringify(requestPayload)
   });
 
   let payload = {};
@@ -407,13 +903,65 @@ async function createAsanaTask(env, config, intake, jiraHandoff) {
     throw new Error(`Asana task creation failed with HTTP ${response.status}${detail ? `: ${detail}` : ""}.`);
   }
 
+  const taskGid = payload.data?.gid || "";
+  const sectionPlacement = taskGid && routing.section?.gid
+    ? await placeAsanaTaskInSection(env, routing.section.gid, taskGid)
+    : { ok: false, warning: `Asana task could not be placed in ${config.defaultSectionName} because the section was not resolved.` };
+  const warnings = [
+    ...(routing.warnings || []),
+    assignee.warning,
+    sectionPlacement.warning
+  ].filter(Boolean);
+
   return {
     gid: payload.data?.gid || "",
     name: payload.data?.name || intake.summary,
     url: payload.data?.permalink_url || `https://app.asana.com/0/${config.projectGid}`,
     projectName: config.projectName,
-    projectGid: config.projectGid
+    projectGid: config.projectGid,
+    section: routing.section,
+    statusField: routing.statusField,
+    defaultAssignee: assignee,
+    customFieldsApplied: summarizeAsanaAppliedFields(config, intake, routing),
+    warnings
   };
+}
+
+async function placeAsanaTaskInSection(env, sectionGid, taskGid) {
+  try {
+    await asanaRequest(env, `/sections/${sectionGid}/addTask`, {
+      method: "POST",
+      body: JSON.stringify({ data: { task: taskGid } })
+    });
+    return { ok: true, warning: "" };
+  } catch (error) {
+    return {
+      ok: false,
+      warning: sanitizePlainText(error?.message || "Asana section placement failed.", 260)
+    };
+  }
+}
+
+function summarizeAsanaAppliedFields(config, intake, routing) {
+  const fields = [];
+  if (routing?.statusField?.gid && routing?.statusField?.optionGid) {
+    fields.push({
+      name: routing.statusField.name,
+      value: routing.statusField.optionName
+    });
+  }
+
+  for (const definition of getAsanaIntakeFieldDefinitions(config)) {
+    const field = routing?.intakeFields?.[definition.key];
+    if (field?.gid) {
+      fields.push({
+        name: field.name,
+        value: intake[definition.key]
+      });
+    }
+  }
+
+  return fields;
 }
 
 function getJiraIntakeConfig(env) {
@@ -440,6 +988,8 @@ function buildJiraHandoff(env, intake) {
     `Asana/HQ intake request from ${intake.requester}.`,
     "",
     `Type: ${intake.requestType}`,
+    `Entity: ${intake.entity}`,
+    `Environment: ${intake.environment}`,
     `Priority: ${intake.priority}`,
     intake.relatedTicket ? `Related ticket: ${intake.relatedTicket}` : "",
     intake.sourceUrl ? `Source URL: ${intake.sourceUrl}` : "",
@@ -476,6 +1026,8 @@ async function createJiraIntakeIfConfigured(env, intake, asanaTask) {
     `Asana task: ${asanaTask.url || asanaTask.name}`,
     `Requester: ${intake.requester}`,
     `Request type: ${intake.requestType}`,
+    `Entity: ${intake.entity}`,
+    `Environment: ${intake.environment}`,
     `Priority: ${intake.priority}`,
     intake.relatedTicket ? `Related ticket: ${intake.relatedTicket}` : "",
     intake.sourceUrl ? `Source URL: ${intake.sourceUrl}` : "",
@@ -598,6 +1150,8 @@ function buildAsanaSlackMessage(env, intake, asanaTask, jiraResult) {
     mention ? `*Notify:* ${mention}` : "",
     `*Summary:* ${intake.summary}`,
     `*Type:* ${intake.requestType}`,
+    `*Entity:* ${intake.entity}`,
+    `*Environment:* ${intake.environment}`,
     `*Priority:* ${intake.priority}`,
     related.trim(),
     source.trim(),

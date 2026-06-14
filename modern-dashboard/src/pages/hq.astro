@@ -331,7 +331,9 @@ const asanaRuntime = {
   workspaceGid: "1211388543961903",
   projectName: "GN CORE QA HQ",
   projectGid: "1215683271714250",
-  slackChannel: "#core-qa-dream-team"
+  slackChannel: "#core-qa-dream-team",
+  defaultSection: "New",
+  defaultAssignee: "Dewan Kabir"
 };
 
 const slackCommandExamples = [
@@ -750,6 +752,8 @@ const hqSpecs = [
                 <span>{asanaRuntime.provider}</span>
                 <span>{asanaRuntime.projectName}</span>
                 <span>{asanaRuntime.projectGid}</span>
+                <span>Section: {asanaRuntime.defaultSection}</span>
+                <span>Assignee: {asanaRuntime.defaultAssignee}</span>
               </div>
             </div>
 
@@ -776,6 +780,30 @@ const hqSpecs = [
                     <option>Release risk follow-up</option>
                     <option>Test data request</option>
                     <option>Access request</option>
+                  </select>
+                </label>
+
+                <label for="hq-asana-entity">
+                  <span>Entity</span>
+                  <select id="hq-asana-entity" name="entity">
+                    <option>GolfNow CORE</option>
+                    <option>GolfNow Web</option>
+                    <option>G1 - Pure</option>
+                    <option>EZL -Pure</option>
+                    <option>EZRTS</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+
+                <label for="hq-asana-environment">
+                  <span>Environment</span>
+                  <select id="hq-asana-environment" name="environment">
+                    <option>DEV TN000</option>
+                    <option>DEV TN001</option>
+                    <option>STG TN000</option>
+                    <option>STG TN001</option>
+                    <option>EZL QA</option>
+                    <option>EZL STAGE</option>
                   </select>
                 </label>
 
@@ -2358,7 +2386,9 @@ const hqSpecs = [
           if (payload.canCreate) {
             const jiraMode = payload.jira?.canCreate ? "Jira direct create ready" : "Jira handoff mode";
             const slackMode = payload.slack?.canPost ? "Slack ready" : "Slack notification pending config";
-            setAsanaState("ready", "Ready", `${payload.message} ${slackMode}; ${jiraMode}.`, true);
+            const sectionMode = payload.routing?.section?.name ? `Asana section: ${payload.routing.section.name}` : "Asana section: New";
+            const assigneeMode = payload.defaultAssignee?.name ? `default assignee: ${payload.defaultAssignee.name}` : "default assignee: Dewan Kabir";
+            setAsanaState("ready", "Ready", `${payload.message} ${sectionMode}; ${assigneeMode}; ${slackMode}; ${jiraMode}.`, true);
           } else if (payload.tokenConfigured === false) {
             setAsanaState("missing", "Token missing", "ASANA_ACCESS_TOKEN is not configured as a Worker secret.", false);
           } else {
@@ -2378,6 +2408,8 @@ const hqSpecs = [
         const body = {
           summary: String(formData.get("summary") || "").trim(),
           requestType: String(formData.get("requestType") || "").trim(),
+          entity: String(formData.get("entity") || "").trim(),
+          environment: String(formData.get("environment") || "").trim(),
           priority: String(formData.get("priority") || "").trim(),
           relatedTicket: String(formData.get("relatedTicket") || "").trim(),
           sourceUrl: String(formData.get("sourceUrl") || "").trim(),
@@ -2445,6 +2477,8 @@ const hqSpecs = [
         const asana = payload.asana || {};
         const jira = payload.jira || {};
         const slack = payload.slack || {};
+        const section = asana.section?.name || "New";
+        const assignee = asana.defaultAssignee?.name || "Dewan Kabir";
         const links = [
           asana.url ? `<a href="${escapeHtml(asana.url)}" target="_blank" rel="noreferrer">Open Asana task</a>` : "",
           jira.url ? `<a href="${escapeHtml(jira.url)}" target="_blank" rel="noreferrer">${jira.key ? "Open Jira ticket" : "Open Jira handoff"}</a>` : ""
@@ -2460,6 +2494,8 @@ const hqSpecs = [
               <p>${escapeHtml(asana.name || "Asana task opened.")}</p>
               <div class="asana-intake-result-links">${links}</div>
               <div class="asana-runtime-facts">
+                <em>Section: ${escapeHtml(section)}</em>
+                <em>Assignee: ${escapeHtml(assignee)}</em>
                 <em>Slack: ${escapeHtml(slack.ok ? "notified" : "needs review")}</em>
                 <em>Jira: ${escapeHtml(jira.mode || "handoff")}</em>
               </div>

@@ -170,11 +170,15 @@ SPEC-HQ-11 adds a reviewed intake path for opening CORE QA HQ work from the web 
 - Workspace: `versantmedia.com` (`1211388543961903`).
 - Project: `GN CORE QA HQ` (`1215683271714250`).
 - Endpoint: `GET /api/asana/status`.
+- Schema repair endpoint: `GET /api/asana/status?ensure=1` verifies the `New` intake placement, resolves Dewan Kabir, and creates or attaches the `Status`, `Request Type`, `Entity`, and `Environment` enum fields when missing.
 - Endpoint: `POST /api/asana/intake`.
 - Secret required: `ASANA_ACCESS_TOKEN`.
+- Default intake placement: project section `New`; HQ also sets `Status = New` when Asana exposes or allows that enum field.
+- Default intake assignee: `Dewan Kabir`.
+- Enum fields: `Status`, `Request Type`, `Entity`, and `Environment`.
 - Slack handoff: uses the existing `SLACK_BOT_TOKEN` and channel config to notify `#core-qa-dream-team`.
 - Jira handoff: creates a Jira issue only when `JIRA_SITE_URL`, `JIRA_EMAIL`, and `JIRA_MCP_TOKEN` or `JIRA_API_TOKEN` are configured on the Worker. Otherwise the response includes a copy-ready Jira payload and the CORE project link.
-- UI surface: `/modern/hq/#automation`, inside the Automation Bench module.
+- UI surface: `/hq/#automation`, inside the Automation Bench module.
 
 Asana project and workspace IDs are Worker vars because they are routing configuration, not secrets. The access token stays in the Worker secret store:
 
@@ -427,6 +431,8 @@ Request:
 {
   "summary": "Need QA review for new checkout flow",
   "requestType": "QA support request",
+  "entity": "GolfNow CORE",
+  "environment": "DEV TN000",
   "priority": "High",
   "relatedTicket": "CORE-14505",
   "sourceUrl": "https://golfnow.atlassian.net/browse/CORE-14505",
