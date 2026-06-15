@@ -31,15 +31,21 @@ const ASANA_STATUS_OPTIONS = [
   "Closed"
 ];
 const DEFAULT_LIVE_ARTIFACT_ORIGIN = "https://raw.githubusercontent.com/DewanKabir009/jira-board-v3001-124-0/master";
-const LIVE_ARTIFACT_PATHS = new Set([
+const LIVE_ARTIFACT_EXACT_PATHS = new Set([
   "/dashboard-data.json",
   "/boards.json"
 ]);
+const LIVE_ARTIFACT_PREFIXES = [
+  "/assets/jira-media/",
+  "/hq/assets/jira-media/",
+  "/modern/assets/jira-media/"
+];
 const WORKER_ROUTES = [
   "GET /health",
   "GET /api/worker/status",
   "GET /dashboard-data.json",
   "GET /boards.json",
+  "GET /assets/jira-media/*",
   "GET /api/ai/status",
   "POST /api/ai/release-summary",
   "POST /api/ai/chat",
@@ -154,8 +160,9 @@ async function serveLiveArtifact(request, env, url) {
     return jsonResponse({ ok: false, message: "Use GET for live board artifacts." }, 405);
   }
 
-  const { response, source, warning } = await fetchLiveArtifactResponse(request, env, url.pathname, url);
-  const headers = liveArtifactHeaders(response.headers, source, warning);
+  const artifactPath = normalizeLiveArtifactPath(url.pathname);
+  const { response, source, warning } = await fetchLiveArtifactResponse(request, env, artifactPath, url);
+  const headers = liveArtifactHeaders(response.headers, source, warning, artifactPath);
 
   return new Response(method === "HEAD" ? null : response.body, {
     status: response.status,
@@ -206,13 +213,16 @@ async function fetchLiveArtifactResponse(request, env, pathname, sourceUrl) {
   };
 }
 
-function liveArtifactHeaders(sourceHeaders, source, warning) {
+function liveArtifactHeaders(sourceHeaders, source, warning, pathname = "") {
   const headers = new Headers(sourceHeaders);
   headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
   headers.set("pragma", "no-cache");
   headers.set("expires", "0");
   headers.set("x-core-qa-cache-policy", "live-artifact");
   headers.set("x-core-qa-artifact-source", source);
+  if (pathname) {
+    headers.set("x-core-qa-artifact-path", pathname);
+  }
 
   if (warning) {
     headers.set("x-core-qa-artifact-warning", warning.slice(0, 240));
@@ -222,7 +232,20 @@ function liveArtifactHeaders(sourceHeaders, source, warning) {
 }
 
 function isLiveArtifactPath(pathname) {
-  return LIVE_ARTIFACT_PATHS.has(pathname);
+  const artifactPath = normalizeLiveArtifactPath(pathname);
+  return LIVE_ARTIFACT_EXACT_PATHS.has(artifactPath) || artifactPath.startsWith("/assets/jira-media/");
+}
+
+function normalizeLiveArtifactPath(pathname) {
+  if (pathname.startsWith("/hq/assets/jira-media/")) {
+    return pathname.replace(/^\/hq\/assets\/jira-media\//, "/assets/jira-media/");
+  }
+
+  if (pathname.startsWith("/modern/assets/jira-media/")) {
+    return pathname.replace(/^\/modern\/assets\/jira-media\//, "/assets/jira-media/");
+  }
+
+  return pathname;
 }
 
 function liveArtifactOrigin(env) {
@@ -4464,7 +4487,10 @@ function buildWorkerStatus(env) {
       strategy: "github-raw-master-first",
       origin: liveArtifactOrigin(env),
       fallback: "Worker Static Assets",
-      routes: Array.from(LIVE_ARTIFACT_PATHS)
+      routes: {
+        exact: Array.from(LIVE_ARTIFACT_EXACT_PATHS),
+        prefixes: LIVE_ARTIFACT_PREFIXES
+      }
     },
     routes: WORKER_ROUTES,
     bindings: {
