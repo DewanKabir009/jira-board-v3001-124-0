@@ -411,6 +411,18 @@ const DEFAULT_ASSIGNABLE_ASSIGNEES = [
   "Alex McNay",
   "Anton Yurkevich"
 ];
+const DEFAULT_JIRA_PROJECT_OPTIONS: SelectOption[] = [
+  { value: "CORE", label: "CORE - B2C Core Platforms" },
+  { value: "B2C", label: "B2C" },
+  { value: "GNCBE", label: "GNCBE" },
+  { value: "GNDS", label: "GNDS" },
+  { value: "OPS", label: "OPS" },
+  { value: "DBA", label: "DBA" },
+  { value: "G1", label: "G1" },
+  { value: "EZL", label: "EZL" },
+  { value: "EZRTS", label: "EZRTS" }
+];
+const DEFAULT_JIRA_PROJECT_ORDER = new Map(DEFAULT_JIRA_PROJECT_OPTIONS.map((option, index) => [option.value, index]));
 const COMMENT_EDITOR_TOOLS: CommentEditorToolConfig[] = [
   { id: "heading2", label: "H2", title: "Heading" },
   { id: "heading3", label: "H3", title: "Subheading" },
@@ -3486,6 +3498,10 @@ function createJiraProjectOptions(issues: Issue[], bridgeProjects: SelectOption[
   const issueProjects = uniqueStrings(issues.map((issue) => projectKeyFromIssue(issue.key || "")));
   const merged = new Map<string, SelectOption>();
 
+  for (const option of DEFAULT_JIRA_PROJECT_OPTIONS) {
+    merged.set(option.value, option);
+  }
+
   for (const option of bridgeProjects) {
     const key = projectKeyFromIssue(`${option.value}-1`) || option.value;
     if (key) {
@@ -3503,7 +3519,18 @@ function createJiraProjectOptions(issues: Issue[], bridgeProjects: SelectOption[
     merged.set("CORE", { value: "CORE", label: "CORE" });
   }
 
-  return Array.from(merged.values()).sort((a, b) => a.value.localeCompare(b.value));
+  return Array.from(merged.values()).sort(compareJiraProjectOptions);
+}
+
+function compareJiraProjectOptions(a: SelectOption, b: SelectOption) {
+  const firstIndex = DEFAULT_JIRA_PROJECT_ORDER.get(a.value);
+  const secondIndex = DEFAULT_JIRA_PROJECT_ORDER.get(b.value);
+
+  if (firstIndex !== undefined || secondIndex !== undefined) {
+    return (firstIndex ?? Number.MAX_SAFE_INTEGER) - (secondIndex ?? Number.MAX_SAFE_INTEGER);
+  }
+
+  return a.value.localeCompare(b.value);
 }
 
 function projectsToSelectOptions(projects: JiraBridgeProject[]): SelectOption[] {
