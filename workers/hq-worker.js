@@ -119,8 +119,9 @@ export default {
 };
 
 async function serveFreshAsset(request, env) {
-  const response = await env.ASSETS.fetch(request);
   const url = new URL(request.url);
+  const assetRequest = rewritePrefixedAssetRequest(request, url);
+  const response = await env.ASSETS.fetch(assetRequest);
   const headers = new Headers(response.headers);
 
   if (shouldBypassAssetCache(url.pathname)) {
@@ -130,11 +131,28 @@ async function serveFreshAsset(request, env) {
     headers.set("x-core-qa-cache-policy", "live-artifact");
   }
 
+  if (assetRequest.url !== request.url) {
+    headers.set("x-core-qa-asset-rewrite", "modern-prefix");
+  }
+
   return new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
     headers
   });
+}
+
+function rewritePrefixedAssetRequest(request, url) {
+  if (!url.pathname.startsWith("/modern/_astro/") && !url.pathname.startsWith("/modern/assets/")) {
+    return request;
+  }
+
+  const rewritten = new URL(url.toString());
+  rewritten.pathname = rewritten.pathname
+    .replace(/^\/modern\/_astro\//, "/_astro/")
+    .replace(/^\/modern\/assets\//, "/assets/");
+
+  return new Request(rewritten.toString(), request);
 }
 
 function shouldBypassAssetCache(pathname) {

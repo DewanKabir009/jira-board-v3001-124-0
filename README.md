@@ -27,6 +27,8 @@ Future HQ changes should be applied to both user-facing shells:
 
 Backend/API-only changes should stay centralized in the Legacy HQ Worker whenever possible, then be consumed by Mordern HQ rather than duplicated.
 
+The Legacy HQ Worker also rewrites prefixed static asset requests from `/modern/_astro/*` and `/modern/assets/*` to the deployed Cloudflare Static Assets paths. This keeps `/hq/` styled correctly when the built Astro HTML carries GitHub Pages-style asset prefixes, and it prevents Mordern HQ previews or links from showing raw unstyled fallback HTML.
+
 ## Version Screenshots
 
 ### HQ Overview
