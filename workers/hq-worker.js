@@ -30,10 +30,40 @@ const ASANA_STATUS_OPTIONS = [
   "Pending",
   "Closed"
 ];
+const DEFAULT_LIVE_ARTIFACT_ORIGIN = "https://raw.githubusercontent.com/DewanKabir009/jira-board-v3001-124-0/master";
+const LIVE_ARTIFACT_PATHS = new Set([
+  "/dashboard-data.json",
+  "/boards.json"
+]);
+const WORKER_ROUTES = [
+  "GET /health",
+  "GET /api/worker/status",
+  "GET /dashboard-data.json",
+  "GET /boards.json",
+  "GET /api/ai/status",
+  "POST /api/ai/release-summary",
+  "POST /api/ai/chat",
+  "GET /api/asana/status",
+  "POST /api/asana/intake",
+  "GET /api/slack/status",
+  "GET /api/slack/activity",
+  "POST /api/slack/send",
+  "POST /api/slack/commands",
+  "POST /api/slack/events",
+  "POST /api/slack/actions"
+];
 
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+
+    if (url.pathname === "/health" || url.pathname === "/api/worker/status") {
+      return jsonResponse(buildWorkerStatus(env));
+    }
+
+    if (isLiveArtifactPath(url.pathname)) {
+      return serveLiveArtifact(request, env, url);
+    }
 
     if (url.pathname === "/api/ai/status") {
       return jsonResponse({
@@ -117,6 +147,91 @@ export default {
     return serveFreshAsset(request, env);
   }
 };
+
+async function serveLiveArtifact(request, env, url) {
+  const method = request.method.toUpperCase();
+  if (!["GET", "HEAD"].includes(method)) {
+    return jsonResponse({ ok: false, message: "Use GET for live board artifacts." }, 405);
+  }
+
+  const { response, source, warning } = await fetchLiveArtifactResponse(request, env, url.pathname, url);
+  const headers = liveArtifactHeaders(response.headers, source, warning);
+
+  return new Response(method === "HEAD" ? null : response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers
+  });
+}
+
+async function fetchLiveArtifactResponse(request, env, pathname, sourceUrl) {
+  const accept = request.headers.get("accept") || "application/json, text/plain;q=0.9, */*;q=0.8";
+  const liveOrigin = liveArtifactOrigin(env);
+  let rawWarning = "";
+
+  try {
+    const rawUrl = new URL(pathname.replace(/^\/+/, ""), ensureTrailingSlash(liveOrigin));
+    rawUrl.searchParams.set("hqLiveArtifact", Date.now().toString());
+    const response = await fetch(rawUrl.toString(), {
+      method: "GET",
+      headers: {
+        accept,
+        "user-agent": "CORE-QA-HQ-live-artifact/1.0"
+      },
+      cf: {
+        cacheTtl: 0,
+        cacheEverything: false
+      }
+    });
+
+    if (response.ok) {
+      return { response, source: "github-raw-master", warning: "" };
+    }
+
+    rawWarning = `GitHub raw returned HTTP ${response.status}`;
+  } catch (error) {
+    rawWarning = error?.message || "GitHub raw artifact fetch failed";
+  }
+
+  const fallbackUrl = new URL(pathname, sourceUrl?.origin || "https://core-qa-assets.local");
+  const fallbackResponse = await env.ASSETS.fetch(new Request(fallbackUrl.toString(), {
+    method: "GET",
+    headers: { accept }
+  }));
+
+  return {
+    response: fallbackResponse,
+    source: "worker-static-assets-fallback",
+    warning: rawWarning
+  };
+}
+
+function liveArtifactHeaders(sourceHeaders, source, warning) {
+  const headers = new Headers(sourceHeaders);
+  headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
+  headers.set("pragma", "no-cache");
+  headers.set("expires", "0");
+  headers.set("x-core-qa-cache-policy", "live-artifact");
+  headers.set("x-core-qa-artifact-source", source);
+
+  if (warning) {
+    headers.set("x-core-qa-artifact-warning", warning.slice(0, 240));
+  }
+
+  return headers;
+}
+
+function isLiveArtifactPath(pathname) {
+  return LIVE_ARTIFACT_PATHS.has(pathname);
+}
+
+function liveArtifactOrigin(env) {
+  return (env.LIVE_ARTIFACT_ORIGIN || DEFAULT_LIVE_ARTIFACT_ORIGIN).replace(/\/+$/g, "");
+}
+
+function ensureTrailingSlash(value) {
+  return value.endsWith("/") ? value : `${value}/`;
+}
 
 async function serveFreshAsset(request, env) {
   const url = new URL(request.url);
@@ -2253,13 +2368,22 @@ function buildBriefPayload({ dashboard, stats, provider, model, brief, warning, 
 
 async function loadDashboardData(env, url) {
   const dataUrl = new URL("/dashboard-data.json", url.origin);
-  const response = await env.ASSETS.fetch(new Request(dataUrl.toString(), { method: "GET" }));
+  const { response, source, warning } = await fetchLiveArtifactResponse(new Request(dataUrl.toString(), {
+    method: "GET",
+    headers: { accept: "application/json" }
+  }), env, "/dashboard-data.json", dataUrl);
 
   if (!response.ok) {
-    throw new Error(`Unable to load dashboard-data.json: HTTP ${response.status}`);
+    throw new Error(`Unable to load dashboard-data.json from ${source}: HTTP ${response.status}${warning ? ` (${warning})` : ""}`);
   }
 
-  return response.json();
+  const dashboard = await response.json();
+  dashboard.artifactRuntime = {
+    source,
+    fallbackWarning: warning || "",
+    loadedAt: new Date().toISOString()
+  };
+  return dashboard;
 }
 
 async function safeJson(request) {
@@ -4312,6 +4436,47 @@ function jsonResponse(payload, status = 200) {
       "cache-control": "no-store"
     }
   });
+}
+
+function buildWorkerStatus(env) {
+  return {
+    ok: true,
+    app: "CORE QA Legacy HQ",
+    worker: {
+      role: env.WORKER_ROLE || "legacy-hq",
+      serviceName: env.WORKER_SERVICE_NAME || "core-qa-headquarters-124",
+      displayName: env.WORKER_DISPLAY_NAME || "CORE QA Legacy HQ Worker",
+      shell: "legacy",
+      sourceOfTruth: "core-qa-headquarters-124"
+    },
+    release: env.RELEASE_VERSION || "v3001.124.0",
+    urls: {
+      legacy: env.CLOUDFLARE_HQ_URL || "https://core-qa-headquarters-124.dfkabir253.workers.dev/hq/",
+      currentBoard: env.CLOUDFLARE_BOARD_URL || "https://core-qa-headquarters-124.dfkabir253.workers.dev/",
+      mordern: env.MORDERN_HQ_URL || "https://core-qa-mordern-hq-124.dfkabir253.workers.dev/"
+    },
+    parity: {
+      frontend: "Legacy operational HQ and release board",
+      backend: "Source-of-truth implementation for HQ APIs consumed by both Legacy HQ and Mordern HQ.",
+      mordernWorkerService: env.MORDERN_WORKER_SERVICE || "core-qa-mordern-hq-124"
+    },
+    artifacts: {
+      strategy: "github-raw-master-first",
+      origin: liveArtifactOrigin(env),
+      fallback: "Worker Static Assets",
+      routes: Array.from(LIVE_ARTIFACT_PATHS)
+    },
+    routes: WORKER_ROUTES,
+    bindings: {
+      assets: Boolean(env.ASSETS),
+      ai: Boolean(env.AI),
+      slackToken: Boolean(env.SLACK_BOT_TOKEN),
+      slackSigningSecret: Boolean(env.SLACK_SIGNING_SECRET),
+      asanaAccessToken: Boolean(env.ASANA_ACCESS_TOKEN),
+      jiraEmail: Boolean(env.JIRA_EMAIL),
+      jiraApiToken: Boolean(env.JIRA_API_TOKEN || env.JIRA_MCP_TOKEN)
+    }
+  };
 }
 
 function slackJsonResponse(payload, status = 200) {

@@ -14,8 +14,14 @@ run_worker_first = true
 binding = "AI"
 
 [vars]
+WORKER_ROLE = "legacy-hq"
+WORKER_SERVICE_NAME = "core-qa-headquarters-124"
+WORKER_DISPLAY_NAME = "CORE QA Legacy HQ Worker"
+MORDERN_WORKER_SERVICE = "core-qa-mordern-hq-124"
+MORDERN_HQ_URL = "https://core-qa-mordern-hq-124.dfkabir253.workers.dev/"
 HQ_ENVIRONMENT = "current-124"
 RELEASE_VERSION = "v3001.124.0"
+LIVE_ARTIFACT_ORIGIN = "https://raw.githubusercontent.com/DewanKabir009/jira-board-v3001-124-0/master"
 GITHUB_PAGES_FALLBACK_URL = "https://dewankabir009.github.io/jira-board-v3001-124-0/modern/"
 CLOUDFLARE_BOARD_URL = "https://core-qa-headquarters-124.dfkabir253.workers.dev/"
 CLOUDFLARE_HQ_URL = "https://core-qa-headquarters-124.dfkabir253.workers.dev/hq/"
