@@ -120,8 +120,7 @@ export default {
 
 async function serveFreshAsset(request, env) {
   const url = new URL(request.url);
-  const assetRequest = rewritePrefixedAssetRequest(request, url);
-  const response = await env.ASSETS.fetch(assetRequest);
+  const { response, rewrittenPath } = await fetchAssetWithFallbacks(request, env, url);
   const headers = new Headers(response.headers);
 
   if (shouldBypassAssetCache(url.pathname)) {
@@ -131,8 +130,8 @@ async function serveFreshAsset(request, env) {
     headers.set("x-core-qa-cache-policy", "live-artifact");
   }
 
-  if (assetRequest.url !== request.url) {
-    headers.set("x-core-qa-asset-rewrite", "modern-prefix");
+  if (rewrittenPath) {
+    headers.set("x-core-qa-asset-rewrite", rewrittenPath);
   }
 
   return new Response(response.body, {
@@ -142,17 +141,43 @@ async function serveFreshAsset(request, env) {
   });
 }
 
-function rewritePrefixedAssetRequest(request, url) {
-  if (!url.pathname.startsWith("/modern/_astro/") && !url.pathname.startsWith("/modern/assets/")) {
-    return request;
+async function fetchAssetWithFallbacks(request, env, url) {
+  const candidatePaths = getAssetCandidatePaths(url.pathname);
+
+  for (let index = 0; index < candidatePaths.length; index += 1) {
+    const candidateUrl = new URL(url.toString());
+    candidateUrl.pathname = candidatePaths[index];
+    const response = await env.ASSETS.fetch(new Request(candidateUrl.toString(), request));
+
+    if (response.status !== 404 || index === candidatePaths.length - 1) {
+      return {
+        response,
+        rewrittenPath: candidateUrl.pathname === url.pathname ? "" : `${url.pathname}->${candidateUrl.pathname}`
+      };
+    }
+  }
+}
+
+function getAssetCandidatePaths(pathname) {
+  const candidates = [pathname];
+  const replacements = [
+    [/^\/modern\/_astro\//, "/_astro/"],
+    [/^\/modern\/assets\//, "/assets/"],
+    [/^\/hq\/_astro\//, "/_astro/"],
+    [/^\/hq\/assets\//, "/assets/"],
+    [/^\/modern\/hq\/_astro\//, "/_astro/"],
+    [/^\/modern\/hq\/assets\//, "/assets/"],
+    [/^\/_astro\//, "/modern/_astro/"],
+    [/^\/assets\//, "/modern/assets/"]
+  ];
+
+  for (const [pattern, replacement] of replacements) {
+    if (pattern.test(pathname)) {
+      candidates.push(pathname.replace(pattern, replacement));
+    }
   }
 
-  const rewritten = new URL(url.toString());
-  rewritten.pathname = rewritten.pathname
-    .replace(/^\/modern\/_astro\//, "/_astro/")
-    .replace(/^\/modern\/assets\//, "/assets/");
-
-  return new Request(rewritten.toString(), request);
+  return [...new Set(candidates)];
 }
 
 function shouldBypassAssetCache(pathname) {
