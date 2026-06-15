@@ -7,6 +7,7 @@ The hub keeps the existing Jira board usable, then layers in release-board navig
 ## Live Links
 
 - Cloudflare HQ Worker: <https://core-qa-headquarters-124.dfkabir253.workers.dev/hq/>
+- Mordern HQ Worker: <https://core-qa-mordern-hq-124.dfkabir253.workers.dev/>
 - Cloudflare `.124` board: <https://core-qa-headquarters-124.dfkabir253.workers.dev/>
 - GitHub Pages HQ fallback: <https://dewankabir009.github.io/jira-board-v3001-124-0/modern/hq/>
 - GitHub Pages `.124` board fallback: <https://dewankabir009.github.io/jira-board-v3001-124-0/modern/>
@@ -14,6 +15,17 @@ The hub keeps the existing Jira board usable, then layers in release-board navig
 - `.122` board: <https://dewankabir009.github.io/jira-board-v3001-122-0/modern/>
 
 GitHub Pages remains useful as a static fallback. The `.124` modern board and HQ are now Cloudflare-first. The live AI endpoint only works on the Cloudflare Worker URL because the Worker owns the `/api/*` routes and the Workers AI binding.
+
+## Mordern HQ UI Variant
+
+Mordern HQ is a separate repo and Cloudflare Worker shell inspired by the premium visual language of `riyadhair.com`: deep aubergine navigation, pearl glass panels, rounded pill controls, editorial hero scale, and image-led command sections. It links back to Legacy HQ, while Legacy HQ now links forward to Mordern HQ.
+
+Future HQ changes should be applied to both user-facing shells:
+
+- Legacy HQ remains the operational source-of-truth implementation in this repo.
+- Mordern HQ lives in `core-qa-mordern-hq` and consumes the same `/dashboard-data.json`, `/boards.json`, and `/api/*` contracts through its Worker proxy.
+
+Backend/API-only changes should stay centralized in the Legacy HQ Worker whenever possible, then be consumed by Mordern HQ rather than duplicated.
 
 ## Version Screenshots
 
