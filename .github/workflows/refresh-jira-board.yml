@@ -122,7 +122,16 @@ jobs:
                 git add assets/jira-media
               fi
               git commit -m "Refresh Jira board data ${pulled_at}"
-              git push origin "HEAD:${GITHUB_REF_NAME}"
+              push_attempt=1
+              until git push origin "HEAD:${GITHUB_REF_NAME}"; do
+                if [ "$push_attempt" -ge 3 ]; then
+                  echo "::error::Unable to publish dashboard refresh after ${push_attempt} attempts."
+                  exit 1
+                fi
+                echo "::warning::Dashboard refresh push was rejected; rebasing latest ${GITHUB_REF_NAME} and retrying."
+                git pull --rebase origin "$GITHUB_REF_NAME"
+                push_attempt=$((push_attempt + 1))
+              done
               node scripts/send-refresh-notifications.cjs || echo "::warning::Notification send failed; continuing refresh loop."
               if [ -n "${CLOUDFLARE_API_TOKEN:-}" ]; then
                 node scripts/prepare-cloudflare-hq-assets.cjs
