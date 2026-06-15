@@ -1,0 +1,40 @@
+# v3001.124.0 workflow bootstrap
+name: Deploy Cloudflare Provisioner
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths:
+      - workers/board-provisioner-worker.js
+      - wrangler.provisioner.toml
+      - .github/workflows/deploy-provisioner.yml
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy provisioner and refresh heartbeat
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Verify Cloudflare token
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::error::Set CLOUDFLARE_API_TOKEN in repository secrets before running this workflow."
+            exit 1
+          fi
+
+      - name: Deploy provisioner Worker
+        run: npx -y wrangler deploy -c wrangler.provisioner.toml

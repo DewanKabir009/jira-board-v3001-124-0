@@ -94,8 +94,10 @@ The Legacy HQ Worker also rewrites prefixed static asset requests from `/modern/
 ## Architecture
 
 ```text
-Jira fixVersion data
+Cloudflare Cron heartbeat
+  -> GitHub workflow_dispatch
   -> GitHub Action refresh
+  -> Jira fixVersion data
   -> Confluence Team Calendar pull
   -> dashboard-data.json
   -> Astro modern dashboard and HQ shell
@@ -108,10 +110,25 @@ Jira fixVersion data
 
 The HQ Worker uses Cloudflare's Static Assets binding for the built Astro files and routes `/api/*` through the Worker first. The AI and Slack services are server-side only, so model bindings, Slack tokens, signing secrets, and other secrets are not exposed in browser JavaScript.
 
+## Five-Minute Refresh Heartbeat
+
+The `.124` board no longer relies on GitHub's native `schedule` event. GitHub scheduled workflows can be delayed or skipped under load, so Cloudflare now owns the clock:
+
+- Cloudflare Cron runs `jira-board-provisioner` on `*/5 * * * *`.
+- The Worker checks `DewanKabir009/jira-board-v3001-124-0` for active or recently-started `refresh-jira-board.yml` runs.
+- If no run is active and the last run was not started within the guard window, the Worker dispatches `workflow_dispatch` on `master`.
+- GitHub Actions still performs the Jira pull, artifact commit, media import, notification pass, and Cloudflare HQ deploy.
+- `/heartbeat/status` shows the current dispatcher state without triggering a run.
+- `/heartbeat/run` performs the same dispatch path manually with provisioner admin auth.
+
+The GitHub workflow keeps `workflow_dispatch` only; the old GitHub `schedule` trigger has been removed so there is a single heartbeat source.
+
 Relevant files:
 
 - `wrangler.hq.toml`: Cloudflare Worker, static assets, Workers AI binding, and public Asana/Jira intake config.
 - `workers/hq-worker.js`: API routes for AI status, release summary, Slack status, Slack message posting, slash commands, Events API callbacks, interactive callbacks, callback activity, and Asana intake.
+- `wrangler.provisioner.toml`: Cloudflare Cron configuration for the five-minute refresh heartbeat and stale-board monitor.
+- `workers/board-provisioner-worker.js`: board spin-up API, managed secret provider, refresh monitor, and Cloudflare-driven refresh heartbeat.
 - `modern-dashboard/src/pages/hq.astro`: HQ UI route and browser-side AI runner.
 - `modern-dashboard/src/styles/qa-hq.css`: HQ design system and responsive styling.
 - `modern-dashboard/scripts/capture-hq-readme-screenshots.cjs`: README screenshot capture harness.
@@ -208,7 +225,7 @@ The HQ Calendar Menu is a Confluence-backed release calendar module.
 
 - Source: Confluence Team Calendar `GN Releases`.
 - Default URL: <https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases>.
-- Refresh cadence: coupled to `refresh-jira-board.yml`, which runs every 5 minutes and on demand.
+- Refresh cadence: coupled to the Cloudflare Cron heartbeat, which dispatches `refresh-jira-board.yml` every 5 minutes and leaves GitHub Actions to execute the pull.
 - Data contract: `dashboard-data.json.calendarMenu`.
 - Views: Calendar grid and Upcoming list.
 - Calendar navigation: the grid defaults to the current month instead of the oldest pulled event month, with Previous, Today, and Next controls.
@@ -252,11 +269,12 @@ Calendar environment overrides:
 | React islands | Power selected interactive dashboard experiences inside the modern board. |
 | TypeScript and JavaScript | Own the UI logic, dashboard transformations, worker routes, and automation scripts. |
 | Cloudflare Workers | Hosts the HQ as a Worker-backed web app and owns same-origin `/api/*` routes. |
+| Cloudflare Cron Triggers | Own the five-minute `.124` refresh heartbeat so dashboard pulls no longer depend on GitHub's native scheduled workflow. |
 | Cloudflare Workers Static Assets | Serves the built HQ and dashboard assets through the Worker. |
 | Cloudflare Workers AI | Generates the draft release intelligence brief from current board data. |
 | Slack Web API | Posts reviewed HQ notifications through the installed CORE JIRA NOTIFIER AGENT bot and receives verified slash commands, app mentions, and interactive callbacks. |
 | Asana REST API | Creates HQ intake tickets in the `GN CORE QA HQ` project from the Automation Bench form. |
-| GitHub Actions | Refreshes Jira data, deploys static pages, runs Playwright jobs, and publishes evidence. |
+| GitHub Actions | Executes refreshes dispatched by Cloudflare, deploys static pages, runs Playwright jobs, and publishes evidence. |
 | Confluence Team Calendars | Feeds the HQ Calendar Menu through the 5-minute board refresh artifact. |
 | GitHub Pages | Keeps static public fallback pages live during the Cloudflare migration. |
 | Wrangler | Builds, validates, and deploys the Cloudflare board and HQ Worker. |

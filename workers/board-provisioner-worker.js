@@ -30,6 +30,9 @@ const DEFAULT_MONITORED_BOARDS = [
     modernUrl: "https://dewankabir009.github.io/jira-board-v3001-123-0/modern/",
   },
 ];
+const DEFAULT_HEARTBEAT_REPOSITORIES = [
+  "DewanKabir009/jira-board-v3001-124-0",
+];
 
 function parseList(value) {
   return String(value || "")
@@ -41,6 +44,14 @@ function parseList(value) {
 function numericEnv(value, fallback) {
   const parsed = Number(value);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function booleanEnv(value, fallback = true) {
+  if (value === undefined || value === null || value === "") {
+    return fallback;
+  }
+
+  return !["0", "false", "off", "no"].includes(String(value).trim().toLowerCase());
 }
 
 function base64UrlDecode(input) {
@@ -333,6 +344,33 @@ function normalizeBoard(input) {
   };
 }
 
+function releaseFromRepositorySlug(repositorySlug) {
+  const repoName = String(repositorySlug || "").split("/").pop() || "";
+  const releaseMatch = repoName.match(/v(\d+)-(\d+)-(\d+)/i);
+  if (!releaseMatch) {
+    return repoName || repositorySlug;
+  }
+
+  return `v${releaseMatch[1]}.${releaseMatch[2]}.${releaseMatch[3]}`;
+}
+
+function boardFromRepositorySlug(repositorySlug, env) {
+  const [owner, repoName] = String(repositorySlug || "").split("/");
+  if (!owner || !repoName) {
+    return null;
+  }
+
+  const dashboardUrlValue = `https://${owner.toLowerCase()}.github.io/${repoName}/`;
+  return normalizeBoard({
+    release: releaseFromRepositorySlug(repositorySlug),
+    repositorySlug,
+    dashboardUrl: dashboardUrlValue,
+    modernUrl: env.REFRESH_HEARTBEAT_MODERN_URL || `${dashboardUrlValue}modern/`,
+    workflow: env.REFRESH_HEARTBEAT_WORKFLOW || "refresh-jira-board.yml",
+    branch: env.REFRESH_HEARTBEAT_BRANCH || env.DEFAULT_BRANCH || "master",
+  });
+}
+
 function parseConfiguredBoards(env) {
   if (!env.MONITORED_BOARDS) {
     return [];
@@ -383,6 +421,14 @@ async function getMonitorBoards(env) {
   }
 
   return DEFAULT_MONITORED_BOARDS.map(normalizeBoard).filter(Boolean);
+}
+
+function getHeartbeatBoards(env) {
+  const configuredRepositories = parseList(env.REFRESH_HEARTBEAT_REPOSITORIES || env.REFRESH_HEARTBEAT_REPOSITORY);
+  const repositories = configuredRepositories.length ? configuredRepositories : DEFAULT_HEARTBEAT_REPOSITORIES;
+  return repositories
+    .map((repositorySlug) => boardFromRepositorySlug(repositorySlug, env))
+    .filter(Boolean);
 }
 
 function extractPulledAt(data) {
@@ -478,6 +524,185 @@ async function dispatchRefreshForBoard(env, board, reason) {
     branch: board.branch || env.DEFAULT_BRANCH || "master",
     dispatchedAt: new Date().toISOString(),
   };
+}
+
+function summarizeWorkflowRun(run) {
+  if (!run) {
+    return null;
+  }
+
+  return {
+    id: run.id,
+    status: run.status,
+    conclusion: run.conclusion,
+    event: run.event,
+    createdAt: run.created_at,
+    updatedAt: run.updated_at,
+    htmlUrl: run.html_url,
+  };
+}
+
+function heartbeatSettings(env) {
+  return {
+    enabled: booleanEnv(env.REFRESH_HEARTBEAT_ENABLED, true),
+    minimumGapSeconds: numericEnv(env.REFRESH_HEARTBEAT_MINIMUM_GAP_SECONDS, 240),
+  };
+}
+
+async function inspectHeartbeatBoard(env, board, options = {}) {
+  const settings = heartbeatSettings(env);
+  const result = {
+    ok: false,
+    release: board.release,
+    repositorySlug: board.repositorySlug,
+    workflow: board.workflow || env.REFRESH_HEARTBEAT_WORKFLOW || "refresh-jira-board.yml",
+    branch: board.branch || env.REFRESH_HEARTBEAT_BRANCH || env.DEFAULT_BRANCH || "master",
+    checkedAt: new Date().toISOString(),
+    minimumGapSeconds: settings.minimumGapSeconds,
+    state: "unknown",
+  };
+
+  if (!settings.enabled) {
+    result.ok = true;
+    result.state = "disabled";
+    result.message = "Cloudflare refresh heartbeat is disabled by REFRESH_HEARTBEAT_ENABLED.";
+    return result;
+  }
+
+  let runs = [];
+  try {
+    runs = await listRefreshRuns(env, board);
+  } catch (error) {
+    result.state = "workflow-list-failed";
+    result.error = error.message;
+    return result;
+  }
+
+  const activeRuns = activeRefreshRuns(runs);
+  result.activeRefreshRuns = activeRuns.map(summarizeWorkflowRun);
+  result.latestWorkflowRun = summarizeWorkflowRun(runs[0]);
+
+  if (activeRuns.length) {
+    result.ok = true;
+    result.state = "active-refresh-present";
+    result.message = "A refresh workflow is already queued or running; this Cloudflare tick skipped dispatch.";
+    return result;
+  }
+
+  const latestStartedAt = Date.parse(runs[0]?.created_at || "");
+  if (Number.isFinite(latestStartedAt)) {
+    result.secondsSinceLatestRunStarted = Math.max(0, Math.round((Date.now() - latestStartedAt) / 1000));
+    if (result.secondsSinceLatestRunStarted < settings.minimumGapSeconds) {
+      result.ok = true;
+      result.state = "recent-refresh-present";
+      result.message = "A refresh workflow was dispatched recently; this Cloudflare tick skipped a duplicate.";
+      return result;
+    }
+  }
+
+  if (options.dispatch === false) {
+    result.ok = true;
+    result.state = "ready-to-dispatch";
+    result.message = "No active or recent refresh run was found.";
+    return result;
+  }
+
+  try {
+    result.dispatch = await dispatchRefreshForBoard(env, board, options.source || "cloudflare-heartbeat");
+    result.ok = true;
+    result.state = "dispatched";
+    result.message = "Cloudflare Cron dispatched the refresh workflow.";
+  } catch (error) {
+    result.state = "dispatch-failed";
+    result.error = error.message;
+  }
+
+  return result;
+}
+
+function buildHeartbeatSummary(results, options = {}) {
+  const dispatched = results.filter((result) => result.state === "dispatched");
+  const active = results.filter((result) => result.state === "active-refresh-present");
+  const recent = results.filter((result) => result.state === "recent-refresh-present");
+  const failed = results.filter((result) => !result.ok);
+
+  return {
+    ok: failed.length === 0,
+    service: "jira-board-refresh-heartbeat",
+    source: options.source || "manual",
+    checkedAt: new Date().toISOString(),
+    cadence: "Cloudflare Cron */5 * * * *",
+    githubScheduleDependency: false,
+    counts: {
+      total: results.length,
+      dispatched: dispatched.length,
+      skippedActive: active.length,
+      skippedRecent: recent.length,
+      failed: failed.length,
+    },
+    boards: results,
+  };
+}
+
+function heartbeatAlertText(summary) {
+  const lines = [
+    `Jira board refresh heartbeat: ${summary.counts.dispatched}/${summary.counts.total} dispatched`,
+    `Checked: ${summary.checkedAt}`,
+  ];
+
+  for (const board of summary.boards.filter((item) => !item.ok)) {
+    lines.push(`- ${board.release}: ${board.state}, ${board.error || board.message || "unknown error"}`);
+    if (board.latestWorkflowRun?.htmlUrl) {
+      lines.push(`  Latest workflow: ${board.latestWorkflowRun.htmlUrl}`);
+    }
+  }
+
+  return lines.join("\n");
+}
+
+async function sendHeartbeatSlackAlert(env, summary) {
+  if (summary.ok) {
+    return false;
+  }
+
+  const text = heartbeatAlertText(summary);
+  const botToken = env.SLACK_BOT_TOKEN;
+  const channelId = env.SLACK_CHANNEL_ID;
+  if (botToken && channelId) {
+    const response = await fetch("https://slack.com/api/chat.postMessage", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${botToken}`,
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify({
+        channel: channelId,
+        text,
+        unfurl_links: false,
+        unfurl_media: false,
+      }),
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok || !payload.ok) {
+      throw new Error(`Slack heartbeat alert failed: ${payload.error || response.status}`);
+    }
+    return true;
+  }
+
+  if (env.SLACK_WEBHOOK_URL) {
+    const response = await fetch(env.SLACK_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+    });
+    if (!response.ok) {
+      throw new Error(`Slack heartbeat webhook failed with HTTP ${response.status}.`);
+    }
+    return true;
+  }
+
+  console.warn("Heartbeat alert skipped; Slack credentials are not configured.");
+  return false;
 }
 
 function monitorThresholds(env) {
@@ -713,6 +938,27 @@ async function runRefreshMonitor(env, options = {}) {
   return summary;
 }
 
+async function runRefreshHeartbeat(env, options = {}) {
+  const boards = getHeartbeatBoards(env);
+  const results = [];
+  for (const board of boards) {
+    results.push(await inspectHeartbeatBoard(env, board, options));
+  }
+
+  const summary = buildHeartbeatSummary(results, options);
+  if (options.alert !== false) {
+    try {
+      summary.alertSent = await sendHeartbeatSlackAlert(env, summary);
+    } catch (error) {
+      summary.alertSent = false;
+      summary.alertError = error.message;
+      console.error(error);
+    }
+  }
+
+  return summary;
+}
+
 async function handleProvision(request, env) {
   const auth = await authorizeAdmin(request, env);
   if (!auth.ok) {
@@ -815,6 +1061,30 @@ async function handleMonitorRun(request, env) {
   return json(summary.ok ? 200 : 202, summary);
 }
 
+async function handleHeartbeatStatus(env) {
+  const summary = await runRefreshHeartbeat(env, {
+    source: "status",
+    dispatch: false,
+    alert: false,
+  });
+  return json(summary.ok ? 200 : 503, summary);
+}
+
+async function handleHeartbeatRun(request, env) {
+  const auth = await authorizeAdmin(request, env);
+  if (!auth.ok) {
+    return json(auth.status, { ok: false, message: auth.message });
+  }
+
+  const summary = await runRefreshHeartbeat(env, {
+    source: "manual",
+    dispatch: true,
+    alert: true,
+  });
+  summary.actor = auth.actor;
+  return json(summary.ok ? 200 : 202, summary);
+}
+
 async function handleMonitorHealth(env) {
   const summary = await runRefreshMonitor(env, {
     source: "health",
@@ -860,6 +1130,17 @@ async function handleStatus(env) {
       staleMinutes: monitorThresholds(env).staleMinutes,
       criticalMinutes: monitorThresholds(env).criticalMinutes,
     },
+    heartbeat: {
+      cadence: "Cloudflare Cron */5 * * * *",
+      githubScheduleDependency: false,
+      settings: heartbeatSettings(env),
+      boards: getHeartbeatBoards(env).map((board) => ({
+        release: board.release,
+        repositorySlug: board.repositorySlug,
+        workflow: board.workflow,
+        branch: board.branch,
+      })),
+    },
   });
 }
 
@@ -884,6 +1165,14 @@ export default {
         return await handleMonitorRun(request, env);
       }
 
+      if (request.method === "GET" && url.pathname === "/heartbeat/status") {
+        return await handleHeartbeatStatus(env);
+      }
+
+      if (request.method === "POST" && url.pathname === "/heartbeat/run") {
+        return await handleHeartbeatRun(request, env);
+      }
+
       if (request.method === "POST" && url.pathname === "/provision") {
         return await handleProvision(request, env);
       }
@@ -902,16 +1191,25 @@ export default {
   },
   async scheduled(event, env, ctx) {
     ctx.waitUntil(
-      runRefreshMonitor(env, {
+      runRefreshHeartbeat(env, {
         source: `cron:${event.cron}`,
         dispatch: true,
         alert: true,
-      }).then((summary) => {
+      }).then(async (heartbeatSummary) => {
+        const monitorSummary = await runRefreshMonitor(env, {
+          source: `post-heartbeat:${event.cron}`,
+          dispatch: false,
+          alert: false,
+        });
         console.log(JSON.stringify({
-          service: summary.service,
-          checkedAt: summary.checkedAt,
-          counts: summary.counts,
-          alertSent: summary.alertSent,
+          service: heartbeatSummary.service,
+          checkedAt: heartbeatSummary.checkedAt,
+          counts: heartbeatSummary.counts,
+          alertSent: heartbeatSummary.alertSent,
+          monitor: {
+            service: monitorSummary.service,
+            counts: monitorSummary.counts,
+          },
         }));
       }),
     );
