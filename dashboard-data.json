@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-15T14:26:35.963Z",
-  "pulledAtDisplay": "Jun 15, 2026, 10:26 AM",
+  "pulledAt": "2026-06-15T14:51:46.796Z",
+  "pulledAtDisplay": "Jun 15, 2026, 10:51 AM",
   "total": 17,
   "issues": [
     {
@@ -1252,15 +1252,15 @@
     "sprintStartDate": "2026-06-01T14:23:42.721Z",
     "sprintEndDate": "2026-06-22T05:00:00.000Z",
     "backlogParity": true,
-    "backlogIssueCount": 95,
+    "backlogIssueCount": 94,
     "backlogWarning": "",
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-15T14:26:35.963Z",
-    "pulledAtDisplay": "Jun 15, 2026, 10:26 AM",
-    "total": 95,
-    "mainTotal": 95,
+    "pulledAt": "2026-06-15T14:51:46.796Z",
+    "pulledAtDisplay": "Jun 15, 2026, 10:51 AM",
+    "total": 94,
+    "mainTotal": 94,
     "subtaskTotal": 0,
     "issues": [
       {
@@ -5320,48 +5320,6 @@
         "parent": null
       },
       {
-        "key": "CORE-14338",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14338",
-        "summary": "New GNC Page - Update Tee Times (Trade)",
-        "description": "In order to better manage trade rounds, the revenue team has requested a new page in GNC that will be similar to Update Tee Times with a few adjustments specific to trade.\n\nRequirements:\n\n- Search functionality\n\n- Start Date:\n\n- Calendar date picker\n\n- Default to the current date\n\n- End Date:\n\n- Calendar date picker\n\n- Default to the next date\n\n- Start Time:\n\n- Text input\n\n- Default to 5:00AM\n\n- End Time:\n\n- Text input\n\n- Default to 10:59PM\n\n- From Rate:\n\n- Text input\n\n- Default to $0.00\n\n- To Rate:\n\n- Text input\n\n- Default to $500.00\n\n- Market Tier:\n\n- Multi-select\n\n- Default to Tier 1 and Tier 2 automatically selected\n\n- Market:\n\n- Multi-select\n\n- Facility Group:\n\n- Multi-select\n\n- Market options:\n\n- Northeast\n\n- Northwest\n\n- Southeast\n\n- Southwest\n\n- Interface:\n\n- Multi-select\n\n- Courses at Floor:\n\n- Yes/No select\n\n- No default selection needed\n\n- Temporary Facility Closure:\n\n- Yes/No select\n\n- No default selection needed\n\n- Status\n\n- Single select dropdown and customizable status selector (same as current UI in GNC)\n\n- Sort Order:\n\n- Single select dropdown\n\n- Sort order options:\n\n- Play Date/Rate Set\n\n- Play Date/Facility/Rate Set\n\n- Facility/Rate Set/Play Date\n\n- Rate Set/Date\n\n- Search button\n\n- Search results to display:\n\n- Play Facility ID\n\n- Play Facility\n\n- Rate Set\n\n- Interface Type\n\n- Market\n\n- Load Time\n\n- Tee Time\n\n- Play Date\n\n- Status\n\n- Players\n\n- Unsold Trade\n\n- Unsold Trade = Trade Capacity - Trade Sold\n\n- Trade Capacity\n\n- Trade Utilization\n\n- Trade Utilization = Trade Sold / Trade Capacity\n\n- Online Rate\n\n- Current Discount Amount\n\n- This comes from the Trade Price Matrix\n\n- Floor Amount\n\n- This comes from the Floor Amount in the Trade Price Matrix\n\n- Course Rate Being Discounted\n\n- Revenue at Risk\n\n- Revenue at Risk = Unsold Trade * Online Rate\n\n- Additional displays:\n\n- Revenue at Risk\n\n- Total Revenue at Risk\n\n- Trade Utilization\n\n- Total Trade Utilization\n\nNOTE: Demo with Allegretti and Alyssa once completed to ensure all trade needs are met before deploying to production.",
-        "descriptionHtml": "<p>In order to better manage trade rounds, the revenue team has requested a new page in GNC that will be similar to Update Tee Times with a few adjustments specific to trade.</p><p><strong>Requirements:</strong></p><ol><li><p><strong>Search functionality</strong></p><ol><li><p><strong>Start Date:</strong></p><ol><li><p>Calendar date picker</p></li><li><p>Default to the current date</p></li></ol></li><li><p><strong>End Date:</strong></p><ol><li><p>Calendar date picker</p></li><li><p>Default to the next date</p></li></ol></li><li><p><strong>Start Time:</strong></p><ol><li><p>Text input</p></li><li><p>Default to 5:00AM</p></li></ol></li><li><p><strong>End Time:</strong></p><ol><li><p>Text input</p></li><li><p>Default to 10:59PM</p></li></ol></li><li><p><strong>From Rate:</strong></p><ol><li><p>Text input</p></li><li><p>Default to $0.00</p></li></ol></li><li><p><strong>To Rate:</strong></p><ol><li><p>Text input</p></li><li><p>Default to $500.00</p></li></ol></li><li><p><strong>Market Tier:</strong></p><ol><li><p>Multi-select</p></li><li><p>Default to Tier 1 and Tier 2 automatically selected</p></li></ol></li><li><p><strong>Market:</strong></p><ol><li><p>Multi-select</p></li></ol></li><li><p><strong>Facility Group:</strong></p><ol><li><p>Multi-select</p></li><li><p>Market options:</p><ol><li><p>Northeast</p></li><li><p>Northwest</p></li><li><p>Southeast</p></li><li><p>Southwest</p></li></ol></li></ol></li><li><p><strong>Interface:</strong></p><ol><li><p>Multi-select</p></li></ol></li><li><p><strong>Courses at Floor:</strong></p><ol><li><p>Yes/No select</p></li><li><p>No default selection needed</p></li></ol></li><li><p><strong>Temporary Facility Closure:</strong></p><ol><li><p>Yes/No select</p></li><li><p>No default selection needed</p></li></ol></li><li><p><strong>Status</strong></p><ol><li><p>Single select dropdown <em>and </em>customizable status selector (same as current UI in GNC)</p></li></ol></li><li><p><strong>Sort Order:</strong></p><ol><li><p>Single select dropdown</p></li><li><p>Sort order options: </p><ol><li><p>Play Date/Rate Set</p></li><li><p>Play Date/Facility/Rate Set</p></li><li><p>Facility/Rate Set/Play Date</p></li><li><p>Rate Set/Date</p></li></ol></li></ol></li><li><p><strong>Search button</strong></p></li></ol></li><li><p><strong>Search results to display:</strong></p><ol><li><p>Play Facility ID</p></li><li><p>Play Facility</p></li><li><p>Rate Set</p></li><li><p>Interface Type</p></li><li><p>Market</p></li><li><p>Load Time</p></li><li><p>Tee Time</p></li><li><p>Play Date</p></li><li><p>Status</p></li><li><p>Players</p></li><li><p>Unsold Trade</p><ol><li><p>Unsold Trade = Trade Capacity - Trade Sold</p></li></ol></li><li><p>Trade Capacity</p></li><li><p>Trade Utilization</p><ol><li><p>Trade Utilization = Trade Sold / Trade Capacity</p></li></ol></li><li><p>Online Rate</p></li><li><p>Current Discount Amount</p><ol><li><p>This comes from the Trade Price Matrix</p></li></ol></li><li><p>Floor Amount</p><ol><li><p>This comes from the Floor Amount in the Trade Price Matrix</p></li></ol></li><li><p>Course Rate Being Discounted</p></li><li><p>Revenue at Risk</p><ol><li><p>Revenue at Risk = Unsold Trade * Online Rate</p></li></ol></li></ol></li><li><p><strong>Additional displays:</strong></p><ol><li><p>Revenue at Risk</p><ol><li><p>Total Revenue at Risk</p></li></ol></li><li><p>Trade Utilization</p><ol><li><p>Total Trade Utilization</p></li></ol></li></ol></li></ol><p>NOTE: Demo with Allegretti and Alyssa once completed to ensure all trade needs are met before deploying to production.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14338/712982-image-20260411-161923.png\" alt=\"image-20260411-161923.png\" loading=\"lazy\"><figcaption>image-20260411-161923.png</figcaption></figure></div>",
-        "descriptionImageCount": 1,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Planning",
-        "priority": "None",
-        "assignee": "Corrie Thomas",
-        "assigneeAccountId": "6278785f0e2c490069024297",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/6278785f0e2c490069024297/9a824d75-70de-4965-81ef-ce64794798ce/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-05-26T02:42:32.133-0400",
-        "updatedDisplay": "May 26, 2026, 2:42 AM",
-        "created": "2026-03-25T11:47:37.925-0400",
-        "createdDisplay": "Mar 25, 2026, 11:47 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": null
-      },
-      {
         "key": "CORE-14359",
         "url": "https://golfnow.atlassian.net/browse/CORE-14359",
         "summary": "Disable searchability for more test facilities in GeoPlaces 2.0",
@@ -7235,13 +7193,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-15T14:26:08.185Z",
-    "pulledAtDisplay": "Jun 15, 2026, 10:26 AM",
+    "pulledAt": "2026-06-15T14:51:09.645Z",
+    "pulledAtDisplay": "Jun 15, 2026, 10:51 AM",
     "window": {
-      "start": "2026-05-01T14:26:08.185Z",
-      "end": "2026-12-12T14:26:08.185Z",
-      "startDisplay": "May 1, 2026, 10:26 AM",
-      "endDisplay": "Dec 12, 2026, 9:26 AM"
+      "start": "2026-05-01T14:51:09.645Z",
+      "end": "2026-12-12T14:51:09.645Z",
+      "startDisplay": "May 1, 2026, 10:51 AM",
+      "endDisplay": "Dec 12, 2026, 9:51 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7254,7 +7212,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-15T14:26:10.795Z",
+        "pulledAt": "2026-06-15T14:51:15.527Z",
         "eventCount": 90,
         "events": [
           {
@@ -7468,21 +7426,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Spring Bank Holiday (UK)",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDisplay": "May 24, 2026, 8:00 PM",
-            "endDisplay": "May 25, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -7493,6 +7436,21 @@
             "endDisplay": "May 25, 2026, 8:00 PM",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Spring Bank Holiday (UK)",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDisplay": "May 24, 2026, 8:00 PM",
+            "endDisplay": "May 25, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -7513,21 +7471,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
-            "start": "2026-05-26T18:00:00.000Z",
-            "end": "2026-05-26T19:55:00.000Z",
-            "startDisplay": "May 26, 2026, 2:00 PM",
-            "endDisplay": "May 26, 2026, 3:55 PM",
-            "allDay": false,
-            "type": "Scheduled Maintenance",
-            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
-            "description": "Slack: #itops_deployments",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -7540,6 +7483,21 @@
             "type": "Patching",
             "location": "https://golfnow.atlassian.net/browse/OPS-54241",
             "description": "Slack: #itops_patching_communications",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
+            "start": "2026-05-26T18:00:00.000Z",
+            "end": "2026-05-26T19:55:00.000Z",
+            "startDisplay": "May 26, 2026, 2:00 PM",
+            "endDisplay": "May 26, 2026, 3:55 PM",
+            "allDay": false,
+            "type": "Scheduled Maintenance",
+            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
+            "description": "Slack: #itops_deployments",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
@@ -8248,21 +8206,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Summer Bank Holiday (UK)",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-01T00:00:00.000Z",
-            "startDisplay": "Aug 30, 2026, 8:00 PM",
-            "endDisplay": "Aug 31, 2026, 8:00 PM",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8273,6 +8216,21 @@
             "endDisplay": "Sep 7, 2026, 8:00 PM",
             "allDay": true,
             "type": "Golf Freeze",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Summer Bank Holiday (UK)",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-01T00:00:00.000Z",
+            "startDisplay": "Aug 30, 2026, 8:00 PM",
+            "endDisplay": "Aug 31, 2026, 8:00 PM",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8613,10 +8571,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-15T14:01:38.509Z",
-    "previousPulledAtDisplay": "Jun 15, 2026, 10:01 AM",
-    "currentPulledAt": "2026-06-15T14:26:35.963Z",
-    "currentPulledAtDisplay": "Jun 15, 2026, 10:26 AM",
+    "previousPulledAt": "2026-06-15T14:26:35.963Z",
+    "previousPulledAtDisplay": "Jun 15, 2026, 10:26 AM",
+    "currentPulledAt": "2026-06-15T14:51:46.796Z",
+    "currentPulledAtDisplay": "Jun 15, 2026, 10:51 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -8624,6 +8582,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-15T14:26:35.963Z",
+      "previousPulledAtDisplay": "Jun 15, 2026, 10:26 AM",
+      "currentPulledAt": "2026-06-15T14:51:46.796Z",
+      "currentPulledAtDisplay": "Jun 15, 2026, 10:51 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-15T14:01:38.509Z",
       "previousPulledAtDisplay": "Jun 15, 2026, 10:01 AM",
@@ -10557,17 +10526,6 @@
       "previousPulledAtDisplay": "Jun 12, 2026, 4:36 PM",
       "currentPulledAt": "2026-06-12T21:01:49.542Z",
       "currentPulledAtDisplay": "Jun 12, 2026, 5:01 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-12T20:12:10.355Z",
-      "previousPulledAtDisplay": "Jun 12, 2026, 4:12 PM",
-      "currentPulledAt": "2026-06-12T20:36:32.824Z",
-      "currentPulledAtDisplay": "Jun 12, 2026, 4:36 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
