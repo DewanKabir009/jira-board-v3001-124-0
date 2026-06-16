@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-16T14:16:32.137Z",
-  "pulledAtDisplay": "Jun 16, 2026, 10:16 AM",
+  "pulledAt": "2026-06-16T14:21:33.695Z",
+  "pulledAtDisplay": "Jun 16, 2026, 10:21 AM",
   "total": 18,
   "issues": [
     {
@@ -1373,8 +1373,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-16T14:16:32.137Z",
-    "pulledAtDisplay": "Jun 16, 2026, 10:16 AM",
+    "pulledAt": "2026-06-16T14:21:33.695Z",
+    "pulledAtDisplay": "Jun 16, 2026, 10:21 AM",
     "total": 93,
     "mainTotal": 93,
     "subtaskTotal": 0,
@@ -7296,13 +7296,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-16T14:16:11.736Z",
-    "pulledAtDisplay": "Jun 16, 2026, 10:16 AM",
+    "pulledAt": "2026-06-16T14:21:13.836Z",
+    "pulledAtDisplay": "Jun 16, 2026, 10:21 AM",
     "window": {
-      "start": "2026-05-02T14:16:11.736Z",
-      "end": "2026-12-13T14:16:11.736Z",
-      "startDisplay": "May 2, 2026, 10:16 AM",
-      "endDisplay": "Dec 13, 2026, 9:16 AM"
+      "start": "2026-05-02T14:21:13.836Z",
+      "end": "2026-12-13T14:21:13.836Z",
+      "startDisplay": "May 2, 2026, 10:21 AM",
+      "endDisplay": "Dec 13, 2026, 9:21 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7315,7 +7315,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "error",
-        "pulledAt": "2026-06-16T14:16:18.334Z",
+        "pulledAt": "2026-06-16T14:21:17.555Z",
         "eventCount": 0,
         "events": [],
         "error": "HTTP 500 from https://golfnow.atlassian.net/wiki/rest/calendar-services/1.0/calendar/export/subcalendar/413a852e-d20c-454c-9808-425e167314f2.ics | HTTP 400 from https://golfnow.atlassian.net/wiki/rest/calendar-services/1.0/calendar/export/subcalendar/private/413a852e-d20c-454c-9808-425e167314f2.ics"
@@ -7323,10 +7323,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-16T14:11:47.230Z",
-    "previousPulledAtDisplay": "Jun 16, 2026, 10:11 AM",
-    "currentPulledAt": "2026-06-16T14:16:32.137Z",
-    "currentPulledAtDisplay": "Jun 16, 2026, 10:16 AM",
+    "previousPulledAt": "2026-06-16T14:16:32.137Z",
+    "previousPulledAtDisplay": "Jun 16, 2026, 10:16 AM",
+    "currentPulledAt": "2026-06-16T14:21:33.695Z",
+    "currentPulledAtDisplay": "Jun 16, 2026, 10:21 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -7334,6 +7334,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-16T14:16:32.137Z",
+      "previousPulledAtDisplay": "Jun 16, 2026, 10:16 AM",
+      "currentPulledAt": "2026-06-16T14:21:33.695Z",
+      "currentPulledAtDisplay": "Jun 16, 2026, 10:21 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-16T14:11:47.230Z",
       "previousPulledAtDisplay": "Jun 16, 2026, 10:11 AM",
@@ -9392,17 +9403,6 @@
       "previousPulledAtDisplay": "Jun 15, 2026, 8:21 PM",
       "currentPulledAt": "2026-06-16T00:26:35.099Z",
       "currentPulledAtDisplay": "Jun 15, 2026, 8:26 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-16T00:16:15.767Z",
-      "previousPulledAtDisplay": "Jun 15, 2026, 8:16 PM",
-      "currentPulledAt": "2026-06-16T00:21:22.898Z",
-      "currentPulledAtDisplay": "Jun 15, 2026, 8:21 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
