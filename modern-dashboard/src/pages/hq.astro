@@ -2848,7 +2848,7 @@ const hqSpecs = [
         const todayKey = dayKey(new Date());
 
         const monthEvents = events.filter((event) => {
-          const eventDate = new Date(event.start || 0);
+          const eventDate = calendarEventDate(event);
           return eventDate.getFullYear() === year && eventDate.getMonth() === month;
         });
 
@@ -2870,7 +2870,7 @@ const hqSpecs = [
           number.textContent = String(day.getDate());
           cell.appendChild(number);
 
-          events.filter((event) => dayKey(new Date(event.start || 0)) === key).slice(0, 3).forEach((event) => {
+          events.filter((event) => calendarEventDayKey(event) === key).slice(0, 3).forEach((event) => {
             const link = document.createElement("a");
             link.className = "calendar-event-pill";
             link.href = event.url || source.url || "#";
@@ -2890,7 +2890,7 @@ const hqSpecs = [
 
       function renderList(source) {
         const events = Array.isArray(source.events)
-          ? source.events.slice().sort((a, b) => new Date(a.start || 0) - new Date(b.start || 0))
+          ? source.events.slice().sort((a, b) => calendarEventDate(a) - calendarEventDate(b))
           : [];
         listView.textContent = "";
 
@@ -2906,7 +2906,7 @@ const hqSpecs = [
 
         const groups = new Map();
         events.forEach((event) => {
-          const date = new Date(event.start || 0);
+          const date = calendarEventDate(event);
           const key = monthKey(date);
           if (!groups.has(key)) {
             groups.set(key, {
@@ -2943,8 +2943,8 @@ const hqSpecs = [
           card.className = "calendar-list-card";
 
           const time = document.createElement("time");
-          time.dateTime = event.start || "";
-          time.textContent = event.startDisplay || event.start || "Date pending";
+          time.dateTime = event.startDate || event.start || "";
+          time.textContent = calendarEventDisplay(event);
 
           const body = document.createElement("div");
           const title = document.createElement("h4");
@@ -2973,6 +2973,50 @@ const hqSpecs = [
           year: "numeric",
           month: "2-digit",
           day: "2-digit",
+        }).format(date);
+      }
+
+      function calendarEventDayKey(event) {
+        if (event?.allDay && event.startDate) {
+          return event.startDate;
+        }
+
+        return dayKey(calendarEventDate(event));
+      }
+
+      function calendarEventDate(event) {
+        if (event?.allDay && event.startDate) {
+          return dateFromCalendarKey(event.startDate);
+        }
+
+        const parsed = new Date(event?.start || 0);
+        return Number.isNaN(parsed.getTime()) ? new Date(0) : parsed;
+      }
+
+      function calendarEventDisplay(event) {
+        if (event?.allDay && event.startDate) {
+          return formatCalendarDateOnly(event.startDate);
+        }
+
+        return event?.startDisplay || event?.start || "Date pending";
+      }
+
+      function dateFromCalendarKey(value) {
+        const match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (!match) {
+          const parsed = new Date(value || 0);
+          return Number.isNaN(parsed.getTime()) ? new Date(0) : parsed;
+        }
+
+        return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+      }
+
+      function formatCalendarDateOnly(value) {
+        const date = dateFromCalendarKey(value);
+        return new Intl.DateTimeFormat("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
         }).format(date);
       }
 

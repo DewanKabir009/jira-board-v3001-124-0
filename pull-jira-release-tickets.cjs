@@ -180,6 +180,20 @@ function formatDate(input) {
   }).format(new Date(input));
 }
 
+function formatCalendarDateOnly(dateKey) {
+  const match = String(dateKey || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) {
+    return formatDate(dateKey);
+  }
+
+  const [, year, month, day] = match;
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(Number(year), Number(month) - 1, Number(day)));
+}
+
 function serializeJsonForScript(value) {
   return JSON.stringify(value)
     .replace(/&/g, "\\u0026")
@@ -2076,8 +2090,13 @@ function normalizeCalendarEvents(payload, source) {
 }
 
 function normalizeCalendarEvent(event, source, index) {
-  const start = coerceCalendarDate(event.start || event.startDate || event.startTime || event.from || event.date || event.when);
-  const end = coerceCalendarDate(event.end || event.endDate || event.endTime || event.to || event.until);
+  const startRaw = event.start || event.startDate || event.startTime || event.from || event.date || event.when;
+  const endRaw = event.end || event.endDate || event.endTime || event.to || event.until;
+  const allDay = Boolean(event.allDay || event.isAllDay || event.isAllDayEvent || isDateOnlyCalendarValue(startRaw));
+  const start = coerceCalendarDate(startRaw);
+  const end = coerceCalendarDate(endRaw);
+  const startDate = allDay ? calendarDateKey(startRaw) || calendarDateKey(start) : "";
+  const endDate = allDay ? calendarDateKey(endRaw) || calendarDateKey(end) : "";
   const title = event.title || event.name || event.what || event.summary || "Untitled release event";
 
   if (!start && !title) {
@@ -2091,14 +2110,53 @@ function normalizeCalendarEvent(event, source, index) {
     title: String(title),
     start,
     end,
-    startDisplay: start ? formatDate(start) : "",
-    endDisplay: end ? formatDate(end) : "",
-    allDay: Boolean(event.allDay || event.isAllDay || event.isAllDayEvent),
+    startDate,
+    endDate,
+    startDisplay: start ? (allDay && startDate ? formatCalendarDateOnly(startDate) : formatDate(start)) : "",
+    endDisplay: end ? (allDay && endDate ? formatCalendarDateOnly(endDate) : formatDate(end)) : "",
+    allDay,
     type: String(event.eventType || event.type || event.eventTypeName || "Release"),
     location: String(event.location || event.where || ""),
     description: normalizeCalendarDescription(event.description || event.notes || event.comment || ""),
     url: String(event.url || event.href || event.link || source.url),
   };
+}
+
+function isDateOnlyCalendarValue(value) {
+  if (!value) {
+    return false;
+  }
+
+  if (typeof value === "object") {
+    return isDateOnlyCalendarValue(value.date || value.value || value.dateTime || value.time);
+  }
+
+  return /^\d{4}-\d{2}-\d{2}$/.test(String(value).trim()) ||
+    /^\d{8}$/.test(String(value).trim());
+}
+
+function calendarDateKey(value) {
+  if (!value) {
+    return "";
+  }
+
+  if (typeof value === "object") {
+    return calendarDateKey(value.date || value.value || value.dateTime || value.time);
+  }
+
+  const text = String(value).trim();
+  let match = text.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (match) {
+    return `${match[1]}-${match[2]}-${match[3]}`;
+  }
+
+  match = text.match(/^(\d{4})(\d{2})(\d{2})$/);
+  if (match) {
+    return `${match[1]}-${match[2]}-${match[3]}`;
+  }
+
+  const parsed = new Date(text);
+  return Number.isNaN(parsed.getTime()) ? "" : parsed.toISOString().slice(0, 10);
 }
 
 function coerceCalendarDate(value) {
@@ -2187,21 +2245,31 @@ function parseIcsEvents(text, source) {
     current[name] = value;
   }
 
-  return events.map((event, index) => ({
-    id: event.UID || `${source.id}-ics-${index}`,
-    calendarId: source.id,
-    calendarName: source.name,
-    title: event.SUMMARY || "Untitled release event",
-    start: parseIcsDate(event.DTSTART),
-    end: parseIcsDate(event.DTEND),
-    startDisplay: parseIcsDate(event.DTSTART) ? formatDate(parseIcsDate(event.DTSTART)) : "",
-    endDisplay: parseIcsDate(event.DTEND) ? formatDate(parseIcsDate(event.DTEND)) : "",
-    allDay: /^\d{8}$/.test(event.DTSTART || ""),
-    type: event.CATEGORIES || "Release",
-    location: event.LOCATION || "",
-    description: normalizeCalendarDescription(event.DESCRIPTION || ""),
-    url: event.URL || source.url,
-  }));
+  return events.map((event, index) => {
+    const start = parseIcsDate(event.DTSTART);
+    const end = parseIcsDate(event.DTEND);
+    const allDay = /^\d{8}$/.test(event.DTSTART || "");
+    const startDate = allDay ? calendarDateKey(event.DTSTART) || calendarDateKey(start) : "";
+    const endDate = allDay ? calendarDateKey(event.DTEND) || calendarDateKey(end) : "";
+
+    return {
+      id: event.UID || `${source.id}-ics-${index}`,
+      calendarId: source.id,
+      calendarName: source.name,
+      title: event.SUMMARY || "Untitled release event",
+      start,
+      end,
+      startDate,
+      endDate,
+      startDisplay: start ? (allDay && startDate ? formatCalendarDateOnly(startDate) : formatDate(start)) : "",
+      endDisplay: end ? (allDay && endDate ? formatCalendarDateOnly(endDate) : formatDate(end)) : "",
+      allDay,
+      type: event.CATEGORIES || "Release",
+      location: event.LOCATION || "",
+      description: normalizeCalendarDescription(event.DESCRIPTION || ""),
+      url: event.URL || source.url,
+    };
+  });
 }
 
 function decodeIcsValue(value) {
