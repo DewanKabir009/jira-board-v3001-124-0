@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-16T16:01:54.795Z",
-  "pulledAtDisplay": "Jun 16, 2026, 12:01 PM",
+  "pulledAt": "2026-06-16T16:06:33.927Z",
+  "pulledAtDisplay": "Jun 16, 2026, 12:06 PM",
   "total": 18,
   "issues": [
     {
@@ -1373,8 +1373,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-16T16:01:54.795Z",
-    "pulledAtDisplay": "Jun 16, 2026, 12:01 PM",
+    "pulledAt": "2026-06-16T16:06:33.927Z",
+    "pulledAtDisplay": "Jun 16, 2026, 12:06 PM",
     "total": 93,
     "mainTotal": 93,
     "subtaskTotal": 0,
@@ -2409,6 +2409,56 @@
           "2026.8"
         ],
         "resolution": "Force Closed",
+        "parent": {
+          "key": "CORE-13172",
+          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+          "summary": "Commerce Proxy API",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14508",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14508",
+        "summary": "CLONE - [Commerce] Cannot complete a non-prepay reservation",
+        "description": "Environment: QA\n\nSTR:\n\n- Navigate to https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/checkout\n\n- Log in\n\n- Add a non-prepay tee time to cart (no convenience fee should be added, so due now = $0)\n\n- Proceed to checkout\n\n- Fill in the payment form and attempt to complete a reservation\n\nAR: The process-payment call fails with the following error:\n\n{error: \"Unknown error occurred. Error Track ID: 5758fd11-2eb5-4506-8405-1a4a4c24ac98\",…}\n\ncode: \"UNKNOWN_ERROR\"\n\nerror: \"Unknown error occurred. Error Track ID: 5758fd11-2eb5-4506-8405-1a4a4c24ac98\"\n\nNote 1: Is reproducing for all types of users\n\nNote 2: Can reproduce for other courses like https://highlands-reserve-golf-club-commerce.qa-phx-ui-be.svc.golf/confirmation , https://xyz-wingfield-sp-commerce.qa-phx-ui-be.svc.golf/confirmation , https://alaska-golf-course-commerce.qa-phx-ui-be.svc.golf/?course=20684&date=2026-06-02&max=999999\n\nER: User should be able to purchase all types of tee times without issues",
+        "descriptionHtml": "<p><strong>Environment</strong>: QA</p><p><strong>STR</strong>:</p><ol><li><p>Navigate to <a href=\"https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/checkout\" target=\"_blank\" rel=\"noopener\">https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/checkout</a> </p></li><li><p>Log in</p></li><li><p>Add a non-prepay tee time to cart (no convenience fee should be added, so due now = $0)</p></li><li><p>Proceed to checkout</p></li><li><p>Fill in the payment form and attempt to complete a reservation</p></li></ol><p><strong>AR</strong>: The<code> process-payment</code> call fails with the following error:</p><pre><code>{error: &quot;Unknown error occurred. Error Track ID: 5758fd11-2eb5-4506-8405-1a4a4c24ac98&quot;,…}\n\ncode: &quot;UNKNOWN_ERROR&quot;\n\nerror: &quot;Unknown error occurred. Error Track ID: 5758fd11-2eb5-4506-8405-1a4a4c24ac98&quot;</code></pre><p><strong>Note 1</strong>: Is reproducing for all types of users</p><p><strong>Note 2</strong>: Can reproduce for other courses like <a href=\"https://highlands-reserve-golf-club-commerce.qa-phx-ui-be.svc.golf/confirmation\" target=\"_blank\" rel=\"noopener\">https://highlands-reserve-golf-club-commerce.qa-phx-ui-be.svc.golf/confirmation</a> , <a href=\"https://xyz-wingfield-sp-commerce.qa-phx-ui-be.svc.golf/confirmation\" target=\"_blank\" rel=\"noopener\">https://xyz-wingfield-sp-commerce.qa-phx-ui-be.svc.golf/confirmation</a> , <a href=\"https://alaska-golf-course-commerce.qa-phx-ui-be.svc.golf/?course=20684&amp;date=2026-06-02&amp;max=999999\" target=\"_blank\" rel=\"noopener\">https://alaska-golf-course-commerce.qa-phx-ui-be.svc.golf/?course=20684&amp;date=2026-06-02&amp;max=999999</a> </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14508/736098-image-20260602-165543.png\" alt=\"image-20260602-165543.png\" loading=\"lazy\"><figcaption>image-20260602-165543.png</figcaption></figure></div><p><strong>ER:</strong> User should be able to purchase all types of tee times without issues</p>",
+        "descriptionImageCount": 1,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 1,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Triage (STG)",
+        "priority": "P1",
+        "assignee": "Andrew Horvat",
+        "assigneeAccountId": "712020:d714b2a6-3491-46da-89f1-9777e2d1ab70",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:d714b2a6-3491-46da-89f1-9777e2d1ab70/25dedc4a-09d9-4ec9-945c-34d31d771711/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-06-16T12:03:15.775-0400",
+        "updatedDisplay": "Jun 16, 2026, 12:03 PM",
+        "created": "2026-06-09T10:54:05.224-0400",
+        "createdDisplay": "Jun 9, 2026, 10:54 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
         "parent": {
           "key": "CORE-13172",
           "url": "https://golfnow.atlassian.net/browse/CORE-13172",
@@ -7187,56 +7237,6 @@
         "parent": null
       },
       {
-        "key": "CORE-14508",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14508",
-        "summary": "CLONE - [Commerce] Cannot complete a non-prepay reservation",
-        "description": "Environment: QA\n\nSTR:\n\n- Navigate to https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/checkout\n\n- Log in\n\n- Add a non-prepay tee time to cart (no convenience fee should be added, so due now = $0)\n\n- Proceed to checkout\n\n- Fill in the payment form and attempt to complete a reservation\n\nAR: The process-payment call fails with the following error:\n\n{error: \"Unknown error occurred. Error Track ID: 5758fd11-2eb5-4506-8405-1a4a4c24ac98\",…}\n\ncode: \"UNKNOWN_ERROR\"\n\nerror: \"Unknown error occurred. Error Track ID: 5758fd11-2eb5-4506-8405-1a4a4c24ac98\"\n\nNote 1: Is reproducing for all types of users\n\nNote 2: Can reproduce for other courses like https://highlands-reserve-golf-club-commerce.qa-phx-ui-be.svc.golf/confirmation , https://xyz-wingfield-sp-commerce.qa-phx-ui-be.svc.golf/confirmation , https://alaska-golf-course-commerce.qa-phx-ui-be.svc.golf/?course=20684&date=2026-06-02&max=999999\n\nER: User should be able to purchase all types of tee times without issues",
-        "descriptionHtml": "<p><strong>Environment</strong>: QA</p><p><strong>STR</strong>:</p><ol><li><p>Navigate to <a href=\"https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/checkout\" target=\"_blank\" rel=\"noopener\">https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/checkout</a> </p></li><li><p>Log in</p></li><li><p>Add a non-prepay tee time to cart (no convenience fee should be added, so due now = $0)</p></li><li><p>Proceed to checkout</p></li><li><p>Fill in the payment form and attempt to complete a reservation</p></li></ol><p><strong>AR</strong>: The<code> process-payment</code> call fails with the following error:</p><pre><code>{error: &quot;Unknown error occurred. Error Track ID: 5758fd11-2eb5-4506-8405-1a4a4c24ac98&quot;,…}\n\ncode: &quot;UNKNOWN_ERROR&quot;\n\nerror: &quot;Unknown error occurred. Error Track ID: 5758fd11-2eb5-4506-8405-1a4a4c24ac98&quot;</code></pre><p><strong>Note 1</strong>: Is reproducing for all types of users</p><p><strong>Note 2</strong>: Can reproduce for other courses like <a href=\"https://highlands-reserve-golf-club-commerce.qa-phx-ui-be.svc.golf/confirmation\" target=\"_blank\" rel=\"noopener\">https://highlands-reserve-golf-club-commerce.qa-phx-ui-be.svc.golf/confirmation</a> , <a href=\"https://xyz-wingfield-sp-commerce.qa-phx-ui-be.svc.golf/confirmation\" target=\"_blank\" rel=\"noopener\">https://xyz-wingfield-sp-commerce.qa-phx-ui-be.svc.golf/confirmation</a> , <a href=\"https://alaska-golf-course-commerce.qa-phx-ui-be.svc.golf/?course=20684&amp;date=2026-06-02&amp;max=999999\" target=\"_blank\" rel=\"noopener\">https://alaska-golf-course-commerce.qa-phx-ui-be.svc.golf/?course=20684&amp;date=2026-06-02&amp;max=999999</a> </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14508/736098-image-20260602-165543.png\" alt=\"image-20260602-165543.png\" loading=\"lazy\"><figcaption>image-20260602-165543.png</figcaption></figure></div><p><strong>ER:</strong> User should be able to purchase all types of tee times without issues</p>",
-        "descriptionImageCount": 1,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "Triage (STG)",
-        "priority": "P1",
-        "assignee": "Andrew Horvat",
-        "assigneeAccountId": "712020:d714b2a6-3491-46da-89f1-9777e2d1ab70",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:d714b2a6-3491-46da-89f1-9777e2d1ab70/25dedc4a-09d9-4ec9-945c-34d31d771711/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-11T16:47:47.150-0400",
-        "updatedDisplay": "Jun 11, 2026, 4:47 PM",
-        "created": "2026-06-09T10:54:05.224-0400",
-        "createdDisplay": "Jun 9, 2026, 10:54 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-13172",
-          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
-          "summary": "Commerce Proxy API",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
         "key": "CORE-14513",
         "url": "https://golfnow.atlassian.net/browse/CORE-14513",
         "summary": "Points for Actions - Anniversary Points and 2nd booking bonus fix",
@@ -7296,13 +7296,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-16T16:01:31.247Z",
-    "pulledAtDisplay": "Jun 16, 2026, 12:01 PM",
+    "pulledAt": "2026-06-16T16:06:08.148Z",
+    "pulledAtDisplay": "Jun 16, 2026, 12:06 PM",
     "window": {
-      "start": "2026-05-02T16:01:31.247Z",
-      "end": "2026-12-13T16:01:31.247Z",
-      "startDisplay": "May 2, 2026, 12:01 PM",
-      "endDisplay": "Dec 13, 2026, 11:01 AM"
+      "start": "2026-05-02T16:06:08.148Z",
+      "end": "2026-12-13T16:06:08.148Z",
+      "startDisplay": "May 2, 2026, 12:06 PM",
+      "endDisplay": "Dec 13, 2026, 11:06 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7315,7 +7315,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-16T16:01:33.358Z",
+        "pulledAt": "2026-06-16T16:06:10.553Z",
         "eventCount": 92,
         "events": [
           {
@@ -8704,10 +8704,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-16T15:56:38.120Z",
-    "previousPulledAtDisplay": "Jun 16, 2026, 11:56 AM",
-    "currentPulledAt": "2026-06-16T16:01:54.795Z",
-    "currentPulledAtDisplay": "Jun 16, 2026, 12:01 PM",
+    "previousPulledAt": "2026-06-16T16:01:54.795Z",
+    "previousPulledAtDisplay": "Jun 16, 2026, 12:01 PM",
+    "currentPulledAt": "2026-06-16T16:06:33.927Z",
+    "currentPulledAtDisplay": "Jun 16, 2026, 12:06 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -8715,6 +8715,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-16T16:01:54.795Z",
+      "previousPulledAtDisplay": "Jun 16, 2026, 12:01 PM",
+      "currentPulledAt": "2026-06-16T16:06:33.927Z",
+      "currentPulledAtDisplay": "Jun 16, 2026, 12:06 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-16T15:56:38.120Z",
       "previousPulledAtDisplay": "Jun 16, 2026, 11:56 AM",
@@ -10663,17 +10674,6 @@
       "previousPulledAtDisplay": "Jun 15, 2026, 10:06 PM",
       "currentPulledAt": "2026-06-16T02:11:31.742Z",
       "currentPulledAtDisplay": "Jun 15, 2026, 10:11 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-16T02:01:27.607Z",
-      "previousPulledAtDisplay": "Jun 15, 2026, 10:01 PM",
-      "currentPulledAt": "2026-06-16T02:06:25.486Z",
-      "currentPulledAtDisplay": "Jun 15, 2026, 10:06 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
