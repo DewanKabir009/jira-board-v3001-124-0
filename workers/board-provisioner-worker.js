@@ -667,7 +667,7 @@ async function sendHeartbeatSlackAlert(env, summary) {
 
   const text = heartbeatAlertText(summary);
   const botToken = env.SLACK_BOT_TOKEN;
-  const channelId = env.SLACK_CHANNEL_ID;
+  const channelId = refreshMonitorSlackChannel(env);
   if (botToken && channelId) {
     const response = await fetch("https://slack.com/api/chat.postMessage", {
       method: "POST",
@@ -879,7 +879,7 @@ async function sendMonitorSlackAlert(env, summary) {
 
   const text = monitorAlertText(summary);
   const botToken = env.SLACK_BOT_TOKEN;
-  const channelId = env.SLACK_CHANNEL_ID;
+  const channelId = refreshMonitorSlackChannel(env);
   if (botToken && channelId) {
     const response = await fetch("https://slack.com/api/chat.postMessage", {
       method: "POST",
@@ -915,6 +915,13 @@ async function sendMonitorSlackAlert(env, summary) {
 
   console.warn("Monitor alert skipped; Slack credentials are not configured.");
   return false;
+}
+
+function refreshMonitorSlackChannel(env) {
+  return env.REFRESH_MONITOR_SLACK_CHANNEL_ID
+    || env.REFRESH_MONITOR_SLACK_CHANNEL
+    || env.SLACK_CHANNEL_ID
+    || env.SLACK_CHANNEL;
 }
 
 async function runRefreshMonitor(env, options = {}) {

@@ -30,6 +30,7 @@ REFRESH_HEARTBEAT_REPOSITORIES = "DewanKabir009/jira-board-v3001-124-0"
 REFRESH_HEARTBEAT_WORKFLOW = "refresh-jira-board.yml"
 REFRESH_HEARTBEAT_BRANCH = "master"
 REFRESH_HEARTBEAT_MINIMUM_GAP_SECONDS = "240"
+REFRESH_MONITOR_SLACK_CHANNEL = "core-qa-dream-team-hq-notifications"
 
 # Optional if you put this Worker behind Cloudflare Access for /provision.
 # PROVISIONER_ADMIN_EMAILS = "qa.lead@example.com"
