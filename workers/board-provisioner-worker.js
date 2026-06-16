@@ -669,23 +669,7 @@ async function sendHeartbeatSlackAlert(env, summary) {
   const botToken = env.SLACK_BOT_TOKEN;
   const channelId = refreshMonitorSlackChannel(env);
   if (botToken && channelId) {
-    const response = await fetch("https://slack.com/api/chat.postMessage", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${botToken}`,
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify({
-        channel: channelId,
-        text,
-        unfurl_links: false,
-        unfurl_media: false,
-      }),
-    });
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok || !payload.ok) {
-      throw new Error(`Slack heartbeat alert failed: ${payload.error || response.status}`);
-    }
+    await postSlackMessage(botToken, channelId, text, "Slack heartbeat alert failed");
     return true;
   }
 
@@ -881,23 +865,7 @@ async function sendMonitorSlackAlert(env, summary) {
   const botToken = env.SLACK_BOT_TOKEN;
   const channelId = refreshMonitorSlackChannel(env);
   if (botToken && channelId) {
-    const response = await fetch("https://slack.com/api/chat.postMessage", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${botToken}`,
-        "Content-Type": "application/json; charset=utf-8",
-      },
-      body: JSON.stringify({
-        channel: channelId,
-        text,
-        unfurl_links: false,
-        unfurl_media: false,
-      }),
-    });
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok || !payload.ok) {
-      throw new Error(`Slack monitor alert failed: ${payload.error || response.status}`);
-    }
+    await postSlackMessage(botToken, channelId, text, "Slack monitor alert failed");
     return true;
   }
 
@@ -922,6 +890,81 @@ function refreshMonitorSlackChannel(env) {
     || env.REFRESH_MONITOR_SLACK_CHANNEL
     || env.SLACK_CHANNEL_ID
     || env.SLACK_CHANNEL;
+}
+
+async function postSlackMessage(botToken, channel, text, failurePrefix) {
+  let response = await sendSlackChatMessage(botToken, channel, text);
+  if (!response.ok && response.error === "channel_not_found" && shouldResolveSlackChannelName(channel)) {
+    const namedChannel = channel.startsWith("#") ? channel : `#${channel}`;
+    response = await sendSlackChatMessage(botToken, namedChannel, text);
+  }
+  if (!response.ok && response.error === "channel_not_found" && shouldResolveSlackChannelName(channel)) {
+    const resolvedChannel = await resolveSlackChannelId(botToken, channel);
+    if (resolvedChannel) {
+      response = await sendSlackChatMessage(botToken, resolvedChannel, text);
+    }
+  }
+
+  if (!response.ok) {
+    throw new Error(`${failurePrefix}: ${response.error || response.status}`);
+  }
+}
+
+async function sendSlackChatMessage(botToken, channel, text) {
+  const response = await fetch("https://slack.com/api/chat.postMessage", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${botToken}`,
+      "Content-Type": "application/json; charset=utf-8",
+    },
+    body: JSON.stringify({
+      channel,
+      text,
+      unfurl_links: false,
+      unfurl_media: false,
+    }),
+  });
+  const payload = await response.json().catch(() => ({}));
+  return {
+    ok: response.ok && payload.ok,
+    status: response.status,
+    error: payload.error,
+  };
+}
+
+function shouldResolveSlackChannelName(channel) {
+  return Boolean(channel)
+    && !/^[CDG][A-Z0-9]+$/.test(channel);
+}
+
+async function resolveSlackChannelId(botToken, channelName) {
+  const targetName = channelName.replace(/^#/, "").toLowerCase();
+  let cursor = "";
+  do {
+    const url = new URL("https://slack.com/api/conversations.list");
+    url.searchParams.set("types", "public_channel,private_channel");
+    url.searchParams.set("exclude_archived", "true");
+    url.searchParams.set("limit", "1000");
+    if (cursor) {
+      url.searchParams.set("cursor", cursor);
+    }
+
+    const response = await fetch(url.toString(), {
+      headers: { Authorization: `Bearer ${botToken}` },
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok || !payload.ok) {
+      return null;
+    }
+
+    const match = (payload.channels || []).find((channel) => channel.name?.toLowerCase() === targetName);
+    if (match?.id) {
+      return match.id;
+    }
+    cursor = payload.response_metadata?.next_cursor || "";
+  } while (cursor);
+
+  return null;
 }
 
 async function runRefreshMonitor(env, options = {}) {
@@ -1205,8 +1248,8 @@ export default {
       }).then(async (heartbeatSummary) => {
         const monitorSummary = await runRefreshMonitor(env, {
           source: `post-heartbeat:${event.cron}`,
-          dispatch: false,
-          alert: false,
+          dispatch: true,
+          alert: true,
         });
         console.log(JSON.stringify({
           service: heartbeatSummary.service,
