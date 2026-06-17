@@ -1496,8 +1496,9 @@ async function notifyAsanaIntakeSlack(env, intake, asanaTask, jiraResult) {
   const slackPayload = {
     channel: config.channel,
     text: buildAsanaSlackMessage(env, intake, asanaTask, jiraResult),
-    unfurl_links: true,
-    unfurl_media: true
+    blocks: buildAsanaSlackCardBlocks(env, intake, asanaTask, jiraResult),
+    unfurl_links: false,
+    unfurl_media: false
   };
   const { response, payload } = await postSlackMessage(env, slackPayload);
 
@@ -1596,6 +1597,110 @@ function buildAsanaSlackMessage(env, intake, asanaTask, jiraResult) {
     `*Jira:* ${jiraLink}`,
     intake.details ? `*Details:* ${truncateText(intake.details, 650)}` : ""
   ].filter(Boolean).join("\n");
+}
+
+function buildAsanaSlackCardBlocks(env, intake, asanaTask, jiraResult) {
+  const asanaUrl = sanitizeUrl(asanaTask?.url || "");
+  const canonicalAsanaUrl = buildAsanaSlackPreviewUrl(asanaTask) || asanaUrl;
+  const jiraUrl = sanitizeUrl(jiraResult?.url || "");
+  const assignee = asanaTask?.defaultAssignee?.name || env.ASANA_DEFAULT_ASSIGNEE_NAME || "Dewan Kabir";
+  const sourceUrl = sanitizeUrl(intake.sourceUrl || "");
+  const hqUrl = sanitizeUrl(env.CLOUDFLARE_HQ_URL || env.MORDERN_HQ_URL || "");
+  const fields = [
+    buildSlackField("Assignee", assignee),
+    buildSlackField("Priority", intake.priority),
+    buildSlackField("Request type", intake.requestType),
+    buildSlackField("Entity", intake.entity),
+    buildSlackField("Environment", intake.environment),
+    buildSlackField("Project", asanaTask?.projectName || env.ASANA_PROJECT_NAME || "GN CORE QA HQ")
+  ];
+  const buttons = [
+    canonicalAsanaUrl ? buildSlackButton("View task in Asana", canonicalAsanaUrl, "primary") : null,
+    jiraUrl ? buildSlackButton("Open Jira handoff", jiraUrl) : null,
+    hqUrl ? buildSlackButton("Open HQ", hqUrl) : null,
+    sourceUrl ? buildSlackButton("Source", sourceUrl) : null
+  ].filter(Boolean).slice(0, 5);
+
+  return [
+    {
+      type: "header",
+      text: {
+        type: "plain_text",
+        text: truncateSlackPlainText("CORE QA HQ intake opened", 150),
+        emoji: true
+      }
+    },
+    {
+      type: "section",
+      text: {
+        type: "mrkdwn",
+        text: [
+          `*${asanaUrl ? buildSlackLink(asanaUrl, asanaTask?.name || intake.summary) : escapeSlackMrkdwn(asanaTask?.name || intake.summary)}*`,
+          intake.details ? escapeSlackMrkdwn(truncateText(intake.details, 450)) : "_No details provided._"
+        ].join("\n")
+      }
+    },
+    { type: "section", fields },
+    intake.relatedTicket
+      ? {
+          type: "context",
+          elements: [{ type: "mrkdwn", text: `Related ticket: *${escapeSlackMrkdwn(intake.relatedTicket)}*` }]
+        }
+      : null,
+    buttons.length ? { type: "actions", elements: buttons } : null,
+    {
+      type: "context",
+      elements: [
+        {
+          type: "mrkdwn",
+          text: `Asana app trigger: ${canonicalAsanaUrl ? buildSlackLink(canonicalAsanaUrl, "canonical task link") : "not available"}`
+        }
+      ]
+    }
+  ].filter(Boolean);
+}
+
+function buildSlackField(label, value) {
+  return {
+    type: "mrkdwn",
+    text: `*${escapeSlackMrkdwn(label)}*\n${escapeSlackMrkdwn(value || "None")}`
+  };
+}
+
+function buildSlackButton(label, url, style = "") {
+  const button = {
+    type: "button",
+    text: {
+      type: "plain_text",
+      text: truncateSlackPlainText(label, 75),
+      emoji: true
+    },
+    url
+  };
+
+  if (style) {
+    button.style = style;
+  }
+
+  return button;
+}
+
+function buildSlackLink(url, label) {
+  const cleanUrl = sanitizeUrl(url);
+  const cleanLabel = escapeSlackMrkdwn(label || cleanUrl || "Open link").replace(/\|/g, "-");
+  return cleanUrl ? `<${cleanUrl}|${cleanLabel}>` : cleanLabel;
+}
+
+function escapeSlackMrkdwn(value) {
+  return sanitizeSlackMessage(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function truncateSlackPlainText(value, maxLength) {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+  return text.length > maxLength ? `${text.slice(0, Math.max(0, maxLength - 3))}...` : text;
 }
 
 function sanitizeExternalId(value) {
