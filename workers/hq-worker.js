@@ -49,6 +49,7 @@ const WORKER_ROUTES = [
   "GET /api/ai/status",
   "POST /api/ai/release-summary",
   "POST /api/ai/chat",
+  "POST /api/board/refresh",
   "GET /api/asana/status",
   "POST /api/asana/intake",
   "GET /api/slack/status",
@@ -96,6 +97,17 @@ export default {
       }
 
       return handleAiChat(request, env, url);
+    }
+
+    if (url.pathname === "/api/board/refresh") {
+      if (request.method === "OPTIONS") {
+        return refreshProxyOptionsResponse(request, env, url);
+      }
+      if (request.method !== "POST") {
+        return refreshProxyJsonResponse(request, env, url, { ok: false, message: "Use POST for board refresh dispatch." }, 405);
+      }
+
+      return handleBoardRefresh(request, env, url);
     }
 
     if (url.pathname === "/api/asana/status") {
@@ -153,6 +165,121 @@ export default {
     return serveFreshAsset(request, env);
   }
 };
+
+async function handleBoardRefresh(request, env, url) {
+  if (!isAllowedRefreshOrigin(request, env, url)) {
+    return refreshProxyJsonResponse(request, env, url, {
+      ok: false,
+      message: "Ticket refresh must be triggered from an approved HQ or board origin."
+    }, 403);
+  }
+
+  if (!env.ASSIGNEE_BRIDGE || typeof env.ASSIGNEE_BRIDGE.fetch !== "function") {
+    return refreshProxyJsonResponse(request, env, url, {
+      ok: false,
+      mode: "missing-service-binding",
+      message: "ASSIGNEE_BRIDGE service binding is not configured on this HQ Worker."
+    }, 503);
+  }
+
+  const body = await request.text();
+  const forwardedOrigin = request.headers.get("Origin") || preferredRefreshOrigin(env, url);
+  const bridgeRequest = new Request("https://jira-board-assignee-bridge/refresh", {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "content-type": request.headers.get("content-type") || "text/plain;charset=UTF-8",
+      "x-core-qa-dashboard-origin": forwardedOrigin,
+      "x-core-qa-refresh-proxy": env.WORKER_SERVICE_NAME || "core-qa-headquarters-124"
+    },
+    body
+  });
+  const bridgeResponse = await env.ASSIGNEE_BRIDGE.fetch(bridgeRequest);
+  const headers = new Headers(bridgeResponse.headers);
+
+  for (const [key, value] of Object.entries(refreshProxyCorsHeaders(request, env, url))) {
+    headers.set(key, value);
+  }
+  headers.set("cache-control", "no-store");
+  headers.set("x-core-qa-refresh-proxy", "hq-service-binding");
+
+  return new Response(bridgeResponse.body, {
+    status: bridgeResponse.status,
+    statusText: bridgeResponse.statusText,
+    headers
+  });
+}
+
+function refreshProxyOptionsResponse(request, env, url) {
+  return new Response(null, {
+    status: 204,
+    headers: refreshProxyCorsHeaders(request, env, url)
+  });
+}
+
+function refreshProxyJsonResponse(request, env, url, payload, status = 200) {
+  return new Response(JSON.stringify(payload, null, 2), {
+    status,
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      "cache-control": "no-store",
+      ...refreshProxyCorsHeaders(request, env, url)
+    }
+  });
+}
+
+function refreshProxyCorsHeaders(request, env, url) {
+  const origin = request.headers.get("Origin") || "";
+  const headers = {
+    "access-control-allow-methods": "POST, OPTIONS",
+    "access-control-allow-headers": "content-type",
+    "access-control-max-age": "600",
+    "vary": "Origin"
+  };
+
+  if (origin && isAllowedRefreshOrigin(request, env, url)) {
+    headers["access-control-allow-origin"] = origin;
+  }
+
+  return headers;
+}
+
+function isAllowedRefreshOrigin(request, env, url) {
+  const origin = request.headers.get("Origin") || "";
+  if (!origin) {
+    return false;
+  }
+
+  return refreshAllowedOrigins(env, url).includes(origin);
+}
+
+function refreshAllowedOrigins(env, url) {
+  return [
+    url.origin,
+    originFromUrl(env.CLOUDFLARE_BOARD_URL),
+    originFromUrl(env.CLOUDFLARE_HQ_URL),
+    originFromUrl(env.MORDERN_HQ_URL),
+    originFromUrl(env.GITHUB_PAGES_FALLBACK_URL),
+    "https://dewankabir009.github.io"
+  ].filter(Boolean).filter((value, index, all) => all.indexOf(value) === index);
+}
+
+function preferredRefreshOrigin(env, url) {
+  return originFromUrl(env.CLOUDFLARE_BOARD_URL) || url.origin;
+}
+
+function originFromUrl(value) {
+  const text = String(value || "").trim();
+  if (!text) {
+    return "";
+  }
+
+  try {
+    return new URL(text).origin;
+  } catch {
+    return "";
+  }
+}
 
 async function serveLiveArtifact(request, env, url) {
   const method = request.method.toUpperCase();

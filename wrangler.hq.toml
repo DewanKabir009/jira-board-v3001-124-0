@@ -13,6 +13,10 @@ run_worker_first = true
 [ai]
 binding = "AI"
 
+[[services]]
+binding = "ASSIGNEE_BRIDGE"
+service = "jira-board-assignee-bridge"
+
 [vars]
 WORKER_ROLE = "legacy-hq"
 WORKER_SERVICE_NAME = "core-qa-headquarters-124"

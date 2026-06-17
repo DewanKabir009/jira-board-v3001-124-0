@@ -102,6 +102,10 @@ function optionsResponse(request, env) {
 }
 
 function assertOrigin(request, env) {
+  if (isInternalRefreshProxy(request, env)) {
+    return null;
+  }
+
   const origin = request.headers.get("Origin");
   if (!origin || corsOrigin(request, env)) {
     return null;
@@ -110,6 +114,32 @@ function assertOrigin(request, env) {
     ok: false,
     message: "This dashboard origin is not allowed to use the hosted bridge.",
   });
+}
+
+function hasAllowedDashboardOrigin(request, env) {
+  const origin = request.headers.get("Origin");
+  const dashboardOrigin = origin || request.headers.get("X-Core-QA-Dashboard-Origin");
+  return Boolean(
+    isInternalRefreshProxy(request, env)
+    || (dashboardOrigin && getAllowedOrigins(env).some((allowedOrigin) => allowedOriginMatches(dashboardOrigin, allowedOrigin)))
+  );
+}
+
+function isInternalRefreshProxy(request, env) {
+  if (request.method !== "POST") {
+    return false;
+  }
+
+  const marker = request.headers.get("X-Core-QA-Refresh-Proxy") || "";
+  if (!marker) {
+    return false;
+  }
+
+  try {
+    return new URL(request.url).pathname.endsWith("/refresh");
+  } catch {
+    return false;
+  }
 }
 
 function getAuthenticatedEmail(request) {
@@ -929,9 +959,18 @@ function handleBridgeLanding(request, env) {
 }
 
 async function handleRefresh(request, env) {
-  const auth = await authorizeMutation(request, env);
-  if (!auth.ok) {
-    return json(request, env, auth.status, { ok: false, message: auth.message });
+  if (!env.BOARD_DISPATCH_TOKEN) {
+    return json(request, env, 503, {
+      ok: false,
+      message: "BOARD_DISPATCH_TOKEN is not configured on the hosted bridge.",
+    });
+  }
+
+  if (!hasAllowedDashboardOrigin(request, env) && !hasValidAccessToken(request, env)) {
+    return json(request, env, 401, {
+      ok: false,
+      message: "Ticket refresh must be triggered from an approved dashboard origin or with a bridge token.",
+    });
   }
 
   const payload = await readJson(request);

@@ -1079,7 +1079,7 @@ export default function TicketExplorerIsland({ dataUrl, boardRegistryUrl }: { da
       setRefreshRequest({
         status: "failed",
         message: isHostedBridgeEndpoint(data?.assigneeDispatchEndpoint || "") && /failed to fetch|unreadable|load failed|network/i.test(errorMessage)
-          ? "Cloudflare login is required. Open the bridge link, then retry."
+          ? "Hosted refresh bridge could not be reached. Try again, or open Actions to confirm whether a run started."
           : errorMessage,
         requestedAt,
         actionsUrl: data?.repositorySlug ? workflowUrl(data.repositorySlug, "refresh-jira-board.yml") : ""
@@ -3646,6 +3646,11 @@ function bridgeProjectsEndpoint(data: DashboardData | null) {
 }
 
 function bridgeRefreshEndpoint(data: DashboardData | null) {
+  const proxiedEndpoint = hqRefreshProxyEndpoint();
+  if (proxiedEndpoint) {
+    return proxiedEndpoint;
+  }
+
   const base = bridgeApiBase(data);
   if (!base) {
     return "";
@@ -3654,6 +3659,23 @@ function bridgeRefreshEndpoint(data: DashboardData | null) {
   base.pathname = "/refresh";
   base.search = "";
   return base.toString();
+}
+
+function hqRefreshProxyEndpoint() {
+  if (typeof window === "undefined") {
+    return "";
+  }
+
+  const hostname = window.location.hostname.toLowerCase();
+  if (hostname === "core-qa-mordern-hq-124.dfkabir253.workers.dev") {
+    return "https://core-qa-headquarters-124.dfkabir253.workers.dev/api/board/refresh";
+  }
+
+  if (hostname.endsWith(".dfkabir253.workers.dev")) {
+    return new URL("/api/board/refresh", window.location.origin).toString();
+  }
+
+  return "";
 }
 
 function playwrightJobsEndpoint(data: DashboardData | null) {
@@ -5310,7 +5332,7 @@ function bridgeButtonStatus(data: DashboardData | null): BridgeButtonStatus {
   }
 
   if (isHostedBridgeEndpoint(endpoint)) {
-    return { label: "Login", tone: "attention" };
+    return { label: "Ready", tone: "good" };
   }
 
   return { label: "External", tone: "attention" };
@@ -5352,11 +5374,11 @@ function bridgeHealth(data: DashboardData | null): { status: string; detail: str
 
   if (isHostedBridgeEndpoint(endpoint)) {
     return {
-      status: "Cloudflare Login",
-      detail: "Jira assign and checklist comments route through the hosted Worker. Open the Access login/status link if writes need to be re-enabled.",
-      tone: "attention",
+      status: "Hosted dispatch",
+      detail: "Jira refresh runs through the hosted Worker and GitHub Actions. Assignee and comment writes remain protected by the bridge auth guard.",
+      tone: "good",
       statusUrl,
-      linkLabel: "Re-enable bridge"
+      linkLabel: "Bridge status"
     };
   }
 
