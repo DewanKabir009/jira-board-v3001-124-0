@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-17T05:31:19.269Z",
-  "pulledAtDisplay": "Jun 17, 2026, 1:31 AM",
+  "pulledAt": "2026-06-17T05:36:28.114Z",
+  "pulledAtDisplay": "Jun 17, 2026, 1:36 AM",
   "total": 19,
   "issues": [
     {
@@ -25,19 +25,24 @@
       "testChecklist": null,
       "type": "Developer Task (sub task)",
       "isSubtask": true,
-      "status": "Development",
+      "status": "Code Review",
       "priority": "None",
-      "assignee": "Raghav Kancherla",
-      "assigneeAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+      "assignee": "Yoel Martin Pardo",
+      "assigneeAccountId": "625571809e7380006fb29599",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
       "assignedDeveloper": "Unassigned",
       "assignedDeveloperAccountId": "",
       "assignedDeveloperAvatarUrl": "",
-      "updated": "2026-06-17T01:30:38.693-0400",
-      "updatedDisplay": "Jun 17, 2026, 1:30 AM",
+      "updated": "2026-06-17T01:31:40.196-0400",
+      "updatedDisplay": "Jun 17, 2026, 1:31 AM",
       "created": "2026-06-17T01:19:25.931-0400",
       "createdDisplay": "Jun 17, 2026, 1:19 AM",
-      "components": [],
+      "components": [
+        "Cache Manager",
+        "GolfNow.Services.Reservation",
+        "GolfNow.Services.TeeSheet",
+        "GolfNowCentral"
+      ],
       "fixVersions": [
         "v3001.124.0"
       ],
@@ -1419,8 +1424,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-17T05:31:19.269Z",
-    "pulledAtDisplay": "Jun 17, 2026, 1:31 AM",
+    "pulledAt": "2026-06-17T05:36:28.114Z",
+    "pulledAtDisplay": "Jun 17, 2026, 1:36 AM",
     "total": 93,
     "mainTotal": 93,
     "subtaskTotal": 0,
@@ -7342,13 +7347,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-17T05:30:58.167Z",
-    "pulledAtDisplay": "Jun 17, 2026, 1:30 AM",
+    "pulledAt": "2026-06-17T05:36:08.305Z",
+    "pulledAtDisplay": "Jun 17, 2026, 1:36 AM",
     "window": {
-      "start": "2026-05-03T05:30:58.166Z",
-      "end": "2026-12-14T05:30:58.166Z",
-      "startDisplay": "May 3, 2026, 1:30 AM",
-      "endDisplay": "Dec 14, 2026, 12:30 AM"
+      "start": "2026-05-03T05:36:08.305Z",
+      "end": "2026-12-14T05:36:08.305Z",
+      "startDisplay": "May 3, 2026, 1:36 AM",
+      "endDisplay": "Dec 14, 2026, 12:36 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7361,7 +7366,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-17T05:31:00.002Z",
+        "pulledAt": "2026-06-17T05:36:10.463Z",
         "eventCount": 93,
         "events": [
           {
@@ -8521,23 +8526,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Summer Bank Holiday (UK)",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-01T00:00:00.000Z",
-            "startDate": "2026-08-31",
-            "endDate": "2026-09-01",
-            "startDisplay": "Aug 31, 2026",
-            "endDisplay": "Sep 1, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8550,6 +8538,23 @@
             "endDisplay": "Sep 8, 2026",
             "allDay": true,
             "type": "Golf Freeze",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Summer Bank Holiday (UK)",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-01T00:00:00.000Z",
+            "startDate": "2026-08-31",
+            "endDate": "2026-09-01",
+            "startDisplay": "Aug 31, 2026",
+            "endDisplay": "Sep 1, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8878,6 +8883,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221750Z-1404075373@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8912,23 +8934,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260112T140557Z-111931857@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8951,48 +8956,49 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-17T05:26:18.169Z",
-    "previousPulledAtDisplay": "Jun 17, 2026, 1:26 AM",
-    "currentPulledAt": "2026-06-17T05:31:19.269Z",
-    "currentPulledAtDisplay": "Jun 17, 2026, 1:31 AM",
+    "previousPulledAt": "2026-06-17T05:31:19.269Z",
+    "previousPulledAtDisplay": "Jun 17, 2026, 1:31 AM",
+    "currentPulledAt": "2026-06-17T05:36:28.114Z",
+    "currentPulledAtDisplay": "Jun 17, 2026, 1:36 AM",
     "isBaseline": false,
-    "added": [
+    "added": [],
+    "removed": [],
+    "updated": [
       {
         "key": "CORE-14526",
         "url": "https://golfnow.atlassian.net/browse/CORE-14526",
         "summary": "Code Changes",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "Development",
+            "after": "Code Review"
+          },
+          {
+            "field": "assignee",
+            "label": "Assignee",
+            "before": "Raghav Kancherla",
+            "after": "Yoel Martin Pardo"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 17, 2026, 1:30 AM",
+            "after": "Jun 17, 2026, 1:31 AM"
+          },
+          {
+            "field": "components",
+            "label": "Components",
+            "before": "None",
+            "after": "Cache Manager, GolfNow.Services.Reservation, GolfNow.Services.TeeSheet, GolfNowCentral"
+          }
+        ],
         "type": "Developer Task (sub task)",
         "isSubtask": true,
-        "status": "Development",
-        "priority": "None",
-        "assignee": "Raghav Kancherla",
-        "assigneeAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+        "assignee": "Yoel Martin Pardo",
         "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-17T01:30:38.693-0400",
-        "updatedDisplay": "Jun 17, 2026, 1:30 AM",
-        "created": "2026-06-17T01:19:25.931-0400",
-        "createdDisplay": "Jun 17, 2026, 1:19 AM",
-        "components": [],
-        "fixVersions": [
-          "v3001.124.0"
-        ],
-        "sprints": [],
-        "sprintNames": [],
-        "resolution": "",
+        "status": "Code Review",
         "parent": {
           "key": "CORE-14145",
           "url": "https://golfnow.atlassian.net/browse/CORE-14145",
@@ -9004,11 +9010,110 @@
         }
       }
     ],
-    "removed": [],
-    "updated": [],
-    "statusChanges": []
+    "statusChanges": [
+      {
+        "key": "CORE-14526",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14526",
+        "summary": "Code Changes",
+        "before": "Development",
+        "after": "Code Review",
+        "type": "Developer Task (sub task)",
+        "isSubtask": true,
+        "assignee": "Yoel Martin Pardo",
+        "assignedDeveloper": "Unassigned",
+        "status": "Code Review",
+        "parent": {
+          "key": "CORE-14145",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+          "summary": "New Interface - PrimaGolf",
+          "description": "",
+          "type": "Task",
+          "status": "Development",
+          "priority": "P1"
+        }
+      }
+    ]
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-17T05:31:19.269Z",
+      "previousPulledAtDisplay": "Jun 17, 2026, 1:31 AM",
+      "currentPulledAt": "2026-06-17T05:36:28.114Z",
+      "currentPulledAtDisplay": "Jun 17, 2026, 1:36 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14526",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14526",
+          "summary": "Code Changes",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "Development",
+              "after": "Code Review"
+            },
+            {
+              "field": "assignee",
+              "label": "Assignee",
+              "before": "Raghav Kancherla",
+              "after": "Yoel Martin Pardo"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 17, 2026, 1:30 AM",
+              "after": "Jun 17, 2026, 1:31 AM"
+            },
+            {
+              "field": "components",
+              "label": "Components",
+              "before": "None",
+              "after": "Cache Manager, GolfNow.Services.Reservation, GolfNow.Services.TeeSheet, GolfNowCentral"
+            }
+          ],
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Yoel Martin Pardo",
+          "assignedDeveloper": "Unassigned",
+          "status": "Code Review",
+          "parent": {
+            "key": "CORE-14145",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+            "summary": "New Interface - PrimaGolf",
+            "description": "",
+            "type": "Task",
+            "status": "Development",
+            "priority": "P1"
+          }
+        }
+      ],
+      "statusChanges": [
+        {
+          "key": "CORE-14526",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14526",
+          "summary": "Code Changes",
+          "before": "Development",
+          "after": "Code Review",
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Yoel Martin Pardo",
+          "assignedDeveloper": "Unassigned",
+          "status": "Code Review",
+          "parent": {
+            "key": "CORE-14145",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+            "summary": "New Interface - PrimaGolf",
+            "description": "",
+            "type": "Task",
+            "status": "Development",
+            "priority": "P1"
+          }
+        }
+      ]
+    },
     {
       "previousPulledAt": "2026-06-17T05:26:18.169Z",
       "previousPulledAtDisplay": "Jun 17, 2026, 1:26 AM",
@@ -9033,9 +9138,9 @@
           "testChecklist": null,
           "type": "Developer Task (sub task)",
           "isSubtask": true,
-          "status": "Development",
+          "status": "Code Review",
           "priority": "None",
-          "assignee": "Raghav Kancherla",
+          "assignee": "Yoel Martin Pardo",
           "assigneeAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
           "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
           "assignedDeveloper": "Unassigned",
@@ -10943,17 +11048,6 @@
       "previousPulledAtDisplay": "Jun 16, 2026, 11:21 AM",
       "currentPulledAt": "2026-06-16T15:26:33.791Z",
       "currentPulledAtDisplay": "Jun 16, 2026, 11:26 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-16T15:16:36.799Z",
-      "previousPulledAtDisplay": "Jun 16, 2026, 11:16 AM",
-      "currentPulledAt": "2026-06-16T15:21:37.040Z",
-      "currentPulledAtDisplay": "Jun 16, 2026, 11:21 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
