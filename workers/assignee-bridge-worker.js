@@ -959,34 +959,42 @@ function handleBridgeLanding(request, env) {
 }
 
 async function handleRefresh(request, env) {
-  if (!env.BOARD_DISPATCH_TOKEN) {
-    return json(request, env, 503, {
+  try {
+    if (!env.BOARD_DISPATCH_TOKEN) {
+      return json(request, env, 503, {
+        ok: false,
+        message: "BOARD_DISPATCH_TOKEN is not configured on the hosted bridge.",
+      });
+    }
+
+    if (!hasAllowedDashboardOrigin(request, env) && !hasValidAccessToken(request, env)) {
+      return json(request, env, 401, {
+        ok: false,
+        message: "Ticket refresh must be triggered from an approved dashboard origin or with a bridge token.",
+      });
+    }
+
+    const payload = await readJson(request);
+    const repositorySlug = resolveRepositorySlug(payload, env);
+    const workflowFile = env.REFRESH_WORKFLOW || "refresh-jira-board.yml";
+
+    await dispatchWorkflow(env, repositorySlug, workflowFile, {});
+
+    return json(request, env, 202, {
+      ok: true,
+      bridge: "hosted",
+      repositorySlug,
+      workflowFile,
+      actionsUrl: `https://github.com/${repositorySlug}/actions/workflows/${workflowFile}`,
+      message: "Jira ticket refresh workflow started.",
+    });
+  } catch (error) {
+    return json(request, env, 500, {
       ok: false,
-      message: "BOARD_DISPATCH_TOKEN is not configured on the hosted bridge.",
+      mode: "refresh-dispatch-error",
+      message: error && error.message ? error.message : "Jira ticket refresh workflow dispatch failed.",
     });
   }
-
-  if (!hasAllowedDashboardOrigin(request, env) && !hasValidAccessToken(request, env)) {
-    return json(request, env, 401, {
-      ok: false,
-      message: "Ticket refresh must be triggered from an approved dashboard origin or with a bridge token.",
-    });
-  }
-
-  const payload = await readJson(request);
-  const repositorySlug = resolveRepositorySlug(payload, env);
-  const workflowFile = env.REFRESH_WORKFLOW || "refresh-jira-board.yml";
-
-  await dispatchWorkflow(env, repositorySlug, workflowFile, {});
-
-  return json(request, env, 202, {
-    ok: true,
-    bridge: "hosted",
-    repositorySlug,
-    workflowFile,
-    actionsUrl: `https://github.com/${repositorySlug}/actions/workflows/${workflowFile}`,
-    message: "Jira ticket refresh workflow started.",
-  });
 }
 
 async function handleAssign(request, env) {

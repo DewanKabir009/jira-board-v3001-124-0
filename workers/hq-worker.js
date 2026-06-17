@@ -194,7 +194,17 @@ async function handleBoardRefresh(request, env, url) {
     },
     body
   });
-  const bridgeResponse = await env.ASSIGNEE_BRIDGE.fetch(bridgeRequest);
+  let bridgeResponse;
+  try {
+    bridgeResponse = await env.ASSIGNEE_BRIDGE.fetch(bridgeRequest);
+  } catch (error) {
+    return refreshProxyJsonResponse(request, env, url, {
+      ok: false,
+      mode: "bridge-service-binding-error",
+      message: error && error.message ? error.message : "Assignee bridge service binding failed during refresh dispatch."
+    }, 502);
+  }
+
   const headers = new Headers(bridgeResponse.headers);
 
   for (const [key, value] of Object.entries(refreshProxyCorsHeaders(request, env, url))) {
