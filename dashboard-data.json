@@ -4,10 +4,76 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-17T22:01:37.825Z",
-  "pulledAtDisplay": "Jun 17, 2026, 6:01 PM",
+  "pulledAt": "2026-06-17T22:06:45.987Z",
+  "pulledAtDisplay": "Jun 17, 2026, 6:06 PM",
   "total": 23,
   "issues": [
+    {
+      "key": "CORE-14145",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+      "summary": "New Interface - PrimaGolf",
+      "description": "Build a new interface to PrimaGolf.\n\nSpec available here: http://api.primagolf.fr/v1/documentation.html\n\nBase URL: http://api.primagolf.fr/v1/\n\nAll REST requests must contain the following headers:\n\nAPI-Key:contact @Kyle Young\n\nClub-Key: QgAkTk34WmVHB5tGmYF4GyCkVhY5mtT3 (Dev system)\n\nContent-Type: application/json\n\nKey API calls\n\n- Get availability & pricing\nGET /courses/teetimes\nUsed to retrieve tee times, availability, and pricing (including multiple price points per tee time and support for 9/18 holes).\n\n- Lock a tee time\nPOST /bookings/lock\nReserves a tee time for a short period (e.g. 15 minutes) while the customer completes their booking. Returns a lock_code that must be used on confirm.\n\n- Confirm a booking\nPOST /bookings/confirm\nConfirms a locked tee time, passing player details and selected prices. Returns one or more booking_ids that must be stored for amendments/cancellation.\n\n- Cancel a booking\nDELETE /bookings/cancel\nCancels an existing booking using date, course_id, time and the booking_ids returned from confirm.\n\nPlease build the interface with:\n\n- The same Send Email logic used for A8 / A9 / NetGolf\n\n- Tee Sheet Pricing and Course Pricing Distribution Controls",
+      "descriptionHtml": "<p>Build a new interface to <strong>PrimaGolf</strong>.</p><p>Spec available here: <a href=\"http://api.primagolf.fr/v1/documentation.html\" target=\"_blank\" rel=\"noopener\">http://api.primagolf.fr/v1/documentation.html</a></p><p>Base URL: <code>http://api.primagolf.fr/v1/</code></p><p>All REST requests must contain the following headers:</p><p><code>API-Key:</code>contact @Kyle Young </p><p><code>Club-Key: QgAkTk34WmVHB5tGmYF4GyCkVhY5mtT3 (Dev system) </code></p><p><code>Content-Type: application/json</code></p><p><strong>Key API calls</strong></p><ul><li><p><strong>Get availability &amp; pricing</strong><br><code>GET /courses/teetimes</code><br>Used to retrieve tee times, availability, and pricing (including multiple price points per tee time and support for 9/18 holes).</p></li><li><p><strong>Lock a tee time</strong><br><code>POST /bookings/lock</code><br>Reserves a tee time for a short period (e.g. 15 minutes) while the customer completes their booking. Returns a <code>lock_code</code> that must be used on confirm.</p></li><li><p><strong>Confirm a booking</strong><br><code>POST /bookings/confirm</code><br>Confirms a locked tee time, passing player details and selected prices. Returns one or more <code>booking_ids</code> that must be stored for amendments/cancellation.</p></li><li><p><strong>Cancel a booking</strong><br><code>DELETE /bookings/cancel</code><br>Cancels an existing booking using <code>date</code>, <code>course_id</code>, <code>time</code> and the <code>booking_ids</code> returned from confirm.</p></li></ul><p>Please build the interface with:</p><ul><li><p>The same <strong>Send Email</strong> logic used for A8 / A9 / NetGolf</p></li><li><p><strong>Tee Sheet Pricing</strong> and <strong>Course Pricing Distribution Controls</strong></p></li></ul><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14145/738262-image-20260616-134548.png\" alt=\"image-20260616-134548.png\" loading=\"lazy\"><figcaption>image-20260616-134548.png</figcaption></figure></div>",
+      "descriptionImageCount": 1,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 1,
+      "commentCount": 1,
+      "comments": [
+        {
+          "id": "1183616",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14145?focusedCommentId=1183616",
+          "author": "Raghav Kancherla",
+          "authorAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+          "created": "2026-06-16T09:45:54.401-0400",
+          "createdDisplay": "Jun 16, 2026, 9:45 AM",
+          "updated": "2026-06-16T09:58:48.747-0400",
+          "updatedDisplay": "Jun 16, 2026, 9:58 AM",
+          "hasMedia": true,
+          "mediaCount": 2,
+          "body": "",
+          "bodyHtml": "<div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14145/comments/1183616/738262-image-20260616-134548.png\" alt=\"image-20260616-134548.png\" loading=\"lazy\"><figcaption>image-20260616-134548.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14145/comments/1183616/738264-image-20260616-135842.png\" alt=\"image-20260616-135842.png\" loading=\"lazy\"><figcaption>image-20260616-135842.png</figcaption></figure></div>"
+        }
+      ],
+      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14145?focusedCommentId=1183616",
+      "lastCommentDisplay": "Jun 16, 2026, 9:45 AM",
+      "lastCommentAuthor": "Raghav Kancherla",
+      "testChecklist": null,
+      "type": "Task",
+      "isSubtask": false,
+      "status": "QA Testing (DEV)",
+      "priority": "P1",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+      "assignedDeveloper": "Raghav Kancherla",
+      "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+      "updated": "2026-06-17T18:05:05.612-0400",
+      "updatedDisplay": "Jun 17, 2026, 6:05 PM",
+      "created": "2026-02-06T07:12:47.081-0500",
+      "createdDisplay": "Feb 6, 2026, 7:12 AM",
+      "components": [
+        "Cache Manager",
+        "Database",
+        "GolfNow.Services.Reservation",
+        "GolfNow.Services.TeeSheet",
+        "GolfNowCentral"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [
+        {
+          "name": "2026.8"
+        }
+      ],
+      "sprintNames": [
+        "2026.8"
+      ],
+      "resolution": "",
+      "parent": null
+    },
     {
       "key": "CORE-14233",
       "url": "https://golfnow.atlassian.net/browse/CORE-14233",
@@ -509,72 +575,6 @@
         "status": "Backlog",
         "priority": "P1"
       }
-    },
-    {
-      "key": "CORE-14145",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14145",
-      "summary": "New Interface - PrimaGolf",
-      "description": "Build a new interface to PrimaGolf.\n\nSpec available here: http://api.primagolf.fr/v1/documentation.html\n\nBase URL: http://api.primagolf.fr/v1/\n\nAll REST requests must contain the following headers:\n\nAPI-Key:contact @Kyle Young\n\nClub-Key: QgAkTk34WmVHB5tGmYF4GyCkVhY5mtT3 (Dev system)\n\nContent-Type: application/json\n\nKey API calls\n\n- Get availability & pricing\nGET /courses/teetimes\nUsed to retrieve tee times, availability, and pricing (including multiple price points per tee time and support for 9/18 holes).\n\n- Lock a tee time\nPOST /bookings/lock\nReserves a tee time for a short period (e.g. 15 minutes) while the customer completes their booking. Returns a lock_code that must be used on confirm.\n\n- Confirm a booking\nPOST /bookings/confirm\nConfirms a locked tee time, passing player details and selected prices. Returns one or more booking_ids that must be stored for amendments/cancellation.\n\n- Cancel a booking\nDELETE /bookings/cancel\nCancels an existing booking using date, course_id, time and the booking_ids returned from confirm.\n\nPlease build the interface with:\n\n- The same Send Email logic used for A8 / A9 / NetGolf\n\n- Tee Sheet Pricing and Course Pricing Distribution Controls",
-      "descriptionHtml": "<p>Build a new interface to <strong>PrimaGolf</strong>.</p><p>Spec available here: <a href=\"http://api.primagolf.fr/v1/documentation.html\" target=\"_blank\" rel=\"noopener\">http://api.primagolf.fr/v1/documentation.html</a></p><p>Base URL: <code>http://api.primagolf.fr/v1/</code></p><p>All REST requests must contain the following headers:</p><p><code>API-Key:</code>contact @Kyle Young </p><p><code>Club-Key: QgAkTk34WmVHB5tGmYF4GyCkVhY5mtT3 (Dev system) </code></p><p><code>Content-Type: application/json</code></p><p><strong>Key API calls</strong></p><ul><li><p><strong>Get availability &amp; pricing</strong><br><code>GET /courses/teetimes</code><br>Used to retrieve tee times, availability, and pricing (including multiple price points per tee time and support for 9/18 holes).</p></li><li><p><strong>Lock a tee time</strong><br><code>POST /bookings/lock</code><br>Reserves a tee time for a short period (e.g. 15 minutes) while the customer completes their booking. Returns a <code>lock_code</code> that must be used on confirm.</p></li><li><p><strong>Confirm a booking</strong><br><code>POST /bookings/confirm</code><br>Confirms a locked tee time, passing player details and selected prices. Returns one or more <code>booking_ids</code> that must be stored for amendments/cancellation.</p></li><li><p><strong>Cancel a booking</strong><br><code>DELETE /bookings/cancel</code><br>Cancels an existing booking using <code>date</code>, <code>course_id</code>, <code>time</code> and the <code>booking_ids</code> returned from confirm.</p></li></ul><p>Please build the interface with:</p><ul><li><p>The same <strong>Send Email</strong> logic used for A8 / A9 / NetGolf</p></li><li><p><strong>Tee Sheet Pricing</strong> and <strong>Course Pricing Distribution Controls</strong></p></li></ul><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14145/738262-image-20260616-134548.png\" alt=\"image-20260616-134548.png\" loading=\"lazy\"><figcaption>image-20260616-134548.png</figcaption></figure></div>",
-      "descriptionImageCount": 1,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 1,
-      "commentCount": 1,
-      "comments": [
-        {
-          "id": "1183616",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14145?focusedCommentId=1183616",
-          "author": "Raghav Kancherla",
-          "authorAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-          "created": "2026-06-16T09:45:54.401-0400",
-          "createdDisplay": "Jun 16, 2026, 9:45 AM",
-          "updated": "2026-06-16T09:58:48.747-0400",
-          "updatedDisplay": "Jun 16, 2026, 9:58 AM",
-          "hasMedia": true,
-          "mediaCount": 2,
-          "body": "",
-          "bodyHtml": "<div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14145/comments/1183616/738262-image-20260616-134548.png\" alt=\"image-20260616-134548.png\" loading=\"lazy\"><figcaption>image-20260616-134548.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14145/comments/1183616/738264-image-20260616-135842.png\" alt=\"image-20260616-135842.png\" loading=\"lazy\"><figcaption>image-20260616-135842.png</figcaption></figure></div>"
-        }
-      ],
-      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14145?focusedCommentId=1183616",
-      "lastCommentDisplay": "Jun 16, 2026, 9:45 AM",
-      "lastCommentAuthor": "Raghav Kancherla",
-      "testChecklist": null,
-      "type": "Task",
-      "isSubtask": false,
-      "status": "QA Testing (DEV)",
-      "priority": "P1",
-      "assignee": "Dewan Kabir",
-      "assigneeAccountId": "630fb06bb433b060db559bdb",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-      "assignedDeveloper": "Raghav Kancherla",
-      "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-      "updated": "2026-06-17T12:14:57.889-0400",
-      "updatedDisplay": "Jun 17, 2026, 12:14 PM",
-      "created": "2026-02-06T07:12:47.081-0500",
-      "createdDisplay": "Feb 6, 2026, 7:12 AM",
-      "components": [
-        "Cache Manager",
-        "Database",
-        "GolfNow.Services.Reservation",
-        "GolfNow.Services.TeeSheet",
-        "GolfNowCentral"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
-      "resolution": "",
-      "parent": null
     },
     {
       "key": "CORE-14527",
@@ -1662,8 +1662,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-17T22:01:37.825Z",
-    "pulledAtDisplay": "Jun 17, 2026, 6:01 PM",
+    "pulledAt": "2026-06-17T22:06:45.987Z",
+    "pulledAtDisplay": "Jun 17, 2026, 6:06 PM",
     "total": 93,
     "mainTotal": 93,
     "subtaskTotal": 0,
@@ -2051,8 +2051,8 @@
         "assignedDeveloper": "Raghav Kancherla",
         "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "updated": "2026-06-17T12:14:57.889-0400",
-        "updatedDisplay": "Jun 17, 2026, 12:14 PM",
+        "updated": "2026-06-17T18:05:05.612-0400",
+        "updatedDisplay": "Jun 17, 2026, 6:05 PM",
         "created": "2026-02-06T07:12:47.081-0500",
         "createdDisplay": "Feb 6, 2026, 7:12 AM",
         "components": [
@@ -7621,13 +7621,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-17T22:01:05.144Z",
-    "pulledAtDisplay": "Jun 17, 2026, 6:01 PM",
+    "pulledAt": "2026-06-17T22:06:13.017Z",
+    "pulledAtDisplay": "Jun 17, 2026, 6:06 PM",
     "window": {
-      "start": "2026-05-03T22:01:05.144Z",
-      "end": "2026-12-14T22:01:05.144Z",
-      "startDisplay": "May 3, 2026, 6:01 PM",
-      "endDisplay": "Dec 14, 2026, 5:01 PM"
+      "start": "2026-05-03T22:06:13.016Z",
+      "end": "2026-12-14T22:06:13.016Z",
+      "startDisplay": "May 3, 2026, 6:06 PM",
+      "endDisplay": "Dec 14, 2026, 5:06 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7640,7 +7640,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-17T22:01:07.928Z",
+        "pulledAt": "2026-06-17T22:06:15.953Z",
         "eventCount": 93,
         "events": [
           {
@@ -7933,23 +7933,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Oak Brook Monthly Production Server Patching May 2026: Slack:\n#itops_patching_communications",
-            "start": "2026-05-26T18:00:00.000Z",
-            "end": "2026-05-27T19:55:00.000Z",
-            "startDate": "",
-            "endDate": "",
-            "startDisplay": "May 26, 2026, 2:00 PM",
-            "endDisplay": "May 27, 2026, 3:55 PM",
-            "allDay": false,
-            "type": "Patching",
-            "location": "https://golfnow.atlassian.net/browse/OPS-54241",
-            "description": "Slack: #itops_patching_communications",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -7964,6 +7947,23 @@
             "type": "Scheduled Maintenance",
             "location": "https://golfnow.atlassian.net/browse/OPS-54736",
             "description": "Slack: #itops_deployments",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Oak Brook Monthly Production Server Patching May 2026: Slack:\n#itops_patching_communications",
+            "start": "2026-05-26T18:00:00.000Z",
+            "end": "2026-05-27T19:55:00.000Z",
+            "startDate": "",
+            "endDate": "",
+            "startDisplay": "May 26, 2026, 2:00 PM",
+            "endDisplay": "May 27, 2026, 3:55 PM",
+            "allDay": false,
+            "type": "Patching",
+            "location": "https://golfnow.atlassian.net/browse/OPS-54241",
+            "description": "Slack: #itops_patching_communications",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
@@ -8460,23 +8460,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.57",
-            "start": "2026-07-14T00:00:00.000Z",
-            "end": "2026-07-15T00:00:00.000Z",
-            "startDate": "2026-07-14",
-            "endDate": "2026-07-15",
-            "startDisplay": "Jul 14, 2026",
-            "endDisplay": "Jul 15, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221527Z-1432222737@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8506,6 +8489,23 @@
             "endDisplay": "Jul 15, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.57",
+            "start": "2026-07-14T00:00:00.000Z",
+            "end": "2026-07-15T00:00:00.000Z",
+            "startDate": "2026-07-14",
+            "endDate": "2026-07-15",
+            "startDisplay": "Jul 14, 2026",
+            "endDisplay": "Jul 15, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8885,23 +8885,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.59",
-            "start": "2026-09-15T00:00:00.000Z",
-            "end": "2026-09-16T00:00:00.000Z",
-            "startDate": "2026-09-15",
-            "endDate": "2026-09-16",
-            "startDisplay": "Sep 15, 2026",
-            "endDisplay": "Sep 16, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221627Z-1916149808@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8931,6 +8914,23 @@
             "endDisplay": "Sep 16, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.59",
+            "start": "2026-09-15T00:00:00.000Z",
+            "end": "2026-09-16T00:00:00.000Z",
+            "startDate": "2026-09-15",
+            "endDate": "2026-09-16",
+            "startDisplay": "Sep 15, 2026",
+            "endDisplay": "Sep 16, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9157,23 +9157,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221750Z-1404075373@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9208,6 +9191,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260112T140557Z-111931857@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9230,17 +9230,68 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-17T21:56:09.736Z",
-    "previousPulledAtDisplay": "Jun 17, 2026, 5:56 PM",
-    "currentPulledAt": "2026-06-17T22:01:37.825Z",
-    "currentPulledAtDisplay": "Jun 17, 2026, 6:01 PM",
+    "previousPulledAt": "2026-06-17T22:01:37.825Z",
+    "previousPulledAtDisplay": "Jun 17, 2026, 6:01 PM",
+    "currentPulledAt": "2026-06-17T22:06:45.987Z",
+    "currentPulledAtDisplay": "Jun 17, 2026, 6:06 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
-    "updated": [],
+    "updated": [
+      {
+        "key": "CORE-14145",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+        "summary": "New Interface - PrimaGolf",
+        "changes": [
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 17, 2026, 12:14 PM",
+            "after": "Jun 17, 2026, 6:05 PM"
+          }
+        ],
+        "type": "Task",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Raghav Kancherla",
+        "status": "QA Testing (DEV)",
+        "parent": null
+      }
+    ],
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-17T22:01:37.825Z",
+      "previousPulledAtDisplay": "Jun 17, 2026, 6:01 PM",
+      "currentPulledAt": "2026-06-17T22:06:45.987Z",
+      "currentPulledAtDisplay": "Jun 17, 2026, 6:06 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14145",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+          "summary": "New Interface - PrimaGolf",
+          "changes": [
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 17, 2026, 12:14 PM",
+              "after": "Jun 17, 2026, 6:05 PM"
+            }
+          ],
+          "type": "Task",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Raghav Kancherla",
+          "status": "QA Testing (DEV)",
+          "parent": null
+        }
+      ],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-17T21:56:09.736Z",
       "previousPulledAtDisplay": "Jun 17, 2026, 5:56 PM",
@@ -11865,17 +11916,6 @@
       "previousPulledAtDisplay": "Jun 17, 2026, 3:06 AM",
       "currentPulledAt": "2026-06-17T07:11:43.645Z",
       "currentPulledAtDisplay": "Jun 17, 2026, 3:11 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-17T07:01:40.614Z",
-      "previousPulledAtDisplay": "Jun 17, 2026, 3:01 AM",
-      "currentPulledAt": "2026-06-17T07:06:34.467Z",
-      "currentPulledAtDisplay": "Jun 17, 2026, 3:06 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
