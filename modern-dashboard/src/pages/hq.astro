@@ -778,6 +778,7 @@ const awsFarmsDocumentJson = JSON.stringify(awsFarmsDocument).replace(/</g, "\\u
             const results = root.querySelector("[data-doc-results]");
             const documentData = JSON.parse(dataNode.textContent || "{}");
             const farms = Array.isArray(documentData.farms) ? documentData.farms : [];
+            const defaultFarm = "GNAPIA";
 
             farms.forEach((farm) => {
               const option = document.createElement("option");
@@ -785,6 +786,10 @@ const awsFarmsDocumentJson = JSON.stringify(awsFarmsDocument).replace(/</g, "\\u
               option.textContent = `${farm.farm} - ${farm.kind}`;
               farmSelect?.append(option);
             });
+
+            if (farmSelect && farms.some((farm) => farm.farm === defaultFarm)) {
+              farmSelect.value = defaultFarm;
+            }
 
             const pad = (value) => String(value).padStart(3, "0");
             const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
@@ -841,8 +846,10 @@ const awsFarmsDocumentJson = JSON.stringify(awsFarmsDocument).replace(/</g, "\\u
                     const servers = expandServers(env);
                     return `
                       <article>
-                        <strong>${escapeHtml(env.env.toUpperCase())}</strong>
-                        <p>${escapeHtml(env.farmName || "No farm name")}</p>
+                        <div class="document-env-heading">
+                          <strong>${escapeHtml(env.env.toUpperCase())}</strong>
+                          <p>${escapeHtml(env.farmName || "No farm name")}</p>
+                        </div>
                         <div class="server-chip-list">${renderServers(servers)}</div>
                       </article>
                     `;

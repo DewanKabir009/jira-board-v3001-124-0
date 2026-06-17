@@ -1126,27 +1126,42 @@ ul {
 
 .document-env-grid article {
   display: grid;
-  gap: 8px;
+  align-content: start;
+  gap: 11px;
   border: 1px solid var(--hq-line);
   border-radius: 8px;
   background:
-    linear-gradient(180deg, rgba(244, 252, 255, 0.96), rgba(255, 255, 255, 0.98));
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(244, 252, 255, 0.9) 52%, rgba(217, 255, 235, 0.45));
   padding: 12px;
 }
 
-.document-env-grid article > strong {
-  justify-self: start;
+.document-env-heading {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 9px;
+}
+
+.document-env-heading strong {
+  display: inline-flex;
+  min-height: 31px;
+  align-items: center;
+  justify-content: center;
   border-radius: 999px;
   background: var(--hq-green);
   color: #ffffff;
   font-size: 0.76rem;
   letter-spacing: 0;
+  line-height: 1;
   padding: 5px 9px;
+  white-space: nowrap;
 }
 
-.document-env-grid article > p {
+.document-env-heading p {
+  min-width: 0;
   color: var(--hq-text);
   font-weight: 950;
+  overflow-wrap: anywhere;
 }
 
 .server-chip-list span,
@@ -1155,10 +1170,12 @@ ul {
   border-radius: 999px;
   background: #ffffff;
   color: var(--hq-muted);
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   font-style: normal;
   font-weight: 850;
-  padding: 4px 8px;
+  line-height: 1.1;
+  padding: 6px 8px;
+  overflow-wrap: anywhere;
 }
 
 .document-farm-card.empty {
