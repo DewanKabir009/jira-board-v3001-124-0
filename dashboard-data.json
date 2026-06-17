@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-17T14:26:37.014Z",
-  "pulledAtDisplay": "Jun 17, 2026, 10:26 AM",
+  "pulledAt": "2026-06-17T14:31:31.720Z",
+  "pulledAtDisplay": "Jun 17, 2026, 10:31 AM",
   "total": 21,
   "issues": [
     {
@@ -1053,12 +1053,12 @@
           "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/61f80648f51e85007087aef1/be5ebe22-4108-4f10-97f0-4a02825274ee/32",
           "created": "2026-04-08T06:52:33.613-0400",
           "createdDisplay": "Apr 8, 2026, 6:52 AM",
-          "updated": "2026-06-01T12:54:39.197-0400",
-          "updatedDisplay": "Jun 1, 2026, 12:54 PM",
+          "updated": "2026-06-17T10:31:00.882-0400",
+          "updatedDisplay": "Jun 17, 2026, 10:31 AM",
           "hasMedia": true,
           "mediaCount": 1,
-          "body": "Outstanding issues\n\n- USGA sourced courses are always showing the all 18 handicap value for the playingHandicap - even if the roundTypeId is Front9 (1) or Back9 (2)\n\n- Example is 38017 in AWS Dev\n\n- Dots are being distributed correctly, it’s the playingHandicap value that isn’t displaying correctly APPEARS RESOLVED BUT WILL MONITOR\n\n- The 9 hole side that is not be played/set by the roundType is still getting half of it’s strokeAdjustments on the most difficult holes on that side. Example - first four holes are the Front9 most difficult which is correct. But the 2 on the Back9 shouldn’t get any strokes since this is a Front9 round\n\n- Still not seeing the right flow for updating roundTypes\n\n- When the playerRound is created it is inheriting the roundType value from the Outing Round, regardless of what is being passed in through the creation of the playerRound here - /api/v2/golfOuting/{golfOutingId}/rounds/{golfOutingRoundId}/players/{playerId}/playerRounds\n\n- it is the Outing round roundHoleType value that initially determines how the playingHandicap is split between the holes in the hole array at the top of the playerRound call. So if the Outing Round is created with a \"roundHoleType\": 3 then the playingHandicap value will be divided between all 18 holes.\n\n- The roundType value that is passed at the creation of the playerRound is determining what handicap value is used for playingHandicap. The correct value is being assigned to this field when based on what is provided to the create playerRound endpoint above.\n\n- Updating the playerRound roundTypeId doesn’t change the playingHandicap, so a user isn’t able to move between 9 and 18 hole rounds on the same playerRound at the moment.\n\n- however when this value is updated the strokeAdjustments are being moved around correctly for the most part,\n\n- Front 9 and Back 9 give the correct strokeAdjustments - with the exception of issue 2 above where the other side gets a few lingering strokes\n\n- All 18 is taking the playingHandicap and dividing it in half, which is correct except it’s using the wrong number since the playerHandicap isn’t changing from the creation of the playerRound - point 3.a.iii above",
-          "bodyHtml": "<h3>Outstanding issues</h3><ol><li><p><s>USGA sourced courses are always showing the all 18 handicap value for the playingHandicap - even if the roundTypeId is Front9 (1) or Back9 (2)</s></p><ol><li><p><s>Example is 38017 in AWS Dev</s></p></li><li><p><s>Dots are being distributed correctly, it’s the playingHandicap value that isn’t displaying correctly</s> APPEARS RESOLVED BUT WILL MONITOR</p></li></ol></li><li><p>The 9 hole side that is not be played/set by the roundType is still getting half of it’s strokeAdjustments on the most difficult holes on that side. Example - first four holes are the Front9 most difficult which is correct. But the 2 on the Back9 shouldn’t get any strokes since this is a Front9 round</p></li></ol><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-13962/comments/1148894/712023-Screenshot-2026-04-08-at-12.58.25-PM.png\" alt=\"Screenshot 2026-04-08 at 12.58.25 PM.png\" loading=\"lazy\"><figcaption>Screenshot 2026-04-08 at 12.58.25 PM.png</figcaption></figure></div><ol><li><p>Still not seeing the right flow for updating roundTypes</p><ol><li><p>When the playerRound is created it is inheriting the roundType value from the Outing Round, regardless of what is being passed in through the creation of the playerRound here - <a href=\"https://graph.dev.golfnow.io/swagger/index.html?urls.primaryName=v2#/GolfOuting%20-%20Rounds/Rounds_CreateGolfOutingPlayerRound\" target=\"_blank\" rel=\"noopener\">/api/v2/golfOuting/{golfOutingId}/rounds/{golfOutingRoundId}/players/{playerId}/playerRounds</a></p><ol><li><p>it is the Outing round roundHoleType value that initially determines how the playingHandicap is split between the holes in the hole array at the top of the playerRound call. So if the Outing Round is created with a <code>&quot;roundHoleType&quot;: 3</code> then the playingHandicap value will be divided between all 18 holes. </p></li><li><p>The roundType value that is passed at the creation of the playerRound is determining what handicap value is used for playingHandicap. The correct value is being assigned to this field when based on what is provided to the create playerRound endpoint above.</p></li><li><p>Updating the playerRound roundTypeId doesn’t change the playingHandicap, so a user isn’t able to move between 9 and 18 hole rounds on the same playerRound at the moment.</p><ol><li><p>however when this value is updated the strokeAdjustments are being moved around correctly for the most part,</p><ol><li><p>Front 9 and Back 9 give the correct strokeAdjustments - with the exception of issue 2 above where the other side gets a few lingering strokes</p></li><li><p>All 18 is taking the playingHandicap and dividing it in half, which is correct except it’s using the wrong number since the playerHandicap isn’t changing from the creation of the playerRound - point 3.a.iii above</p></li></ol></li></ol></li></ol></li></ol></li></ol>"
+          "body": "Outstanding issues\n\n- USGA sourced courses are always showing the all 18 handicap value for the playingHandicap - even if the roundTypeId is Front9 (1) or Back9 (2)\n\n- Example is 38017 in AWS Dev\n\n- Dots are being distributed correctly, it’s the playingHandicap value that isn’t displaying correctly APPEARS RESOLVED BUT WILL MONITOR\n\n- The 9 hole side that is not be played/set by the roundType is still getting half of it’s strokeAdjustments on the most difficult holes on that side. Example - first four holes are the Front9 most difficult which is correct. But the 2 on the Back9 shouldn’t get any strokes since this is a Front9 round RESOLVED\n\n- Still not seeing the right flow for updating roundTypes WORKING CORRECTLY BUT WE WILL NOT SUPPORT ROUNDTYPE ADJUSTMENTS ON THE FE\n\n- When the playerRound is created it is inheriting the roundType value from the Outing Round, regardless of what is being passed in through the creation of the playerRound here - /api/v2/golfOuting/{golfOutingId}/rounds/{golfOutingRoundId}/players/{playerId}/playerRounds\n\n- it is the Outing round roundHoleType value that initially determines how the playingHandicap is split between the holes in the hole array at the top of the playerRound call. So if the Outing Round is created with a \"roundHoleType\": 3 then the playingHandicap value will be divided between all 18 holes.\n\n- The roundType value that is passed at the creation of the playerRound is determining what handicap value is used for playingHandicap. The correct value is being assigned to this field when based on what is provided to the create playerRound endpoint above.\n\n- Updating the playerRound roundTypeId doesn’t change the playingHandicap, so a user isn’t able to move between 9 and 18 hole rounds on the same playerRound at the moment.\n\n- however when this value is updated the strokeAdjustments are being moved around correctly for the most part,\n\n- Front 9 and Back 9 give the correct strokeAdjustments - with the exception of issue 2 above where the other side gets a few lingering strokes\n\n- All 18 is taking the playingHandicap and dividing it in half, which is correct except it’s using the wrong number since the playerHandicap isn’t changing from the creation of the playerRound - point 3.a.iii above",
+          "bodyHtml": "<h3>Outstanding issues</h3><ol><li><p><s>USGA sourced courses are always showing the all 18 handicap value for the playingHandicap - even if the roundTypeId is Front9 (1) or Back9 (2)</s></p><ol><li><p><s>Example is 38017 in AWS Dev</s></p></li><li><p><s>Dots are being distributed correctly, it’s the playingHandicap value that isn’t displaying correctly</s> APPEARS RESOLVED BUT WILL MONITOR</p></li></ol></li><li><p><s>The 9 hole side that is not be played/set by the roundType is still getting half of it’s strokeAdjustments on the most difficult holes on that side. Example - first four holes are the Front9 most difficult which is correct. But the 2 on the Back9 shouldn’t get any strokes since this is a Front9 round</s> RESOLVED</p></li></ol><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-13962/comments/1148894/712023-Screenshot-2026-04-08-at-12.58.25-PM.png\" alt=\"Screenshot 2026-04-08 at 12.58.25 PM.png\" loading=\"lazy\"><figcaption>Screenshot 2026-04-08 at 12.58.25 PM.png</figcaption></figure></div><ol><li><p><s>Still not seeing the right flow for updating roundTypes</s> WORKING CORRECTLY BUT WE WILL NOT SUPPORT ROUNDTYPE ADJUSTMENTS ON THE FE</p><ol><li><p>When the playerRound is created it is inheriting the roundType value from the Outing Round, regardless of what is being passed in through the creation of the playerRound here - <a href=\"https://graph.dev.golfnow.io/swagger/index.html?urls.primaryName=v2#/GolfOuting%20-%20Rounds/Rounds_CreateGolfOutingPlayerRound\" target=\"_blank\" rel=\"noopener\">/api/v2/golfOuting/{golfOutingId}/rounds/{golfOutingRoundId}/players/{playerId}/playerRounds</a></p><ol><li><p>it is the Outing round roundHoleType value that initially determines how the playingHandicap is split between the holes in the hole array at the top of the playerRound call. So if the Outing Round is created with a <code>&quot;roundHoleType&quot;: 3</code> then the playingHandicap value will be divided between all 18 holes. </p></li><li><p>The roundType value that is passed at the creation of the playerRound is determining what handicap value is used for playingHandicap. The correct value is being assigned to this field when based on what is provided to the create playerRound endpoint above.</p></li><li><p>Updating the playerRound roundTypeId doesn’t change the playingHandicap, so a user isn’t able to move between 9 and 18 hole rounds on the same playerRound at the moment.</p><ol><li><p>however when this value is updated the strokeAdjustments are being moved around correctly for the most part,</p><ol><li><p>Front 9 and Back 9 give the correct strokeAdjustments - with the exception of issue 2 above where the other side gets a few lingering strokes</p></li><li><p>All 18 is taking the playingHandicap and dividing it in half, which is correct except it’s using the wrong number since the playerHandicap isn’t changing from the creation of the playerRound - point 3.a.iii above</p></li></ol></li></ol></li></ol></li></ol></li></ol>"
         }
       ],
       "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-13962?focusedCommentId=1148894",
@@ -1075,8 +1075,8 @@
       "assignedDeveloper": "Yoel Martin Pardo",
       "assignedDeveloperAccountId": "625571809e7380006fb29599",
       "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-      "updated": "2026-06-09T11:53:23.587-0400",
-      "updatedDisplay": "Jun 9, 2026, 11:53 AM",
+      "updated": "2026-06-17T10:31:00.949-0400",
+      "updatedDisplay": "Jun 17, 2026, 10:31 AM",
       "created": "2025-12-09T11:27:22.531-0500",
       "createdDisplay": "Dec 9, 2025, 11:27 AM",
       "components": [
@@ -1538,8 +1538,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-17T14:26:37.014Z",
-    "pulledAtDisplay": "Jun 17, 2026, 10:26 AM",
+    "pulledAt": "2026-06-17T14:31:31.720Z",
+    "pulledAtDisplay": "Jun 17, 2026, 10:31 AM",
     "total": 93,
     "mainTotal": 93,
     "subtaskTotal": 0,
@@ -1835,12 +1835,12 @@
             "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/61f80648f51e85007087aef1/be5ebe22-4108-4f10-97f0-4a02825274ee/32",
             "created": "2026-04-08T06:52:33.613-0400",
             "createdDisplay": "Apr 8, 2026, 6:52 AM",
-            "updated": "2026-06-01T12:54:39.197-0400",
-            "updatedDisplay": "Jun 1, 2026, 12:54 PM",
+            "updated": "2026-06-17T10:31:00.882-0400",
+            "updatedDisplay": "Jun 17, 2026, 10:31 AM",
             "hasMedia": true,
             "mediaCount": 1,
-            "body": "Outstanding issues\n\n- USGA sourced courses are always showing the all 18 handicap value for the playingHandicap - even if the roundTypeId is Front9 (1) or Back9 (2)\n\n- Example is 38017 in AWS Dev\n\n- Dots are being distributed correctly, it’s the playingHandicap value that isn’t displaying correctly APPEARS RESOLVED BUT WILL MONITOR\n\n- The 9 hole side that is not be played/set by the roundType is still getting half of it’s strokeAdjustments on the most difficult holes on that side. Example - first four holes are the Front9 most difficult which is correct. But the 2 on the Back9 shouldn’t get any strokes since this is a Front9 round\n\n- Still not seeing the right flow for updating roundTypes\n\n- When the playerRound is created it is inheriting the roundType value from the Outing Round, regardless of what is being passed in through the creation of the playerRound here - /api/v2/golfOuting/{golfOutingId}/rounds/{golfOutingRoundId}/players/{playerId}/playerRounds\n\n- it is the Outing round roundHoleType value that initially determines how the playingHandicap is split between the holes in the hole array at the top of the playerRound call. So if the Outing Round is created with a \"roundHoleType\": 3 then the playingHandicap value will be divided between all 18 holes.\n\n- The roundType value that is passed at the creation of the playerRound is determining what handicap value is used for playingHandicap. The correct value is being assigned to this field when based on what is provided to the create playerRound endpoint above.\n\n- Updating the playerRound roundTypeId doesn’t change the playingHandicap, so a user isn’t able to move between 9 and 18 hole rounds on the same playerRound at the moment.\n\n- however when this value is updated the strokeAdjustments are being moved around correctly for the most part,\n\n- Front 9 and Back 9 give the correct strokeAdjustments - with the exception of issue 2 above where the other side gets a few lingering strokes\n\n- All 18 is taking the playingHandicap and dividing it in half, which is correct except it’s using the wrong number since the playerHandicap isn’t changing from the creation of the playerRound - point 3.a.iii above",
-            "bodyHtml": "<h3>Outstanding issues</h3><ol><li><p><s>USGA sourced courses are always showing the all 18 handicap value for the playingHandicap - even if the roundTypeId is Front9 (1) or Back9 (2)</s></p><ol><li><p><s>Example is 38017 in AWS Dev</s></p></li><li><p><s>Dots are being distributed correctly, it’s the playingHandicap value that isn’t displaying correctly</s> APPEARS RESOLVED BUT WILL MONITOR</p></li></ol></li><li><p>The 9 hole side that is not be played/set by the roundType is still getting half of it’s strokeAdjustments on the most difficult holes on that side. Example - first four holes are the Front9 most difficult which is correct. But the 2 on the Back9 shouldn’t get any strokes since this is a Front9 round</p></li></ol><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-13962/comments/1148894/712023-Screenshot-2026-04-08-at-12.58.25-PM.png\" alt=\"Screenshot 2026-04-08 at 12.58.25 PM.png\" loading=\"lazy\"><figcaption>Screenshot 2026-04-08 at 12.58.25 PM.png</figcaption></figure></div><ol><li><p>Still not seeing the right flow for updating roundTypes</p><ol><li><p>When the playerRound is created it is inheriting the roundType value from the Outing Round, regardless of what is being passed in through the creation of the playerRound here - <a href=\"https://graph.dev.golfnow.io/swagger/index.html?urls.primaryName=v2#/GolfOuting%20-%20Rounds/Rounds_CreateGolfOutingPlayerRound\" target=\"_blank\" rel=\"noopener\">/api/v2/golfOuting/{golfOutingId}/rounds/{golfOutingRoundId}/players/{playerId}/playerRounds</a></p><ol><li><p>it is the Outing round roundHoleType value that initially determines how the playingHandicap is split between the holes in the hole array at the top of the playerRound call. So if the Outing Round is created with a <code>&quot;roundHoleType&quot;: 3</code> then the playingHandicap value will be divided between all 18 holes. </p></li><li><p>The roundType value that is passed at the creation of the playerRound is determining what handicap value is used for playingHandicap. The correct value is being assigned to this field when based on what is provided to the create playerRound endpoint above.</p></li><li><p>Updating the playerRound roundTypeId doesn’t change the playingHandicap, so a user isn’t able to move between 9 and 18 hole rounds on the same playerRound at the moment.</p><ol><li><p>however when this value is updated the strokeAdjustments are being moved around correctly for the most part,</p><ol><li><p>Front 9 and Back 9 give the correct strokeAdjustments - with the exception of issue 2 above where the other side gets a few lingering strokes</p></li><li><p>All 18 is taking the playingHandicap and dividing it in half, which is correct except it’s using the wrong number since the playerHandicap isn’t changing from the creation of the playerRound - point 3.a.iii above</p></li></ol></li></ol></li></ol></li></ol></li></ol>"
+            "body": "Outstanding issues\n\n- USGA sourced courses are always showing the all 18 handicap value for the playingHandicap - even if the roundTypeId is Front9 (1) or Back9 (2)\n\n- Example is 38017 in AWS Dev\n\n- Dots are being distributed correctly, it’s the playingHandicap value that isn’t displaying correctly APPEARS RESOLVED BUT WILL MONITOR\n\n- The 9 hole side that is not be played/set by the roundType is still getting half of it’s strokeAdjustments on the most difficult holes on that side. Example - first four holes are the Front9 most difficult which is correct. But the 2 on the Back9 shouldn’t get any strokes since this is a Front9 round RESOLVED\n\n- Still not seeing the right flow for updating roundTypes WORKING CORRECTLY BUT WE WILL NOT SUPPORT ROUNDTYPE ADJUSTMENTS ON THE FE\n\n- When the playerRound is created it is inheriting the roundType value from the Outing Round, regardless of what is being passed in through the creation of the playerRound here - /api/v2/golfOuting/{golfOutingId}/rounds/{golfOutingRoundId}/players/{playerId}/playerRounds\n\n- it is the Outing round roundHoleType value that initially determines how the playingHandicap is split between the holes in the hole array at the top of the playerRound call. So if the Outing Round is created with a \"roundHoleType\": 3 then the playingHandicap value will be divided between all 18 holes.\n\n- The roundType value that is passed at the creation of the playerRound is determining what handicap value is used for playingHandicap. The correct value is being assigned to this field when based on what is provided to the create playerRound endpoint above.\n\n- Updating the playerRound roundTypeId doesn’t change the playingHandicap, so a user isn’t able to move between 9 and 18 hole rounds on the same playerRound at the moment.\n\n- however when this value is updated the strokeAdjustments are being moved around correctly for the most part,\n\n- Front 9 and Back 9 give the correct strokeAdjustments - with the exception of issue 2 above where the other side gets a few lingering strokes\n\n- All 18 is taking the playingHandicap and dividing it in half, which is correct except it’s using the wrong number since the playerHandicap isn’t changing from the creation of the playerRound - point 3.a.iii above",
+            "bodyHtml": "<h3>Outstanding issues</h3><ol><li><p><s>USGA sourced courses are always showing the all 18 handicap value for the playingHandicap - even if the roundTypeId is Front9 (1) or Back9 (2)</s></p><ol><li><p><s>Example is 38017 in AWS Dev</s></p></li><li><p><s>Dots are being distributed correctly, it’s the playingHandicap value that isn’t displaying correctly</s> APPEARS RESOLVED BUT WILL MONITOR</p></li></ol></li><li><p><s>The 9 hole side that is not be played/set by the roundType is still getting half of it’s strokeAdjustments on the most difficult holes on that side. Example - first four holes are the Front9 most difficult which is correct. But the 2 on the Back9 shouldn’t get any strokes since this is a Front9 round</s> RESOLVED</p></li></ol><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-13962/comments/1148894/712023-Screenshot-2026-04-08-at-12.58.25-PM.png\" alt=\"Screenshot 2026-04-08 at 12.58.25 PM.png\" loading=\"lazy\"><figcaption>Screenshot 2026-04-08 at 12.58.25 PM.png</figcaption></figure></div><ol><li><p><s>Still not seeing the right flow for updating roundTypes</s> WORKING CORRECTLY BUT WE WILL NOT SUPPORT ROUNDTYPE ADJUSTMENTS ON THE FE</p><ol><li><p>When the playerRound is created it is inheriting the roundType value from the Outing Round, regardless of what is being passed in through the creation of the playerRound here - <a href=\"https://graph.dev.golfnow.io/swagger/index.html?urls.primaryName=v2#/GolfOuting%20-%20Rounds/Rounds_CreateGolfOutingPlayerRound\" target=\"_blank\" rel=\"noopener\">/api/v2/golfOuting/{golfOutingId}/rounds/{golfOutingRoundId}/players/{playerId}/playerRounds</a></p><ol><li><p>it is the Outing round roundHoleType value that initially determines how the playingHandicap is split between the holes in the hole array at the top of the playerRound call. So if the Outing Round is created with a <code>&quot;roundHoleType&quot;: 3</code> then the playingHandicap value will be divided between all 18 holes. </p></li><li><p>The roundType value that is passed at the creation of the playerRound is determining what handicap value is used for playingHandicap. The correct value is being assigned to this field when based on what is provided to the create playerRound endpoint above.</p></li><li><p>Updating the playerRound roundTypeId doesn’t change the playingHandicap, so a user isn’t able to move between 9 and 18 hole rounds on the same playerRound at the moment.</p><ol><li><p>however when this value is updated the strokeAdjustments are being moved around correctly for the most part,</p><ol><li><p>Front 9 and Back 9 give the correct strokeAdjustments - with the exception of issue 2 above where the other side gets a few lingering strokes</p></li><li><p>All 18 is taking the playingHandicap and dividing it in half, which is correct except it’s using the wrong number since the playerHandicap isn’t changing from the creation of the playerRound - point 3.a.iii above</p></li></ol></li></ol></li></ol></li></ol></li></ol>"
           }
         ],
         "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-13962?focusedCommentId=1148894",
@@ -1857,8 +1857,8 @@
         "assignedDeveloper": "Yoel Martin Pardo",
         "assignedDeveloperAccountId": "625571809e7380006fb29599",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-06-09T11:53:23.587-0400",
-        "updatedDisplay": "Jun 9, 2026, 11:53 AM",
+        "updated": "2026-06-17T10:31:00.949-0400",
+        "updatedDisplay": "Jun 17, 2026, 10:31 AM",
         "created": "2025-12-09T11:27:22.531-0500",
         "createdDisplay": "Dec 9, 2025, 11:27 AM",
         "components": [
@@ -7478,13 +7478,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-17T14:26:09.625Z",
-    "pulledAtDisplay": "Jun 17, 2026, 10:26 AM",
+    "pulledAt": "2026-06-17T14:31:05.510Z",
+    "pulledAtDisplay": "Jun 17, 2026, 10:31 AM",
     "window": {
-      "start": "2026-05-03T14:26:09.624Z",
-      "end": "2026-12-14T14:26:09.624Z",
-      "startDisplay": "May 3, 2026, 10:26 AM",
-      "endDisplay": "Dec 14, 2026, 9:26 AM"
+      "start": "2026-05-03T14:31:05.509Z",
+      "end": "2026-12-14T14:31:05.509Z",
+      "startDisplay": "May 3, 2026, 10:31 AM",
+      "endDisplay": "Dec 14, 2026, 9:31 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7497,7 +7497,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-17T14:26:12.232Z",
+        "pulledAt": "2026-06-17T14:31:07.751Z",
         "eventCount": 93,
         "events": [
           {
@@ -9087,17 +9087,84 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-17T14:21:33.140Z",
-    "previousPulledAtDisplay": "Jun 17, 2026, 10:21 AM",
-    "currentPulledAt": "2026-06-17T14:26:37.014Z",
-    "currentPulledAtDisplay": "Jun 17, 2026, 10:26 AM",
+    "previousPulledAt": "2026-06-17T14:26:37.014Z",
+    "previousPulledAtDisplay": "Jun 17, 2026, 10:26 AM",
+    "currentPulledAt": "2026-06-17T14:31:31.720Z",
+    "currentPulledAtDisplay": "Jun 17, 2026, 10:31 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
-    "updated": [],
+    "updated": [
+      {
+        "key": "CORE-13962",
+        "url": "https://golfnow.atlassian.net/browse/CORE-13962",
+        "summary": "(USGA-Blocking) strokeAdjustment update for Compete playerRound",
+        "changes": [
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 9, 2026, 11:53 AM",
+            "after": "Jun 17, 2026, 10:31 AM"
+          }
+        ],
+        "type": "Task",
+        "isSubtask": false,
+        "assignee": "Alex McNay",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "status": "QA Testing (DEV)",
+        "parent": {
+          "key": "B2C-61",
+          "url": "https://golfnow.atlassian.net/browse/B2C-61",
+          "summary": "Compete - USGA GPA Phase II",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "P1"
+        }
+      }
+    ],
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-17T14:26:37.014Z",
+      "previousPulledAtDisplay": "Jun 17, 2026, 10:26 AM",
+      "currentPulledAt": "2026-06-17T14:31:31.720Z",
+      "currentPulledAtDisplay": "Jun 17, 2026, 10:31 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-13962",
+          "url": "https://golfnow.atlassian.net/browse/CORE-13962",
+          "summary": "(USGA-Blocking) strokeAdjustment update for Compete playerRound",
+          "changes": [
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 9, 2026, 11:53 AM",
+              "after": "Jun 17, 2026, 10:31 AM"
+            }
+          ],
+          "type": "Task",
+          "isSubtask": false,
+          "assignee": "Alex McNay",
+          "assignedDeveloper": "Yoel Martin Pardo",
+          "status": "QA Testing (DEV)",
+          "parent": {
+            "key": "B2C-61",
+            "url": "https://golfnow.atlassian.net/browse/B2C-61",
+            "summary": "Compete - USGA GPA Phase II",
+            "description": "",
+            "type": "Epic",
+            "status": "Backlog",
+            "priority": "P1"
+          }
+        }
+      ],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-17T14:21:33.140Z",
       "previousPulledAtDisplay": "Jun 17, 2026, 10:21 AM",
@@ -11159,17 +11226,6 @@
       "previousPulledAtDisplay": "Jun 16, 2026, 8:11 PM",
       "currentPulledAt": "2026-06-17T00:16:34.398Z",
       "currentPulledAtDisplay": "Jun 16, 2026, 8:16 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-17T00:06:33.402Z",
-      "previousPulledAtDisplay": "Jun 16, 2026, 8:06 PM",
-      "currentPulledAt": "2026-06-17T00:11:24.940Z",
-      "currentPulledAtDisplay": "Jun 16, 2026, 8:11 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
