@@ -4,10 +4,206 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-17T21:46:19.490Z",
-  "pulledAtDisplay": "Jun 17, 2026, 5:46 PM",
+  "pulledAt": "2026-06-17T21:56:09.736Z",
+  "pulledAtDisplay": "Jun 17, 2026, 5:56 PM",
   "total": 23,
   "issues": [
+    {
+      "key": "CORE-14233",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14233",
+      "summary": "Updates to Reservation Confirmation Template",
+      "description": "On the Tee Time Reservation email sent to golfers, there are two different bodies that reference benefits of GolfPass. One as a member and one as a non-member. We need to update the text in these versions. See attached for the two versions.\n\nGolfPass Member - Anyone with ProductID [36, 37, 42, 62, 69, 71] - Attached image Screenshot 2026-03-02 at 3.23.43 PM.png\n\n- Can we confirm what validation we are using to determine what member they are? We got a report that some members are receiving the non member version. Confirm with Brian when you find the logic - Luis Confirmed the logic is based on ProductId\n\n- Change “Extra GolfPass Rewards Points” to: Earn or redeem GolfPass Points on tee time bookings\n\nNon-Member OR anyone with a ProductId that does not match the above list- Attached image image (24).png\n\n- Change “Earn and redeem GolfPass Points…” to: Earn GolfPass Points on tee time bookings and redeem for a discount on GolfPass+ membership\n\n- Remove $40 Taylormade credit\n\n- Change the Peacock benefit to: Complimentary access to Peacock Premium (up to 12 months)",
+      "descriptionHtml": "<p>On the Tee Time Reservation email sent to golfers, there are two different bodies that reference benefits of GolfPass. One as a member and one as a non-member. We need to update the text in these versions. See attached for the two versions. </p><p><strong>GolfPass Member - Anyone with ProductID [36, 37, 42, 62, 69, 71] - Attached image Screenshot 2026-03-02 at 3.23.43 PM.png</strong></p><ul><li><p>Can we confirm what validation we are using to determine what member they are? We got a report that some members are receiving the non member version. Confirm with Brian when you find the logic - Luis Confirmed the logic is based on ProductId</p></li><li><p>Change “Extra GolfPass Rewards Points” to: Earn or redeem GolfPass Points on tee time bookings</p></li></ul><p><strong>Non-Member OR anyone with a ProductId that does not match the above list- Attached image image (24).png</strong></p><ul><li><p>Change “Earn and redeem GolfPass Points…” to: Earn GolfPass Points on tee time bookings and redeem for a discount on GolfPass+ membership</p></li><li><p>Remove $40 Taylormade credit</p></li><li><p>Change the Peacock benefit to: Complimentary access to Peacock Premium (up to 12 months)</p></li></ul>",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 2,
+      "comments": [
+        {
+          "id": "1176866",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1176866",
+          "author": "Luis Vallejo Mursuli",
+          "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+          "created": "2026-06-01T10:28:23.247-0400",
+          "createdDisplay": "Jun 1, 2026, 10:28 AM",
+          "updated": "2026-06-01T10:28:23.247-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "QA,\n\nHere are the instructions to test this ticket. Contact me if you have questions.\n\nThanks!",
+          "bodyHtml": "<p>QA,</p><p>Here are the instructions to test this ticket. Contact me if you have questions.</p><p>Thanks!<br><br> </p>"
+        },
+        {
+          "id": "1184542",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1184542",
+          "author": "Nicole Greer",
+          "authorAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
+          "created": "2026-06-17T17:53:03.998-0400",
+          "createdDisplay": "Jun 17, 2026, 5:53 PM",
+          "updated": "2026-06-17T17:53:03.998-0400",
+          "updatedDisplay": "",
+          "hasMedia": true,
+          "mediaCount": 1,
+          "body": "Successful test case with PPID 64 reservation. Other test cases in progress.",
+          "bodyHtml": "<p>Successful test case with PPID 64 reservation. Other test cases in progress.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14233/comments/1184542/738935-emailconfirmUseCase64.png\" alt=\"emailconfirmUseCase64.png\" loading=\"lazy\"><figcaption>emailconfirmUseCase64.png</figcaption></figure></div>"
+        }
+      ],
+      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1184542",
+      "lastCommentDisplay": "Jun 17, 2026, 5:53 PM",
+      "lastCommentAuthor": "Nicole Greer",
+      "testChecklist": {
+        "files": [
+          {
+            "id": "733040",
+            "filename": "QA_Test_Guide_CORE-14233.md",
+            "created": "2026-06-01T10:28:22.922-0400",
+            "author": "Luis Vallejo Mursuli"
+          }
+        ],
+        "commentIds": [
+          "1176866"
+        ],
+        "total": 6,
+        "testCases": [
+          {
+            "id": "A1",
+            "title": "GolfPass+ Member Confirmation Email - ProductId 36",
+            "category": "4. Detailed Test Cases",
+            "blocking": false,
+            "description": "Test ID: TC-CORE14233-A1 Priority: High Test Type: End-to-End Email Validation",
+            "checks": [
+              "Member benefits header is displayed",
+              "All 4 benefit bullet points are present",
+              "\"Earn or redeem GolfPass Points on tee time bookings\" text is correct (NOT \"Extra GolfPass Rewards Points\")",
+              "Phone number 833-465-3847 is displayed twice",
+              "Support contact text is displayed at the end of the section",
+              "No non-member benefits text is displayed"
+            ],
+            "sourceFile": "QA_Test_Guide_CORE-14233.md"
+          },
+          {
+            "id": "A2",
+            "title": "GolfPass+ Member Confirmation Email - ProductId Variation",
+            "category": "4. Detailed Test Cases",
+            "blocking": false,
+            "description": "Test ID: TC-CORE14233-A2 Priority: High Test Type: End-to-End Email Validation",
+            "checks": [
+              "Email received successfully",
+              "Member benefits section displays correctly",
+              "All 4 benefit bullet points are present and correct",
+              "\"Earn or redeem GolfPass Points on tee time bookings\" text is displayed",
+              "No non-member benefits section visible"
+            ],
+            "sourceFile": "QA_Test_Guide_CORE-14233.md"
+          },
+          {
+            "id": "B1",
+            "title": "Non-Member Confirmation Email - Standard Non-Member",
+            "category": "4. Detailed Test Cases",
+            "blocking": false,
+            "description": "Test ID: TC-CORE14233-B1 Priority: High Test Type: End-to-End Email Validation",
+            "checks": [
+              "Non-member header is displayed",
+              "Non-member benefits description is present",
+              "All 5 benefit bullet points are present",
+              "\"Earn GolfPass Points on tee time bookings and redeem for a discount on GolfPass+ membership\" text is correct (NOT \"Earn and redeem GolfPass Points…\")",
+              "Peacock benefit states \"Complimentary access to Peacock Premium (up to 12 months)\"",
+              "No \"$40 TaylorMade credit\" is mentioned anywhere",
+              "Call-to-action link to golfpass.com is present and clickable",
+              "No member benefits section is visible"
+            ],
+            "sourceFile": "QA_Test_Guide_CORE-14233.md"
+          },
+          {
+            "id": "B2",
+            "title": "Non-Member Confirmation Email - Verify Removed Content",
+            "category": "4. Detailed Test Cases",
+            "blocking": false,
+            "description": "Test ID: TC-CORE14233-B2 Priority: High Test Type: Regression Test - Removed Content Validation",
+            "checks": [
+              "Search email for \"TaylorMade\" - should return 0 results",
+              "Search email for \"$40\" - should return 0 results",
+              "Search email for \"Extra GolfPass Rewards Points\" - should return 0 results",
+              "Search email for \"NBCUniversal\" - should return 0 results",
+              "Confirm new Peacock text includes \"Peacock Premium (up to 12 months)\""
+            ],
+            "sourceFile": "QA_Test_Guide_CORE-14233.md"
+          },
+          {
+            "id": "C1",
+            "title": "ProductId Boundary Validation - ProductId 35 (Non-Member)",
+            "category": "4. Detailed Test Cases",
+            "blocking": false,
+            "description": "Test ID: TC-CORE14233-C1 Priority: Medium Test Type: Boundary Condition Test",
+            "checks": [
+              "Non-member header \"Looking to get even more out of your game?\" is displayed",
+              "Non-member benefits list (5 items) is present",
+              "Member benefits section is NOT visible",
+              "ProductId 35 correctly triggers non-member template (not member template)"
+            ],
+            "sourceFile": "QA_Test_Guide_CORE-14233.md"
+          },
+          {
+            "id": "C2",
+            "title": "ProductTypeId Requirement Validation",
+            "category": "4. Detailed Test Cases",
+            "blocking": true,
+            "description": "Test ID: TC-CORE14233-C2 Priority: Medium Test Type: Conditional Logic Test",
+            "checks": [
+              "Email received successfully",
+              "GolfPass Value Prop section is NOT present",
+              "No member benefits section visible",
+              "No non-member benefits section visible",
+              "Standard reservation details are displayed correctly",
+              "ProductTypeId = 9 requirement is properly enforced",
+              "Development environment is accessible (https://dev.golfnow.com)",
+              "Test customer accounts are configured with correct ProductIds",
+              "Email inboxes are accessible for all test accounts",
+              "Select 2-3 test facilities with available tee times",
+              "Record facility names and available time slots",
+              "Verify pricing is configured correctly",
+              "Print or have digital copy of test cases ready",
+              "Email client open for quick verification",
+              "Screenshot tool ready for capturing email examples",
+              "Header: \"As a GolfPass+ member, every tee time you book includes exclusive benefits:\""
+            ],
+            "sourceFile": "QA_Test_Guide_CORE-14233.md"
+          }
+        ]
+      },
+      "type": "Story",
+      "isSubtask": false,
+      "status": "QA Testing (DEV)",
+      "priority": "P2",
+      "assignee": "Nicole Greer",
+      "assigneeAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
+      "assignedDeveloper": "Luis Vallejo Mursuli",
+      "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+      "updated": "2026-06-17T17:53:03.998-0400",
+      "updatedDisplay": "Jun 17, 2026, 5:53 PM",
+      "created": "2026-03-02T15:21:34.425-0500",
+      "createdDisplay": "Mar 2, 2026, 3:21 PM",
+      "components": [
+        "GolfNow.Notification (Windows Service)"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [
+        {
+          "name": "2026.8"
+        }
+      ],
+      "sprintNames": [
+        "2026.8"
+      ],
+      "resolution": "",
+      "parent": null
+    },
     {
       "key": "CORE-14488",
       "url": "https://golfnow.atlassian.net/browse/CORE-14488",
@@ -1214,187 +1410,6 @@
       }
     },
     {
-      "key": "CORE-14233",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14233",
-      "summary": "Updates to Reservation Confirmation Template",
-      "description": "On the Tee Time Reservation email sent to golfers, there are two different bodies that reference benefits of GolfPass. One as a member and one as a non-member. We need to update the text in these versions. See attached for the two versions.\n\nGolfPass Member - Anyone with ProductID [36, 37, 42, 62, 69, 71] - Attached image Screenshot 2026-03-02 at 3.23.43 PM.png\n\n- Can we confirm what validation we are using to determine what member they are? We got a report that some members are receiving the non member version. Confirm with Brian when you find the logic - Luis Confirmed the logic is based on ProductId\n\n- Change “Extra GolfPass Rewards Points” to: Earn or redeem GolfPass Points on tee time bookings\n\nNon-Member OR anyone with a ProductId that does not match the above list- Attached image image (24).png\n\n- Change “Earn and redeem GolfPass Points…” to: Earn GolfPass Points on tee time bookings and redeem for a discount on GolfPass+ membership\n\n- Remove $40 Taylormade credit\n\n- Change the Peacock benefit to: Complimentary access to Peacock Premium (up to 12 months)",
-      "descriptionHtml": "<p>On the Tee Time Reservation email sent to golfers, there are two different bodies that reference benefits of GolfPass. One as a member and one as a non-member. We need to update the text in these versions. See attached for the two versions. </p><p><strong>GolfPass Member - Anyone with ProductID [36, 37, 42, 62, 69, 71] - Attached image Screenshot 2026-03-02 at 3.23.43 PM.png</strong></p><ul><li><p>Can we confirm what validation we are using to determine what member they are? We got a report that some members are receiving the non member version. Confirm with Brian when you find the logic - Luis Confirmed the logic is based on ProductId</p></li><li><p>Change “Extra GolfPass Rewards Points” to: Earn or redeem GolfPass Points on tee time bookings</p></li></ul><p><strong>Non-Member OR anyone with a ProductId that does not match the above list- Attached image image (24).png</strong></p><ul><li><p>Change “Earn and redeem GolfPass Points…” to: Earn GolfPass Points on tee time bookings and redeem for a discount on GolfPass+ membership</p></li><li><p>Remove $40 Taylormade credit</p></li><li><p>Change the Peacock benefit to: Complimentary access to Peacock Premium (up to 12 months)</p></li></ul>",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 1,
-      "comments": [
-        {
-          "id": "1176866",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1176866",
-          "author": "Luis Vallejo Mursuli",
-          "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-          "created": "2026-06-01T10:28:23.247-0400",
-          "createdDisplay": "Jun 1, 2026, 10:28 AM",
-          "updated": "2026-06-01T10:28:23.247-0400",
-          "updatedDisplay": "",
-          "hasMedia": false,
-          "mediaCount": 0,
-          "body": "QA,\n\nHere are the instructions to test this ticket. Contact me if you have questions.\n\nThanks!",
-          "bodyHtml": "<p>QA,</p><p>Here are the instructions to test this ticket. Contact me if you have questions.</p><p>Thanks!<br><br> </p>"
-        }
-      ],
-      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1176866",
-      "lastCommentDisplay": "Jun 1, 2026, 10:28 AM",
-      "lastCommentAuthor": "Luis Vallejo Mursuli",
-      "testChecklist": {
-        "files": [
-          {
-            "id": "733040",
-            "filename": "QA_Test_Guide_CORE-14233.md",
-            "created": "2026-06-01T10:28:22.922-0400",
-            "author": "Luis Vallejo Mursuli"
-          }
-        ],
-        "commentIds": [
-          "1176866"
-        ],
-        "total": 6,
-        "testCases": [
-          {
-            "id": "A1",
-            "title": "GolfPass+ Member Confirmation Email - ProductId 36",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-A1 Priority: High Test Type: End-to-End Email Validation",
-            "checks": [
-              "Member benefits header is displayed",
-              "All 4 benefit bullet points are present",
-              "\"Earn or redeem GolfPass Points on tee time bookings\" text is correct (NOT \"Extra GolfPass Rewards Points\")",
-              "Phone number 833-465-3847 is displayed twice",
-              "Support contact text is displayed at the end of the section",
-              "No non-member benefits text is displayed"
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "A2",
-            "title": "GolfPass+ Member Confirmation Email - ProductId Variation",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-A2 Priority: High Test Type: End-to-End Email Validation",
-            "checks": [
-              "Email received successfully",
-              "Member benefits section displays correctly",
-              "All 4 benefit bullet points are present and correct",
-              "\"Earn or redeem GolfPass Points on tee time bookings\" text is displayed",
-              "No non-member benefits section visible"
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "B1",
-            "title": "Non-Member Confirmation Email - Standard Non-Member",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-B1 Priority: High Test Type: End-to-End Email Validation",
-            "checks": [
-              "Non-member header is displayed",
-              "Non-member benefits description is present",
-              "All 5 benefit bullet points are present",
-              "\"Earn GolfPass Points on tee time bookings and redeem for a discount on GolfPass+ membership\" text is correct (NOT \"Earn and redeem GolfPass Points…\")",
-              "Peacock benefit states \"Complimentary access to Peacock Premium (up to 12 months)\"",
-              "No \"$40 TaylorMade credit\" is mentioned anywhere",
-              "Call-to-action link to golfpass.com is present and clickable",
-              "No member benefits section is visible"
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "B2",
-            "title": "Non-Member Confirmation Email - Verify Removed Content",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-B2 Priority: High Test Type: Regression Test - Removed Content Validation",
-            "checks": [
-              "Search email for \"TaylorMade\" - should return 0 results",
-              "Search email for \"$40\" - should return 0 results",
-              "Search email for \"Extra GolfPass Rewards Points\" - should return 0 results",
-              "Search email for \"NBCUniversal\" - should return 0 results",
-              "Confirm new Peacock text includes \"Peacock Premium (up to 12 months)\""
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "C1",
-            "title": "ProductId Boundary Validation - ProductId 35 (Non-Member)",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-C1 Priority: Medium Test Type: Boundary Condition Test",
-            "checks": [
-              "Non-member header \"Looking to get even more out of your game?\" is displayed",
-              "Non-member benefits list (5 items) is present",
-              "Member benefits section is NOT visible",
-              "ProductId 35 correctly triggers non-member template (not member template)"
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "C2",
-            "title": "ProductTypeId Requirement Validation",
-            "category": "4. Detailed Test Cases",
-            "blocking": true,
-            "description": "Test ID: TC-CORE14233-C2 Priority: Medium Test Type: Conditional Logic Test",
-            "checks": [
-              "Email received successfully",
-              "GolfPass Value Prop section is NOT present",
-              "No member benefits section visible",
-              "No non-member benefits section visible",
-              "Standard reservation details are displayed correctly",
-              "ProductTypeId = 9 requirement is properly enforced",
-              "Development environment is accessible (https://dev.golfnow.com)",
-              "Test customer accounts are configured with correct ProductIds",
-              "Email inboxes are accessible for all test accounts",
-              "Select 2-3 test facilities with available tee times",
-              "Record facility names and available time slots",
-              "Verify pricing is configured correctly",
-              "Print or have digital copy of test cases ready",
-              "Email client open for quick verification",
-              "Screenshot tool ready for capturing email examples",
-              "Header: \"As a GolfPass+ member, every tee time you book includes exclusive benefits:\""
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          }
-        ]
-      },
-      "type": "Story",
-      "isSubtask": false,
-      "status": "QA Testing (DEV)",
-      "priority": "P2",
-      "assignee": "Nicole Greer",
-      "assigneeAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
-      "assignedDeveloper": "Luis Vallejo Mursuli",
-      "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-      "updated": "2026-06-08T09:13:21.478-0400",
-      "updatedDisplay": "Jun 8, 2026, 9:13 AM",
-      "created": "2026-03-02T15:21:34.425-0500",
-      "createdDisplay": "Mar 2, 2026, 3:21 PM",
-      "components": [
-        "GolfNow.Notification (Windows Service)"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
-      "resolution": "",
-      "parent": null
-    },
-    {
       "key": "CORE-14494",
       "url": "https://golfnow.atlassian.net/browse/CORE-14494",
       "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
@@ -1647,8 +1662,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-17T21:46:19.490Z",
-    "pulledAtDisplay": "Jun 17, 2026, 5:46 PM",
+    "pulledAt": "2026-06-17T21:56:09.736Z",
+    "pulledAtDisplay": "Jun 17, 2026, 5:56 PM",
     "total": 93,
     "mainTotal": 93,
     "subtaskTotal": 0,
@@ -3615,7 +3630,7 @@
         "descriptionImageCount": 0,
         "descriptionVideoCount": 0,
         "descriptionMediaCount": 0,
-        "commentCount": 1,
+        "commentCount": 2,
         "comments": [
           {
             "id": "1176866",
@@ -3631,11 +3646,26 @@
             "mediaCount": 0,
             "body": "QA,\n\nHere are the instructions to test this ticket. Contact me if you have questions.\n\nThanks!",
             "bodyHtml": "<p>QA,</p><p>Here are the instructions to test this ticket. Contact me if you have questions.</p><p>Thanks!<br><br> </p>"
+          },
+          {
+            "id": "1184542",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1184542",
+            "author": "Nicole Greer",
+            "authorAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
+            "created": "2026-06-17T17:53:03.998-0400",
+            "createdDisplay": "Jun 17, 2026, 5:53 PM",
+            "updated": "2026-06-17T17:53:03.998-0400",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 1,
+            "body": "Successful test case with PPID 64 reservation. Other test cases in progress.",
+            "bodyHtml": "<p>Successful test case with PPID 64 reservation. Other test cases in progress.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14233/comments/1184542/738935-emailconfirmUseCase64.png\" alt=\"emailconfirmUseCase64.png\" loading=\"lazy\"><figcaption>emailconfirmUseCase64.png</figcaption></figure></div>"
           }
         ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1176866",
-        "lastCommentDisplay": "Jun 1, 2026, 10:28 AM",
-        "lastCommentAuthor": "Luis Vallejo Mursuli",
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1184542",
+        "lastCommentDisplay": "Jun 17, 2026, 5:53 PM",
+        "lastCommentAuthor": "Nicole Greer",
         "testChecklist": {
           "files": [
             {
@@ -3766,8 +3796,8 @@
         "assignedDeveloper": "Luis Vallejo Mursuli",
         "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-06-08T09:13:21.478-0400",
-        "updatedDisplay": "Jun 8, 2026, 9:13 AM",
+        "updated": "2026-06-17T17:53:03.998-0400",
+        "updatedDisplay": "Jun 17, 2026, 5:53 PM",
         "created": "2026-03-02T15:21:34.425-0500",
         "createdDisplay": "Mar 2, 2026, 3:21 PM",
         "components": [
@@ -7591,13 +7621,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-17T21:46:00.529Z",
-    "pulledAtDisplay": "Jun 17, 2026, 5:46 PM",
+    "pulledAt": "2026-06-17T21:55:39.086Z",
+    "pulledAtDisplay": "Jun 17, 2026, 5:55 PM",
     "window": {
-      "start": "2026-05-03T21:46:00.528Z",
-      "end": "2026-12-14T21:46:00.528Z",
-      "startDisplay": "May 3, 2026, 5:46 PM",
-      "endDisplay": "Dec 14, 2026, 4:46 PM"
+      "start": "2026-05-03T21:55:39.085Z",
+      "end": "2026-12-14T21:55:39.085Z",
+      "startDisplay": "May 3, 2026, 5:55 PM",
+      "endDisplay": "Dec 14, 2026, 4:55 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7610,7 +7640,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-17T21:46:02.494Z",
+        "pulledAt": "2026-06-17T21:55:41.883Z",
         "eventCount": 93,
         "events": [
           {
@@ -7852,23 +7882,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Memorial Day - (US) Company Holiday",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDate": "2026-05-25",
-            "endDate": "2026-05-26",
-            "startDisplay": "May 25, 2026",
-            "endDisplay": "May 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -7881,6 +7894,23 @@
             "endDisplay": "May 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Memorial Day - (US) Company Holiday",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDate": "2026-05-25",
+            "endDate": "2026-05-26",
+            "startDisplay": "May 25, 2026",
+            "endDisplay": "May 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -7903,23 +7933,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
-            "start": "2026-05-26T18:00:00.000Z",
-            "end": "2026-05-26T19:55:00.000Z",
-            "startDate": "",
-            "endDate": "",
-            "startDisplay": "May 26, 2026, 2:00 PM",
-            "endDisplay": "May 26, 2026, 3:55 PM",
-            "allDay": false,
-            "type": "Scheduled Maintenance",
-            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
-            "description": "Slack: #itops_deployments",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -7934,6 +7947,23 @@
             "type": "Patching",
             "location": "https://golfnow.atlassian.net/browse/OPS-54241",
             "description": "Slack: #itops_patching_communications",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
+            "start": "2026-05-26T18:00:00.000Z",
+            "end": "2026-05-26T19:55:00.000Z",
+            "startDate": "",
+            "endDate": "",
+            "startDisplay": "May 26, 2026, 2:00 PM",
+            "endDisplay": "May 26, 2026, 3:55 PM",
+            "allDay": false,
+            "type": "Scheduled Maintenance",
+            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
+            "description": "Slack: #itops_deployments",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
@@ -8430,6 +8460,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.57",
+            "start": "2026-07-14T00:00:00.000Z",
+            "end": "2026-07-15T00:00:00.000Z",
+            "startDate": "2026-07-14",
+            "endDate": "2026-07-15",
+            "startDisplay": "Jul 14, 2026",
+            "endDisplay": "Jul 15, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221527Z-1432222737@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8459,23 +8506,6 @@
             "endDisplay": "Jul 15, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.57",
-            "start": "2026-07-14T00:00:00.000Z",
-            "end": "2026-07-15T00:00:00.000Z",
-            "startDate": "2026-07-14",
-            "endDate": "2026-07-15",
-            "startDisplay": "Jul 14, 2026",
-            "endDisplay": "Jul 15, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8770,23 +8800,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Holiday Freeze",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-08T00:00:00.000Z",
-            "startDate": "2026-08-31",
-            "endDate": "2026-09-08",
-            "startDisplay": "Aug 31, 2026",
-            "endDisplay": "Sep 8, 2026",
-            "allDay": true,
-            "type": "Golf Freeze",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8799,6 +8812,23 @@
             "endDisplay": "Sep 1, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Holiday Freeze",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-08T00:00:00.000Z",
+            "startDate": "2026-08-31",
+            "endDate": "2026-09-08",
+            "startDisplay": "Aug 31, 2026",
+            "endDisplay": "Sep 8, 2026",
+            "allDay": true,
+            "type": "Golf Freeze",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8855,6 +8885,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.59",
+            "start": "2026-09-15T00:00:00.000Z",
+            "end": "2026-09-16T00:00:00.000Z",
+            "startDate": "2026-09-15",
+            "endDate": "2026-09-16",
+            "startDisplay": "Sep 15, 2026",
+            "endDisplay": "Sep 16, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221627Z-1916149808@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8884,23 +8931,6 @@
             "endDisplay": "Sep 16, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.59",
-            "start": "2026-09-15T00:00:00.000Z",
-            "end": "2026-09-16T00:00:00.000Z",
-            "startDate": "2026-09-15",
-            "endDate": "2026-09-16",
-            "startDisplay": "Sep 15, 2026",
-            "endDisplay": "Sep 16, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9127,6 +9157,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221750Z-1404075373@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9161,23 +9208,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260112T140557Z-111931857@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9200,17 +9230,68 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-17T21:41:36.701Z",
-    "previousPulledAtDisplay": "Jun 17, 2026, 5:41 PM",
-    "currentPulledAt": "2026-06-17T21:46:19.490Z",
-    "currentPulledAtDisplay": "Jun 17, 2026, 5:46 PM",
+    "previousPulledAt": "2026-06-17T21:46:19.490Z",
+    "previousPulledAtDisplay": "Jun 17, 2026, 5:46 PM",
+    "currentPulledAt": "2026-06-17T21:56:09.736Z",
+    "currentPulledAtDisplay": "Jun 17, 2026, 5:56 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
-    "updated": [],
+    "updated": [
+      {
+        "key": "CORE-14233",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14233",
+        "summary": "Updates to Reservation Confirmation Template",
+        "changes": [
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 8, 2026, 9:13 AM",
+            "after": "Jun 17, 2026, 5:53 PM"
+          }
+        ],
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Nicole Greer",
+        "assignedDeveloper": "Luis Vallejo Mursuli",
+        "status": "QA Testing (DEV)",
+        "parent": null
+      }
+    ],
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-17T21:46:19.490Z",
+      "previousPulledAtDisplay": "Jun 17, 2026, 5:46 PM",
+      "currentPulledAt": "2026-06-17T21:56:09.736Z",
+      "currentPulledAtDisplay": "Jun 17, 2026, 5:56 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14233",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14233",
+          "summary": "Updates to Reservation Confirmation Template",
+          "changes": [
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 8, 2026, 9:13 AM",
+              "after": "Jun 17, 2026, 5:53 PM"
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Nicole Greer",
+          "assignedDeveloper": "Luis Vallejo Mursuli",
+          "status": "QA Testing (DEV)",
+          "parent": null
+        }
+      ],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-17T21:41:36.701Z",
       "previousPulledAtDisplay": "Jun 17, 2026, 5:41 PM",
@@ -11815,17 +11896,6 @@
       "previousPulledAtDisplay": "Jun 17, 2026, 2:56 AM",
       "currentPulledAt": "2026-06-17T07:01:40.614Z",
       "currentPulledAtDisplay": "Jun 17, 2026, 3:01 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-17T06:51:18.873Z",
-      "previousPulledAtDisplay": "Jun 17, 2026, 2:51 AM",
-      "currentPulledAt": "2026-06-17T06:56:41.028Z",
-      "currentPulledAtDisplay": "Jun 17, 2026, 2:56 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
