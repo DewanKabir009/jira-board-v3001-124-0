@@ -1522,7 +1522,7 @@ async function notifyAsanaIntakeSlack(env, intake, asanaTask, jiraResult) {
 }
 
 async function notifyAsanaSlackAppPreview(env, config, asanaTask) {
-  const asanaUrl = sanitizeUrl(asanaTask?.url || "");
+  const asanaUrl = buildAsanaSlackPreviewUrl(asanaTask);
 
   if (!asanaUrl) {
     return {
@@ -1553,16 +1553,31 @@ async function notifyAsanaSlackAppPreview(env, config, asanaTask) {
   return {
     ok: true,
     mode: "raw-link-unfurl-request",
+    url: asanaUrl,
     channel: payload.channel || config.channel,
     ts: payload.ts || "",
     warning: ""
   };
 }
 
+function buildAsanaSlackPreviewUrl(asanaTask) {
+  const taskGid = sanitizeAsanaGid(asanaTask?.gid || "");
+  const projectGid = sanitizeAsanaGid(asanaTask?.projectGid || "");
+
+  if (taskGid && projectGid) {
+    return `https://app.asana.com/0/${projectGid}/${taskGid}`;
+  }
+
+  return sanitizeUrl(asanaTask?.url || "");
+}
+
+function sanitizeAsanaGid(value) {
+  return String(value || "").trim().replace(/[^\d]/g, "").slice(0, 32);
+}
+
 function buildAsanaSlackMessage(env, intake, asanaTask, jiraResult) {
   const mention = sanitizeSlackMessage(env.ASANA_INTAKE_SLACK_MENTION || "Dewan Kabir");
   const asanaLink = asanaTask?.url ? `<${asanaTask.url}|${asanaTask.name || "Asana ticket"}>` : (asanaTask?.name || "Asana ticket");
-  const asanaRawUrl = asanaTask?.url ? sanitizeUrl(asanaTask.url) : "";
   const jiraLink = jiraResult?.url ? `<${jiraResult.url}|${jiraResult.key || jiraResult.projectKey || "Jira handoff"}>` : "Jira handoff not configured";
   const related = intake.relatedTicket ? `\n*Related ticket:* ${intake.relatedTicket}` : "";
   const source = intake.sourceUrl ? `\n*Source:* ${intake.sourceUrl}` : "";
@@ -1578,7 +1593,6 @@ function buildAsanaSlackMessage(env, intake, asanaTask, jiraResult) {
     related.trim(),
     source.trim(),
     `*Asana:* ${asanaLink}`,
-    asanaRawUrl ? `*Asana app preview:* ${asanaRawUrl}` : "",
     `*Jira:* ${jiraLink}`,
     intake.details ? `*Details:* ${truncateText(intake.details, 650)}` : ""
   ].filter(Boolean).join("\n");
