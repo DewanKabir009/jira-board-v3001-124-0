@@ -1510,8 +1510,49 @@ async function notifyAsanaIntakeSlack(env, intake, asanaTask, jiraResult) {
     };
   }
 
+  const asanaAppPreview = await notifyAsanaSlackAppPreview(env, config, asanaTask);
+
   return {
     ok: true,
+    channel: payload.channel || config.channel,
+    ts: payload.ts || "",
+    asanaAppPreview,
+    warning: asanaAppPreview.warning || ""
+  };
+}
+
+async function notifyAsanaSlackAppPreview(env, config, asanaTask) {
+  const asanaUrl = sanitizeUrl(asanaTask?.url || "");
+
+  if (!asanaUrl) {
+    return {
+      ok: false,
+      mode: "missing-asana-url",
+      warning: "Asana app preview was skipped because the created ticket did not include a public Asana URL."
+    };
+  }
+
+  const previewPayload = {
+    channel: config.channel,
+    text: asanaUrl,
+    unfurl_links: true,
+    unfurl_media: true
+  };
+  const { response, payload } = await postSlackMessage(env, previewPayload);
+
+  if (!response.ok || !payload.ok) {
+    return {
+      ok: false,
+      mode: "raw-link-unfurl-request",
+      status: response.status,
+      slackError: payload.error || "unknown_error",
+      warning: `Asana app preview link could not be posted: ${formatSlackError(payload.error, response.status)}`
+    };
+  }
+
+  return {
+    ok: true,
+    mode: "raw-link-unfurl-request",
     channel: payload.channel || config.channel,
     ts: payload.ts || "",
     warning: ""
