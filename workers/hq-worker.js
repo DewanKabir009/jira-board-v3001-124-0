@@ -1345,6 +1345,7 @@ async function createAsanaTask(env, config, intake, jiraHandoff) {
     name: payload.data?.name || intake.summary,
     url: payload.data?.permalink_url || `https://app.asana.com/0/${config.projectGid}`,
     projectName: config.projectName,
+    workspaceGid: config.workspaceGid,
     projectGid: config.projectGid,
     section: routing.section,
     ticketType: {
@@ -1699,14 +1700,22 @@ async function notifyAsanaSlackAppPreview(env, config, asanaTask) {
 }
 
 function buildAsanaSlackPreviewUrl(asanaTask) {
+  const permalink = sanitizeUrl(asanaTask?.url || "");
+  if (permalink) return permalink;
+
   const taskGid = sanitizeAsanaGid(asanaTask?.gid || "");
+  const workspaceGid = sanitizeAsanaGid(asanaTask?.workspaceGid || "");
   const projectGid = sanitizeAsanaGid(asanaTask?.projectGid || "");
+
+  if (taskGid && workspaceGid && projectGid) {
+    return `https://app.asana.com/1/${workspaceGid}/project/${projectGid}/task/${taskGid}`;
+  }
 
   if (taskGid && projectGid) {
     return `https://app.asana.com/0/${projectGid}/${taskGid}`;
   }
 
-  return sanitizeUrl(asanaTask?.url || "");
+  return "";
 }
 
 function sanitizeAsanaGid(value) {
