@@ -1,0 +1,363 @@
+{
+  "id": "aws-golfnow-b2c-ec2-farms-us-east-2",
+  "title": "AWS GolfNow B2C EC2 Farms",
+  "region": "us-east-2",
+  "regionLabel": "us-east-2 (Primary)",
+  "sourceUrl": "https://golfnow.atlassian.net/wiki/spaces/OPS/pages/9784754347/AWS+-+GolfNow+B2C+-+EC2+-+Farms",
+  "sourcePageId": "9784754347",
+  "sourceLastModified": "May 18, 2026",
+  "capturedAt": "2026-06-16",
+  "columns": ["Farm", "Applications", "Env", "Farm Name", "Servers", "APM Name / Link", "Notes"],
+  "farms": [
+    {
+      "farm": "AUTH",
+      "nodes": 4,
+      "kind": "EC2 farm",
+      "applications": ["Golf.Services.CredentialManager", "Golf.Svc.Loyalty", "GolfNow.API.Authentication", "GolfNow.Management.API", "GolfNow.Services.Auth", "GolfNow.Services.Entitlement", "GolfNow.Api.PlatformAuth"],
+      "apm": ["golfnow.api-credentialmanager", "golfnow.api-loyalty-service", "golfnow.api-authentication", "golfnow.api-management", "golfnow.api-auth", "golfnow.api-entitlement-service", "golfnow.api-platformauth"],
+      "notes": "Golf.Services.CredentialManager is marked DECOM in OPS-50651.",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW013", "serverRanges": [{ "prefix": "USE2GNDWW013", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW013", "serverRanges": [{ "prefix": "USE2GNSWW013", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW013", "serverRanges": [{ "prefix": "USE2GNPWW013", "from": 1, "to": 4 }] }
+      ]
+    },
+    {
+      "farm": "BDS",
+      "nodes": 2,
+      "kind": "EC2 farm",
+      "applications": ["BulkDataService"],
+      "apm": ["golfnow.api-bulkdataservice"],
+      "notes": "",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW023", "serverRanges": [{ "prefix": "USE2GNDWW023", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW023", "serverRanges": [{ "prefix": "USE2GNSWW023", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW023", "serverRanges": [{ "prefix": "USE2GNPWW023", "from": 1, "to": 2 }] }
+      ]
+    },
+    {
+      "farm": "COMPETE",
+      "nodes": 6,
+      "kind": "EC2 farm",
+      "applications": ["GolfNow.Compete.Web", "GolfNow.Services.Graph", "GolfNow.Services.Invite", "GolfNow.Services.Profile", "GolfNow.Services.Scorecard"],
+      "apm": ["golfnow.site-compete-web", "golfnow.api-graph-service", "golfnow.api-invite-service", "golfnow.api-profile-service", "golfnow.api-scorecard-service"],
+      "notes": "",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW012", "serverRanges": [{ "prefix": "USE2GNDWW012", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW012", "serverRanges": [{ "prefix": "USE2GNSWW012", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW012", "serverRanges": [{ "prefix": "USE2GNPWW012", "from": 1, "to": 6 }] }
+      ]
+    },
+    {
+      "farm": "COREEXT",
+      "nodes": 8,
+      "kind": "EC2 farm",
+      "applications": ["GolfNow.API.Customer", "GolfNow.Api.Inventory", "GolfNow.Api.OrderProcessing", "GolfNow.Services.CommerceProxy", "GolfNow.Services.GolfCourse", "GolfNow.Services.Timelyst"],
+      "apm": ["golfnow.api-customer", "golfnow.api-golfcourse-service", "golfnow.api-commerceproxy-service", "golfnow.api-timelyst-service"],
+      "notes": "",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW010", "serverRanges": [{ "prefix": "USE2GNDWW010", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW010", "serverRanges": [{ "prefix": "USE2GNSWW010", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW010", "serverRanges": [{ "prefix": "USE2GNPWW010", "from": 1, "to": 8 }] }
+      ]
+    },
+    {
+      "farm": "COREINT",
+      "nodes": 6,
+      "kind": "EC2 farm",
+      "applications": ["Golf.Services.GeoIP", "Golf.Svc.Compliance", "Golf.Svc.Emailer", "GolfNow.Services.Localization", "GolfNow.Services.Weather", "GolfNow.Services.TeeTime", "GolfNow.Services.Timelyst.Hangfire"],
+      "apm": ["golfnow.api-geoip", "golfnow.api-compliance-service", "golfnow.api-emailer-service", "golfnow.api-localization-service", "golfnow.api-weather-service", "golfnow.api-teetime-service", "golfnow.api-timelysthangfire-service"],
+      "notes": "",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW009", "serverRanges": [{ "prefix": "USE2GNDWW009", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW009", "serverRanges": [{ "prefix": "USE2GNSWW009", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW009", "serverRanges": [{ "prefix": "USE2GNPWW009", "from": 1, "to": 6 }] }
+      ]
+    },
+    {
+      "farm": "COREMGMTEXT",
+      "nodes": 6,
+      "kind": "EC2 farm",
+      "applications": ["Golf.Services.GPA.Webhook", "GolfNow.Services.Chargeback", "GolfNow.Services.GolferProductAccess", "GolfNow.Services.Greenskeeper", "GolfNow.Services.InventoryManagement"],
+      "apm": ["golfnow.api-gpa-webhoook", "payments.api-chargeback-service", "golfnow.api-golfer-productaccess-service", "golfnow.api-greenskeeper-service", "golfnow.api-inventory-management-service"],
+      "notes": "",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW011", "serverRanges": [{ "prefix": "USE2GNDWW011", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW011", "serverRanges": [{ "prefix": "USE2GNSWW011", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW011", "serverRanges": [{ "prefix": "USE2GNPWW011", "from": 1, "to": 6 }] }
+      ]
+    },
+    {
+      "farm": "FINTECHEXT",
+      "nodes": 6,
+      "kind": "EC2 farm",
+      "applications": ["Payments.Service.GiftCards.API", "Payments.Service.Partner.API", "Payments.Service.PortalGateway.API", "Payments.Service.Tax", "Payments.Service.WebhookConsumer.API", "Payments.Service.WebhookProducer.API", "PMT.Svc.Documents"],
+      "apm": ["payments.api-giftcards-service", "payments.api-partner-service", "payments.api-portalgateway-service", "payments.api-tax-service", "payments.api-webhook-consumer", "payments.api-webhookproducer-service"],
+      "notes": "",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW021", "serverRanges": [{ "prefix": "USE2GNDWW021", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW021", "serverRanges": [{ "prefix": "USE2GNSWW021", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW021", "serverRanges": [{ "prefix": "USE2GNPWW021", "from": 1, "to": 6 }] }
+      ]
+    },
+    {
+      "farm": "FINTECHINT",
+      "nodes": 6,
+      "kind": "EC2 farm",
+      "applications": ["Payments.Service.Ancillary.API", "Payments.Service.Chargeback.API", "Payments.Service.Notification.API", "Payments.Service.Onboarding.API", "Payments.Service.PaymentMethods.API", "Payments.Service.Security.API", "Payments.Service.Support.API", "Payments.Service.Transactions.API", "Payments.Service.Reporting.API"],
+      "apm": ["payments.api-ancillary-service", "payments.api-chargeback-service", "payments.api-notification", "payments.api-onboarding", "payments.api-paymentmethods-service", "payments.api-security-service", "payments.api-support", "payments.api-transactions-service", "payments.api-reporting-service"],
+      "notes": "",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW020", "serverRanges": [{ "prefix": "USE2GNDWW020", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW020", "serverRanges": [{ "prefix": "USE2GNSWW020", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW020", "serverRanges": [{ "prefix": "USE2GNPWW020", "from": 1, "to": 6 }] }
+      ]
+    },
+    {
+      "farm": "FINTECHUX",
+      "nodes": 6,
+      "kind": "EC2 farm",
+      "applications": ["GolfNow.API.TR", "GolfNow.Payment.TrWeb", "Payments.NEXT.UI", "Payments.Site.CheckoutTest", "PaymentAdmin", "PaymentAdmin.Beta"],
+      "apm": ["golfnow.api-transparent-redirect", "golfnow.site-trweb"],
+      "notes": "Payments.Site.CheckoutTest is dev/stg only; PaymentAdmin and PaymentAdmin.Beta are struck out in the source.",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW019", "serverRanges": [{ "prefix": "USE2GNDWW019", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW019", "serverRanges": [{ "prefix": "USE2GNSWW019", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW019", "serverRanges": [{ "prefix": "USE2GNPWW019", "from": 1, "to": 6 }] }
+      ]
+    },
+    {
+      "farm": "GNAPIA",
+      "nodes": 20,
+      "kind": "EC2 farm",
+      "applications": ["GolfNowAPI"],
+      "apm": ["golfnow.api-golfnowapi"],
+      "notes": "Blue/green deployment pair with GNAPIB. Source PRD row lists duplicate hosts; UI normalizes the server range to 001-020.",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW005", "serverRanges": [{ "prefix": "USE2GNDWW005", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW005", "serverRanges": [{ "prefix": "USE2GNSWW005", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW005", "serverRanges": [{ "prefix": "USE2GNPWW005", "from": 1, "to": 20 }] }
+      ]
+    },
+    {
+      "farm": "GNAPIB",
+      "nodes": 20,
+      "kind": "EC2 farm",
+      "applications": ["GolfNowAPI"],
+      "apm": ["golfnow.api-golfnowapi"],
+      "notes": "Blue/green deployment pair with GNAPIA. GolfNowAPI dedicated.",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW006", "serverRanges": [{ "prefix": "USE2GNDWW006", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW006", "serverRanges": [{ "prefix": "USE2GNSWW006", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW006", "serverRanges": [{ "prefix": "USE2GNPWW006", "from": 1, "to": 20 }] }
+      ]
+    },
+    {
+      "farm": "GNUSA",
+      "nodes": 15,
+      "kind": "EC2 farm",
+      "applications": ["GolfNow.Web", "GolfNow.Web-Core"],
+      "apm": ["golfnow.site-web-golfnow"],
+      "notes": "Blue/green deployment pair with GNUSB. GolfNow.Web dedicated. GolfNow.Web-Core is only in dev/stg.",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW001", "serverRanges": [{ "prefix": "USE2GNDWW001", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW001", "serverRanges": [{ "prefix": "USE2GNSWW001", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW001", "serverRanges": [{ "prefix": "USE2GNPWW001", "from": 1, "to": 15 }] }
+      ]
+    },
+    {
+      "farm": "GNUSB",
+      "nodes": 15,
+      "kind": "EC2 farm",
+      "applications": ["GolfNow.Web", "GolfNow.Web-Core"],
+      "apm": ["golfnow.site-web-golfnow"],
+      "notes": "Blue/green deployment pair with GNUSA. GolfNow.Web dedicated. GolfNow.Web-Core is only in dev/stg.",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW002", "serverRanges": [{ "prefix": "USE2GNDWW002", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW002", "serverRanges": [{ "prefix": "USE2GNSWW002", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW002", "serverRanges": [{ "prefix": "USE2GNPWW002", "from": 1, "to": 15 }] }
+      ]
+    },
+    {
+      "farm": "INTERNALSVC",
+      "nodes": 16,
+      "kind": "EC2 farm",
+      "applications": ["GolfNow.Services.AffiliateMgmt", "GolfNow.Services.Affiliates", "GolfNow.Services.Ancillary", "GolfNow.Services.Configuration", "GolfNow.Services.Distribution", "GolfNow.Services.Inventory", "GolfNow.Services.Loyalty", "GolfNow.Services.Notification", "GolfNow.Services.Product", "GolfNow.Services.Reservation", "GolfNow.Services.Retry", "GolfNow.Services.Social", "GolfNow.Services.TeeSheet", "GolfNow.Services.TeeSheetInterface", "GolfNow.Services.Vendor", "GolfNow.Services.Wallet"],
+      "apm": ["golfnow.api-affiliatemgmt-service", "golfnow.api-affiliate", "golfnow.api-ancillary-service", "golfnow.api-distribution-service", "golfnow.api-inventory-service", "golfnow.api-loyalty-service-legacy", "golfnow.api-notification-service", "golfnow.api-product-service", "golfnow.api-reservation-service", "golfnow.api-retry-service", "golfnow.api-social-service", "golfnow.api-teesheet-service", "golfnow.api-vendor-service", "golfnow.api-wallet-service"],
+      "notes": "GolfNow.Services.Configuration is marked DECOM SOON in the source.",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW008", "serverRanges": [{ "prefix": "USE2GNDWW008", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW008", "serverRanges": [{ "prefix": "USE2GNSWW008", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW008", "serverRanges": [{ "prefix": "USE2GNPWW008", "from": 1, "to": 16 }] }
+      ]
+    },
+    {
+      "farm": "LOG",
+      "nodes": 3,
+      "kind": "EC2 farm",
+      "applications": ["Golf.Svc.Logging", "Ops.Pipeline.Actions.2"],
+      "apm": ["golfnow.api-logging-service", "ops.api-pipeline-actions-2"],
+      "notes": "Ops.Pipeline.Actions.2 (OPA2) is for DevOps workflow testing only.",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW025", "serverRanges": [{ "prefix": "USE2GNDWW025", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW025", "serverRanges": [{ "prefix": "USE2GNSWW025", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW025", "serverRanges": [{ "prefix": "USE2GNPWW025", "from": 1, "to": 3 }] }
+      ]
+    },
+    {
+      "farm": "LOGLEGACY",
+      "nodes": 3,
+      "kind": "EC2 farm",
+      "applications": ["GolfNow.Log"],
+      "apm": ["golfnow.api-log"],
+      "notes": "",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW024", "serverRanges": [{ "prefix": "USE2GNDWW024", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW024", "serverRanges": [{ "prefix": "USE2GNSWW024", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW024", "serverRanges": [{ "prefix": "USE2GNPWW024", "from": 1, "to": 3 }] }
+      ]
+    },
+    {
+      "farm": "ONLINERESSYSTEM",
+      "nodes": 3,
+      "kind": "EC2 farm",
+      "applications": ["COM", "CRM", "ORS"],
+      "apm": ["golfnow.site-onlinereservationsystems"],
+      "notes": "",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW022", "serverRanges": [{ "prefix": "USE2GNDWW022", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW022", "serverRanges": [{ "prefix": "USE2GNSWW022", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW022", "serverRanges": [{ "prefix": "USE2GNPWW022", "from": 1, "to": 3 }] }
+      ]
+    },
+    {
+      "farm": "PARTNER",
+      "nodes": 4,
+      "kind": "EC2 farm",
+      "applications": ["ActivityFeed.Service", "GolfNow.AdPartner", "GolfNow.API.Affiliate", "eFax", "SmartPlay", "GolfNow.API.Groupon", "Yelp.Integration"],
+      "apm": ["golfnow.api-activityfeed-service", "golfnow.api-adpartner", "golfnow.api-affiliate", "golfnow.api-efax", "golfnow.api-smartplay-service", "golfnow.api-groupon"],
+      "notes": "Yelp.Integration is struck out in the source.",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW014", "serverRanges": [{ "prefix": "USE2GNDWW014", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW014", "serverRanges": [{ "prefix": "USE2GNSWW014", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW014", "serverRanges": [{ "prefix": "USE2GNPWW014", "from": 1, "to": 4 }] }
+      ]
+    },
+    {
+      "farm": "PMT1",
+      "nodes": 8,
+      "kind": "EC2 farm",
+      "applications": ["GolfNow.Payment.Processing.API", "Payments.Service.TokenizedPayments.API"],
+      "apm": ["payments.api-payment-processing", "payments.api-tokenizedpayments-service"],
+      "notes": "GolfNow dedicated.",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW015", "serverRanges": [{ "prefix": "USE2GNDWW015", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW015", "serverRanges": [{ "prefix": "USE2GNSWW015", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW015", "serverRanges": [{ "prefix": "USE2GNPWW015", "from": 1, "to": 8 }] }
+      ]
+    },
+    {
+      "farm": "PMT2",
+      "nodes": 8,
+      "kind": "EC2 farm",
+      "applications": ["GolfNow.Payment.Processing.API.2", "Payments.Service.TokenizedPayments.API.2"],
+      "apm": ["payments.api-payment-processing-2", "payments.api-tokenizedpayments-service-2"],
+      "notes": "SportsEngine dedicated.",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW016", "serverRanges": [{ "prefix": "USE2GNDWW016", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW016", "serverRanges": [{ "prefix": "USE2GNSWW016", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW016", "serverRanges": [{ "prefix": "USE2GNPWW016", "from": 1, "to": 8 }] }
+      ]
+    },
+    {
+      "farm": "PMT3",
+      "nodes": 8,
+      "kind": "EC2 farm",
+      "applications": ["GolfNow.Payment.Processing.API.3", "Payments.Service.TokenizedPayments.API.3"],
+      "apm": ["payments.api-payment-processing-3", "payments.api-tokenizedpayments-service-3"],
+      "notes": "Golf365 Pro (G1) dedicated.",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW017", "serverRanges": [{ "prefix": "USE2GNDWW017", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW017", "serverRanges": [{ "prefix": "USE2GNSWW017", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW017", "serverRanges": [{ "prefix": "USE2GNPWW017", "from": 1, "to": 8 }] }
+      ]
+    },
+    {
+      "farm": "PMT4",
+      "nodes": 8,
+      "kind": "EC2 farm",
+      "applications": ["GolfNow.Payment.Processing.API.4", "Payments.Service.TokenizedPayments.API.4"],
+      "apm": ["payments.api-payment-processing-4", "payments.api-tokenizedpayments-service-4"],
+      "notes": "Fandango dedicated.",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW018", "serverRanges": [{ "prefix": "USE2GNDWW018", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW018", "serverRanges": [{ "prefix": "USE2GNSWW018", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW018", "serverRanges": [{ "prefix": "USE2GNPWW018", "from": 1, "to": 8 }] }
+      ]
+    },
+    {
+      "farm": "S3",
+      "nodes": 0,
+      "kind": "S3 static site group",
+      "applications": ["Payments.Site.AdminSupport", "Payments.Site.SubmerchantOnboarding", "PMT.Site.FinancialDashboard", "FinTech.Internal.Tools", "GolfNow.API.Platform.Documentation"],
+      "apm": [],
+      "notes": "Source calls this out as buckets for front-end sites and not an EC2 farm.",
+      "environments": [
+        { "env": "n/a", "farmName": "S3 / CloudFront", "servers": [] }
+      ]
+    },
+    {
+      "farm": "SUPPORT",
+      "nodes": 6,
+      "kind": "EC2 farm",
+      "applications": ["GolfNow.Support.Site", "GolfNowCentral", "GolfNow.Management.Support"],
+      "apm": ["golfnow.site-support", "golfnow.site-golfnowcentral", "golfnow.site-management-support", "golfnow.api-golfnowcentral"],
+      "notes": "",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW007", "serverRanges": [{ "prefix": "USE2GNDWW007", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW007", "serverRanges": [{ "prefix": "USE2GNSWW007", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW007", "serverRanges": [{ "prefix": "USE2GNPWW007", "from": 1, "to": 6 }] }
+      ]
+    },
+    {
+      "farm": "TOFFA",
+      "nodes": 4,
+      "kind": "EC2 farm",
+      "applications": ["GolfNow.Web (Teeoff)", "Ops.Pipeline.Actions"],
+      "apm": ["golfnow.site-web-teeoff", "ops.api-pipeline-actions"],
+      "notes": "Blue/green deployment pair with TOFFB. Ops.Pipeline.Actions (OPA1) is for DevOps workflow testing only.",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW003", "serverRanges": [{ "prefix": "USE2GNDWW003", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW003", "serverRanges": [{ "prefix": "USE2GNSWW003", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW003", "serverRanges": [{ "prefix": "USE2GNPWW003", "from": 1, "to": 4 }] }
+      ]
+    },
+    {
+      "farm": "TOFFB",
+      "nodes": 4,
+      "kind": "EC2 farm",
+      "applications": ["GolfNow.Web (Teeoff)", "Ops.Pipeline.Actions"],
+      "apm": ["golfnow.site-web-teeoff", "ops.api-pipeline-actions"],
+      "notes": "Blue/green deployment pair with TOFFA. Ops.Pipeline.Actions is for DevOps blue-green workflow testing only.",
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWW004", "serverRanges": [{ "prefix": "USE2GNDWW004", "from": 1, "to": 2 }] },
+        { "env": "stg", "farmName": "USE2GNSWW004", "serverRanges": [{ "prefix": "USE2GNSWW004", "from": 1, "to": 2 }] },
+        { "env": "prd", "farmName": "USE2GNPWW004", "serverRanges": [{ "prefix": "USE2GNPWW004", "from": 1, "to": 4 }] }
+      ]
+    },
+    {
+      "farm": "TASK",
+      "nodes": 15,
+      "kind": "EC2 task hosts",
+      "applications": ["Task hosts", "Inventory host TASKxxx"],
+      "apm": [],
+      "notes": "Each node is its own inventory host based off the last three digits of the host, in the format TASKxxx.",
+      "relatedLinks": ["https://golfnow.atlassian.net/wiki/spaces/OPS/pages/10212311060"],
+      "environments": [
+        { "env": "dev", "farmName": "USE2GNDWT001", "serverRanges": [{ "prefix": "USE2GNDWT001", "from": 1, "to": 3 }] },
+        { "env": "stg", "farmName": "USE2GNSWT001", "serverRanges": [{ "prefix": "USE2GNSWT001", "from": 1, "to": 3 }] },
+        { "env": "prd", "farmName": "USE2GNPWT001", "serverRanges": [{ "prefix": "USE2GNPWT001", "from": 1, "to": 15 }] }
+      ]
+    }
+  ]
+}

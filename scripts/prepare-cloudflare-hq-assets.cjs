@@ -39,7 +39,13 @@ function rewriteHtmlAssets(dir) {
     }
 
     const html = fs.readFileSync(filePath, "utf8");
-    fs.writeFileSync(filePath, html.replaceAll(githubAssetPrefix, cloudflareAssetPrefix));
+    fs.writeFileSync(
+      filePath,
+      html
+        .replaceAll(githubAssetPrefix, cloudflareAssetPrefix)
+        .replaceAll("/modern/_astro/", cloudflareAssetPrefix)
+        .replaceAll("/modern/assets/", "/assets/")
+    );
   }
 }
 

@@ -1,5 +1,6 @@
 ---
 import QaHqLayout from "../layouts/QaHqLayout.astro";
+import awsFarmsDocument from "../data/aws-farms-us-east-2.json";
 import "../styles/qa-hq.css";
 
 const releaseBoards = [
@@ -506,8 +507,11 @@ const hqSpecs = [
   { id: "SPEC-HQ-08", title: "Admin console", status: "Planned", detail: "Users, roles, sections, and script permissions." },
   { id: "SPEC-HQ-09", title: "Calendar menu", status: "Implemented", detail: "Confluence GN Releases calendar data is pulled into dashboard-data.json and rendered in HQ with calendar/list views." },
   { id: "SPEC-HQ-10", title: "Slack two-way bridge", status: "In progress", detail: "Worker routes now cover HQ posts, slash commands, Events API mentions, interactive callbacks, and an HQ activity panel; live inbound needs SLACK_SIGNING_SECRET and Slack app Request URLs." },
-  { id: "SPEC-HQ-11", title: "Asana intake", status: "Implemented", detail: "HQ can open requests in the GN CORE QA HQ Asana project, notify Slack, and prepare or create Jira handoff records based on Worker credentials." }
+  { id: "SPEC-HQ-11", title: "Asana intake", status: "Implemented", detail: "HQ can open requests in the GN CORE QA HQ Asana project, notify Slack, and prepare or create Jira handoff records based on Worker credentials." },
+  { id: "SPEC-HQ-12", title: "Document search", status: "Implemented", detail: "OPS AWS B2C EC2 farm documentation is normalized into a searchable farm, application, and environment explorer." }
 ];
+
+const awsFarmsDocumentJson = JSON.stringify(awsFarmsDocument).replace(/</g, "\\u003c");
 ---
 
 <QaHqLayout title="CORE QA Headquarters">
@@ -529,6 +533,7 @@ const hqSpecs = [
         <a href={mordernHqUrl}>Mordern HQ</a>
         <a class="active" href="#boards">Release boards</a>
         <a href="#kb">Knowledge base</a>
+        <a href="#documents">Documents</a>
         <a href="#automation">Automation + Asana intake</a>
         <a href="#ai">AI summary</a>
         <a href="#status">Operations status</a>
@@ -553,6 +558,7 @@ const hqSpecs = [
         <div class="command-actions" aria-label="HQ quick links">
           <a href={mordernHqUrl}>Mordern HQ</a>
           <a href="#boards">Boards</a>
+          <a href="#documents">Documents</a>
           <a href="#asana-intake">Open request</a>
           <a href="#automation">Runbook</a>
           <a href="#specs">Specs</a>
@@ -698,6 +704,177 @@ const hqSpecs = [
             ))}
           </div>
         </div>
+      </section>
+
+      <section class="module-panel documents-module" id="documents" data-document-explorer>
+        <div class="module-heading">
+          <div>
+            <p class="eyebrow">Documents</p>
+            <h2>AWS farm document explorer</h2>
+          </div>
+          <span class="module-pill">SPEC-HQ-12 active</span>
+        </div>
+
+        <div class="document-source-card">
+          <div>
+            <p class="eyebrow">OPS Confluence source</p>
+            <h3>{awsFarmsDocument.title}</h3>
+            <p>Search the Region: {awsFarmsDocument.regionLabel} table by farm, application, APM name, farm name, server, note, or environment.</p>
+          </div>
+          <dl>
+            <div>
+              <dt>Region</dt>
+              <dd>{awsFarmsDocument.region}</dd>
+            </div>
+            <div>
+              <dt>Farms</dt>
+              <dd>{awsFarmsDocument.farms.length}</dd>
+            </div>
+            <div>
+              <dt>Source updated</dt>
+              <dd>{awsFarmsDocument.sourceLastModified}</dd>
+            </div>
+          </dl>
+          <a href={awsFarmsDocument.sourceUrl}>Open Confluence page</a>
+        </div>
+
+        <div class="document-controls" aria-label="AWS farm document filters">
+          <label>
+            <span>Farm</span>
+            <select data-doc-farm>
+              <option value="all">All farms</option>
+            </select>
+          </label>
+          <label class="wide">
+            <span>Application search</span>
+            <input data-doc-search type="search" placeholder="Application, APM, server, farm name, or note">
+          </label>
+          <label>
+            <span>Environment</span>
+            <select data-doc-env>
+              <option value="all">All environments</option>
+              <option value="dev">DEV</option>
+              <option value="stg">STG</option>
+              <option value="prd">PRD</option>
+              <option value="n/a">N/A</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="document-summary" data-doc-summary aria-live="polite"></div>
+        <div class="document-results" data-doc-results aria-live="polite"></div>
+
+        <script type="application/json" id="aws-farms-document" set:html={awsFarmsDocumentJson}></script>
+        <script is:inline>
+          (() => {
+            const root = document.querySelector("[data-document-explorer]");
+            const dataNode = document.getElementById("aws-farms-document");
+            if (!root || !dataNode) return;
+
+            const farmSelect = root.querySelector("[data-doc-farm]");
+            const searchInput = root.querySelector("[data-doc-search]");
+            const envSelect = root.querySelector("[data-doc-env]");
+            const summary = root.querySelector("[data-doc-summary]");
+            const results = root.querySelector("[data-doc-results]");
+            const documentData = JSON.parse(dataNode.textContent || "{}");
+            const farms = Array.isArray(documentData.farms) ? documentData.farms : [];
+
+            farms.forEach((farm) => {
+              const option = document.createElement("option");
+              option.value = farm.farm;
+              option.textContent = `${farm.farm} - ${farm.kind}`;
+              farmSelect?.append(option);
+            });
+
+            const pad = (value) => String(value).padStart(3, "0");
+            const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              "\"": "&quot;",
+              "'": "&#39;",
+            }[char]));
+            const expandServers = (env) => {
+              if (Array.isArray(env.servers)) return env.servers;
+              return (env.serverRanges || []).flatMap((range) => {
+                const servers = [];
+                for (let index = Number(range.from || 1); index <= Number(range.to || 1); index += 1) {
+                  servers.push(`${range.prefix}${pad(index)}`);
+                }
+                return servers;
+              });
+            };
+            const farmSearchText = (farm) => [
+              farm.farm,
+              farm.kind,
+              farm.notes,
+              ...(farm.applications || []),
+              ...(farm.apm || []),
+              ...(farm.environments || []).flatMap((env) => [env.env, env.farmName, ...expandServers(env)])
+            ].join(" ").toLowerCase();
+            const environmentMatches = (farm, selectedEnv) => {
+              if (selectedEnv === "all") return farm.environments || [];
+              return (farm.environments || []).filter((env) => env.env === selectedEnv);
+            };
+            const renderServers = (servers) => {
+              if (!servers.length) return `<span class="muted-note">No EC2 servers listed</span>`;
+              const visible = servers.slice(0, 8).map((server) => `<span>${escapeHtml(server)}</span>`).join("");
+              const hiddenCount = servers.length - 8;
+              return `${visible}${hiddenCount > 0 ? `<em>+${hiddenCount} more</em>` : ""}`;
+            };
+            const renderFarm = (farm, matchedEnvs) => `
+              <article class="document-farm-card">
+                <header>
+                  <div>
+                    <p class="eyebrow">${escapeHtml(farm.kind || "Farm")}</p>
+                    <h3>${escapeHtml(farm.farm)}</h3>
+                  </div>
+                  <span>${escapeHtml(farm.nodes || 0)} nodes</span>
+                </header>
+                <div class="document-chip-cloud" aria-label="${escapeHtml(farm.farm)} applications">
+                  ${(farm.applications || []).map((app) => `<span>${escapeHtml(app)}</span>`).join("")}
+                </div>
+                ${farm.apm?.length ? `<div class="document-apm"><strong>APM</strong>${farm.apm.map((apm) => `<code>${escapeHtml(apm)}</code>`).join("")}</div>` : ""}
+                ${farm.notes ? `<p class="document-note">${escapeHtml(farm.notes)}</p>` : ""}
+                <div class="document-env-grid">
+                  ${matchedEnvs.map((env) => {
+                    const servers = expandServers(env);
+                    return `
+                      <article>
+                        <strong>${escapeHtml(env.env.toUpperCase())}</strong>
+                        <p>${escapeHtml(env.farmName || "No farm name")}</p>
+                        <div class="server-chip-list">${renderServers(servers)}</div>
+                      </article>
+                    `;
+                  }).join("")}
+                </div>
+              </article>
+            `;
+
+            function render() {
+              const selectedFarm = farmSelect?.value || "all";
+              const selectedEnv = envSelect?.value || "all";
+              const query = (searchInput?.value || "").trim().toLowerCase();
+              const matched = farms
+                .filter((farm) => selectedFarm === "all" || farm.farm === selectedFarm)
+                .filter((farm) => !query || farmSearchText(farm).includes(query))
+                .map((farm) => ({ farm, envs: environmentMatches(farm, selectedEnv) }))
+                .filter((entry) => entry.envs.length);
+
+              const envCount = matched.reduce((count, entry) => count + entry.envs.length, 0);
+              summary.innerHTML = `
+                <strong>${matched.length} farm${matched.length === 1 ? "" : "s"} matched</strong>
+                <span>${envCount} environment row${envCount === 1 ? "" : "s"} from ${escapeHtml(documentData.regionLabel || documentData.region || "the source table")}.</span>
+              `;
+              results.innerHTML = matched.length
+                ? matched.map((entry) => renderFarm(entry.farm, entry.envs)).join("")
+                : `<article class="document-farm-card empty"><h3>No matching farm rows</h3><p>Try a farm like INTERNALSVC, an app like Reservation, an APM name, or a server such as USE2GNPWW008014.</p></article>`;
+            }
+
+            [farmSelect, searchInput, envSelect].forEach((control) => control?.addEventListener("input", render));
+            render();
+          })();
+        </script>
       </section>
 
       <section class="module-panel automation-module" id="automation">
@@ -1463,6 +1640,132 @@ const hqSpecs = [
       </section>
     </section>
   </main>
+
+  <aside
+    class="asana-chat-widget"
+    data-asana-chat-widget
+    data-asana-status-endpoint={asanaRuntime.statusEndpoint}
+    data-asana-intake-endpoint={asanaRuntime.intakeEndpoint}
+    aria-label="Asana ticket intake"
+  >
+    <button
+      type="button"
+      class="asana-chat-launcher"
+      data-asana-chat-open
+      aria-haspopup="dialog"
+      aria-controls="asana-chat-panel"
+      aria-expanded="false"
+    >
+      <span class="asana-logo-mark" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+      <span>
+        <strong>Asana</strong>
+        <em>Open a ticket</em>
+      </span>
+    </button>
+
+    <section
+      class="asana-chat-panel"
+      id="asana-chat-panel"
+      role="dialog"
+      aria-modal="false"
+      aria-labelledby="asana-chat-title"
+      hidden
+    >
+      <div class="asana-chat-heading">
+        <div>
+          <p class="eyebrow">Asana intake</p>
+          <h2 id="asana-chat-title">Open a ticket</h2>
+          <p>Use this compact intake when you do not want to scroll to the full Automation section.</p>
+        </div>
+        <button type="button" data-asana-chat-close aria-label="Close Asana intake">X</button>
+      </div>
+
+      <form class="asana-chat-form" data-asana-chat-form>
+        <label>
+          <span>Request summary</span>
+          <input name="summary" type="text" maxlength="180" placeholder="Short title for the Asana request" required>
+        </label>
+
+        <div class="asana-chat-grid">
+          <label>
+            <span>Request type</span>
+            <select name="requestType">
+              <option>QA support request</option>
+              <option>Automation request</option>
+              <option>Release risk follow-up</option>
+              <option>Test data request</option>
+              <option>Access request</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Entity</span>
+            <select name="entity">
+              <option>GolfNow CORE</option>
+              <option>GolfNow Web</option>
+              <option>G1 - Pure</option>
+              <option>EZL -Pure</option>
+              <option>EZRTS</option>
+              <option>Other</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Environment</span>
+            <select name="environment">
+              <option>DEV TN000</option>
+              <option>DEV TN001</option>
+              <option>STG TN000</option>
+              <option>STG TN001</option>
+              <option>EZL QA</option>
+              <option>EZL STAGE</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Priority</span>
+            <select name="priority">
+              <option>Normal</option>
+              <option>High</option>
+              <option>Urgent</option>
+              <option>Low</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="asana-chat-grid">
+          <label>
+            <span>Related ticket</span>
+            <input name="relatedTicket" type="text" maxlength="80" placeholder="CORE-12345">
+          </label>
+
+          <label>
+            <span>Source URL</span>
+            <input name="sourceUrl" type="url" maxlength="500" placeholder="Jira, dashboard, Slack, or evidence link">
+          </label>
+        </div>
+
+        <label>
+          <span>Details</span>
+          <textarea name="details" rows="4" placeholder="What does QA need, who is impacted, and what should the first follow-up be?"></textarea>
+        </label>
+
+        <div class="asana-chat-actions">
+          <button type="button" data-asana-chat-status>Check status</button>
+          <button type="submit">Open Asana ticket</button>
+        </div>
+      </form>
+
+      <div class="asana-chat-result" data-asana-chat-result aria-live="polite">
+        <strong>Ready when you are.</strong>
+        <p>This opens the same GN CORE QA HQ Asana ticket flow as the full intake card.</p>
+      </div>
+    </section>
+  </aside>
 
   <script is:inline>
     (() => {
@@ -2512,6 +2815,170 @@ const hqSpecs = [
               <strong>Asana intake did not complete.</strong>
               <p>${escapeHtml(payload.message || "Review the Worker response and try again.")}</p>
             `;
+      }
+
+      function escapeHtml(value) {
+        return String(value || "").replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          "\"": "&quot;",
+          "'": "&#39;"
+        }[char]));
+      }
+    })();
+  </script>
+
+  <script is:inline>
+    (() => {
+      const widget = document.querySelector("[data-asana-chat-widget]");
+      if (!widget) return;
+
+      const openButton = widget.querySelector("[data-asana-chat-open]");
+      const closeButton = widget.querySelector("[data-asana-chat-close]");
+      const panel = widget.querySelector(".asana-chat-panel");
+      const form = widget.querySelector("[data-asana-chat-form]");
+      const statusButton = widget.querySelector("[data-asana-chat-status]");
+      const result = widget.querySelector("[data-asana-chat-result]");
+      const statusEndpoint = widget.dataset.asanaStatusEndpoint || "/api/asana/status";
+      const intakeEndpoint = widget.dataset.asanaIntakeEndpoint || "/api/asana/intake";
+      let routeReady = false;
+
+      openButton?.addEventListener("click", () => {
+        const nextOpen = panel?.hidden;
+        setPanelOpen(Boolean(nextOpen));
+        if (nextOpen) {
+          checkStatus(false);
+        }
+      });
+
+      closeButton?.addEventListener("click", () => setPanelOpen(false));
+      statusButton?.addEventListener("click", () => checkStatus(true));
+      form?.addEventListener("submit", submitTicket);
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !panel?.hidden) {
+          setPanelOpen(false);
+        }
+      });
+
+      async function checkStatus(forceMessage) {
+        renderResult("Checking Asana route...", "Reading project, section, field, assignee, and token state.", "loading");
+
+        try {
+          const response = await fetch(statusEndpoint, { cache: "no-store" });
+          const payload = await response.json();
+          if (!response.ok || !payload.ok) {
+            throw new Error(payload.message || `Asana status failed with HTTP ${response.status}`);
+          }
+
+          routeReady = Boolean(payload.canCreate || payload.ok);
+          const section = payload.routing?.section?.name || payload.defaultSectionName || "New";
+          const assignee = payload.defaultAssignee?.name || payload.assignee?.name || "Dewan Kabir";
+          renderResult(
+            routeReady ? "Asana intake is ready." : "Asana intake needs review.",
+            `${payload.message || "Worker route returned status."} Section: ${section}; Assignee: ${assignee}.`,
+            routeReady ? "ready" : "warning"
+          );
+        } catch (error) {
+          routeReady = false;
+          if (forceMessage) {
+            renderResult("Asana status check failed.", error.message, "error");
+          } else {
+            renderResult("Ready when you are.", "Submit will retry the Asana route check before opening a ticket.", "idle");
+          }
+        }
+      }
+
+      async function submitTicket(event) {
+        event.preventDefault();
+        if (!form) return;
+
+        const formData = new FormData(form);
+        const body = {
+          summary: String(formData.get("summary") || "").trim(),
+          requestType: String(formData.get("requestType") || "").trim(),
+          entity: String(formData.get("entity") || "").trim(),
+          environment: String(formData.get("environment") || "").trim(),
+          priority: String(formData.get("priority") || "").trim(),
+          relatedTicket: String(formData.get("relatedTicket") || "").trim(),
+          sourceUrl: String(formData.get("sourceUrl") || "").trim(),
+          details: String(formData.get("details") || "").trim(),
+          requester: "HQ dashboard user"
+        };
+
+        if (!body.summary) {
+          renderResult("Add a request summary.", "A short title is required before opening an Asana ticket.", "warning");
+          return;
+        }
+
+        if (!routeReady) {
+          await checkStatus(false);
+        }
+
+        renderResult("Opening Asana ticket...", "Sending the reviewed payload through the HQ Worker.", "loading");
+
+        try {
+          const response = await fetch(intakeEndpoint, {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify(body)
+          });
+          const payload = await response.json();
+          if (!response.ok || !payload.ok) {
+            throw new Error(payload.message || `Asana intake failed with HTTP ${response.status}`);
+          }
+
+          renderTicketResult(payload);
+          form.reset();
+          routeReady = true;
+        } catch (error) {
+          renderResult("Asana intake failed.", error.message, "error");
+        }
+      }
+
+      function setPanelOpen(open) {
+        if (!panel || !openButton) return;
+        panel.hidden = !open;
+        openButton.setAttribute("aria-expanded", String(open));
+        if (open) {
+          panel.querySelector("input, select, textarea, button")?.focus();
+        }
+      }
+
+      function renderResult(title, message, state) {
+        if (!result) return;
+        result.dataset.state = state || "idle";
+        result.innerHTML = `
+          <strong>${escapeHtml(title)}</strong>
+          <p>${escapeHtml(message)}</p>
+        `;
+      }
+
+      function renderTicketResult(payload) {
+        const asana = payload.asana || {};
+        const jira = payload.jira || {};
+        const slack = payload.slack || {};
+        const warnings = Array.isArray(payload.warnings) ? payload.warnings : [];
+        const links = [
+          asana.url ? `<a href="${escapeHtml(asana.url)}" target="_blank" rel="noreferrer">Open Asana ticket</a>` : "",
+          jira.url ? `<a href="${escapeHtml(jira.url)}" target="_blank" rel="noreferrer">${jira.key ? "Open Jira ticket" : "Open Jira handoff"}</a>` : ""
+        ].filter(Boolean).join("");
+
+        if (!result) return;
+        result.dataset.state = warnings.length ? "warning" : "ready";
+        result.innerHTML = `
+          <strong>${escapeHtml(payload.message || "Asana ticket opened.")}</strong>
+          <p>${escapeHtml(asana.name || "Ticket opened from HQ chat intake.")}</p>
+          ${links ? `<div class="asana-chat-result-links">${links}</div>` : ""}
+          <div class="asana-runtime-facts">
+            <em>Section: ${escapeHtml(asana.section?.name || "New")}</em>
+            <em>Assignee: ${escapeHtml(asana.defaultAssignee?.name || "Dewan Kabir")}</em>
+            <em>Slack: ${escapeHtml(slack.ok ? "notified" : "review")}</em>
+            <em>Jira: ${escapeHtml(jira.mode || "handoff")}</em>
+          </div>
+          ${warnings.length ? `<ul>${warnings.map((warning) => `<li>${escapeHtml(warning)}</li>`).join("")}</ul>` : ""}
+        `;
       }
 
       function escapeHtml(value) {

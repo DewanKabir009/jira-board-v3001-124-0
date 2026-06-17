@@ -28,6 +28,9 @@ jobs:
       SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
       SLACK_SIGNING_SECRET: ${{ secrets.SLACK_SIGNING_SECRET }}
+      ASANA_ACCESS_TOKEN: ${{ secrets.ASANA_ACCESS_TOKEN }}
+      JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+      JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -47,26 +50,17 @@ jobs:
       - name: Prepare Cloudflare board and HQ assets
         run: node scripts/prepare-cloudflare-hq-assets.cjs
 
-      - name: Sync Slack Worker secrets
+      - name: Sync HQ Worker secrets
         run: |
           set -euo pipefail
-          if [ -n "${SLACK_BOT_TOKEN:-}" ]; then
-            printf '%s' "$SLACK_BOT_TOKEN" | npx -y wrangler versions secret put SLACK_BOT_TOKEN -c wrangler.hq.toml
-          else
-            echo "::notice::SLACK_BOT_TOKEN is not set; HQ Slack notifier will report token missing."
-          fi
-
-          if [ -n "${SLACK_CHANNEL_ID:-}" ]; then
-            printf '%s' "$SLACK_CHANNEL_ID" | npx -y wrangler versions secret put SLACK_CHANNEL_ID -c wrangler.hq.toml
-          else
-            echo "::notice::SLACK_CHANNEL_ID is not set; HQ Slack notifier will use SLACK_DEFAULT_CHANNEL_NAME."
-          fi
-
-          if [ -n "${SLACK_SIGNING_SECRET:-}" ]; then
-            printf '%s' "$SLACK_SIGNING_SECRET" | npx -y wrangler versions secret put SLACK_SIGNING_SECRET -c wrangler.hq.toml
-          else
-            echo "::notice::SLACK_SIGNING_SECRET is not set; Slack-to-HQ callbacks will report inbound setup needed."
-          fi
+          for secret_name in SLACK_BOT_TOKEN SLACK_CHANNEL_ID SLACK_SIGNING_SECRET ASANA_ACCESS_TOKEN JIRA_EMAIL JIRA_API_TOKEN; do
+            secret_value="${!secret_name:-}"
+            if [ -n "$secret_value" ]; then
+              printf '%s' "$secret_value" | npx -y wrangler versions secret put "$secret_name" -c wrangler.hq.toml
+            else
+              echo "::notice::$secret_name is not set; related Legacy HQ integration will report setup needed."
+            fi
+          done
 
       - name: Deploy board and HQ Worker Static Assets
         run: npx -y wrangler deploy -c wrangler.hq.toml

@@ -23,9 +23,9 @@ Mordern HQ is a separate repo and Cloudflare Worker shell inspired by the premiu
 Future HQ changes should be applied to both user-facing shells:
 
 - Legacy HQ remains the operational source-of-truth implementation in this repo.
-- Mordern HQ lives in `core-qa-mordern-hq` and consumes the same `/dashboard-data.json`, `/boards.json`, and `/api/*` contracts through its Worker proxy.
+- Mordern HQ lives in `core-qa-mordern-hq` and now owns a separate Cloudflare Worker/API implementation using the same `/dashboard-data.json`, `/boards.json`, and `/api/*` contract.
 
-Backend/API-only changes should stay centralized in the Legacy HQ Worker whenever possible, then be consumed by Mordern HQ rather than duplicated.
+Backend/API-only changes should be mirrored in both Worker files unless one shell is intentionally being retired from that feature. This keeps Legacy HQ decommissionable without breaking Mordern HQ.
 
 The Legacy HQ Worker also rewrites prefixed static asset requests from `/modern/_astro/*` and `/modern/assets/*` to the deployed Cloudflare Static Assets paths. This keeps `/hq/` styled correctly when the built Astro HTML carries GitHub Pages-style asset prefixes, and it prevents Mordern HQ previews or links from showing raw unstyled fallback HTML.
 
@@ -81,6 +81,7 @@ The Legacy HQ Worker also rewrites prefixed static asset requests from `/modern/
 - Sprint View mirrors the Jira Backlog sprint bucket for sprint `2026.8` on board `GN Core Platform`, then falls back to the Agile sprint endpoint only if Jira planning data is unavailable. This keeps the dashboard aligned with the 94 work items users see in Jira Backlog instead of every `CORE` issue with the sprint field.
 - `/modern/hq/` is the HQ landing route built with Astro and deployed as static assets.
 - `/modern/hq/#calendar` is the Calendar Menu. It reads the Confluence GN Releases Team Calendar payload from `dashboard-data.json`, opens on the current month, provides month navigation, and groups the Upcoming list into collapsible month sections.
+- `/modern/hq/#documents` is the Documents explorer. It normalizes the `Region: us-east-2 (Primary)` table from the OPS Confluence page `AWS - GolfNow B2C - EC2 - Farms` into a searchable farm, application, APM, server, and environment view.
 - `/api/ai/status` reports whether the Cloudflare Worker has the Workers AI binding.
 - `/api/ai/release-summary` reads `dashboard-data.json`, resolves assignee/developer/component/priority ticket lookups from the direct board pull, asks Cloudflare Workers AI to turn those exact matches into human-readable linked analysis, or combines the user's broader prompt with compact ticket context for a draft release brief.
 - `/api/ai/chat` powers the HQ AI release agent. It keeps short chat history, detects whether the user is asking about the active release or Sprint `2026.8`, filters exact ticket matches from `dashboard-data.json`, and asks Workers AI to turn those results into a readable response with linked ticket tables.
@@ -88,7 +89,8 @@ The Legacy HQ Worker also rewrites prefixed static asset requests from `/modern/
 - `/api/slack/activity` shows recent Slack-to-HQ callback activity from the Worker MVP memory store.
 - `/api/slack/send` posts a manually reviewed HQ message to the configured CORE QA Slack channel when `SLACK_BOT_TOKEN` is present as a Worker secret.
 - `/api/slack/commands`, `/api/slack/events`, and `/api/slack/actions` are the Slack-to-HQ request URLs for slash commands, Events API, and interactive callbacks.
-- `/api/asana/status` and `/api/asana/intake` power the HQ Asana intake form. Requests create tickets in Asana project `GN CORE QA HQ` (`1215683271714250`), notify Slack when the bot token is ready, and either create Jira directly when Jira Worker credentials exist or return a copy-ready Jira handoff.
+- `/api/asana/status` and `/api/asana/intake` power the HQ Asana intake form and the floating Asana chat-head launcher. Requests create tickets in Asana project `GN CORE QA HQ` (`1215683271714250`), notify Slack when the bot token is ready, and either create Jira directly when Jira Worker credentials exist or return a copy-ready Jira handoff.
+- Asana intake Slack notifications now post the raw Asana ticket permalink with Slack link unfurling enabled, so the installed Asana Slack app can render the ticket preview in `#core-qa-dream-team`.
 - GitHub Pages can render the same HQ page but cannot run the AI API. The page tells users to open the Cloudflare URL when the endpoint is unavailable.
 
 ## Architecture
@@ -259,7 +261,8 @@ Calendar environment overrides:
 | SPEC-HQ-08 | Admin console | Planned | Future user, permission, and section management surface. |
 | SPEC-HQ-09 | Calendar menu | Complete | Confluence GN Releases calendar data is pulled into `dashboard-data.json` and rendered in HQ with Calendar and Upcoming tabs. |
 | SPEC-HQ-10 | Slack two-way bridge | In progress | Outbound bot posts are ready; signed slash commands, Events API callbacks, interactive callbacks, and HQ activity UI are implemented. Live inbound requires `SLACK_SIGNING_SECRET` and Slack app Request URLs. |
-| SPEC-HQ-11 | Asana intake | Complete | HQ opens requests in Asana project `GN CORE QA HQ`, notifies Slack when available, and returns Jira direct-create or manual handoff state. |
+| SPEC-HQ-11 | Asana intake | Complete | HQ opens requests in Asana project `GN CORE QA HQ`, notifies Slack when available, returns Jira direct-create or manual handoff state, and exposes the same flow through a floating Asana chat-head launcher. |
+| SPEC-HQ-12 | Document search | Complete | OPS AWS B2C EC2 farm data is stored in `modern-dashboard/src/data/aws-farms-us-east-2.json` and rendered as a farm/application/environment explorer in both HQ shells. |
 
 ## Technology Stack
 
@@ -273,7 +276,7 @@ Calendar environment overrides:
 | Cloudflare Workers Static Assets | Serves the built HQ and dashboard assets through the Worker. |
 | Cloudflare Workers AI | Generates the draft release intelligence brief from current board data. |
 | Slack Web API | Posts reviewed HQ notifications through the installed CORE JIRA NOTIFIER AGENT bot and receives verified slash commands, app mentions, and interactive callbacks. |
-| Asana REST API | Creates HQ intake tickets in the `GN CORE QA HQ` project from the Automation Bench form. |
+| Asana REST API | Creates HQ intake tickets in the `GN CORE QA HQ` project from the Automation Bench form and floating Asana chat-head launcher. |
 | GitHub Actions | Executes refreshes dispatched by Cloudflare, deploys static pages, runs Playwright jobs, and publishes evidence. |
 | Confluence Team Calendars | Feeds the HQ Calendar Menu through the 5-minute board refresh artifact. |
 | GitHub Pages | Keeps static public fallback pages live during the Cloudflare migration. |

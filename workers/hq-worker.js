@@ -1496,8 +1496,8 @@ async function notifyAsanaIntakeSlack(env, intake, asanaTask, jiraResult) {
   const slackPayload = {
     channel: config.channel,
     text: buildAsanaSlackMessage(env, intake, asanaTask, jiraResult),
-    unfurl_links: false,
-    unfurl_media: false
+    unfurl_links: true,
+    unfurl_media: true
   };
   const { response, payload } = await postSlackMessage(env, slackPayload);
 
@@ -1521,6 +1521,7 @@ async function notifyAsanaIntakeSlack(env, intake, asanaTask, jiraResult) {
 function buildAsanaSlackMessage(env, intake, asanaTask, jiraResult) {
   const mention = sanitizeSlackMessage(env.ASANA_INTAKE_SLACK_MENTION || "Dewan Kabir");
   const asanaLink = asanaTask?.url ? `<${asanaTask.url}|${asanaTask.name || "Asana ticket"}>` : (asanaTask?.name || "Asana ticket");
+  const asanaRawUrl = asanaTask?.url ? sanitizeUrl(asanaTask.url) : "";
   const jiraLink = jiraResult?.url ? `<${jiraResult.url}|${jiraResult.key || jiraResult.projectKey || "Jira handoff"}>` : "Jira handoff not configured";
   const related = intake.relatedTicket ? `\n*Related ticket:* ${intake.relatedTicket}` : "";
   const source = intake.sourceUrl ? `\n*Source:* ${intake.sourceUrl}` : "";
@@ -1536,6 +1537,7 @@ function buildAsanaSlackMessage(env, intake, asanaTask, jiraResult) {
     related.trim(),
     source.trim(),
     `*Asana:* ${asanaLink}`,
+    asanaRawUrl ? `*Asana app preview:* ${asanaRawUrl}` : "",
     `*Jira:* ${jiraLink}`,
     intake.details ? `*Details:* ${truncateText(intake.details, 650)}` : ""
   ].filter(Boolean).join("\n");
