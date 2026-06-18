@@ -4,10 +4,54 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-18T12:21:38.255Z",
-  "pulledAtDisplay": "Jun 18, 2026, 8:21 AM",
-  "total": 23,
+  "pulledAt": "2026-06-18T12:26:46.789Z",
+  "pulledAtDisplay": "Jun 18, 2026, 8:26 AM",
+  "total": 24,
   "issues": [
+    {
+      "key": "CORE-14530",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14530",
+      "summary": "CRM_Repl Cache.UrgencyBookings Bug",
+      "description": "The proc CRM_Repl.Cache.UrgencyBookingsInsert has a partial merge statement, where it only does UPDATE and INSERT, but not DELETE. This is causing stale records to persist. Update the proc to delete records.",
+      "descriptionHtml": "<p>The proc CRM_Repl.Cache.UrgencyBookingsInsert has a partial merge statement, where it only does UPDATE and INSERT, but not DELETE. This is causing stale records to persist. Update the proc to delete records.</p>",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 0,
+      "comments": [],
+      "lastCommentUrl": "",
+      "lastCommentDisplay": "",
+      "lastCommentAuthor": "",
+      "testChecklist": null,
+      "type": "Bug",
+      "isSubtask": false,
+      "status": "Pre Planning",
+      "priority": "P0",
+      "assignee": "Daniel McNaughton",
+      "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+      "assignedDeveloper": "Daniel McNaughton",
+      "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+      "updated": "2026-06-18T08:21:46.333-0400",
+      "updatedDisplay": "Jun 18, 2026, 8:21 AM",
+      "created": "2026-06-18T08:21:20.652-0400",
+      "createdDisplay": "Jun 18, 2026, 8:21 AM",
+      "components": [],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [
+        {
+          "name": "2026.8"
+        }
+      ],
+      "sprintNames": [
+        "2026.8"
+      ],
+      "resolution": "",
+      "parent": null
+    },
     {
       "key": "CORE-14145",
       "url": "https://golfnow.atlassian.net/browse/CORE-14145",
@@ -1657,15 +1701,15 @@
     "sprintStartDate": "2026-06-01T14:23:42.721Z",
     "sprintEndDate": "2026-06-22T05:00:00.000Z",
     "backlogParity": true,
-    "backlogIssueCount": 93,
+    "backlogIssueCount": 94,
     "backlogWarning": "",
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-18T12:21:38.255Z",
-    "pulledAtDisplay": "Jun 18, 2026, 8:21 AM",
-    "total": 93,
-    "mainTotal": 93,
+    "pulledAt": "2026-06-18T12:26:46.789Z",
+    "pulledAtDisplay": "Jun 18, 2026, 8:26 AM",
+    "total": 94,
+    "mainTotal": 94,
     "subtaskTotal": 0,
     "issues": [
       {
@@ -7615,19 +7659,63 @@
           "status": "Selected for Development",
           "priority": "Normal"
         }
+      },
+      {
+        "key": "CORE-14530",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14530",
+        "summary": "CRM_Repl Cache.UrgencyBookings Bug",
+        "description": "The proc CRM_Repl.Cache.UrgencyBookingsInsert has a partial merge statement, where it only does UPDATE and INSERT, but not DELETE. This is causing stale records to persist. Update the proc to delete records.",
+        "descriptionHtml": "<p>The proc CRM_Repl.Cache.UrgencyBookingsInsert has a partial merge statement, where it only does UPDATE and INSERT, but not DELETE. This is causing stale records to persist. Update the proc to delete records.</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Pre Planning",
+        "priority": "P0",
+        "assignee": "Daniel McNaughton",
+        "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+        "assignedDeveloper": "Daniel McNaughton",
+        "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+        "updated": "2026-06-18T08:21:46.333-0400",
+        "updatedDisplay": "Jun 18, 2026, 8:21 AM",
+        "created": "2026-06-18T08:21:20.652-0400",
+        "createdDisplay": "Jun 18, 2026, 8:21 AM",
+        "components": [],
+        "fixVersions": [
+          "v3001.124.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": null
       }
     ]
   },
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-18T12:21:04.808Z",
-    "pulledAtDisplay": "Jun 18, 2026, 8:21 AM",
+    "pulledAt": "2026-06-18T12:26:11.121Z",
+    "pulledAtDisplay": "Jun 18, 2026, 8:26 AM",
     "window": {
-      "start": "2026-05-04T12:21:04.808Z",
-      "end": "2026-12-15T12:21:04.808Z",
-      "startDisplay": "May 4, 2026, 8:21 AM",
-      "endDisplay": "Dec 15, 2026, 7:21 AM"
+      "start": "2026-05-04T12:26:11.121Z",
+      "end": "2026-12-15T12:26:11.121Z",
+      "startDisplay": "May 4, 2026, 8:26 AM",
+      "endDisplay": "Dec 15, 2026, 7:26 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7640,7 +7728,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-18T12:21:07.649Z",
+        "pulledAt": "2026-06-18T12:26:14.500Z",
         "eventCount": 91,
         "events": [
           {
@@ -8426,23 +8514,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.57",
-            "start": "2026-07-14T00:00:00.000Z",
-            "end": "2026-07-15T00:00:00.000Z",
-            "startDate": "2026-07-14",
-            "endDate": "2026-07-15",
-            "startDisplay": "Jul 14, 2026",
-            "endDisplay": "Jul 15, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221527Z-1432222737@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8472,6 +8543,23 @@
             "endDisplay": "Jul 15, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.57",
+            "start": "2026-07-14T00:00:00.000Z",
+            "end": "2026-07-15T00:00:00.000Z",
+            "startDate": "2026-07-14",
+            "endDate": "2026-07-15",
+            "startDisplay": "Jul 14, 2026",
+            "endDisplay": "Jul 15, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8766,23 +8854,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Summer Bank Holiday (UK)",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-01T00:00:00.000Z",
-            "startDate": "2026-08-31",
-            "endDate": "2026-09-01",
-            "startDisplay": "Aug 31, 2026",
-            "endDisplay": "Sep 1, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8795,6 +8866,23 @@
             "endDisplay": "Sep 8, 2026",
             "allDay": true,
             "type": "Golf Freeze",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Summer Bank Holiday (UK)",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-01T00:00:00.000Z",
+            "startDate": "2026-08-31",
+            "endDate": "2026-09-01",
+            "startDisplay": "Aug 31, 2026",
+            "endDisplay": "Sep 1, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8851,23 +8939,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.59",
-            "start": "2026-09-15T00:00:00.000Z",
-            "end": "2026-09-16T00:00:00.000Z",
-            "startDate": "2026-09-15",
-            "endDate": "2026-09-16",
-            "startDisplay": "Sep 15, 2026",
-            "endDisplay": "Sep 16, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221627Z-1916149808@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8897,6 +8968,23 @@
             "endDisplay": "Sep 16, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.59",
+            "start": "2026-09-15T00:00:00.000Z",
+            "end": "2026-09-16T00:00:00.000Z",
+            "startDate": "2026-09-15",
+            "endDate": "2026-09-16",
+            "startDisplay": "Sep 15, 2026",
+            "endDisplay": "Sep 16, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9196,17 +9284,118 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-18T12:16:22.644Z",
-    "previousPulledAtDisplay": "Jun 18, 2026, 8:16 AM",
-    "currentPulledAt": "2026-06-18T12:21:38.255Z",
-    "currentPulledAtDisplay": "Jun 18, 2026, 8:21 AM",
+    "previousPulledAt": "2026-06-18T12:21:38.255Z",
+    "previousPulledAtDisplay": "Jun 18, 2026, 8:21 AM",
+    "currentPulledAt": "2026-06-18T12:26:46.789Z",
+    "currentPulledAtDisplay": "Jun 18, 2026, 8:26 AM",
     "isBaseline": false,
-    "added": [],
+    "added": [
+      {
+        "key": "CORE-14530",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14530",
+        "summary": "CRM_Repl Cache.UrgencyBookings Bug",
+        "description": "The proc CRM_Repl.Cache.UrgencyBookingsInsert has a partial merge statement, where it only does UPDATE and INSERT, but not DELETE. This is causing stale records to persist. Update the proc to delete records.",
+        "descriptionHtml": "<p>The proc CRM_Repl.Cache.UrgencyBookingsInsert has a partial merge statement, where it only does UPDATE and INSERT, but not DELETE. This is causing stale records to persist. Update the proc to delete records.</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Pre Planning",
+        "priority": "P0",
+        "assignee": "Daniel McNaughton",
+        "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+        "assignedDeveloper": "Daniel McNaughton",
+        "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+        "updated": "2026-06-18T08:21:46.333-0400",
+        "updatedDisplay": "Jun 18, 2026, 8:21 AM",
+        "created": "2026-06-18T08:21:20.652-0400",
+        "createdDisplay": "Jun 18, 2026, 8:21 AM",
+        "components": [],
+        "fixVersions": [
+          "v3001.124.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": null
+      }
+    ],
     "removed": [],
     "updated": [],
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-18T12:21:38.255Z",
+      "previousPulledAtDisplay": "Jun 18, 2026, 8:21 AM",
+      "currentPulledAt": "2026-06-18T12:26:46.789Z",
+      "currentPulledAtDisplay": "Jun 18, 2026, 8:26 AM",
+      "isBaseline": false,
+      "added": [
+        {
+          "key": "CORE-14530",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14530",
+          "summary": "CRM_Repl Cache.UrgencyBookings Bug",
+          "description": "The proc CRM_Repl.Cache.UrgencyBookingsInsert has a partial merge statement, where it only does UPDATE and INSERT, but not DELETE. This is causing stale records to persist. Update the proc to delete records.",
+          "descriptionHtml": "<p>The proc CRM_Repl.Cache.UrgencyBookingsInsert has a partial merge statement, where it only does UPDATE and INSERT, but not DELETE. This is causing stale records to persist. Update the proc to delete records.</p>",
+          "descriptionImageCount": 0,
+          "descriptionVideoCount": 0,
+          "descriptionMediaCount": 0,
+          "commentCount": 0,
+          "comments": [],
+          "lastCommentUrl": "",
+          "lastCommentDisplay": "",
+          "lastCommentAuthor": "",
+          "testChecklist": null,
+          "type": "Bug",
+          "isSubtask": false,
+          "status": "Pre Planning",
+          "priority": "P0",
+          "assignee": "Daniel McNaughton",
+          "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
+          "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+          "assignedDeveloper": "Daniel McNaughton",
+          "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
+          "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+          "updated": "2026-06-18T08:21:46.333-0400",
+          "updatedDisplay": "Jun 18, 2026, 8:21 AM",
+          "created": "2026-06-18T08:21:20.652-0400",
+          "createdDisplay": "Jun 18, 2026, 8:21 AM",
+          "components": [],
+          "fixVersions": [
+            "v3001.124.0"
+          ],
+          "sprints": [
+            {
+              "name": "2026.8"
+            }
+          ],
+          "sprintNames": [
+            "2026.8"
+          ],
+          "resolution": "",
+          "parent": null
+        }
+      ],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-18T12:16:22.644Z",
       "previousPulledAtDisplay": "Jun 18, 2026, 8:16 AM",
@@ -11038,17 +11227,6 @@
       "previousPulledAtDisplay": "Jun 17, 2026, 6:11 PM",
       "currentPulledAt": "2026-06-17T22:16:25.531Z",
       "currentPulledAtDisplay": "Jun 17, 2026, 6:16 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-17T22:06:45.987Z",
-      "previousPulledAtDisplay": "Jun 17, 2026, 6:06 PM",
-      "currentPulledAt": "2026-06-17T22:11:46.698Z",
-      "currentPulledAtDisplay": "Jun 17, 2026, 6:11 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
