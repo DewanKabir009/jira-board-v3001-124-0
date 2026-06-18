@@ -5500,8 +5500,12 @@ function statusChangeLabel(change: PullChange) {
 
 async function copyTextToClipboard(value: string) {
   if (navigator.clipboard?.writeText) {
-    await navigator.clipboard.writeText(value);
-    return;
+    try {
+      await navigator.clipboard.writeText(value);
+      return;
+    } catch {
+      // Embedded dashboard contexts can expose navigator.clipboard while blocking writes.
+    }
   }
 
   const textarea = document.createElement("textarea");
@@ -5509,10 +5513,15 @@ async function copyTextToClipboard(value: string) {
   textarea.setAttribute("readonly", "true");
   textarea.style.position = "fixed";
   textarea.style.opacity = "0";
+  textarea.style.pointerEvents = "none";
   document.body.appendChild(textarea);
+  textarea.focus();
   textarea.select();
-  document.execCommand("copy");
-  document.body.removeChild(textarea);
+  try {
+    document.execCommand("copy");
+  } finally {
+    document.body.removeChild(textarea);
+  }
 }
 
 function ticketCopyText(issue: Issue) {
