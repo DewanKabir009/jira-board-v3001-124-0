@@ -448,6 +448,8 @@ async function handleEzrtsMedia(request, env, url) {
 
   const candidates = [];
   if (filename && filename.toLowerCase() !== "null") {
+    candidates.push(...await ezrtsAttachmentDownloadCandidates(site, pageId, filename, auth));
+    candidates.push(`${site}/wiki/download/attachments/${pageId}/${encodeURIComponent(filename)}`);
     candidates.push(`${site}/wiki/download/attachments/${pageId}/${encodeURIComponent(filename)}?api=v2`);
   }
 
@@ -463,17 +465,7 @@ async function handleEzrtsMedia(request, env, url) {
   let lastError = "";
   for (const candidate of candidates) {
     try {
-      const response = await fetch(candidate, {
-        headers: {
-          authorization: auth,
-          accept: "image/avif,image/webp,image/png,image/jpeg,image/*,*/*;q=0.8",
-          "user-agent": "CORE-QA-HQ-ezrts-media/1.0"
-        },
-        cf: {
-          cacheTtl: 0,
-          cacheEverything: false
-        }
-      });
+      const response = await fetchEzrtsMediaCandidate(candidate, auth, site);
 
       if (response.ok) {
         const headers = new Headers(response.headers);
@@ -496,6 +488,78 @@ async function handleEzrtsMedia(request, env, url) {
   }
 
   return ezrtsMediaPlaceholder(lastError || "No media source was available", method, 502);
+}
+
+async function ezrtsAttachmentDownloadCandidates(site, pageId, filename, auth) {
+  const endpoint = `${site}/wiki/rest/api/content/${pageId}/child/attachment?filename=${encodeURIComponent(filename)}&expand=version`;
+  try {
+    const response = await fetch(endpoint, {
+      headers: {
+        authorization: auth,
+        accept: "application/json",
+        "user-agent": "CORE-QA-HQ-ezrts-media/1.0"
+      },
+      cf: {
+        cacheTtl: 0,
+        cacheEverything: false
+      }
+    });
+    if (!response.ok) return [];
+    const payload = await response.json();
+    const attachment = Array.isArray(payload?.results) ? payload.results[0] : null;
+    if (!attachment?.id) return [];
+    const downloadPath = attachment?._links?.download || "";
+    const candidates = [
+      `${site}/wiki/rest/api/content/${encodeURIComponent(attachment.id)}/download`,
+      `${site}/wiki/rest/api/content/${pageId}/child/attachment/${encodeURIComponent(attachment.id)}/download`,
+      `${site}/wiki/api/v2/attachments/${encodeURIComponent(attachment.id)}/download`
+    ];
+    if (downloadPath) {
+      candidates.unshift(downloadPath.startsWith("http") ? downloadPath : `${site}${downloadPath.startsWith("/") ? "" : "/"}${downloadPath}`);
+    }
+    return candidates;
+  } catch {
+    return [];
+  }
+}
+
+async function fetchEzrtsMediaCandidate(candidate, auth, site) {
+  const baseHeaders = {
+    accept: "image/avif,image/webp,image/png,image/jpeg,image/*,*/*;q=0.8",
+    "user-agent": "CORE-QA-HQ-ezrts-media/1.0"
+  };
+  const response = await fetch(candidate, {
+    headers: {
+      ...baseHeaders,
+      authorization: auth
+    },
+    redirect: "manual",
+    cf: {
+      cacheTtl: 0,
+      cacheEverything: false
+    }
+  });
+
+  if (![301, 302, 303, 307, 308].includes(response.status)) {
+    return response;
+  }
+
+  const location = response.headers.get("location") || "";
+  if (!location) {
+    return response;
+  }
+
+  const redirectUrl = new URL(location, candidate).toString();
+  const redirectHeaders = redirectUrl.startsWith(site)
+    ? { ...baseHeaders, authorization: auth }
+    : baseHeaders;
+  return fetch(redirectUrl, {
+    headers: redirectHeaders,
+    cf: {
+      cacheTtl: 0,
+      cacheEverything: false
+    }
+  });
 }
 
 function ezrtsMediaPlaceholder(message, method, status = 502) {
@@ -698,7 +762,9 @@ function enrichEzrtsMediaItem(item, mediaIndex) {
     mediaIndex.get(String(item?.localId || "")) ||
     mediaIndex.get(String(item?.filename || "")) ||
     {};
-  const id = cleanEzrtsMediaValue(item?.id || item?.mediaId || metadata.id || metadata.mediaId);
+  const rawItemId = cleanEzrtsMediaValue(item?.id || item?.mediaId);
+  const metadataId = cleanEzrtsMediaValue(metadata.id || metadata.mediaId);
+  const id = metadataId || rawItemId;
   const filename = cleanEzrtsMediaValue(item?.filename || metadata.filename);
   const sourceUrl = cleanEzrtsMediaValue(item?.sourceUrl || metadata.sourceUrl);
   const collection = cleanEzrtsMediaValue(item?.collection || metadata.collection || `contentId-${EZRTS_MAPPING_PAGE_ID}`);
@@ -708,7 +774,7 @@ function enrichEzrtsMediaItem(item, mediaIndex) {
     ...item,
     id,
     mediaId: id,
-    localId: cleanEzrtsMediaValue(item?.localId || metadata.localId),
+    localId: cleanEzrtsMediaValue(item?.localId || metadata.localId || (metadataId ? rawItemId : "")),
     collection,
     filename,
     sourceUrl,
