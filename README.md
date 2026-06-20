@@ -84,7 +84,7 @@ The Legacy HQ Worker also rewrites prefixed static asset requests from `/modern/
 - `/modern/hq/` is the HQ landing route built with Astro and deployed as static assets.
 - `/modern/hq/#calendar` is the Calendar Menu. It reads the Confluence GN Releases Team Calendar payload from `dashboard-data.json`, opens on the current month, provides month navigation, and groups the Upcoming list into collapsible month sections.
 - `/modern/hq/#documents` is the Documents explorer. It normalizes the `Region: us-east-2 (Primary)` table from the OPS Confluence page `AWS - GolfNow B2C - EC2 - Farms` into a searchable farm, application, APM, server, and environment view.
-- Mordern HQ `/#ezrts` is the EZRTS Mapping page. It renders the PRO Confluence page `G1 Stage Multi-Tenant EZRTS Test Locations` as native HQ source cards, filters, status summaries, and mapping tables, with a five-minute refresh contract through `/api/ezrts/mapping`.
+- Mordern HQ `/ezrts/` is the dedicated EZRTS Mapping page. It renders the PRO Confluence page `G1 Stage Multi-Tenant EZRTS Test Locations` as native HQ source cards, filters, status summaries, mapping tables, and row-level screenshots, with a five-minute refresh contract through `/api/ezrts/mapping` and `/api/ezrts/media/*`.
 - `/api/ai/status` reports whether the Cloudflare Worker has the Workers AI binding.
 - `/api/ai/release-summary` reads `dashboard-data.json`, resolves assignee/developer/component/priority ticket lookups from the direct board pull, asks Cloudflare Workers AI to turn those exact matches into human-readable linked analysis, or combines the user's broader prompt with compact ticket context for a draft release brief.
 - `/api/ai/chat` powers the HQ AI release agent. It keeps short chat history, detects whether the user is asking about the active release or Sprint `2026.8`, filters exact ticket matches from `dashboard-data.json`, and asks Workers AI to turn those results into a readable response with linked ticket tables.
@@ -266,7 +266,7 @@ Calendar environment overrides:
 | SPEC-HQ-10 | Slack two-way bridge | In progress | Outbound bot posts are ready; signed slash commands, Events API callbacks, interactive callbacks, and HQ activity UI are implemented. Live inbound requires `SLACK_SIGNING_SECRET` and Slack app Request URLs. |
 | SPEC-HQ-11 | Asana intake | Complete | HQ opens requests in Asana project `GN CORE QA HQ`, notifies Slack when available, returns Jira direct-create or manual handoff state, and exposes the same flow through a floating Asana chat-head launcher. |
 | SPEC-HQ-12 | Document search | Complete | OPS AWS B2C EC2 farm data is stored in `modern-dashboard/src/data/aws-farms-us-east-2.json` and rendered as a farm/application/environment explorer in both HQ shells. |
-| SPEC-HQ-13 | EZRTS mapping | Complete | Mordern HQ renders the PRO G1 Stage multi-tenant EZRTS Confluence mapping as native cards and tables, and Legacy HQ links into the page. |
+| SPEC-HQ-13 | EZRTS mapping | Complete | Mordern HQ renders the PRO G1 Stage multi-tenant EZRTS Confluence mapping as a dedicated `/ezrts/` page with native cards, tables, and screenshot/media previews, and Legacy HQ links into that page. |
 
 ## Technology Stack
 
@@ -283,7 +283,7 @@ Calendar environment overrides:
 | Asana REST API | Creates HQ intake tickets in the `GN CORE QA HQ` project from the Automation Bench form and floating Asana chat-head launcher. |
 | GitHub Actions | Executes refreshes dispatched by Cloudflare, deploys static pages, runs Playwright jobs, and publishes evidence. |
 | Confluence Team Calendars | Feeds the HQ Calendar Menu through the 5-minute board refresh artifact. |
-| Confluence REST API | Feeds the EZRTS Mapping page through `/api/ezrts/mapping` when Worker Jira/Confluence credentials are configured. |
+| Confluence REST API | Feeds the EZRTS Mapping page through `/api/ezrts/mapping` and row-level screenshots through `/api/ezrts/media/*` when Worker Jira/Confluence credentials are configured. |
 | GitHub Pages | Keeps static public fallback pages live during the Cloudflare migration. |
 | Wrangler | Builds, validates, and deploys the Cloudflare board and HQ Worker. |
 | Playwright | Captures README screenshots and powers approved browser automation jobs. |

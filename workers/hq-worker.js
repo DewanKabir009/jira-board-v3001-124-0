@@ -51,6 +51,7 @@ const WORKER_ROUTES = [
   "GET /boards.json",
   "GET /assets/jira-media/*",
   "GET /api/ezrts/mapping",
+  "GET /api/ezrts/media/*",
   "GET /api/ai/status",
   "POST /api/ai/release-summary",
   "POST /api/ai/chat",
@@ -79,6 +80,10 @@ export default {
 
     if (url.pathname === "/api/ezrts/mapping") {
       return handleEzrtsMapping(request, env, url);
+    }
+
+    if (url.pathname === "/api/ezrts/media" || url.pathname.startsWith("/api/ezrts/media/")) {
+      return handleEzrtsMedia(request, env, url);
     }
 
     if (url.pathname === "/api/ai/status") {
@@ -421,6 +426,91 @@ function ezrtsMappingResponse(payload, method, source, status = 200) {
   });
 }
 
+async function handleEzrtsMedia(request, env, url) {
+  const method = request.method.toUpperCase();
+  if (!["GET", "HEAD"].includes(method)) {
+    return jsonResponse({ ok: false, message: "Use GET for EZRTS media." }, 405);
+  }
+
+  const auth = confluenceAuthHeader(env);
+  if (!auth) {
+    return ezrtsMediaPlaceholder("Confluence auth is not configured", method, 503);
+  }
+
+  const site = (env.JIRA_SITE_URL || "https://golfnow.atlassian.net").replace(/\/+$/g, "");
+  const pageId = sanitizeExternalId(url.searchParams.get("pageId") || EZRTS_MAPPING_PAGE_ID);
+  const filename = url.searchParams.get("filename") || "";
+  const source = url.searchParams.get("source") || "";
+  const mediaId = (
+    url.searchParams.get("mediaId") ||
+    decodeURIComponent(url.pathname.replace(/^\/api\/ezrts\/media\/?/, ""))
+  ).trim();
+
+  const candidates = [];
+  if (filename && filename.toLowerCase() !== "null") {
+    candidates.push(`${site}/wiki/download/attachments/${pageId}/${encodeURIComponent(filename)}?api=v2`);
+  }
+
+  if (source && source.startsWith(site)) {
+    candidates.push(source);
+  }
+
+  if (mediaId && mediaId.toLowerCase() !== "null" && /^[a-f0-9-]{20,}$/i.test(mediaId)) {
+    const collection = url.searchParams.get("collection") || `contentId-${pageId}`;
+    candidates.push(`https://api.media.atlassian.com/file/${encodeURIComponent(mediaId)}/binary?collection=${encodeURIComponent(collection)}`);
+  }
+
+  let lastError = "";
+  for (const candidate of candidates) {
+    try {
+      const response = await fetch(candidate, {
+        headers: {
+          authorization: auth,
+          accept: "image/avif,image/webp,image/png,image/jpeg,image/*,*/*;q=0.8",
+          "user-agent": "CORE-QA-HQ-ezrts-media/1.0"
+        },
+        cf: {
+          cacheTtl: 0,
+          cacheEverything: false
+        }
+      });
+
+      if (response.ok) {
+        const headers = new Headers(response.headers);
+        headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
+        headers.set("pragma", "no-cache");
+        headers.set("expires", "0");
+        headers.set("x-core-qa-cache-policy", "live-artifact");
+        headers.set("x-core-qa-ezrts-media-source", candidate.includes("api.media.atlassian.com") ? "atlassian-media-api" : "confluence-download");
+        return new Response(method === "HEAD" ? null : response.body, {
+          status: response.status,
+          statusText: response.statusText,
+          headers
+        });
+      }
+
+      lastError = `HTTP ${response.status} from ${candidate}`;
+    } catch (error) {
+      lastError = error?.message || "media fetch failed";
+    }
+  }
+
+  return ezrtsMediaPlaceholder(lastError || "No media source was available", method, 502);
+}
+
+function ezrtsMediaPlaceholder(message, method, status = 502) {
+  const safeMessage = sanitizePlainText(message, 120);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="EZRTS screenshot unavailable"><rect width="960" height="540" rx="32" fill="#f7f4fb"/><rect x="28" y="28" width="904" height="484" rx="28" fill="#fff" stroke="#cfd8ea" stroke-width="4"/><text x="480" y="244" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#250854">Screenshot unavailable</text><text x="480" y="298" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#625f78">${escapeSvg(safeMessage)}</text></svg>`;
+  return new Response(method === "HEAD" ? null : svg, {
+    status,
+    headers: {
+      "content-type": "image/svg+xml; charset=utf-8",
+      "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
+      "x-core-qa-ezrts-media-source": "placeholder"
+    }
+  });
+}
+
 async function fetchEzrtsMappingFromConfluence(env) {
   const auth = confluenceAuthHeader(env);
   if (!auth) {
@@ -428,7 +518,7 @@ async function fetchEzrtsMappingFromConfluence(env) {
   }
 
   const site = (env.JIRA_SITE_URL || "https://golfnow.atlassian.net").replace(/\/+$/g, "");
-  const endpoint = `${site}/wiki/rest/api/content/${EZRTS_MAPPING_PAGE_ID}?expand=body.storage,version,space,history.lastUpdated,history.createdBy`;
+  const endpoint = `${site}/wiki/rest/api/content/${EZRTS_MAPPING_PAGE_ID}?expand=body.storage,body.atlas_doc_format,version,space,history.lastUpdated,history.createdBy`;
   const response = await fetch(endpoint, {
     headers: {
       authorization: auth,
@@ -446,7 +536,10 @@ async function fetchEzrtsMappingFromConfluence(env) {
   }
 
   const payload = JSON.parse(text);
-  const sections = normalizeEzrtsSections(payload?.body?.storage?.value || "");
+  const sections = enrichEzrtsMediaFromAdf(
+    normalizeEzrtsSections(payload?.body?.storage?.value || ""),
+    payload?.body?.atlas_doc_format?.value
+  );
   if (!sections.length) {
     throw new Error("Confluence page did not contain parseable EZRTS mapping tables.");
   }
@@ -517,6 +610,121 @@ function normalizeEzrtsSections(html) {
   return [...byId.values()];
 }
 
+function enrichEzrtsMediaFromAdf(sections, adfValue) {
+  const mediaIndex = buildEzrtsAdfMediaIndex(adfValue);
+  if (!mediaIndex.size) {
+    return sections;
+  }
+
+  sections.forEach((section) => {
+    (section.rows || []).forEach((row) => {
+      if (row.mediaByField && typeof row.mediaByField === "object") {
+        Object.keys(row.mediaByField).forEach((field) => {
+          row.mediaByField[field] = (row.mediaByField[field] || []).map((item) => enrichEzrtsMediaItem(item, mediaIndex));
+        });
+        row.media = Object.values(row.mediaByField).flat();
+        return;
+      }
+
+      if (Array.isArray(row.media)) {
+        row.media = row.media.map((item) => enrichEzrtsMediaItem(item, mediaIndex));
+      }
+    });
+  });
+
+  return sections;
+}
+
+function buildEzrtsAdfMediaIndex(adfValue) {
+  const index = new Map();
+  if (!adfValue) {
+    return index;
+  }
+
+  let root = adfValue;
+  if (typeof adfValue === "string") {
+    try {
+      root = JSON.parse(adfValue);
+    } catch {
+      return index;
+    }
+  }
+
+  const register = (metadata) => {
+    [metadata.id, metadata.mediaId, metadata.localId, metadata.filename, metadata.title]
+      .filter(Boolean)
+      .forEach((key) => index.set(String(key), metadata));
+  };
+
+  const walk = (node) => {
+    if (!node || typeof node !== "object") return;
+    const attrs = node.attrs || {};
+    if (node.type === "media" || attrs.type === "media") {
+      const id = cleanEzrtsMediaValue(attrs.id || attrs.mediaId);
+      const localId = cleanEzrtsMediaValue(attrs.localId);
+      const filename = cleanEzrtsMediaValue(attrs.alt || attrs.name || attrs.__fileName || attrs.fileName || attrs.filename);
+      const collection = cleanEzrtsMediaValue(attrs.collection);
+      const title = filename || cleanEzrtsMediaValue(attrs.title) || "EZRTS screenshot";
+      register({
+        id,
+        mediaId: id,
+        localId,
+        collection,
+        filename,
+        title,
+        alt: title,
+        width: firstNumber(attrs.width),
+        height: firstNumber(attrs.height)
+      });
+    }
+
+    if (Array.isArray(node.content)) {
+      node.content.forEach(walk);
+    }
+
+    if (Array.isArray(node.marks)) {
+      node.marks.forEach(walk);
+    }
+  };
+
+  walk(root);
+  return index;
+}
+
+function enrichEzrtsMediaItem(item, mediaIndex) {
+  const metadata =
+    mediaIndex.get(String(item?.id || "")) ||
+    mediaIndex.get(String(item?.mediaId || "")) ||
+    mediaIndex.get(String(item?.localId || "")) ||
+    mediaIndex.get(String(item?.filename || "")) ||
+    {};
+  const id = cleanEzrtsMediaValue(item?.id || item?.mediaId || metadata.id || metadata.mediaId);
+  const filename = cleanEzrtsMediaValue(item?.filename || metadata.filename);
+  const sourceUrl = cleanEzrtsMediaValue(item?.sourceUrl || metadata.sourceUrl);
+  const collection = cleanEzrtsMediaValue(item?.collection || metadata.collection || `contentId-${EZRTS_MAPPING_PAGE_ID}`);
+  const title = filename || cleanEzrtsMediaValue(item?.title || metadata.title) || "EZRTS screenshot";
+
+  return {
+    ...item,
+    id,
+    mediaId: id,
+    localId: cleanEzrtsMediaValue(item?.localId || metadata.localId),
+    collection,
+    filename,
+    sourceUrl,
+    url: ezrtsMediaProxyUrl({
+      mediaId: id || filename || sourceUrl || item?.url,
+      filename,
+      collection,
+      sourceUrl
+    }),
+    width: firstNumber(item?.width || metadata.width),
+    height: firstNumber(item?.height || metadata.height),
+    title,
+    alt: cleanEzrtsMediaValue(item?.alt || metadata.alt || title)
+  };
+}
+
 function parseEzrtsTable(tableHtml) {
   const parsedRows = (String(tableHtml || "").match(/<tr\b[\s\S]*?<\/tr>/gi) || [])
     .map((row) => ({
@@ -539,6 +747,7 @@ function parseEzrtsTable(tableHtml) {
 }
 
 function parseEzrtsCell(cellHtml) {
+  const media = extractEzrtsMedia(cellHtml);
   const links = [];
   String(cellHtml || "").replace(/href=["']([^"']+)["']/gi, (_match, href) => {
     const decoded = decodeHtmlEntities(href);
@@ -548,7 +757,8 @@ function parseEzrtsCell(cellHtml) {
 
   return {
     text: normalizeConfluenceText(cellHtml),
-    links
+    links,
+    media
   };
 }
 
@@ -568,6 +778,8 @@ function normalizeEzrtsRow(headers, cells) {
   const beBooking = ezrtsCell(headers, cells, [/booking.*engine.*booking/, /\bbe\b.*booking/], 12);
   const notes = ezrtsCell(headers, cells, [/note/, /comment/], 13);
   const link = firstCellLink(bookingEngine) || firstUrl(bookingEngine.text);
+  const mediaByField = ezrtsMediaByField(headers, cells);
+  const media = Object.values(mediaByField).flat();
 
   return {
     accountName: account.text,
@@ -584,13 +796,219 @@ function normalizeEzrtsRow(headers, cells) {
     gncBooking: gncBooking.text,
     bookingEngineBooking: beBooking.text,
     notes: notes.text,
+    media,
+    mediaByField,
     status: inferEzrtsStatus([account, brand, g1Created, location, ezFacility, ezCourses, gncFacility, gncFacilityName, setup, interfaceConfiguration, bookingEngine, gncBooking, beBooking, notes])
   };
 }
 
 function ezrtsCell(headers, cells, patterns, fallbackIndex) {
+  const index = ezrtsCellIndex(headers, patterns, fallbackIndex);
+  return cells[index] || { text: "", links: [], media: [] };
+}
+
+function ezrtsCellIndex(headers, patterns, fallbackIndex) {
   const index = headers.findIndex((header) => patterns.some((pattern) => pattern.test(header)));
-  return cells[index >= 0 ? index : fallbackIndex] || { text: "", links: [] };
+  return index >= 0 ? index : fallbackIndex;
+}
+
+function ezrtsMediaByField(headers, cells) {
+  const result = {};
+  cells.forEach((cell, index) => {
+    if (!Array.isArray(cell?.media) || !cell.media.length) return;
+    const field = ezrtsMediaFieldLabel(headers[index] || `column ${index + 1}`);
+    result[field] = (result[field] || []).concat(cell.media.map((item, mediaIndex) => ({
+      ...item,
+      field,
+      title: item.title || `${field} screenshot ${mediaIndex + 1}`,
+      alt: item.alt || `${field} screenshot`
+    })));
+  });
+  return result;
+}
+
+function ezrtsMediaFieldLabel(header) {
+  const value = String(header || "").toLowerCase();
+  if (value.includes("gnc") && value.includes("booking")) return "GNC Booking";
+  if (value.includes("booking engine") && value.includes("booking")) return "Booking Engine Booking";
+  if (value.includes("gift")) return "Gift Certificate";
+  if (value.includes("membership")) return "Membership";
+  if (value.includes("note")) return "Notes";
+  if (value.includes("interface")) return "Interface Configuration";
+  return toTitleCase(value || "EZRTS Media");
+}
+
+function extractEzrtsMedia(cellHtml) {
+  const raw = String(cellHtml || "");
+  const media = [];
+
+  raw.replace(/<ac:image\b[\s\S]*?<\/ac:image>/gi, (match) => {
+    media.push(buildEzrtsMedia(match, media.length));
+    return "";
+  });
+
+  raw.replace(/<ac:adf-node\b[\s\S]*?<\/ac:adf-node>/gi, (match) => {
+    if (/media|file|image|attachment/i.test(match)) {
+      media.push(buildEzrtsMedia(match, media.length));
+    }
+    return "";
+  });
+
+  raw.replace(/<img\b[^>]*src=["']([^"']+)["'][^>]*>/gi, (match, src) => {
+    media.push(buildEzrtsMedia(match, media.length, decodeHtmlEntities(src)));
+    return "";
+  });
+
+  raw.replace(/!\[[^\]]*]\(([^)]+)\)/g, (match, src) => {
+    media.push(buildEzrtsMedia(match, media.length, decodeHtmlEntities(src)));
+    return "";
+  });
+
+  return dedupeEzrtsMedia(media.filter((item) => item.id || item.filename || item.sourceUrl || item.url));
+}
+
+function buildEzrtsMedia(rawRef, index, src = "") {
+  const decoded = decodeHtmlEntities(String(rawRef || ""));
+  const sourceUrl =
+    src ||
+    extractAttr(decoded, "src") ||
+    extractAttr(decoded, "ri:value") ||
+    extractJsonLike(decoded, "url") ||
+    extractJsonLike(decoded, "src") ||
+    "";
+  const filename = cleanEzrtsMediaValue(
+    queryParam(sourceUrl, "__fileName") ||
+    extractJsonLike(decoded, "__fileName") ||
+    extractJsonLike(decoded, "fileName") ||
+    extractJsonLike(decoded, "filename") ||
+    extractJsonLike(decoded, "alt") ||
+    extractAttr(decoded, "ri:filename") ||
+    extractAttr(decoded, "data-file-name") ||
+    extractAttr(decoded, "filename") ||
+    extractAttr(decoded, "alt") ||
+    extractAttr(decoded, "title") ||
+    ""
+  );
+  const id = cleanEzrtsMediaValue(
+    queryParam(sourceUrl, "id") ||
+    extractJsonLike(decoded, "id") ||
+    extractJsonLike(decoded, "mediaId") ||
+    extractAttr(decoded, "data-media-id") ||
+    extractAttr(decoded, "ri:media-id") ||
+    extractAttr(decoded, "media-id") ||
+    extractAttr(decoded, "id") ||
+    ""
+  );
+  const localId = cleanEzrtsMediaValue(
+    queryParam(sourceUrl, "localId") ||
+    extractJsonLike(decoded, "localId") ||
+    extractAttr(decoded, "localId") ||
+    extractAttr(decoded, "data-local-id") ||
+    ""
+  );
+  const collection = cleanEzrtsMediaValue(
+    queryParam(sourceUrl, "collection") ||
+    extractJsonLike(decoded, "collection") ||
+    `contentId-${EZRTS_MAPPING_PAGE_ID}`
+  );
+  const width =
+    queryParam(sourceUrl, "width") ||
+    extractJsonLike(decoded, "width") ||
+    extractAttr(decoded, "width") ||
+    extractAttr(decoded, "ac:width") ||
+    "";
+  const height =
+    queryParam(sourceUrl, "height") ||
+    extractJsonLike(decoded, "height") ||
+    extractAttr(decoded, "height") ||
+    extractAttr(decoded, "ac:height") ||
+    "";
+  const key = id || filename || sourceUrl || `media-${index + 1}`;
+  const proxyUrl = ezrtsMediaProxyUrl({
+    mediaId: key,
+    filename,
+    collection,
+    sourceUrl
+  });
+
+  return {
+    id,
+    mediaId: id,
+    localId,
+    collection,
+    filename,
+    sourceUrl,
+    url: proxyUrl,
+    width: firstNumber(width),
+    height: firstNumber(height),
+    title: filename || `EZRTS screenshot ${index + 1}`,
+    alt: filename || `EZRTS screenshot ${index + 1}`
+  };
+}
+
+function ezrtsMediaProxyUrl({ mediaId, filename, collection, sourceUrl, pageId = EZRTS_MAPPING_PAGE_ID }) {
+  const params = new URLSearchParams();
+  params.set("mediaId", cleanEzrtsMediaValue(mediaId) || cleanEzrtsMediaValue(filename) || "media");
+  params.set("pageId", cleanEzrtsMediaValue(pageId) || EZRTS_MAPPING_PAGE_ID);
+  const cleanFilename = cleanEzrtsMediaValue(filename);
+  const cleanCollection = cleanEzrtsMediaValue(collection);
+  const cleanSource = cleanEzrtsMediaValue(sourceUrl);
+  if (cleanFilename) params.set("filename", cleanFilename);
+  if (cleanCollection) params.set("collection", cleanCollection);
+  if (cleanSource.startsWith("https://golfnow.atlassian.net")) params.set("source", cleanSource);
+  return `/api/ezrts/media?${params.toString()}`;
+}
+
+function cleanEzrtsMediaValue(value) {
+  const text = decodeHtmlEntities(String(value || "").trim());
+  if (!text || text.toLowerCase() === "null" || text.toLowerCase() === "undefined") return "";
+  return sanitizePlainText(text, 260);
+}
+
+function dedupeEzrtsMedia(items) {
+  const seen = new Set();
+  return items.filter((item) => {
+    const key = item.id || item.filename || item.sourceUrl || item.url;
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function extractAttr(value, name) {
+  const pattern = new RegExp(`${escapeRegex(name)}=["']([^"']+)["']`, "i");
+  const match = String(value || "").match(pattern);
+  return match ? decodeHtmlEntities(match[1]) : "";
+}
+
+function extractJsonLike(value, name) {
+  const pattern = new RegExp(`["']${escapeRegex(name)}["']\\s*:\\s*(["'])(.*?)\\1`, "i");
+  const match = String(value || "").match(pattern);
+  return match ? decodeHtmlEntities(match[2]) : "";
+}
+
+function queryParam(value, key) {
+  const text = String(value || "");
+  if (!text) return "";
+  try {
+    const parsed = new URL(text);
+    const parsedValue = parsed.searchParams.get(key);
+    if (parsedValue) return parsedValue;
+  } catch {
+    // Fall back below for blob URLs and escaped Confluence macro payloads.
+  }
+
+  const pattern = new RegExp(`[?&]${escapeRegex(key)}=([^&"'<\\s]+)`, "i");
+  const match = text.match(pattern);
+  return match ? decodeURIComponent(match[1]) : "";
+}
+
+function toTitleCase(value) {
+  return String(value || "")
+    .split(/\s+/g)
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
 }
 
 function inferEzrtsStatus(cells) {
@@ -646,6 +1064,8 @@ function normalizeHeader(value) {
 
 function normalizeConfluenceText(html) {
   return decodeHtmlEntities(String(html || "")
+    .replace(/!\[[^\]]*]\([^)]+\)/g, " ")
+    .replace(/<ac:image\b[\s\S]*?<\/ac:image>/gi, " ")
     .replace(/<br\s*\/?>/gi, "\n")
     .replace(/<\/p>|<\/li>|<\/tr>/gi, "\n")
     .replace(/<[^>]+>/g, " ")
@@ -667,6 +1087,18 @@ function decodeHtmlEntities(value) {
       nbsp: " "
     }[lower] || entity;
   });
+}
+
+function escapeRegex(value) {
+  return String(value || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function escapeSvg(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 }
 
 function numericList(value) {
@@ -826,7 +1258,7 @@ function shouldDecorateLegacyHqShell(request, response, pathname) {
 
 function decorateLegacyHqShell(html, env) {
   const mordernBase = (env.MORDERN_HQ_URL || "https://core-qa-mordern-hq-124.dfkabir253.workers.dev/").replace(/\/+$/g, "");
-  const ezrtsUrl = `${mordernBase}/#ezrts`;
+  const ezrtsUrl = `${mordernBase}/ezrts/`;
   let nextHtml = html;
 
   if (!nextHtml.includes(`href="${ezrtsUrl}"`)) {
