@@ -508,7 +508,8 @@ const hqSpecs = [
   { id: "SPEC-HQ-09", title: "Calendar menu", status: "Implemented", detail: "Confluence GN Releases calendar data is pulled into dashboard-data.json and rendered in HQ with calendar/list views." },
   { id: "SPEC-HQ-10", title: "Slack two-way bridge", status: "In progress", detail: "Worker routes now cover HQ posts, slash commands, Events API mentions, interactive callbacks, and an HQ activity panel; live inbound needs SLACK_SIGNING_SECRET and Slack app Request URLs." },
   { id: "SPEC-HQ-11", title: "Asana intake", status: "Implemented", detail: "HQ can open requests in the GN CORE QA HQ Asana project, notify Slack, and prepare or create Jira handoff records based on Worker credentials." },
-  { id: "SPEC-HQ-12", title: "Document search", status: "Implemented", detail: "OPS AWS B2C EC2 farm documentation is normalized into a searchable farm, application, and environment explorer." }
+  { id: "SPEC-HQ-12", title: "Document search", status: "Implemented", detail: "OPS AWS B2C EC2 farm documentation is normalized into a searchable farm, application, and environment explorer." },
+  { id: "SPEC-HQ-13", title: "EZRTS mapping", status: "Implemented", detail: "Mordern HQ renders the PRO G1 Stage multi-tenant EZRTS Confluence mapping as native HQ cards and tables, with Legacy HQ linked into the same page." }
 ];
 
 const awsFarmsDocumentJson = JSON.stringify(awsFarmsDocument).replace(/</g, "\\u003c");
@@ -534,6 +535,7 @@ const awsFarmsDocumentJson = JSON.stringify(awsFarmsDocument).replace(/</g, "\\u
         <a class="active" href="#boards">Release boards</a>
         <a href="#kb">Knowledge base</a>
         <a href="#documents">Documents</a>
+        <a href={`${mordernHqUrl}#ezrts`}>EZRTS</a>
         <a href="#automation">Automation + Asana intake</a>
         <a href="#ai">AI summary</a>
         <a href="#status">Operations status</a>
@@ -559,6 +561,7 @@ const awsFarmsDocumentJson = JSON.stringify(awsFarmsDocument).replace(/</g, "\\u
           <a href={mordernHqUrl}>Mordern HQ</a>
           <a href="#boards">Boards</a>
           <a href="#documents">Documents</a>
+          <a href={`${mordernHqUrl}#ezrts`}>EZRTS mapping</a>
           <a href="#asana-intake">Open request</a>
           <a href="#automation">Runbook</a>
           <a href="#specs">Specs</a>

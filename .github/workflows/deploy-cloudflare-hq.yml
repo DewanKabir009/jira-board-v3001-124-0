@@ -31,6 +31,7 @@ jobs:
       ASANA_ACCESS_TOKEN: ${{ secrets.ASANA_ACCESS_TOKEN }}
       JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
       JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+      JIRA_MCP_TOKEN: ${{ secrets.JIRA_MCP_TOKEN }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -53,7 +54,7 @@ jobs:
       - name: Sync HQ Worker secrets
         run: |
           set -euo pipefail
-          for secret_name in SLACK_BOT_TOKEN SLACK_CHANNEL_ID SLACK_SIGNING_SECRET ASANA_ACCESS_TOKEN JIRA_EMAIL JIRA_API_TOKEN; do
+          for secret_name in SLACK_BOT_TOKEN SLACK_CHANNEL_ID SLACK_SIGNING_SECRET ASANA_ACCESS_TOKEN JIRA_EMAIL JIRA_API_TOKEN JIRA_MCP_TOKEN; do
             secret_value="${!secret_name:-}"
             if [ -n "$secret_value" ]; then
               printf '%s' "$secret_value" | npx -y wrangler versions secret put "$secret_name" -c wrangler.hq.toml

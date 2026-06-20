@@ -30,6 +30,10 @@ const ASANA_STATUS_OPTIONS = [
   "Pending",
   "Closed"
 ];
+const EZRTS_MAPPING_PAGE_ID = "11204624385";
+const EZRTS_MAPPING_SOURCE_URL =
+  "https://golfnow.atlassian.net/wiki/spaces/PRO/pages/11204624385/G1+Stage+Multi-Tenant+EZRTS+Test+Locations";
+const EZRTS_MAPPING_REFRESH_SECONDS = 300;
 const DEFAULT_LIVE_ARTIFACT_ORIGIN = "https://raw.githubusercontent.com/DewanKabir009/jira-board-v3001-124-0/master";
 const LIVE_ARTIFACT_EXACT_PATHS = new Set([
   "/dashboard-data.json",
@@ -46,6 +50,7 @@ const WORKER_ROUTES = [
   "GET /dashboard-data.json",
   "GET /boards.json",
   "GET /assets/jira-media/*",
+  "GET /api/ezrts/mapping",
   "GET /api/ai/status",
   "POST /api/ai/release-summary",
   "POST /api/ai/chat",
@@ -70,6 +75,10 @@ export default {
 
     if (isLiveArtifactPath(url.pathname)) {
       return serveLiveArtifact(request, env, url);
+    }
+
+    if (url.pathname === "/api/ezrts/mapping") {
+      return handleEzrtsMapping(request, env, url);
     }
 
     if (url.pathname === "/api/ai/status") {
@@ -368,6 +377,331 @@ function liveArtifactHeaders(sourceHeaders, source, warning, pathname = "") {
   return headers;
 }
 
+async function handleEzrtsMapping(request, env) {
+  const method = request.method.toUpperCase();
+  if (!["GET", "HEAD"].includes(method)) {
+    return jsonResponse({ ok: false, message: "Use GET for EZRTS mapping data." }, 405);
+  }
+
+  try {
+    const mapping = await fetchEzrtsMappingFromConfluence(env);
+    return ezrtsMappingResponse(mapping, method, "confluence-live");
+  } catch (error) {
+    return ezrtsMappingResponse({
+      ok: false,
+      schemaVersion: "hq-ezrts-mapping/v1",
+      title: "G1 Stage Multi-Tenant EZRTS Test Locations",
+      space: "PRO",
+      spaceName: "ETN Engineering",
+      sourcePageId: EZRTS_MAPPING_PAGE_ID,
+      sourceUrl: EZRTS_MAPPING_SOURCE_URL,
+      sourceLastModified: "Unknown",
+      sourceAuthor: "Unknown",
+      pulledAt: new Date().toISOString(),
+      pulledAtDisplay: formatShortDateTime(new Date().toISOString()),
+      refreshSeconds: EZRTS_MAPPING_REFRESH_SECONDS,
+      status: "error",
+      message: `Confluence EZRTS mapping could not be refreshed: ${sanitizePlainText(error?.message || "unknown error", 220)}`,
+      sections: []
+    }, method, "confluence-error", 502);
+  }
+}
+
+function ezrtsMappingResponse(payload, method, source, status = 200) {
+  return new Response(method === "HEAD" ? null : JSON.stringify(payload, null, 2), {
+    status,
+    headers: {
+      "content-type": "application/json; charset=utf-8",
+      "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
+      "pragma": "no-cache",
+      "expires": "0",
+      "x-core-qa-cache-policy": "live-artifact",
+      "x-core-qa-ezrts-source": source
+    }
+  });
+}
+
+async function fetchEzrtsMappingFromConfluence(env) {
+  const auth = confluenceAuthHeader(env);
+  if (!auth) {
+    throw new Error("JIRA_EMAIL plus JIRA_MCP_TOKEN/JIRA_API_TOKEN are required for Confluence page refresh.");
+  }
+
+  const site = (env.JIRA_SITE_URL || "https://golfnow.atlassian.net").replace(/\/+$/g, "");
+  const endpoint = `${site}/wiki/rest/api/content/${EZRTS_MAPPING_PAGE_ID}?expand=body.storage,version,space,history.lastUpdated,history.createdBy`;
+  const response = await fetch(endpoint, {
+    headers: {
+      authorization: auth,
+      accept: "application/json"
+    },
+    cf: {
+      cacheTtl: 0,
+      cacheEverything: false
+    }
+  });
+  const text = await response.text();
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status} from ${endpoint}`);
+  }
+
+  const payload = JSON.parse(text);
+  const sections = normalizeEzrtsSections(payload?.body?.storage?.value || "");
+  if (!sections.length) {
+    throw new Error("Confluence page did not contain parseable EZRTS mapping tables.");
+  }
+
+  const modifiedAt = payload?.version?.when || payload?.history?.lastUpdated?.when || "";
+  const author =
+    payload?.version?.by?.displayName ||
+    payload?.history?.lastUpdated?.by?.displayName ||
+    payload?.history?.createdBy?.displayName ||
+    "Unknown";
+
+  return {
+    ok: true,
+    schemaVersion: "hq-ezrts-mapping/v1",
+    title: payload?.title || "G1 Stage Multi-Tenant EZRTS Test Locations",
+    space: payload?.space?.key || "PRO",
+    spaceName: payload?.space?.name || "ETN Engineering",
+    sourcePageId: String(payload?.id || EZRTS_MAPPING_PAGE_ID),
+    sourceUrl: EZRTS_MAPPING_SOURCE_URL,
+    sourceLastModified: modifiedAt ? formatShortDateTime(modifiedAt) : "Unknown",
+    sourceAuthor: author,
+    pulledAt: new Date().toISOString(),
+    pulledAtDisplay: formatShortDateTime(new Date().toISOString()),
+    refreshSeconds: EZRTS_MAPPING_REFRESH_SECONDS,
+    status: "loaded",
+    notes: "Live-normalized from the Confluence PRO mapping page by the Legacy HQ Worker.",
+    sections,
+    relatedLinks: extractEzrtsRelatedLinks(payload?.body?.storage?.value || "")
+  };
+}
+
+function confluenceAuthHeader(env) {
+  const email = env.JIRA_EMAIL || env.ATLASSIAN_EMAIL || "";
+  const token = env.JIRA_MCP_TOKEN || env.JIRA_API_TOKEN || env.ATLASSIAN_API_TOKEN || "";
+  if (!email || !token) {
+    return "";
+  }
+  return `Basic ${btoa(`${email}:${token}`)}`;
+}
+
+function normalizeEzrtsSections(html) {
+  const blocks = String(html || "").match(/<h([1-4])\b[\s\S]*?<\/h\1>|<table\b[\s\S]*?<\/table>/gi) || [];
+  const byId = new Map();
+  let activeHeading = "G1_001_Stage Manual locations";
+
+  for (const block of blocks) {
+    if (/^<h[1-4]\b/i.test(block)) {
+      activeHeading = normalizeConfluenceText(block) || activeHeading;
+      continue;
+    }
+
+    const rows = parseEzrtsTable(block);
+    if (!rows.length) {
+      continue;
+    }
+
+    const id = ezrtsSectionId(activeHeading, byId.size);
+    const section = byId.get(id) || {
+      id,
+      name: ezrtsSectionName(activeHeading, id),
+      summary: ezrtsSectionSummary(id),
+      rows: []
+    };
+    section.rows.push(...rows);
+    byId.set(id, section);
+  }
+
+  return [...byId.values()];
+}
+
+function parseEzrtsTable(tableHtml) {
+  const parsedRows = (String(tableHtml || "").match(/<tr\b[\s\S]*?<\/tr>/gi) || [])
+    .map((row) => ({
+      isHeader: /<th\b/i.test(row),
+      cells: (row.match(/<t[dh]\b[\s\S]*?<\/t[dh]>/gi) || []).map(parseEzrtsCell)
+    }))
+    .filter((row) => row.cells.length);
+
+  if (parsedRows.length < 2) {
+    return [];
+  }
+
+  const headerRow = parsedRows.find((row) => row.isHeader) || parsedRows[0];
+  const headers = headerRow.cells.map((cell) => normalizeHeader(cell.text));
+  const dataRows = parsedRows.slice(parsedRows.indexOf(headerRow) + 1);
+
+  return dataRows
+    .map((row) => normalizeEzrtsRow(headers, row.cells))
+    .filter((row) => row && (row.accountName || row.locationName || row.ezFacilityId || row.gncFacilityId));
+}
+
+function parseEzrtsCell(cellHtml) {
+  const links = [];
+  String(cellHtml || "").replace(/href=["']([^"']+)["']/gi, (_match, href) => {
+    const decoded = decodeHtmlEntities(href);
+    links.push(decoded.startsWith("http") ? decoded : `https://golfnow.atlassian.net${decoded.startsWith("/") ? decoded : `/${decoded}`}`);
+    return "";
+  });
+
+  return {
+    text: normalizeConfluenceText(cellHtml),
+    links
+  };
+}
+
+function normalizeEzrtsRow(headers, cells) {
+  const account = ezrtsCell(headers, cells, [/account/, /name/], 0);
+  const brand = ezrtsCell(headers, cells, [/brand/], 1);
+  const g1Created = ezrtsCell(headers, cells, [/g1.*created/, /location.*created/, /created/], 2);
+  const location = ezrtsCell(headers, cells, [/location.*name/, /ez.*location/], 3);
+  const ezFacility = ezrtsCell(headers, cells, [/ez.*facility/, /facility.*id/], 4);
+  const ezCourses = ezrtsCell(headers, cells, [/course.*id/, /ezl.*course/], 5);
+  const gncFacility = ezrtsCell(headers, cells, [/gnc.*facility.*id/], 6);
+  const gncFacilityName = ezrtsCell(headers, cells, [/gnc.*facility.*name/, /gnc.*name/], 7);
+  const setup = ezrtsCell(headers, cells, [/setup/], 8);
+  const interfaceConfiguration = ezrtsCell(headers, cells, [/interface/], 9);
+  const bookingEngine = ezrtsCell(headers, cells, [/booking.*engine.*link/, /\bbe\b.*link/], 10);
+  const gncBooking = ezrtsCell(headers, cells, [/gnc.*booking/], 11);
+  const beBooking = ezrtsCell(headers, cells, [/booking.*engine.*booking/, /\bbe\b.*booking/], 12);
+  const notes = ezrtsCell(headers, cells, [/note/, /comment/], 13);
+  const link = firstCellLink(bookingEngine) || firstUrl(bookingEngine.text);
+
+  return {
+    accountName: account.text,
+    brand: brand.text,
+    g1EzLocationCreated: g1Created.text,
+    locationName: location.text || account.text,
+    ezFacilityId: firstNumber(ezFacility.text),
+    ezCourseIds: numericList(ezCourses.text),
+    gncFacilityId: firstNumber(gncFacility.text),
+    gncFacilityName: gncFacilityName.text,
+    setup: setup.text,
+    interfaceConfiguration: interfaceConfiguration.text,
+    bookingEngineLink: link,
+    gncBooking: gncBooking.text,
+    bookingEngineBooking: beBooking.text,
+    notes: notes.text,
+    status: inferEzrtsStatus([account, brand, g1Created, location, ezFacility, ezCourses, gncFacility, gncFacilityName, setup, interfaceConfiguration, bookingEngine, gncBooking, beBooking, notes])
+  };
+}
+
+function ezrtsCell(headers, cells, patterns, fallbackIndex) {
+  const index = headers.findIndex((header) => patterns.some((pattern) => pattern.test(header)));
+  return cells[index >= 0 ? index : fallbackIndex] || { text: "", links: [] };
+}
+
+function inferEzrtsStatus(cells) {
+  const text = cells.map((cell) => cell.text).join(" ").toLowerCase();
+  if (/\berror\b|not being|not mapped|connection error|failed/.test(text)) return "risk";
+  if (/\bwip\b|work in progress/.test(text)) return "wip";
+  if (/\blinked\b|https?:\/\//.test(text)) return "linked";
+  if (/setup checked|\by\s*\/\s*y\b|created/.test(text)) return "ready";
+  return "linked";
+}
+
+function ezrtsSectionId(heading, index) {
+  const lower = String(heading || "").toLowerCase();
+  if (lower.includes("automation")) return "automation";
+  if (lower.includes("gift") || lower.includes("membership")) return "giftMembership";
+  if (lower.includes("manual")) return "manual";
+  return `mapping-${index + 1}`;
+}
+
+function ezrtsSectionName(heading, id) {
+  if (id === "manual") return "G1_001_Stage Manual locations";
+  if (id === "automation") return "G1_001_Stage Automation locations";
+  if (id === "giftMembership") return "Gift Certificate and Membership Validations from Booking Engine";
+  return sanitizePlainText(heading, 140) || "EZRTS mapping";
+}
+
+function ezrtsSectionSummary(id) {
+  if (id === "manual") return "Manual G1 Stage locations mapped to GNC AWS DEV.";
+  if (id === "automation") return "Automation G1 Stage location identifiers and EZL course mappings.";
+  if (id === "giftMembership") return "Booking Engine validation rows for gift certificate and membership checks.";
+  return "Confluence EZRTS mapping rows.";
+}
+
+function extractEzrtsRelatedLinks(html) {
+  const links = [];
+  String(html || "").replace(/<a\b[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi, (_match, href, label) => {
+    const text = normalizeConfluenceText(label);
+    const url = decodeHtmlEntities(href);
+    if (/brs|moved/i.test(text) || /11296965553/.test(url)) {
+      links.push({
+        label: text || "Related Confluence page",
+        url: url.startsWith("http") ? url : `https://golfnow.atlassian.net${url.startsWith("/") ? url : `/${url}`}`
+      });
+    }
+    return "";
+  });
+  return links;
+}
+
+function normalizeHeader(value) {
+  return normalizeConfluenceText(value).toLowerCase().replace(/\s+/g, " ");
+}
+
+function normalizeConfluenceText(html) {
+  return decodeHtmlEntities(String(html || "")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/p>|<\/li>|<\/tr>/gi, "\n")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim());
+}
+
+function decodeHtmlEntities(value) {
+  return String(value || "").replace(/&(#x?[0-9a-f]+|[a-z]+);/gi, (entity, code) => {
+    const lower = code.toLowerCase();
+    if (lower.startsWith("#x")) return String.fromCharCode(parseInt(lower.slice(2), 16));
+    if (lower.startsWith("#")) return String.fromCharCode(parseInt(lower.slice(1), 10));
+    return {
+      amp: "&",
+      lt: "<",
+      gt: ">",
+      quot: "\"",
+      apos: "'",
+      nbsp: " "
+    }[lower] || entity;
+  });
+}
+
+function numericList(value) {
+  return [...new Set(String(value || "").match(/\b\d{4,}\b/g) || [])];
+}
+
+function firstNumber(value) {
+  return numericList(value)[0] || "";
+}
+
+function firstCellLink(cell) {
+  return Array.isArray(cell?.links) ? cell.links.find(Boolean) || "" : "";
+}
+
+function firstUrl(value) {
+  const match = String(value || "").match(/https?:\/\/[^\s)]+/i);
+  return match ? match[0] : "";
+}
+
+function formatShortDateTime(value) {
+  try {
+    return new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      timeZone: "America/New_York",
+      timeZoneName: "short"
+    }).format(new Date(value));
+  } catch {
+    return String(value || "Unknown");
+  }
+}
+
 function isLiveArtifactPath(pathname) {
   const artifactPath = normalizeLiveArtifactPath(pathname);
   return LIVE_ARTIFACT_EXACT_PATHS.has(artifactPath) || artifactPath.startsWith("/assets/jira-media/");
@@ -407,6 +741,18 @@ async function serveFreshAsset(request, env) {
 
   if (rewrittenPath) {
     headers.set("x-core-qa-asset-rewrite", rewrittenPath);
+  }
+
+  if (shouldDecorateLegacyHqShell(request, response, url.pathname)) {
+    const html = await response.text();
+    headers.set("content-type", "text/html; charset=utf-8");
+    headers.set("x-core-qa-hq-shell-decorated", "ezrts-link");
+
+    return new Response(decorateLegacyHqShell(html, env), {
+      status: response.status,
+      statusText: response.statusText,
+      headers
+    });
   }
 
   return new Response(response.body, {
@@ -464,6 +810,37 @@ function shouldBypassAssetCache(pathname) {
     pathname.endsWith("/dashboard-data.json") ||
     pathname.endsWith("/boards.json")
   );
+}
+
+function shouldDecorateLegacyHqShell(request, response, pathname) {
+  if (request.method.toUpperCase() !== "GET" || response.status !== 200) {
+    return false;
+  }
+
+  const contentType = response.headers.get("content-type") || "";
+  return (
+    contentType.includes("text/html") &&
+    (pathname === "/hq" || pathname === "/hq/" || pathname === "/hq/index.html")
+  );
+}
+
+function decorateLegacyHqShell(html, env) {
+  const mordernBase = (env.MORDERN_HQ_URL || "https://core-qa-mordern-hq-124.dfkabir253.workers.dev/").replace(/\/+$/g, "");
+  const ezrtsUrl = `${mordernBase}/#ezrts`;
+  let nextHtml = html;
+
+  if (!nextHtml.includes(`href="${ezrtsUrl}"`)) {
+    nextHtml = nextHtml.replace(
+      '<a href="#status">Operations status</a>',
+      `<a href="#status">Operations status</a> <a href="${ezrtsUrl}">EZRTS</a>`
+    );
+    nextHtml = nextHtml.replace(
+      '<a href="#automation">Runbook</a>',
+      `<a href="#automation">Runbook</a> <a href="${ezrtsUrl}">EZRTS mapping</a>`
+    );
+  }
+
+  return nextHtml;
 }
 
 async function handleAsanaStatus(env, url) {
