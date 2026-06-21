@@ -4,11 +4,13 @@ CORE QA Headquarters is the current QA hub pilot for the CORE project. The `.124
 
 The hub keeps the existing Jira board usable, then layers in release-board navigation, a knowledge base, approved automation, operational health, and AI-assisted release summaries.
 
+The Knowledge Base now sends the NY State One Click Cancellation flow to the Mordern HQ native documentation page at `https://core-qa-mordern-hq-124.dfkabir253.workers.dev/knowledge/ny-one-click-cancellation/` instead of relying on the inaccessible Notion page. The converted page uses a developer-doc layout with metadata, table of contents, validation matrix, execution steps, edge cases, evidence expectations, and a copy-ready leadership summary.
+
 The Legacy HQ shell links to the Mordern HQ EZRTS Mapping page, which renders the PRO Confluence `G1 Stage Multi-Tenant EZRTS Test Locations` source as native HQ cards and tables instead of an iframe.
 
 ## Live Links
 
-- Cloudflare HQ Worker: <https://core-qa-headquarters-124.dfkabir253.workers.dev/hq/>
+- Cloudflare HQ Worker: <https://core-qa-headquarters-124.dfkabir253.workers.dev/legacy-hq/>
 - Mordern HQ Worker: <https://core-qa-mordern-hq-124.dfkabir253.workers.dev/>
 - Cloudflare `.124` board: <https://core-qa-headquarters-124.dfkabir253.workers.dev/>
 - GitHub Pages HQ fallback: <https://dewankabir009.github.io/jira-board-v3001-124-0/modern/hq/>

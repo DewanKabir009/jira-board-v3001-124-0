@@ -1232,6 +1232,9 @@ async function serveFreshAsset(request, env) {
 
   if (shouldBypassAssetCache(url.pathname)) {
     headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
+    headers.set("cdn-cache-control", "no-store");
+    headers.set("cloudflare-cdn-cache-control", "no-store");
+    headers.set("surrogate-control", "no-store");
     headers.set("pragma", "no-cache");
     headers.set("expires", "0");
     headers.set("x-core-qa-cache-policy", "live-artifact");
@@ -1245,6 +1248,7 @@ async function serveFreshAsset(request, env) {
     const html = await response.text();
     headers.set("content-type", "text/html; charset=utf-8");
     headers.set("x-core-qa-hq-shell-decorated", "ezrts-link");
+    headers.set("x-core-qa-hq-shell-source-path", rewrittenPath || url.pathname);
 
     return new Response(decorateLegacyHqShell(html, env), {
       status: response.status,
@@ -1266,7 +1270,16 @@ async function fetchAssetWithFallbacks(request, env, url) {
   for (let index = 0; index < candidatePaths.length; index += 1) {
     const candidateUrl = new URL(url.toString());
     candidateUrl.pathname = candidatePaths[index];
-    const response = await env.ASSETS.fetch(new Request(candidateUrl.toString(), request));
+    candidateUrl.search = "";
+
+    const headers = new Headers(request.headers);
+    headers.set("cache-control", "no-store, no-cache, must-revalidate, max-age=0");
+    headers.set("pragma", "no-cache");
+
+    const response = await env.ASSETS.fetch(new Request(candidateUrl.toString(), {
+      method: request.method,
+      headers
+    }));
 
     if (response.status !== 404 || index === candidatePaths.length - 1) {
       return {
@@ -1279,6 +1292,19 @@ async function fetchAssetWithFallbacks(request, env, url) {
 
 function getAssetCandidatePaths(pathname) {
   const candidates = [pathname];
+
+  if (pathname === "/legacy-hq" || pathname === "/legacy-hq/" || pathname === "/legacy-hq/index.html") {
+    candidates.push("/hq/index.html");
+  }
+
+  if (pathname === "/hq" || pathname === "/hq/") {
+    candidates.push("/hq/index.html");
+  }
+
+  if (pathname === "/" || pathname === "") {
+    candidates.push("/index.html");
+  }
+
   const replacements = [
     [/^\/modern\/_astro\//, "/_astro/"],
     [/^\/modern\/assets\//, "/assets/"],
@@ -1302,6 +1328,8 @@ function getAssetCandidatePaths(pathname) {
 function shouldBypassAssetCache(pathname) {
   return (
     pathname === "/" ||
+    pathname === "/legacy-hq" ||
+    pathname === "/legacy-hq/" ||
     pathname === "/hq" ||
     pathname === "/hq/" ||
     pathname.endsWith(".html") ||
@@ -1318,7 +1346,14 @@ function shouldDecorateLegacyHqShell(request, response, pathname) {
   const contentType = response.headers.get("content-type") || "";
   return (
     contentType.includes("text/html") &&
-    (pathname === "/hq" || pathname === "/hq/" || pathname === "/hq/index.html")
+    (
+      pathname === "/hq" ||
+      pathname === "/hq/" ||
+      pathname === "/hq/index.html" ||
+      pathname === "/legacy-hq" ||
+      pathname === "/legacy-hq/" ||
+      pathname === "/legacy-hq/index.html"
+    )
   );
 }
 
@@ -5657,7 +5692,7 @@ function buildWorkerStatus(env) {
     },
     release: env.RELEASE_VERSION || "v3001.124.0",
     urls: {
-      legacy: env.CLOUDFLARE_HQ_URL || "https://core-qa-headquarters-124.dfkabir253.workers.dev/hq/",
+      legacy: env.CLOUDFLARE_HQ_URL || "https://core-qa-headquarters-124.dfkabir253.workers.dev/legacy-hq/",
       currentBoard: env.CLOUDFLARE_BOARD_URL || "https://core-qa-headquarters-124.dfkabir253.workers.dev/",
       mordern: env.MORDERN_HQ_URL || "https://core-qa-mordern-hq-124.dfkabir253.workers.dev/"
     },

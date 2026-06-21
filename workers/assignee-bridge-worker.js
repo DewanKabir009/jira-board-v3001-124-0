@@ -787,7 +787,7 @@ function handleBridgeLanding(request, env) {
   const assignUrl = new URL("/assign", url.origin).toString();
   const checklistUrl = new URL("/comment-checklist", url.origin).toString();
   const refreshUrl = new URL("/refresh", url.origin).toString();
-  const hqUrl = env.HQ_URL || "https://core-qa-headquarters-124.dfkabir253.workers.dev/hq/";
+  const hqUrl = env.HQ_URL || "https://core-qa-headquarters-124.dfkabir253.workers.dev/legacy-hq/";
   const boardUrl = env.BOARD_URL || "https://core-qa-headquarters-124.dfkabir253.workers.dev/";
   const repoList = parseList(env.ALLOWED_REPOSITORIES);
   const repoText = repoList.length ? repoList.join(", ") : "Not configured";

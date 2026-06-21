@@ -42,14 +42,14 @@ const mordernHqUrl = "https://core-qa-mordern-hq-124.dfkabir253.workers.dev/";
 const knowledgeBase = [
   {
     title: "NY State One Click Cancellation",
-    source: "Notion",
-    url: "https://zany-seer-d0e.notion.site/NY-STATE-ONE-CLICK-CANCELLATION-3651c22c014480b8b393ef3f40f294f3",
+    source: "HQ docs",
+    url: `${mordernHqUrl}knowledge/ny-one-click-cancellation/`,
     owner: "CORE QA",
-    status: "Live link",
+    status: "Converted",
     access: "QA Engineer",
-    freshness: "External source",
+    freshness: "HQ-native",
     summary: "Cancellation compliance flow reference for validating one-click cancellation coverage and expected reservation-state behavior.",
-    nextAction: "Open source page and attach structured test cases to this HQ registry.",
+    nextAction: "Use the converted HQ documentation page for step-by-step validation and evidence expectations.",
     tags: ["Cancellation", "Compliance", "Reservation"]
   },
   {
@@ -670,7 +670,7 @@ const awsFarmsDocumentJson = JSON.stringify(awsFarmsDocument).replace(/</g, "\\u
               </div>
             </dl>
             <div class="kb-actions">
-              <a href={knowledgeBase[0].url}>Open source</a>
+              <a href={knowledgeBase[0].url}>Open HQ doc</a>
               <a href="#access">Review access</a>
             </div>
           </article>
