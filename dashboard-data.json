@@ -4,10 +4,88 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-22T19:16:53.157Z",
-  "pulledAtDisplay": "Jun 22, 2026, 3:16 PM",
+  "pulledAt": "2026-06-22T19:22:06.179Z",
+  "pulledAtDisplay": "Jun 22, 2026, 3:22 PM",
   "total": 27,
   "issues": [
+    {
+      "key": "CORE-14479",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14479",
+      "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
+      "description": "Summary\n\nCORE needs to support the new cart/tax include parameter contract required by https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614 so RTS/EZRTS/EZP can receive a per-player/per-slot breakdown during tee-time/book, persist it in ETNv4, and send the correct values to G1/EZSuite POS during tender.\n\nThis is part of the forward path on the new booking API. It should not be treated as a legacy API remediation effort.\n\nCheck with @Juan Gonzalez\nhttps://golfnow.atlassian.net/browse/RTS-7614\n\n---\nExpected Behavior\n\n- CORE can provide the RTS-required optional cart/tax fields per player slot in the tee-time/book flow.\n\n- When values are present, CORE sends them exactly as calculated/known by CORE.\n\n- When values are absent, CORE omits them or sends null; CORE should not default or fabricate values.\n\n- RTS can use the received values as its exclusive source for the ETNv4 cart/tax breakdown tracked under https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614.\n\n---\nCurrent Behavior / Problem\n\n- https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614 is waiting on a CORE-side ticket to track the dependency for sending the new cart/tax parameter set.\n\n- Existing CORE/reservation models include external charge detail concepts, but RTS needs a specific per-slot parameter contract on tee-time/book for greens fee tax, cart fee, cart fee tax, and partial-prepay status.\n\n- Without CORE sending this breakdown, RTS cannot reliably persist the values needed for EZTP/EZRTS tender flows without deriving from unreliable ETNv4 fields.\n\n---\nScope Guardrails\n\n- Include the CORE-side request/DTO/model/mapping work needed to support the RTS-required parameter set on the new tee-time/book API path.\n\n- Include tests proving optional/null behavior and value preservation.\n\n- Do not implement a separate fix for the legacy booking API. For legacy API impact, the intended resolution is migration/use of the new API path.\n\n- Do not require RTS storage, ETNv4 schema changes, or POS tender packet changes in this CORE ticket; those are tracked by https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614.\n\n- Do not derive, supplement, or fall back to ETNv4 fields such as dbo.TeeOffTransactionAuditItem, dbo.CCAuthorization, or dbo.TTPrepaid.PrepaidFeeAmount.\n\n---\nRequested Parameters\n\nAll fields are optional and should be represented per slot/player where the booking contract supports slot-level detail.\n\n- includes_greens_fee_tax\n\n- greens_fee_tax_pct\n\n- greens_fee_tax_amount_ppd\n\n- greens_fee_tax_amount_due\n\n- includes_cart_fee\n\n- cart_fee_amount_ppd\n\n- cart_fee_amount_due\n\n- includes_cart_fee_tax\n\n- cart_fee_tax_pct\n\n- cart_fee_tax_amount_ppd\n\n- cart_fee_tax_amount_due\n\n- is_partial_prepaid\n\n---\nTechnical Notes\n\n- Source dependency: https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614, \"Support Cart/Tax Include Parameters on tee-time/book\".\n\n- Existing CORE code paths that may be relevant:\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Reservation/MakeReservationRequest.cs\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Reservation/Workflow/MakeReservation/Activities/MakeReservationActivity.cs\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Contracts/DataContracts/Order/Items/ExternalChargeDetails.cs\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Contracts/DataContracts/Order/Items/ExternalChargeLineItem.cs\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Service/Converters/ServiceBusinessMapingExtensions.cs\n\n- Internal Services/GolfNow.Services.Reservation/GolfNow.Services.Reservation.Provider/Workflow/Reservation/Activities/External/ApplyExternalChargeDetailsActivity.cs\n\n- Current local model names already include ExternalChargeDetails and ExternalChargeLineItem; engineering should decide whether to extend that structure or add a dedicated RTS-facing cart/tax breakdown model.\n\n---\nAcceptance Criteria\n\nExisting Behavior Preserved\n\n- Existing booking flows continue to work when no cart/tax include parameters are supplied.\n\n- Existing external charge detail behavior is not regressed for current callers.\n\nNew Behavior\n\n- [ ] CORE supports all RTS-requested parameters above as optional values in the new tee-time/book flow.\n\n- [ ] CORE sends provided values through to RTS without recalculating, defaulting, or deriving from ETNv4 fallback fields.\n\n- [ ] Omitted parameters remain absent/null downstream.\n\n- [ ] Per-slot/player data remains associated with the correct booked player/slot.\n\n- [ ] Unit and/or integration coverage validates populated, partially populated, and omitted parameter sets.\n\nNot Included Unless Product Expands Scope\n\n- No legacy booking API remediation is included in this story.\n\n- No RTS ETNv4 persistence or POS tender payload implementation is included in this story.\n\n---\nTest Matrix\n\nScenario\n\nExpected Result\n\ntee-time/book with all cart/tax fields populated\n\nValues are accepted and passed downstream exactly as supplied.\n\ntee-time/book with only greens fee tax values populated\n\nPopulated values pass downstream; omitted cart/cart tax values remain null/absent.\n\ntee-time/book with no new fields\n\nExisting booking behavior remains unchanged.\n\nMulti-player booking with different per-slot values\n\nEach slot retains its own cart/tax breakdown.\n\nPartial prepaid booking\n\nis_partial_prepaid and ppd/due splits reflect the supplied values.\n\n---\nOpen Questions / Product Decisions\n\n- Confirm the final wire-format and field casing expected by RTS for tee-time/book.\n\n- Confirm whether the CORE source of truth should be the existing ExternalChargeDetails/line-item model or a dedicated cart/tax include DTO.\n\n- Confirm whether is_partial_prepaid should remain a Boolean even though https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614 currently describes both not-prepaid and fully-prepaid as No.\n\n---\nRelated\n\n- https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\n\n- https://golfnow.atlassian.net/browse/RTS-4339#icft=RTS-4339\n\n- https://golfnow.atlassian.net/browse/TTSUPPORT-7211#icft=TTSUPPORT-7211\n\nCommunication Note\n\nFor https://golfnow.atlassian.net/browse/TTSUPPORT-7307#icft=TTSUPPORT-7307/new-vs-legacy wording: CORE resolved the issue on the new booking API path. The intended resolution for legacy API exposure is migration/use of the new API, not a separate legacy investigation under this ticket.",
+      "descriptionHtml": "<h3>Summary</h3><p>CORE needs to support the new cart/tax include parameter contract required by <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a> so RTS/EZRTS/EZP can receive a per-player/per-slot breakdown during <code>tee-time/book</code>, persist it in ETNv4, and send the correct values to G1/EZSuite POS during tender.</p><p>This is part of the forward path on the new booking API. It should not be treated as a legacy API remediation effort.</p><p>Check with @Juan Gonzalez <br><a href=\"https://golfnow.atlassian.net/browse/RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614</a> </p><hr><h3>Expected Behavior</h3><ul><li><p>CORE can provide the RTS-required optional cart/tax fields per player slot in the <code>tee-time/book</code> flow.</p></li><li><p>When values are present, CORE sends them exactly as calculated/known by CORE.</p></li><li><p>When values are absent, CORE omits them or sends null; CORE should not default or fabricate values.</p></li><li><p>RTS can use the received values as its exclusive source for the ETNv4 cart/tax breakdown tracked under <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a>.</p></li></ul><hr><h3>Current Behavior / Problem</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a> is waiting on a CORE-side ticket to track the dependency for sending the new cart/tax parameter set.</p></li><li><p>Existing CORE/reservation models include external charge detail concepts, but RTS needs a specific per-slot parameter contract on <code>tee-time/book</code> for greens fee tax, cart fee, cart fee tax, and partial-prepay status.</p></li><li><p>Without CORE sending this breakdown, RTS cannot reliably persist the values needed for EZTP/EZRTS tender flows without deriving from unreliable ETNv4 fields.</p></li></ul><hr><h3>Scope Guardrails</h3><ul><li><p>Include the CORE-side request/DTO/model/mapping work needed to support the RTS-required parameter set on the new <code>tee-time/book</code> API path.</p></li><li><p>Include tests proving optional/null behavior and value preservation.</p></li><li><p>Do not implement a separate fix for the legacy booking API. For legacy API impact, the intended resolution is migration/use of the new API path.</p></li><li><p>Do not require RTS storage, ETNv4 schema changes, or POS tender packet changes in this CORE ticket; those are tracked by <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a>.</p></li><li><p>Do not derive, supplement, or fall back to ETNv4 fields such as <code>dbo.TeeOffTransactionAuditItem</code>, <code>dbo.CCAuthorization</code>, or <code>dbo.TTPrepaid.PrepaidFeeAmount</code>.</p></li></ul><hr><h3>Requested Parameters</h3><p>All fields are optional and should be represented per slot/player where the booking contract supports slot-level detail.</p><ul><li><p><code>includes_greens_fee_tax</code></p></li><li><p><code>greens_fee_tax_pct</code></p></li><li><p><code>greens_fee_tax_amount_ppd</code></p></li><li><p><code>greens_fee_tax_amount_due</code></p></li><li><p><code>includes_cart_fee</code></p></li><li><p><code>cart_fee_amount_ppd</code></p></li><li><p><code>cart_fee_amount_due</code></p></li><li><p><code>includes_cart_fee_tax</code></p></li><li><p><code>cart_fee_tax_pct</code></p></li><li><p><code>cart_fee_tax_amount_ppd</code></p></li><li><p><code>cart_fee_tax_amount_due</code></p></li><li><p><code>is_partial_prepaid</code></p></li></ul><hr><h3>Technical Notes</h3><ul><li><p>Source dependency: <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a>, &quot;Support Cart/Tax Include Parameters on tee-time/book&quot;.</p></li><li><p>Existing CORE code paths that may be relevant:</p><ul><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Reservation/MakeReservationRequest.cs</code></p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Reservation/Workflow/MakeReservation/Activities/MakeReservationActivity.cs</code></p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Contracts/DataContracts/Order/Items/ExternalChargeDetails.cs</code></p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Contracts/DataContracts/Order/Items/ExternalChargeLineItem.cs</code></p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Service/Converters/ServiceBusinessMapingExtensions.cs</code></p></li><li><p><code>Internal Services/GolfNow.Services.Reservation/GolfNow.Services.Reservation.Provider/Workflow/Reservation/Activities/External/ApplyExternalChargeDetailsActivity.cs</code></p></li></ul></li><li><p>Current local model names already include <code>ExternalChargeDetails</code> and <code>ExternalChargeLineItem</code>; engineering should decide whether to extend that structure or add a dedicated RTS-facing cart/tax breakdown model.</p></li></ul><hr><h3>Acceptance Criteria</h3><h3>Existing Behavior Preserved</h3><ul><li><p>Existing booking flows continue to work when no cart/tax include parameters are supplied.</p></li><li><p>Existing external charge detail behavior is not regressed for current callers.</p></li></ul><h3>New Behavior</h3><ul><li><p>[ ] CORE supports all RTS-requested parameters above as optional values in the new <code>tee-time/book</code> flow.</p></li><li><p>[ ] CORE sends provided values through to RTS without recalculating, defaulting, or deriving from ETNv4 fallback fields.</p></li><li><p>[ ] Omitted parameters remain absent/null downstream.</p></li><li><p>[ ] Per-slot/player data remains associated with the correct booked player/slot.</p></li><li><p>[ ] Unit and/or integration coverage validates populated, partially populated, and omitted parameter sets.</p></li></ul><h3>Not Included Unless Product Expands Scope</h3><ul><li><p>No legacy booking API remediation is included in this story.</p></li><li><p>No RTS ETNv4 persistence or POS tender payload implementation is included in this story.</p></li></ul><hr><h3>Test Matrix</h3><div class=\"description-table-wrap\"><table><tr><th><p><strong>Scenario</strong></p></th><th><p><strong>Expected Result</strong></p></th></tr><tr><td><p><code>tee-time/book</code> with all cart/tax fields populated</p></td><td><p>Values are accepted and passed downstream exactly as supplied.</p></td></tr><tr><td><p><code>tee-time/book</code> with only greens fee tax values populated</p></td><td><p>Populated values pass downstream; omitted cart/cart tax values remain null/absent.</p></td></tr><tr><td><p><code>tee-time/book</code> with no new fields</p></td><td><p>Existing booking behavior remains unchanged.</p></td></tr><tr><td><p>Multi-player booking with different per-slot values</p></td><td><p>Each slot retains its own cart/tax breakdown.</p></td></tr><tr><td><p>Partial prepaid booking</p></td><td><p><code>is_partial_prepaid</code> and ppd/due splits reflect the supplied values.</p></td></tr></table></div><hr><h3>Open Questions / Product Decisions</h3><ul><li><p>Confirm the final wire-format and field casing expected by RTS for <code>tee-time/book</code>.</p></li><li><p>Confirm whether the CORE source of truth should be the existing <code>ExternalChargeDetails</code>/line-item model or a dedicated cart/tax include DTO.</p></li><li><p>Confirm whether <code>is_partial_prepaid</code> should remain a Boolean even though <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a> currently describes both not-prepaid and fully-prepaid as <code>No</code>.</p></li></ul><hr><h3>Related</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a></p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-4339#icft=RTS-4339\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-4339#icft=RTS-4339</a></p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/TTSUPPORT-7211#icft=TTSUPPORT-7211\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/TTSUPPORT-7211#icft=TTSUPPORT-7211</a></p></li></ul><h3>Communication Note</h3><p>For <a href=\"https://golfnow.atlassian.net/browse/TTSUPPORT-7307#icft=TTSUPPORT-7307\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/TTSUPPORT-7307#icft=TTSUPPORT-7307</a>/new-vs-legacy wording: CORE resolved the issue on the new booking API path. The intended resolution for legacy API exposure is migration/use of the new API, not a separate legacy investigation under this ticket.</p>",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 2,
+      "comments": [
+        {
+          "id": "1181127",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181127",
+          "author": "Tyler Olechnowicz",
+          "authorAccountId": "5d2396c1ea26c40c2043fc92",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+          "created": "2026-06-09T19:13:09.180-0400",
+          "createdDisplay": "Jun 9, 2026, 7:13 PM",
+          "updated": "2026-06-09T19:13:09.180-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "QA Test Instructions\n\n- Book a tee time reservation using a rate set configured for the EZL tee sheet and the new EZL API.\n\n- Verify the reservation is created successfully.\n\n- Coordinate with the EZL team to review the tee-time/book request received by EZL.\n\n- Confirm the new prepaid_and_tax fields are present and populated as expected by EZL.\n\n- Repeat the test with:\n\n- A tax-exclusive tee time.\n\n- A tax-inclusive tee time.\n\n- For both scenarios, validate with the EZL team that the fee, tax, and tax-inclusion values received by EZL match the expected reservation pricing.",
+          "bodyHtml": "<h3>QA Test Instructions</h3><ol><li><p>Book a tee time reservation using a rate set configured for the EZL tee sheet and the new EZL API.</p></li><li><p>Verify the reservation is created successfully.</p></li><li><p>Coordinate with the EZL team to review the <code>tee-time/book</code> request received by EZL.</p></li><li><p>Confirm the new <code>prepaid_and_tax</code> fields are present and populated as expected by EZL.</p></li><li><p>Repeat the test with:</p><ul><li><p>A tax-exclusive tee time.</p></li><li><p>A tax-inclusive tee time.</p></li></ul></li><li><p>For both scenarios, validate with the EZL team that the fee, tax, and tax-inclusion values received by EZL match the expected reservation pricing.</p></li></ol>"
+        },
+        {
+          "id": "1181313",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181313",
+          "author": "Tyler Olechnowicz",
+          "authorAccountId": "5d2396c1ea26c40c2043fc92",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+          "created": "2026-06-10T09:30:38.815-0400",
+          "createdDisplay": "Jun 10, 2026, 9:30 AM",
+          "updated": "2026-06-10T09:30:38.815-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "Note: No changes were made to the existing green_fee payload. Per EZL guidance, these amounts should continue to include both greens fee and cart fee values. Cart fee and tax breakdowns are now provided separately in the prepaid_and_tax object.",
+          "bodyHtml": "<p>Note: No changes were made to the existing <code>green_fee</code> payload. Per EZL guidance, these amounts should continue to include both greens fee and cart fee values. Cart fee and tax breakdowns are now provided separately in the <code>prepaid_and_tax</code> object.</p>"
+        }
+      ],
+      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181313",
+      "lastCommentDisplay": "Jun 10, 2026, 9:30 AM",
+      "lastCommentAuthor": "Tyler Olechnowicz",
+      "testChecklist": null,
+      "type": "Story",
+      "isSubtask": false,
+      "status": "QA Testing (DEV)",
+      "priority": "P1",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+      "assignedDeveloper": "Tyler Olechnowicz",
+      "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+      "updated": "2026-06-22T15:20:20.194-0400",
+      "updatedDisplay": "Jun 22, 2026, 3:20 PM",
+      "created": "2026-05-18T12:36:39.447-0400",
+      "createdDisplay": "May 18, 2026, 12:36 PM",
+      "components": [
+        "GolfNow.Services.Reservation",
+        "GolfNow.Services.TeeSheet"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [
+        {
+          "name": "2026.8"
+        }
+      ],
+      "sprintNames": [
+        "2026.8"
+      ],
+      "resolution": "",
+      "parent": null
+    },
     {
       "key": "CORE-14529",
       "url": "https://golfnow.atlassian.net/browse/CORE-14529",
@@ -111,84 +189,6 @@
         "status": "Pending Deployment (DEV)",
         "priority": "None"
       }
-    },
-    {
-      "key": "CORE-14479",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14479",
-      "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
-      "description": "Summary\n\nCORE needs to support the new cart/tax include parameter contract required by https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614 so RTS/EZRTS/EZP can receive a per-player/per-slot breakdown during tee-time/book, persist it in ETNv4, and send the correct values to G1/EZSuite POS during tender.\n\nThis is part of the forward path on the new booking API. It should not be treated as a legacy API remediation effort.\n\nCheck with @Juan Gonzalez\nhttps://golfnow.atlassian.net/browse/RTS-7614\n\n---\nExpected Behavior\n\n- CORE can provide the RTS-required optional cart/tax fields per player slot in the tee-time/book flow.\n\n- When values are present, CORE sends them exactly as calculated/known by CORE.\n\n- When values are absent, CORE omits them or sends null; CORE should not default or fabricate values.\n\n- RTS can use the received values as its exclusive source for the ETNv4 cart/tax breakdown tracked under https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614.\n\n---\nCurrent Behavior / Problem\n\n- https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614 is waiting on a CORE-side ticket to track the dependency for sending the new cart/tax parameter set.\n\n- Existing CORE/reservation models include external charge detail concepts, but RTS needs a specific per-slot parameter contract on tee-time/book for greens fee tax, cart fee, cart fee tax, and partial-prepay status.\n\n- Without CORE sending this breakdown, RTS cannot reliably persist the values needed for EZTP/EZRTS tender flows without deriving from unreliable ETNv4 fields.\n\n---\nScope Guardrails\n\n- Include the CORE-side request/DTO/model/mapping work needed to support the RTS-required parameter set on the new tee-time/book API path.\n\n- Include tests proving optional/null behavior and value preservation.\n\n- Do not implement a separate fix for the legacy booking API. For legacy API impact, the intended resolution is migration/use of the new API path.\n\n- Do not require RTS storage, ETNv4 schema changes, or POS tender packet changes in this CORE ticket; those are tracked by https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614.\n\n- Do not derive, supplement, or fall back to ETNv4 fields such as dbo.TeeOffTransactionAuditItem, dbo.CCAuthorization, or dbo.TTPrepaid.PrepaidFeeAmount.\n\n---\nRequested Parameters\n\nAll fields are optional and should be represented per slot/player where the booking contract supports slot-level detail.\n\n- includes_greens_fee_tax\n\n- greens_fee_tax_pct\n\n- greens_fee_tax_amount_ppd\n\n- greens_fee_tax_amount_due\n\n- includes_cart_fee\n\n- cart_fee_amount_ppd\n\n- cart_fee_amount_due\n\n- includes_cart_fee_tax\n\n- cart_fee_tax_pct\n\n- cart_fee_tax_amount_ppd\n\n- cart_fee_tax_amount_due\n\n- is_partial_prepaid\n\n---\nTechnical Notes\n\n- Source dependency: https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614, \"Support Cart/Tax Include Parameters on tee-time/book\".\n\n- Existing CORE code paths that may be relevant:\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Reservation/MakeReservationRequest.cs\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Reservation/Workflow/MakeReservation/Activities/MakeReservationActivity.cs\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Contracts/DataContracts/Order/Items/ExternalChargeDetails.cs\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Contracts/DataContracts/Order/Items/ExternalChargeLineItem.cs\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Service/Converters/ServiceBusinessMapingExtensions.cs\n\n- Internal Services/GolfNow.Services.Reservation/GolfNow.Services.Reservation.Provider/Workflow/Reservation/Activities/External/ApplyExternalChargeDetailsActivity.cs\n\n- Current local model names already include ExternalChargeDetails and ExternalChargeLineItem; engineering should decide whether to extend that structure or add a dedicated RTS-facing cart/tax breakdown model.\n\n---\nAcceptance Criteria\n\nExisting Behavior Preserved\n\n- Existing booking flows continue to work when no cart/tax include parameters are supplied.\n\n- Existing external charge detail behavior is not regressed for current callers.\n\nNew Behavior\n\n- [ ] CORE supports all RTS-requested parameters above as optional values in the new tee-time/book flow.\n\n- [ ] CORE sends provided values through to RTS without recalculating, defaulting, or deriving from ETNv4 fallback fields.\n\n- [ ] Omitted parameters remain absent/null downstream.\n\n- [ ] Per-slot/player data remains associated with the correct booked player/slot.\n\n- [ ] Unit and/or integration coverage validates populated, partially populated, and omitted parameter sets.\n\nNot Included Unless Product Expands Scope\n\n- No legacy booking API remediation is included in this story.\n\n- No RTS ETNv4 persistence or POS tender payload implementation is included in this story.\n\n---\nTest Matrix\n\nScenario\n\nExpected Result\n\ntee-time/book with all cart/tax fields populated\n\nValues are accepted and passed downstream exactly as supplied.\n\ntee-time/book with only greens fee tax values populated\n\nPopulated values pass downstream; omitted cart/cart tax values remain null/absent.\n\ntee-time/book with no new fields\n\nExisting booking behavior remains unchanged.\n\nMulti-player booking with different per-slot values\n\nEach slot retains its own cart/tax breakdown.\n\nPartial prepaid booking\n\nis_partial_prepaid and ppd/due splits reflect the supplied values.\n\n---\nOpen Questions / Product Decisions\n\n- Confirm the final wire-format and field casing expected by RTS for tee-time/book.\n\n- Confirm whether the CORE source of truth should be the existing ExternalChargeDetails/line-item model or a dedicated cart/tax include DTO.\n\n- Confirm whether is_partial_prepaid should remain a Boolean even though https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614 currently describes both not-prepaid and fully-prepaid as No.\n\n---\nRelated\n\n- https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\n\n- https://golfnow.atlassian.net/browse/RTS-4339#icft=RTS-4339\n\n- https://golfnow.atlassian.net/browse/TTSUPPORT-7211#icft=TTSUPPORT-7211\n\nCommunication Note\n\nFor https://golfnow.atlassian.net/browse/TTSUPPORT-7307#icft=TTSUPPORT-7307/new-vs-legacy wording: CORE resolved the issue on the new booking API path. The intended resolution for legacy API exposure is migration/use of the new API, not a separate legacy investigation under this ticket.",
-      "descriptionHtml": "<h3>Summary</h3><p>CORE needs to support the new cart/tax include parameter contract required by <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a> so RTS/EZRTS/EZP can receive a per-player/per-slot breakdown during <code>tee-time/book</code>, persist it in ETNv4, and send the correct values to G1/EZSuite POS during tender.</p><p>This is part of the forward path on the new booking API. It should not be treated as a legacy API remediation effort.</p><p>Check with @Juan Gonzalez <br><a href=\"https://golfnow.atlassian.net/browse/RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614</a> </p><hr><h3>Expected Behavior</h3><ul><li><p>CORE can provide the RTS-required optional cart/tax fields per player slot in the <code>tee-time/book</code> flow.</p></li><li><p>When values are present, CORE sends them exactly as calculated/known by CORE.</p></li><li><p>When values are absent, CORE omits them or sends null; CORE should not default or fabricate values.</p></li><li><p>RTS can use the received values as its exclusive source for the ETNv4 cart/tax breakdown tracked under <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a>.</p></li></ul><hr><h3>Current Behavior / Problem</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a> is waiting on a CORE-side ticket to track the dependency for sending the new cart/tax parameter set.</p></li><li><p>Existing CORE/reservation models include external charge detail concepts, but RTS needs a specific per-slot parameter contract on <code>tee-time/book</code> for greens fee tax, cart fee, cart fee tax, and partial-prepay status.</p></li><li><p>Without CORE sending this breakdown, RTS cannot reliably persist the values needed for EZTP/EZRTS tender flows without deriving from unreliable ETNv4 fields.</p></li></ul><hr><h3>Scope Guardrails</h3><ul><li><p>Include the CORE-side request/DTO/model/mapping work needed to support the RTS-required parameter set on the new <code>tee-time/book</code> API path.</p></li><li><p>Include tests proving optional/null behavior and value preservation.</p></li><li><p>Do not implement a separate fix for the legacy booking API. For legacy API impact, the intended resolution is migration/use of the new API path.</p></li><li><p>Do not require RTS storage, ETNv4 schema changes, or POS tender packet changes in this CORE ticket; those are tracked by <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a>.</p></li><li><p>Do not derive, supplement, or fall back to ETNv4 fields such as <code>dbo.TeeOffTransactionAuditItem</code>, <code>dbo.CCAuthorization</code>, or <code>dbo.TTPrepaid.PrepaidFeeAmount</code>.</p></li></ul><hr><h3>Requested Parameters</h3><p>All fields are optional and should be represented per slot/player where the booking contract supports slot-level detail.</p><ul><li><p><code>includes_greens_fee_tax</code></p></li><li><p><code>greens_fee_tax_pct</code></p></li><li><p><code>greens_fee_tax_amount_ppd</code></p></li><li><p><code>greens_fee_tax_amount_due</code></p></li><li><p><code>includes_cart_fee</code></p></li><li><p><code>cart_fee_amount_ppd</code></p></li><li><p><code>cart_fee_amount_due</code></p></li><li><p><code>includes_cart_fee_tax</code></p></li><li><p><code>cart_fee_tax_pct</code></p></li><li><p><code>cart_fee_tax_amount_ppd</code></p></li><li><p><code>cart_fee_tax_amount_due</code></p></li><li><p><code>is_partial_prepaid</code></p></li></ul><hr><h3>Technical Notes</h3><ul><li><p>Source dependency: <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a>, &quot;Support Cart/Tax Include Parameters on tee-time/book&quot;.</p></li><li><p>Existing CORE code paths that may be relevant:</p><ul><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Reservation/MakeReservationRequest.cs</code></p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Reservation/Workflow/MakeReservation/Activities/MakeReservationActivity.cs</code></p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Contracts/DataContracts/Order/Items/ExternalChargeDetails.cs</code></p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Contracts/DataContracts/Order/Items/ExternalChargeLineItem.cs</code></p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Service/Converters/ServiceBusinessMapingExtensions.cs</code></p></li><li><p><code>Internal Services/GolfNow.Services.Reservation/GolfNow.Services.Reservation.Provider/Workflow/Reservation/Activities/External/ApplyExternalChargeDetailsActivity.cs</code></p></li></ul></li><li><p>Current local model names already include <code>ExternalChargeDetails</code> and <code>ExternalChargeLineItem</code>; engineering should decide whether to extend that structure or add a dedicated RTS-facing cart/tax breakdown model.</p></li></ul><hr><h3>Acceptance Criteria</h3><h3>Existing Behavior Preserved</h3><ul><li><p>Existing booking flows continue to work when no cart/tax include parameters are supplied.</p></li><li><p>Existing external charge detail behavior is not regressed for current callers.</p></li></ul><h3>New Behavior</h3><ul><li><p>[ ] CORE supports all RTS-requested parameters above as optional values in the new <code>tee-time/book</code> flow.</p></li><li><p>[ ] CORE sends provided values through to RTS without recalculating, defaulting, or deriving from ETNv4 fallback fields.</p></li><li><p>[ ] Omitted parameters remain absent/null downstream.</p></li><li><p>[ ] Per-slot/player data remains associated with the correct booked player/slot.</p></li><li><p>[ ] Unit and/or integration coverage validates populated, partially populated, and omitted parameter sets.</p></li></ul><h3>Not Included Unless Product Expands Scope</h3><ul><li><p>No legacy booking API remediation is included in this story.</p></li><li><p>No RTS ETNv4 persistence or POS tender payload implementation is included in this story.</p></li></ul><hr><h3>Test Matrix</h3><div class=\"description-table-wrap\"><table><tr><th><p><strong>Scenario</strong></p></th><th><p><strong>Expected Result</strong></p></th></tr><tr><td><p><code>tee-time/book</code> with all cart/tax fields populated</p></td><td><p>Values are accepted and passed downstream exactly as supplied.</p></td></tr><tr><td><p><code>tee-time/book</code> with only greens fee tax values populated</p></td><td><p>Populated values pass downstream; omitted cart/cart tax values remain null/absent.</p></td></tr><tr><td><p><code>tee-time/book</code> with no new fields</p></td><td><p>Existing booking behavior remains unchanged.</p></td></tr><tr><td><p>Multi-player booking with different per-slot values</p></td><td><p>Each slot retains its own cart/tax breakdown.</p></td></tr><tr><td><p>Partial prepaid booking</p></td><td><p><code>is_partial_prepaid</code> and ppd/due splits reflect the supplied values.</p></td></tr></table></div><hr><h3>Open Questions / Product Decisions</h3><ul><li><p>Confirm the final wire-format and field casing expected by RTS for <code>tee-time/book</code>.</p></li><li><p>Confirm whether the CORE source of truth should be the existing <code>ExternalChargeDetails</code>/line-item model or a dedicated cart/tax include DTO.</p></li><li><p>Confirm whether <code>is_partial_prepaid</code> should remain a Boolean even though <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a> currently describes both not-prepaid and fully-prepaid as <code>No</code>.</p></li></ul><hr><h3>Related</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a></p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-4339#icft=RTS-4339\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-4339#icft=RTS-4339</a></p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/TTSUPPORT-7211#icft=TTSUPPORT-7211\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/TTSUPPORT-7211#icft=TTSUPPORT-7211</a></p></li></ul><h3>Communication Note</h3><p>For <a href=\"https://golfnow.atlassian.net/browse/TTSUPPORT-7307#icft=TTSUPPORT-7307\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/TTSUPPORT-7307#icft=TTSUPPORT-7307</a>/new-vs-legacy wording: CORE resolved the issue on the new booking API path. The intended resolution for legacy API exposure is migration/use of the new API, not a separate legacy investigation under this ticket.</p>",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 2,
-      "comments": [
-        {
-          "id": "1181127",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181127",
-          "author": "Tyler Olechnowicz",
-          "authorAccountId": "5d2396c1ea26c40c2043fc92",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-          "created": "2026-06-09T19:13:09.180-0400",
-          "createdDisplay": "Jun 9, 2026, 7:13 PM",
-          "updated": "2026-06-09T19:13:09.180-0400",
-          "updatedDisplay": "",
-          "hasMedia": false,
-          "mediaCount": 0,
-          "body": "QA Test Instructions\n\n- Book a tee time reservation using a rate set configured for the EZL tee sheet and the new EZL API.\n\n- Verify the reservation is created successfully.\n\n- Coordinate with the EZL team to review the tee-time/book request received by EZL.\n\n- Confirm the new prepaid_and_tax fields are present and populated as expected by EZL.\n\n- Repeat the test with:\n\n- A tax-exclusive tee time.\n\n- A tax-inclusive tee time.\n\n- For both scenarios, validate with the EZL team that the fee, tax, and tax-inclusion values received by EZL match the expected reservation pricing.",
-          "bodyHtml": "<h3>QA Test Instructions</h3><ol><li><p>Book a tee time reservation using a rate set configured for the EZL tee sheet and the new EZL API.</p></li><li><p>Verify the reservation is created successfully.</p></li><li><p>Coordinate with the EZL team to review the <code>tee-time/book</code> request received by EZL.</p></li><li><p>Confirm the new <code>prepaid_and_tax</code> fields are present and populated as expected by EZL.</p></li><li><p>Repeat the test with:</p><ul><li><p>A tax-exclusive tee time.</p></li><li><p>A tax-inclusive tee time.</p></li></ul></li><li><p>For both scenarios, validate with the EZL team that the fee, tax, and tax-inclusion values received by EZL match the expected reservation pricing.</p></li></ol>"
-        },
-        {
-          "id": "1181313",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181313",
-          "author": "Tyler Olechnowicz",
-          "authorAccountId": "5d2396c1ea26c40c2043fc92",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-          "created": "2026-06-10T09:30:38.815-0400",
-          "createdDisplay": "Jun 10, 2026, 9:30 AM",
-          "updated": "2026-06-10T09:30:38.815-0400",
-          "updatedDisplay": "",
-          "hasMedia": false,
-          "mediaCount": 0,
-          "body": "Note: No changes were made to the existing green_fee payload. Per EZL guidance, these amounts should continue to include both greens fee and cart fee values. Cart fee and tax breakdowns are now provided separately in the prepaid_and_tax object.",
-          "bodyHtml": "<p>Note: No changes were made to the existing <code>green_fee</code> payload. Per EZL guidance, these amounts should continue to include both greens fee and cart fee values. Cart fee and tax breakdowns are now provided separately in the <code>prepaid_and_tax</code> object.</p>"
-        }
-      ],
-      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181313",
-      "lastCommentDisplay": "Jun 10, 2026, 9:30 AM",
-      "lastCommentAuthor": "Tyler Olechnowicz",
-      "testChecklist": null,
-      "type": "Story",
-      "isSubtask": false,
-      "status": "QA Testing (DEV)",
-      "priority": "P1",
-      "assignee": "Dewan Kabir",
-      "assigneeAccountId": "630fb06bb433b060db559bdb",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-      "assignedDeveloper": "Tyler Olechnowicz",
-      "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-      "updated": "2026-06-18T14:42:42.721-0400",
-      "updatedDisplay": "Jun 18, 2026, 2:42 PM",
-      "created": "2026-05-18T12:36:39.447-0400",
-      "createdDisplay": "May 18, 2026, 12:36 PM",
-      "components": [
-        "GolfNow.Services.Reservation",
-        "GolfNow.Services.TeeSheet"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
-      "resolution": "",
-      "parent": null
     },
     {
       "key": "CORE-14532",
@@ -1821,8 +1821,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-22T19:16:53.157Z",
-    "pulledAtDisplay": "Jun 22, 2026, 3:16 PM",
+    "pulledAt": "2026-06-22T19:22:06.179Z",
+    "pulledAtDisplay": "Jun 22, 2026, 3:22 PM",
     "total": 95,
     "mainTotal": 95,
     "subtaskTotal": 0,
@@ -2436,8 +2436,8 @@
         "assignedDeveloper": "Tyler Olechnowicz",
         "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-        "updated": "2026-06-18T14:42:42.721-0400",
-        "updatedDisplay": "Jun 18, 2026, 2:42 PM",
+        "updated": "2026-06-22T15:20:20.194-0400",
+        "updatedDisplay": "Jun 22, 2026, 3:20 PM",
         "created": "2026-05-18T12:36:39.447-0400",
         "createdDisplay": "May 18, 2026, 12:36 PM",
         "components": [
@@ -7873,13 +7873,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-22T19:16:26.116Z",
-    "pulledAtDisplay": "Jun 22, 2026, 3:16 PM",
+    "pulledAt": "2026-06-22T19:21:28.701Z",
+    "pulledAtDisplay": "Jun 22, 2026, 3:21 PM",
     "window": {
-      "start": "2026-05-08T19:16:26.115Z",
-      "end": "2026-12-19T19:16:26.115Z",
-      "startDisplay": "May 8, 2026, 3:16 PM",
-      "endDisplay": "Dec 19, 2026, 2:16 PM"
+      "start": "2026-05-08T19:21:28.701Z",
+      "end": "2026-12-19T19:21:28.701Z",
+      "startDisplay": "May 8, 2026, 3:21 PM",
+      "endDisplay": "Dec 19, 2026, 2:21 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7892,7 +7892,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-22T19:16:28.215Z",
+        "pulledAt": "2026-06-22T19:21:31.983Z",
         "eventCount": 93,
         "events": [
           {
@@ -8083,23 +8083,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Memorial Day - (US) Company Holiday",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDate": "2026-05-25",
-            "endDate": "2026-05-26",
-            "startDisplay": "May 25, 2026",
-            "endDisplay": "May 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8112,6 +8095,23 @@
             "endDisplay": "May 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Memorial Day - (US) Company Holiday",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDate": "2026-05-25",
+            "endDate": "2026-05-26",
+            "startDisplay": "May 25, 2026",
+            "endDisplay": "May 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9035,23 +9035,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Holiday Freeze",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-08T00:00:00.000Z",
-            "startDate": "2026-08-31",
-            "endDate": "2026-09-08",
-            "startDisplay": "Aug 31, 2026",
-            "endDisplay": "Sep 8, 2026",
-            "allDay": true,
-            "type": "Golf Freeze",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9064,6 +9047,23 @@
             "endDisplay": "Sep 1, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Holiday Freeze",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-08T00:00:00.000Z",
+            "startDate": "2026-08-31",
+            "endDate": "2026-09-08",
+            "startDisplay": "Aug 31, 2026",
+            "endDisplay": "Sep 8, 2026",
+            "allDay": true,
+            "type": "Golf Freeze",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9482,17 +9482,68 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-22T19:12:04.030Z",
-    "previousPulledAtDisplay": "Jun 22, 2026, 3:12 PM",
-    "currentPulledAt": "2026-06-22T19:16:53.157Z",
-    "currentPulledAtDisplay": "Jun 22, 2026, 3:16 PM",
+    "previousPulledAt": "2026-06-22T19:16:53.157Z",
+    "previousPulledAtDisplay": "Jun 22, 2026, 3:16 PM",
+    "currentPulledAt": "2026-06-22T19:22:06.179Z",
+    "currentPulledAtDisplay": "Jun 22, 2026, 3:22 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
-    "updated": [],
+    "updated": [
+      {
+        "key": "CORE-14479",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14479",
+        "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
+        "changes": [
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 18, 2026, 2:42 PM",
+            "after": "Jun 22, 2026, 3:20 PM"
+          }
+        ],
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "status": "QA Testing (DEV)",
+        "parent": null
+      }
+    ],
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-22T19:16:53.157Z",
+      "previousPulledAtDisplay": "Jun 22, 2026, 3:16 PM",
+      "currentPulledAt": "2026-06-22T19:22:06.179Z",
+      "currentPulledAtDisplay": "Jun 22, 2026, 3:22 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14479",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14479",
+          "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
+          "changes": [
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 18, 2026, 2:42 PM",
+              "after": "Jun 22, 2026, 3:20 PM"
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Tyler Olechnowicz",
+          "status": "QA Testing (DEV)",
+          "parent": null
+        }
+      ],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-22T19:12:04.030Z",
       "previousPulledAtDisplay": "Jun 22, 2026, 3:12 PM",
@@ -11381,17 +11432,6 @@
       "previousPulledAtDisplay": "Jun 22, 2026, 1:16 AM",
       "currentPulledAt": "2026-06-22T05:21:38.930Z",
       "currentPulledAtDisplay": "Jun 22, 2026, 1:21 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-22T05:11:24.548Z",
-      "previousPulledAtDisplay": "Jun 22, 2026, 1:11 AM",
-      "currentPulledAt": "2026-06-22T05:16:18.657Z",
-      "currentPulledAtDisplay": "Jun 22, 2026, 1:16 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
