@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-22T12:21:53.448Z",
-  "pulledAtDisplay": "Jun 22, 2026, 8:21 AM",
+  "pulledAt": "2026-06-22T12:27:04.788Z",
+  "pulledAtDisplay": "Jun 22, 2026, 8:27 AM",
   "total": 27,
   "issues": [
     {
@@ -1821,8 +1821,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-22T12:21:53.448Z",
-    "pulledAtDisplay": "Jun 22, 2026, 8:21 AM",
+    "pulledAt": "2026-06-22T12:27:04.788Z",
+    "pulledAtDisplay": "Jun 22, 2026, 8:27 AM",
     "total": 95,
     "mainTotal": 95,
     "subtaskTotal": 0,
@@ -7873,13 +7873,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-22T12:21:24.083Z",
-    "pulledAtDisplay": "Jun 22, 2026, 8:21 AM",
+    "pulledAt": "2026-06-22T12:26:28.727Z",
+    "pulledAtDisplay": "Jun 22, 2026, 8:26 AM",
     "window": {
-      "start": "2026-05-08T12:21:24.083Z",
-      "end": "2026-12-19T12:21:24.083Z",
-      "startDisplay": "May 8, 2026, 8:21 AM",
-      "endDisplay": "Dec 19, 2026, 7:21 AM"
+      "start": "2026-05-08T12:26:28.727Z",
+      "end": "2026-12-19T12:26:28.727Z",
+      "startDisplay": "May 8, 2026, 8:26 AM",
+      "endDisplay": "Dec 19, 2026, 7:26 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7892,7 +7892,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-22T12:21:26.443Z",
+        "pulledAt": "2026-06-22T12:26:34.316Z",
         "eventCount": 91,
         "events": [
           {
@@ -8066,23 +8066,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Memorial Day - (US) Company Holiday",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDate": "2026-05-25",
-            "endDate": "2026-05-26",
-            "startDisplay": "May 25, 2026",
-            "endDisplay": "May 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8095,6 +8078,23 @@
             "endDisplay": "May 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Memorial Day - (US) Company Holiday",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDate": "2026-05-25",
+            "endDate": "2026-05-26",
+            "startDisplay": "May 25, 2026",
+            "endDisplay": "May 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8661,23 +8661,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.57",
-            "start": "2026-07-14T00:00:00.000Z",
-            "end": "2026-07-15T00:00:00.000Z",
-            "startDate": "2026-07-14",
-            "endDate": "2026-07-15",
-            "startDisplay": "Jul 14, 2026",
-            "endDisplay": "Jul 15, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221527Z-1432222737@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8707,6 +8690,23 @@
             "endDisplay": "Jul 15, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.57",
+            "start": "2026-07-14T00:00:00.000Z",
+            "end": "2026-07-15T00:00:00.000Z",
+            "startDate": "2026-07-14",
+            "endDate": "2026-07-15",
+            "startDisplay": "Jul 14, 2026",
+            "endDisplay": "Jul 15, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9001,23 +9001,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Summer Bank Holiday (UK)",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-01T00:00:00.000Z",
-            "startDate": "2026-08-31",
-            "endDate": "2026-09-01",
-            "startDisplay": "Aug 31, 2026",
-            "endDisplay": "Sep 1, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9030,6 +9013,23 @@
             "endDisplay": "Sep 8, 2026",
             "allDay": true,
             "type": "Golf Freeze",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Summer Bank Holiday (UK)",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-01T00:00:00.000Z",
+            "startDate": "2026-08-31",
+            "endDate": "2026-09-01",
+            "startDisplay": "Aug 31, 2026",
+            "endDisplay": "Sep 1, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9086,23 +9086,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.59",
-            "start": "2026-09-15T00:00:00.000Z",
-            "end": "2026-09-16T00:00:00.000Z",
-            "startDate": "2026-09-15",
-            "endDate": "2026-09-16",
-            "startDisplay": "Sep 15, 2026",
-            "endDisplay": "Sep 16, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221627Z-1916149808@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9132,6 +9115,23 @@
             "endDisplay": "Sep 16, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.59",
+            "start": "2026-09-15T00:00:00.000Z",
+            "end": "2026-09-16T00:00:00.000Z",
+            "startDate": "2026-09-15",
+            "endDate": "2026-09-16",
+            "startDisplay": "Sep 15, 2026",
+            "endDisplay": "Sep 16, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9358,23 +9358,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221750Z-1404075373@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9404,6 +9387,23 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9448,74 +9448,28 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-22T12:17:10.115Z",
-    "previousPulledAtDisplay": "Jun 22, 2026, 8:17 AM",
-    "currentPulledAt": "2026-06-22T12:21:53.448Z",
-    "currentPulledAtDisplay": "Jun 22, 2026, 8:21 AM",
+    "previousPulledAt": "2026-06-22T12:21:53.448Z",
+    "previousPulledAtDisplay": "Jun 22, 2026, 8:21 AM",
+    "currentPulledAt": "2026-06-22T12:27:04.788Z",
+    "currentPulledAtDisplay": "Jun 22, 2026, 8:27 AM",
     "isBaseline": false,
-    "added": [
-      {
-        "key": "CORE-14529",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14529",
-        "summary": "Add Costa Rica to GeoPlaces 2.0",
-        "description": "Add Costa Rica to GeoPlaces 2.0 eligible countries for all credentials\n\n- Costa Rica\n\n- https://www.geonames.org/countries/CR/costa-rica.html\n\n- Create a custom entry similar to what we did for the Hawaiian island\n\n- Name: Guanacaste\n\n- Lat: 10.6295845\n\n- Long: -85.4598143",
-        "descriptionHtml": "<p>Add Costa Rica to GeoPlaces 2.0 eligible countries for all credentials</p><ul><li><p>Costa Rica</p><ul><li><p><a href=\"https://www.geonames.org/countries/CR/costa-rica.html\" target=\"_blank\" rel=\"noopener\">https://www.geonames.org/countries/CR/costa-rica.html</a> </p></li></ul></li><li><p>Create a custom entry similar to what we did for the Hawaiian island</p><ul><li><p>Name: Guanacaste</p></li><li><p>Lat: 10.6295845</p></li><li><p>Long: -85.4598143</p></li></ul></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1185113",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14529?focusedCommentId=1185113",
-            "author": "Sebastian Calzadilla Gonzalez",
-            "authorAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
-            "created": "2026-06-18T16:01:36.077-0400",
-            "createdDisplay": "Jun 18, 2026, 4:01 PM",
-            "updated": "2026-06-18T17:57:08.646-0400",
-            "updatedDisplay": "Jun 18, 2026, 5:57 PM",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Running the following script on STG to enable the new custom record modeled off Provincia de Guanacaste, Costa Rica in geonames. Roles already have ‘CR’ in their allowed lists.\n\ndb.GeoLocation.insertOne({\n_id: ObjectId(),\n_Version: 0,\nModifiedAt: new Date(),\nName: \"Guanacaste\",\nAsciiName: \"Guanacaste\",\nAlternateNames: \"Guanacaste\",\n\nPosition: {\ntype: \"Point\",\ncoordinates: [\n-85.45981,\n10.62958,\n],\n},\n\nFeatureClass: 65,\nFeatureCode: \"ADM1\",\n\nCountryCode: \"CR\",\nAdmin1Name: \"\",\nAdmin1Code: \"\",\n\nPopulation: NumberLong(\"354154\"),\nDem: 63,\n\nTimeZone: \"America/Costa_Rica\",\n\nModificationDate: new Date(\"2026-06-18T04:00:00.000Z\"),\nAccuracy: 0,\n\nIsCity: true,\nIsPostal: false,\nSearchable: true,\nIsManualOverride: true,\n});\n\nNext record is for San Jose, CR modeled after San José, Costa Rica\n\ndb.GeoLocation.insertOne({\n_id: ObjectId(),\n_Version: 0,\nModifiedAt: new Date(),\nName: \"San Jose\",\nAsciiName: \"San Jose\",\nAlternateNames: \"San Jose\",\n\nPosition: {\ntype: \"Point\",\ncoordinates: [\n-84.08489,\n9.93388,\n],\n},\n\nFeatureClass: 65,\nFeatureCode: \"ADM1\",\n\nCountryCode: \"CR\",\nAdmin1Name: \"\",\nAdmin1Code: \"CR\",\n\nPopulation: NumberLong(\"335007\"),\nDem: 63,\n\nTimeZone: \"America/Costa_Rica\",\n\nModificationDate: new Date(\"2026-06-18T04:00:00.000Z\"),\nAccuracy: 0,\n\nIsCity: true,\nIsPostal: false,\nSearchable: true,\nIsManualOverride: true,\n});",
-            "bodyHtml": "<p>Running the following script on STG to enable the new custom record modeled off <a href=\"https://www.geonames.org/3623582/provincia-de-guanacaste.html\" target=\"_blank\" rel=\"noopener\">Provincia de Guanacaste, Costa Rica</a> in geonames. Roles already have ‘CR’ in their allowed lists.<br><br></p><pre><code>db.GeoLocation.insertOne({\n  _id: ObjectId(),\n  _Version: 0,\n  ModifiedAt: new Date(),\n  Name: &quot;Guanacaste&quot;,\n  AsciiName: &quot;Guanacaste&quot;,\n  AlternateNames: &quot;Guanacaste&quot;,\n\n  Position: {\n    type: &quot;Point&quot;,\n    coordinates: [\n      -85.45981,\n      10.62958,\n    ],\n  },\n\n  FeatureClass: 65,\n  FeatureCode: &quot;ADM1&quot;,\n\n  CountryCode: &quot;CR&quot;,\n  Admin1Name: &quot;&quot;,\n  Admin1Code: &quot;&quot;,\n\n  Population: NumberLong(&quot;354154&quot;),\n  Dem: 63,\n\n  TimeZone: &quot;America/Costa_Rica&quot;,\n\n  ModificationDate: new Date(&quot;2026-06-18T04:00:00.000Z&quot;),\n  Accuracy: 0,\n\n  IsCity: true,\n  IsPostal: false,\n  Searchable: true,\n  IsManualOverride: true,\n});\n</code></pre><p><br>Next record is for San Jose, CR modeled after <a href=\"https://www.geonames.org/3621849/san-jose.html\" target=\"_blank\" rel=\"noopener\">San José, Costa Rica</a><br><br></p><pre><code>db.GeoLocation.insertOne({\n  _id: ObjectId(),\n  _Version: 0,\n  ModifiedAt: new Date(),\n  Name: &quot;San Jose&quot;,\n  AsciiName: &quot;San Jose&quot;,\n  AlternateNames: &quot;San Jose&quot;,\n\n  Position: {\n    type: &quot;Point&quot;,\n    coordinates: [\n      -84.08489,\n      9.93388,\n    ],\n  },\n\n  FeatureClass: 65,\n  FeatureCode: &quot;ADM1&quot;,\n\n  CountryCode: &quot;CR&quot;,\n  Admin1Name: &quot;&quot;,\n  Admin1Code: &quot;CR&quot;,\n\n  Population: NumberLong(&quot;335007&quot;),\n  Dem: 63,\n\n  TimeZone: &quot;America/Costa_Rica&quot;,\n\n  ModificationDate: new Date(&quot;2026-06-18T04:00:00.000Z&quot;),\n  Accuracy: 0,\n\n  IsCity: true,\n  IsPostal: false,\n  Searchable: true,\n  IsManualOverride: true,\n});\n\n</code></pre>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14529?focusedCommentId=1185113",
-        "lastCommentDisplay": "Jun 18, 2026, 4:01 PM",
-        "lastCommentAuthor": "Sebastian Calzadilla Gonzalez",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "QA Testing (DEV)",
-        "priority": "None",
-        "assignee": "Brian Pugh",
-        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-        "assignedDeveloper": "Sebastian Calzadilla Gonzalez",
-        "assignedDeveloperAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
-        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
-        "updated": "2026-06-22T08:17:53.288-0400",
-        "updatedDisplay": "Jun 22, 2026, 8:17 AM",
-        "created": "2026-06-17T15:58:52.744-0400",
-        "createdDisplay": "Jun 17, 2026, 3:58 PM",
-        "components": [
-          "Geoplaces"
-        ],
-        "fixVersions": [
-          "v3001.124.0"
-        ],
-        "sprints": [],
-        "sprintNames": [],
-        "resolution": "",
-        "parent": null
-      }
-    ],
+    "added": [],
     "removed": [],
     "updated": [],
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-22T12:21:53.448Z",
+      "previousPulledAtDisplay": "Jun 22, 2026, 8:21 AM",
+      "currentPulledAt": "2026-06-22T12:27:04.788Z",
+      "currentPulledAtDisplay": "Jun 22, 2026, 8:27 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-22T12:17:10.115Z",
       "previousPulledAtDisplay": "Jun 22, 2026, 8:17 AM",
@@ -11404,17 +11358,6 @@
       "previousPulledAtDisplay": "Jun 21, 2026, 6:21 PM",
       "currentPulledAt": "2026-06-21T22:26:16.382Z",
       "currentPulledAtDisplay": "Jun 21, 2026, 6:26 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-21T22:16:32.100Z",
-      "previousPulledAtDisplay": "Jun 21, 2026, 6:16 PM",
-      "currentPulledAt": "2026-06-21T22:21:28.003Z",
-      "currentPulledAtDisplay": "Jun 21, 2026, 6:21 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
