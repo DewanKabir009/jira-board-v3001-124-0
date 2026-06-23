@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-23T20:56:45.820Z",
-  "pulledAtDisplay": "Jun 23, 2026, 4:56 PM",
+  "pulledAt": "2026-06-23T21:02:07.878Z",
+  "pulledAtDisplay": "Jun 23, 2026, 5:02 PM",
   "total": 24,
   "issues": [
     {
@@ -1731,8 +1731,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-23T20:56:45.820Z",
-    "pulledAtDisplay": "Jun 23, 2026, 4:56 PM",
+    "pulledAt": "2026-06-23T21:02:07.878Z",
+    "pulledAtDisplay": "Jun 23, 2026, 5:02 PM",
     "total": 95,
     "mainTotal": 95,
     "subtaskTotal": 0,
@@ -1741,8 +1741,8 @@
         "key": "CORE-14520",
         "url": "https://golfnow.atlassian.net/browse/CORE-14520",
         "summary": "CVV is not submitting to payment processing during product purchases",
-        "description": "We confirmed today that submitting a product purchase through API 2.1 /orders endpoint does not hit payment processing to do the validation of the cvv. Tee times are functioning as expected.\n\nSteps to recreate:\n\n- Buy a paid or free trial using /orders endpoint\n\n- Pass in \"CVVCode\": 976, (or any invalid CVV)\n\n- See the the transaction is successful\n\n- Payments team confirmed they never received the validation check\n\nTest with both free trial and paid products. Free trial should be validated by the $1 auth.\n\nTest that tee times are still validating as expecetd",
-        "descriptionHtml": "<p>We confirmed today that submitting a product purchase through API 2.1 /orders endpoint does not hit payment processing to do the validation of the cvv. Tee times are functioning as expected. </p><p>Steps to recreate:</p><ol><li><p>Buy a paid or free trial using /orders endpoint</p></li><li><p>Pass in <code>&quot;CVVCode&quot;: 976,</code> (or any invalid CVV)</p></li><li><p>See the the transaction is successful</p></li><li><p>Payments team confirmed they never received the validation check</p></li></ol><p>Test with both free trial and paid products. Free trial should be validated by the $1 auth. </p><p>Test that tee times are still validating as expecetd</p>",
+        "description": "We confirmed today that submitting a product purchase through API 2.1 /orders endpoint does not hit payment processing to do the validation of the cvv. Tee times are functioning as expected.\n\nSteps to recreate:\n\n- Buy a paid or free trial using /orders endpoint\n\n- Pass in \"CVVCode\": 976, (or any invalid CVV)\n\n- See the the transaction is successful\n\n- Payments team confirmed they never received the validation check\n\nTest with both free trial and paid products. Free trial should be validated by the $1 auth.\n\nTest that tee times are still validating as expecetd\n\nTest that renewals are not requiring CVV",
+        "descriptionHtml": "<p>We confirmed today that submitting a product purchase through API 2.1 /orders endpoint does not hit payment processing to do the validation of the cvv. Tee times are functioning as expected. </p><p>Steps to recreate:</p><ol><li><p>Buy a paid or free trial using /orders endpoint</p></li><li><p>Pass in <code>&quot;CVVCode&quot;: 976,</code> (or any invalid CVV)</p></li><li><p>See the the transaction is successful</p></li><li><p>Payments team confirmed they never received the validation check</p></li></ol><p>Test with both free trial and paid products. Free trial should be validated by the $1 auth. </p><p>Test that tee times are still validating as expecetd</p><p>Test that renewals are not requiring CVV</p>",
         "descriptionImageCount": 0,
         "descriptionVideoCount": 0,
         "descriptionMediaCount": 0,
@@ -1762,8 +1762,8 @@
         "assignedDeveloper": "Unassigned",
         "assignedDeveloperAccountId": "",
         "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-16T10:07:04.106-0400",
-        "updatedDisplay": "Jun 16, 2026, 10:07 AM",
+        "updated": "2026-06-23T17:00:31.603-0400",
+        "updatedDisplay": "Jun 23, 2026, 5:00 PM",
         "created": "2026-06-15T17:19:49.003-0400",
         "createdDisplay": "Jun 15, 2026, 5:19 PM",
         "components": [],
@@ -7801,13 +7801,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-23T20:56:24.967Z",
-    "pulledAtDisplay": "Jun 23, 2026, 4:56 PM",
+    "pulledAt": "2026-06-23T21:01:30.934Z",
+    "pulledAtDisplay": "Jun 23, 2026, 5:01 PM",
     "window": {
-      "start": "2026-05-09T20:56:24.966Z",
-      "end": "2026-12-20T20:56:24.966Z",
-      "startDisplay": "May 9, 2026, 4:56 PM",
-      "endDisplay": "Dec 20, 2026, 3:56 PM"
+      "start": "2026-05-09T21:01:30.934Z",
+      "end": "2026-12-20T21:01:30.934Z",
+      "startDisplay": "May 9, 2026, 5:01 PM",
+      "endDisplay": "Dec 20, 2026, 4:01 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7820,7 +7820,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-23T20:56:27.037Z",
+        "pulledAt": "2026-06-23T21:01:34.081Z",
         "eventCount": 93,
         "events": [
           {
@@ -8011,23 +8011,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Memorial Day - (US) Company Holiday",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDate": "2026-05-25",
-            "endDate": "2026-05-26",
-            "startDisplay": "May 25, 2026",
-            "endDisplay": "May 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8040,6 +8023,23 @@
             "endDisplay": "May 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Memorial Day - (US) Company Holiday",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDate": "2026-05-25",
+            "endDate": "2026-05-26",
+            "startDisplay": "May 25, 2026",
+            "endDisplay": "May 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9410,10 +9410,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-23T20:51:54.158Z",
-    "previousPulledAtDisplay": "Jun 23, 2026, 4:51 PM",
-    "currentPulledAt": "2026-06-23T20:56:45.820Z",
-    "currentPulledAtDisplay": "Jun 23, 2026, 4:56 PM",
+    "previousPulledAt": "2026-06-23T20:56:45.820Z",
+    "previousPulledAtDisplay": "Jun 23, 2026, 4:56 PM",
+    "currentPulledAt": "2026-06-23T21:02:07.878Z",
+    "currentPulledAtDisplay": "Jun 23, 2026, 5:02 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -9421,6 +9421,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-23T20:56:45.820Z",
+      "previousPulledAtDisplay": "Jun 23, 2026, 4:56 PM",
+      "currentPulledAt": "2026-06-23T21:02:07.878Z",
+      "currentPulledAtDisplay": "Jun 23, 2026, 5:02 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-23T20:51:54.158Z",
       "previousPulledAtDisplay": "Jun 23, 2026, 4:51 PM",
@@ -11508,17 +11519,6 @@
       "previousPulledAtDisplay": "Jun 23, 2026, 2:56 AM",
       "currentPulledAt": "2026-06-23T07:01:59.265Z",
       "currentPulledAtDisplay": "Jun 23, 2026, 3:01 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-23T06:51:59.346Z",
-      "previousPulledAtDisplay": "Jun 23, 2026, 2:51 AM",
-      "currentPulledAt": "2026-06-23T06:56:45.203Z",
-      "currentPulledAtDisplay": "Jun 23, 2026, 2:56 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
