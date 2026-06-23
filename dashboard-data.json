@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-23T20:26:49.819Z",
-  "pulledAtDisplay": "Jun 23, 2026, 4:26 PM",
+  "pulledAt": "2026-06-23T20:31:48.110Z",
+  "pulledAtDisplay": "Jun 23, 2026, 4:31 PM",
   "total": 24,
   "issues": [
     {
@@ -1731,8 +1731,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-23T20:26:49.819Z",
-    "pulledAtDisplay": "Jun 23, 2026, 4:26 PM",
+    "pulledAt": "2026-06-23T20:31:48.110Z",
+    "pulledAtDisplay": "Jun 23, 2026, 4:31 PM",
     "total": 95,
     "mainTotal": 95,
     "subtaskTotal": 0,
@@ -7801,13 +7801,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-23T20:26:27.117Z",
-    "pulledAtDisplay": "Jun 23, 2026, 4:26 PM",
+    "pulledAt": "2026-06-23T20:31:26.783Z",
+    "pulledAtDisplay": "Jun 23, 2026, 4:31 PM",
     "window": {
-      "start": "2026-05-09T20:26:27.116Z",
-      "end": "2026-12-20T20:26:27.116Z",
-      "startDisplay": "May 9, 2026, 4:26 PM",
-      "endDisplay": "Dec 20, 2026, 3:26 PM"
+      "start": "2026-05-09T20:31:26.782Z",
+      "end": "2026-12-20T20:31:26.782Z",
+      "startDisplay": "May 9, 2026, 4:31 PM",
+      "endDisplay": "Dec 20, 2026, 3:31 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7820,7 +7820,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-23T20:26:29.464Z",
+        "pulledAt": "2026-06-23T20:31:29.026Z",
         "eventCount": 93,
         "events": [
           {
@@ -8062,23 +8062,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
-            "start": "2026-05-26T18:00:00.000Z",
-            "end": "2026-05-26T19:55:00.000Z",
-            "startDate": "",
-            "endDate": "",
-            "startDisplay": "May 26, 2026, 2:00 PM",
-            "endDisplay": "May 26, 2026, 3:55 PM",
-            "allDay": false,
-            "type": "Scheduled Maintenance",
-            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
-            "description": "Slack: #itops_deployments",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8093,6 +8076,23 @@
             "type": "Patching",
             "location": "https://golfnow.atlassian.net/browse/OPS-54241",
             "description": "Slack: #itops_patching_communications",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
+            "start": "2026-05-26T18:00:00.000Z",
+            "end": "2026-05-26T19:55:00.000Z",
+            "startDate": "",
+            "endDate": "",
+            "startDisplay": "May 26, 2026, 2:00 PM",
+            "endDisplay": "May 26, 2026, 3:55 PM",
+            "allDay": false,
+            "type": "Scheduled Maintenance",
+            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
+            "description": "Slack: #itops_deployments",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
@@ -8963,23 +8963,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Holiday Freeze",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-08T00:00:00.000Z",
-            "startDate": "2026-08-31",
-            "endDate": "2026-09-08",
-            "startDisplay": "Aug 31, 2026",
-            "endDisplay": "Sep 8, 2026",
-            "allDay": true,
-            "type": "Golf Freeze",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8992,6 +8975,23 @@
             "endDisplay": "Sep 1, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Holiday Freeze",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-08T00:00:00.000Z",
+            "startDate": "2026-08-31",
+            "endDate": "2026-09-08",
+            "startDisplay": "Aug 31, 2026",
+            "endDisplay": "Sep 8, 2026",
+            "allDay": true,
+            "type": "Golf Freeze",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9410,69 +9410,28 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-23T20:22:18.168Z",
-    "previousPulledAtDisplay": "Jun 23, 2026, 4:22 PM",
-    "currentPulledAt": "2026-06-23T20:26:49.819Z",
-    "currentPulledAtDisplay": "Jun 23, 2026, 4:26 PM",
+    "previousPulledAt": "2026-06-23T20:26:49.819Z",
+    "previousPulledAtDisplay": "Jun 23, 2026, 4:26 PM",
+    "currentPulledAt": "2026-06-23T20:31:48.110Z",
+    "currentPulledAtDisplay": "Jun 23, 2026, 4:31 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
-    "updated": [
-      {
-        "key": "CORE-14529",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14529",
-        "summary": "Add Costa Rica to GeoPlaces 2.0",
-        "changes": [
-          {
-            "field": "status",
-            "label": "Status",
-            "before": "PO Review",
-            "after": "Closed"
-          },
-          {
-            "field": "assignee",
-            "label": "Assignee",
-            "before": "Brian Pugh",
-            "after": "Unassigned"
-          },
-          {
-            "field": "resolution",
-            "label": "Resolution",
-            "before": "None",
-            "after": "Done"
-          },
-          {
-            "field": "updatedDisplay",
-            "label": "Jira updated",
-            "before": "Jun 23, 2026, 4:20 PM",
-            "after": "Jun 23, 2026, 4:23 PM"
-          }
-        ],
-        "type": "Story",
-        "isSubtask": false,
-        "assignee": "Unassigned",
-        "assignedDeveloper": "Sebastian Calzadilla Gonzalez",
-        "status": "Closed",
-        "parent": null
-      }
-    ],
-    "statusChanges": [
-      {
-        "key": "CORE-14529",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14529",
-        "summary": "Add Costa Rica to GeoPlaces 2.0",
-        "before": "PO Review",
-        "after": "Closed",
-        "type": "Story",
-        "isSubtask": false,
-        "assignee": "Unassigned",
-        "assignedDeveloper": "Sebastian Calzadilla Gonzalez",
-        "status": "Closed",
-        "parent": null
-      }
-    ]
+    "updated": [],
+    "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-23T20:26:49.819Z",
+      "previousPulledAtDisplay": "Jun 23, 2026, 4:26 PM",
+      "currentPulledAt": "2026-06-23T20:31:48.110Z",
+      "currentPulledAtDisplay": "Jun 23, 2026, 4:31 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-23T20:22:18.168Z",
       "previousPulledAtDisplay": "Jun 23, 2026, 4:22 PM",
@@ -11560,17 +11519,6 @@
       "previousPulledAtDisplay": "Jun 23, 2026, 2:26 AM",
       "currentPulledAt": "2026-06-23T06:31:51.938Z",
       "currentPulledAtDisplay": "Jun 23, 2026, 2:31 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-23T06:21:43.489Z",
-      "previousPulledAtDisplay": "Jun 23, 2026, 2:21 AM",
-      "currentPulledAt": "2026-06-23T06:26:49.054Z",
-      "currentPulledAtDisplay": "Jun 23, 2026, 2:26 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
