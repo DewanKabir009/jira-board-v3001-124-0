@@ -4,19 +4,19 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-24T06:01:54.222Z",
-  "pulledAtDisplay": "Jun 24, 2026, 2:01 AM",
+  "pulledAt": "2026-06-24T06:06:56.157Z",
+  "pulledAtDisplay": "Jun 24, 2026, 2:06 AM",
   "total": 25,
   "issues": [
     {
       "key": "CORE-14542",
       "url": "https://golfnow.atlassian.net/browse/CORE-14542",
-      "summary": "CLONE - Points for Actions - Anniversary Points and 2nd booking bonus fix",
-      "description": "We are seeing Anniversary Points PFA return either no actions or an oddly specific repeatable amount of actions submitted.\n\n2025 Results - These are good\n\n2026 Results - There looks to be some sort of validation happening that was not present in the 2025 initial run.\n\nWe have tried with and without this checkbox and the results do no improve\n\nHappy Path for Anniversary Points:\n\n- Today’s date = 5/19/26\n\n- If i created my account on 5/19/25 , i should receive anniversary points today\n\n- If i created my account on 5/20/25, i should not receive points",
-      "descriptionHtml": "<p>We are seeing Anniversary Points PFA return either no actions or an oddly specific repeatable amount of actions submitted. </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14542/740947-image-20260505-172643.png\" alt=\"image-20260505-172643.png\" loading=\"lazy\"><figcaption>image-20260505-172643.png</figcaption></figure></div><p>2025 Results - These are good</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14542/740946-image-20260505-172805.png\" alt=\"image-20260505-172805.png\" loading=\"lazy\"><figcaption>image-20260505-172805.png</figcaption></figure></div><p>2026 Results - There looks to be some sort of validation happening that was not present in the 2025 initial run.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14542/740945-image-20260505-172902.png\" alt=\"image-20260505-172902.png\" loading=\"lazy\"><figcaption>image-20260505-172902.png</figcaption></figure></div><p>We have tried with and without this checkbox and the results do no improve </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14542/740948-image-20260505-173048.png\" alt=\"image-20260505-173048.png\" loading=\"lazy\"><figcaption>image-20260505-173048.png</figcaption></figure></div><p>Happy Path for Anniversary Points:</p><ul><li><p>Today’s date = 5/19/26 </p></li><li><p>If i created my account on 5/19/25 , i should receive anniversary points today</p></li><li><p>If i created my account on 5/20/25, i should not receive points</p></li></ul>",
-      "descriptionImageCount": 4,
+      "summary": "Points for Actions - duplicate 2nd booking bonus",
+      "description": "Some customers are receiving double 2nd booking points",
+      "descriptionHtml": "<p>Some customers are receiving double 2nd booking points</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14542/740949-image-20260624-060344.png\" alt=\"image-20260624-060344.png\" loading=\"lazy\"><figcaption>image-20260624-060344.png</figcaption></figure></div>",
+      "descriptionImageCount": 1,
       "descriptionVideoCount": 0,
-      "descriptionMediaCount": 4,
+      "descriptionMediaCount": 1,
       "commentCount": 0,
       "comments": [],
       "lastCommentUrl": "",
@@ -33,8 +33,8 @@
       "assignedDeveloper": "Raghav Kancherla",
       "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
       "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-      "updated": "2026-06-24T02:00:39.738-0400",
-      "updatedDisplay": "Jun 24, 2026, 2:00 AM",
+      "updated": "2026-06-24T02:03:50.426-0400",
+      "updatedDisplay": "Jun 24, 2026, 2:03 AM",
       "created": "2026-06-24T02:00:34.529-0400",
       "createdDisplay": "Jun 24, 2026, 2:00 AM",
       "components": [
@@ -1780,8 +1780,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-24T06:01:54.222Z",
-    "pulledAtDisplay": "Jun 24, 2026, 2:01 AM",
+    "pulledAt": "2026-06-24T06:06:56.157Z",
+    "pulledAtDisplay": "Jun 24, 2026, 2:06 AM",
     "total": 95,
     "mainTotal": 95,
     "subtaskTotal": 0,
@@ -7850,13 +7850,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-24T06:01:27.759Z",
-    "pulledAtDisplay": "Jun 24, 2026, 2:01 AM",
+    "pulledAt": "2026-06-24T06:06:28.846Z",
+    "pulledAtDisplay": "Jun 24, 2026, 2:06 AM",
     "window": {
-      "start": "2026-05-10T06:01:27.759Z",
-      "end": "2026-12-21T06:01:27.759Z",
-      "startDisplay": "May 10, 2026, 2:01 AM",
-      "endDisplay": "Dec 21, 2026, 1:01 AM"
+      "start": "2026-05-10T06:06:28.846Z",
+      "end": "2026-12-21T06:06:28.846Z",
+      "startDisplay": "May 10, 2026, 2:06 AM",
+      "endDisplay": "Dec 21, 2026, 1:06 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7869,7 +7869,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-24T06:01:29.814Z",
+        "pulledAt": "2026-06-24T06:06:32.281Z",
         "eventCount": 94,
         "events": [
           {
@@ -8060,23 +8060,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Spring Bank Holiday (UK)",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDate": "2026-05-25",
-            "endDate": "2026-05-26",
-            "startDisplay": "May 25, 2026",
-            "endDisplay": "May 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8089,6 +8072,23 @@
             "endDisplay": "May 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Spring Bank Holiday (UK)",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDate": "2026-05-25",
+            "endDate": "2026-05-26",
+            "startDisplay": "May 25, 2026",
+            "endDisplay": "May 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8111,23 +8111,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
-            "start": "2026-05-26T18:00:00.000Z",
-            "end": "2026-05-26T19:55:00.000Z",
-            "startDate": "",
-            "endDate": "",
-            "startDisplay": "May 26, 2026, 2:00 PM",
-            "endDisplay": "May 26, 2026, 3:55 PM",
-            "allDay": false,
-            "type": "Scheduled Maintenance",
-            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
-            "description": "Slack: #itops_deployments",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8142,6 +8125,23 @@
             "type": "Patching",
             "location": "https://golfnow.atlassian.net/browse/OPS-54241",
             "description": "Slack: #itops_patching_communications",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
+            "start": "2026-05-26T18:00:00.000Z",
+            "end": "2026-05-26T19:55:00.000Z",
+            "startDate": "",
+            "endDate": "",
+            "startDisplay": "May 26, 2026, 2:00 PM",
+            "endDisplay": "May 26, 2026, 3:55 PM",
+            "allDay": false,
+            "type": "Scheduled Maintenance",
+            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
+            "description": "Slack: #itops_deployments",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
@@ -8672,6 +8672,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.57",
+            "start": "2026-07-14T00:00:00.000Z",
+            "end": "2026-07-15T00:00:00.000Z",
+            "startDate": "2026-07-14",
+            "endDate": "2026-07-15",
+            "startDisplay": "Jul 14, 2026",
+            "endDisplay": "Jul 15, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221527Z-1432222737@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8701,23 +8718,6 @@
             "endDisplay": "Jul 15, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.57",
-            "start": "2026-07-14T00:00:00.000Z",
-            "end": "2026-07-15T00:00:00.000Z",
-            "startDate": "2026-07-14",
-            "endDate": "2026-07-15",
-            "startDisplay": "Jul 14, 2026",
-            "endDisplay": "Jul 15, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9029,23 +9029,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Holiday Freeze",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-08T00:00:00.000Z",
-            "startDate": "2026-08-31",
-            "endDate": "2026-09-08",
-            "startDisplay": "Aug 31, 2026",
-            "endDisplay": "Sep 8, 2026",
-            "allDay": true,
-            "type": "Golf Freeze",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9058,6 +9041,23 @@
             "endDisplay": "Sep 1, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Holiday Freeze",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-08T00:00:00.000Z",
+            "startDate": "2026-08-31",
+            "endDate": "2026-09-08",
+            "startDisplay": "Aug 31, 2026",
+            "endDisplay": "Sep 8, 2026",
+            "allDay": true,
+            "type": "Golf Freeze",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9114,6 +9114,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.59",
+            "start": "2026-09-15T00:00:00.000Z",
+            "end": "2026-09-16T00:00:00.000Z",
+            "startDate": "2026-09-15",
+            "endDate": "2026-09-16",
+            "startDisplay": "Sep 15, 2026",
+            "endDisplay": "Sep 16, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221627Z-1916149808@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9143,23 +9160,6 @@
             "endDisplay": "Sep 16, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.59",
-            "start": "2026-09-15T00:00:00.000Z",
-            "end": "2026-09-16T00:00:00.000Z",
-            "startDate": "2026-09-15",
-            "endDate": "2026-09-16",
-            "startDisplay": "Sep 15, 2026",
-            "endDisplay": "Sep 16, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9386,6 +9386,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221750Z-1404075373@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9415,23 +9432,6 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9476,81 +9476,43 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-24T05:56:45.606Z",
-    "previousPulledAtDisplay": "Jun 24, 2026, 1:56 AM",
-    "currentPulledAt": "2026-06-24T06:01:54.222Z",
-    "currentPulledAtDisplay": "Jun 24, 2026, 2:01 AM",
+    "previousPulledAt": "2026-06-24T06:01:54.222Z",
+    "previousPulledAtDisplay": "Jun 24, 2026, 2:01 AM",
+    "currentPulledAt": "2026-06-24T06:06:56.157Z",
+    "currentPulledAtDisplay": "Jun 24, 2026, 2:06 AM",
     "isBaseline": false,
-    "added": [
-      {
-        "key": "CORE-14542",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14542",
-        "summary": "CLONE - Points for Actions - Anniversary Points and 2nd booking bonus fix",
-        "description": "We are seeing Anniversary Points PFA return either no actions or an oddly specific repeatable amount of actions submitted.\n\n2025 Results - These are good\n\n2026 Results - There looks to be some sort of validation happening that was not present in the 2025 initial run.\n\nWe have tried with and without this checkbox and the results do no improve\n\nHappy Path for Anniversary Points:\n\n- Today’s date = 5/19/26\n\n- If i created my account on 5/19/25 , i should receive anniversary points today\n\n- If i created my account on 5/20/25, i should not receive points",
-        "descriptionHtml": "<p>We are seeing Anniversary Points PFA return either no actions or an oddly specific repeatable amount of actions submitted. </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14542/740947-image-20260505-172643.png\" alt=\"image-20260505-172643.png\" loading=\"lazy\"><figcaption>image-20260505-172643.png</figcaption></figure></div><p>2025 Results - These are good</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14542/740946-image-20260505-172805.png\" alt=\"image-20260505-172805.png\" loading=\"lazy\"><figcaption>image-20260505-172805.png</figcaption></figure></div><p>2026 Results - There looks to be some sort of validation happening that was not present in the 2025 initial run.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14542/740945-image-20260505-172902.png\" alt=\"image-20260505-172902.png\" loading=\"lazy\"><figcaption>image-20260505-172902.png</figcaption></figure></div><p>We have tried with and without this checkbox and the results do no improve </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14542/740948-image-20260505-173048.png\" alt=\"image-20260505-173048.png\" loading=\"lazy\"><figcaption>image-20260505-173048.png</figcaption></figure></div><p>Happy Path for Anniversary Points:</p><ul><li><p>Today’s date = 5/19/26 </p></li><li><p>If i created my account on 5/19/25 , i should receive anniversary points today</p></li><li><p>If i created my account on 5/20/25, i should not receive points</p></li></ul>",
-        "descriptionImageCount": 4,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 4,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "Pre Planning",
-        "priority": "None",
-        "assignee": "Raghav Kancherla",
-        "assigneeAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "assignedDeveloper": "Raghav Kancherla",
-        "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "updated": "2026-06-24T02:00:39.738-0400",
-        "updatedDisplay": "Jun 24, 2026, 2:00 AM",
-        "created": "2026-06-24T02:00:34.529-0400",
-        "createdDisplay": "Jun 24, 2026, 2:00 AM",
-        "components": [
-          "GolfNowCentral",
-          "SQL"
-        ],
-        "fixVersions": [
-          "v3001.124.0"
-        ],
-        "sprints": [],
-        "sprintNames": [],
-        "resolution": "",
-        "parent": {
-          "key": "B2C-21",
-          "url": "https://golfnow.atlassian.net/browse/B2C-21",
-          "summary": "Loyalty - Points for Actions",
-          "description": "",
-          "type": "Epic",
-          "status": "Selected for Development",
-          "priority": "Normal"
-        }
-      }
-    ],
+    "added": [],
     "removed": [],
     "updated": [
       {
-        "key": "CORE-14513",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14513",
-        "summary": "Points for Actions - Anniversary Points and 2nd booking bonus fix",
+        "key": "CORE-14542",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14542",
+        "summary": "Points for Actions - duplicate 2nd booking bonus",
         "changes": [
+          {
+            "field": "summary",
+            "label": "Summary",
+            "before": "CLONE - Points for Actions - Anniversary Points and 2nd booking bonus fix",
+            "after": "Points for Actions - duplicate 2nd booking bonus"
+          },
           {
             "field": "updatedDisplay",
             "label": "Jira updated",
-            "before": "Jun 15, 2026, 8:59 AM",
-            "after": "Jun 24, 2026, 2:00 AM"
+            "before": "Jun 24, 2026, 2:00 AM",
+            "after": "Jun 24, 2026, 2:03 AM"
+          },
+          {
+            "field": "description",
+            "label": "Description",
+            "before": "We are seeing Anniversary Points PFA return either no actions or an oddly specific repeatable amount of actions submitted. 2025 Results -...",
+            "after": "Some customers are receiving double 2nd booking points"
           }
         ],
         "type": "Bug",
         "isSubtask": false,
         "assignee": "Raghav Kancherla",
         "assignedDeveloper": "Raghav Kancherla",
-        "status": "QA Testing (DEV)",
+        "status": "Pre Planning",
         "parent": {
           "key": "B2C-21",
           "url": "https://golfnow.atlassian.net/browse/B2C-21",
@@ -9565,6 +9527,57 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-24T06:01:54.222Z",
+      "previousPulledAtDisplay": "Jun 24, 2026, 2:01 AM",
+      "currentPulledAt": "2026-06-24T06:06:56.157Z",
+      "currentPulledAtDisplay": "Jun 24, 2026, 2:06 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14542",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14542",
+          "summary": "Points for Actions - duplicate 2nd booking bonus",
+          "changes": [
+            {
+              "field": "summary",
+              "label": "Summary",
+              "before": "CLONE - Points for Actions - Anniversary Points and 2nd booking bonus fix",
+              "after": "Points for Actions - duplicate 2nd booking bonus"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 24, 2026, 2:00 AM",
+              "after": "Jun 24, 2026, 2:03 AM"
+            },
+            {
+              "field": "description",
+              "label": "Description",
+              "before": "We are seeing Anniversary Points PFA return either no actions or an oddly specific repeatable amount of actions submitted. 2025 Results -...",
+              "after": "Some customers are receiving double 2nd booking points"
+            }
+          ],
+          "type": "Bug",
+          "isSubtask": false,
+          "assignee": "Raghav Kancherla",
+          "assignedDeveloper": "Raghav Kancherla",
+          "status": "Pre Planning",
+          "parent": {
+            "key": "B2C-21",
+            "url": "https://golfnow.atlassian.net/browse/B2C-21",
+            "summary": "Loyalty - Points for Actions",
+            "description": "",
+            "type": "Epic",
+            "status": "Selected for Development",
+            "priority": "Normal"
+          }
+        }
+      ],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-24T05:56:45.606Z",
       "previousPulledAtDisplay": "Jun 24, 2026, 1:56 AM",
@@ -11690,17 +11703,6 @@
       "previousPulledAtDisplay": "Jun 23, 2026, 11:56 AM",
       "currentPulledAt": "2026-06-23T16:02:11.658Z",
       "currentPulledAtDisplay": "Jun 23, 2026, 12:02 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-23T15:52:06.124Z",
-      "previousPulledAtDisplay": "Jun 23, 2026, 11:52 AM",
-      "currentPulledAt": "2026-06-23T15:56:55.345Z",
-      "currentPulledAtDisplay": "Jun 23, 2026, 11:56 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
