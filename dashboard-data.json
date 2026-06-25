@@ -4,10 +4,269 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-25T13:13:24.745Z",
-  "pulledAtDisplay": "Jun 25, 2026, 9:13 AM",
+  "pulledAt": "2026-06-25T13:22:06.852Z",
+  "pulledAtDisplay": "Jun 25, 2026, 9:22 AM",
   "total": 24,
   "issues": [
+    {
+      "key": "CORE-14415",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14415",
+      "summary": "Missing Headers in API 2.1 Request Logs",
+      "description": "Per a report from data engineering team (@Melissa.Barberio ) they’re unable to locate the GN HEaders from the IsAlive docs in the Mongo Logs for API 2.1. Looking back this started on or around 9/3/0225 which was the cutover date from USH to AWS for GolfNow.",
+      "descriptionHtml": "<p>Per a report from data engineering team (@Melissa.Barberio ) they’re unable to locate the GN HEaders from the IsAlive docs in the Mongo Logs for API 2.1. Looking back this started on or around 9/3/0225 which was the cutover date from USH to AWS for GolfNow. </p>",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 5,
+      "comments": [
+        {
+          "id": "1156993",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14415?focusedCommentId=1156993",
+          "author": "Daniel McNaughton",
+          "authorAccountId": "5a53cc00246f8c21033ff5a6",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+          "created": "2026-04-28T08:25:11.149-0400",
+          "createdDisplay": "Apr 28, 2026, 8:25 AM",
+          "updated": "2026-04-28T08:25:11.149-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "Opened a request with ITOps in Slack, waiting to hear back.",
+          "bodyHtml": "<p>Opened a request with ITOps in Slack, waiting to hear back.</p>"
+        },
+        {
+          "id": "1173029",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14415?focusedCommentId=1173029",
+          "author": "Cody Bulwin",
+          "authorAccountId": "712020:40722342-11c3-4625-a970-3f704200105b",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/CB-1.png",
+          "created": "2026-05-20T22:37:06.944-0400",
+          "createdDisplay": "May 20, 2026, 10:37 PM",
+          "updated": "2026-05-20T22:37:06.944-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "When drop_invalid_header_fields is set to true, the ALB silently drops any HTTP headers that don't conform, RFC 7230 does allow underscores in header field names. The ALB's drop_invalid_header_fields setting is stricter than the RFC and drops headers with characters\n\nthat AWS considers \"invalid\" which incorrectly includes underscores.\n\nunderscores (_) in their names.\n\nAll your custom headers use underscores:\n\n- GN_ReportingPage\n\n- GN_DeviceSessionId\n\n- GN_CustomerId\n\n- GN_FacilityId\n\n- GN_TeeTimeId\n\n- GN_ConfirmationId\n\n- GN_ReportingType\n\n- GN_RequestedPage\n\n- GN_Platform\n\n- GN_Version\n\nThe ALB is stripping them before they reach the target. The fix is either:\n\n- Disable drop_invalid_header_fields on the ALB (less secure but allows underscored headers)\n\n- Rename the headers to use hyphens instead of underscores (e.g. GN-ReportingPage) — requires app changes on both ends",
+          "bodyHtml": "<p>When drop_invalid_header_fields is set to true, the ALB silently drops any HTTP headers that don't conform, RFC 7230 does allow underscores in header field names. The ALB's drop_invalid_header_fields setting is stricter than the RFC and drops headers with characters  </p><p>  that AWS considers &quot;invalid&quot; which incorrectly includes underscores.       </p><p>  underscores (_) in their names.                                                                                                                                               </p><p>                                                                                                                                                                                  </p><p>  All your custom headers use underscores:                                                                                                                                        </p><ul><li><p>GN_ReportingPage                                                                                                                                                              </p></li></ul><ul><li><p>GN_DeviceSessionId                                                                                                                                                            </p></li></ul><ul><li><p>GN_CustomerId                                                                                                                                                                 </p></li></ul><ul><li><p>GN_FacilityId                                                                                                                                                                 </p></li></ul><ul><li><p>GN_TeeTimeId                                                                                                                                                                  </p></li></ul><ul><li><p>GN_ConfirmationId                                                                                                                                                             </p></li></ul><ul><li><p>GN_ReportingType                                                                                                                                                              </p></li></ul><ul><li><p>GN_RequestedPage                                                                                                                                                              </p></li></ul><ul><li><p>GN_Platform                                                                                                                                                                   </p></li></ul><ul><li><p>GN_Version                                                                                                                                                                    </p></li></ul><p>                                                                                                                                                                                  </p><p>  The ALB is stripping them before they reach the target. The fix is either:                                                                                                      </p><p>                                                                                                                                                                                  </p><ol><li><p><strong>Disable</strong> <strong>drop_invalid_header_fields</strong> on the ALB (less secure but allows underscored headers)                                                                                   </p></li></ol><ol><li><p><strong>Rename</strong> <strong>the</strong> <strong>headers</strong> to use hyphens instead of underscores (e.g. GN-ReportingPage) — requires app changes on both ends   </p></li></ol>"
+        },
+        {
+          "id": "1176941",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14415?focusedCommentId=1176941",
+          "author": "Bryan Geiger",
+          "authorAccountId": "557058:a53f8c7c-daa1-4720-aafe-2bf8ab386aa3",
+          "authorAvatarUrl": "https://secure.gravatar.com/avatar/6a471a6afc51203dd5b053efc5706bf1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FBG-5.png",
+          "created": "2026-06-01T12:23:41.159-0400",
+          "createdDisplay": "Jun 1, 2026, 12:23 PM",
+          "updated": "2026-06-01T12:23:41.159-0400",
+          "updatedDisplay": "",
+          "hasMedia": true,
+          "mediaCount": 1,
+          "body": "confirmed data is flowing in mongodb after the change @Paul Vitty made on the ALB.",
+          "bodyHtml": "<p>confirmed data is flowing in mongodb after the change @Paul Vitty made on the ALB. </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14415/comments/1176941/733099-Screenshot-2026-06-01-at-12.22.19-PM.png\" alt=\"Screenshot 2026-06-01 at 12.22.19 PM.png\" loading=\"lazy\"><figcaption>Screenshot 2026-06-01 at 12.22.19 PM.png</figcaption></figure></div>"
+        },
+        {
+          "id": "1176942",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14415?focusedCommentId=1176942",
+          "author": "Bryan Geiger",
+          "authorAccountId": "557058:a53f8c7c-daa1-4720-aafe-2bf8ab386aa3",
+          "authorAvatarUrl": "https://secure.gravatar.com/avatar/6a471a6afc51203dd5b053efc5706bf1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FBG-5.png",
+          "created": "2026-06-01T12:28:07.511-0400",
+          "createdDisplay": "Jun 1, 2026, 12:28 PM",
+          "updated": "2026-06-01T12:28:07.511-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "Core team, please rename name header variables to:\n\n- GN-ReportingPage\n\n- GN-DeviceSessionId\n\n- GN-CustomerId\n\n- GN-FacilityId\n\n- GN-TeeTimeId\n\n- GN-ConfirmationId\n\n- GN-ReportingType\n\n- GN-RequestedPage\n\n- GN-Platform\n\n- GN-Version",
+          "bodyHtml": "<p>Core team, please rename name header variables to: </p><ul><li><p>GN-ReportingPage</p></li><li><p>GN-DeviceSessionId</p></li><li><p>GN-CustomerId</p></li><li><p>GN-FacilityId</p></li><li><p>GN-TeeTimeId</p></li><li><p>GN-ConfirmationId</p></li><li><p>GN-ReportingType</p></li><li><p>GN-RequestedPage</p></li><li><p>GN-Platform</p></li><li><p>GN-Version</p></li></ul>"
+        },
+        {
+          "id": "1177739",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14415?focusedCommentId=1177739",
+          "author": "Marcus Briggs",
+          "authorAccountId": "712020:1339d8ef-ec0d-4624-8f70-87b2442de6dc",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/MB-5.png",
+          "created": "2026-06-02T16:53:57.923-0400",
+          "createdDisplay": "Jun 2, 2026, 4:53 PM",
+          "updated": "2026-06-02T16:53:57.923-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "Linking this GNSCM header rename task to CORE-14415 per request.",
+          "bodyHtml": "<p>Linking this GNSCM header rename task to CORE-14415 per request.</p>"
+        }
+      ],
+      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14415?focusedCommentId=1177739",
+      "lastCommentDisplay": "Jun 2, 2026, 4:53 PM",
+      "lastCommentAuthor": "Marcus Briggs",
+      "testChecklist": null,
+      "type": "Bug",
+      "isSubtask": false,
+      "status": "PO Review",
+      "priority": "None",
+      "assignee": "Daniel McNaughton",
+      "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+      "assignedDeveloper": "Daniel McNaughton",
+      "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+      "updated": "2026-06-25T09:13:59.468-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:13 AM",
+      "created": "2026-04-28T08:19:22.981-0400",
+      "createdDisplay": "Apr 28, 2026, 8:19 AM",
+      "components": [
+        "GolfNowAPI"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [],
+      "sprintNames": [],
+      "resolution": "Done",
+      "parent": null
+    },
+    {
+      "key": "CORE-14533",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14533",
+      "summary": "Database Changes",
+      "description": "",
+      "descriptionHtml": "",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 0,
+      "comments": [],
+      "lastCommentUrl": "",
+      "lastCommentDisplay": "",
+      "lastCommentAuthor": "",
+      "testChecklist": null,
+      "type": "Developer Task (sub task)",
+      "isSubtask": true,
+      "status": "PO Review",
+      "priority": "None",
+      "assignee": "Unassigned",
+      "assigneeAccountId": "",
+      "assigneeAvatarUrl": "",
+      "assignedDeveloper": "Daniel McNaughton",
+      "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+      "updated": "2026-06-25T09:13:38.669-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:13 AM",
+      "created": "2026-06-18T11:22:34.593-0400",
+      "createdDisplay": "Jun 18, 2026, 11:22 AM",
+      "components": [
+        "Database"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [],
+      "sprintNames": [],
+      "resolution": "",
+      "parent": {
+        "key": "CORE-14531",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+        "summary": "Migrate Urgency Bookings query to CRM",
+        "description": "",
+        "type": "Story",
+        "status": "Pending Prod Release",
+        "priority": "None"
+      }
+    },
+    {
+      "key": "CORE-14532",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14532",
+      "summary": "API 2.1 Changes",
+      "description": "",
+      "descriptionHtml": "",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 0,
+      "comments": [],
+      "lastCommentUrl": "",
+      "lastCommentDisplay": "",
+      "lastCommentAuthor": "",
+      "testChecklist": null,
+      "type": "Developer Task (sub task)",
+      "isSubtask": true,
+      "status": "PO Review",
+      "priority": "None",
+      "assignee": "Unassigned",
+      "assigneeAccountId": "",
+      "assigneeAvatarUrl": "",
+      "assignedDeveloper": "Daniel McNaughton",
+      "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+      "updated": "2026-06-25T09:13:29.362-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:13 AM",
+      "created": "2026-06-18T11:22:29.280-0400",
+      "createdDisplay": "Jun 18, 2026, 11:22 AM",
+      "components": [
+        "GolfNowAPI"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [],
+      "sprintNames": [],
+      "resolution": "",
+      "parent": {
+        "key": "CORE-14531",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+        "summary": "Migrate Urgency Bookings query to CRM",
+        "description": "",
+        "type": "Story",
+        "status": "Pending Prod Release",
+        "priority": "None"
+      }
+    },
+    {
+      "key": "CORE-14531",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+      "summary": "Migrate Urgency Bookings query to CRM",
+      "description": "Migrate the Urgency Bookings query from CRM_Repl to CRM.\n\nEndpoint to test: https://api.gnsvc.com/internal/help/operations/GetCourseMetricsByCourseId",
+      "descriptionHtml": "<p>Migrate the Urgency Bookings query from CRM_Repl to CRM.</p><p>Endpoint to test: <a href=\"https://api.gnsvc.com/internal/help/operations/GetCourseMetricsByCourseId\" target=\"_blank\" rel=\"noopener\">https://api.gnsvc.com/internal/help/operations/GetCourseMetricsByCourseId</a> </p>",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 0,
+      "comments": [],
+      "lastCommentUrl": "",
+      "lastCommentDisplay": "",
+      "lastCommentAuthor": "",
+      "testChecklist": null,
+      "type": "Story",
+      "isSubtask": false,
+      "status": "Pending Prod Release",
+      "priority": "None",
+      "assignee": "Daniel McNaughton",
+      "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+      "assignedDeveloper": "Daniel McNaughton",
+      "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+      "updated": "2026-06-25T09:13:06.682-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:13 AM",
+      "created": "2026-06-18T11:21:50.969-0400",
+      "createdDisplay": "Jun 18, 2026, 11:21 AM",
+      "components": [
+        "Database",
+        "GolfNowAPI"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [
+        {
+          "name": "2026.8"
+        }
+      ],
+      "sprintNames": [
+        "2026.8"
+      ],
+      "resolution": "",
+      "parent": null
+    },
     {
       "key": "CORE-14530",
       "url": "https://golfnow.atlassian.net/browse/CORE-14530",
@@ -1061,265 +1320,6 @@
       "parent": null
     },
     {
-      "key": "CORE-14533",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14533",
-      "summary": "Database Changes",
-      "description": "",
-      "descriptionHtml": "",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 0,
-      "comments": [],
-      "lastCommentUrl": "",
-      "lastCommentDisplay": "",
-      "lastCommentAuthor": "",
-      "testChecklist": null,
-      "type": "Developer Task (sub task)",
-      "isSubtask": true,
-      "status": "QA Testing (DEV)",
-      "priority": "None",
-      "assignee": "Unassigned",
-      "assigneeAccountId": "",
-      "assigneeAvatarUrl": "",
-      "assignedDeveloper": "Daniel McNaughton",
-      "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-      "updated": "2026-06-18T16:13:17.887-0400",
-      "updatedDisplay": "Jun 18, 2026, 4:13 PM",
-      "created": "2026-06-18T11:22:34.593-0400",
-      "createdDisplay": "Jun 18, 2026, 11:22 AM",
-      "components": [
-        "Database"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [],
-      "sprintNames": [],
-      "resolution": "",
-      "parent": {
-        "key": "CORE-14531",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14531",
-        "summary": "Migrate Urgency Bookings query to CRM",
-        "description": "",
-        "type": "Story",
-        "status": "Pending Deployment (DEV)",
-        "priority": "None"
-      }
-    },
-    {
-      "key": "CORE-14532",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14532",
-      "summary": "API 2.1 Changes",
-      "description": "",
-      "descriptionHtml": "",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 0,
-      "comments": [],
-      "lastCommentUrl": "",
-      "lastCommentDisplay": "",
-      "lastCommentAuthor": "",
-      "testChecklist": null,
-      "type": "Developer Task (sub task)",
-      "isSubtask": true,
-      "status": "QA Testing (DEV)",
-      "priority": "None",
-      "assignee": "Unassigned",
-      "assigneeAccountId": "",
-      "assigneeAvatarUrl": "",
-      "assignedDeveloper": "Daniel McNaughton",
-      "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-      "updated": "2026-06-18T13:21:02.912-0400",
-      "updatedDisplay": "Jun 18, 2026, 1:21 PM",
-      "created": "2026-06-18T11:22:29.280-0400",
-      "createdDisplay": "Jun 18, 2026, 11:22 AM",
-      "components": [
-        "GolfNowAPI"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [],
-      "sprintNames": [],
-      "resolution": "",
-      "parent": {
-        "key": "CORE-14531",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14531",
-        "summary": "Migrate Urgency Bookings query to CRM",
-        "description": "",
-        "type": "Story",
-        "status": "Pending Deployment (DEV)",
-        "priority": "None"
-      }
-    },
-    {
-      "key": "CORE-14531",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14531",
-      "summary": "Migrate Urgency Bookings query to CRM",
-      "description": "Migrate the Urgency Bookings query from CRM_Repl to CRM.\n\nEndpoint to test: https://api.gnsvc.com/internal/help/operations/GetCourseMetricsByCourseId",
-      "descriptionHtml": "<p>Migrate the Urgency Bookings query from CRM_Repl to CRM.</p><p>Endpoint to test: <a href=\"https://api.gnsvc.com/internal/help/operations/GetCourseMetricsByCourseId\" target=\"_blank\" rel=\"noopener\">https://api.gnsvc.com/internal/help/operations/GetCourseMetricsByCourseId</a> </p>",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 0,
-      "comments": [],
-      "lastCommentUrl": "",
-      "lastCommentDisplay": "",
-      "lastCommentAuthor": "",
-      "testChecklist": null,
-      "type": "Story",
-      "isSubtask": false,
-      "status": "Pending Deployment (DEV)",
-      "priority": "None",
-      "assignee": "Daniel McNaughton",
-      "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-      "assignedDeveloper": "Daniel McNaughton",
-      "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-      "updated": "2026-06-18T13:08:46.420-0400",
-      "updatedDisplay": "Jun 18, 2026, 1:08 PM",
-      "created": "2026-06-18T11:21:50.969-0400",
-      "createdDisplay": "Jun 18, 2026, 11:21 AM",
-      "components": [
-        "Database",
-        "GolfNowAPI"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
-      "resolution": "",
-      "parent": null
-    },
-    {
-      "key": "CORE-14415",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14415",
-      "summary": "Missing Headers in API 2.1 Request Logs",
-      "description": "Per a report from data engineering team (@Melissa.Barberio ) they’re unable to locate the GN HEaders from the IsAlive docs in the Mongo Logs for API 2.1. Looking back this started on or around 9/3/0225 which was the cutover date from USH to AWS for GolfNow.",
-      "descriptionHtml": "<p>Per a report from data engineering team (@Melissa.Barberio ) they’re unable to locate the GN HEaders from the IsAlive docs in the Mongo Logs for API 2.1. Looking back this started on or around 9/3/0225 which was the cutover date from USH to AWS for GolfNow. </p>",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 5,
-      "comments": [
-        {
-          "id": "1156993",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14415?focusedCommentId=1156993",
-          "author": "Daniel McNaughton",
-          "authorAccountId": "5a53cc00246f8c21033ff5a6",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-          "created": "2026-04-28T08:25:11.149-0400",
-          "createdDisplay": "Apr 28, 2026, 8:25 AM",
-          "updated": "2026-04-28T08:25:11.149-0400",
-          "updatedDisplay": "",
-          "hasMedia": false,
-          "mediaCount": 0,
-          "body": "Opened a request with ITOps in Slack, waiting to hear back.",
-          "bodyHtml": "<p>Opened a request with ITOps in Slack, waiting to hear back.</p>"
-        },
-        {
-          "id": "1173029",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14415?focusedCommentId=1173029",
-          "author": "Cody Bulwin",
-          "authorAccountId": "712020:40722342-11c3-4625-a970-3f704200105b",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/CB-1.png",
-          "created": "2026-05-20T22:37:06.944-0400",
-          "createdDisplay": "May 20, 2026, 10:37 PM",
-          "updated": "2026-05-20T22:37:06.944-0400",
-          "updatedDisplay": "",
-          "hasMedia": false,
-          "mediaCount": 0,
-          "body": "When drop_invalid_header_fields is set to true, the ALB silently drops any HTTP headers that don't conform, RFC 7230 does allow underscores in header field names. The ALB's drop_invalid_header_fields setting is stricter than the RFC and drops headers with characters\n\nthat AWS considers \"invalid\" which incorrectly includes underscores.\n\nunderscores (_) in their names.\n\nAll your custom headers use underscores:\n\n- GN_ReportingPage\n\n- GN_DeviceSessionId\n\n- GN_CustomerId\n\n- GN_FacilityId\n\n- GN_TeeTimeId\n\n- GN_ConfirmationId\n\n- GN_ReportingType\n\n- GN_RequestedPage\n\n- GN_Platform\n\n- GN_Version\n\nThe ALB is stripping them before they reach the target. The fix is either:\n\n- Disable drop_invalid_header_fields on the ALB (less secure but allows underscored headers)\n\n- Rename the headers to use hyphens instead of underscores (e.g. GN-ReportingPage) — requires app changes on both ends",
-          "bodyHtml": "<p>When drop_invalid_header_fields is set to true, the ALB silently drops any HTTP headers that don't conform, RFC 7230 does allow underscores in header field names. The ALB's drop_invalid_header_fields setting is stricter than the RFC and drops headers with characters  </p><p>  that AWS considers &quot;invalid&quot; which incorrectly includes underscores.       </p><p>  underscores (_) in their names.                                                                                                                                               </p><p>                                                                                                                                                                                  </p><p>  All your custom headers use underscores:                                                                                                                                        </p><ul><li><p>GN_ReportingPage                                                                                                                                                              </p></li></ul><ul><li><p>GN_DeviceSessionId                                                                                                                                                            </p></li></ul><ul><li><p>GN_CustomerId                                                                                                                                                                 </p></li></ul><ul><li><p>GN_FacilityId                                                                                                                                                                 </p></li></ul><ul><li><p>GN_TeeTimeId                                                                                                                                                                  </p></li></ul><ul><li><p>GN_ConfirmationId                                                                                                                                                             </p></li></ul><ul><li><p>GN_ReportingType                                                                                                                                                              </p></li></ul><ul><li><p>GN_RequestedPage                                                                                                                                                              </p></li></ul><ul><li><p>GN_Platform                                                                                                                                                                   </p></li></ul><ul><li><p>GN_Version                                                                                                                                                                    </p></li></ul><p>                                                                                                                                                                                  </p><p>  The ALB is stripping them before they reach the target. The fix is either:                                                                                                      </p><p>                                                                                                                                                                                  </p><ol><li><p><strong>Disable</strong> <strong>drop_invalid_header_fields</strong> on the ALB (less secure but allows underscored headers)                                                                                   </p></li></ol><ol><li><p><strong>Rename</strong> <strong>the</strong> <strong>headers</strong> to use hyphens instead of underscores (e.g. GN-ReportingPage) — requires app changes on both ends   </p></li></ol>"
-        },
-        {
-          "id": "1176941",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14415?focusedCommentId=1176941",
-          "author": "Bryan Geiger",
-          "authorAccountId": "557058:a53f8c7c-daa1-4720-aafe-2bf8ab386aa3",
-          "authorAvatarUrl": "https://secure.gravatar.com/avatar/6a471a6afc51203dd5b053efc5706bf1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FBG-5.png",
-          "created": "2026-06-01T12:23:41.159-0400",
-          "createdDisplay": "Jun 1, 2026, 12:23 PM",
-          "updated": "2026-06-01T12:23:41.159-0400",
-          "updatedDisplay": "",
-          "hasMedia": true,
-          "mediaCount": 1,
-          "body": "confirmed data is flowing in mongodb after the change @Paul Vitty made on the ALB.",
-          "bodyHtml": "<p>confirmed data is flowing in mongodb after the change @Paul Vitty made on the ALB. </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14415/comments/1176941/733099-Screenshot-2026-06-01-at-12.22.19-PM.png\" alt=\"Screenshot 2026-06-01 at 12.22.19 PM.png\" loading=\"lazy\"><figcaption>Screenshot 2026-06-01 at 12.22.19 PM.png</figcaption></figure></div>"
-        },
-        {
-          "id": "1176942",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14415?focusedCommentId=1176942",
-          "author": "Bryan Geiger",
-          "authorAccountId": "557058:a53f8c7c-daa1-4720-aafe-2bf8ab386aa3",
-          "authorAvatarUrl": "https://secure.gravatar.com/avatar/6a471a6afc51203dd5b053efc5706bf1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FBG-5.png",
-          "created": "2026-06-01T12:28:07.511-0400",
-          "createdDisplay": "Jun 1, 2026, 12:28 PM",
-          "updated": "2026-06-01T12:28:07.511-0400",
-          "updatedDisplay": "",
-          "hasMedia": false,
-          "mediaCount": 0,
-          "body": "Core team, please rename name header variables to:\n\n- GN-ReportingPage\n\n- GN-DeviceSessionId\n\n- GN-CustomerId\n\n- GN-FacilityId\n\n- GN-TeeTimeId\n\n- GN-ConfirmationId\n\n- GN-ReportingType\n\n- GN-RequestedPage\n\n- GN-Platform\n\n- GN-Version",
-          "bodyHtml": "<p>Core team, please rename name header variables to: </p><ul><li><p>GN-ReportingPage</p></li><li><p>GN-DeviceSessionId</p></li><li><p>GN-CustomerId</p></li><li><p>GN-FacilityId</p></li><li><p>GN-TeeTimeId</p></li><li><p>GN-ConfirmationId</p></li><li><p>GN-ReportingType</p></li><li><p>GN-RequestedPage</p></li><li><p>GN-Platform</p></li><li><p>GN-Version</p></li></ul>"
-        },
-        {
-          "id": "1177739",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14415?focusedCommentId=1177739",
-          "author": "Marcus Briggs",
-          "authorAccountId": "712020:1339d8ef-ec0d-4624-8f70-87b2442de6dc",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/MB-5.png",
-          "created": "2026-06-02T16:53:57.923-0400",
-          "createdDisplay": "Jun 2, 2026, 4:53 PM",
-          "updated": "2026-06-02T16:53:57.923-0400",
-          "updatedDisplay": "",
-          "hasMedia": false,
-          "mediaCount": 0,
-          "body": "Linking this GNSCM header rename task to CORE-14415 per request.",
-          "bodyHtml": "<p>Linking this GNSCM header rename task to CORE-14415 per request.</p>"
-        }
-      ],
-      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14415?focusedCommentId=1177739",
-      "lastCommentDisplay": "Jun 2, 2026, 4:53 PM",
-      "lastCommentAuthor": "Marcus Briggs",
-      "testChecklist": null,
-      "type": "Bug",
-      "isSubtask": false,
-      "status": "Pending Deployment (DEV)",
-      "priority": "None",
-      "assignee": "Daniel McNaughton",
-      "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-      "assignedDeveloper": "Daniel McNaughton",
-      "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-      "updated": "2026-06-18T10:20:35.872-0400",
-      "updatedDisplay": "Jun 18, 2026, 10:20 AM",
-      "created": "2026-04-28T08:19:22.981-0400",
-      "createdDisplay": "Apr 28, 2026, 8:19 AM",
-      "components": [
-        "GolfNowAPI"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [],
-      "sprintNames": [],
-      "resolution": "Done",
-      "parent": null
-    },
-    {
       "key": "CORE-14233",
       "url": "https://golfnow.atlassian.net/browse/CORE-14233",
       "summary": "Updates to Reservation Confirmation Template",
@@ -1746,8 +1746,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-25T13:13:24.745Z",
-    "pulledAtDisplay": "Jun 25, 2026, 9:13 AM",
+    "pulledAt": "2026-06-25T13:22:06.852Z",
+    "pulledAtDisplay": "Jun 25, 2026, 9:22 AM",
     "total": 95,
     "mainTotal": 95,
     "subtaskTotal": 0,
@@ -2998,7 +2998,7 @@
         "descriptionImageCount": 0,
         "descriptionVideoCount": 0,
         "descriptionMediaCount": 0,
-        "commentCount": 4,
+        "commentCount": 5,
         "comments": [
           {
             "id": "1143473",
@@ -3059,10 +3059,25 @@
             "mediaCount": 0,
             "body": "@Joshua Marquess Thank you!",
             "bodyHtml": "<p>@Joshua Marquess Thank you!</p>"
+          },
+          {
+            "id": "1187892",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14299?focusedCommentId=1187892",
+            "author": "Andrew Lounsberry",
+            "authorAccountId": "60240ef2b489c50070c4cc81",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/5feb9ebbcf946de7d4384ac995cd8bf2?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAL-4.png",
+            "created": "2026-06-25T09:15:26.744-0400",
+            "createdDisplay": "Jun 25, 2026, 9:15 AM",
+            "updated": "2026-06-25T09:15:26.744-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "@Joshua Marquess Wanted to check in to see if this made it in June 23rd release and if not, when the expected date/release is. Thank you!",
+            "bodyHtml": "<p>@Joshua Marquess Wanted to check in to see if this made it in June 23rd release and if not, when the expected date/release is. Thank you!</p>"
           }
         ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14299?focusedCommentId=1173505",
-        "lastCommentDisplay": "May 21, 2026, 3:30 PM",
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14299?focusedCommentId=1187892",
+        "lastCommentDisplay": "Jun 25, 2026, 9:15 AM",
         "lastCommentAuthor": "Andrew Lounsberry",
         "testChecklist": null,
         "type": "Story",
@@ -3075,8 +3090,8 @@
         "assignedDeveloper": "Unassigned",
         "assignedDeveloperAccountId": "",
         "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-01T09:31:21.483-0400",
-        "updatedDisplay": "Jun 1, 2026, 9:31 AM",
+        "updated": "2026-06-25T09:15:26.744-0400",
+        "updatedDisplay": "Jun 25, 2026, 9:15 AM",
         "created": "2026-03-12T09:18:26.329-0400",
         "createdDisplay": "Mar 12, 2026, 9:18 AM",
         "components": [],
@@ -7796,7 +7811,7 @@
         "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
-        "status": "Pending Deployment (DEV)",
+        "status": "Pending Prod Release",
         "priority": "None",
         "assignee": "Daniel McNaughton",
         "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
@@ -7804,8 +7819,8 @@
         "assignedDeveloper": "Daniel McNaughton",
         "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-        "updated": "2026-06-18T13:08:46.420-0400",
-        "updatedDisplay": "Jun 18, 2026, 1:08 PM",
+        "updated": "2026-06-25T09:13:06.682-0400",
+        "updatedDisplay": "Jun 25, 2026, 9:13 AM",
         "created": "2026-06-18T11:21:50.969-0400",
         "createdDisplay": "Jun 18, 2026, 11:21 AM",
         "components": [
@@ -7831,13 +7846,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-25T13:12:54.423Z",
-    "pulledAtDisplay": "Jun 25, 2026, 9:12 AM",
+    "pulledAt": "2026-06-25T13:21:31.283Z",
+    "pulledAtDisplay": "Jun 25, 2026, 9:21 AM",
     "window": {
-      "start": "2026-05-11T13:12:54.423Z",
-      "end": "2026-12-22T13:12:54.423Z",
-      "startDisplay": "May 11, 2026, 9:12 AM",
-      "endDisplay": "Dec 22, 2026, 8:12 AM"
+      "start": "2026-05-11T13:21:31.283Z",
+      "end": "2026-12-22T13:21:31.283Z",
+      "startDisplay": "May 11, 2026, 9:21 AM",
+      "endDisplay": "Dec 22, 2026, 8:21 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7850,7 +7865,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-25T13:12:57.758Z",
+        "pulledAt": "2026-06-25T13:21:34.440Z",
         "eventCount": 94,
         "events": [
           {
@@ -9010,23 +9025,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Holiday Freeze",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-08T00:00:00.000Z",
-            "startDate": "2026-08-31",
-            "endDate": "2026-09-08",
-            "startDisplay": "Aug 31, 2026",
-            "endDisplay": "Sep 8, 2026",
-            "allDay": true,
-            "type": "Golf Freeze",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9039,6 +9037,23 @@
             "endDisplay": "Sep 1, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Holiday Freeze",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-08T00:00:00.000Z",
+            "startDate": "2026-08-31",
+            "endDate": "2026-09-08",
+            "startDisplay": "Aug 31, 2026",
+            "endDisplay": "Sep 8, 2026",
+            "allDay": true,
+            "type": "Golf Freeze",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9457,18 +9472,18 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-25T13:12:00.186Z",
-    "previousPulledAtDisplay": "Jun 25, 2026, 9:12 AM",
-    "currentPulledAt": "2026-06-25T13:13:24.745Z",
-    "currentPulledAtDisplay": "Jun 25, 2026, 9:13 AM",
+    "previousPulledAt": "2026-06-25T13:13:24.745Z",
+    "previousPulledAtDisplay": "Jun 25, 2026, 9:13 AM",
+    "currentPulledAt": "2026-06-25T13:22:06.852Z",
+    "currentPulledAtDisplay": "Jun 25, 2026, 9:22 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
     "updated": [
       {
-        "key": "CORE-14530",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14530",
-        "summary": "CRM_Repl Cache.UrgencyBookings Bug",
+        "key": "CORE-14415",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14415",
+        "summary": "Missing Headers in API 2.1 Request Logs",
         "changes": [
           {
             "field": "status",
@@ -9479,8 +9494,8 @@
           {
             "field": "updatedDisplay",
             "label": "Jira updated",
-            "before": "Jun 18, 2026, 9:43 AM",
-            "after": "Jun 25, 2026, 9:12 AM"
+            "before": "Jun 18, 2026, 10:20 AM",
+            "after": "Jun 25, 2026, 9:13 AM"
           }
         ],
         "type": "Bug",
@@ -9491,9 +9506,9 @@
         "parent": null
       },
       {
-        "key": "CORE-14513",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14513",
-        "summary": "Points for Actions - Anniversary Points and 2nd booking bonus fix",
+        "key": "CORE-14533",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14533",
+        "summary": "Database Changes",
         "changes": [
           {
             "field": "status",
@@ -9504,62 +9519,29 @@
           {
             "field": "updatedDisplay",
             "label": "Jira updated",
-            "before": "Jun 24, 2026, 2:00 AM",
-            "after": "Jun 25, 2026, 9:12 AM"
-          }
-        ],
-        "type": "Bug",
-        "isSubtask": false,
-        "assignee": "Raghav Kancherla",
-        "assignedDeveloper": "Raghav Kancherla",
-        "status": "PO Review",
-        "parent": {
-          "key": "B2C-21",
-          "url": "https://golfnow.atlassian.net/browse/B2C-21",
-          "summary": "Loyalty - Points for Actions",
-          "description": "",
-          "type": "Epic",
-          "status": "Selected for Development",
-          "priority": "Normal"
-        }
-      },
-      {
-        "key": "CORE-14511",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14511",
-        "summary": "Code Changes",
-        "changes": [
-          {
-            "field": "status",
-            "label": "Status",
-            "before": "QA Testing (DEV)",
-            "after": "PO Review"
-          },
-          {
-            "field": "updatedDisplay",
-            "label": "Jira updated",
-            "before": "Jun 10, 2026, 10:09 AM",
-            "after": "Jun 25, 2026, 9:11 AM"
+            "before": "Jun 18, 2026, 4:13 PM",
+            "after": "Jun 25, 2026, 9:13 AM"
           }
         ],
         "type": "Developer Task (sub task)",
         "isSubtask": true,
         "assignee": "Unassigned",
-        "assignedDeveloper": "Tyler Olechnowicz",
+        "assignedDeveloper": "Daniel McNaughton",
         "status": "PO Review",
         "parent": {
-          "key": "CORE-14273",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14273",
-          "summary": "Update EZ Legacy API Call (AddConfirmationNote) to Include Param5 – SponsorID",
+          "key": "CORE-14531",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+          "summary": "Migrate Urgency Bookings query to CRM",
           "description": "",
           "type": "Story",
-          "status": "PO Review",
-          "priority": "P2"
+          "status": "Pending Prod Release",
+          "priority": "None"
         }
       },
       {
-        "key": "CORE-14273",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14273",
-        "summary": "Update EZ Legacy API Call (AddConfirmationNote) to Include Param5 – SponsorID",
+        "key": "CORE-14532",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14532",
+        "summary": "API 2.1 Changes",
         "changes": [
           {
             "field": "status",
@@ -9570,23 +9552,56 @@
           {
             "field": "updatedDisplay",
             "label": "Jira updated",
-            "before": "Jun 10, 2026, 10:20 AM",
-            "after": "Jun 25, 2026, 9:11 AM"
+            "before": "Jun 18, 2026, 1:21 PM",
+            "after": "Jun 25, 2026, 9:13 AM"
+          }
+        ],
+        "type": "Developer Task (sub task)",
+        "isSubtask": true,
+        "assignee": "Unassigned",
+        "assignedDeveloper": "Daniel McNaughton",
+        "status": "PO Review",
+        "parent": {
+          "key": "CORE-14531",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+          "summary": "Migrate Urgency Bookings query to CRM",
+          "description": "",
+          "type": "Story",
+          "status": "Pending Prod Release",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14531",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+        "summary": "Migrate Urgency Bookings query to CRM",
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "Pending Deployment (DEV)",
+            "after": "Pending Prod Release"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 18, 2026, 1:08 PM",
+            "after": "Jun 25, 2026, 9:13 AM"
           }
         ],
         "type": "Story",
         "isSubtask": false,
-        "assignee": "Dewan Kabir",
-        "assignedDeveloper": "Tyler Olechnowicz",
-        "status": "PO Review",
+        "assignee": "Daniel McNaughton",
+        "assignedDeveloper": "Daniel McNaughton",
+        "status": "Pending Prod Release",
         "parent": null
       }
     ],
     "statusChanges": [
       {
-        "key": "CORE-14530",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14530",
-        "summary": "CRM_Repl Cache.UrgencyBookings Bug",
+        "key": "CORE-14415",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14415",
+        "summary": "Missing Headers in API 2.1 Request Logs",
         "before": "Pending Deployment (DEV)",
         "after": "PO Review",
         "type": "Bug",
@@ -9597,63 +9612,260 @@
         "parent": null
       },
       {
-        "key": "CORE-14513",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14513",
-        "summary": "Points for Actions - Anniversary Points and 2nd booking bonus fix",
-        "before": "QA Testing (DEV)",
-        "after": "PO Review",
-        "type": "Bug",
-        "isSubtask": false,
-        "assignee": "Raghav Kancherla",
-        "assignedDeveloper": "Raghav Kancherla",
-        "status": "PO Review",
-        "parent": {
-          "key": "B2C-21",
-          "url": "https://golfnow.atlassian.net/browse/B2C-21",
-          "summary": "Loyalty - Points for Actions",
-          "description": "",
-          "type": "Epic",
-          "status": "Selected for Development",
-          "priority": "Normal"
-        }
-      },
-      {
-        "key": "CORE-14511",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14511",
-        "summary": "Code Changes",
+        "key": "CORE-14533",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14533",
+        "summary": "Database Changes",
         "before": "QA Testing (DEV)",
         "after": "PO Review",
         "type": "Developer Task (sub task)",
         "isSubtask": true,
         "assignee": "Unassigned",
-        "assignedDeveloper": "Tyler Olechnowicz",
+        "assignedDeveloper": "Daniel McNaughton",
         "status": "PO Review",
         "parent": {
-          "key": "CORE-14273",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14273",
-          "summary": "Update EZ Legacy API Call (AddConfirmationNote) to Include Param5 – SponsorID",
+          "key": "CORE-14531",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+          "summary": "Migrate Urgency Bookings query to CRM",
           "description": "",
           "type": "Story",
-          "status": "PO Review",
-          "priority": "P2"
+          "status": "Pending Prod Release",
+          "priority": "None"
         }
       },
       {
-        "key": "CORE-14273",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14273",
-        "summary": "Update EZ Legacy API Call (AddConfirmationNote) to Include Param5 – SponsorID",
+        "key": "CORE-14532",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14532",
+        "summary": "API 2.1 Changes",
         "before": "QA Testing (DEV)",
         "after": "PO Review",
+        "type": "Developer Task (sub task)",
+        "isSubtask": true,
+        "assignee": "Unassigned",
+        "assignedDeveloper": "Daniel McNaughton",
+        "status": "PO Review",
+        "parent": {
+          "key": "CORE-14531",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+          "summary": "Migrate Urgency Bookings query to CRM",
+          "description": "",
+          "type": "Story",
+          "status": "Pending Prod Release",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14531",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+        "summary": "Migrate Urgency Bookings query to CRM",
+        "before": "Pending Deployment (DEV)",
+        "after": "Pending Prod Release",
         "type": "Story",
         "isSubtask": false,
-        "assignee": "Dewan Kabir",
-        "assignedDeveloper": "Tyler Olechnowicz",
-        "status": "PO Review",
+        "assignee": "Daniel McNaughton",
+        "assignedDeveloper": "Daniel McNaughton",
+        "status": "Pending Prod Release",
         "parent": null
       }
     ]
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-25T13:13:24.745Z",
+      "previousPulledAtDisplay": "Jun 25, 2026, 9:13 AM",
+      "currentPulledAt": "2026-06-25T13:22:06.852Z",
+      "currentPulledAtDisplay": "Jun 25, 2026, 9:22 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14415",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14415",
+          "summary": "Missing Headers in API 2.1 Request Logs",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "Pending Deployment (DEV)",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 18, 2026, 10:20 AM",
+              "after": "Jun 25, 2026, 9:13 AM"
+            }
+          ],
+          "type": "Bug",
+          "isSubtask": false,
+          "assignee": "Daniel McNaughton",
+          "assignedDeveloper": "Daniel McNaughton",
+          "status": "PO Review",
+          "parent": null
+        },
+        {
+          "key": "CORE-14533",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14533",
+          "summary": "Database Changes",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "QA Testing (DEV)",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 18, 2026, 4:13 PM",
+              "after": "Jun 25, 2026, 9:13 AM"
+            }
+          ],
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Unassigned",
+          "assignedDeveloper": "Daniel McNaughton",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-14531",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+            "summary": "Migrate Urgency Bookings query to CRM",
+            "description": "",
+            "type": "Story",
+            "status": "Pending Prod Release",
+            "priority": "None"
+          }
+        },
+        {
+          "key": "CORE-14532",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14532",
+          "summary": "API 2.1 Changes",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "QA Testing (DEV)",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 18, 2026, 1:21 PM",
+              "after": "Jun 25, 2026, 9:13 AM"
+            }
+          ],
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Unassigned",
+          "assignedDeveloper": "Daniel McNaughton",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-14531",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+            "summary": "Migrate Urgency Bookings query to CRM",
+            "description": "",
+            "type": "Story",
+            "status": "Pending Prod Release",
+            "priority": "None"
+          }
+        },
+        {
+          "key": "CORE-14531",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+          "summary": "Migrate Urgency Bookings query to CRM",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "Pending Deployment (DEV)",
+              "after": "Pending Prod Release"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 18, 2026, 1:08 PM",
+              "after": "Jun 25, 2026, 9:13 AM"
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Daniel McNaughton",
+          "assignedDeveloper": "Daniel McNaughton",
+          "status": "Pending Prod Release",
+          "parent": null
+        }
+      ],
+      "statusChanges": [
+        {
+          "key": "CORE-14415",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14415",
+          "summary": "Missing Headers in API 2.1 Request Logs",
+          "before": "Pending Deployment (DEV)",
+          "after": "PO Review",
+          "type": "Bug",
+          "isSubtask": false,
+          "assignee": "Daniel McNaughton",
+          "assignedDeveloper": "Daniel McNaughton",
+          "status": "PO Review",
+          "parent": null
+        },
+        {
+          "key": "CORE-14533",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14533",
+          "summary": "Database Changes",
+          "before": "QA Testing (DEV)",
+          "after": "PO Review",
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Unassigned",
+          "assignedDeveloper": "Daniel McNaughton",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-14531",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+            "summary": "Migrate Urgency Bookings query to CRM",
+            "description": "",
+            "type": "Story",
+            "status": "Pending Prod Release",
+            "priority": "None"
+          }
+        },
+        {
+          "key": "CORE-14532",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14532",
+          "summary": "API 2.1 Changes",
+          "before": "QA Testing (DEV)",
+          "after": "PO Review",
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Unassigned",
+          "assignedDeveloper": "Daniel McNaughton",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-14531",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+            "summary": "Migrate Urgency Bookings query to CRM",
+            "description": "",
+            "type": "Story",
+            "status": "Pending Prod Release",
+            "priority": "None"
+          }
+        },
+        {
+          "key": "CORE-14531",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+          "summary": "Migrate Urgency Bookings query to CRM",
+          "before": "Pending Deployment (DEV)",
+          "after": "Pending Prod Release",
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Daniel McNaughton",
+          "assignedDeveloper": "Daniel McNaughton",
+          "status": "Pending Prod Release",
+          "parent": null
+        }
+      ]
+    },
     {
       "previousPulledAt": "2026-06-25T13:12:00.186Z",
       "previousPulledAtDisplay": "Jun 25, 2026, 9:12 AM",
@@ -12149,17 +12361,6 @@
       "previousPulledAtDisplay": "Jun 24, 2026, 7:16 PM",
       "currentPulledAt": "2026-06-24T23:21:44.993Z",
       "currentPulledAtDisplay": "Jun 24, 2026, 7:21 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-24T23:11:49.645Z",
-      "previousPulledAtDisplay": "Jun 24, 2026, 7:11 PM",
-      "currentPulledAt": "2026-06-24T23:16:44.018Z",
-      "currentPulledAtDisplay": "Jun 24, 2026, 7:16 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
