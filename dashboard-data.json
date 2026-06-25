@@ -4,10 +4,641 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-25T13:06:56.792Z",
-  "pulledAtDisplay": "Jun 25, 2026, 9:06 AM",
+  "pulledAt": "2026-06-25T13:12:00.186Z",
+  "pulledAtDisplay": "Jun 25, 2026, 9:12 AM",
   "total": 24,
   "issues": [
+    {
+      "key": "CORE-14396",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14396",
+      "summary": "Add IsCaddyRequested parameter support to EZL/EZLRTS tee sheet interface",
+      "description": "Background\n\nIn 2023, we added support for passing the IsCaddyRequested parameter as a pass-through to BRS and BRSG1 tee sheet interfaces to support ClubUp (caddy service) integrations. However, this parameter was not added to the EZL tee sheet interface.\n\nCurrent State\n\n- ✅ BRS tee sheet: Passes IsCaddyRequested parameter (line 163 in BRSTeeSheet.cs)\n\n- ✅ BRSG1 tee sheet: Passes IsCaddyRequested parameter (line 199 in BRSG1TeeSheet.cs)\n\n- ❌ EZL tee sheet: Does NOT pass IsCaddyRequested parameter\n\nIssue\n\nThe EZL tee sheet (code: \"EZL\") does not handle the IsCaddyRequested parameter when making reservations. This means courses using EZLRTS tee sheet systems cannot indicate caddy requests through our booking flow, creating an inconsistent experience across different tee sheet providers.\n\nExpected Behavior\n\nWhen a booking is made through the EZL tee sheet interface with IsCaddyRequested = true, the caddie request should be submitted to the EZLinks Integrators API via the dedicated Caddie Request endpoint (see RTS-2163), similar to how BRS and BRSG handle it through their respective interfaces.\n\n---\nTechnical Details\n\nImportant Update (per Viitalii Slobodianyk): A completely new endpoint was added in RTS-2163 to support caddie requests for EZL/EZRTS. The EZL implementation should use this dedicated endpoint rather than adding a parameter to the existing booking payload.\n\n⚠️ BRS/BRSG1 must remain untouched. BRS and BRSG1 are still using the old method (passing IsCaddyRequested directly in the booking payload). Do NOT modify BRS/BRSG1 — only EZL will use the new Caddie Request API endpoint.\n\nNew Caddie Request Endpoint (from RTS-2163):\n\n- Type: POST\n\n- URL path: Under the \"Tee Time\" path in the Integrators API\n\n- GrantArea: APIReservationSystem\n\n- Input Parameters:\n\n- SponsorID (required)\n\n- ConfirmID (required)\n\n- Caddie-Requested (required, Boolean)\n\n- Behavior: Writes value to ETNv4.dbo.TTQuick.QuickEntryCaddy (False = 0, True = 1)\n\n- Response: Indicates success or failure\n\n- Failure reasons: missing parameters, SponsorID lacks access to course, ConfirmID doesn't exist\n\nFile to modify: Framework/GolfNow.Framework.TeeSheets/Interfaces/EZL/EZLinksTeeSheet.cs\n\nMethod to update: BookTeeTimeAsync (starting around line 2208)\n\nWhat's needed: After a successful booking, if request.TeeTime.IsCaddyRequested is true, call the Caddie Request POST endpoint with the SponsorID and the ConfirmID from the booking response.\n\nReference implementations:\n\n- BRSTeeSheet.cs:163 (old method — DO NOT CHANGE)\n\n- BRSG1TeeSheet.cs:199 (old method — DO NOT CHANGE)\n\n- RTS-2163 — Caddie Request endpoint spec (EZL uses this)\n\n---\nAcceptance Criteria\n\n- After a successful EZL booking with IsCaddyRequested = true, the Caddie Request endpoint is called with the appropriate SponsorID and ConfirmID\n\n- Parameter defaults to false/0 when not explicitly set (no endpoint call needed)\n\n- BRS and BRSG1 implementations remain unchanged (they use the existing pass-through method)\n\n- Existing EZL bookings continue to work without regression\n\n- Handles endpoint failure gracefully (booking should not fail if caddie request fails)\n\n---\nAdditional Notes: The parameter is already available in the TR API (Reservation.IsCaddyRequested) and flows through to the MakeReservationRequest object, so the plumbing exists—we just need to call the new Caddie Request endpoint after a successful EZL booking when the flag is set.",
+      "descriptionHtml": "<h3>Background</h3><p>In 2023, we added support for passing the <code>IsCaddyRequested</code> parameter as a pass-through to BRS and BRSG1 tee sheet interfaces to support ClubUp (caddy service) integrations. However, this parameter was <strong>not added to the EZL tee sheet interface</strong>.</p><h3>Current State</h3><p>  - ✅ <strong>BRS</strong> tee sheet: Passes <code>IsCaddyRequested</code> parameter (line 163 in BRSTeeSheet.cs)</p><p>  - ✅ <strong>BRSG1</strong> tee sheet: Passes <code>IsCaddyRequested</code> parameter (line 199 in BRSG1TeeSheet.cs)</p><p>  - ❌ <strong>EZL</strong> tee sheet: Does NOT pass <code>IsCaddyRequested</code> parameter</p><h3>Issue</h3><p>The EZL tee sheet (code: &quot;EZL&quot;) does not handle the <code>IsCaddyRequested</code> parameter when making reservations. This means courses using EZLRTS tee sheet systems cannot indicate caddy requests through our booking flow, creating an inconsistent experience across different tee sheet providers.</p><h3>Expected Behavior</h3><p>When a booking is made through the EZL tee sheet interface with <code>IsCaddyRequested = true</code>, the caddie request should be submitted to the EZLinks Integrators API via the dedicated Caddie Request endpoint (see RTS-2163), similar to how BRS and BRSG handle it through their respective interfaces.</p><hr><h3><strong>Technical Details</strong></h3><p><strong>Important Update (per Viitalii Slobodianyk):</strong> A completely new endpoint was added in <a href=\"https://golfnow.atlassian.net/browse/RTS-2163\" target=\"_blank\" rel=\"noopener\">RTS-2163</a> to support caddie requests for EZL/EZRTS. The EZL implementation should use this dedicated endpoint rather than adding a parameter to the existing booking payload.</p><p><strong>⚠️ BRS/BRSG1 must remain untouched.</strong> BRS and BRSG1 are still using the old method (passing <code>IsCaddyRequested</code> directly in the booking payload). Do NOT modify BRS/BRSG1 — only EZL will use the new Caddie Request API endpoint.</p><p><strong>New Caddie Request Endpoint (from RTS-2163):</strong></p><ul><li><p>Type: POST</p></li><li><p>URL path: Under the &quot;Tee Time&quot; path in the Integrators API</p></li><li><p>GrantArea: API<em>Reservation</em>System</p></li><li><p>Input Parameters:</p></li></ul><p>  - <code>SponsorID</code> (required)</p><p>  - <code>ConfirmID</code> (required)</p><p>  - <code>Caddie-Requested</code> (required, Boolean)</p><ul><li><p>Behavior: Writes value to <code>ETNv4.dbo.TTQuick.QuickEntryCaddy</code> (False = 0, True = 1)</p></li><li><p>Response: Indicates success or failure</p></li></ul><p>  - Failure reasons: missing parameters, SponsorID lacks access to course, ConfirmID doesn't exist</p><p><strong>File to modify:</strong> <code>Framework/GolfNow.Framework.TeeSheets/Interfaces/EZL/EZLinksTeeSheet.cs</code></p><p><strong>Method to update:</strong> <code>BookTeeTimeAsync</code> (starting around line 2208)</p><p><strong>What's needed:</strong> After a successful booking, if <code>request.TeeTime.IsCaddyRequested</code> is <code>true</code>, call the Caddie Request POST endpoint with the SponsorID and the ConfirmID from the booking response.</p><p><strong>Reference implementations:</strong></p><ul><li><p>BRSTeeSheet.cs:163 (old method — DO NOT CHANGE)</p></li><li><p>BRSG1TeeSheet.cs:199 (old method — DO NOT CHANGE)</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-2163\" target=\"_blank\" rel=\"noopener\">RTS-2163</a> — Caddie Request endpoint spec (EZL uses this)</p></li></ul><hr><h3><strong>Acceptance Criteria</strong></h3><ul><li><p>After a successful EZL booking with <code>IsCaddyRequested = true</code>, the Caddie Request endpoint is called with the appropriate SponsorID and ConfirmID</p></li><li><p>Parameter defaults to <code>false</code>/<code>0</code> when not explicitly set (no endpoint call needed)</p></li><li><p>BRS and BRSG1 implementations remain unchanged (they use the existing pass-through method)</p></li><li><p>Existing EZL bookings continue to work without regression</p></li><li><p>Handles endpoint failure gracefully (booking should not fail if caddie request fails)</p></li></ul><hr><p><strong>Additional Notes:</strong> The parameter is already available in the TR API (<code>Reservation.IsCaddyRequested</code>) and flows through to the <code>MakeReservationRequest</code> object, so the plumbing exists—we just need to call the new Caddie Request endpoint after a successful EZL booking when the flag is set.</p>",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 3,
+      "comments": [
+        {
+          "id": "1179160",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1179160",
+          "author": "Viitalii Slobodianyk",
+          "authorAccountId": "712020:b881aa16-5548-4bf1-a846-79d06ad8ef2b",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:b881aa16-5548-4bf1-a846-79d06ad8ef2b/3d1ec60c-b90a-471e-a225-46c1ad4d0d81/32",
+          "created": "2026-06-04T13:44:58.800-0400",
+          "createdDisplay": "Jun 4, 2026, 1:44 PM",
+          "updated": "2026-06-04T13:44:58.800-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "@Andrew Horvat\nCompletely new endpoint was added to support caddie requests in https://golfnow.atlassian.net/browse/RTS-2163\nSo part of the AC : What's needed: Add the IsCaddyRequested parameter to the tee time booking request JSON payload sent to the EZLinks REST API.\nneeds to be updated.\n\nCC: @Sarah Wolfkiel  @Jeff Sykes",
+          "bodyHtml": "<p>@Andrew Horvat <br>Completely new endpoint was added to support caddie requests in <a href=\"https://golfnow.atlassian.net/browse/RTS-2163\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-2163</a> <br>So part of the AC : <code>What's needed: Add the IsCaddyRequested parameter to the tee time booking request JSON payload sent to the EZLinks REST API.</code><br>needs to be updated.<br><br>CC: @Sarah Wolfkiel  @Jeff Sykes </p>"
+        },
+        {
+          "id": "1179194",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1179194",
+          "author": "Sarah Wolfkiel ",
+          "authorAccountId": "557058:b88eea94-1c5d-4349-a5a9-584440729b21",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/557058:b88eea94-1c5d-4349-a5a9-584440729b21/42029b3c-b753-44d3-a7e8-3b387b3eac67/32",
+          "created": "2026-06-04T15:26:34.698-0400",
+          "createdDisplay": "Jun 4, 2026, 3:26 PM",
+          "updated": "2026-06-04T15:26:34.698-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "CC @Brian Pugh  @Joshua Marquess",
+          "bodyHtml": "<p>CC @Brian Pugh  @Joshua Marquess  </p>"
+        },
+        {
+          "id": "1181392",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1181392",
+          "author": "Yoel Martin Pardo",
+          "authorAccountId": "625571809e7380006fb29599",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+          "created": "2026-06-10T11:18:16.193-0400",
+          "createdDisplay": "Jun 10, 2026, 11:18 AM",
+          "updated": "2026-06-10T11:18:16.193-0400",
+          "updatedDisplay": "",
+          "hasMedia": true,
+          "mediaCount": 1,
+          "body": "Validated result with Sarah Wolfkiel:",
+          "bodyHtml": "<p>Validated result with Sarah Wolfkiel:</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14396/comments/1181392/736558-image-20260610-151547.png\" alt=\"image-20260610-151547.png\" loading=\"lazy\"><figcaption>image-20260610-151547.png</figcaption></figure></div>"
+        }
+      ],
+      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1181392",
+      "lastCommentDisplay": "Jun 10, 2026, 11:18 AM",
+      "lastCommentAuthor": "Yoel Martin Pardo",
+      "testChecklist": null,
+      "type": "Story",
+      "isSubtask": false,
+      "status": "PO Review",
+      "priority": "P2",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+      "assignedDeveloper": "Yoel Martin Pardo",
+      "assignedDeveloperAccountId": "625571809e7380006fb29599",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+      "updated": "2026-06-25T09:10:48.629-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:10 AM",
+      "created": "2026-04-21T13:51:19.069-0400",
+      "createdDisplay": "Apr 21, 2026, 1:51 PM",
+      "components": [
+        "GolfNow.Services.Reservation",
+        "GolfNow.Services.TeeSheet"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [
+        {
+          "name": "2026.8"
+        }
+      ],
+      "sprintNames": [
+        "2026.8"
+      ],
+      "resolution": "",
+      "parent": null
+    },
+    {
+      "key": "CORE-14496",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14496",
+      "summary": "Database changes.",
+      "description": "",
+      "descriptionHtml": "",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 0,
+      "comments": [],
+      "lastCommentUrl": "",
+      "lastCommentDisplay": "",
+      "lastCommentAuthor": "",
+      "testChecklist": null,
+      "type": "Developer Task (sub task)",
+      "isSubtask": true,
+      "status": "PO Review",
+      "priority": "None",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+      "assignedDeveloper": "Yoel Martin Pardo",
+      "assignedDeveloperAccountId": "625571809e7380006fb29599",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+      "updated": "2026-06-25T09:10:32.631-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:10 AM",
+      "created": "2026-05-21T12:22:42.122-0400",
+      "createdDisplay": "May 21, 2026, 12:22 PM",
+      "components": [
+        "Database"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [],
+      "sprintNames": [],
+      "resolution": "",
+      "parent": {
+        "key": "CORE-14494",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+        "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+        "description": "",
+        "type": "Story",
+        "status": "PO Review",
+        "priority": "P1"
+      }
+    },
+    {
+      "key": "CORE-14495",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14495",
+      "summary": "Code changes.",
+      "description": "",
+      "descriptionHtml": "",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 0,
+      "comments": [],
+      "lastCommentUrl": "",
+      "lastCommentDisplay": "",
+      "lastCommentAuthor": "",
+      "testChecklist": null,
+      "type": "Developer Task (sub task)",
+      "isSubtask": true,
+      "status": "PO Review",
+      "priority": "None",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+      "assignedDeveloper": "Yoel Martin Pardo",
+      "assignedDeveloperAccountId": "625571809e7380006fb29599",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+      "updated": "2026-06-25T09:10:24.116-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:10 AM",
+      "created": "2026-05-21T12:22:31.101-0400",
+      "createdDisplay": "May 21, 2026, 12:22 PM",
+      "components": [
+        "GolfNow.Services.Reservation",
+        "GolfNowAPI"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [],
+      "sprintNames": [],
+      "resolution": "",
+      "parent": {
+        "key": "CORE-14494",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+        "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+        "description": "",
+        "type": "Story",
+        "status": "PO Review",
+        "priority": "P1"
+      }
+    },
+    {
+      "key": "CORE-14494",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+      "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+      "description": "Our current logic for Apple Pay matches the payment type of Apple Pay to the the processor that has a matching CurrencyCode. The concern is that the some Currency Codes have multiple processors so it could choose the wrong one.\n\nExample:\n\n- CurrencyCode: EUR\n\n- Processor: GNEU-EUR\n\n- Processor: GP-EUR\n\nExpectation:\n\n- For an Apple Pay transaction, we should choose the processor that matches the facility of the tee time\n\n- Scenario:\n\n- FID - 19631\n\n- Book an Apple Pay tee time\n\n- Use the GNEU-EUR processor since that is what is configured at the facility\n\n- Scenario:\n\n- FID - 1951\n\n- Book an Apple Pay tee times\n\n- Use the GP-EUR processor since that is what is configured at the facility\n\nTesting:\n\n- Need to do full regression of Apple Pay\n\n- Hot Deals\n\n- $0 due online course time with payfac for reservations\n\n- $0 due online course time without payfac for reservations\n\n- $ due online course time with payfac for reservations\n\n- $ due online course time without payfac for reservations\n\n- Prepaid course times with and without payfac\n\n- GolfPass Paid\n\n- GolfPass Free\n\n- Renewals\n\n- No Shows\n\n- Specifically test EUR and AUD currency as those were reported with issues in prod\n\n- Find an Apple Pay transaction with one of the old ChargeBys for Apple Pay → Make sure you can refund that after the data cleanup script is run\n\n- Work with Yoel to set up test data\n\n- Do a no show with and old ChargeBy as well",
+      "descriptionHtml": "<p>Our current logic for Apple Pay matches the payment type of Apple Pay to the the processor that has a matching CurrencyCode. The concern is that the some Currency Codes have multiple processors so it could choose the wrong one. </p><p>Example: </p><ul><li><p>CurrencyCode: EUR</p></li><li><p>Processor: GNEU-EUR</p></li><li><p>Processor: GP-EUR</p></li></ul><p>Expectation:</p><ul><li><p>For an Apple Pay transaction, we should choose the processor that matches the facility of the tee time</p></li><li><p>Scenario:</p><ul><li><p>FID - 19631</p></li><li><p>Book an Apple Pay tee time</p></li><li><p>Use the GNEU-EUR processor since that is what is configured at the facility</p></li></ul></li><li><p>Scenario:</p><ul><li><p>FID - 1951</p></li><li><p>Book an Apple Pay tee times</p></li><li><p>Use the GP-EUR processor since that is what is configured at the facility</p></li></ul></li></ul><p>Testing:</p><ul><li><p>Need to do full regression of Apple Pay</p><ul><li><p>Hot Deals</p></li><li><p>$0 due online course time with payfac for reservations</p></li><li><p>$0 due online course time without payfac for reservations</p></li><li><p>$ due online course time with payfac for reservations</p></li><li><p>$ due online course time without payfac for reservations</p></li><li><p>Prepaid course times with and without payfac</p></li><li><p>GolfPass Paid</p></li><li><p>GolfPass Free</p></li><li><p>Renewals</p></li><li><p>No Shows</p></li><li><p>Specifically test EUR and AUD currency as those were reported with issues in prod</p></li></ul></li><li><p>Find an Apple Pay transaction with one of the old ChargeBys for Apple Pay → Make sure you can refund that after the data cleanup script is run</p><ul><li><p>Work with Yoel to set up test data</p></li><li><p>Do a no show with and old ChargeBy as well</p></li></ul></li></ul>",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 1,
+      "comments": [
+        {
+          "id": "1177667",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14494?focusedCommentId=1177667",
+          "author": "Yoel Martin Pardo",
+          "authorAccountId": "625571809e7380006fb29599",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+          "created": "2026-06-02T14:35:18.237-0400",
+          "createdDisplay": "Jun 2, 2026, 2:35 PM",
+          "updated": "2026-06-02T14:35:18.237-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "QA: We will need to test refunds with previous Subscriptions, reservations and noshows. Also we will need to do regression on everything again to make sure that everything is working properly. Previous records using chargeBy ApplePay, they should be using GP processors now.",
+          "bodyHtml": "<p>QA: We will need to test refunds with previous Subscriptions, reservations and noshows. Also we will need to do regression on everything again to make sure that everything is working properly. Previous records using chargeBy ApplePay, they should be using GP processors now.</p>"
+        }
+      ],
+      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14494?focusedCommentId=1177667",
+      "lastCommentDisplay": "Jun 2, 2026, 2:35 PM",
+      "lastCommentAuthor": "Yoel Martin Pardo",
+      "testChecklist": null,
+      "type": "Story",
+      "isSubtask": false,
+      "status": "PO Review",
+      "priority": "P1",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+      "assignedDeveloper": "Yoel Martin Pardo",
+      "assignedDeveloperAccountId": "625571809e7380006fb29599",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+      "updated": "2026-06-25T09:10:08.573-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:10 AM",
+      "created": "2026-05-21T10:53:10.905-0400",
+      "createdDisplay": "May 21, 2026, 10:53 AM",
+      "components": [
+        "Database",
+        "GolfNow.Services.Reservation",
+        "GolfNowAPI"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [
+        {
+          "name": "2026.8"
+        }
+      ],
+      "sprintNames": [
+        "2026.8"
+      ],
+      "resolution": "",
+      "parent": {
+        "key": "B2C-68",
+        "url": "https://golfnow.atlassian.net/browse/B2C-68",
+        "summary": "Apple Pay 2026",
+        "description": "",
+        "type": "Epic",
+        "status": "Backlog",
+        "priority": "None"
+      }
+    },
+    {
+      "key": "CORE-14507",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14507",
+      "summary": "Code Changes",
+      "description": "",
+      "descriptionHtml": "",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 0,
+      "comments": [],
+      "lastCommentUrl": "",
+      "lastCommentDisplay": "",
+      "lastCommentAuthor": "",
+      "testChecklist": null,
+      "type": "Developer Task (sub task)",
+      "isSubtask": true,
+      "status": "PO Review",
+      "priority": "None",
+      "assignee": "Unassigned",
+      "assigneeAccountId": "",
+      "assigneeAvatarUrl": "",
+      "assignedDeveloper": "Tyler Olechnowicz",
+      "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+      "updated": "2026-06-25T09:09:55.930-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:09 AM",
+      "created": "2026-06-08T17:33:11.790-0400",
+      "createdDisplay": "Jun 8, 2026, 5:33 PM",
+      "components": [
+        "GolfNow.Services.Reservation",
+        "GolfNow.Services.TeeSheet"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [],
+      "sprintNames": [],
+      "resolution": "",
+      "parent": {
+        "key": "CORE-14479",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14479",
+        "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
+        "description": "",
+        "type": "Story",
+        "status": "PO Review",
+        "priority": "P1"
+      }
+    },
+    {
+      "key": "CORE-14479",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14479",
+      "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
+      "description": "Summary\n\nCORE needs to support the new cart/tax include parameter contract required by https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614 so RTS/EZRTS/EZP can receive a per-player/per-slot breakdown during tee-time/book, persist it in ETNv4, and send the correct values to G1/EZSuite POS during tender.\n\nThis is part of the forward path on the new booking API. It should not be treated as a legacy API remediation effort.\n\nCheck with @Juan Gonzalez\nhttps://golfnow.atlassian.net/browse/RTS-7614\n\n---\nExpected Behavior\n\n- CORE can provide the RTS-required optional cart/tax fields per player slot in the tee-time/book flow.\n\n- When values are present, CORE sends them exactly as calculated/known by CORE.\n\n- When values are absent, CORE omits them or sends null; CORE should not default or fabricate values.\n\n- RTS can use the received values as its exclusive source for the ETNv4 cart/tax breakdown tracked under https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614.\n\n---\nCurrent Behavior / Problem\n\n- https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614 is waiting on a CORE-side ticket to track the dependency for sending the new cart/tax parameter set.\n\n- Existing CORE/reservation models include external charge detail concepts, but RTS needs a specific per-slot parameter contract on tee-time/book for greens fee tax, cart fee, cart fee tax, and partial-prepay status.\n\n- Without CORE sending this breakdown, RTS cannot reliably persist the values needed for EZTP/EZRTS tender flows without deriving from unreliable ETNv4 fields.\n\n---\nScope Guardrails\n\n- Include the CORE-side request/DTO/model/mapping work needed to support the RTS-required parameter set on the new tee-time/book API path.\n\n- Include tests proving optional/null behavior and value preservation.\n\n- Do not implement a separate fix for the legacy booking API. For legacy API impact, the intended resolution is migration/use of the new API path.\n\n- Do not require RTS storage, ETNv4 schema changes, or POS tender packet changes in this CORE ticket; those are tracked by https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614.\n\n- Do not derive, supplement, or fall back to ETNv4 fields such as dbo.TeeOffTransactionAuditItem, dbo.CCAuthorization, or dbo.TTPrepaid.PrepaidFeeAmount.\n\n---\nRequested Parameters\n\nAll fields are optional and should be represented per slot/player where the booking contract supports slot-level detail.\n\n- includes_greens_fee_tax\n\n- greens_fee_tax_pct\n\n- greens_fee_tax_amount_ppd\n\n- greens_fee_tax_amount_due\n\n- includes_cart_fee\n\n- cart_fee_amount_ppd\n\n- cart_fee_amount_due\n\n- includes_cart_fee_tax\n\n- cart_fee_tax_pct\n\n- cart_fee_tax_amount_ppd\n\n- cart_fee_tax_amount_due\n\n- is_partial_prepaid\n\n---\nTechnical Notes\n\n- Source dependency: https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614, \"Support Cart/Tax Include Parameters on tee-time/book\".\n\n- Existing CORE code paths that may be relevant:\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Reservation/MakeReservationRequest.cs\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Reservation/Workflow/MakeReservation/Activities/MakeReservationActivity.cs\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Contracts/DataContracts/Order/Items/ExternalChargeDetails.cs\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Contracts/DataContracts/Order/Items/ExternalChargeLineItem.cs\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Service/Converters/ServiceBusinessMapingExtensions.cs\n\n- Internal Services/GolfNow.Services.Reservation/GolfNow.Services.Reservation.Provider/Workflow/Reservation/Activities/External/ApplyExternalChargeDetailsActivity.cs\n\n- Current local model names already include ExternalChargeDetails and ExternalChargeLineItem; engineering should decide whether to extend that structure or add a dedicated RTS-facing cart/tax breakdown model.\n\n---\nAcceptance Criteria\n\nExisting Behavior Preserved\n\n- Existing booking flows continue to work when no cart/tax include parameters are supplied.\n\n- Existing external charge detail behavior is not regressed for current callers.\n\nNew Behavior\n\n- [ ] CORE supports all RTS-requested parameters above as optional values in the new tee-time/book flow.\n\n- [ ] CORE sends provided values through to RTS without recalculating, defaulting, or deriving from ETNv4 fallback fields.\n\n- [ ] Omitted parameters remain absent/null downstream.\n\n- [ ] Per-slot/player data remains associated with the correct booked player/slot.\n\n- [ ] Unit and/or integration coverage validates populated, partially populated, and omitted parameter sets.\n\nNot Included Unless Product Expands Scope\n\n- No legacy booking API remediation is included in this story.\n\n- No RTS ETNv4 persistence or POS tender payload implementation is included in this story.\n\n---\nTest Matrix\n\nScenario\n\nExpected Result\n\ntee-time/book with all cart/tax fields populated\n\nValues are accepted and passed downstream exactly as supplied.\n\ntee-time/book with only greens fee tax values populated\n\nPopulated values pass downstream; omitted cart/cart tax values remain null/absent.\n\ntee-time/book with no new fields\n\nExisting booking behavior remains unchanged.\n\nMulti-player booking with different per-slot values\n\nEach slot retains its own cart/tax breakdown.\n\nPartial prepaid booking\n\nis_partial_prepaid and ppd/due splits reflect the supplied values.\n\n---\nOpen Questions / Product Decisions\n\n- Confirm the final wire-format and field casing expected by RTS for tee-time/book.\n\n- Confirm whether the CORE source of truth should be the existing ExternalChargeDetails/line-item model or a dedicated cart/tax include DTO.\n\n- Confirm whether is_partial_prepaid should remain a Boolean even though https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614 currently describes both not-prepaid and fully-prepaid as No.\n\n---\nRelated\n\n- https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\n\n- https://golfnow.atlassian.net/browse/RTS-4339#icft=RTS-4339\n\n- https://golfnow.atlassian.net/browse/TTSUPPORT-7211#icft=TTSUPPORT-7211\n\nCommunication Note\n\nFor https://golfnow.atlassian.net/browse/TTSUPPORT-7307#icft=TTSUPPORT-7307/new-vs-legacy wording: CORE resolved the issue on the new booking API path. The intended resolution for legacy API exposure is migration/use of the new API, not a separate legacy investigation under this ticket.",
+      "descriptionHtml": "<h3>Summary</h3><p>CORE needs to support the new cart/tax include parameter contract required by <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a> so RTS/EZRTS/EZP can receive a per-player/per-slot breakdown during <code>tee-time/book</code>, persist it in ETNv4, and send the correct values to G1/EZSuite POS during tender.</p><p>This is part of the forward path on the new booking API. It should not be treated as a legacy API remediation effort.</p><p>Check with @Juan Gonzalez <br><a href=\"https://golfnow.atlassian.net/browse/RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614</a> </p><hr><h3>Expected Behavior</h3><ul><li><p>CORE can provide the RTS-required optional cart/tax fields per player slot in the <code>tee-time/book</code> flow.</p></li><li><p>When values are present, CORE sends them exactly as calculated/known by CORE.</p></li><li><p>When values are absent, CORE omits them or sends null; CORE should not default or fabricate values.</p></li><li><p>RTS can use the received values as its exclusive source for the ETNv4 cart/tax breakdown tracked under <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a>.</p></li></ul><hr><h3>Current Behavior / Problem</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a> is waiting on a CORE-side ticket to track the dependency for sending the new cart/tax parameter set.</p></li><li><p>Existing CORE/reservation models include external charge detail concepts, but RTS needs a specific per-slot parameter contract on <code>tee-time/book</code> for greens fee tax, cart fee, cart fee tax, and partial-prepay status.</p></li><li><p>Without CORE sending this breakdown, RTS cannot reliably persist the values needed for EZTP/EZRTS tender flows without deriving from unreliable ETNv4 fields.</p></li></ul><hr><h3>Scope Guardrails</h3><ul><li><p>Include the CORE-side request/DTO/model/mapping work needed to support the RTS-required parameter set on the new <code>tee-time/book</code> API path.</p></li><li><p>Include tests proving optional/null behavior and value preservation.</p></li><li><p>Do not implement a separate fix for the legacy booking API. For legacy API impact, the intended resolution is migration/use of the new API path.</p></li><li><p>Do not require RTS storage, ETNv4 schema changes, or POS tender packet changes in this CORE ticket; those are tracked by <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a>.</p></li><li><p>Do not derive, supplement, or fall back to ETNv4 fields such as <code>dbo.TeeOffTransactionAuditItem</code>, <code>dbo.CCAuthorization</code>, or <code>dbo.TTPrepaid.PrepaidFeeAmount</code>.</p></li></ul><hr><h3>Requested Parameters</h3><p>All fields are optional and should be represented per slot/player where the booking contract supports slot-level detail.</p><ul><li><p><code>includes_greens_fee_tax</code></p></li><li><p><code>greens_fee_tax_pct</code></p></li><li><p><code>greens_fee_tax_amount_ppd</code></p></li><li><p><code>greens_fee_tax_amount_due</code></p></li><li><p><code>includes_cart_fee</code></p></li><li><p><code>cart_fee_amount_ppd</code></p></li><li><p><code>cart_fee_amount_due</code></p></li><li><p><code>includes_cart_fee_tax</code></p></li><li><p><code>cart_fee_tax_pct</code></p></li><li><p><code>cart_fee_tax_amount_ppd</code></p></li><li><p><code>cart_fee_tax_amount_due</code></p></li><li><p><code>is_partial_prepaid</code></p></li></ul><hr><h3>Technical Notes</h3><ul><li><p>Source dependency: <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a>, &quot;Support Cart/Tax Include Parameters on tee-time/book&quot;.</p></li><li><p>Existing CORE code paths that may be relevant:</p><ul><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Reservation/MakeReservationRequest.cs</code></p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Reservation/Workflow/MakeReservation/Activities/MakeReservationActivity.cs</code></p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Contracts/DataContracts/Order/Items/ExternalChargeDetails.cs</code></p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Contracts/DataContracts/Order/Items/ExternalChargeLineItem.cs</code></p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Service/Converters/ServiceBusinessMapingExtensions.cs</code></p></li><li><p><code>Internal Services/GolfNow.Services.Reservation/GolfNow.Services.Reservation.Provider/Workflow/Reservation/Activities/External/ApplyExternalChargeDetailsActivity.cs</code></p></li></ul></li><li><p>Current local model names already include <code>ExternalChargeDetails</code> and <code>ExternalChargeLineItem</code>; engineering should decide whether to extend that structure or add a dedicated RTS-facing cart/tax breakdown model.</p></li></ul><hr><h3>Acceptance Criteria</h3><h3>Existing Behavior Preserved</h3><ul><li><p>Existing booking flows continue to work when no cart/tax include parameters are supplied.</p></li><li><p>Existing external charge detail behavior is not regressed for current callers.</p></li></ul><h3>New Behavior</h3><ul><li><p>[ ] CORE supports all RTS-requested parameters above as optional values in the new <code>tee-time/book</code> flow.</p></li><li><p>[ ] CORE sends provided values through to RTS without recalculating, defaulting, or deriving from ETNv4 fallback fields.</p></li><li><p>[ ] Omitted parameters remain absent/null downstream.</p></li><li><p>[ ] Per-slot/player data remains associated with the correct booked player/slot.</p></li><li><p>[ ] Unit and/or integration coverage validates populated, partially populated, and omitted parameter sets.</p></li></ul><h3>Not Included Unless Product Expands Scope</h3><ul><li><p>No legacy booking API remediation is included in this story.</p></li><li><p>No RTS ETNv4 persistence or POS tender payload implementation is included in this story.</p></li></ul><hr><h3>Test Matrix</h3><div class=\"description-table-wrap\"><table><tr><th><p><strong>Scenario</strong></p></th><th><p><strong>Expected Result</strong></p></th></tr><tr><td><p><code>tee-time/book</code> with all cart/tax fields populated</p></td><td><p>Values are accepted and passed downstream exactly as supplied.</p></td></tr><tr><td><p><code>tee-time/book</code> with only greens fee tax values populated</p></td><td><p>Populated values pass downstream; omitted cart/cart tax values remain null/absent.</p></td></tr><tr><td><p><code>tee-time/book</code> with no new fields</p></td><td><p>Existing booking behavior remains unchanged.</p></td></tr><tr><td><p>Multi-player booking with different per-slot values</p></td><td><p>Each slot retains its own cart/tax breakdown.</p></td></tr><tr><td><p>Partial prepaid booking</p></td><td><p><code>is_partial_prepaid</code> and ppd/due splits reflect the supplied values.</p></td></tr></table></div><hr><h3>Open Questions / Product Decisions</h3><ul><li><p>Confirm the final wire-format and field casing expected by RTS for <code>tee-time/book</code>.</p></li><li><p>Confirm whether the CORE source of truth should be the existing <code>ExternalChargeDetails</code>/line-item model or a dedicated cart/tax include DTO.</p></li><li><p>Confirm whether <code>is_partial_prepaid</code> should remain a Boolean even though <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a> currently describes both not-prepaid and fully-prepaid as <code>No</code>.</p></li></ul><hr><h3>Related</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a></p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-4339#icft=RTS-4339\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-4339#icft=RTS-4339</a></p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/TTSUPPORT-7211#icft=TTSUPPORT-7211\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/TTSUPPORT-7211#icft=TTSUPPORT-7211</a></p></li></ul><h3>Communication Note</h3><p>For <a href=\"https://golfnow.atlassian.net/browse/TTSUPPORT-7307#icft=TTSUPPORT-7307\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/TTSUPPORT-7307#icft=TTSUPPORT-7307</a>/new-vs-legacy wording: CORE resolved the issue on the new booking API path. The intended resolution for legacy API exposure is migration/use of the new API, not a separate legacy investigation under this ticket.</p>",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 2,
+      "comments": [
+        {
+          "id": "1181127",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181127",
+          "author": "Tyler Olechnowicz",
+          "authorAccountId": "5d2396c1ea26c40c2043fc92",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+          "created": "2026-06-09T19:13:09.180-0400",
+          "createdDisplay": "Jun 9, 2026, 7:13 PM",
+          "updated": "2026-06-09T19:13:09.180-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "QA Test Instructions\n\n- Book a tee time reservation using a rate set configured for the EZL tee sheet and the new EZL API.\n\n- Verify the reservation is created successfully.\n\n- Coordinate with the EZL team to review the tee-time/book request received by EZL.\n\n- Confirm the new prepaid_and_tax fields are present and populated as expected by EZL.\n\n- Repeat the test with:\n\n- A tax-exclusive tee time.\n\n- A tax-inclusive tee time.\n\n- For both scenarios, validate with the EZL team that the fee, tax, and tax-inclusion values received by EZL match the expected reservation pricing.",
+          "bodyHtml": "<h3>QA Test Instructions</h3><ol><li><p>Book a tee time reservation using a rate set configured for the EZL tee sheet and the new EZL API.</p></li><li><p>Verify the reservation is created successfully.</p></li><li><p>Coordinate with the EZL team to review the <code>tee-time/book</code> request received by EZL.</p></li><li><p>Confirm the new <code>prepaid_and_tax</code> fields are present and populated as expected by EZL.</p></li><li><p>Repeat the test with:</p><ul><li><p>A tax-exclusive tee time.</p></li><li><p>A tax-inclusive tee time.</p></li></ul></li><li><p>For both scenarios, validate with the EZL team that the fee, tax, and tax-inclusion values received by EZL match the expected reservation pricing.</p></li></ol>"
+        },
+        {
+          "id": "1181313",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181313",
+          "author": "Tyler Olechnowicz",
+          "authorAccountId": "5d2396c1ea26c40c2043fc92",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+          "created": "2026-06-10T09:30:38.815-0400",
+          "createdDisplay": "Jun 10, 2026, 9:30 AM",
+          "updated": "2026-06-10T09:30:38.815-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "Note: No changes were made to the existing green_fee payload. Per EZL guidance, these amounts should continue to include both greens fee and cart fee values. Cart fee and tax breakdowns are now provided separately in the prepaid_and_tax object.",
+          "bodyHtml": "<p>Note: No changes were made to the existing <code>green_fee</code> payload. Per EZL guidance, these amounts should continue to include both greens fee and cart fee values. Cart fee and tax breakdowns are now provided separately in the <code>prepaid_and_tax</code> object.</p>"
+        }
+      ],
+      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181313",
+      "lastCommentDisplay": "Jun 10, 2026, 9:30 AM",
+      "lastCommentAuthor": "Tyler Olechnowicz",
+      "testChecklist": null,
+      "type": "Story",
+      "isSubtask": false,
+      "status": "PO Review",
+      "priority": "P1",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+      "assignedDeveloper": "Tyler Olechnowicz",
+      "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+      "updated": "2026-06-25T09:09:36.013-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:09 AM",
+      "created": "2026-05-18T12:36:39.447-0400",
+      "createdDisplay": "May 18, 2026, 12:36 PM",
+      "components": [
+        "GolfNow.Services.Reservation",
+        "GolfNow.Services.TeeSheet"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [
+        {
+          "name": "2026.8"
+        }
+      ],
+      "sprintNames": [
+        "2026.8"
+      ],
+      "resolution": "",
+      "parent": null
+    },
+    {
+      "key": "CORE-14527",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14527",
+      "summary": "SQL Changes",
+      "description": "",
+      "descriptionHtml": "",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 0,
+      "comments": [],
+      "lastCommentUrl": "",
+      "lastCommentDisplay": "",
+      "lastCommentAuthor": "",
+      "testChecklist": null,
+      "type": "Developer Task (sub task)",
+      "isSubtask": true,
+      "status": "PO Review",
+      "priority": "None",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+      "assignedDeveloper": "Raghav Kancherla",
+      "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+      "updated": "2026-06-25T09:09:20.677-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:09 AM",
+      "created": "2026-06-17T01:19:34.520-0400",
+      "createdDisplay": "Jun 17, 2026, 1:19 AM",
+      "components": [
+        "SQL"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [],
+      "sprintNames": [],
+      "resolution": "",
+      "parent": {
+        "key": "CORE-14145",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+        "summary": "New Interface - PrimaGolf",
+        "description": "",
+        "type": "Task",
+        "status": "PO Review",
+        "priority": "P1"
+      }
+    },
+    {
+      "key": "CORE-14526",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14526",
+      "summary": "Code Changes",
+      "description": "",
+      "descriptionHtml": "",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 0,
+      "comments": [],
+      "lastCommentUrl": "",
+      "lastCommentDisplay": "",
+      "lastCommentAuthor": "",
+      "testChecklist": null,
+      "type": "Developer Task (sub task)",
+      "isSubtask": true,
+      "status": "PO Review",
+      "priority": "None",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+      "assignedDeveloper": "Unassigned",
+      "assignedDeveloperAccountId": "",
+      "assignedDeveloperAvatarUrl": "",
+      "updated": "2026-06-25T09:09:12.310-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:09 AM",
+      "created": "2026-06-17T01:19:25.931-0400",
+      "createdDisplay": "Jun 17, 2026, 1:19 AM",
+      "components": [
+        "Cache Manager",
+        "GolfNow.Services.Reservation",
+        "GolfNow.Services.TeeSheet",
+        "GolfNowCentral"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [],
+      "sprintNames": [],
+      "resolution": "",
+      "parent": {
+        "key": "CORE-14145",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+        "summary": "New Interface - PrimaGolf",
+        "description": "",
+        "type": "Task",
+        "status": "PO Review",
+        "priority": "P1"
+      }
+    },
+    {
+      "key": "CORE-14145",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+      "summary": "New Interface - PrimaGolf",
+      "description": "Build a new interface to PrimaGolf.\n\nSpec available here: http://api.primagolf.fr/v1/documentation.html\n\nBase URL: http://api.primagolf.fr/v1/\n\nAll REST requests must contain the following headers:\n\nAPI-Key:contact @Kyle Young\n\nClub-Key: QgAkTk34WmVHB5tGmYF4GyCkVhY5mtT3 (Dev system)\n\nContent-Type: application/json\n\nKey API calls\n\n- Get availability & pricing\nGET /courses/teetimes\nUsed to retrieve tee times, availability, and pricing (including multiple price points per tee time and support for 9/18 holes).\n\n- Lock a tee time\nPOST /bookings/lock\nReserves a tee time for a short period (e.g. 15 minutes) while the customer completes their booking. Returns a lock_code that must be used on confirm.\n\n- Confirm a booking\nPOST /bookings/confirm\nConfirms a locked tee time, passing player details and selected prices. Returns one or more booking_ids that must be stored for amendments/cancellation.\n\n- Cancel a booking\nDELETE /bookings/cancel\nCancels an existing booking using date, course_id, time and the booking_ids returned from confirm.\n\nPlease build the interface with:\n\n- The same Send Email logic used for A8 / A9 / NetGolf\n\n- Tee Sheet Pricing and Course Pricing Distribution Controls",
+      "descriptionHtml": "<p>Build a new interface to <strong>PrimaGolf</strong>.</p><p>Spec available here: <a href=\"http://api.primagolf.fr/v1/documentation.html\" target=\"_blank\" rel=\"noopener\">http://api.primagolf.fr/v1/documentation.html</a></p><p>Base URL: <code>http://api.primagolf.fr/v1/</code></p><p>All REST requests must contain the following headers:</p><p><code>API-Key:</code>contact @Kyle Young </p><p><code>Club-Key: QgAkTk34WmVHB5tGmYF4GyCkVhY5mtT3 (Dev system) </code></p><p><code>Content-Type: application/json</code></p><p><strong>Key API calls</strong></p><ul><li><p><strong>Get availability &amp; pricing</strong><br><code>GET /courses/teetimes</code><br>Used to retrieve tee times, availability, and pricing (including multiple price points per tee time and support for 9/18 holes).</p></li><li><p><strong>Lock a tee time</strong><br><code>POST /bookings/lock</code><br>Reserves a tee time for a short period (e.g. 15 minutes) while the customer completes their booking. Returns a <code>lock_code</code> that must be used on confirm.</p></li><li><p><strong>Confirm a booking</strong><br><code>POST /bookings/confirm</code><br>Confirms a locked tee time, passing player details and selected prices. Returns one or more <code>booking_ids</code> that must be stored for amendments/cancellation.</p></li><li><p><strong>Cancel a booking</strong><br><code>DELETE /bookings/cancel</code><br>Cancels an existing booking using <code>date</code>, <code>course_id</code>, <code>time</code> and the <code>booking_ids</code> returned from confirm.</p></li></ul><p>Please build the interface with:</p><ul><li><p>The same <strong>Send Email</strong> logic used for A8 / A9 / NetGolf</p></li><li><p><strong>Tee Sheet Pricing</strong> and <strong>Course Pricing Distribution Controls</strong></p></li></ul><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14145/738262-image-20260616-134548.png\" alt=\"image-20260616-134548.png\" loading=\"lazy\"><figcaption>image-20260616-134548.png</figcaption></figure></div>",
+      "descriptionImageCount": 1,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 1,
+      "commentCount": 2,
+      "comments": [
+        {
+          "id": "1183616",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14145?focusedCommentId=1183616",
+          "author": "Raghav Kancherla",
+          "authorAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+          "created": "2026-06-16T09:45:54.401-0400",
+          "createdDisplay": "Jun 16, 2026, 9:45 AM",
+          "updated": "2026-06-16T09:58:48.747-0400",
+          "updatedDisplay": "Jun 16, 2026, 9:58 AM",
+          "hasMedia": true,
+          "mediaCount": 2,
+          "body": "",
+          "bodyHtml": "<div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14145/comments/1183616/738262-image-20260616-134548.png\" alt=\"image-20260616-134548.png\" loading=\"lazy\"><figcaption>image-20260616-134548.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14145/comments/1183616/738264-image-20260616-135842.png\" alt=\"image-20260616-135842.png\" loading=\"lazy\"><figcaption>image-20260616-135842.png</figcaption></figure></div>"
+        },
+        {
+          "id": "1187883",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14145?focusedCommentId=1187883",
+          "author": "Dewan Kabir",
+          "authorAccountId": "630fb06bb433b060db559bdb",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+          "created": "2026-06-25T09:08:51.296-0400",
+          "createdDisplay": "Jun 25, 2026, 9:08 AM",
+          "updated": "2026-06-25T09:09:00.417-0400",
+          "updatedDisplay": "Jun 25, 2026, 9:09 AM",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": ":warning: NEED TO RETEST WHEN THE INTERFACE IS CONFIGURED TO BE TESTABLE OPERATIONAL WISE IN DEV AND STG .",
+          "bodyHtml": "<p>:warning: <strong>NEED TO RETEST WHEN THE INTERFACE IS CONFIGURED TO BE TESTABLE OPERATIONAL WISE IN DEV AND STG .</strong></p>"
+        }
+      ],
+      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14145?focusedCommentId=1187883",
+      "lastCommentDisplay": "Jun 25, 2026, 9:08 AM",
+      "lastCommentAuthor": "Dewan Kabir",
+      "testChecklist": null,
+      "type": "Task",
+      "isSubtask": false,
+      "status": "PO Review",
+      "priority": "P1",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+      "assignedDeveloper": "Raghav Kancherla",
+      "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+      "updated": "2026-06-25T09:09:00.450-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:09 AM",
+      "created": "2026-02-06T07:12:47.081-0500",
+      "createdDisplay": "Feb 6, 2026, 7:12 AM",
+      "components": [
+        "Cache Manager",
+        "Database",
+        "GolfNow.Services.Reservation",
+        "GolfNow.Services.TeeSheet",
+        "GolfNowCentral"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [
+        {
+          "name": "2026.8"
+        }
+      ],
+      "sprintNames": [
+        "2026.8"
+      ],
+      "resolution": "",
+      "parent": null
+    },
+    {
+      "key": "CORE-14505",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14505",
+      "summary": "Modernize Affiliate API dependencies to remediate security vulnerabilities",
+      "description": "Modernize the Affiliate API's application dependencies and supporting configuration to remediate identified security vulnerabilities and improve compatibility with .NET Framework 4.8.\n\nChanges\n\n- Updated and revalidated application dependencies to ensure compatibility with .NET Framework 4.8.\n\n- Corrected package, assembly, and analyzer references impacted by dependency upgrades.\n\n- Modernized and consolidated dependency injection configuration used throughout the application.\n\n- Added and corrected service registrations required for application startup and runtime dependency resolution.\n\n- Improved application startup and configuration initialization to align with current dependency versions.\n\n- Removed obsolete configuration artifacts and legacy project references that were no longer required.\n\n- Reviewed and updated client-side dependency configuration and JavaScript resources.\n\n- Evaluated Bootstrap and front-end dependencies while preserving compatibility with the existing Bootstrap 3 user interface.\n\n- Investigated reported security vulnerabilities, including a Handlebars vulnerability, and verified that Handlebars is not directly referenced or loaded by the application.\n\n- Improved maintainability, readability, and consistency of application configuration and dependency management.",
+      "descriptionHtml": "<p>Modernize the Affiliate API's application dependencies and supporting configuration to remediate identified security vulnerabilities and improve compatibility with .NET Framework 4.8.</p><h3>Changes</h3><ul><li><p>Updated and revalidated application dependencies to ensure compatibility with .NET Framework 4.8.</p></li><li><p>Corrected package, assembly, and analyzer references impacted by dependency upgrades.</p></li><li><p>Modernized and consolidated dependency injection configuration used throughout the application.</p></li><li><p>Added and corrected service registrations required for application startup and runtime dependency resolution.</p></li><li><p>Improved application startup and configuration initialization to align with current dependency versions.</p></li><li><p>Removed obsolete configuration artifacts and legacy project references that were no longer required.</p></li><li><p>Reviewed and updated client-side dependency configuration and JavaScript resources.</p></li><li><p>Evaluated Bootstrap and front-end dependencies while preserving compatibility with the existing Bootstrap 3 user interface.</p></li><li><p>Investigated reported security vulnerabilities, including a Handlebars vulnerability, and verified that Handlebars is not directly referenced or loaded by the application.</p></li><li><p>Improved maintainability, readability, and consistency of application configuration and dependency management.</p></li></ul>",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 1,
+      "comments": [
+        {
+          "id": "1177791",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14505?focusedCommentId=1177791",
+          "author": "Tyler Olechnowicz",
+          "authorAccountId": "5d2396c1ea26c40c2043fc92",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+          "created": "2026-06-02T17:30:22.339-0400",
+          "createdDisplay": "Jun 2, 2026, 5:30 PM",
+          "updated": "2026-06-02T17:30:22.339-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "QA Testing Instructions\n\n- Verify the Affiliate API application loads successfully.\n\n- Sign in with a valid account and verify authentication functions as expected.\n\n- Perform a full regression test of the application and verify pages load and function as expected.\n\n- Verify application navigation and menus render correctly.\n\n- Verify browser console is free of JavaScript errors during testing.\n\n- Confirm no regressions are observed as a result of the dependency and configuration updates.\n\nExpected Result:\nThe application loads successfully, authentication works as expected, pages render and function correctly, and no regressions are introduced by the dependency and configuration updates.",
+          "bodyHtml": "<h3>QA Testing Instructions</h3><ol><li><p>Verify the Affiliate API application loads successfully.</p></li><li><p>Sign in with a valid account and verify authentication functions as expected.</p></li><li><p>Perform a full regression test of the application and verify pages load and function as expected.</p></li><li><p>Verify application navigation and menus render correctly.</p></li><li><p>Verify browser console is free of JavaScript errors during testing.</p></li><li><p>Confirm no regressions are observed as a result of the dependency and configuration updates.</p></li></ol><p><strong>Expected Result:</strong><br>The application loads successfully, authentication works as expected, pages render and function correctly, and no regressions are introduced by the dependency and configuration updates.</p>"
+        }
+      ],
+      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14505?focusedCommentId=1177791",
+      "lastCommentDisplay": "Jun 2, 2026, 5:30 PM",
+      "lastCommentAuthor": "Tyler Olechnowicz",
+      "testChecklist": null,
+      "type": "Story",
+      "isSubtask": false,
+      "status": "PO Review",
+      "priority": "P0",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+      "assignedDeveloper": "Tyler Olechnowicz",
+      "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+      "updated": "2026-06-25T09:07:41.364-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:07 AM",
+      "created": "2026-06-02T17:27:50.603-0400",
+      "createdDisplay": "Jun 2, 2026, 5:27 PM",
+      "components": [
+        "GolfNow.API.Affiliate"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [
+        {
+          "name": "2026.8"
+        }
+      ],
+      "sprintNames": [
+        "2026.8"
+      ],
+      "resolution": "",
+      "parent": null
+    },
     {
       "key": "CORE-14513",
       "url": "https://golfnow.atlassian.net/browse/CORE-14513",
@@ -256,84 +887,6 @@
       "createdDisplay": "May 27, 2026, 10:45 AM",
       "components": [
         "Geoplaces"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
-      "resolution": "",
-      "parent": null
-    },
-    {
-      "key": "CORE-14479",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14479",
-      "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
-      "description": "Summary\n\nCORE needs to support the new cart/tax include parameter contract required by https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614 so RTS/EZRTS/EZP can receive a per-player/per-slot breakdown during tee-time/book, persist it in ETNv4, and send the correct values to G1/EZSuite POS during tender.\n\nThis is part of the forward path on the new booking API. It should not be treated as a legacy API remediation effort.\n\nCheck with @Juan Gonzalez\nhttps://golfnow.atlassian.net/browse/RTS-7614\n\n---\nExpected Behavior\n\n- CORE can provide the RTS-required optional cart/tax fields per player slot in the tee-time/book flow.\n\n- When values are present, CORE sends them exactly as calculated/known by CORE.\n\n- When values are absent, CORE omits them or sends null; CORE should not default or fabricate values.\n\n- RTS can use the received values as its exclusive source for the ETNv4 cart/tax breakdown tracked under https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614.\n\n---\nCurrent Behavior / Problem\n\n- https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614 is waiting on a CORE-side ticket to track the dependency for sending the new cart/tax parameter set.\n\n- Existing CORE/reservation models include external charge detail concepts, but RTS needs a specific per-slot parameter contract on tee-time/book for greens fee tax, cart fee, cart fee tax, and partial-prepay status.\n\n- Without CORE sending this breakdown, RTS cannot reliably persist the values needed for EZTP/EZRTS tender flows without deriving from unreliable ETNv4 fields.\n\n---\nScope Guardrails\n\n- Include the CORE-side request/DTO/model/mapping work needed to support the RTS-required parameter set on the new tee-time/book API path.\n\n- Include tests proving optional/null behavior and value preservation.\n\n- Do not implement a separate fix for the legacy booking API. For legacy API impact, the intended resolution is migration/use of the new API path.\n\n- Do not require RTS storage, ETNv4 schema changes, or POS tender packet changes in this CORE ticket; those are tracked by https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614.\n\n- Do not derive, supplement, or fall back to ETNv4 fields such as dbo.TeeOffTransactionAuditItem, dbo.CCAuthorization, or dbo.TTPrepaid.PrepaidFeeAmount.\n\n---\nRequested Parameters\n\nAll fields are optional and should be represented per slot/player where the booking contract supports slot-level detail.\n\n- includes_greens_fee_tax\n\n- greens_fee_tax_pct\n\n- greens_fee_tax_amount_ppd\n\n- greens_fee_tax_amount_due\n\n- includes_cart_fee\n\n- cart_fee_amount_ppd\n\n- cart_fee_amount_due\n\n- includes_cart_fee_tax\n\n- cart_fee_tax_pct\n\n- cart_fee_tax_amount_ppd\n\n- cart_fee_tax_amount_due\n\n- is_partial_prepaid\n\n---\nTechnical Notes\n\n- Source dependency: https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614, \"Support Cart/Tax Include Parameters on tee-time/book\".\n\n- Existing CORE code paths that may be relevant:\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Reservation/MakeReservationRequest.cs\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Reservation/Workflow/MakeReservation/Activities/MakeReservationActivity.cs\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Contracts/DataContracts/Order/Items/ExternalChargeDetails.cs\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Contracts/DataContracts/Order/Items/ExternalChargeLineItem.cs\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Service/Converters/ServiceBusinessMapingExtensions.cs\n\n- Internal Services/GolfNow.Services.Reservation/GolfNow.Services.Reservation.Provider/Workflow/Reservation/Activities/External/ApplyExternalChargeDetailsActivity.cs\n\n- Current local model names already include ExternalChargeDetails and ExternalChargeLineItem; engineering should decide whether to extend that structure or add a dedicated RTS-facing cart/tax breakdown model.\n\n---\nAcceptance Criteria\n\nExisting Behavior Preserved\n\n- Existing booking flows continue to work when no cart/tax include parameters are supplied.\n\n- Existing external charge detail behavior is not regressed for current callers.\n\nNew Behavior\n\n- [ ] CORE supports all RTS-requested parameters above as optional values in the new tee-time/book flow.\n\n- [ ] CORE sends provided values through to RTS without recalculating, defaulting, or deriving from ETNv4 fallback fields.\n\n- [ ] Omitted parameters remain absent/null downstream.\n\n- [ ] Per-slot/player data remains associated with the correct booked player/slot.\n\n- [ ] Unit and/or integration coverage validates populated, partially populated, and omitted parameter sets.\n\nNot Included Unless Product Expands Scope\n\n- No legacy booking API remediation is included in this story.\n\n- No RTS ETNv4 persistence or POS tender payload implementation is included in this story.\n\n---\nTest Matrix\n\nScenario\n\nExpected Result\n\ntee-time/book with all cart/tax fields populated\n\nValues are accepted and passed downstream exactly as supplied.\n\ntee-time/book with only greens fee tax values populated\n\nPopulated values pass downstream; omitted cart/cart tax values remain null/absent.\n\ntee-time/book with no new fields\n\nExisting booking behavior remains unchanged.\n\nMulti-player booking with different per-slot values\n\nEach slot retains its own cart/tax breakdown.\n\nPartial prepaid booking\n\nis_partial_prepaid and ppd/due splits reflect the supplied values.\n\n---\nOpen Questions / Product Decisions\n\n- Confirm the final wire-format and field casing expected by RTS for tee-time/book.\n\n- Confirm whether the CORE source of truth should be the existing ExternalChargeDetails/line-item model or a dedicated cart/tax include DTO.\n\n- Confirm whether is_partial_prepaid should remain a Boolean even though https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614 currently describes both not-prepaid and fully-prepaid as No.\n\n---\nRelated\n\n- https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\n\n- https://golfnow.atlassian.net/browse/RTS-4339#icft=RTS-4339\n\n- https://golfnow.atlassian.net/browse/TTSUPPORT-7211#icft=TTSUPPORT-7211\n\nCommunication Note\n\nFor https://golfnow.atlassian.net/browse/TTSUPPORT-7307#icft=TTSUPPORT-7307/new-vs-legacy wording: CORE resolved the issue on the new booking API path. The intended resolution for legacy API exposure is migration/use of the new API, not a separate legacy investigation under this ticket.",
-      "descriptionHtml": "<h3>Summary</h3><p>CORE needs to support the new cart/tax include parameter contract required by <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a> so RTS/EZRTS/EZP can receive a per-player/per-slot breakdown during <code>tee-time/book</code>, persist it in ETNv4, and send the correct values to G1/EZSuite POS during tender.</p><p>This is part of the forward path on the new booking API. It should not be treated as a legacy API remediation effort.</p><p>Check with @Juan Gonzalez <br><a href=\"https://golfnow.atlassian.net/browse/RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614</a> </p><hr><h3>Expected Behavior</h3><ul><li><p>CORE can provide the RTS-required optional cart/tax fields per player slot in the <code>tee-time/book</code> flow.</p></li><li><p>When values are present, CORE sends them exactly as calculated/known by CORE.</p></li><li><p>When values are absent, CORE omits them or sends null; CORE should not default or fabricate values.</p></li><li><p>RTS can use the received values as its exclusive source for the ETNv4 cart/tax breakdown tracked under <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a>.</p></li></ul><hr><h3>Current Behavior / Problem</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a> is waiting on a CORE-side ticket to track the dependency for sending the new cart/tax parameter set.</p></li><li><p>Existing CORE/reservation models include external charge detail concepts, but RTS needs a specific per-slot parameter contract on <code>tee-time/book</code> for greens fee tax, cart fee, cart fee tax, and partial-prepay status.</p></li><li><p>Without CORE sending this breakdown, RTS cannot reliably persist the values needed for EZTP/EZRTS tender flows without deriving from unreliable ETNv4 fields.</p></li></ul><hr><h3>Scope Guardrails</h3><ul><li><p>Include the CORE-side request/DTO/model/mapping work needed to support the RTS-required parameter set on the new <code>tee-time/book</code> API path.</p></li><li><p>Include tests proving optional/null behavior and value preservation.</p></li><li><p>Do not implement a separate fix for the legacy booking API. For legacy API impact, the intended resolution is migration/use of the new API path.</p></li><li><p>Do not require RTS storage, ETNv4 schema changes, or POS tender packet changes in this CORE ticket; those are tracked by <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a>.</p></li><li><p>Do not derive, supplement, or fall back to ETNv4 fields such as <code>dbo.TeeOffTransactionAuditItem</code>, <code>dbo.CCAuthorization</code>, or <code>dbo.TTPrepaid.PrepaidFeeAmount</code>.</p></li></ul><hr><h3>Requested Parameters</h3><p>All fields are optional and should be represented per slot/player where the booking contract supports slot-level detail.</p><ul><li><p><code>includes_greens_fee_tax</code></p></li><li><p><code>greens_fee_tax_pct</code></p></li><li><p><code>greens_fee_tax_amount_ppd</code></p></li><li><p><code>greens_fee_tax_amount_due</code></p></li><li><p><code>includes_cart_fee</code></p></li><li><p><code>cart_fee_amount_ppd</code></p></li><li><p><code>cart_fee_amount_due</code></p></li><li><p><code>includes_cart_fee_tax</code></p></li><li><p><code>cart_fee_tax_pct</code></p></li><li><p><code>cart_fee_tax_amount_ppd</code></p></li><li><p><code>cart_fee_tax_amount_due</code></p></li><li><p><code>is_partial_prepaid</code></p></li></ul><hr><h3>Technical Notes</h3><ul><li><p>Source dependency: <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a>, &quot;Support Cart/Tax Include Parameters on tee-time/book&quot;.</p></li><li><p>Existing CORE code paths that may be relevant:</p><ul><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Reservation/MakeReservationRequest.cs</code></p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Reservation/Workflow/MakeReservation/Activities/MakeReservationActivity.cs</code></p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Contracts/DataContracts/Order/Items/ExternalChargeDetails.cs</code></p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Contracts/DataContracts/Order/Items/ExternalChargeLineItem.cs</code></p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Service/Converters/ServiceBusinessMapingExtensions.cs</code></p></li><li><p><code>Internal Services/GolfNow.Services.Reservation/GolfNow.Services.Reservation.Provider/Workflow/Reservation/Activities/External/ApplyExternalChargeDetailsActivity.cs</code></p></li></ul></li><li><p>Current local model names already include <code>ExternalChargeDetails</code> and <code>ExternalChargeLineItem</code>; engineering should decide whether to extend that structure or add a dedicated RTS-facing cart/tax breakdown model.</p></li></ul><hr><h3>Acceptance Criteria</h3><h3>Existing Behavior Preserved</h3><ul><li><p>Existing booking flows continue to work when no cart/tax include parameters are supplied.</p></li><li><p>Existing external charge detail behavior is not regressed for current callers.</p></li></ul><h3>New Behavior</h3><ul><li><p>[ ] CORE supports all RTS-requested parameters above as optional values in the new <code>tee-time/book</code> flow.</p></li><li><p>[ ] CORE sends provided values through to RTS without recalculating, defaulting, or deriving from ETNv4 fallback fields.</p></li><li><p>[ ] Omitted parameters remain absent/null downstream.</p></li><li><p>[ ] Per-slot/player data remains associated with the correct booked player/slot.</p></li><li><p>[ ] Unit and/or integration coverage validates populated, partially populated, and omitted parameter sets.</p></li></ul><h3>Not Included Unless Product Expands Scope</h3><ul><li><p>No legacy booking API remediation is included in this story.</p></li><li><p>No RTS ETNv4 persistence or POS tender payload implementation is included in this story.</p></li></ul><hr><h3>Test Matrix</h3><div class=\"description-table-wrap\"><table><tr><th><p><strong>Scenario</strong></p></th><th><p><strong>Expected Result</strong></p></th></tr><tr><td><p><code>tee-time/book</code> with all cart/tax fields populated</p></td><td><p>Values are accepted and passed downstream exactly as supplied.</p></td></tr><tr><td><p><code>tee-time/book</code> with only greens fee tax values populated</p></td><td><p>Populated values pass downstream; omitted cart/cart tax values remain null/absent.</p></td></tr><tr><td><p><code>tee-time/book</code> with no new fields</p></td><td><p>Existing booking behavior remains unchanged.</p></td></tr><tr><td><p>Multi-player booking with different per-slot values</p></td><td><p>Each slot retains its own cart/tax breakdown.</p></td></tr><tr><td><p>Partial prepaid booking</p></td><td><p><code>is_partial_prepaid</code> and ppd/due splits reflect the supplied values.</p></td></tr></table></div><hr><h3>Open Questions / Product Decisions</h3><ul><li><p>Confirm the final wire-format and field casing expected by RTS for <code>tee-time/book</code>.</p></li><li><p>Confirm whether the CORE source of truth should be the existing <code>ExternalChargeDetails</code>/line-item model or a dedicated cart/tax include DTO.</p></li><li><p>Confirm whether <code>is_partial_prepaid</code> should remain a Boolean even though <a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a> currently describes both not-prepaid and fully-prepaid as <code>No</code>.</p></li></ul><hr><h3>Related</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-7614#icft=RTS-7614</a></p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-4339#icft=RTS-4339\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-4339#icft=RTS-4339</a></p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/TTSUPPORT-7211#icft=TTSUPPORT-7211\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/TTSUPPORT-7211#icft=TTSUPPORT-7211</a></p></li></ul><h3>Communication Note</h3><p>For <a href=\"https://golfnow.atlassian.net/browse/TTSUPPORT-7307#icft=TTSUPPORT-7307\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/TTSUPPORT-7307#icft=TTSUPPORT-7307</a>/new-vs-legacy wording: CORE resolved the issue on the new booking API path. The intended resolution for legacy API exposure is migration/use of the new API, not a separate legacy investigation under this ticket.</p>",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 2,
-      "comments": [
-        {
-          "id": "1181127",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181127",
-          "author": "Tyler Olechnowicz",
-          "authorAccountId": "5d2396c1ea26c40c2043fc92",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-          "created": "2026-06-09T19:13:09.180-0400",
-          "createdDisplay": "Jun 9, 2026, 7:13 PM",
-          "updated": "2026-06-09T19:13:09.180-0400",
-          "updatedDisplay": "",
-          "hasMedia": false,
-          "mediaCount": 0,
-          "body": "QA Test Instructions\n\n- Book a tee time reservation using a rate set configured for the EZL tee sheet and the new EZL API.\n\n- Verify the reservation is created successfully.\n\n- Coordinate with the EZL team to review the tee-time/book request received by EZL.\n\n- Confirm the new prepaid_and_tax fields are present and populated as expected by EZL.\n\n- Repeat the test with:\n\n- A tax-exclusive tee time.\n\n- A tax-inclusive tee time.\n\n- For both scenarios, validate with the EZL team that the fee, tax, and tax-inclusion values received by EZL match the expected reservation pricing.",
-          "bodyHtml": "<h3>QA Test Instructions</h3><ol><li><p>Book a tee time reservation using a rate set configured for the EZL tee sheet and the new EZL API.</p></li><li><p>Verify the reservation is created successfully.</p></li><li><p>Coordinate with the EZL team to review the <code>tee-time/book</code> request received by EZL.</p></li><li><p>Confirm the new <code>prepaid_and_tax</code> fields are present and populated as expected by EZL.</p></li><li><p>Repeat the test with:</p><ul><li><p>A tax-exclusive tee time.</p></li><li><p>A tax-inclusive tee time.</p></li></ul></li><li><p>For both scenarios, validate with the EZL team that the fee, tax, and tax-inclusion values received by EZL match the expected reservation pricing.</p></li></ol>"
-        },
-        {
-          "id": "1181313",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181313",
-          "author": "Tyler Olechnowicz",
-          "authorAccountId": "5d2396c1ea26c40c2043fc92",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-          "created": "2026-06-10T09:30:38.815-0400",
-          "createdDisplay": "Jun 10, 2026, 9:30 AM",
-          "updated": "2026-06-10T09:30:38.815-0400",
-          "updatedDisplay": "",
-          "hasMedia": false,
-          "mediaCount": 0,
-          "body": "Note: No changes were made to the existing green_fee payload. Per EZL guidance, these amounts should continue to include both greens fee and cart fee values. Cart fee and tax breakdowns are now provided separately in the prepaid_and_tax object.",
-          "bodyHtml": "<p>Note: No changes were made to the existing <code>green_fee</code> payload. Per EZL guidance, these amounts should continue to include both greens fee and cart fee values. Cart fee and tax breakdowns are now provided separately in the <code>prepaid_and_tax</code> object.</p>"
-        }
-      ],
-      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14479?focusedCommentId=1181313",
-      "lastCommentDisplay": "Jun 10, 2026, 9:30 AM",
-      "lastCommentAuthor": "Tyler Olechnowicz",
-      "testChecklist": null,
-      "type": "Story",
-      "isSubtask": false,
-      "status": "QA Testing (DEV)",
-      "priority": "P1",
-      "assignee": "Dewan Kabir",
-      "assigneeAccountId": "630fb06bb433b060db559bdb",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-      "assignedDeveloper": "Tyler Olechnowicz",
-      "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-      "updated": "2026-06-22T15:20:20.194-0400",
-      "updatedDisplay": "Jun 22, 2026, 3:20 PM",
-      "created": "2026-05-18T12:36:39.447-0400",
-      "createdDisplay": "May 18, 2026, 12:36 PM",
-      "components": [
-        "GolfNow.Services.Reservation",
-        "GolfNow.Services.TeeSheet"
       ],
       "fixVersions": [
         "v3001.124.0"
@@ -639,72 +1192,6 @@
       "createdDisplay": "Jun 18, 2026, 8:21 AM",
       "components": [
         "Database"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
-      "resolution": "",
-      "parent": null
-    },
-    {
-      "key": "CORE-14145",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14145",
-      "summary": "New Interface - PrimaGolf",
-      "description": "Build a new interface to PrimaGolf.\n\nSpec available here: http://api.primagolf.fr/v1/documentation.html\n\nBase URL: http://api.primagolf.fr/v1/\n\nAll REST requests must contain the following headers:\n\nAPI-Key:contact @Kyle Young\n\nClub-Key: QgAkTk34WmVHB5tGmYF4GyCkVhY5mtT3 (Dev system)\n\nContent-Type: application/json\n\nKey API calls\n\n- Get availability & pricing\nGET /courses/teetimes\nUsed to retrieve tee times, availability, and pricing (including multiple price points per tee time and support for 9/18 holes).\n\n- Lock a tee time\nPOST /bookings/lock\nReserves a tee time for a short period (e.g. 15 minutes) while the customer completes their booking. Returns a lock_code that must be used on confirm.\n\n- Confirm a booking\nPOST /bookings/confirm\nConfirms a locked tee time, passing player details and selected prices. Returns one or more booking_ids that must be stored for amendments/cancellation.\n\n- Cancel a booking\nDELETE /bookings/cancel\nCancels an existing booking using date, course_id, time and the booking_ids returned from confirm.\n\nPlease build the interface with:\n\n- The same Send Email logic used for A8 / A9 / NetGolf\n\n- Tee Sheet Pricing and Course Pricing Distribution Controls",
-      "descriptionHtml": "<p>Build a new interface to <strong>PrimaGolf</strong>.</p><p>Spec available here: <a href=\"http://api.primagolf.fr/v1/documentation.html\" target=\"_blank\" rel=\"noopener\">http://api.primagolf.fr/v1/documentation.html</a></p><p>Base URL: <code>http://api.primagolf.fr/v1/</code></p><p>All REST requests must contain the following headers:</p><p><code>API-Key:</code>contact @Kyle Young </p><p><code>Club-Key: QgAkTk34WmVHB5tGmYF4GyCkVhY5mtT3 (Dev system) </code></p><p><code>Content-Type: application/json</code></p><p><strong>Key API calls</strong></p><ul><li><p><strong>Get availability &amp; pricing</strong><br><code>GET /courses/teetimes</code><br>Used to retrieve tee times, availability, and pricing (including multiple price points per tee time and support for 9/18 holes).</p></li><li><p><strong>Lock a tee time</strong><br><code>POST /bookings/lock</code><br>Reserves a tee time for a short period (e.g. 15 minutes) while the customer completes their booking. Returns a <code>lock_code</code> that must be used on confirm.</p></li><li><p><strong>Confirm a booking</strong><br><code>POST /bookings/confirm</code><br>Confirms a locked tee time, passing player details and selected prices. Returns one or more <code>booking_ids</code> that must be stored for amendments/cancellation.</p></li><li><p><strong>Cancel a booking</strong><br><code>DELETE /bookings/cancel</code><br>Cancels an existing booking using <code>date</code>, <code>course_id</code>, <code>time</code> and the <code>booking_ids</code> returned from confirm.</p></li></ul><p>Please build the interface with:</p><ul><li><p>The same <strong>Send Email</strong> logic used for A8 / A9 / NetGolf</p></li><li><p><strong>Tee Sheet Pricing</strong> and <strong>Course Pricing Distribution Controls</strong></p></li></ul><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14145/738262-image-20260616-134548.png\" alt=\"image-20260616-134548.png\" loading=\"lazy\"><figcaption>image-20260616-134548.png</figcaption></figure></div>",
-      "descriptionImageCount": 1,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 1,
-      "commentCount": 1,
-      "comments": [
-        {
-          "id": "1183616",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14145?focusedCommentId=1183616",
-          "author": "Raghav Kancherla",
-          "authorAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-          "created": "2026-06-16T09:45:54.401-0400",
-          "createdDisplay": "Jun 16, 2026, 9:45 AM",
-          "updated": "2026-06-16T09:58:48.747-0400",
-          "updatedDisplay": "Jun 16, 2026, 9:58 AM",
-          "hasMedia": true,
-          "mediaCount": 2,
-          "body": "",
-          "bodyHtml": "<div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14145/comments/1183616/738262-image-20260616-134548.png\" alt=\"image-20260616-134548.png\" loading=\"lazy\"><figcaption>image-20260616-134548.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14145/comments/1183616/738264-image-20260616-135842.png\" alt=\"image-20260616-135842.png\" loading=\"lazy\"><figcaption>image-20260616-135842.png</figcaption></figure></div>"
-        }
-      ],
-      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14145?focusedCommentId=1183616",
-      "lastCommentDisplay": "Jun 16, 2026, 9:45 AM",
-      "lastCommentAuthor": "Raghav Kancherla",
-      "testChecklist": null,
-      "type": "Task",
-      "isSubtask": false,
-      "status": "QA Testing (DEV)",
-      "priority": "P1",
-      "assignee": "Dewan Kabir",
-      "assigneeAccountId": "630fb06bb433b060db559bdb",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-      "assignedDeveloper": "Raghav Kancherla",
-      "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-      "updated": "2026-06-17T18:05:05.612-0400",
-      "updatedDisplay": "Jun 17, 2026, 6:05 PM",
-      "created": "2026-02-06T07:12:47.081-0500",
-      "createdDisplay": "Feb 6, 2026, 7:12 AM",
-      "components": [
-        "Cache Manager",
-        "Database",
-        "GolfNow.Services.Reservation",
-        "GolfNow.Services.TeeSheet",
-        "GolfNowCentral"
       ],
       "fixVersions": [
         "v3001.124.0"
@@ -1126,198 +1613,6 @@
       }
     },
     {
-      "key": "CORE-14527",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14527",
-      "summary": "SQL Changes",
-      "description": "",
-      "descriptionHtml": "",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 0,
-      "comments": [],
-      "lastCommentUrl": "",
-      "lastCommentDisplay": "",
-      "lastCommentAuthor": "",
-      "testChecklist": null,
-      "type": "Developer Task (sub task)",
-      "isSubtask": true,
-      "status": "QA Testing (DEV)",
-      "priority": "None",
-      "assignee": "Dewan Kabir",
-      "assigneeAccountId": "630fb06bb433b060db559bdb",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-      "assignedDeveloper": "Raghav Kancherla",
-      "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-      "updated": "2026-06-17T12:14:46.377-0400",
-      "updatedDisplay": "Jun 17, 2026, 12:14 PM",
-      "created": "2026-06-17T01:19:34.520-0400",
-      "createdDisplay": "Jun 17, 2026, 1:19 AM",
-      "components": [
-        "SQL"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [],
-      "sprintNames": [],
-      "resolution": "",
-      "parent": {
-        "key": "CORE-14145",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14145",
-        "summary": "New Interface - PrimaGolf",
-        "description": "",
-        "type": "Task",
-        "status": "QA Testing (DEV)",
-        "priority": "P1"
-      }
-    },
-    {
-      "key": "CORE-14526",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14526",
-      "summary": "Code Changes",
-      "description": "",
-      "descriptionHtml": "",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 0,
-      "comments": [],
-      "lastCommentUrl": "",
-      "lastCommentDisplay": "",
-      "lastCommentAuthor": "",
-      "testChecklist": null,
-      "type": "Developer Task (sub task)",
-      "isSubtask": true,
-      "status": "QA Testing (DEV)",
-      "priority": "None",
-      "assignee": "Dewan Kabir",
-      "assigneeAccountId": "630fb06bb433b060db559bdb",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-      "assignedDeveloper": "Unassigned",
-      "assignedDeveloperAccountId": "",
-      "assignedDeveloperAvatarUrl": "",
-      "updated": "2026-06-17T12:14:40.653-0400",
-      "updatedDisplay": "Jun 17, 2026, 12:14 PM",
-      "created": "2026-06-17T01:19:25.931-0400",
-      "createdDisplay": "Jun 17, 2026, 1:19 AM",
-      "components": [
-        "Cache Manager",
-        "GolfNow.Services.Reservation",
-        "GolfNow.Services.TeeSheet",
-        "GolfNowCentral"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [],
-      "sprintNames": [],
-      "resolution": "",
-      "parent": {
-        "key": "CORE-14145",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14145",
-        "summary": "New Interface - PrimaGolf",
-        "description": "",
-        "type": "Task",
-        "status": "QA Testing (DEV)",
-        "priority": "P1"
-      }
-    },
-    {
-      "key": "CORE-14396",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14396",
-      "summary": "Add IsCaddyRequested parameter support to EZL/EZLRTS tee sheet interface",
-      "description": "Background\n\nIn 2023, we added support for passing the IsCaddyRequested parameter as a pass-through to BRS and BRSG1 tee sheet interfaces to support ClubUp (caddy service) integrations. However, this parameter was not added to the EZL tee sheet interface.\n\nCurrent State\n\n- ✅ BRS tee sheet: Passes IsCaddyRequested parameter (line 163 in BRSTeeSheet.cs)\n\n- ✅ BRSG1 tee sheet: Passes IsCaddyRequested parameter (line 199 in BRSG1TeeSheet.cs)\n\n- ❌ EZL tee sheet: Does NOT pass IsCaddyRequested parameter\n\nIssue\n\nThe EZL tee sheet (code: \"EZL\") does not handle the IsCaddyRequested parameter when making reservations. This means courses using EZLRTS tee sheet systems cannot indicate caddy requests through our booking flow, creating an inconsistent experience across different tee sheet providers.\n\nExpected Behavior\n\nWhen a booking is made through the EZL tee sheet interface with IsCaddyRequested = true, the caddie request should be submitted to the EZLinks Integrators API via the dedicated Caddie Request endpoint (see RTS-2163), similar to how BRS and BRSG handle it through their respective interfaces.\n\n---\nTechnical Details\n\nImportant Update (per Viitalii Slobodianyk): A completely new endpoint was added in RTS-2163 to support caddie requests for EZL/EZRTS. The EZL implementation should use this dedicated endpoint rather than adding a parameter to the existing booking payload.\n\n⚠️ BRS/BRSG1 must remain untouched. BRS and BRSG1 are still using the old method (passing IsCaddyRequested directly in the booking payload). Do NOT modify BRS/BRSG1 — only EZL will use the new Caddie Request API endpoint.\n\nNew Caddie Request Endpoint (from RTS-2163):\n\n- Type: POST\n\n- URL path: Under the \"Tee Time\" path in the Integrators API\n\n- GrantArea: APIReservationSystem\n\n- Input Parameters:\n\n- SponsorID (required)\n\n- ConfirmID (required)\n\n- Caddie-Requested (required, Boolean)\n\n- Behavior: Writes value to ETNv4.dbo.TTQuick.QuickEntryCaddy (False = 0, True = 1)\n\n- Response: Indicates success or failure\n\n- Failure reasons: missing parameters, SponsorID lacks access to course, ConfirmID doesn't exist\n\nFile to modify: Framework/GolfNow.Framework.TeeSheets/Interfaces/EZL/EZLinksTeeSheet.cs\n\nMethod to update: BookTeeTimeAsync (starting around line 2208)\n\nWhat's needed: After a successful booking, if request.TeeTime.IsCaddyRequested is true, call the Caddie Request POST endpoint with the SponsorID and the ConfirmID from the booking response.\n\nReference implementations:\n\n- BRSTeeSheet.cs:163 (old method — DO NOT CHANGE)\n\n- BRSG1TeeSheet.cs:199 (old method — DO NOT CHANGE)\n\n- RTS-2163 — Caddie Request endpoint spec (EZL uses this)\n\n---\nAcceptance Criteria\n\n- After a successful EZL booking with IsCaddyRequested = true, the Caddie Request endpoint is called with the appropriate SponsorID and ConfirmID\n\n- Parameter defaults to false/0 when not explicitly set (no endpoint call needed)\n\n- BRS and BRSG1 implementations remain unchanged (they use the existing pass-through method)\n\n- Existing EZL bookings continue to work without regression\n\n- Handles endpoint failure gracefully (booking should not fail if caddie request fails)\n\n---\nAdditional Notes: The parameter is already available in the TR API (Reservation.IsCaddyRequested) and flows through to the MakeReservationRequest object, so the plumbing exists—we just need to call the new Caddie Request endpoint after a successful EZL booking when the flag is set.",
-      "descriptionHtml": "<h3>Background</h3><p>In 2023, we added support for passing the <code>IsCaddyRequested</code> parameter as a pass-through to BRS and BRSG1 tee sheet interfaces to support ClubUp (caddy service) integrations. However, this parameter was <strong>not added to the EZL tee sheet interface</strong>.</p><h3>Current State</h3><p>  - ✅ <strong>BRS</strong> tee sheet: Passes <code>IsCaddyRequested</code> parameter (line 163 in BRSTeeSheet.cs)</p><p>  - ✅ <strong>BRSG1</strong> tee sheet: Passes <code>IsCaddyRequested</code> parameter (line 199 in BRSG1TeeSheet.cs)</p><p>  - ❌ <strong>EZL</strong> tee sheet: Does NOT pass <code>IsCaddyRequested</code> parameter</p><h3>Issue</h3><p>The EZL tee sheet (code: &quot;EZL&quot;) does not handle the <code>IsCaddyRequested</code> parameter when making reservations. This means courses using EZLRTS tee sheet systems cannot indicate caddy requests through our booking flow, creating an inconsistent experience across different tee sheet providers.</p><h3>Expected Behavior</h3><p>When a booking is made through the EZL tee sheet interface with <code>IsCaddyRequested = true</code>, the caddie request should be submitted to the EZLinks Integrators API via the dedicated Caddie Request endpoint (see RTS-2163), similar to how BRS and BRSG handle it through their respective interfaces.</p><hr><h3><strong>Technical Details</strong></h3><p><strong>Important Update (per Viitalii Slobodianyk):</strong> A completely new endpoint was added in <a href=\"https://golfnow.atlassian.net/browse/RTS-2163\" target=\"_blank\" rel=\"noopener\">RTS-2163</a> to support caddie requests for EZL/EZRTS. The EZL implementation should use this dedicated endpoint rather than adding a parameter to the existing booking payload.</p><p><strong>⚠️ BRS/BRSG1 must remain untouched.</strong> BRS and BRSG1 are still using the old method (passing <code>IsCaddyRequested</code> directly in the booking payload). Do NOT modify BRS/BRSG1 — only EZL will use the new Caddie Request API endpoint.</p><p><strong>New Caddie Request Endpoint (from RTS-2163):</strong></p><ul><li><p>Type: POST</p></li><li><p>URL path: Under the &quot;Tee Time&quot; path in the Integrators API</p></li><li><p>GrantArea: API<em>Reservation</em>System</p></li><li><p>Input Parameters:</p></li></ul><p>  - <code>SponsorID</code> (required)</p><p>  - <code>ConfirmID</code> (required)</p><p>  - <code>Caddie-Requested</code> (required, Boolean)</p><ul><li><p>Behavior: Writes value to <code>ETNv4.dbo.TTQuick.QuickEntryCaddy</code> (False = 0, True = 1)</p></li><li><p>Response: Indicates success or failure</p></li></ul><p>  - Failure reasons: missing parameters, SponsorID lacks access to course, ConfirmID doesn't exist</p><p><strong>File to modify:</strong> <code>Framework/GolfNow.Framework.TeeSheets/Interfaces/EZL/EZLinksTeeSheet.cs</code></p><p><strong>Method to update:</strong> <code>BookTeeTimeAsync</code> (starting around line 2208)</p><p><strong>What's needed:</strong> After a successful booking, if <code>request.TeeTime.IsCaddyRequested</code> is <code>true</code>, call the Caddie Request POST endpoint with the SponsorID and the ConfirmID from the booking response.</p><p><strong>Reference implementations:</strong></p><ul><li><p>BRSTeeSheet.cs:163 (old method — DO NOT CHANGE)</p></li><li><p>BRSG1TeeSheet.cs:199 (old method — DO NOT CHANGE)</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/RTS-2163\" target=\"_blank\" rel=\"noopener\">RTS-2163</a> — Caddie Request endpoint spec (EZL uses this)</p></li></ul><hr><h3><strong>Acceptance Criteria</strong></h3><ul><li><p>After a successful EZL booking with <code>IsCaddyRequested = true</code>, the Caddie Request endpoint is called with the appropriate SponsorID and ConfirmID</p></li><li><p>Parameter defaults to <code>false</code>/<code>0</code> when not explicitly set (no endpoint call needed)</p></li><li><p>BRS and BRSG1 implementations remain unchanged (they use the existing pass-through method)</p></li><li><p>Existing EZL bookings continue to work without regression</p></li><li><p>Handles endpoint failure gracefully (booking should not fail if caddie request fails)</p></li></ul><hr><p><strong>Additional Notes:</strong> The parameter is already available in the TR API (<code>Reservation.IsCaddyRequested</code>) and flows through to the <code>MakeReservationRequest</code> object, so the plumbing exists—we just need to call the new Caddie Request endpoint after a successful EZL booking when the flag is set.</p>",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 3,
-      "comments": [
-        {
-          "id": "1179160",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1179160",
-          "author": "Viitalii Slobodianyk",
-          "authorAccountId": "712020:b881aa16-5548-4bf1-a846-79d06ad8ef2b",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:b881aa16-5548-4bf1-a846-79d06ad8ef2b/3d1ec60c-b90a-471e-a225-46c1ad4d0d81/32",
-          "created": "2026-06-04T13:44:58.800-0400",
-          "createdDisplay": "Jun 4, 2026, 1:44 PM",
-          "updated": "2026-06-04T13:44:58.800-0400",
-          "updatedDisplay": "",
-          "hasMedia": false,
-          "mediaCount": 0,
-          "body": "@Andrew Horvat\nCompletely new endpoint was added to support caddie requests in https://golfnow.atlassian.net/browse/RTS-2163\nSo part of the AC : What's needed: Add the IsCaddyRequested parameter to the tee time booking request JSON payload sent to the EZLinks REST API.\nneeds to be updated.\n\nCC: @Sarah Wolfkiel  @Jeff Sykes",
-          "bodyHtml": "<p>@Andrew Horvat <br>Completely new endpoint was added to support caddie requests in <a href=\"https://golfnow.atlassian.net/browse/RTS-2163\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/RTS-2163</a> <br>So part of the AC : <code>What's needed: Add the IsCaddyRequested parameter to the tee time booking request JSON payload sent to the EZLinks REST API.</code><br>needs to be updated.<br><br>CC: @Sarah Wolfkiel  @Jeff Sykes </p>"
-        },
-        {
-          "id": "1179194",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1179194",
-          "author": "Sarah Wolfkiel ",
-          "authorAccountId": "557058:b88eea94-1c5d-4349-a5a9-584440729b21",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/557058:b88eea94-1c5d-4349-a5a9-584440729b21/42029b3c-b753-44d3-a7e8-3b387b3eac67/32",
-          "created": "2026-06-04T15:26:34.698-0400",
-          "createdDisplay": "Jun 4, 2026, 3:26 PM",
-          "updated": "2026-06-04T15:26:34.698-0400",
-          "updatedDisplay": "",
-          "hasMedia": false,
-          "mediaCount": 0,
-          "body": "CC @Brian Pugh  @Joshua Marquess",
-          "bodyHtml": "<p>CC @Brian Pugh  @Joshua Marquess  </p>"
-        },
-        {
-          "id": "1181392",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1181392",
-          "author": "Yoel Martin Pardo",
-          "authorAccountId": "625571809e7380006fb29599",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-          "created": "2026-06-10T11:18:16.193-0400",
-          "createdDisplay": "Jun 10, 2026, 11:18 AM",
-          "updated": "2026-06-10T11:18:16.193-0400",
-          "updatedDisplay": "",
-          "hasMedia": true,
-          "mediaCount": 1,
-          "body": "Validated result with Sarah Wolfkiel:",
-          "bodyHtml": "<p>Validated result with Sarah Wolfkiel:</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14396/comments/1181392/736558-image-20260610-151547.png\" alt=\"image-20260610-151547.png\" loading=\"lazy\"><figcaption>image-20260610-151547.png</figcaption></figure></div>"
-        }
-      ],
-      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14396?focusedCommentId=1181392",
-      "lastCommentDisplay": "Jun 10, 2026, 11:18 AM",
-      "lastCommentAuthor": "Yoel Martin Pardo",
-      "testChecklist": null,
-      "type": "Story",
-      "isSubtask": false,
-      "status": "QA Testing (DEV)",
-      "priority": "P2",
-      "assignee": "Dewan Kabir",
-      "assigneeAccountId": "630fb06bb433b060db559bdb",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-      "assignedDeveloper": "Yoel Martin Pardo",
-      "assignedDeveloperAccountId": "625571809e7380006fb29599",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-      "updated": "2026-06-10T16:56:48.950-0400",
-      "updatedDisplay": "Jun 10, 2026, 4:56 PM",
-      "created": "2026-04-21T13:51:19.069-0400",
-      "createdDisplay": "Apr 21, 2026, 1:51 PM",
-      "components": [
-        "GolfNow.Services.Reservation",
-        "GolfNow.Services.TeeSheet"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
-      "resolution": "",
-      "parent": null
-    },
-    {
       "key": "CORE-14273",
       "url": "https://golfnow.atlassian.net/browse/CORE-14273",
       "summary": "Update EZ Legacy API Call (AddConfirmationNote) to Include Param5 – SponsorID",
@@ -1428,286 +1723,6 @@
         "status": "QA Testing (DEV)",
         "priority": "P2"
       }
-    },
-    {
-      "key": "CORE-14507",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14507",
-      "summary": "Code Changes",
-      "description": "",
-      "descriptionHtml": "",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 0,
-      "comments": [],
-      "lastCommentUrl": "",
-      "lastCommentDisplay": "",
-      "lastCommentAuthor": "",
-      "testChecklist": null,
-      "type": "Developer Task (sub task)",
-      "isSubtask": true,
-      "status": "QA Testing (DEV)",
-      "priority": "None",
-      "assignee": "Unassigned",
-      "assigneeAccountId": "",
-      "assigneeAvatarUrl": "",
-      "assignedDeveloper": "Tyler Olechnowicz",
-      "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-      "updated": "2026-06-09T19:16:08.197-0400",
-      "updatedDisplay": "Jun 9, 2026, 7:16 PM",
-      "created": "2026-06-08T17:33:11.790-0400",
-      "createdDisplay": "Jun 8, 2026, 5:33 PM",
-      "components": [
-        "GolfNow.Services.Reservation",
-        "GolfNow.Services.TeeSheet"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [],
-      "sprintNames": [],
-      "resolution": "",
-      "parent": {
-        "key": "CORE-14479",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14479",
-        "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
-        "description": "",
-        "type": "Story",
-        "status": "QA Testing (DEV)",
-        "priority": "P1"
-      }
-    },
-    {
-      "key": "CORE-14494",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14494",
-      "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
-      "description": "Our current logic for Apple Pay matches the payment type of Apple Pay to the the processor that has a matching CurrencyCode. The concern is that the some Currency Codes have multiple processors so it could choose the wrong one.\n\nExample:\n\n- CurrencyCode: EUR\n\n- Processor: GNEU-EUR\n\n- Processor: GP-EUR\n\nExpectation:\n\n- For an Apple Pay transaction, we should choose the processor that matches the facility of the tee time\n\n- Scenario:\n\n- FID - 19631\n\n- Book an Apple Pay tee time\n\n- Use the GNEU-EUR processor since that is what is configured at the facility\n\n- Scenario:\n\n- FID - 1951\n\n- Book an Apple Pay tee times\n\n- Use the GP-EUR processor since that is what is configured at the facility\n\nTesting:\n\n- Need to do full regression of Apple Pay\n\n- Hot Deals\n\n- $0 due online course time with payfac for reservations\n\n- $0 due online course time without payfac for reservations\n\n- $ due online course time with payfac for reservations\n\n- $ due online course time without payfac for reservations\n\n- Prepaid course times with and without payfac\n\n- GolfPass Paid\n\n- GolfPass Free\n\n- Renewals\n\n- No Shows\n\n- Specifically test EUR and AUD currency as those were reported with issues in prod\n\n- Find an Apple Pay transaction with one of the old ChargeBys for Apple Pay → Make sure you can refund that after the data cleanup script is run\n\n- Work with Yoel to set up test data\n\n- Do a no show with and old ChargeBy as well",
-      "descriptionHtml": "<p>Our current logic for Apple Pay matches the payment type of Apple Pay to the the processor that has a matching CurrencyCode. The concern is that the some Currency Codes have multiple processors so it could choose the wrong one. </p><p>Example: </p><ul><li><p>CurrencyCode: EUR</p></li><li><p>Processor: GNEU-EUR</p></li><li><p>Processor: GP-EUR</p></li></ul><p>Expectation:</p><ul><li><p>For an Apple Pay transaction, we should choose the processor that matches the facility of the tee time</p></li><li><p>Scenario:</p><ul><li><p>FID - 19631</p></li><li><p>Book an Apple Pay tee time</p></li><li><p>Use the GNEU-EUR processor since that is what is configured at the facility</p></li></ul></li><li><p>Scenario:</p><ul><li><p>FID - 1951</p></li><li><p>Book an Apple Pay tee times</p></li><li><p>Use the GP-EUR processor since that is what is configured at the facility</p></li></ul></li></ul><p>Testing:</p><ul><li><p>Need to do full regression of Apple Pay</p><ul><li><p>Hot Deals</p></li><li><p>$0 due online course time with payfac for reservations</p></li><li><p>$0 due online course time without payfac for reservations</p></li><li><p>$ due online course time with payfac for reservations</p></li><li><p>$ due online course time without payfac for reservations</p></li><li><p>Prepaid course times with and without payfac</p></li><li><p>GolfPass Paid</p></li><li><p>GolfPass Free</p></li><li><p>Renewals</p></li><li><p>No Shows</p></li><li><p>Specifically test EUR and AUD currency as those were reported with issues in prod</p></li></ul></li><li><p>Find an Apple Pay transaction with one of the old ChargeBys for Apple Pay → Make sure you can refund that after the data cleanup script is run</p><ul><li><p>Work with Yoel to set up test data</p></li><li><p>Do a no show with and old ChargeBy as well</p></li></ul></li></ul>",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 1,
-      "comments": [
-        {
-          "id": "1177667",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14494?focusedCommentId=1177667",
-          "author": "Yoel Martin Pardo",
-          "authorAccountId": "625571809e7380006fb29599",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-          "created": "2026-06-02T14:35:18.237-0400",
-          "createdDisplay": "Jun 2, 2026, 2:35 PM",
-          "updated": "2026-06-02T14:35:18.237-0400",
-          "updatedDisplay": "",
-          "hasMedia": false,
-          "mediaCount": 0,
-          "body": "QA: We will need to test refunds with previous Subscriptions, reservations and noshows. Also we will need to do regression on everything again to make sure that everything is working properly. Previous records using chargeBy ApplePay, they should be using GP processors now.",
-          "bodyHtml": "<p>QA: We will need to test refunds with previous Subscriptions, reservations and noshows. Also we will need to do regression on everything again to make sure that everything is working properly. Previous records using chargeBy ApplePay, they should be using GP processors now.</p>"
-        }
-      ],
-      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14494?focusedCommentId=1177667",
-      "lastCommentDisplay": "Jun 2, 2026, 2:35 PM",
-      "lastCommentAuthor": "Yoel Martin Pardo",
-      "testChecklist": null,
-      "type": "Story",
-      "isSubtask": false,
-      "status": "QA Testing (DEV)",
-      "priority": "P1",
-      "assignee": "Dewan Kabir",
-      "assigneeAccountId": "630fb06bb433b060db559bdb",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-      "assignedDeveloper": "Yoel Martin Pardo",
-      "assignedDeveloperAccountId": "625571809e7380006fb29599",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-      "updated": "2026-06-08T08:59:30.053-0400",
-      "updatedDisplay": "Jun 8, 2026, 8:59 AM",
-      "created": "2026-05-21T10:53:10.905-0400",
-      "createdDisplay": "May 21, 2026, 10:53 AM",
-      "components": [
-        "Database",
-        "GolfNow.Services.Reservation",
-        "GolfNowAPI"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
-      "resolution": "",
-      "parent": {
-        "key": "B2C-68",
-        "url": "https://golfnow.atlassian.net/browse/B2C-68",
-        "summary": "Apple Pay 2026",
-        "description": "",
-        "type": "Epic",
-        "status": "Backlog",
-        "priority": "None"
-      }
-    },
-    {
-      "key": "CORE-14495",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14495",
-      "summary": "Code changes.",
-      "description": "",
-      "descriptionHtml": "",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 0,
-      "comments": [],
-      "lastCommentUrl": "",
-      "lastCommentDisplay": "",
-      "lastCommentAuthor": "",
-      "testChecklist": null,
-      "type": "Developer Task (sub task)",
-      "isSubtask": true,
-      "status": "QA Testing (DEV)",
-      "priority": "None",
-      "assignee": "Dewan Kabir",
-      "assigneeAccountId": "630fb06bb433b060db559bdb",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-      "assignedDeveloper": "Yoel Martin Pardo",
-      "assignedDeveloperAccountId": "625571809e7380006fb29599",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-      "updated": "2026-06-03T13:09:43.436-0400",
-      "updatedDisplay": "Jun 3, 2026, 1:09 PM",
-      "created": "2026-05-21T12:22:31.101-0400",
-      "createdDisplay": "May 21, 2026, 12:22 PM",
-      "components": [
-        "GolfNow.Services.Reservation",
-        "GolfNowAPI"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [],
-      "sprintNames": [],
-      "resolution": "",
-      "parent": {
-        "key": "CORE-14494",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14494",
-        "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
-        "description": "",
-        "type": "Story",
-        "status": "QA Testing (DEV)",
-        "priority": "P1"
-      }
-    },
-    {
-      "key": "CORE-14496",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14496",
-      "summary": "Database changes.",
-      "description": "",
-      "descriptionHtml": "",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 0,
-      "comments": [],
-      "lastCommentUrl": "",
-      "lastCommentDisplay": "",
-      "lastCommentAuthor": "",
-      "testChecklist": null,
-      "type": "Developer Task (sub task)",
-      "isSubtask": true,
-      "status": "QA Testing (DEV)",
-      "priority": "None",
-      "assignee": "Dewan Kabir",
-      "assigneeAccountId": "630fb06bb433b060db559bdb",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-      "assignedDeveloper": "Yoel Martin Pardo",
-      "assignedDeveloperAccountId": "625571809e7380006fb29599",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-      "updated": "2026-06-03T13:08:21.497-0400",
-      "updatedDisplay": "Jun 3, 2026, 1:08 PM",
-      "created": "2026-05-21T12:22:42.122-0400",
-      "createdDisplay": "May 21, 2026, 12:22 PM",
-      "components": [
-        "Database"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [],
-      "sprintNames": [],
-      "resolution": "",
-      "parent": {
-        "key": "CORE-14494",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14494",
-        "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
-        "description": "",
-        "type": "Story",
-        "status": "QA Testing (DEV)",
-        "priority": "P1"
-      }
-    },
-    {
-      "key": "CORE-14505",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14505",
-      "summary": "Modernize Affiliate API dependencies to remediate security vulnerabilities",
-      "description": "Modernize the Affiliate API's application dependencies and supporting configuration to remediate identified security vulnerabilities and improve compatibility with .NET Framework 4.8.\n\nChanges\n\n- Updated and revalidated application dependencies to ensure compatibility with .NET Framework 4.8.\n\n- Corrected package, assembly, and analyzer references impacted by dependency upgrades.\n\n- Modernized and consolidated dependency injection configuration used throughout the application.\n\n- Added and corrected service registrations required for application startup and runtime dependency resolution.\n\n- Improved application startup and configuration initialization to align with current dependency versions.\n\n- Removed obsolete configuration artifacts and legacy project references that were no longer required.\n\n- Reviewed and updated client-side dependency configuration and JavaScript resources.\n\n- Evaluated Bootstrap and front-end dependencies while preserving compatibility with the existing Bootstrap 3 user interface.\n\n- Investigated reported security vulnerabilities, including a Handlebars vulnerability, and verified that Handlebars is not directly referenced or loaded by the application.\n\n- Improved maintainability, readability, and consistency of application configuration and dependency management.",
-      "descriptionHtml": "<p>Modernize the Affiliate API's application dependencies and supporting configuration to remediate identified security vulnerabilities and improve compatibility with .NET Framework 4.8.</p><h3>Changes</h3><ul><li><p>Updated and revalidated application dependencies to ensure compatibility with .NET Framework 4.8.</p></li><li><p>Corrected package, assembly, and analyzer references impacted by dependency upgrades.</p></li><li><p>Modernized and consolidated dependency injection configuration used throughout the application.</p></li><li><p>Added and corrected service registrations required for application startup and runtime dependency resolution.</p></li><li><p>Improved application startup and configuration initialization to align with current dependency versions.</p></li><li><p>Removed obsolete configuration artifacts and legacy project references that were no longer required.</p></li><li><p>Reviewed and updated client-side dependency configuration and JavaScript resources.</p></li><li><p>Evaluated Bootstrap and front-end dependencies while preserving compatibility with the existing Bootstrap 3 user interface.</p></li><li><p>Investigated reported security vulnerabilities, including a Handlebars vulnerability, and verified that Handlebars is not directly referenced or loaded by the application.</p></li><li><p>Improved maintainability, readability, and consistency of application configuration and dependency management.</p></li></ul>",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 1,
-      "comments": [
-        {
-          "id": "1177791",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14505?focusedCommentId=1177791",
-          "author": "Tyler Olechnowicz",
-          "authorAccountId": "5d2396c1ea26c40c2043fc92",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-          "created": "2026-06-02T17:30:22.339-0400",
-          "createdDisplay": "Jun 2, 2026, 5:30 PM",
-          "updated": "2026-06-02T17:30:22.339-0400",
-          "updatedDisplay": "",
-          "hasMedia": false,
-          "mediaCount": 0,
-          "body": "QA Testing Instructions\n\n- Verify the Affiliate API application loads successfully.\n\n- Sign in with a valid account and verify authentication functions as expected.\n\n- Perform a full regression test of the application and verify pages load and function as expected.\n\n- Verify application navigation and menus render correctly.\n\n- Verify browser console is free of JavaScript errors during testing.\n\n- Confirm no regressions are observed as a result of the dependency and configuration updates.\n\nExpected Result:\nThe application loads successfully, authentication works as expected, pages render and function correctly, and no regressions are introduced by the dependency and configuration updates.",
-          "bodyHtml": "<h3>QA Testing Instructions</h3><ol><li><p>Verify the Affiliate API application loads successfully.</p></li><li><p>Sign in with a valid account and verify authentication functions as expected.</p></li><li><p>Perform a full regression test of the application and verify pages load and function as expected.</p></li><li><p>Verify application navigation and menus render correctly.</p></li><li><p>Verify browser console is free of JavaScript errors during testing.</p></li><li><p>Confirm no regressions are observed as a result of the dependency and configuration updates.</p></li></ol><p><strong>Expected Result:</strong><br>The application loads successfully, authentication works as expected, pages render and function correctly, and no regressions are introduced by the dependency and configuration updates.</p>"
-        }
-      ],
-      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14505?focusedCommentId=1177791",
-      "lastCommentDisplay": "Jun 2, 2026, 5:30 PM",
-      "lastCommentAuthor": "Tyler Olechnowicz",
-      "testChecklist": null,
-      "type": "Story",
-      "isSubtask": false,
-      "status": "QA Testing (DEV)",
-      "priority": "P0",
-      "assignee": "Dewan Kabir",
-      "assigneeAccountId": "630fb06bb433b060db559bdb",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-      "assignedDeveloper": "Tyler Olechnowicz",
-      "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-      "updated": "2026-06-03T12:33:05.788-0400",
-      "updatedDisplay": "Jun 3, 2026, 12:33 PM",
-      "created": "2026-06-02T17:27:50.603-0400",
-      "createdDisplay": "Jun 2, 2026, 5:27 PM",
-      "components": [
-        "GolfNow.API.Affiliate"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
-      "resolution": "",
-      "parent": null
     }
   ],
   "sprintView": {
@@ -1731,8 +1746,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-25T13:06:56.792Z",
-    "pulledAtDisplay": "Jun 25, 2026, 9:06 AM",
+    "pulledAt": "2026-06-25T13:12:00.186Z",
+    "pulledAtDisplay": "Jun 25, 2026, 9:12 AM",
     "total": 95,
     "mainTotal": 95,
     "subtaskTotal": 0,
@@ -2088,7 +2103,7 @@
         "descriptionImageCount": 1,
         "descriptionVideoCount": 0,
         "descriptionMediaCount": 1,
-        "commentCount": 1,
+        "commentCount": 2,
         "comments": [
           {
             "id": "1183616",
@@ -2104,15 +2119,30 @@
             "mediaCount": 2,
             "body": "",
             "bodyHtml": "<div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14145/comments/1183616/738262-image-20260616-134548.png\" alt=\"image-20260616-134548.png\" loading=\"lazy\"><figcaption>image-20260616-134548.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14145/comments/1183616/738264-image-20260616-135842.png\" alt=\"image-20260616-135842.png\" loading=\"lazy\"><figcaption>image-20260616-135842.png</figcaption></figure></div>"
+          },
+          {
+            "id": "1187883",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14145?focusedCommentId=1187883",
+            "author": "Dewan Kabir",
+            "authorAccountId": "630fb06bb433b060db559bdb",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+            "created": "2026-06-25T09:08:51.296-0400",
+            "createdDisplay": "Jun 25, 2026, 9:08 AM",
+            "updated": "2026-06-25T09:09:00.417-0400",
+            "updatedDisplay": "Jun 25, 2026, 9:09 AM",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": ":warning: NEED TO RETEST WHEN THE INTERFACE IS CONFIGURED TO BE TESTABLE OPERATIONAL WISE IN DEV AND STG .",
+            "bodyHtml": "<p>:warning: <strong>NEED TO RETEST WHEN THE INTERFACE IS CONFIGURED TO BE TESTABLE OPERATIONAL WISE IN DEV AND STG .</strong></p>"
           }
         ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14145?focusedCommentId=1183616",
-        "lastCommentDisplay": "Jun 16, 2026, 9:45 AM",
-        "lastCommentAuthor": "Raghav Kancherla",
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14145?focusedCommentId=1187883",
+        "lastCommentDisplay": "Jun 25, 2026, 9:08 AM",
+        "lastCommentAuthor": "Dewan Kabir",
         "testChecklist": null,
         "type": "Task",
         "isSubtask": false,
-        "status": "QA Testing (DEV)",
+        "status": "PO Review",
         "priority": "P1",
         "assignee": "Dewan Kabir",
         "assigneeAccountId": "630fb06bb433b060db559bdb",
@@ -2120,8 +2150,8 @@
         "assignedDeveloper": "Raghav Kancherla",
         "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "updated": "2026-06-17T18:05:05.612-0400",
-        "updatedDisplay": "Jun 17, 2026, 6:05 PM",
+        "updated": "2026-06-25T09:09:00.450-0400",
+        "updatedDisplay": "Jun 25, 2026, 9:09 AM",
         "created": "2026-02-06T07:12:47.081-0500",
         "createdDisplay": "Feb 6, 2026, 7:12 AM",
         "components": [
@@ -2178,7 +2208,7 @@
         "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
-        "status": "QA Testing (DEV)",
+        "status": "PO Review",
         "priority": "P1",
         "assignee": "Dewan Kabir",
         "assigneeAccountId": "630fb06bb433b060db559bdb",
@@ -2186,8 +2216,8 @@
         "assignedDeveloper": "Yoel Martin Pardo",
         "assignedDeveloperAccountId": "625571809e7380006fb29599",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-06-08T08:59:30.053-0400",
-        "updatedDisplay": "Jun 8, 2026, 8:59 AM",
+        "updated": "2026-06-25T09:10:08.573-0400",
+        "updatedDisplay": "Jun 25, 2026, 9:10 AM",
         "created": "2026-05-21T10:53:10.905-0400",
         "createdDisplay": "May 21, 2026, 10:53 AM",
         "components": [
@@ -2338,7 +2368,7 @@
         "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
-        "status": "QA Testing (DEV)",
+        "status": "PO Review",
         "priority": "P1",
         "assignee": "Dewan Kabir",
         "assigneeAccountId": "630fb06bb433b060db559bdb",
@@ -2346,8 +2376,8 @@
         "assignedDeveloper": "Tyler Olechnowicz",
         "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-        "updated": "2026-06-22T15:20:20.194-0400",
-        "updatedDisplay": "Jun 22, 2026, 3:20 PM",
+        "updated": "2026-06-25T09:09:36.013-0400",
+        "updatedDisplay": "Jun 25, 2026, 9:09 AM",
         "created": "2026-05-18T12:36:39.447-0400",
         "createdDisplay": "May 18, 2026, 12:36 PM",
         "components": [
@@ -2929,7 +2959,7 @@
         "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
-        "status": "QA Testing (DEV)",
+        "status": "PO Review",
         "priority": "P2",
         "assignee": "Dewan Kabir",
         "assigneeAccountId": "630fb06bb433b060db559bdb",
@@ -2937,8 +2967,8 @@
         "assignedDeveloper": "Yoel Martin Pardo",
         "assignedDeveloperAccountId": "625571809e7380006fb29599",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-06-10T16:56:48.950-0400",
-        "updatedDisplay": "Jun 10, 2026, 4:56 PM",
+        "updated": "2026-06-25T09:10:48.629-0400",
+        "updatedDisplay": "Jun 25, 2026, 9:10 AM",
         "created": "2026-04-21T13:51:19.069-0400",
         "createdDisplay": "Apr 21, 2026, 1:51 PM",
         "components": [
@@ -7619,7 +7649,7 @@
         "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
-        "status": "QA Testing (DEV)",
+        "status": "PO Review",
         "priority": "P0",
         "assignee": "Dewan Kabir",
         "assigneeAccountId": "630fb06bb433b060db559bdb",
@@ -7627,8 +7657,8 @@
         "assignedDeveloper": "Tyler Olechnowicz",
         "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-        "updated": "2026-06-03T12:33:05.788-0400",
-        "updatedDisplay": "Jun 3, 2026, 12:33 PM",
+        "updated": "2026-06-25T09:07:41.364-0400",
+        "updatedDisplay": "Jun 25, 2026, 9:07 AM",
         "created": "2026-06-02T17:27:50.603-0400",
         "createdDisplay": "Jun 2, 2026, 5:27 PM",
         "components": [
@@ -7801,13 +7831,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-25T13:06:28.177Z",
-    "pulledAtDisplay": "Jun 25, 2026, 9:06 AM",
+    "pulledAt": "2026-06-25T13:11:26.694Z",
+    "pulledAtDisplay": "Jun 25, 2026, 9:11 AM",
     "window": {
-      "start": "2026-05-11T13:06:28.177Z",
-      "end": "2026-12-22T13:06:28.177Z",
-      "startDisplay": "May 11, 2026, 9:06 AM",
-      "endDisplay": "Dec 22, 2026, 8:06 AM"
+      "start": "2026-05-11T13:11:26.694Z",
+      "end": "2026-12-22T13:11:26.694Z",
+      "startDisplay": "May 11, 2026, 9:11 AM",
+      "endDisplay": "Dec 22, 2026, 8:11 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7820,7 +7850,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-25T13:06:30.575Z",
+        "pulledAt": "2026-06-25T13:11:28.991Z",
         "eventCount": 94,
         "events": [
           {
@@ -8011,23 +8041,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Spring Bank Holiday (UK)",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDate": "2026-05-25",
-            "endDate": "2026-05-26",
-            "startDisplay": "May 25, 2026",
-            "endDisplay": "May 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8040,6 +8053,23 @@
             "endDisplay": "May 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Spring Bank Holiday (UK)",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDate": "2026-05-25",
+            "endDate": "2026-05-26",
+            "startDisplay": "May 25, 2026",
+            "endDisplay": "May 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -8980,23 +9010,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Summer Bank Holiday (UK)",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-01T00:00:00.000Z",
-            "startDate": "2026-08-31",
-            "endDate": "2026-09-01",
-            "startDisplay": "Aug 31, 2026",
-            "endDisplay": "Sep 1, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9009,6 +9022,23 @@
             "endDisplay": "Sep 8, 2026",
             "allDay": true,
             "type": "Golf Freeze",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Summer Bank Holiday (UK)",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-01T00:00:00.000Z",
+            "startDate": "2026-08-31",
+            "endDate": "2026-09-01",
+            "startDisplay": "Aug 31, 2026",
+            "endDisplay": "Sep 1, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9337,23 +9367,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221750Z-1404075373@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9383,6 +9396,23 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9427,17 +9457,984 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-25T13:02:18.998Z",
-    "previousPulledAtDisplay": "Jun 25, 2026, 9:02 AM",
-    "currentPulledAt": "2026-06-25T13:06:56.792Z",
-    "currentPulledAtDisplay": "Jun 25, 2026, 9:06 AM",
+    "previousPulledAt": "2026-06-25T13:06:56.792Z",
+    "previousPulledAtDisplay": "Jun 25, 2026, 9:06 AM",
+    "currentPulledAt": "2026-06-25T13:12:00.186Z",
+    "currentPulledAtDisplay": "Jun 25, 2026, 9:12 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
-    "updated": [],
-    "statusChanges": []
+    "updated": [
+      {
+        "key": "CORE-14396",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14396",
+        "summary": "Add IsCaddyRequested parameter support to EZL/EZLRTS tee sheet interface",
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "QA Testing (DEV)",
+            "after": "PO Review"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 10, 2026, 4:56 PM",
+            "after": "Jun 25, 2026, 9:10 AM"
+          }
+        ],
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "status": "PO Review",
+        "parent": null
+      },
+      {
+        "key": "CORE-14496",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14496",
+        "summary": "Database changes.",
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "QA Testing (DEV)",
+            "after": "PO Review"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 3, 2026, 1:08 PM",
+            "after": "Jun 25, 2026, 9:10 AM"
+          }
+        ],
+        "type": "Developer Task (sub task)",
+        "isSubtask": true,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "status": "PO Review",
+        "parent": {
+          "key": "CORE-14494",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+          "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+          "description": "",
+          "type": "Story",
+          "status": "PO Review",
+          "priority": "P1"
+        }
+      },
+      {
+        "key": "CORE-14495",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14495",
+        "summary": "Code changes.",
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "QA Testing (DEV)",
+            "after": "PO Review"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 3, 2026, 1:09 PM",
+            "after": "Jun 25, 2026, 9:10 AM"
+          }
+        ],
+        "type": "Developer Task (sub task)",
+        "isSubtask": true,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "status": "PO Review",
+        "parent": {
+          "key": "CORE-14494",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+          "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+          "description": "",
+          "type": "Story",
+          "status": "PO Review",
+          "priority": "P1"
+        }
+      },
+      {
+        "key": "CORE-14494",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+        "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "QA Testing (DEV)",
+            "after": "PO Review"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 8, 2026, 8:59 AM",
+            "after": "Jun 25, 2026, 9:10 AM"
+          }
+        ],
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "status": "PO Review",
+        "parent": {
+          "key": "B2C-68",
+          "url": "https://golfnow.atlassian.net/browse/B2C-68",
+          "summary": "Apple Pay 2026",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14507",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14507",
+        "summary": "Code Changes",
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "QA Testing (DEV)",
+            "after": "PO Review"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 9, 2026, 7:16 PM",
+            "after": "Jun 25, 2026, 9:09 AM"
+          }
+        ],
+        "type": "Developer Task (sub task)",
+        "isSubtask": true,
+        "assignee": "Unassigned",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "status": "PO Review",
+        "parent": {
+          "key": "CORE-14479",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14479",
+          "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
+          "description": "",
+          "type": "Story",
+          "status": "PO Review",
+          "priority": "P1"
+        }
+      },
+      {
+        "key": "CORE-14479",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14479",
+        "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "QA Testing (DEV)",
+            "after": "PO Review"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 22, 2026, 3:20 PM",
+            "after": "Jun 25, 2026, 9:09 AM"
+          }
+        ],
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "status": "PO Review",
+        "parent": null
+      },
+      {
+        "key": "CORE-14527",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14527",
+        "summary": "SQL Changes",
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "QA Testing (DEV)",
+            "after": "PO Review"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 17, 2026, 12:14 PM",
+            "after": "Jun 25, 2026, 9:09 AM"
+          }
+        ],
+        "type": "Developer Task (sub task)",
+        "isSubtask": true,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Raghav Kancherla",
+        "status": "PO Review",
+        "parent": {
+          "key": "CORE-14145",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+          "summary": "New Interface - PrimaGolf",
+          "description": "",
+          "type": "Task",
+          "status": "PO Review",
+          "priority": "P1"
+        }
+      },
+      {
+        "key": "CORE-14526",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14526",
+        "summary": "Code Changes",
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "QA Testing (DEV)",
+            "after": "PO Review"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 17, 2026, 12:14 PM",
+            "after": "Jun 25, 2026, 9:09 AM"
+          }
+        ],
+        "type": "Developer Task (sub task)",
+        "isSubtask": true,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Unassigned",
+        "status": "PO Review",
+        "parent": {
+          "key": "CORE-14145",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+          "summary": "New Interface - PrimaGolf",
+          "description": "",
+          "type": "Task",
+          "status": "PO Review",
+          "priority": "P1"
+        }
+      },
+      {
+        "key": "CORE-14145",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+        "summary": "New Interface - PrimaGolf",
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "QA Testing (DEV)",
+            "after": "PO Review"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 17, 2026, 6:05 PM",
+            "after": "Jun 25, 2026, 9:09 AM"
+          }
+        ],
+        "type": "Task",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Raghav Kancherla",
+        "status": "PO Review",
+        "parent": null
+      },
+      {
+        "key": "CORE-14505",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14505",
+        "summary": "Modernize Affiliate API dependencies to remediate security vulnerabilities",
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "QA Testing (DEV)",
+            "after": "PO Review"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 3, 2026, 12:33 PM",
+            "after": "Jun 25, 2026, 9:07 AM"
+          }
+        ],
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "status": "PO Review",
+        "parent": null
+      }
+    ],
+    "statusChanges": [
+      {
+        "key": "CORE-14396",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14396",
+        "summary": "Add IsCaddyRequested parameter support to EZL/EZLRTS tee sheet interface",
+        "before": "QA Testing (DEV)",
+        "after": "PO Review",
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "status": "PO Review",
+        "parent": null
+      },
+      {
+        "key": "CORE-14496",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14496",
+        "summary": "Database changes.",
+        "before": "QA Testing (DEV)",
+        "after": "PO Review",
+        "type": "Developer Task (sub task)",
+        "isSubtask": true,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "status": "PO Review",
+        "parent": {
+          "key": "CORE-14494",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+          "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+          "description": "",
+          "type": "Story",
+          "status": "PO Review",
+          "priority": "P1"
+        }
+      },
+      {
+        "key": "CORE-14495",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14495",
+        "summary": "Code changes.",
+        "before": "QA Testing (DEV)",
+        "after": "PO Review",
+        "type": "Developer Task (sub task)",
+        "isSubtask": true,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "status": "PO Review",
+        "parent": {
+          "key": "CORE-14494",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+          "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+          "description": "",
+          "type": "Story",
+          "status": "PO Review",
+          "priority": "P1"
+        }
+      },
+      {
+        "key": "CORE-14494",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+        "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+        "before": "QA Testing (DEV)",
+        "after": "PO Review",
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "status": "PO Review",
+        "parent": {
+          "key": "B2C-68",
+          "url": "https://golfnow.atlassian.net/browse/B2C-68",
+          "summary": "Apple Pay 2026",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14507",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14507",
+        "summary": "Code Changes",
+        "before": "QA Testing (DEV)",
+        "after": "PO Review",
+        "type": "Developer Task (sub task)",
+        "isSubtask": true,
+        "assignee": "Unassigned",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "status": "PO Review",
+        "parent": {
+          "key": "CORE-14479",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14479",
+          "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
+          "description": "",
+          "type": "Story",
+          "status": "PO Review",
+          "priority": "P1"
+        }
+      },
+      {
+        "key": "CORE-14479",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14479",
+        "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
+        "before": "QA Testing (DEV)",
+        "after": "PO Review",
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "status": "PO Review",
+        "parent": null
+      },
+      {
+        "key": "CORE-14527",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14527",
+        "summary": "SQL Changes",
+        "before": "QA Testing (DEV)",
+        "after": "PO Review",
+        "type": "Developer Task (sub task)",
+        "isSubtask": true,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Raghav Kancherla",
+        "status": "PO Review",
+        "parent": {
+          "key": "CORE-14145",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+          "summary": "New Interface - PrimaGolf",
+          "description": "",
+          "type": "Task",
+          "status": "PO Review",
+          "priority": "P1"
+        }
+      },
+      {
+        "key": "CORE-14526",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14526",
+        "summary": "Code Changes",
+        "before": "QA Testing (DEV)",
+        "after": "PO Review",
+        "type": "Developer Task (sub task)",
+        "isSubtask": true,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Unassigned",
+        "status": "PO Review",
+        "parent": {
+          "key": "CORE-14145",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+          "summary": "New Interface - PrimaGolf",
+          "description": "",
+          "type": "Task",
+          "status": "PO Review",
+          "priority": "P1"
+        }
+      },
+      {
+        "key": "CORE-14145",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+        "summary": "New Interface - PrimaGolf",
+        "before": "QA Testing (DEV)",
+        "after": "PO Review",
+        "type": "Task",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Raghav Kancherla",
+        "status": "PO Review",
+        "parent": null
+      },
+      {
+        "key": "CORE-14505",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14505",
+        "summary": "Modernize Affiliate API dependencies to remediate security vulnerabilities",
+        "before": "QA Testing (DEV)",
+        "after": "PO Review",
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "status": "PO Review",
+        "parent": null
+      }
+    ]
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-25T13:06:56.792Z",
+      "previousPulledAtDisplay": "Jun 25, 2026, 9:06 AM",
+      "currentPulledAt": "2026-06-25T13:12:00.186Z",
+      "currentPulledAtDisplay": "Jun 25, 2026, 9:12 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14396",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14396",
+          "summary": "Add IsCaddyRequested parameter support to EZL/EZLRTS tee sheet interface",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "QA Testing (DEV)",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 10, 2026, 4:56 PM",
+              "after": "Jun 25, 2026, 9:10 AM"
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Yoel Martin Pardo",
+          "status": "PO Review",
+          "parent": null
+        },
+        {
+          "key": "CORE-14496",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14496",
+          "summary": "Database changes.",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "QA Testing (DEV)",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 3, 2026, 1:08 PM",
+              "after": "Jun 25, 2026, 9:10 AM"
+            }
+          ],
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Yoel Martin Pardo",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-14494",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+            "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+            "description": "",
+            "type": "Story",
+            "status": "PO Review",
+            "priority": "P1"
+          }
+        },
+        {
+          "key": "CORE-14495",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14495",
+          "summary": "Code changes.",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "QA Testing (DEV)",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 3, 2026, 1:09 PM",
+              "after": "Jun 25, 2026, 9:10 AM"
+            }
+          ],
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Yoel Martin Pardo",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-14494",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+            "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+            "description": "",
+            "type": "Story",
+            "status": "PO Review",
+            "priority": "P1"
+          }
+        },
+        {
+          "key": "CORE-14494",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+          "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "QA Testing (DEV)",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 8, 2026, 8:59 AM",
+              "after": "Jun 25, 2026, 9:10 AM"
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Yoel Martin Pardo",
+          "status": "PO Review",
+          "parent": {
+            "key": "B2C-68",
+            "url": "https://golfnow.atlassian.net/browse/B2C-68",
+            "summary": "Apple Pay 2026",
+            "description": "",
+            "type": "Epic",
+            "status": "Backlog",
+            "priority": "None"
+          }
+        },
+        {
+          "key": "CORE-14507",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14507",
+          "summary": "Code Changes",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "QA Testing (DEV)",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 9, 2026, 7:16 PM",
+              "after": "Jun 25, 2026, 9:09 AM"
+            }
+          ],
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Unassigned",
+          "assignedDeveloper": "Tyler Olechnowicz",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-14479",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14479",
+            "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
+            "description": "",
+            "type": "Story",
+            "status": "PO Review",
+            "priority": "P1"
+          }
+        },
+        {
+          "key": "CORE-14479",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14479",
+          "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "QA Testing (DEV)",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 22, 2026, 3:20 PM",
+              "after": "Jun 25, 2026, 9:09 AM"
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Tyler Olechnowicz",
+          "status": "PO Review",
+          "parent": null
+        },
+        {
+          "key": "CORE-14527",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14527",
+          "summary": "SQL Changes",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "QA Testing (DEV)",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 17, 2026, 12:14 PM",
+              "after": "Jun 25, 2026, 9:09 AM"
+            }
+          ],
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Raghav Kancherla",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-14145",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+            "summary": "New Interface - PrimaGolf",
+            "description": "",
+            "type": "Task",
+            "status": "PO Review",
+            "priority": "P1"
+          }
+        },
+        {
+          "key": "CORE-14526",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14526",
+          "summary": "Code Changes",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "QA Testing (DEV)",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 17, 2026, 12:14 PM",
+              "after": "Jun 25, 2026, 9:09 AM"
+            }
+          ],
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Unassigned",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-14145",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+            "summary": "New Interface - PrimaGolf",
+            "description": "",
+            "type": "Task",
+            "status": "PO Review",
+            "priority": "P1"
+          }
+        },
+        {
+          "key": "CORE-14145",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+          "summary": "New Interface - PrimaGolf",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "QA Testing (DEV)",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 17, 2026, 6:05 PM",
+              "after": "Jun 25, 2026, 9:09 AM"
+            }
+          ],
+          "type": "Task",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Raghav Kancherla",
+          "status": "PO Review",
+          "parent": null
+        },
+        {
+          "key": "CORE-14505",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14505",
+          "summary": "Modernize Affiliate API dependencies to remediate security vulnerabilities",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "QA Testing (DEV)",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 3, 2026, 12:33 PM",
+              "after": "Jun 25, 2026, 9:07 AM"
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Tyler Olechnowicz",
+          "status": "PO Review",
+          "parent": null
+        }
+      ],
+      "statusChanges": [
+        {
+          "key": "CORE-14396",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14396",
+          "summary": "Add IsCaddyRequested parameter support to EZL/EZLRTS tee sheet interface",
+          "before": "QA Testing (DEV)",
+          "after": "PO Review",
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Yoel Martin Pardo",
+          "status": "PO Review",
+          "parent": null
+        },
+        {
+          "key": "CORE-14496",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14496",
+          "summary": "Database changes.",
+          "before": "QA Testing (DEV)",
+          "after": "PO Review",
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Yoel Martin Pardo",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-14494",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+            "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+            "description": "",
+            "type": "Story",
+            "status": "PO Review",
+            "priority": "P1"
+          }
+        },
+        {
+          "key": "CORE-14495",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14495",
+          "summary": "Code changes.",
+          "before": "QA Testing (DEV)",
+          "after": "PO Review",
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Yoel Martin Pardo",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-14494",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+            "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+            "description": "",
+            "type": "Story",
+            "status": "PO Review",
+            "priority": "P1"
+          }
+        },
+        {
+          "key": "CORE-14494",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14494",
+          "summary": "Improve Apple Pay Support when there are multiple processors of the same currency",
+          "before": "QA Testing (DEV)",
+          "after": "PO Review",
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Yoel Martin Pardo",
+          "status": "PO Review",
+          "parent": {
+            "key": "B2C-68",
+            "url": "https://golfnow.atlassian.net/browse/B2C-68",
+            "summary": "Apple Pay 2026",
+            "description": "",
+            "type": "Epic",
+            "status": "Backlog",
+            "priority": "None"
+          }
+        },
+        {
+          "key": "CORE-14507",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14507",
+          "summary": "Code Changes",
+          "before": "QA Testing (DEV)",
+          "after": "PO Review",
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Unassigned",
+          "assignedDeveloper": "Tyler Olechnowicz",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-14479",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14479",
+            "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
+            "description": "",
+            "type": "Story",
+            "status": "PO Review",
+            "priority": "P1"
+          }
+        },
+        {
+          "key": "CORE-14479",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14479",
+          "summary": "Add cart/tax include parameters to tee-time/book for EZL (EZTP and EZ-RTS) integration",
+          "before": "QA Testing (DEV)",
+          "after": "PO Review",
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Tyler Olechnowicz",
+          "status": "PO Review",
+          "parent": null
+        },
+        {
+          "key": "CORE-14527",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14527",
+          "summary": "SQL Changes",
+          "before": "QA Testing (DEV)",
+          "after": "PO Review",
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Raghav Kancherla",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-14145",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+            "summary": "New Interface - PrimaGolf",
+            "description": "",
+            "type": "Task",
+            "status": "PO Review",
+            "priority": "P1"
+          }
+        },
+        {
+          "key": "CORE-14526",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14526",
+          "summary": "Code Changes",
+          "before": "QA Testing (DEV)",
+          "after": "PO Review",
+          "type": "Developer Task (sub task)",
+          "isSubtask": true,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Unassigned",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-14145",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+            "summary": "New Interface - PrimaGolf",
+            "description": "",
+            "type": "Task",
+            "status": "PO Review",
+            "priority": "P1"
+          }
+        },
+        {
+          "key": "CORE-14145",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14145",
+          "summary": "New Interface - PrimaGolf",
+          "before": "QA Testing (DEV)",
+          "after": "PO Review",
+          "type": "Task",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Raghav Kancherla",
+          "status": "PO Review",
+          "parent": null
+        },
+        {
+          "key": "CORE-14505",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14505",
+          "summary": "Modernize Affiliate API dependencies to remediate security vulnerabilities",
+          "before": "QA Testing (DEV)",
+          "after": "PO Review",
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Tyler Olechnowicz",
+          "status": "PO Review",
+          "parent": null
+        }
+      ]
+    },
     {
       "previousPulledAt": "2026-06-25T13:02:18.998Z",
       "previousPulledAtDisplay": "Jun 25, 2026, 9:02 AM",
@@ -11269,17 +12266,6 @@
       "previousPulledAtDisplay": "Jun 24, 2026, 7:06 PM",
       "currentPulledAt": "2026-06-24T23:11:49.645Z",
       "currentPulledAtDisplay": "Jun 24, 2026, 7:11 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-24T23:01:54.000Z",
-      "previousPulledAtDisplay": "Jun 24, 2026, 7:01 PM",
-      "currentPulledAt": "2026-06-24T23:06:46.564Z",
-      "currentPulledAtDisplay": "Jun 24, 2026, 7:06 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
