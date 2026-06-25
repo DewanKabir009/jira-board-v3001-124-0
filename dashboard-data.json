@@ -4,10 +4,57 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-25T13:25:04.098Z",
-  "pulledAtDisplay": "Jun 25, 2026, 9:25 AM",
+  "pulledAt": "2026-06-25T13:32:06.315Z",
+  "pulledAtDisplay": "Jun 25, 2026, 9:32 AM",
   "total": 24,
   "issues": [
+    {
+      "key": "CORE-14531",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+      "summary": "Migrate Urgency Bookings query to CRM",
+      "description": "Migrate the Urgency Bookings query from CRM_Repl to CRM.\n\nEndpoint to test: https://api.gnsvc.com/internal/help/operations/GetCourseMetricsByCourseId",
+      "descriptionHtml": "<p>Migrate the Urgency Bookings query from CRM_Repl to CRM.</p><p>Endpoint to test: <a href=\"https://api.gnsvc.com/internal/help/operations/GetCourseMetricsByCourseId\" target=\"_blank\" rel=\"noopener\">https://api.gnsvc.com/internal/help/operations/GetCourseMetricsByCourseId</a> </p>",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 0,
+      "comments": [],
+      "lastCommentUrl": "",
+      "lastCommentDisplay": "",
+      "lastCommentAuthor": "",
+      "testChecklist": null,
+      "type": "Story",
+      "isSubtask": false,
+      "status": "PO Review",
+      "priority": "None",
+      "assignee": "Daniel McNaughton",
+      "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+      "assignedDeveloper": "Daniel McNaughton",
+      "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+      "updated": "2026-06-25T09:24:48.197-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:24 AM",
+      "created": "2026-06-18T11:21:50.969-0400",
+      "createdDisplay": "Jun 18, 2026, 11:21 AM",
+      "components": [
+        "Database",
+        "GolfNowAPI"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [
+        {
+          "name": "2026.8"
+        }
+      ],
+      "sprintNames": [
+        "2026.8"
+      ],
+      "resolution": "",
+      "parent": null
+    },
     {
       "key": "CORE-14233",
       "url": "https://golfnow.atlassian.net/browse/CORE-14233",
@@ -473,7 +520,7 @@
         "summary": "Migrate Urgency Bookings query to CRM",
         "description": "",
         "type": "Story",
-        "status": "Pending Prod Release",
+        "status": "PO Review",
         "priority": "None"
       }
     },
@@ -521,56 +568,9 @@
         "summary": "Migrate Urgency Bookings query to CRM",
         "description": "",
         "type": "Story",
-        "status": "Pending Prod Release",
+        "status": "PO Review",
         "priority": "None"
       }
-    },
-    {
-      "key": "CORE-14531",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14531",
-      "summary": "Migrate Urgency Bookings query to CRM",
-      "description": "Migrate the Urgency Bookings query from CRM_Repl to CRM.\n\nEndpoint to test: https://api.gnsvc.com/internal/help/operations/GetCourseMetricsByCourseId",
-      "descriptionHtml": "<p>Migrate the Urgency Bookings query from CRM_Repl to CRM.</p><p>Endpoint to test: <a href=\"https://api.gnsvc.com/internal/help/operations/GetCourseMetricsByCourseId\" target=\"_blank\" rel=\"noopener\">https://api.gnsvc.com/internal/help/operations/GetCourseMetricsByCourseId</a> </p>",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 0,
-      "comments": [],
-      "lastCommentUrl": "",
-      "lastCommentDisplay": "",
-      "lastCommentAuthor": "",
-      "testChecklist": null,
-      "type": "Story",
-      "isSubtask": false,
-      "status": "Pending Prod Release",
-      "priority": "None",
-      "assignee": "Daniel McNaughton",
-      "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-      "assignedDeveloper": "Daniel McNaughton",
-      "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-      "updated": "2026-06-25T09:13:06.682-0400",
-      "updatedDisplay": "Jun 25, 2026, 9:13 AM",
-      "created": "2026-06-18T11:21:50.969-0400",
-      "createdDisplay": "Jun 18, 2026, 11:21 AM",
-      "components": [
-        "Database",
-        "GolfNowAPI"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
-      "resolution": "",
-      "parent": null
     },
     {
       "key": "CORE-14530",
@@ -1746,8 +1746,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-25T13:25:04.098Z",
-    "pulledAtDisplay": "Jun 25, 2026, 9:25 AM",
+    "pulledAt": "2026-06-25T13:32:06.315Z",
+    "pulledAtDisplay": "Jun 25, 2026, 9:32 AM",
     "total": 95,
     "mainTotal": 95,
     "subtaskTotal": 0,
@@ -7811,7 +7811,7 @@
         "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
-        "status": "Pending Prod Release",
+        "status": "PO Review",
         "priority": "None",
         "assignee": "Daniel McNaughton",
         "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
@@ -7819,8 +7819,8 @@
         "assignedDeveloper": "Daniel McNaughton",
         "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-        "updated": "2026-06-25T09:13:06.682-0400",
-        "updatedDisplay": "Jun 25, 2026, 9:13 AM",
+        "updated": "2026-06-25T09:24:48.197-0400",
+        "updatedDisplay": "Jun 25, 2026, 9:24 AM",
         "created": "2026-06-18T11:21:50.969-0400",
         "createdDisplay": "Jun 18, 2026, 11:21 AM",
         "components": [
@@ -7846,13 +7846,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-25T13:24:40.546Z",
-    "pulledAtDisplay": "Jun 25, 2026, 9:24 AM",
+    "pulledAt": "2026-06-25T13:31:31.321Z",
+    "pulledAtDisplay": "Jun 25, 2026, 9:31 AM",
     "window": {
-      "start": "2026-05-11T13:24:40.546Z",
-      "end": "2026-12-22T13:24:40.546Z",
-      "startDisplay": "May 11, 2026, 9:24 AM",
-      "endDisplay": "Dec 22, 2026, 8:24 AM"
+      "start": "2026-05-11T13:31:31.321Z",
+      "end": "2026-12-22T13:31:31.321Z",
+      "startDisplay": "May 11, 2026, 9:31 AM",
+      "endDisplay": "Dec 22, 2026, 8:31 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7865,7 +7865,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-25T13:24:42.835Z",
+        "pulledAt": "2026-06-25T13:31:35.328Z",
         "eventCount": 94,
         "events": [
           {
@@ -9472,165 +9472,108 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-25T13:22:06.852Z",
-    "previousPulledAtDisplay": "Jun 25, 2026, 9:22 AM",
-    "currentPulledAt": "2026-06-25T13:25:04.098Z",
-    "currentPulledAtDisplay": "Jun 25, 2026, 9:25 AM",
+    "previousPulledAt": "2026-06-25T13:25:04.098Z",
+    "previousPulledAtDisplay": "Jun 25, 2026, 9:25 AM",
+    "currentPulledAt": "2026-06-25T13:32:06.315Z",
+    "currentPulledAtDisplay": "Jun 25, 2026, 9:32 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
     "updated": [
       {
-        "key": "CORE-14233",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14233",
-        "summary": "Updates to Reservation Confirmation Template",
+        "key": "CORE-14531",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+        "summary": "Migrate Urgency Bookings query to CRM",
         "changes": [
           {
             "field": "status",
             "label": "Status",
-            "before": "QA Testing (DEV)",
+            "before": "Pending Prod Release",
             "after": "PO Review"
           },
           {
             "field": "updatedDisplay",
             "label": "Jira updated",
-            "before": "Jun 17, 2026, 5:53 PM",
-            "after": "Jun 25, 2026, 9:23 AM"
+            "before": "Jun 25, 2026, 9:13 AM",
+            "after": "Jun 25, 2026, 9:24 AM"
           }
         ],
         "type": "Story",
         "isSubtask": false,
-        "assignee": "Nicole Greer",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
+        "assignee": "Daniel McNaughton",
+        "assignedDeveloper": "Daniel McNaughton",
         "status": "PO Review",
         "parent": null
-      },
-      {
-        "key": "CORE-14508",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14508",
-        "summary": "CLONE - [Commerce] Cannot complete a non-prepay reservation",
-        "changes": [
-          {
-            "field": "status",
-            "label": "Status",
-            "before": "QA Testing (DEV)",
-            "after": "PO Review"
-          },
-          {
-            "field": "updatedDisplay",
-            "label": "Jira updated",
-            "before": "Jun 17, 2026, 4:55 PM",
-            "after": "Jun 25, 2026, 9:22 AM"
-          }
-        ],
-        "type": "Bug",
-        "isSubtask": false,
-        "assignee": "Dewan Kabir",
-        "assignedDeveloper": "Unassigned",
-        "status": "PO Review",
-        "parent": {
-          "key": "CORE-13172",
-          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
-          "summary": "Commerce Proxy API",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14397",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14397",
-        "summary": "CLONE - Update to allow No Payment Methods when $0 due now for BE",
-        "changes": [
-          {
-            "field": "status",
-            "label": "Status",
-            "before": "QA Testing (DEV)",
-            "after": "PO Review"
-          },
-          {
-            "field": "updatedDisplay",
-            "label": "Jira updated",
-            "before": "Jun 17, 2026, 4:56 PM",
-            "after": "Jun 25, 2026, 9:22 AM"
-          }
-        ],
-        "type": "Story",
-        "isSubtask": false,
-        "assignee": "Dewan Kabir",
-        "assignedDeveloper": "Andrew Horvat",
-        "status": "PO Review",
-        "parent": {
-          "key": "CORE-13172",
-          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
-          "summary": "Commerce Proxy API",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
       }
     ],
     "statusChanges": [
       {
-        "key": "CORE-14233",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14233",
-        "summary": "Updates to Reservation Confirmation Template",
-        "before": "QA Testing (DEV)",
+        "key": "CORE-14531",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+        "summary": "Migrate Urgency Bookings query to CRM",
+        "before": "Pending Prod Release",
         "after": "PO Review",
         "type": "Story",
         "isSubtask": false,
-        "assignee": "Nicole Greer",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
+        "assignee": "Daniel McNaughton",
+        "assignedDeveloper": "Daniel McNaughton",
         "status": "PO Review",
         "parent": null
-      },
-      {
-        "key": "CORE-14508",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14508",
-        "summary": "CLONE - [Commerce] Cannot complete a non-prepay reservation",
-        "before": "QA Testing (DEV)",
-        "after": "PO Review",
-        "type": "Bug",
-        "isSubtask": false,
-        "assignee": "Dewan Kabir",
-        "assignedDeveloper": "Unassigned",
-        "status": "PO Review",
-        "parent": {
-          "key": "CORE-13172",
-          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
-          "summary": "Commerce Proxy API",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14397",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14397",
-        "summary": "CLONE - Update to allow No Payment Methods when $0 due now for BE",
-        "before": "QA Testing (DEV)",
-        "after": "PO Review",
-        "type": "Story",
-        "isSubtask": false,
-        "assignee": "Dewan Kabir",
-        "assignedDeveloper": "Andrew Horvat",
-        "status": "PO Review",
-        "parent": {
-          "key": "CORE-13172",
-          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
-          "summary": "Commerce Proxy API",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
       }
     ]
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-25T13:25:04.098Z",
+      "previousPulledAtDisplay": "Jun 25, 2026, 9:25 AM",
+      "currentPulledAt": "2026-06-25T13:32:06.315Z",
+      "currentPulledAtDisplay": "Jun 25, 2026, 9:32 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14531",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+          "summary": "Migrate Urgency Bookings query to CRM",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "Pending Prod Release",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 25, 2026, 9:13 AM",
+              "after": "Jun 25, 2026, 9:24 AM"
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Daniel McNaughton",
+          "assignedDeveloper": "Daniel McNaughton",
+          "status": "PO Review",
+          "parent": null
+        }
+      ],
+      "statusChanges": [
+        {
+          "key": "CORE-14531",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14531",
+          "summary": "Migrate Urgency Bookings query to CRM",
+          "before": "Pending Prod Release",
+          "after": "PO Review",
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Daniel McNaughton",
+          "assignedDeveloper": "Daniel McNaughton",
+          "status": "PO Review",
+          "parent": null
+        }
+      ]
+    },
     {
       "previousPulledAt": "2026-06-25T13:22:06.852Z",
       "previousPulledAtDisplay": "Jun 25, 2026, 9:22 AM",
@@ -9853,7 +9796,7 @@
             "summary": "Migrate Urgency Bookings query to CRM",
             "description": "",
             "type": "Story",
-            "status": "Pending Prod Release",
+            "status": "PO Review",
             "priority": "None"
           }
         },
@@ -9886,7 +9829,7 @@
             "summary": "Migrate Urgency Bookings query to CRM",
             "description": "",
             "type": "Story",
-            "status": "Pending Prod Release",
+            "status": "PO Review",
             "priority": "None"
           }
         },
@@ -9912,7 +9855,7 @@
           "isSubtask": false,
           "assignee": "Daniel McNaughton",
           "assignedDeveloper": "Daniel McNaughton",
-          "status": "Pending Prod Release",
+          "status": "PO Review",
           "parent": null
         }
       ],
@@ -9947,7 +9890,7 @@
             "summary": "Migrate Urgency Bookings query to CRM",
             "description": "",
             "type": "Story",
-            "status": "Pending Prod Release",
+            "status": "PO Review",
             "priority": "None"
           }
         },
@@ -9968,7 +9911,7 @@
             "summary": "Migrate Urgency Bookings query to CRM",
             "description": "",
             "type": "Story",
-            "status": "Pending Prod Release",
+            "status": "PO Review",
             "priority": "None"
           }
         },
@@ -9982,7 +9925,7 @@
           "isSubtask": false,
           "assignee": "Daniel McNaughton",
           "assignedDeveloper": "Daniel McNaughton",
-          "status": "Pending Prod Release",
+          "status": "PO Review",
           "parent": null
         }
       ]
@@ -12460,17 +12403,6 @@
       "previousPulledAtDisplay": "Jun 24, 2026, 7:26 PM",
       "currentPulledAt": "2026-06-24T23:31:44.246Z",
       "currentPulledAtDisplay": "Jun 24, 2026, 7:31 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-24T23:21:44.993Z",
-      "previousPulledAtDisplay": "Jun 24, 2026, 7:21 PM",
-      "currentPulledAt": "2026-06-24T23:26:54.578Z",
-      "currentPulledAtDisplay": "Jun 24, 2026, 7:26 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
