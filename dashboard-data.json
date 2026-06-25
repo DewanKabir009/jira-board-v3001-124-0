@@ -4,10 +4,315 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-25T13:22:06.852Z",
-  "pulledAtDisplay": "Jun 25, 2026, 9:22 AM",
+  "pulledAt": "2026-06-25T13:25:04.098Z",
+  "pulledAtDisplay": "Jun 25, 2026, 9:25 AM",
   "total": 24,
   "issues": [
+    {
+      "key": "CORE-14233",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14233",
+      "summary": "Updates to Reservation Confirmation Template",
+      "description": "On the Tee Time Reservation email sent to golfers, there are two different bodies that reference benefits of GolfPass. One as a member and one as a non-member. We need to update the text in these versions. See attached for the two versions.\n\nGolfPass Member - Anyone with ProductID [36, 37, 42, 62, 69, 71] - Attached image Screenshot 2026-03-02 at 3.23.43 PM.png\n\n- Can we confirm what validation we are using to determine what member they are? We got a report that some members are receiving the non member version. Confirm with Brian when you find the logic - Luis Confirmed the logic is based on ProductId\n\n- Change “Extra GolfPass Rewards Points” to: Earn or redeem GolfPass Points on tee time bookings\n\nNon-Member OR anyone with a ProductId that does not match the above list- Attached image image (24).png\n\n- Change “Earn and redeem GolfPass Points…” to: Earn GolfPass Points on tee time bookings and redeem for a discount on GolfPass+ membership\n\n- Remove $40 Taylormade credit\n\n- Change the Peacock benefit to: Complimentary access to Peacock Premium (up to 12 months)",
+      "descriptionHtml": "<p>On the Tee Time Reservation email sent to golfers, there are two different bodies that reference benefits of GolfPass. One as a member and one as a non-member. We need to update the text in these versions. See attached for the two versions. </p><p><strong>GolfPass Member - Anyone with ProductID [36, 37, 42, 62, 69, 71] - Attached image Screenshot 2026-03-02 at 3.23.43 PM.png</strong></p><ul><li><p>Can we confirm what validation we are using to determine what member they are? We got a report that some members are receiving the non member version. Confirm with Brian when you find the logic - Luis Confirmed the logic is based on ProductId</p></li><li><p>Change “Extra GolfPass Rewards Points” to: Earn or redeem GolfPass Points on tee time bookings</p></li></ul><p><strong>Non-Member OR anyone with a ProductId that does not match the above list- Attached image image (24).png</strong></p><ul><li><p>Change “Earn and redeem GolfPass Points…” to: Earn GolfPass Points on tee time bookings and redeem for a discount on GolfPass+ membership</p></li><li><p>Remove $40 Taylormade credit</p></li><li><p>Change the Peacock benefit to: Complimentary access to Peacock Premium (up to 12 months)</p></li></ul>",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 2,
+      "comments": [
+        {
+          "id": "1176866",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1176866",
+          "author": "Luis Vallejo Mursuli",
+          "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+          "created": "2026-06-01T10:28:23.247-0400",
+          "createdDisplay": "Jun 1, 2026, 10:28 AM",
+          "updated": "2026-06-01T10:28:23.247-0400",
+          "updatedDisplay": "",
+          "hasMedia": false,
+          "mediaCount": 0,
+          "body": "QA,\n\nHere are the instructions to test this ticket. Contact me if you have questions.\n\nThanks!",
+          "bodyHtml": "<p>QA,</p><p>Here are the instructions to test this ticket. Contact me if you have questions.</p><p>Thanks!<br><br> </p>"
+        },
+        {
+          "id": "1184542",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1184542",
+          "author": "Nicole Greer",
+          "authorAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
+          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
+          "created": "2026-06-17T17:53:03.998-0400",
+          "createdDisplay": "Jun 17, 2026, 5:53 PM",
+          "updated": "2026-06-17T17:53:03.998-0400",
+          "updatedDisplay": "",
+          "hasMedia": true,
+          "mediaCount": 1,
+          "body": "Successful test case with PPID 64 reservation. Other test cases in progress.",
+          "bodyHtml": "<p>Successful test case with PPID 64 reservation. Other test cases in progress.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14233/comments/1184542/738935-emailconfirmUseCase64.png\" alt=\"emailconfirmUseCase64.png\" loading=\"lazy\"><figcaption>emailconfirmUseCase64.png</figcaption></figure></div>"
+        }
+      ],
+      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1184542",
+      "lastCommentDisplay": "Jun 17, 2026, 5:53 PM",
+      "lastCommentAuthor": "Nicole Greer",
+      "testChecklist": {
+        "files": [
+          {
+            "id": "733040",
+            "filename": "QA_Test_Guide_CORE-14233.md",
+            "created": "2026-06-01T10:28:22.922-0400",
+            "author": "Luis Vallejo Mursuli"
+          }
+        ],
+        "commentIds": [
+          "1176866"
+        ],
+        "total": 6,
+        "testCases": [
+          {
+            "id": "A1",
+            "title": "GolfPass+ Member Confirmation Email - ProductId 36",
+            "category": "4. Detailed Test Cases",
+            "blocking": false,
+            "description": "Test ID: TC-CORE14233-A1 Priority: High Test Type: End-to-End Email Validation",
+            "checks": [
+              "Member benefits header is displayed",
+              "All 4 benefit bullet points are present",
+              "\"Earn or redeem GolfPass Points on tee time bookings\" text is correct (NOT \"Extra GolfPass Rewards Points\")",
+              "Phone number 833-465-3847 is displayed twice",
+              "Support contact text is displayed at the end of the section",
+              "No non-member benefits text is displayed"
+            ],
+            "sourceFile": "QA_Test_Guide_CORE-14233.md"
+          },
+          {
+            "id": "A2",
+            "title": "GolfPass+ Member Confirmation Email - ProductId Variation",
+            "category": "4. Detailed Test Cases",
+            "blocking": false,
+            "description": "Test ID: TC-CORE14233-A2 Priority: High Test Type: End-to-End Email Validation",
+            "checks": [
+              "Email received successfully",
+              "Member benefits section displays correctly",
+              "All 4 benefit bullet points are present and correct",
+              "\"Earn or redeem GolfPass Points on tee time bookings\" text is displayed",
+              "No non-member benefits section visible"
+            ],
+            "sourceFile": "QA_Test_Guide_CORE-14233.md"
+          },
+          {
+            "id": "B1",
+            "title": "Non-Member Confirmation Email - Standard Non-Member",
+            "category": "4. Detailed Test Cases",
+            "blocking": false,
+            "description": "Test ID: TC-CORE14233-B1 Priority: High Test Type: End-to-End Email Validation",
+            "checks": [
+              "Non-member header is displayed",
+              "Non-member benefits description is present",
+              "All 5 benefit bullet points are present",
+              "\"Earn GolfPass Points on tee time bookings and redeem for a discount on GolfPass+ membership\" text is correct (NOT \"Earn and redeem GolfPass Points…\")",
+              "Peacock benefit states \"Complimentary access to Peacock Premium (up to 12 months)\"",
+              "No \"$40 TaylorMade credit\" is mentioned anywhere",
+              "Call-to-action link to golfpass.com is present and clickable",
+              "No member benefits section is visible"
+            ],
+            "sourceFile": "QA_Test_Guide_CORE-14233.md"
+          },
+          {
+            "id": "B2",
+            "title": "Non-Member Confirmation Email - Verify Removed Content",
+            "category": "4. Detailed Test Cases",
+            "blocking": false,
+            "description": "Test ID: TC-CORE14233-B2 Priority: High Test Type: Regression Test - Removed Content Validation",
+            "checks": [
+              "Search email for \"TaylorMade\" - should return 0 results",
+              "Search email for \"$40\" - should return 0 results",
+              "Search email for \"Extra GolfPass Rewards Points\" - should return 0 results",
+              "Search email for \"NBCUniversal\" - should return 0 results",
+              "Confirm new Peacock text includes \"Peacock Premium (up to 12 months)\""
+            ],
+            "sourceFile": "QA_Test_Guide_CORE-14233.md"
+          },
+          {
+            "id": "C1",
+            "title": "ProductId Boundary Validation - ProductId 35 (Non-Member)",
+            "category": "4. Detailed Test Cases",
+            "blocking": false,
+            "description": "Test ID: TC-CORE14233-C1 Priority: Medium Test Type: Boundary Condition Test",
+            "checks": [
+              "Non-member header \"Looking to get even more out of your game?\" is displayed",
+              "Non-member benefits list (5 items) is present",
+              "Member benefits section is NOT visible",
+              "ProductId 35 correctly triggers non-member template (not member template)"
+            ],
+            "sourceFile": "QA_Test_Guide_CORE-14233.md"
+          },
+          {
+            "id": "C2",
+            "title": "ProductTypeId Requirement Validation",
+            "category": "4. Detailed Test Cases",
+            "blocking": true,
+            "description": "Test ID: TC-CORE14233-C2 Priority: Medium Test Type: Conditional Logic Test",
+            "checks": [
+              "Email received successfully",
+              "GolfPass Value Prop section is NOT present",
+              "No member benefits section visible",
+              "No non-member benefits section visible",
+              "Standard reservation details are displayed correctly",
+              "ProductTypeId = 9 requirement is properly enforced",
+              "Development environment is accessible (https://dev.golfnow.com)",
+              "Test customer accounts are configured with correct ProductIds",
+              "Email inboxes are accessible for all test accounts",
+              "Select 2-3 test facilities with available tee times",
+              "Record facility names and available time slots",
+              "Verify pricing is configured correctly",
+              "Print or have digital copy of test cases ready",
+              "Email client open for quick verification",
+              "Screenshot tool ready for capturing email examples",
+              "Header: \"As a GolfPass+ member, every tee time you book includes exclusive benefits:\""
+            ],
+            "sourceFile": "QA_Test_Guide_CORE-14233.md"
+          }
+        ]
+      },
+      "type": "Story",
+      "isSubtask": false,
+      "status": "PO Review",
+      "priority": "P2",
+      "assignee": "Nicole Greer",
+      "assigneeAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
+      "assignedDeveloper": "Luis Vallejo Mursuli",
+      "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+      "updated": "2026-06-25T09:23:52.954-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:23 AM",
+      "created": "2026-03-02T15:21:34.425-0500",
+      "createdDisplay": "Mar 2, 2026, 3:21 PM",
+      "components": [
+        "GolfNow.Notification (Windows Service)"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [
+        {
+          "name": "2026.8"
+        }
+      ],
+      "sprintNames": [
+        "2026.8"
+      ],
+      "resolution": "",
+      "parent": null
+    },
+    {
+      "key": "CORE-14508",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14508",
+      "summary": "CLONE - [Commerce] Cannot complete a non-prepay reservation",
+      "description": "Environment: QA\n\nSTR:\n\n- Navigate to https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/checkout\n\n- Log in\n\n- Add a non-prepay tee time to cart (no convenience fee should be added, so due now = $0)\n\n- Proceed to checkout\n\n- Fill in the payment form and attempt to complete a reservation\n\nAR: The process-payment call fails with the following error:\n\n{error: \"Unknown error occurred. Error Track ID: 5758fd11-2eb5-4506-8405-1a4a4c24ac98\",…}\n\ncode: \"UNKNOWN_ERROR\"\n\nerror: \"Unknown error occurred. Error Track ID: 5758fd11-2eb5-4506-8405-1a4a4c24ac98\"\n\nNote 1: Is reproducing for all types of users\n\nNote 2: Can reproduce for other courses like https://highlands-reserve-golf-club-commerce.qa-phx-ui-be.svc.golf/confirmation , https://xyz-wingfield-sp-commerce.qa-phx-ui-be.svc.golf/confirmation , https://alaska-golf-course-commerce.qa-phx-ui-be.svc.golf/?course=20684&date=2026-06-02&max=999999\n\nER: User should be able to purchase all types of tee times without issues",
+      "descriptionHtml": "<p><strong>Environment</strong>: QA</p><p><strong>STR</strong>:</p><ol><li><p>Navigate to <a href=\"https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/checkout\" target=\"_blank\" rel=\"noopener\">https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/checkout</a> </p></li><li><p>Log in</p></li><li><p>Add a non-prepay tee time to cart (no convenience fee should be added, so due now = $0)</p></li><li><p>Proceed to checkout</p></li><li><p>Fill in the payment form and attempt to complete a reservation</p></li></ol><p><strong>AR</strong>: The<code> process-payment</code> call fails with the following error:</p><pre><code>{error: &quot;Unknown error occurred. Error Track ID: 5758fd11-2eb5-4506-8405-1a4a4c24ac98&quot;,…}\n\ncode: &quot;UNKNOWN_ERROR&quot;\n\nerror: &quot;Unknown error occurred. Error Track ID: 5758fd11-2eb5-4506-8405-1a4a4c24ac98&quot;</code></pre><p><strong>Note 1</strong>: Is reproducing for all types of users</p><p><strong>Note 2</strong>: Can reproduce for other courses like <a href=\"https://highlands-reserve-golf-club-commerce.qa-phx-ui-be.svc.golf/confirmation\" target=\"_blank\" rel=\"noopener\">https://highlands-reserve-golf-club-commerce.qa-phx-ui-be.svc.golf/confirmation</a> , <a href=\"https://xyz-wingfield-sp-commerce.qa-phx-ui-be.svc.golf/confirmation\" target=\"_blank\" rel=\"noopener\">https://xyz-wingfield-sp-commerce.qa-phx-ui-be.svc.golf/confirmation</a> , <a href=\"https://alaska-golf-course-commerce.qa-phx-ui-be.svc.golf/?course=20684&amp;date=2026-06-02&amp;max=999999\" target=\"_blank\" rel=\"noopener\">https://alaska-golf-course-commerce.qa-phx-ui-be.svc.golf/?course=20684&amp;date=2026-06-02&amp;max=999999</a> </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14508/736098-image-20260602-165543.png\" alt=\"image-20260602-165543.png\" loading=\"lazy\"><figcaption>image-20260602-165543.png</figcaption></figure></div><p><strong>ER:</strong> User should be able to purchase all types of tee times without issues</p>",
+      "descriptionImageCount": 1,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 1,
+      "commentCount": 0,
+      "comments": [],
+      "lastCommentUrl": "",
+      "lastCommentDisplay": "",
+      "lastCommentAuthor": "",
+      "testChecklist": null,
+      "type": "Bug",
+      "isSubtask": false,
+      "status": "PO Review",
+      "priority": "P1",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+      "assignedDeveloper": "Unassigned",
+      "assignedDeveloperAccountId": "",
+      "assignedDeveloperAvatarUrl": "",
+      "updated": "2026-06-25T09:22:25.496-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:22 AM",
+      "created": "2026-06-09T10:54:05.224-0400",
+      "createdDisplay": "Jun 9, 2026, 10:54 AM",
+      "components": [
+        "GolfNow.Services.Reservation"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [
+        {
+          "name": "2026.8"
+        }
+      ],
+      "sprintNames": [
+        "2026.8"
+      ],
+      "resolution": "",
+      "parent": {
+        "key": "CORE-13172",
+        "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+        "summary": "Commerce Proxy API",
+        "description": "",
+        "type": "Epic",
+        "status": "Planning",
+        "priority": "None"
+      }
+    },
+    {
+      "key": "CORE-14397",
+      "url": "https://golfnow.atlassian.net/browse/CORE-14397",
+      "summary": "CLONE - Update to allow No Payment Methods when $0 due now for BE",
+      "description": "As a user of the Golf BE, I shouldn’t have to provide a CC in the legacy flow when I don’t have to pay anything up front in some scenarios. There are many legacy courses with this setup.\n\nWe need to update the Process Payment workflow to allow Booking Engine users to not send a payment method for the following:\n\n- Due Now = $0\n\n- Due Later > $0\n\nToday, in this scenario this isn’t possible since there is a due later amount, we are still validating the payment methods. As none are being sent, the following validation error is shown:\n\nRequest:\n\ncurl -X POST \\\n-H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3Yjg1YzE1OS1lZTExLTRkNWMtYmQ4YS1hNDgxZDcxOWZiM2YiLCJUaWNrZXRpbmc6UHJpbmNpcGFsS2V5IjoiNjdhYTc0Y2RmNjYxN2M5ZmRlODFkMWVjIiwiVGlja2V0aW5nOlBlcm1pc3Npb25UeXBlcyI6IjExMSw2MDMsNjA1LDYwNiw3MDAsNzA2LDcwNCw3MTIsNzAxLDcwNSw3MDgsNzA5LDcxOCw3MjEsNzI0LDcwNyw3MTAsNzExLDcxMyw3MTksNzIwLDcyNiw3MjcsNzAyLDcwMyw3MTQsNzIyLDcyMyw3MjUsNzI5LDczMCw3MzIsNzM0LDczNSw3MzYsNzM3LDczOCw3MzksNzQwLDc0MSw3NDIsNzQzLDc0NCw3NDUsNzQ2LDc0Nyw3NDgsNzQ5LDc1MSw3MTUsNzE2LDcxNyw3MjgsNzMxLDc1Miw3NTMiLCJ1bmlxdWVfbmFtZSI6IkdvbGZOb3dCb29raW5nRW5naW5lIiwiVGlja2V0aW5nOlByaW5jaXBhbFR5cGUiOiIxIiwibmJmIjoxNzc1MDY0Mzg1LCJleHAiOjE3NzUyMzcxODUsImlzcyI6Imh0dHBzOi8vc2VjdXJpdHktYXBpLmRldi51cy1lYXN0LTIucGhvdG9uZGFzaC5kZXYiLCJhdWQiOiJodHRwczovL3NlY3VyaXR5LWFwaS5kZXYudXMtZWFzdC0yLnBob3RvbmRhc2guZGV2In0.Rv1IxIReuvcHGwguZAaV5tumZQ66xD1jNX25xl9epIQ\" \\\n-H \"com-x-client-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJHb2xmTm93UUEiLCJjaGFubmVsSWQiOiIyMDk3MiIsIm5vbmNlIjoiYWMxY2ZjNWZjZmY4NzBiYTRmYjU1ODYyOWQ5MDUzZDhhZDk5YzA4OTYyY2RjOGJkZjBmYjU1N2FmZGFjZDBlYSIsImlhdCI6MTc3NTA3MzY5MiwiZXhwIjoxNzc1MDc1NDkyLCJhdWQiOiJnb2xmbm93LWNvbW1lcmNlIiwiaXNzIjoidW5pZmllZC1jb21tZXJjZS1wbGF0Zm9ybSJ9.Ld5VnDDkrIeR0n5zLGV3_rg_3JhimZTtto_Bn_E0AGc\" \\\n-H \"Content-Type: application/json\" \\\n-d '{\"originalInvoiceAmount\":0,\"nonce\":\"3d5ef7e3-9bb4-4c07-841e-3aef1932fead\",\"authenticatedTenant\":{\"tenantTypeCode\":\"booking-engine-identity\",\"identifier\":\"732e6239-a33a-4ae6-a6a9-64637e6e782d\",\"criteria\":{\"access_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaG9wcGluZ0NhcnRJZCI6IjczMmU2MjM5LWEzM2EtNGFlNi1hNmE5LTY0NjM3ZTZlNzgyZCIsImVtYWlsIjoiaGFubmFoNzZ0OEBtYWlsaW5hdG9yLmNvbSIsImlzR3Vlc3QiOmZhbHNlLCJpc0FjY291bnRWZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzc1MDczNjkyLCJleHAiOjE3NzUwNzcyOTJ9.lNW4kT0Xtzdn9hYWw4QISZugyfQ98yVsk8-wFcrK61s\"}},\"guest\":{\"firstName\":\"Hannah\",\"lastName\":\"McDuck\",\"emailAddress\":\"hannah76t8@mailinator.com\",\"phoneNumber\":\"+12345678900\"}}' \\\n\"https://commerce-api.dev.us-east-2.photondash.dev/api/my/v1/payment/process/69cd18224405eb69e43eaeeb\"\n\nResponse:\n\n{\"errorCode\":\"UNKNOWN_ERROR\",\"errorId\":\"b06bc93d-d5d6-4b37-9d6c-471e909590a9\",\"errorMessages\":\"The selected payment methods are invalid: The selected payment methods are not valid for order (store:GN Facility 17266 Store)\",\"level\":\"error\",\"message\":\"Commerce API error:\",\"status\":400,\"url\":\"my/v1/payment/process/69cd18224405eb69e43eaeeb\"}\n\n{\"errorCode\":\"UNKNOWN_ERROR\",\"initialError\":{\"data\":{\"CorrelationId\":\"\",\"Error\":{\"ID\":10012,\"Type\":\"DataValidation\"},\"ErrorID\":\"10012\",\"ErrorMessages\":[\"The selected payment methods are invalid: The selected payment methods are not valid for order (store:GN Facility 17266 Store)\"],\"ErrorType\":\"DataValidation\",\"ValidationErrors\":{}},\"message\":\"Request failed with status code 400\",\"request\":{\"headers\":{},\"method\":\"post\",\"url\":\"my/v1/payment/process/69cd18224405eb69e43eaeeb\"},\"status\":400},\"level\":\"error\",\"message\":\"Error occurred: Unknown error occurred. Error Track ID: b06bc93d-d5d6-4b37-9d6c-471e909590a9\",\"name\":\"AppError\",\"stack\":\"AppError: Unknown error occurred. Error Track ID: b06bc93d-d5d6-4b37-9d6c-471e909590a9\\n    at mapCommerceError (/application/src/services/commerce-api/commerce-error-mapper.ts:69:12)\\n    at CommerceApiClient.processPayment (/application/src/api-clients/commerce-api-client.ts:486:35)\\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)\\n    at async processPayment (/application/src/services/invoice/process-payment.ts:151:41)\\n    at async /application/src/routes/shopping-cart-v2.ts:936:34\"}\n\n- In the process payment workflow update the validation to check if any products in the cart requires the credit card to be collect. If there are any then throw the validation error if a payment method is not provided else allow the $0 order to proceed.\n\n- Verify that Authorization and Capture Activites will be bypassed when criteria is met.\n\nThread: https://versant-golfnow.slack.com/archives/C09MHR4RJ3F/p1775138883976139?thread_ts=1771354328.177829&cid=C09MHR4RJ3F",
+      "descriptionHtml": "<p><em>As a user of the Golf BE, I shouldn’t have to provide a CC in the legacy flow when I don’t have to pay anything up front in some scenarios. There are many legacy courses with this setup. </em></p><p>We need to update the Process Payment workflow to allow Booking Engine users to not send a payment method for the following: </p><ul><li><p>Due Now = $0</p></li><li><p>Due Later &gt; $0 </p></li></ul><p>Today, in this scenario this isn’t possible since there is a due later amount, we are still validating the payment methods. As none are being sent, the following validation error is shown: </p><p>Request: </p><pre><code>curl -X POST \\\n  -H &quot;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3Yjg1YzE1OS1lZTExLTRkNWMtYmQ4YS1hNDgxZDcxOWZiM2YiLCJUaWNrZXRpbmc6UHJpbmNpcGFsS2V5IjoiNjdhYTc0Y2RmNjYxN2M5ZmRlODFkMWVjIiwiVGlja2V0aW5nOlBlcm1pc3Npb25UeXBlcyI6IjExMSw2MDMsNjA1LDYwNiw3MDAsNzA2LDcwNCw3MTIsNzAxLDcwNSw3MDgsNzA5LDcxOCw3MjEsNzI0LDcwNyw3MTAsNzExLDcxMyw3MTksNzIwLDcyNiw3MjcsNzAyLDcwMyw3MTQsNzIyLDcyMyw3MjUsNzI5LDczMCw3MzIsNzM0LDczNSw3MzYsNzM3LDczOCw3MzksNzQwLDc0MSw3NDIsNzQzLDc0NCw3NDUsNzQ2LDc0Nyw3NDgsNzQ5LDc1MSw3MTUsNzE2LDcxNyw3MjgsNzMxLDc1Miw3NTMiLCJ1bmlxdWVfbmFtZSI6IkdvbGZOb3dCb29raW5nRW5naW5lIiwiVGlja2V0aW5nOlByaW5jaXBhbFR5cGUiOiIxIiwibmJmIjoxNzc1MDY0Mzg1LCJleHAiOjE3NzUyMzcxODUsImlzcyI6Imh0dHBzOi8vc2VjdXJpdHktYXBpLmRldi51cy1lYXN0LTIucGhvdG9uZGFzaC5kZXYiLCJhdWQiOiJodHRwczovL3NlY3VyaXR5LWFwaS5kZXYudXMtZWFzdC0yLnBob3RvbmRhc2guZGV2In0.Rv1IxIReuvcHGwguZAaV5tumZQ66xD1jNX25xl9epIQ&quot; \\\n  -H &quot;com-x-client-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJHb2xmTm93UUEiLCJjaGFubmVsSWQiOiIyMDk3MiIsIm5vbmNlIjoiYWMxY2ZjNWZjZmY4NzBiYTRmYjU1ODYyOWQ5MDUzZDhhZDk5YzA4OTYyY2RjOGJkZjBmYjU1N2FmZGFjZDBlYSIsImlhdCI6MTc3NTA3MzY5MiwiZXhwIjoxNzc1MDc1NDkyLCJhdWQiOiJnb2xmbm93LWNvbW1lcmNlIiwiaXNzIjoidW5pZmllZC1jb21tZXJjZS1wbGF0Zm9ybSJ9.Ld5VnDDkrIeR0n5zLGV3_rg_3JhimZTtto_Bn_E0AGc&quot; \\\n  -H &quot;Content-Type: application/json&quot; \\\n  -d '{&quot;originalInvoiceAmount&quot;:0,&quot;nonce&quot;:&quot;3d5ef7e3-9bb4-4c07-841e-3aef1932fead&quot;,&quot;authenticatedTenant&quot;:{&quot;tenantTypeCode&quot;:&quot;booking-engine-identity&quot;,&quot;identifier&quot;:&quot;732e6239-a33a-4ae6-a6a9-64637e6e782d&quot;,&quot;criteria&quot;:{&quot;access_token&quot;:&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaG9wcGluZ0NhcnRJZCI6IjczMmU2MjM5LWEzM2EtNGFlNi1hNmE5LTY0NjM3ZTZlNzgyZCIsImVtYWlsIjoiaGFubmFoNzZ0OEBtYWlsaW5hdG9yLmNvbSIsImlzR3Vlc3QiOmZhbHNlLCJpc0FjY291bnRWZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzc1MDczNjkyLCJleHAiOjE3NzUwNzcyOTJ9.lNW4kT0Xtzdn9hYWw4QISZugyfQ98yVsk8-wFcrK61s&quot;}},&quot;guest&quot;:{&quot;firstName&quot;:&quot;Hannah&quot;,&quot;lastName&quot;:&quot;McDuck&quot;,&quot;emailAddress&quot;:&quot;hannah76t8@mailinator.com&quot;,&quot;phoneNumber&quot;:&quot;+12345678900&quot;}}' \\\n  &quot;https://commerce-api.dev.us-east-2.photondash.dev/api/my/v1/payment/process/69cd18224405eb69e43eaeeb&quot;</code></pre><p>Response: </p><pre><code>{&quot;errorCode&quot;:&quot;UNKNOWN_ERROR&quot;,&quot;errorId&quot;:&quot;b06bc93d-d5d6-4b37-9d6c-471e909590a9&quot;,&quot;errorMessages&quot;:&quot;The selected payment methods are invalid: The selected payment methods are not valid for order (store:GN Facility 17266 Store)&quot;,&quot;level&quot;:&quot;error&quot;,&quot;message&quot;:&quot;Commerce API error:&quot;,&quot;status&quot;:400,&quot;url&quot;:&quot;my/v1/payment/process/69cd18224405eb69e43eaeeb&quot;}\n\n{&quot;errorCode&quot;:&quot;UNKNOWN_ERROR&quot;,&quot;initialError&quot;:{&quot;data&quot;:{&quot;CorrelationId&quot;:&quot;&quot;,&quot;Error&quot;:{&quot;ID&quot;:10012,&quot;Type&quot;:&quot;DataValidation&quot;},&quot;ErrorID&quot;:&quot;10012&quot;,&quot;ErrorMessages&quot;:[&quot;The selected payment methods are invalid: The selected payment methods are not valid for order (store:GN Facility 17266 Store)&quot;],&quot;ErrorType&quot;:&quot;DataValidation&quot;,&quot;ValidationErrors&quot;:{}},&quot;message&quot;:&quot;Request failed with status code 400&quot;,&quot;request&quot;:{&quot;headers&quot;:{},&quot;method&quot;:&quot;post&quot;,&quot;url&quot;:&quot;my/v1/payment/process/69cd18224405eb69e43eaeeb&quot;},&quot;status&quot;:400},&quot;level&quot;:&quot;error&quot;,&quot;message&quot;:&quot;Error occurred: Unknown error occurred. Error Track ID: b06bc93d-d5d6-4b37-9d6c-471e909590a9&quot;,&quot;name&quot;:&quot;AppError&quot;,&quot;stack&quot;:&quot;AppError: Unknown error occurred. Error Track ID: b06bc93d-d5d6-4b37-9d6c-471e909590a9\\n    at mapCommerceError (/application/src/services/commerce-api/commerce-error-mapper.ts:69:12)\\n    at CommerceApiClient.processPayment (/application/src/api-clients/commerce-api-client.ts:486:35)\\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)\\n    at async processPayment (/application/src/services/invoice/process-payment.ts:151:41)\\n    at async /application/src/routes/shopping-cart-v2.ts:936:34&quot;}</code></pre><ul><li><p>In the process payment workflow update the validation to check if any products in the cart requires the credit card to be collect. If there are any then throw the validation error if a payment method is not provided else allow the $0 order to proceed. </p></li><li><p>Verify that Authorization and Capture Activites will be bypassed when criteria is met. </p></li></ul><p>Thread: <a href=\"https://versant-golfnow.slack.com/archives/C09MHR4RJ3F/p1775138883976139?thread_ts=1771354328.177829&amp;cid=C09MHR4RJ3F\" target=\"_blank\" rel=\"noopener\">https://versant-golfnow.slack.com/archives/C09MHR4RJ3F/p1775138883976139?thread_ts=1771354328.177829&amp;cid=C09MHR4RJ3F</a> </p>",
+      "descriptionImageCount": 0,
+      "descriptionVideoCount": 0,
+      "descriptionMediaCount": 0,
+      "commentCount": 0,
+      "comments": [],
+      "lastCommentUrl": "",
+      "lastCommentDisplay": "",
+      "lastCommentAuthor": "",
+      "testChecklist": null,
+      "type": "Story",
+      "isSubtask": false,
+      "status": "PO Review",
+      "priority": "P1",
+      "assignee": "Dewan Kabir",
+      "assigneeAccountId": "630fb06bb433b060db559bdb",
+      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+      "assignedDeveloper": "Andrew Horvat",
+      "assignedDeveloperAccountId": "712020:fb2131ba-2122-41a0-9559-9966f684a89e",
+      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:fb2131ba-2122-41a0-9559-9966f684a89e/169c8770-21ac-4272-a73c-858827f0c5bd/32",
+      "updated": "2026-06-25T09:22:14.387-0400",
+      "updatedDisplay": "Jun 25, 2026, 9:22 AM",
+      "created": "2026-04-22T09:44:51.371-0400",
+      "createdDisplay": "Apr 22, 2026, 9:44 AM",
+      "components": [
+        "GolfNow.Services.CommerceProxy",
+        "GolfNowAPI"
+      ],
+      "fixVersions": [
+        "v3001.124.0"
+      ],
+      "sprints": [
+        {
+          "name": "2026.8"
+        }
+      ],
+      "sprintNames": [
+        "2026.8"
+      ],
+      "resolution": "Force Closed",
+      "parent": {
+        "key": "CORE-13172",
+        "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+        "summary": "Commerce Proxy API",
+        "description": "",
+        "type": "Epic",
+        "status": "Planning",
+        "priority": "None"
+      }
+    },
     {
       "key": "CORE-14415",
       "url": "https://golfnow.atlassian.net/browse/CORE-14415",
@@ -1320,311 +1625,6 @@
       "parent": null
     },
     {
-      "key": "CORE-14233",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14233",
-      "summary": "Updates to Reservation Confirmation Template",
-      "description": "On the Tee Time Reservation email sent to golfers, there are two different bodies that reference benefits of GolfPass. One as a member and one as a non-member. We need to update the text in these versions. See attached for the two versions.\n\nGolfPass Member - Anyone with ProductID [36, 37, 42, 62, 69, 71] - Attached image Screenshot 2026-03-02 at 3.23.43 PM.png\n\n- Can we confirm what validation we are using to determine what member they are? We got a report that some members are receiving the non member version. Confirm with Brian when you find the logic - Luis Confirmed the logic is based on ProductId\n\n- Change “Extra GolfPass Rewards Points” to: Earn or redeem GolfPass Points on tee time bookings\n\nNon-Member OR anyone with a ProductId that does not match the above list- Attached image image (24).png\n\n- Change “Earn and redeem GolfPass Points…” to: Earn GolfPass Points on tee time bookings and redeem for a discount on GolfPass+ membership\n\n- Remove $40 Taylormade credit\n\n- Change the Peacock benefit to: Complimentary access to Peacock Premium (up to 12 months)",
-      "descriptionHtml": "<p>On the Tee Time Reservation email sent to golfers, there are two different bodies that reference benefits of GolfPass. One as a member and one as a non-member. We need to update the text in these versions. See attached for the two versions. </p><p><strong>GolfPass Member - Anyone with ProductID [36, 37, 42, 62, 69, 71] - Attached image Screenshot 2026-03-02 at 3.23.43 PM.png</strong></p><ul><li><p>Can we confirm what validation we are using to determine what member they are? We got a report that some members are receiving the non member version. Confirm with Brian when you find the logic - Luis Confirmed the logic is based on ProductId</p></li><li><p>Change “Extra GolfPass Rewards Points” to: Earn or redeem GolfPass Points on tee time bookings</p></li></ul><p><strong>Non-Member OR anyone with a ProductId that does not match the above list- Attached image image (24).png</strong></p><ul><li><p>Change “Earn and redeem GolfPass Points…” to: Earn GolfPass Points on tee time bookings and redeem for a discount on GolfPass+ membership</p></li><li><p>Remove $40 Taylormade credit</p></li><li><p>Change the Peacock benefit to: Complimentary access to Peacock Premium (up to 12 months)</p></li></ul>",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 2,
-      "comments": [
-        {
-          "id": "1176866",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1176866",
-          "author": "Luis Vallejo Mursuli",
-          "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-          "created": "2026-06-01T10:28:23.247-0400",
-          "createdDisplay": "Jun 1, 2026, 10:28 AM",
-          "updated": "2026-06-01T10:28:23.247-0400",
-          "updatedDisplay": "",
-          "hasMedia": false,
-          "mediaCount": 0,
-          "body": "QA,\n\nHere are the instructions to test this ticket. Contact me if you have questions.\n\nThanks!",
-          "bodyHtml": "<p>QA,</p><p>Here are the instructions to test this ticket. Contact me if you have questions.</p><p>Thanks!<br><br> </p>"
-        },
-        {
-          "id": "1184542",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1184542",
-          "author": "Nicole Greer",
-          "authorAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
-          "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
-          "created": "2026-06-17T17:53:03.998-0400",
-          "createdDisplay": "Jun 17, 2026, 5:53 PM",
-          "updated": "2026-06-17T17:53:03.998-0400",
-          "updatedDisplay": "",
-          "hasMedia": true,
-          "mediaCount": 1,
-          "body": "Successful test case with PPID 64 reservation. Other test cases in progress.",
-          "bodyHtml": "<p>Successful test case with PPID 64 reservation. Other test cases in progress.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14233/comments/1184542/738935-emailconfirmUseCase64.png\" alt=\"emailconfirmUseCase64.png\" loading=\"lazy\"><figcaption>emailconfirmUseCase64.png</figcaption></figure></div>"
-        }
-      ],
-      "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1184542",
-      "lastCommentDisplay": "Jun 17, 2026, 5:53 PM",
-      "lastCommentAuthor": "Nicole Greer",
-      "testChecklist": {
-        "files": [
-          {
-            "id": "733040",
-            "filename": "QA_Test_Guide_CORE-14233.md",
-            "created": "2026-06-01T10:28:22.922-0400",
-            "author": "Luis Vallejo Mursuli"
-          }
-        ],
-        "commentIds": [
-          "1176866"
-        ],
-        "total": 6,
-        "testCases": [
-          {
-            "id": "A1",
-            "title": "GolfPass+ Member Confirmation Email - ProductId 36",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-A1 Priority: High Test Type: End-to-End Email Validation",
-            "checks": [
-              "Member benefits header is displayed",
-              "All 4 benefit bullet points are present",
-              "\"Earn or redeem GolfPass Points on tee time bookings\" text is correct (NOT \"Extra GolfPass Rewards Points\")",
-              "Phone number 833-465-3847 is displayed twice",
-              "Support contact text is displayed at the end of the section",
-              "No non-member benefits text is displayed"
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "A2",
-            "title": "GolfPass+ Member Confirmation Email - ProductId Variation",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-A2 Priority: High Test Type: End-to-End Email Validation",
-            "checks": [
-              "Email received successfully",
-              "Member benefits section displays correctly",
-              "All 4 benefit bullet points are present and correct",
-              "\"Earn or redeem GolfPass Points on tee time bookings\" text is displayed",
-              "No non-member benefits section visible"
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "B1",
-            "title": "Non-Member Confirmation Email - Standard Non-Member",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-B1 Priority: High Test Type: End-to-End Email Validation",
-            "checks": [
-              "Non-member header is displayed",
-              "Non-member benefits description is present",
-              "All 5 benefit bullet points are present",
-              "\"Earn GolfPass Points on tee time bookings and redeem for a discount on GolfPass+ membership\" text is correct (NOT \"Earn and redeem GolfPass Points…\")",
-              "Peacock benefit states \"Complimentary access to Peacock Premium (up to 12 months)\"",
-              "No \"$40 TaylorMade credit\" is mentioned anywhere",
-              "Call-to-action link to golfpass.com is present and clickable",
-              "No member benefits section is visible"
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "B2",
-            "title": "Non-Member Confirmation Email - Verify Removed Content",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-B2 Priority: High Test Type: Regression Test - Removed Content Validation",
-            "checks": [
-              "Search email for \"TaylorMade\" - should return 0 results",
-              "Search email for \"$40\" - should return 0 results",
-              "Search email for \"Extra GolfPass Rewards Points\" - should return 0 results",
-              "Search email for \"NBCUniversal\" - should return 0 results",
-              "Confirm new Peacock text includes \"Peacock Premium (up to 12 months)\""
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "C1",
-            "title": "ProductId Boundary Validation - ProductId 35 (Non-Member)",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-C1 Priority: Medium Test Type: Boundary Condition Test",
-            "checks": [
-              "Non-member header \"Looking to get even more out of your game?\" is displayed",
-              "Non-member benefits list (5 items) is present",
-              "Member benefits section is NOT visible",
-              "ProductId 35 correctly triggers non-member template (not member template)"
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "C2",
-            "title": "ProductTypeId Requirement Validation",
-            "category": "4. Detailed Test Cases",
-            "blocking": true,
-            "description": "Test ID: TC-CORE14233-C2 Priority: Medium Test Type: Conditional Logic Test",
-            "checks": [
-              "Email received successfully",
-              "GolfPass Value Prop section is NOT present",
-              "No member benefits section visible",
-              "No non-member benefits section visible",
-              "Standard reservation details are displayed correctly",
-              "ProductTypeId = 9 requirement is properly enforced",
-              "Development environment is accessible (https://dev.golfnow.com)",
-              "Test customer accounts are configured with correct ProductIds",
-              "Email inboxes are accessible for all test accounts",
-              "Select 2-3 test facilities with available tee times",
-              "Record facility names and available time slots",
-              "Verify pricing is configured correctly",
-              "Print or have digital copy of test cases ready",
-              "Email client open for quick verification",
-              "Screenshot tool ready for capturing email examples",
-              "Header: \"As a GolfPass+ member, every tee time you book includes exclusive benefits:\""
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          }
-        ]
-      },
-      "type": "Story",
-      "isSubtask": false,
-      "status": "QA Testing (DEV)",
-      "priority": "P2",
-      "assignee": "Nicole Greer",
-      "assigneeAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
-      "assignedDeveloper": "Luis Vallejo Mursuli",
-      "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-      "updated": "2026-06-17T17:53:03.998-0400",
-      "updatedDisplay": "Jun 17, 2026, 5:53 PM",
-      "created": "2026-03-02T15:21:34.425-0500",
-      "createdDisplay": "Mar 2, 2026, 3:21 PM",
-      "components": [
-        "GolfNow.Notification (Windows Service)"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
-      "resolution": "",
-      "parent": null
-    },
-    {
-      "key": "CORE-14397",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14397",
-      "summary": "CLONE - Update to allow No Payment Methods when $0 due now for BE",
-      "description": "As a user of the Golf BE, I shouldn’t have to provide a CC in the legacy flow when I don’t have to pay anything up front in some scenarios. There are many legacy courses with this setup.\n\nWe need to update the Process Payment workflow to allow Booking Engine users to not send a payment method for the following:\n\n- Due Now = $0\n\n- Due Later > $0\n\nToday, in this scenario this isn’t possible since there is a due later amount, we are still validating the payment methods. As none are being sent, the following validation error is shown:\n\nRequest:\n\ncurl -X POST \\\n-H \"Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3Yjg1YzE1OS1lZTExLTRkNWMtYmQ4YS1hNDgxZDcxOWZiM2YiLCJUaWNrZXRpbmc6UHJpbmNpcGFsS2V5IjoiNjdhYTc0Y2RmNjYxN2M5ZmRlODFkMWVjIiwiVGlja2V0aW5nOlBlcm1pc3Npb25UeXBlcyI6IjExMSw2MDMsNjA1LDYwNiw3MDAsNzA2LDcwNCw3MTIsNzAxLDcwNSw3MDgsNzA5LDcxOCw3MjEsNzI0LDcwNyw3MTAsNzExLDcxMyw3MTksNzIwLDcyNiw3MjcsNzAyLDcwMyw3MTQsNzIyLDcyMyw3MjUsNzI5LDczMCw3MzIsNzM0LDczNSw3MzYsNzM3LDczOCw3MzksNzQwLDc0MSw3NDIsNzQzLDc0NCw3NDUsNzQ2LDc0Nyw3NDgsNzQ5LDc1MSw3MTUsNzE2LDcxNyw3MjgsNzMxLDc1Miw3NTMiLCJ1bmlxdWVfbmFtZSI6IkdvbGZOb3dCb29raW5nRW5naW5lIiwiVGlja2V0aW5nOlByaW5jaXBhbFR5cGUiOiIxIiwibmJmIjoxNzc1MDY0Mzg1LCJleHAiOjE3NzUyMzcxODUsImlzcyI6Imh0dHBzOi8vc2VjdXJpdHktYXBpLmRldi51cy1lYXN0LTIucGhvdG9uZGFzaC5kZXYiLCJhdWQiOiJodHRwczovL3NlY3VyaXR5LWFwaS5kZXYudXMtZWFzdC0yLnBob3RvbmRhc2guZGV2In0.Rv1IxIReuvcHGwguZAaV5tumZQ66xD1jNX25xl9epIQ\" \\\n-H \"com-x-client-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJHb2xmTm93UUEiLCJjaGFubmVsSWQiOiIyMDk3MiIsIm5vbmNlIjoiYWMxY2ZjNWZjZmY4NzBiYTRmYjU1ODYyOWQ5MDUzZDhhZDk5YzA4OTYyY2RjOGJkZjBmYjU1N2FmZGFjZDBlYSIsImlhdCI6MTc3NTA3MzY5MiwiZXhwIjoxNzc1MDc1NDkyLCJhdWQiOiJnb2xmbm93LWNvbW1lcmNlIiwiaXNzIjoidW5pZmllZC1jb21tZXJjZS1wbGF0Zm9ybSJ9.Ld5VnDDkrIeR0n5zLGV3_rg_3JhimZTtto_Bn_E0AGc\" \\\n-H \"Content-Type: application/json\" \\\n-d '{\"originalInvoiceAmount\":0,\"nonce\":\"3d5ef7e3-9bb4-4c07-841e-3aef1932fead\",\"authenticatedTenant\":{\"tenantTypeCode\":\"booking-engine-identity\",\"identifier\":\"732e6239-a33a-4ae6-a6a9-64637e6e782d\",\"criteria\":{\"access_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaG9wcGluZ0NhcnRJZCI6IjczMmU2MjM5LWEzM2EtNGFlNi1hNmE5LTY0NjM3ZTZlNzgyZCIsImVtYWlsIjoiaGFubmFoNzZ0OEBtYWlsaW5hdG9yLmNvbSIsImlzR3Vlc3QiOmZhbHNlLCJpc0FjY291bnRWZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzc1MDczNjkyLCJleHAiOjE3NzUwNzcyOTJ9.lNW4kT0Xtzdn9hYWw4QISZugyfQ98yVsk8-wFcrK61s\"}},\"guest\":{\"firstName\":\"Hannah\",\"lastName\":\"McDuck\",\"emailAddress\":\"hannah76t8@mailinator.com\",\"phoneNumber\":\"+12345678900\"}}' \\\n\"https://commerce-api.dev.us-east-2.photondash.dev/api/my/v1/payment/process/69cd18224405eb69e43eaeeb\"\n\nResponse:\n\n{\"errorCode\":\"UNKNOWN_ERROR\",\"errorId\":\"b06bc93d-d5d6-4b37-9d6c-471e909590a9\",\"errorMessages\":\"The selected payment methods are invalid: The selected payment methods are not valid for order (store:GN Facility 17266 Store)\",\"level\":\"error\",\"message\":\"Commerce API error:\",\"status\":400,\"url\":\"my/v1/payment/process/69cd18224405eb69e43eaeeb\"}\n\n{\"errorCode\":\"UNKNOWN_ERROR\",\"initialError\":{\"data\":{\"CorrelationId\":\"\",\"Error\":{\"ID\":10012,\"Type\":\"DataValidation\"},\"ErrorID\":\"10012\",\"ErrorMessages\":[\"The selected payment methods are invalid: The selected payment methods are not valid for order (store:GN Facility 17266 Store)\"],\"ErrorType\":\"DataValidation\",\"ValidationErrors\":{}},\"message\":\"Request failed with status code 400\",\"request\":{\"headers\":{},\"method\":\"post\",\"url\":\"my/v1/payment/process/69cd18224405eb69e43eaeeb\"},\"status\":400},\"level\":\"error\",\"message\":\"Error occurred: Unknown error occurred. Error Track ID: b06bc93d-d5d6-4b37-9d6c-471e909590a9\",\"name\":\"AppError\",\"stack\":\"AppError: Unknown error occurred. Error Track ID: b06bc93d-d5d6-4b37-9d6c-471e909590a9\\n    at mapCommerceError (/application/src/services/commerce-api/commerce-error-mapper.ts:69:12)\\n    at CommerceApiClient.processPayment (/application/src/api-clients/commerce-api-client.ts:486:35)\\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)\\n    at async processPayment (/application/src/services/invoice/process-payment.ts:151:41)\\n    at async /application/src/routes/shopping-cart-v2.ts:936:34\"}\n\n- In the process payment workflow update the validation to check if any products in the cart requires the credit card to be collect. If there are any then throw the validation error if a payment method is not provided else allow the $0 order to proceed.\n\n- Verify that Authorization and Capture Activites will be bypassed when criteria is met.\n\nThread: https://versant-golfnow.slack.com/archives/C09MHR4RJ3F/p1775138883976139?thread_ts=1771354328.177829&cid=C09MHR4RJ3F",
-      "descriptionHtml": "<p><em>As a user of the Golf BE, I shouldn’t have to provide a CC in the legacy flow when I don’t have to pay anything up front in some scenarios. There are many legacy courses with this setup. </em></p><p>We need to update the Process Payment workflow to allow Booking Engine users to not send a payment method for the following: </p><ul><li><p>Due Now = $0</p></li><li><p>Due Later &gt; $0 </p></li></ul><p>Today, in this scenario this isn’t possible since there is a due later amount, we are still validating the payment methods. As none are being sent, the following validation error is shown: </p><p>Request: </p><pre><code>curl -X POST \\\n  -H &quot;Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI3Yjg1YzE1OS1lZTExLTRkNWMtYmQ4YS1hNDgxZDcxOWZiM2YiLCJUaWNrZXRpbmc6UHJpbmNpcGFsS2V5IjoiNjdhYTc0Y2RmNjYxN2M5ZmRlODFkMWVjIiwiVGlja2V0aW5nOlBlcm1pc3Npb25UeXBlcyI6IjExMSw2MDMsNjA1LDYwNiw3MDAsNzA2LDcwNCw3MTIsNzAxLDcwNSw3MDgsNzA5LDcxOCw3MjEsNzI0LDcwNyw3MTAsNzExLDcxMyw3MTksNzIwLDcyNiw3MjcsNzAyLDcwMyw3MTQsNzIyLDcyMyw3MjUsNzI5LDczMCw3MzIsNzM0LDczNSw3MzYsNzM3LDczOCw3MzksNzQwLDc0MSw3NDIsNzQzLDc0NCw3NDUsNzQ2LDc0Nyw3NDgsNzQ5LDc1MSw3MTUsNzE2LDcxNyw3MjgsNzMxLDc1Miw3NTMiLCJ1bmlxdWVfbmFtZSI6IkdvbGZOb3dCb29raW5nRW5naW5lIiwiVGlja2V0aW5nOlByaW5jaXBhbFR5cGUiOiIxIiwibmJmIjoxNzc1MDY0Mzg1LCJleHAiOjE3NzUyMzcxODUsImlzcyI6Imh0dHBzOi8vc2VjdXJpdHktYXBpLmRldi51cy1lYXN0LTIucGhvdG9uZGFzaC5kZXYiLCJhdWQiOiJodHRwczovL3NlY3VyaXR5LWFwaS5kZXYudXMtZWFzdC0yLnBob3RvbmRhc2guZGV2In0.Rv1IxIReuvcHGwguZAaV5tumZQ66xD1jNX25xl9epIQ&quot; \\\n  -H &quot;com-x-client-token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJHb2xmTm93UUEiLCJjaGFubmVsSWQiOiIyMDk3MiIsIm5vbmNlIjoiYWMxY2ZjNWZjZmY4NzBiYTRmYjU1ODYyOWQ5MDUzZDhhZDk5YzA4OTYyY2RjOGJkZjBmYjU1N2FmZGFjZDBlYSIsImlhdCI6MTc3NTA3MzY5MiwiZXhwIjoxNzc1MDc1NDkyLCJhdWQiOiJnb2xmbm93LWNvbW1lcmNlIiwiaXNzIjoidW5pZmllZC1jb21tZXJjZS1wbGF0Zm9ybSJ9.Ld5VnDDkrIeR0n5zLGV3_rg_3JhimZTtto_Bn_E0AGc&quot; \\\n  -H &quot;Content-Type: application/json&quot; \\\n  -d '{&quot;originalInvoiceAmount&quot;:0,&quot;nonce&quot;:&quot;3d5ef7e3-9bb4-4c07-841e-3aef1932fead&quot;,&quot;authenticatedTenant&quot;:{&quot;tenantTypeCode&quot;:&quot;booking-engine-identity&quot;,&quot;identifier&quot;:&quot;732e6239-a33a-4ae6-a6a9-64637e6e782d&quot;,&quot;criteria&quot;:{&quot;access_token&quot;:&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaG9wcGluZ0NhcnRJZCI6IjczMmU2MjM5LWEzM2EtNGFlNi1hNmE5LTY0NjM3ZTZlNzgyZCIsImVtYWlsIjoiaGFubmFoNzZ0OEBtYWlsaW5hdG9yLmNvbSIsImlzR3Vlc3QiOmZhbHNlLCJpc0FjY291bnRWZXJpZmllZCI6dHJ1ZSwiaWF0IjoxNzc1MDczNjkyLCJleHAiOjE3NzUwNzcyOTJ9.lNW4kT0Xtzdn9hYWw4QISZugyfQ98yVsk8-wFcrK61s&quot;}},&quot;guest&quot;:{&quot;firstName&quot;:&quot;Hannah&quot;,&quot;lastName&quot;:&quot;McDuck&quot;,&quot;emailAddress&quot;:&quot;hannah76t8@mailinator.com&quot;,&quot;phoneNumber&quot;:&quot;+12345678900&quot;}}' \\\n  &quot;https://commerce-api.dev.us-east-2.photondash.dev/api/my/v1/payment/process/69cd18224405eb69e43eaeeb&quot;</code></pre><p>Response: </p><pre><code>{&quot;errorCode&quot;:&quot;UNKNOWN_ERROR&quot;,&quot;errorId&quot;:&quot;b06bc93d-d5d6-4b37-9d6c-471e909590a9&quot;,&quot;errorMessages&quot;:&quot;The selected payment methods are invalid: The selected payment methods are not valid for order (store:GN Facility 17266 Store)&quot;,&quot;level&quot;:&quot;error&quot;,&quot;message&quot;:&quot;Commerce API error:&quot;,&quot;status&quot;:400,&quot;url&quot;:&quot;my/v1/payment/process/69cd18224405eb69e43eaeeb&quot;}\n\n{&quot;errorCode&quot;:&quot;UNKNOWN_ERROR&quot;,&quot;initialError&quot;:{&quot;data&quot;:{&quot;CorrelationId&quot;:&quot;&quot;,&quot;Error&quot;:{&quot;ID&quot;:10012,&quot;Type&quot;:&quot;DataValidation&quot;},&quot;ErrorID&quot;:&quot;10012&quot;,&quot;ErrorMessages&quot;:[&quot;The selected payment methods are invalid: The selected payment methods are not valid for order (store:GN Facility 17266 Store)&quot;],&quot;ErrorType&quot;:&quot;DataValidation&quot;,&quot;ValidationErrors&quot;:{}},&quot;message&quot;:&quot;Request failed with status code 400&quot;,&quot;request&quot;:{&quot;headers&quot;:{},&quot;method&quot;:&quot;post&quot;,&quot;url&quot;:&quot;my/v1/payment/process/69cd18224405eb69e43eaeeb&quot;},&quot;status&quot;:400},&quot;level&quot;:&quot;error&quot;,&quot;message&quot;:&quot;Error occurred: Unknown error occurred. Error Track ID: b06bc93d-d5d6-4b37-9d6c-471e909590a9&quot;,&quot;name&quot;:&quot;AppError&quot;,&quot;stack&quot;:&quot;AppError: Unknown error occurred. Error Track ID: b06bc93d-d5d6-4b37-9d6c-471e909590a9\\n    at mapCommerceError (/application/src/services/commerce-api/commerce-error-mapper.ts:69:12)\\n    at CommerceApiClient.processPayment (/application/src/api-clients/commerce-api-client.ts:486:35)\\n    at processTicksAndRejections (node:internal/process/task_queues:103:5)\\n    at async processPayment (/application/src/services/invoice/process-payment.ts:151:41)\\n    at async /application/src/routes/shopping-cart-v2.ts:936:34&quot;}</code></pre><ul><li><p>In the process payment workflow update the validation to check if any products in the cart requires the credit card to be collect. If there are any then throw the validation error if a payment method is not provided else allow the $0 order to proceed. </p></li><li><p>Verify that Authorization and Capture Activites will be bypassed when criteria is met. </p></li></ul><p>Thread: <a href=\"https://versant-golfnow.slack.com/archives/C09MHR4RJ3F/p1775138883976139?thread_ts=1771354328.177829&amp;cid=C09MHR4RJ3F\" target=\"_blank\" rel=\"noopener\">https://versant-golfnow.slack.com/archives/C09MHR4RJ3F/p1775138883976139?thread_ts=1771354328.177829&amp;cid=C09MHR4RJ3F</a> </p>",
-      "descriptionImageCount": 0,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 0,
-      "commentCount": 0,
-      "comments": [],
-      "lastCommentUrl": "",
-      "lastCommentDisplay": "",
-      "lastCommentAuthor": "",
-      "testChecklist": null,
-      "type": "Story",
-      "isSubtask": false,
-      "status": "QA Testing (DEV)",
-      "priority": "P1",
-      "assignee": "Dewan Kabir",
-      "assigneeAccountId": "630fb06bb433b060db559bdb",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-      "assignedDeveloper": "Andrew Horvat",
-      "assignedDeveloperAccountId": "712020:fb2131ba-2122-41a0-9559-9966f684a89e",
-      "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:fb2131ba-2122-41a0-9559-9966f684a89e/169c8770-21ac-4272-a73c-858827f0c5bd/32",
-      "updated": "2026-06-17T16:56:24.130-0400",
-      "updatedDisplay": "Jun 17, 2026, 4:56 PM",
-      "created": "2026-04-22T09:44:51.371-0400",
-      "createdDisplay": "Apr 22, 2026, 9:44 AM",
-      "components": [
-        "GolfNow.Services.CommerceProxy",
-        "GolfNowAPI"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
-      "resolution": "Force Closed",
-      "parent": {
-        "key": "CORE-13172",
-        "url": "https://golfnow.atlassian.net/browse/CORE-13172",
-        "summary": "Commerce Proxy API",
-        "description": "",
-        "type": "Epic",
-        "status": "Planning",
-        "priority": "None"
-      }
-    },
-    {
-      "key": "CORE-14508",
-      "url": "https://golfnow.atlassian.net/browse/CORE-14508",
-      "summary": "CLONE - [Commerce] Cannot complete a non-prepay reservation",
-      "description": "Environment: QA\n\nSTR:\n\n- Navigate to https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/checkout\n\n- Log in\n\n- Add a non-prepay tee time to cart (no convenience fee should be added, so due now = $0)\n\n- Proceed to checkout\n\n- Fill in the payment form and attempt to complete a reservation\n\nAR: The process-payment call fails with the following error:\n\n{error: \"Unknown error occurred. Error Track ID: 5758fd11-2eb5-4506-8405-1a4a4c24ac98\",…}\n\ncode: \"UNKNOWN_ERROR\"\n\nerror: \"Unknown error occurred. Error Track ID: 5758fd11-2eb5-4506-8405-1a4a4c24ac98\"\n\nNote 1: Is reproducing for all types of users\n\nNote 2: Can reproduce for other courses like https://highlands-reserve-golf-club-commerce.qa-phx-ui-be.svc.golf/confirmation , https://xyz-wingfield-sp-commerce.qa-phx-ui-be.svc.golf/confirmation , https://alaska-golf-course-commerce.qa-phx-ui-be.svc.golf/?course=20684&date=2026-06-02&max=999999\n\nER: User should be able to purchase all types of tee times without issues",
-      "descriptionHtml": "<p><strong>Environment</strong>: QA</p><p><strong>STR</strong>:</p><ol><li><p>Navigate to <a href=\"https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/checkout\" target=\"_blank\" rel=\"noopener\">https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/checkout</a> </p></li><li><p>Log in</p></li><li><p>Add a non-prepay tee time to cart (no convenience fee should be added, so due now = $0)</p></li><li><p>Proceed to checkout</p></li><li><p>Fill in the payment form and attempt to complete a reservation</p></li></ol><p><strong>AR</strong>: The<code> process-payment</code> call fails with the following error:</p><pre><code>{error: &quot;Unknown error occurred. Error Track ID: 5758fd11-2eb5-4506-8405-1a4a4c24ac98&quot;,…}\n\ncode: &quot;UNKNOWN_ERROR&quot;\n\nerror: &quot;Unknown error occurred. Error Track ID: 5758fd11-2eb5-4506-8405-1a4a4c24ac98&quot;</code></pre><p><strong>Note 1</strong>: Is reproducing for all types of users</p><p><strong>Note 2</strong>: Can reproduce for other courses like <a href=\"https://highlands-reserve-golf-club-commerce.qa-phx-ui-be.svc.golf/confirmation\" target=\"_blank\" rel=\"noopener\">https://highlands-reserve-golf-club-commerce.qa-phx-ui-be.svc.golf/confirmation</a> , <a href=\"https://xyz-wingfield-sp-commerce.qa-phx-ui-be.svc.golf/confirmation\" target=\"_blank\" rel=\"noopener\">https://xyz-wingfield-sp-commerce.qa-phx-ui-be.svc.golf/confirmation</a> , <a href=\"https://alaska-golf-course-commerce.qa-phx-ui-be.svc.golf/?course=20684&amp;date=2026-06-02&amp;max=999999\" target=\"_blank\" rel=\"noopener\">https://alaska-golf-course-commerce.qa-phx-ui-be.svc.golf/?course=20684&amp;date=2026-06-02&amp;max=999999</a> </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14508/736098-image-20260602-165543.png\" alt=\"image-20260602-165543.png\" loading=\"lazy\"><figcaption>image-20260602-165543.png</figcaption></figure></div><p><strong>ER:</strong> User should be able to purchase all types of tee times without issues</p>",
-      "descriptionImageCount": 1,
-      "descriptionVideoCount": 0,
-      "descriptionMediaCount": 1,
-      "commentCount": 0,
-      "comments": [],
-      "lastCommentUrl": "",
-      "lastCommentDisplay": "",
-      "lastCommentAuthor": "",
-      "testChecklist": null,
-      "type": "Bug",
-      "isSubtask": false,
-      "status": "QA Testing (DEV)",
-      "priority": "P1",
-      "assignee": "Dewan Kabir",
-      "assigneeAccountId": "630fb06bb433b060db559bdb",
-      "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-      "assignedDeveloper": "Unassigned",
-      "assignedDeveloperAccountId": "",
-      "assignedDeveloperAvatarUrl": "",
-      "updated": "2026-06-17T16:55:57.617-0400",
-      "updatedDisplay": "Jun 17, 2026, 4:55 PM",
-      "created": "2026-06-09T10:54:05.224-0400",
-      "createdDisplay": "Jun 9, 2026, 10:54 AM",
-      "components": [
-        "GolfNow.Services.Reservation"
-      ],
-      "fixVersions": [
-        "v3001.124.0"
-      ],
-      "sprints": [
-        {
-          "name": "2026.8"
-        }
-      ],
-      "sprintNames": [
-        "2026.8"
-      ],
-      "resolution": "",
-      "parent": {
-        "key": "CORE-13172",
-        "url": "https://golfnow.atlassian.net/browse/CORE-13172",
-        "summary": "Commerce Proxy API",
-        "description": "",
-        "type": "Epic",
-        "status": "Planning",
-        "priority": "None"
-      }
-    },
-    {
       "key": "CORE-13962",
       "url": "https://golfnow.atlassian.net/browse/CORE-13962",
       "summary": "(USGA-Blocking) strokeAdjustment update for Compete playerRound",
@@ -1746,8 +1746,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-25T13:22:06.852Z",
-    "pulledAtDisplay": "Jun 25, 2026, 9:22 AM",
+    "pulledAt": "2026-06-25T13:25:04.098Z",
+    "pulledAtDisplay": "Jun 25, 2026, 9:25 AM",
     "total": 95,
     "mainTotal": 95,
     "subtaskTotal": 0,
@@ -2804,7 +2804,7 @@
         "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
-        "status": "QA Testing (DEV)",
+        "status": "PO Review",
         "priority": "P1",
         "assignee": "Dewan Kabir",
         "assigneeAccountId": "630fb06bb433b060db559bdb",
@@ -2812,8 +2812,8 @@
         "assignedDeveloper": "Andrew Horvat",
         "assignedDeveloperAccountId": "712020:fb2131ba-2122-41a0-9559-9966f684a89e",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:fb2131ba-2122-41a0-9559-9966f684a89e/169c8770-21ac-4272-a73c-858827f0c5bd/32",
-        "updated": "2026-06-17T16:56:24.130-0400",
-        "updatedDisplay": "Jun 17, 2026, 4:56 PM",
+        "updated": "2026-06-25T09:22:14.387-0400",
+        "updatedDisplay": "Jun 25, 2026, 9:22 AM",
         "created": "2026-04-22T09:44:51.371-0400",
         "createdDisplay": "Apr 22, 2026, 9:44 AM",
         "components": [
@@ -2859,7 +2859,7 @@
         "testChecklist": null,
         "type": "Bug",
         "isSubtask": false,
-        "status": "QA Testing (DEV)",
+        "status": "PO Review",
         "priority": "P1",
         "assignee": "Dewan Kabir",
         "assigneeAccountId": "630fb06bb433b060db559bdb",
@@ -2867,8 +2867,8 @@
         "assignedDeveloper": "Unassigned",
         "assignedDeveloperAccountId": "",
         "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-17T16:55:57.617-0400",
-        "updatedDisplay": "Jun 17, 2026, 4:55 PM",
+        "updated": "2026-06-25T09:22:25.496-0400",
+        "updatedDisplay": "Jun 25, 2026, 9:22 AM",
         "created": "2026-06-09T10:54:05.224-0400",
         "createdDisplay": "Jun 9, 2026, 10:54 AM",
         "components": [
@@ -3920,7 +3920,7 @@
         },
         "type": "Story",
         "isSubtask": false,
-        "status": "QA Testing (DEV)",
+        "status": "PO Review",
         "priority": "P2",
         "assignee": "Nicole Greer",
         "assigneeAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
@@ -3928,8 +3928,8 @@
         "assignedDeveloper": "Luis Vallejo Mursuli",
         "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-06-17T17:53:03.998-0400",
-        "updatedDisplay": "Jun 17, 2026, 5:53 PM",
+        "updated": "2026-06-25T09:23:52.954-0400",
+        "updatedDisplay": "Jun 25, 2026, 9:23 AM",
         "created": "2026-03-02T15:21:34.425-0500",
         "createdDisplay": "Mar 2, 2026, 3:21 PM",
         "components": [
@@ -7846,13 +7846,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-25T13:21:31.283Z",
-    "pulledAtDisplay": "Jun 25, 2026, 9:21 AM",
+    "pulledAt": "2026-06-25T13:24:40.546Z",
+    "pulledAtDisplay": "Jun 25, 2026, 9:24 AM",
     "window": {
-      "start": "2026-05-11T13:21:31.283Z",
-      "end": "2026-12-22T13:21:31.283Z",
-      "startDisplay": "May 11, 2026, 9:21 AM",
-      "endDisplay": "Dec 22, 2026, 8:21 AM"
+      "start": "2026-05-11T13:24:40.546Z",
+      "end": "2026-12-22T13:24:40.546Z",
+      "startDisplay": "May 11, 2026, 9:24 AM",
+      "endDisplay": "Dec 22, 2026, 8:24 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7865,7 +7865,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-25T13:21:34.440Z",
+        "pulledAt": "2026-06-25T13:24:42.835Z",
         "eventCount": 94,
         "events": [
           {
@@ -8668,23 +8668,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.57",
-            "start": "2026-07-14T00:00:00.000Z",
-            "end": "2026-07-15T00:00:00.000Z",
-            "startDate": "2026-07-14",
-            "endDate": "2026-07-15",
-            "startDisplay": "Jul 14, 2026",
-            "endDisplay": "Jul 15, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221527Z-1432222737@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -8714,6 +8697,23 @@
             "endDisplay": "Jul 15, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.57",
+            "start": "2026-07-14T00:00:00.000Z",
+            "end": "2026-07-15T00:00:00.000Z",
+            "startDate": "2026-07-14",
+            "endDate": "2026-07-15",
+            "startDisplay": "Jul 14, 2026",
+            "endDisplay": "Jul 15, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9110,23 +9110,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.59",
-            "start": "2026-09-15T00:00:00.000Z",
-            "end": "2026-09-16T00:00:00.000Z",
-            "startDate": "2026-09-15",
-            "endDate": "2026-09-16",
-            "startDisplay": "Sep 15, 2026",
-            "endDisplay": "Sep 16, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221627Z-1916149808@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9156,6 +9139,23 @@
             "endDisplay": "Sep 16, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.59",
+            "start": "2026-09-15T00:00:00.000Z",
+            "end": "2026-09-16T00:00:00.000Z",
+            "startDate": "2026-09-15",
+            "endDate": "2026-09-16",
+            "startDisplay": "Sep 15, 2026",
+            "endDisplay": "Sep 16, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9382,23 +9382,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221750Z-1404075373@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9428,6 +9411,23 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9472,43 +9472,18 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-25T13:13:24.745Z",
-    "previousPulledAtDisplay": "Jun 25, 2026, 9:13 AM",
-    "currentPulledAt": "2026-06-25T13:22:06.852Z",
-    "currentPulledAtDisplay": "Jun 25, 2026, 9:22 AM",
+    "previousPulledAt": "2026-06-25T13:22:06.852Z",
+    "previousPulledAtDisplay": "Jun 25, 2026, 9:22 AM",
+    "currentPulledAt": "2026-06-25T13:25:04.098Z",
+    "currentPulledAtDisplay": "Jun 25, 2026, 9:25 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
     "updated": [
       {
-        "key": "CORE-14415",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14415",
-        "summary": "Missing Headers in API 2.1 Request Logs",
-        "changes": [
-          {
-            "field": "status",
-            "label": "Status",
-            "before": "Pending Deployment (DEV)",
-            "after": "PO Review"
-          },
-          {
-            "field": "updatedDisplay",
-            "label": "Jira updated",
-            "before": "Jun 18, 2026, 10:20 AM",
-            "after": "Jun 25, 2026, 9:13 AM"
-          }
-        ],
-        "type": "Bug",
-        "isSubtask": false,
-        "assignee": "Daniel McNaughton",
-        "assignedDeveloper": "Daniel McNaughton",
-        "status": "PO Review",
-        "parent": null
-      },
-      {
-        "key": "CORE-14533",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14533",
-        "summary": "Database Changes",
+        "key": "CORE-14233",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14233",
+        "summary": "Updates to Reservation Confirmation Template",
         "changes": [
           {
             "field": "status",
@@ -9519,156 +9494,302 @@
           {
             "field": "updatedDisplay",
             "label": "Jira updated",
-            "before": "Jun 18, 2026, 4:13 PM",
-            "after": "Jun 25, 2026, 9:13 AM"
-          }
-        ],
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "assignee": "Unassigned",
-        "assignedDeveloper": "Daniel McNaughton",
-        "status": "PO Review",
-        "parent": {
-          "key": "CORE-14531",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14531",
-          "summary": "Migrate Urgency Bookings query to CRM",
-          "description": "",
-          "type": "Story",
-          "status": "Pending Prod Release",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14532",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14532",
-        "summary": "API 2.1 Changes",
-        "changes": [
-          {
-            "field": "status",
-            "label": "Status",
-            "before": "QA Testing (DEV)",
-            "after": "PO Review"
-          },
-          {
-            "field": "updatedDisplay",
-            "label": "Jira updated",
-            "before": "Jun 18, 2026, 1:21 PM",
-            "after": "Jun 25, 2026, 9:13 AM"
-          }
-        ],
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "assignee": "Unassigned",
-        "assignedDeveloper": "Daniel McNaughton",
-        "status": "PO Review",
-        "parent": {
-          "key": "CORE-14531",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14531",
-          "summary": "Migrate Urgency Bookings query to CRM",
-          "description": "",
-          "type": "Story",
-          "status": "Pending Prod Release",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14531",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14531",
-        "summary": "Migrate Urgency Bookings query to CRM",
-        "changes": [
-          {
-            "field": "status",
-            "label": "Status",
-            "before": "Pending Deployment (DEV)",
-            "after": "Pending Prod Release"
-          },
-          {
-            "field": "updatedDisplay",
-            "label": "Jira updated",
-            "before": "Jun 18, 2026, 1:08 PM",
-            "after": "Jun 25, 2026, 9:13 AM"
+            "before": "Jun 17, 2026, 5:53 PM",
+            "after": "Jun 25, 2026, 9:23 AM"
           }
         ],
         "type": "Story",
         "isSubtask": false,
-        "assignee": "Daniel McNaughton",
-        "assignedDeveloper": "Daniel McNaughton",
-        "status": "Pending Prod Release",
+        "assignee": "Nicole Greer",
+        "assignedDeveloper": "Luis Vallejo Mursuli",
+        "status": "PO Review",
         "parent": null
+      },
+      {
+        "key": "CORE-14508",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14508",
+        "summary": "CLONE - [Commerce] Cannot complete a non-prepay reservation",
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "QA Testing (DEV)",
+            "after": "PO Review"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 17, 2026, 4:55 PM",
+            "after": "Jun 25, 2026, 9:22 AM"
+          }
+        ],
+        "type": "Bug",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Unassigned",
+        "status": "PO Review",
+        "parent": {
+          "key": "CORE-13172",
+          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+          "summary": "Commerce Proxy API",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14397",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14397",
+        "summary": "CLONE - Update to allow No Payment Methods when $0 due now for BE",
+        "changes": [
+          {
+            "field": "status",
+            "label": "Status",
+            "before": "QA Testing (DEV)",
+            "after": "PO Review"
+          },
+          {
+            "field": "updatedDisplay",
+            "label": "Jira updated",
+            "before": "Jun 17, 2026, 4:56 PM",
+            "after": "Jun 25, 2026, 9:22 AM"
+          }
+        ],
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Andrew Horvat",
+        "status": "PO Review",
+        "parent": {
+          "key": "CORE-13172",
+          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+          "summary": "Commerce Proxy API",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
       }
     ],
     "statusChanges": [
       {
-        "key": "CORE-14415",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14415",
-        "summary": "Missing Headers in API 2.1 Request Logs",
-        "before": "Pending Deployment (DEV)",
+        "key": "CORE-14233",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14233",
+        "summary": "Updates to Reservation Confirmation Template",
+        "before": "QA Testing (DEV)",
+        "after": "PO Review",
+        "type": "Story",
+        "isSubtask": false,
+        "assignee": "Nicole Greer",
+        "assignedDeveloper": "Luis Vallejo Mursuli",
+        "status": "PO Review",
+        "parent": null
+      },
+      {
+        "key": "CORE-14508",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14508",
+        "summary": "CLONE - [Commerce] Cannot complete a non-prepay reservation",
+        "before": "QA Testing (DEV)",
         "after": "PO Review",
         "type": "Bug",
         "isSubtask": false,
-        "assignee": "Daniel McNaughton",
-        "assignedDeveloper": "Daniel McNaughton",
-        "status": "PO Review",
-        "parent": null
-      },
-      {
-        "key": "CORE-14533",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14533",
-        "summary": "Database Changes",
-        "before": "QA Testing (DEV)",
-        "after": "PO Review",
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "assignee": "Unassigned",
-        "assignedDeveloper": "Daniel McNaughton",
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Unassigned",
         "status": "PO Review",
         "parent": {
-          "key": "CORE-14531",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14531",
-          "summary": "Migrate Urgency Bookings query to CRM",
+          "key": "CORE-13172",
+          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+          "summary": "Commerce Proxy API",
           "description": "",
-          "type": "Story",
-          "status": "Pending Prod Release",
+          "type": "Epic",
+          "status": "Planning",
           "priority": "None"
         }
       },
       {
-        "key": "CORE-14532",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14532",
-        "summary": "API 2.1 Changes",
+        "key": "CORE-14397",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14397",
+        "summary": "CLONE - Update to allow No Payment Methods when $0 due now for BE",
         "before": "QA Testing (DEV)",
         "after": "PO Review",
-        "type": "Developer Task (sub task)",
-        "isSubtask": true,
-        "assignee": "Unassigned",
-        "assignedDeveloper": "Daniel McNaughton",
-        "status": "PO Review",
-        "parent": {
-          "key": "CORE-14531",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14531",
-          "summary": "Migrate Urgency Bookings query to CRM",
-          "description": "",
-          "type": "Story",
-          "status": "Pending Prod Release",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14531",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14531",
-        "summary": "Migrate Urgency Bookings query to CRM",
-        "before": "Pending Deployment (DEV)",
-        "after": "Pending Prod Release",
         "type": "Story",
         "isSubtask": false,
-        "assignee": "Daniel McNaughton",
-        "assignedDeveloper": "Daniel McNaughton",
-        "status": "Pending Prod Release",
-        "parent": null
+        "assignee": "Dewan Kabir",
+        "assignedDeveloper": "Andrew Horvat",
+        "status": "PO Review",
+        "parent": {
+          "key": "CORE-13172",
+          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+          "summary": "Commerce Proxy API",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
       }
     ]
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-25T13:22:06.852Z",
+      "previousPulledAtDisplay": "Jun 25, 2026, 9:22 AM",
+      "currentPulledAt": "2026-06-25T13:25:04.098Z",
+      "currentPulledAtDisplay": "Jun 25, 2026, 9:25 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [
+        {
+          "key": "CORE-14233",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14233",
+          "summary": "Updates to Reservation Confirmation Template",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "QA Testing (DEV)",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 17, 2026, 5:53 PM",
+              "after": "Jun 25, 2026, 9:23 AM"
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Nicole Greer",
+          "assignedDeveloper": "Luis Vallejo Mursuli",
+          "status": "PO Review",
+          "parent": null
+        },
+        {
+          "key": "CORE-14508",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14508",
+          "summary": "CLONE - [Commerce] Cannot complete a non-prepay reservation",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "QA Testing (DEV)",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 17, 2026, 4:55 PM",
+              "after": "Jun 25, 2026, 9:22 AM"
+            }
+          ],
+          "type": "Bug",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Unassigned",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-13172",
+            "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+            "summary": "Commerce Proxy API",
+            "description": "",
+            "type": "Epic",
+            "status": "Planning",
+            "priority": "None"
+          }
+        },
+        {
+          "key": "CORE-14397",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14397",
+          "summary": "CLONE - Update to allow No Payment Methods when $0 due now for BE",
+          "changes": [
+            {
+              "field": "status",
+              "label": "Status",
+              "before": "QA Testing (DEV)",
+              "after": "PO Review"
+            },
+            {
+              "field": "updatedDisplay",
+              "label": "Jira updated",
+              "before": "Jun 17, 2026, 4:56 PM",
+              "after": "Jun 25, 2026, 9:22 AM"
+            }
+          ],
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Andrew Horvat",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-13172",
+            "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+            "summary": "Commerce Proxy API",
+            "description": "",
+            "type": "Epic",
+            "status": "Planning",
+            "priority": "None"
+          }
+        }
+      ],
+      "statusChanges": [
+        {
+          "key": "CORE-14233",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14233",
+          "summary": "Updates to Reservation Confirmation Template",
+          "before": "QA Testing (DEV)",
+          "after": "PO Review",
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Nicole Greer",
+          "assignedDeveloper": "Luis Vallejo Mursuli",
+          "status": "PO Review",
+          "parent": null
+        },
+        {
+          "key": "CORE-14508",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14508",
+          "summary": "CLONE - [Commerce] Cannot complete a non-prepay reservation",
+          "before": "QA Testing (DEV)",
+          "after": "PO Review",
+          "type": "Bug",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Unassigned",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-13172",
+            "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+            "summary": "Commerce Proxy API",
+            "description": "",
+            "type": "Epic",
+            "status": "Planning",
+            "priority": "None"
+          }
+        },
+        {
+          "key": "CORE-14397",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14397",
+          "summary": "CLONE - Update to allow No Payment Methods when $0 due now for BE",
+          "before": "QA Testing (DEV)",
+          "after": "PO Review",
+          "type": "Story",
+          "isSubtask": false,
+          "assignee": "Dewan Kabir",
+          "assignedDeveloper": "Andrew Horvat",
+          "status": "PO Review",
+          "parent": {
+            "key": "CORE-13172",
+            "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+            "summary": "Commerce Proxy API",
+            "description": "",
+            "type": "Epic",
+            "status": "Planning",
+            "priority": "None"
+          }
+        }
+      ]
+    },
     {
       "previousPulledAt": "2026-06-25T13:13:24.745Z",
       "previousPulledAtDisplay": "Jun 25, 2026, 9:13 AM",
@@ -12350,17 +12471,6 @@
       "previousPulledAtDisplay": "Jun 24, 2026, 7:21 PM",
       "currentPulledAt": "2026-06-24T23:26:54.578Z",
       "currentPulledAtDisplay": "Jun 24, 2026, 7:26 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-24T23:16:44.018Z",
-      "previousPulledAtDisplay": "Jun 24, 2026, 7:16 PM",
-      "currentPulledAt": "2026-06-24T23:21:44.993Z",
-      "currentPulledAtDisplay": "Jun 24, 2026, 7:21 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
