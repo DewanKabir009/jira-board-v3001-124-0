@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-27T22:26:42.916Z",
-  "pulledAtDisplay": "Jun 27, 2026, 6:26 PM",
+  "pulledAt": "2026-06-27T22:31:52.095Z",
+  "pulledAtDisplay": "Jun 27, 2026, 6:31 PM",
   "total": 24,
   "issues": [
     {
@@ -1746,8 +1746,8 @@
     "queryDescription": "Jira backlog sprint \"2026.8\" on board \"GN Core Platform\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-27T22:26:42.916Z",
-    "pulledAtDisplay": "Jun 27, 2026, 6:26 PM",
+    "pulledAt": "2026-06-27T22:31:52.095Z",
+    "pulledAtDisplay": "Jun 27, 2026, 6:31 PM",
     "total": 95,
     "mainTotal": 95,
     "subtaskTotal": 0,
@@ -7867,13 +7867,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-27T22:26:17.931Z",
-    "pulledAtDisplay": "Jun 27, 2026, 6:26 PM",
+    "pulledAt": "2026-06-27T22:31:21.535Z",
+    "pulledAtDisplay": "Jun 27, 2026, 6:31 PM",
     "window": {
-      "start": "2026-05-13T22:26:17.931Z",
-      "end": "2026-12-24T22:26:17.931Z",
-      "startDisplay": "May 13, 2026, 6:26 PM",
-      "endDisplay": "Dec 24, 2026, 5:26 PM"
+      "start": "2026-05-13T22:31:21.535Z",
+      "end": "2026-12-24T22:31:21.535Z",
+      "startDisplay": "May 13, 2026, 6:31 PM",
+      "endDisplay": "Dec 24, 2026, 5:31 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -7886,7 +7886,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-27T22:26:20.479Z",
+        "pulledAt": "2026-06-27T22:31:24.552Z",
         "eventCount": 87,
         "events": [
           {
@@ -9284,23 +9284,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -9330,6 +9313,23 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -9374,10 +9374,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-27T22:21:53.050Z",
-    "previousPulledAtDisplay": "Jun 27, 2026, 6:21 PM",
-    "currentPulledAt": "2026-06-27T22:26:42.916Z",
-    "currentPulledAtDisplay": "Jun 27, 2026, 6:26 PM",
+    "previousPulledAt": "2026-06-27T22:26:42.916Z",
+    "previousPulledAtDisplay": "Jun 27, 2026, 6:26 PM",
+    "currentPulledAt": "2026-06-27T22:31:52.095Z",
+    "currentPulledAtDisplay": "Jun 27, 2026, 6:31 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -9385,6 +9385,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-27T22:26:42.916Z",
+      "previousPulledAtDisplay": "Jun 27, 2026, 6:26 PM",
+      "currentPulledAt": "2026-06-27T22:31:52.095Z",
+      "currentPulledAtDisplay": "Jun 27, 2026, 6:31 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-27T22:21:53.050Z",
       "previousPulledAtDisplay": "Jun 27, 2026, 6:21 PM",
@@ -11216,17 +11227,6 @@
       "previousPulledAtDisplay": "Jun 27, 2026, 4:31 AM",
       "currentPulledAt": "2026-06-27T08:36:01.334Z",
       "currentPulledAtDisplay": "Jun 27, 2026, 4:36 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-27T08:26:01.804Z",
-      "previousPulledAtDisplay": "Jun 27, 2026, 4:26 AM",
-      "currentPulledAt": "2026-06-27T08:31:07.260Z",
-      "currentPulledAtDisplay": "Jun 27, 2026, 4:31 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
