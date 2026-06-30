@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-30T12:43:03.310Z",
-  "pulledAtDisplay": "Jun 30, 2026, 8:43 AM",
+  "pulledAt": "2026-06-30T12:47:44.807Z",
+  "pulledAtDisplay": "Jun 30, 2026, 8:47 AM",
   "total": 24,
   "issues": [
     {
@@ -1794,8 +1794,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-30T12:43:03.310Z",
-    "pulledAtDisplay": "Jun 30, 2026, 8:43 AM",
+    "pulledAt": "2026-06-30T12:47:44.807Z",
+    "pulledAtDisplay": "Jun 30, 2026, 8:47 AM",
     "total": 418,
     "mainTotal": 388,
     "subtaskTotal": 30,
@@ -7831,6 +7831,74 @@
         }
       },
       {
+        "key": "CORE-13228",
+        "url": "https://golfnow.atlassian.net/browse/CORE-13228",
+        "summary": "Retro stored procedure - remove hard coded values",
+        "description": "Stored Procedures:\n\n- GetNoShowIncidents_Paged\n\n- NoShowCancelReservationsSelect\n\n- GetNoShowReservations_Paged\n\nThese three stored procedures all contain similar clause where it is checking for the Payment Types that is acceptable for no-shows\n\nHowever there are already an existing column in the dbo.PaymentTypes table for the information and we should not be hardcoding values.\n\nAND (TTR.CreditCardID > 0 OR CD.ReservationID IS NOT NULL OR TTRD.PaymentTypeID = 8)",
+        "descriptionHtml": "<p>Stored Procedures:</p><ul><li><p>GetNoShowIncidents_Paged</p></li><li><p>NoShowCancelReservationsSelect</p></li><li><p>GetNoShowReservations_Paged</p></li></ul><p>These three stored procedures all contain similar clause where it is checking for the Payment Types that is acceptable for no-shows</p><p>However there are already an existing column in the dbo.PaymentTypes table for the information and we should not be hardcoding values.</p><pre><code>AND (TTR.CreditCardID &gt; 0 OR CD.ReservationID IS NOT NULL OR TTRD.PaymentTypeID = 8)  </code></pre>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1189196",
+            "url": "https://golfnow.atlassian.net/browse/CORE-13228?focusedCommentId=1189196",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-06-30T08:44:59.962-0400",
+            "createdDisplay": "Jun 30, 2026, 8:44 AM",
+            "updated": "2026-06-30T08:44:59.962-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Beginning research on this now.",
+            "bodyHtml": "<p>Beginning research on this now.</p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-13228?focusedCommentId=1189196",
+        "lastCommentDisplay": "Jun 30, 2026, 8:44 AM",
+        "lastCommentAuthor": "Alex Wulff",
+        "testChecklist": null,
+        "type": "Task",
+        "isSubtask": false,
+        "status": "Development",
+        "priority": "P4",
+        "assignee": "Alex Wulff",
+        "assigneeAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "assignedDeveloper": "Alex Wulff",
+        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "updated": "2026-06-30T08:45:00.343-0400",
+        "updatedDisplay": "Jun 30, 2026, 8:45 AM",
+        "created": "2025-03-10T12:01:29.088-0400",
+        "createdDisplay": "Mar 10, 2025, 12:01 PM",
+        "components": [
+          "Database"
+        ],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14278",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14278",
+          "summary": "gn-main Tech Debt & Cleanup",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
         "key": "UXD-1264",
         "url": "https://golfnow.atlassian.net/browse/UXD-1264",
         "summary": "[Design] Apple Pay - MVP",
@@ -10612,58 +10680,6 @@
           "key": "CORE-13172",
           "url": "https://golfnow.atlassian.net/browse/CORE-13172",
           "summary": "Commerce Proxy API",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-13228",
-        "url": "https://golfnow.atlassian.net/browse/CORE-13228",
-        "summary": "Retro stored procedure - remove hard coded values",
-        "description": "Stored Procedures:\n\n- GetNoShowIncidents_Paged\n\n- NoShowCancelReservationsSelect\n\n- GetNoShowReservations_Paged\n\nThese three stored procedures all contain similar clause where it is checking for the Payment Types that is acceptable for no-shows\n\nHowever there are already an existing column in the dbo.PaymentTypes table for the information and we should not be hardcoding values.\n\nAND (TTR.CreditCardID > 0 OR CD.ReservationID IS NOT NULL OR TTRD.PaymentTypeID = 8)",
-        "descriptionHtml": "<p>Stored Procedures:</p><ul><li><p>GetNoShowIncidents_Paged</p></li><li><p>NoShowCancelReservationsSelect</p></li><li><p>GetNoShowReservations_Paged</p></li></ul><p>These three stored procedures all contain similar clause where it is checking for the Payment Types that is acceptable for no-shows</p><p>However there are already an existing column in the dbo.PaymentTypes table for the information and we should not be hardcoding values.</p><pre><code>AND (TTR.CreditCardID &gt; 0 OR CD.ReservationID IS NOT NULL OR TTRD.PaymentTypeID = 8)  </code></pre>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Task",
-        "isSubtask": false,
-        "status": "Pre Planning",
-        "priority": "P4",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-05-26T02:49:47.533-0400",
-        "updatedDisplay": "May 26, 2026, 2:49 AM",
-        "created": "2025-03-10T12:01:29.088-0400",
-        "createdDisplay": "Mar 10, 2025, 12:01 PM",
-        "components": [
-          "Database"
-        ],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14278",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14278",
-          "summary": "gn-main Tech Debt & Cleanup",
           "description": "",
           "type": "Epic",
           "status": "Planning",
@@ -32472,13 +32488,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-30T12:41:10.168Z",
-    "pulledAtDisplay": "Jun 30, 2026, 8:41 AM",
+    "pulledAt": "2026-06-30T12:46:02.955Z",
+    "pulledAtDisplay": "Jun 30, 2026, 8:46 AM",
     "window": {
-      "start": "2026-05-16T12:41:10.168Z",
-      "end": "2026-12-27T12:41:10.168Z",
-      "startDisplay": "May 16, 2026, 8:41 AM",
-      "endDisplay": "Dec 27, 2026, 7:41 AM"
+      "start": "2026-05-16T12:46:02.955Z",
+      "end": "2026-12-27T12:46:02.955Z",
+      "startDisplay": "May 16, 2026, 8:46 AM",
+      "endDisplay": "Dec 27, 2026, 7:46 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -32491,7 +32507,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-30T12:41:13.702Z",
+        "pulledAt": "2026-06-30T12:46:05.623Z",
         "eventCount": 87,
         "events": [
           {
@@ -32512,23 +32528,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Memorial Day - (US) Company Holiday",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDate": "2026-05-25",
-            "endDate": "2026-05-26",
-            "startDisplay": "May 25, 2026",
-            "endDisplay": "May 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -32541,6 +32540,23 @@
             "endDisplay": "May 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Memorial Day - (US) Company Holiday",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDate": "2026-05-25",
+            "endDate": "2026-05-26",
+            "startDisplay": "May 25, 2026",
+            "endDisplay": "May 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -33855,6 +33871,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -33884,23 +33917,6 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -33940,23 +33956,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - US Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -33972,6 +33971,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - US Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -33979,10 +33995,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-30T12:37:38.780Z",
-    "previousPulledAtDisplay": "Jun 30, 2026, 8:37 AM",
-    "currentPulledAt": "2026-06-30T12:43:03.310Z",
-    "currentPulledAtDisplay": "Jun 30, 2026, 8:43 AM",
+    "previousPulledAt": "2026-06-30T12:43:03.310Z",
+    "previousPulledAtDisplay": "Jun 30, 2026, 8:43 AM",
+    "currentPulledAt": "2026-06-30T12:47:44.807Z",
+    "currentPulledAtDisplay": "Jun 30, 2026, 8:47 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -33990,6 +34006,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-30T12:43:03.310Z",
+      "previousPulledAtDisplay": "Jun 30, 2026, 8:43 AM",
+      "currentPulledAt": "2026-06-30T12:47:44.807Z",
+      "currentPulledAtDisplay": "Jun 30, 2026, 8:47 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-30T12:37:38.780Z",
       "previousPulledAtDisplay": "Jun 30, 2026, 8:37 AM",
@@ -35821,17 +35848,6 @@
       "previousPulledAtDisplay": "Jun 29, 2026, 6:42 PM",
       "currentPulledAt": "2026-06-29T22:48:02.923Z",
       "currentPulledAtDisplay": "Jun 29, 2026, 6:48 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-29T22:38:33.285Z",
-      "previousPulledAtDisplay": "Jun 29, 2026, 6:38 PM",
-      "currentPulledAt": "2026-06-29T22:42:21.441Z",
-      "currentPulledAtDisplay": "Jun 29, 2026, 6:42 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
