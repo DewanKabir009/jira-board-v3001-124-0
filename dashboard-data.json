@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-30T14:22:33.537Z",
-  "pulledAtDisplay": "Jun 30, 2026, 10:22 AM",
+  "pulledAt": "2026-06-30T14:27:23.608Z",
+  "pulledAtDisplay": "Jun 30, 2026, 10:27 AM",
   "total": 24,
   "issues": [
     {
@@ -1794,8 +1794,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-30T14:22:33.537Z",
-    "pulledAtDisplay": "Jun 30, 2026, 10:22 AM",
+    "pulledAt": "2026-06-30T14:27:23.608Z",
+    "pulledAtDisplay": "Jun 30, 2026, 10:27 AM",
     "total": 418,
     "mainTotal": 388,
     "subtaskTotal": 30,
@@ -7831,6 +7831,80 @@
         }
       },
       {
+        "key": "CORE-14355",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14355",
+        "summary": "Add Support for Paypal and Apple Pay as Default Payment Methods",
+        "description": "Summary\n\nCurrently, only credit cards can be set as default payment methods. This ticket adds support for PayPal Direct and Apple Pay to be set as default payment methods in customer wallets.\n\nBackground\n\nThe system currently restricts default payment methods to credit cards only (Payment Type ID = 2). This restriction is enforced in multiple layers:\n\n- Wallet Service validation throws exception: \"Only credit card wallet options can be set as the default\"\n\n- Legacy WalletService explicitly rejects PayPal and Apple Pay in switch statement\n\n- Database layer only has SetDefaultCreditCardInWallet stored procedure\n\nBoth PayPal Direct (type 16) and Apple Pay (type 17) are already fully implemented payment types in the system with complete payment processing support.\n\nBusiness Value\n\n- Allows customers to use their preferred payment method as default\n\n- Improves user experience for customers who prefer digital wallets\n\n- Aligns with industry standards where any valid payment method can be default\n\n---\nDefault Payment Method Support\n\nWhat needs to work:\n\n- Users can set PayPal Direct (Payment Type 16) as their default payment method\n\n- Users can set Apple Pay (Payment Type 17) as their default payment method\n\n- Only one payment method can be default at a time per wallet\n\n- When a user sets a new default, the old one automatically gets unset\n\n- All current validations should remain such as the inability to set an inactive or expired payment method as a default\n\n- If this will require a contract change to the existing Get Wallet endpoint, please create a brand new wallet endpoint or find a way to make it backwards compatible\n\n- It is not expected UI teams will be able to support this in parallel\n\nCheckout Integration\n\nScheduled Payments\n\nRecurring charges need to work:\n\n- Scheduled payments should support PayPal and Apple Pay as defaults\n\n- Subscription renewals should support PayPal and Apple Pay as defaults\n\nPayment Operations\n\nThese operations need to handle PayPal/Apple Pay defaults:\n\n- Refunds - should process correctly when refunding to a PayPal or Apple Pay default\n\n- No-show charges - should work when charging a PayPal or Apple Pay default\n\n- Manual charges - should work when charging a PayPal or Apple Pay default\n\n---\nImplementation Areas\n\n1. Wallet Service - Core Default Payment Logic\n\nWhat needs to change:\n\n- Remove the restriction that only allows credit cards to be set as default\n\n- Update validation logic to accept PayPal Direct and Apple Pay as valid default payment types\n\n- Ensure database operations (stored procedures) can handle setting any payment type as default, not just credit cards\n\n---\n2. Customer Service Integration\n\nWhat needs to verify:\n\n- Ensure the service layer properly passes through PayPal and Apple Pay when setting defaults\n\n- No additional restrictions or assumptions at this layer\n\n---\n3. TeeTimesAPI / API 2.1 Layer\n\nWhat needs to change/verify:\n\n- Customer wallet management endpoints (methods with names like \"SetCreditCardAsPrimary\" may need updating)\n\n- Reservation creation logic when no payment method is specified (should fall back to default)\n\n- Order creation logic when no payment method is specified (should fall back to default)\n\n- Payment validation in reservation workflows\n\n---\n4. Reservation Service Workflows\n\nWhat needs to verify:\n\n- Payment validation activities accept PayPal and Apple Pay as defaults\n\n- Charge building activities handle all payment types equally\n\n- Payment capture activities work with PayPal and Apple Pay defaults\n\n- Default payment retrieval logic doesn't assume credit cards\n\n---\n5. Scheduled Payments & Recurring Charges\n\nWhat needs to verify:\n\n- Scheduled payment execution can charge PayPal and Apple Pay defaults\n\n- Subscription renewal workflows support PayPal and Apple Pay\n\n- Payment method update workflows handle all payment types\n\n- Background job processors don't assume credit cards\n\n---\n6. Refund Processing\n\nWhat needs to verify:\n\n- Refund workflows can process refunds to PayPal and Apple Pay\n\n- Refund amount calculations work for all payment types\n\n- Scheduled payment refunds handle all payment types\n\n---\n7. No-Show & Manual Charge Workflows\n\nWhat needs to verify:\n\n- No-show charge workflows can charge PayPal and Apple Pay defaults\n\n- Manual charge workflows accept PayPal and Apple Pay\n\n- Validation logic doesn't restrict to credit cards only\n\n---\n8. Database Layer\n\nWhat needs to change:\n\n- Create or update stored procedures to set defaults for any payment type (not just credit cards)\n\n- Ensure the IsDefault flag works consistently across all payment types\n\n- Database operations should be payment-type agnostic\n\n---\n9. Cross-Cutting Concerns to Review\n\nDefault Payment Retrieval:\n\n- Anywhere the system fetches \"the default payment method\" to use automatically\n\n- Ensure no code assumes the default will always be a credit card type\n\nPayment Type Validation:\n\n- Look for validation logic that checks payment types\n\n- Ensure none inadvertently block PayPal or Apple Pay from being defaults\n\nMethod Naming:\n\n- Methods with names like \"SetCreditCardAsPrimary\" should either be renamed or verified to handle all payment types\n\nError Handling:\n\n- Ensure error messages make sense for all payment types\n\n- No error messages that say \"credit card\" when they mean \"payment method\"\n\n---\nTesting Notes\n\nUnit Tests Required\n\nTest Suite 1: Wallet Service Validation\n\nLocation: Internal Services/GolfNow.Services.Wallet/GolfNow.Services.Wallet.UnitTests/\n\nTests to Add:\n\nTest_SetDefaultWalletOption_PayPalDirect_Success\n- Arrange: Customer with active PayPal payment option\n- Act: Call SetDefaultWalletOption with PayPal wallet option ID\n- Assert: Returns true, no exception thrown\n\nTest_SetDefaultWalletOption_ApplePay_Success\n- Arrange: Customer with active Apple Pay payment option\n- Act: Call SetDefaultWalletOption with Apple Pay wallet option ID\n- Assert: Returns true, no exception thrown\n\nTest_SetDefaultWalletOption_ExpiredPayPal_Fails\n- Arrange: Customer with expired PayPal payment option\n- Act: Call SetDefaultWalletOption with expired PayPal ID\n- Assert: Throws WalletInvalidDataException with appropriate message\n\nTest_SetDefaultWalletOption_GuestWallet_PayPal_Fails\n- Arrange: Guest wallet with PayPal payment option\n- Act: Call SetDefaultWalletOption\n- Assert: Throws exception about guest wallets\n\nTest_SetDefaultWalletOption_SwitchFromCreditCardToPayPal\n- Arrange: Customer with credit card as default\n- Act: Set PayPal as default\n- Assert: Credit card IsDefault = false, PayPal IsDefault = true\n\nTest_SetDefaultWalletOption_SwitchFromPayPalToApplePay\n- Arrange: Customer with PayPal as default\n- Act: Set Apple Pay as default\n- Assert: PayPal IsDefault = false, Apple Pay IsDefault = true\n\nTest Suite 2: Customer Service Integration\n\nLocation: Internal Services/GolfNow.Services.Customer/GolfNow.Services.Customer.UnitTests/\n\nTests to Add:\n\nTest_SetDefaultPaymentOption_PayPal_IntegrationSuccess\nTest_SetDefaultPaymentOption_ApplePay_IntegrationSuccess\nTest_GetCustomerWallet_DefaultPayPalMarkedCorrectly\nTest_GetCustomerWallet_DefaultApplePayMarkedCorrectly\n\nIntegration Tests Required\n\nTest Scenario 1: Full Reservation Flow with Default PayPal\n\nSetup:\n\n- Create test customer with PayPal payment method\n\n- Set PayPal as default via API\n\n- Create reservation without specifying payment method\n\nExpected Results:\n\n- Reservation created successfully\n\n- Payment charged to PayPal account\n\n- Reservation payment_method_type = 16 (PayPal Direct)\n\n- Charge record shows PayPal wallet option ID\n\nTest Scenario 2: Full Reservation Flow with Default Apple Pay\n\nSetup:\n\n- Create test customer with Apple Pay payment method\n\n- Set Apple Pay as default via API\n\n- Create reservation without specifying payment method\n\nExpected Results:\n\n- Reservation created successfully\n\n- Payment charged to Apple Pay account\n\n- Reservation payment_method_type = 17 (Apple Pay)\n\n- Charge record shows Apple Pay wallet option ID\n\nTest Scenario 3: Scheduled Payment Execution\n\nSetup:\n\n- Create customer with scheduled payment\n\n- Customer has PayPal as default payment method\n\n- Trigger scheduled payment execution\n\nExpected Results:\n\n- Scheduled payment charges PayPal account\n\n- Transaction records show PayPal as payment method\n\n- No errors logged\n\nTest Scenario 4: Refund to PayPal Default\n\nSetup:\n\n- Complete reservation with default PayPal\n\n- Process full refund\n\nExpected Results:\n\n- Refund processes successfully\n\n- Refund goes to original PayPal account\n\n- Refund status updated correctly\n\nTest Scenario 5: No-Show Charge\n\nSetup:\n\n- Create reservation with default Apple Pay\n\n- Mark reservation as no-show\n\n- Process no-show charge\n\nExpected Results:\n\n- No-show charge processes to Apple Pay account\n\n- Charge successful\n\n- Reservation status updated\n\nTest Scenario 6: Multi-Currency Support\n\nSetup:\n\n- Set PayPal as default for customer in USD market\n\n- Set PayPal as default for customer in CAD market\n\n- Make reservations in both currencies\n\nExpected Results:\n\n- Both process successfully with correct currency\n\nManual QA Test Cases\n\nQA-1: Basic Set Default Functionality\n\nSteps:\n\n- Login as customer with multiple payment methods (CC, PayPal, Apple Pay)\n\n- Navigate to payment methods page\n\n- Set PayPal as default\n\n- Refresh page\n\n- Verify PayPal shows as default\n\n- Set Apple Pay as default\n\n- Verify only Apple Pay shows as default\n\nExpected: UI correctly shows default indicator, only one method is default at a time\n\nQA-2: Reservation Without Specifying Payment\n\nSteps:\n\n- Set PayPal as default payment method\n\n- Start new reservation booking\n\n- Proceed to payment WITHOUT selecting a payment method\n\n- Complete booking\n\nExpected: Booking uses PayPal by default, confirmation shows PayPal\n\nQA-3: Guest User Restriction\n\nSteps:\n\n- Login as guest user\n\n- Add PayPal payment method\n\n- Attempt to set as default\n\nExpected: Error message displayed, action blocked\n\nQA-4: Expired Payment Restriction\n\nSteps:\n\n- Have an expired PayPal payment method in wallet\n\n- Attempt to set as default\n\nExpected: Error message about expired payment method, action blocked\n\nQA-5: API Testing (Postman/Swagger)\n\nSteps:\n\n- Call SetDefaultWalletOption API with PayPal wallet option ID\n\n- Call GetCustomerWallet API\n\n- Verify response shows PayPal with IsDefault = true\n\n- Call SetDefaultWalletOption API with Apple Pay wallet option ID\n\n- Call GetCustomerWallet API\n\n- Verify response shows Apple Pay with IsDefault = true, PayPal with IsDefault = false\n\nExpected: API responses consistent with expectations\n\nQA-6: Scheduled Payment Renewal\n\nSteps:\n\n- Create subscription with scheduled renewal\n\n- Set Apple Pay as default\n\n- Wait for or trigger renewal\n\n- Check transaction records\n\nExpected: Renewal charges to Apple Pay successfully\n\nQA-7: Switch Default Multiple Times\n\nSteps:\n\n- Set Credit Card as default\n\n- Set PayPal as default\n\n- Set Apple Pay as default\n\n- Set Credit Card as default again\n\n- After each change, verify via API and UI\n\nExpected: Each switch works correctly, previous default is unset\n\nRegression Testing\n\nAreas to Regression Test:\n\n- Credit card as default still works (existing functionality)\n\n- Gift card wallet behavior unchanged\n\n- Account balance wallet behavior unchanged\n\n- Payment without default specified still prompts for payment selection\n\n- All existing reservation flows with explicit payment method selection\n\nPerformance Testing\n\nTests to Run:\n\n- Load test: 1000 concurrent SetDefaultWalletOption calls\n\n- Response time should be < 500ms for 95th percentile\n\n- Database connection pool handles load\n\n- No deadlocks when updating default payment methods concurrently",
+        "descriptionHtml": "<h3>Summary</h3><p>Currently, only credit cards can be set as default payment methods. This ticket adds support for PayPal Direct and Apple Pay to be set as default payment methods in customer wallets.</p><h3>Background</h3><p>The system currently restricts default payment methods to credit cards only (Payment Type ID = 2). This restriction is enforced in multiple layers:</p><ul><li><p>Wallet Service validation throws exception: &quot;Only credit card wallet options can be set as the default&quot;</p></li><li><p>Legacy WalletService explicitly rejects PayPal and Apple Pay in switch statement</p></li><li><p>Database layer only has <code>SetDefaultCreditCardInWallet</code> stored procedure</p></li></ul><p>Both PayPal Direct (type 16) and Apple Pay (type 17) are already fully implemented payment types in the system with complete payment processing support.</p><h3>Business Value</h3><ul><li><p>Allows customers to use their preferred payment method as default</p></li><li><p>Improves user experience for customers who prefer digital wallets</p></li><li><p>Aligns with industry standards where any valid payment method can be default</p></li></ul><hr><h3>Default Payment Method Support</h3><p><strong>What needs to work:</strong></p><ul><li><p>Users can set PayPal Direct (Payment Type 16) as their default payment method</p></li><li><p>Users can set Apple Pay (Payment Type 17) as their default payment method</p></li><li><p>Only one payment method can be default at a time per wallet</p></li><li><p>When a user sets a new default, the old one automatically gets unset</p></li><li><p>All current validations should remain such as the inability to set an inactive or expired payment method as a default</p></li><li><p><strong>If this will require a contract change to the existing Get Wallet endpoint, please create a brand new wallet endpoint or find a way to make it backwards compatible</strong></p><ul><li><p><strong>It is not expected UI teams will be able to support this in parallel </strong></p></li></ul></li></ul><h3>Checkout Integration</h3><h3>Scheduled Payments</h3><p><strong>Recurring charges need to work:</strong></p><ul><li><p>Scheduled payments should support PayPal and Apple Pay as defaults</p></li><li><p>Subscription renewals should support PayPal and Apple Pay as defaults</p></li></ul><h3>Payment Operations</h3><p><strong>These operations need to handle PayPal/Apple Pay defaults:</strong></p><ul><li><p>Refunds - should process correctly when refunding to a PayPal or Apple Pay default</p></li><li><p>No-show charges - should work when charging a PayPal or Apple Pay default</p></li><li><p>Manual charges - should work when charging a PayPal or Apple Pay default</p></li></ul><hr><h3>Implementation Areas</h3><h3>1. Wallet Service - Core Default Payment Logic</h3><p><strong>What needs to change:</strong></p><ul><li><p>Remove the restriction that only allows credit cards to be set as default</p></li><li><p>Update validation logic to accept PayPal Direct and Apple Pay as valid default payment types</p></li><li><p>Ensure database operations (stored procedures) can handle setting any payment type as default, not just credit cards</p></li></ul><hr><h3>2. Customer Service Integration</h3><p><strong>What needs to verify:</strong></p><ul><li><p>Ensure the service layer properly passes through PayPal and Apple Pay when setting defaults</p></li><li><p>No additional restrictions or assumptions at this layer</p></li></ul><hr><h3>3. TeeTimesAPI / API 2.1 Layer</h3><p><strong>What needs to change/verify:</strong></p><ul><li><p>Customer wallet management endpoints (methods with names like &quot;SetCreditCardAsPrimary&quot; may need updating)</p></li><li><p>Reservation creation logic when no payment method is specified (should fall back to default)</p></li><li><p>Order creation logic when no payment method is specified (should fall back to default)</p></li><li><p>Payment validation in reservation workflows</p></li></ul><hr><h3>4. Reservation Service Workflows</h3><p><strong>What needs to verify:</strong></p><ul><li><p>Payment validation activities accept PayPal and Apple Pay as defaults</p></li><li><p>Charge building activities handle all payment types equally</p></li><li><p>Payment capture activities work with PayPal and Apple Pay defaults</p></li><li><p>Default payment retrieval logic doesn't assume credit cards</p></li></ul><hr><h3>5. Scheduled Payments &amp; Recurring Charges</h3><p><strong>What needs to verify:</strong></p><ul><li><p>Scheduled payment execution can charge PayPal and Apple Pay defaults</p></li><li><p>Subscription renewal workflows support PayPal and Apple Pay</p></li><li><p>Payment method update workflows handle all payment types</p></li><li><p>Background job processors don't assume credit cards</p></li></ul><hr><h3>6. Refund Processing</h3><p><strong>What needs to verify:</strong></p><ul><li><p>Refund workflows can process refunds to PayPal and Apple Pay</p></li><li><p>Refund amount calculations work for all payment types</p></li><li><p>Scheduled payment refunds handle all payment types</p></li></ul><hr><h3>7. No-Show &amp; Manual Charge Workflows</h3><p><strong>What needs to verify:</strong></p><ul><li><p>No-show charge workflows can charge PayPal and Apple Pay defaults</p></li><li><p>Manual charge workflows accept PayPal and Apple Pay</p></li><li><p>Validation logic doesn't restrict to credit cards only</p></li></ul><hr><h3>8. Database Layer</h3><p><strong>What needs to change:</strong></p><ul><li><p>Create or update stored procedures to set defaults for any payment type (not just credit cards)</p></li><li><p>Ensure the <code>IsDefault</code> flag works consistently across all payment types</p></li><li><p>Database operations should be payment-type agnostic</p></li></ul><hr><h3>9. Cross-Cutting Concerns to Review</h3><p><strong>Default Payment Retrieval:</strong></p><ul><li><p>Anywhere the system fetches &quot;the default payment method&quot; to use automatically</p></li><li><p>Ensure no code assumes the default will always be a credit card type</p></li></ul><p><strong>Payment Type Validation:</strong></p><ul><li><p>Look for validation logic that checks payment types</p></li><li><p>Ensure none inadvertently block PayPal or Apple Pay from being defaults</p></li></ul><p><strong>Method Naming:</strong></p><ul><li><p>Methods with names like &quot;SetCreditCardAsPrimary&quot; should either be renamed or verified to handle all payment types</p></li></ul><p><strong>Error Handling:</strong></p><ul><li><p>Ensure error messages make sense for all payment types</p></li><li><p>No error messages that say &quot;credit card&quot; when they mean &quot;payment method&quot;</p></li></ul><hr><h3>Testing Notes</h3><h3>Unit Tests Required</h3><h4>Test Suite 1: Wallet Service Validation</h4><p><strong>Location:</strong> <code>Internal Services/GolfNow.Services.Wallet/GolfNow.Services.Wallet.UnitTests/</code></p><p><strong>Tests to Add:</strong></p><pre><code>Test_SetDefaultWalletOption_PayPalDirect_Success\n  - Arrange: Customer with active PayPal payment option\n  - Act: Call SetDefaultWalletOption with PayPal wallet option ID\n  - Assert: Returns true, no exception thrown\n\nTest_SetDefaultWalletOption_ApplePay_Success\n  - Arrange: Customer with active Apple Pay payment option\n  - Act: Call SetDefaultWalletOption with Apple Pay wallet option ID\n  - Assert: Returns true, no exception thrown\n\nTest_SetDefaultWalletOption_ExpiredPayPal_Fails\n  - Arrange: Customer with expired PayPal payment option\n  - Act: Call SetDefaultWalletOption with expired PayPal ID\n  - Assert: Throws WalletInvalidDataException with appropriate message\n\nTest_SetDefaultWalletOption_GuestWallet_PayPal_Fails\n  - Arrange: Guest wallet with PayPal payment option\n  - Act: Call SetDefaultWalletOption\n  - Assert: Throws exception about guest wallets\n\nTest_SetDefaultWalletOption_SwitchFromCreditCardToPayPal\n  - Arrange: Customer with credit card as default\n  - Act: Set PayPal as default\n  - Assert: Credit card IsDefault = false, PayPal IsDefault = true\n\nTest_SetDefaultWalletOption_SwitchFromPayPalToApplePay\n  - Arrange: Customer with PayPal as default\n  - Act: Set Apple Pay as default\n  - Assert: PayPal IsDefault = false, Apple Pay IsDefault = true\n</code></pre><h4>Test Suite 2: Customer Service Integration</h4><p><strong>Location:</strong> <code>Internal Services/GolfNow.Services.Customer/GolfNow.Services.Customer.UnitTests/</code></p><p><strong>Tests to Add:</strong></p><pre><code>Test_SetDefaultPaymentOption_PayPal_IntegrationSuccess\nTest_SetDefaultPaymentOption_ApplePay_IntegrationSuccess\nTest_GetCustomerWallet_DefaultPayPalMarkedCorrectly\nTest_GetCustomerWallet_DefaultApplePayMarkedCorrectly\n</code></pre><h3>Integration Tests Required</h3><h4>Test Scenario 1: Full Reservation Flow with Default PayPal</h4><p><strong>Setup:</strong></p><ol><li><p>Create test customer with PayPal payment method</p></li><li><p>Set PayPal as default via API</p></li><li><p>Create reservation without specifying payment method</p></li></ol><p><strong>Expected Results:</strong></p><ul><li><p>Reservation created successfully</p></li><li><p>Payment charged to PayPal account</p></li><li><p>Reservation payment_method_type = 16 (PayPal Direct)</p></li><li><p>Charge record shows PayPal wallet option ID</p></li></ul><h4>Test Scenario 2: Full Reservation Flow with Default Apple Pay</h4><p><strong>Setup:</strong></p><ol><li><p>Create test customer with Apple Pay payment method</p></li><li><p>Set Apple Pay as default via API</p></li><li><p>Create reservation without specifying payment method</p></li></ol><p><strong>Expected Results:</strong></p><ul><li><p>Reservation created successfully</p></li><li><p>Payment charged to Apple Pay account</p></li><li><p>Reservation payment_method_type = 17 (Apple Pay)</p></li><li><p>Charge record shows Apple Pay wallet option ID</p></li></ul><h4>Test Scenario 3: Scheduled Payment Execution</h4><p><strong>Setup:</strong></p><ol><li><p>Create customer with scheduled payment</p></li><li><p>Customer has PayPal as default payment method</p></li><li><p>Trigger scheduled payment execution</p></li></ol><p><strong>Expected Results:</strong></p><ul><li><p>Scheduled payment charges PayPal account</p></li><li><p>Transaction records show PayPal as payment method</p></li><li><p>No errors logged</p></li></ul><h4>Test Scenario 4: Refund to PayPal Default</h4><p><strong>Setup:</strong></p><ol><li><p>Complete reservation with default PayPal</p></li><li><p>Process full refund</p></li></ol><p><strong>Expected Results:</strong></p><ul><li><p>Refund processes successfully</p></li><li><p>Refund goes to original PayPal account</p></li><li><p>Refund status updated correctly</p></li></ul><h4>Test Scenario 5: No-Show Charge</h4><p><strong>Setup:</strong></p><ol><li><p>Create reservation with default Apple Pay</p></li><li><p>Mark reservation as no-show</p></li><li><p>Process no-show charge</p></li></ol><p><strong>Expected Results:</strong></p><ul><li><p>No-show charge processes to Apple Pay account</p></li><li><p>Charge successful</p></li><li><p>Reservation status updated</p></li></ul><h4>Test Scenario 6: Multi-Currency Support</h4><p><strong>Setup:</strong></p><ol><li><p>Set PayPal as default for customer in USD market</p></li><li><p>Set PayPal as default for customer in CAD market</p></li><li><p>Make reservations in both currencies</p></li></ol><p><strong>Expected Results:</strong></p><ul><li><p>Both process successfully with correct currency</p></li></ul><h3>Manual QA Test Cases</h3><h4>QA-1: Basic Set Default Functionality</h4><p><strong>Steps:</strong></p><ol><li><p>Login as customer with multiple payment methods (CC, PayPal, Apple Pay)</p></li><li><p>Navigate to payment methods page</p></li><li><p>Set PayPal as default</p></li><li><p>Refresh page</p></li><li><p>Verify PayPal shows as default</p></li><li><p>Set Apple Pay as default</p></li><li><p>Verify only Apple Pay shows as default</p></li></ol><p><strong>Expected:</strong> UI correctly shows default indicator, only one method is default at a time</p><h4>QA-2: Reservation Without Specifying Payment</h4><p><strong>Steps:</strong></p><ol><li><p>Set PayPal as default payment method</p></li><li><p>Start new reservation booking</p></li><li><p>Proceed to payment WITHOUT selecting a payment method</p></li><li><p>Complete booking</p></li></ol><p><strong>Expected:</strong> Booking uses PayPal by default, confirmation shows PayPal</p><h4>QA-3: Guest User Restriction</h4><p><strong>Steps:</strong></p><ol><li><p>Login as guest user</p></li><li><p>Add PayPal payment method</p></li><li><p>Attempt to set as default</p></li></ol><p><strong>Expected:</strong> Error message displayed, action blocked</p><h4>QA-4: Expired Payment Restriction</h4><p><strong>Steps:</strong></p><ol><li><p>Have an expired PayPal payment method in wallet</p></li><li><p>Attempt to set as default</p></li></ol><p><strong>Expected:</strong> Error message about expired payment method, action blocked</p><h4>QA-5: API Testing (Postman/Swagger)</h4><p><strong>Steps:</strong></p><ol><li><p>Call SetDefaultWalletOption API with PayPal wallet option ID</p></li><li><p>Call GetCustomerWallet API</p></li><li><p>Verify response shows PayPal with IsDefault = true</p></li><li><p>Call SetDefaultWalletOption API with Apple Pay wallet option ID</p></li><li><p>Call GetCustomerWallet API</p></li><li><p>Verify response shows Apple Pay with IsDefault = true, PayPal with IsDefault = false</p></li></ol><p><strong>Expected:</strong> API responses consistent with expectations</p><h4>QA-6: Scheduled Payment Renewal</h4><p><strong>Steps:</strong></p><ol><li><p>Create subscription with scheduled renewal</p></li><li><p>Set Apple Pay as default</p></li><li><p>Wait for or trigger renewal</p></li><li><p>Check transaction records</p></li></ol><p><strong>Expected:</strong> Renewal charges to Apple Pay successfully</p><h4>QA-7: Switch Default Multiple Times</h4><p><strong>Steps:</strong></p><ol><li><p>Set Credit Card as default</p></li><li><p>Set PayPal as default</p></li><li><p>Set Apple Pay as default</p></li><li><p>Set Credit Card as default again</p></li><li><p>After each change, verify via API and UI</p></li></ol><p><strong>Expected:</strong> Each switch works correctly, previous default is unset</p><h3>Regression Testing</h3><p><strong>Areas to Regression Test:</strong></p><ul><li><p>Credit card as default still works (existing functionality)</p></li><li><p>Gift card wallet behavior unchanged</p></li><li><p>Account balance wallet behavior unchanged</p></li><li><p>Payment without default specified still prompts for payment selection</p></li><li><p>All existing reservation flows with explicit payment method selection</p></li></ul><h3>Performance Testing</h3><p><strong>Tests to Run:</strong></p><ul><li><p>Load test: 1000 concurrent SetDefaultWalletOption calls</p></li><li><p>Response time should be &lt; 500ms for 95th percentile</p></li><li><p>Database connection pool handles load</p></li><li><p>No deadlocks when updating default payment methods concurrently</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1187017",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14355?focusedCommentId=1187017",
+            "author": "Yoel Martin Pardo",
+            "authorAccountId": "625571809e7380006fb29599",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+            "created": "2026-06-23T13:34:48.211-0400",
+            "createdDisplay": "Jun 23, 2026, 1:34 PM",
+            "updated": "2026-06-23T13:34:48.211-0400",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 1,
+            "body": "Internal note: In this ticket we are only allowing to set Apple Pay payment method as default.\n\nDetails:\n\n- We added a new property SetAsDefault on ApplePayPayment payment info.\n\n- SetAsDefault will be false by default unless it is explicitly specified.\n\n- If specified as true in checkout endpoint. Apple Pay WalletOption with PaymentTypeID equal 17 will be set as default.\n\n- GetWallet endpoint in API 2.1 will now return a new collection called ApplePayPaymentOptionswith all Apple Pay WalletOptions.\n\nExample of the body:\n\n\"PaymentInformation\": [\n{\n\"__type\": \"ApplePayPayment:#GolfNow.API.Contracts.DataContracts\",\n\"PaymentDataToken\":\"\",\n\"PaymentMethodNetwork\": \"MasterCard\",\n\"SetAsDefault\" : true\n}",
+            "bodyHtml": "<p>Internal note: In this ticket we are only allowing to set Apple Pay payment method as default. </p><p><strong>Details:</strong></p><ul><li><p>We added a new property <code>SetAsDefault</code> on <code>ApplePayPayment</code> payment info.</p></li><li><p><code>SetAsDefault</code> will be <code>false</code> by default unless it is explicitly specified.</p></li><li><p>If specified as true in checkout endpoint. Apple Pay WalletOption with <code>PaymentTypeID</code> equal 17 will be set as default.</p></li><li><p><code>GetWallet</code> endpoint in API 2.1 will now return a new collection called <code>ApplePayPaymentOptions</code>with all Apple Pay WalletOptions.</p></li></ul><p>Example of the body:</p><pre><code>&quot;PaymentInformation&quot;: [    \n{\n    &quot;__type&quot;: &quot;ApplePayPayment:#GolfNow.API.Contracts.DataContracts&quot;,\n    &quot;PaymentDataToken&quot;:&quot;&quot;,\n    &quot;PaymentMethodNetwork&quot;: &quot;MasterCard&quot;,\n    &quot;SetAsDefault&quot; : true\n}</code></pre><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14355/comments/1187017/740724-image-20260623-172314.png\" alt=\"image-20260623-172314.png\" loading=\"lazy\"><figcaption>image-20260623-172314.png</figcaption></figure></div>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14355?focusedCommentId=1187017",
+        "lastCommentDisplay": "Jun 23, 2026, 1:34 PM",
+        "lastCommentAuthor": "Yoel Martin Pardo",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "QA Testing (DEV)",
+        "priority": "P3",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "assignedDeveloperAccountId": "625571809e7380006fb29599",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "updated": "2026-06-30T10:24:54.988-0400",
+        "updatedDisplay": "Jun 30, 2026, 10:24 AM",
+        "created": "2026-04-01T21:28:01.191-0400",
+        "createdDisplay": "Apr 1, 2026, 9:28 PM",
+        "components": [
+          "Database",
+          "GolfNow.API.Customer",
+          "GolfNow.API.TR",
+          "GolfNow.Services.Wallet",
+          "GolfNowAPI"
+        ],
+        "fixVersions": [
+          "v3001.125.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "B2C-68",
+          "url": "https://golfnow.atlassian.net/browse/B2C-68",
+          "summary": "Apple Pay 2026",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14510",
         "url": "https://golfnow.atlassian.net/browse/CORE-14510",
         "summary": "Surface IsWaivable and IsRefundable through the FeeConfiguration data access layer",
@@ -8789,80 +8863,6 @@
           "description": "",
           "type": "Epic",
           "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14355",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14355",
-        "summary": "Add Support for Paypal and Apple Pay as Default Payment Methods",
-        "description": "Summary\n\nCurrently, only credit cards can be set as default payment methods. This ticket adds support for PayPal Direct and Apple Pay to be set as default payment methods in customer wallets.\n\nBackground\n\nThe system currently restricts default payment methods to credit cards only (Payment Type ID = 2). This restriction is enforced in multiple layers:\n\n- Wallet Service validation throws exception: \"Only credit card wallet options can be set as the default\"\n\n- Legacy WalletService explicitly rejects PayPal and Apple Pay in switch statement\n\n- Database layer only has SetDefaultCreditCardInWallet stored procedure\n\nBoth PayPal Direct (type 16) and Apple Pay (type 17) are already fully implemented payment types in the system with complete payment processing support.\n\nBusiness Value\n\n- Allows customers to use their preferred payment method as default\n\n- Improves user experience for customers who prefer digital wallets\n\n- Aligns with industry standards where any valid payment method can be default\n\n---\nDefault Payment Method Support\n\nWhat needs to work:\n\n- Users can set PayPal Direct (Payment Type 16) as their default payment method\n\n- Users can set Apple Pay (Payment Type 17) as their default payment method\n\n- Only one payment method can be default at a time per wallet\n\n- When a user sets a new default, the old one automatically gets unset\n\n- All current validations should remain such as the inability to set an inactive or expired payment method as a default\n\n- If this will require a contract change to the existing Get Wallet endpoint, please create a brand new wallet endpoint or find a way to make it backwards compatible\n\n- It is not expected UI teams will be able to support this in parallel\n\nCheckout Integration\n\nScheduled Payments\n\nRecurring charges need to work:\n\n- Scheduled payments should support PayPal and Apple Pay as defaults\n\n- Subscription renewals should support PayPal and Apple Pay as defaults\n\nPayment Operations\n\nThese operations need to handle PayPal/Apple Pay defaults:\n\n- Refunds - should process correctly when refunding to a PayPal or Apple Pay default\n\n- No-show charges - should work when charging a PayPal or Apple Pay default\n\n- Manual charges - should work when charging a PayPal or Apple Pay default\n\n---\nImplementation Areas\n\n1. Wallet Service - Core Default Payment Logic\n\nWhat needs to change:\n\n- Remove the restriction that only allows credit cards to be set as default\n\n- Update validation logic to accept PayPal Direct and Apple Pay as valid default payment types\n\n- Ensure database operations (stored procedures) can handle setting any payment type as default, not just credit cards\n\n---\n2. Customer Service Integration\n\nWhat needs to verify:\n\n- Ensure the service layer properly passes through PayPal and Apple Pay when setting defaults\n\n- No additional restrictions or assumptions at this layer\n\n---\n3. TeeTimesAPI / API 2.1 Layer\n\nWhat needs to change/verify:\n\n- Customer wallet management endpoints (methods with names like \"SetCreditCardAsPrimary\" may need updating)\n\n- Reservation creation logic when no payment method is specified (should fall back to default)\n\n- Order creation logic when no payment method is specified (should fall back to default)\n\n- Payment validation in reservation workflows\n\n---\n4. Reservation Service Workflows\n\nWhat needs to verify:\n\n- Payment validation activities accept PayPal and Apple Pay as defaults\n\n- Charge building activities handle all payment types equally\n\n- Payment capture activities work with PayPal and Apple Pay defaults\n\n- Default payment retrieval logic doesn't assume credit cards\n\n---\n5. Scheduled Payments & Recurring Charges\n\nWhat needs to verify:\n\n- Scheduled payment execution can charge PayPal and Apple Pay defaults\n\n- Subscription renewal workflows support PayPal and Apple Pay\n\n- Payment method update workflows handle all payment types\n\n- Background job processors don't assume credit cards\n\n---\n6. Refund Processing\n\nWhat needs to verify:\n\n- Refund workflows can process refunds to PayPal and Apple Pay\n\n- Refund amount calculations work for all payment types\n\n- Scheduled payment refunds handle all payment types\n\n---\n7. No-Show & Manual Charge Workflows\n\nWhat needs to verify:\n\n- No-show charge workflows can charge PayPal and Apple Pay defaults\n\n- Manual charge workflows accept PayPal and Apple Pay\n\n- Validation logic doesn't restrict to credit cards only\n\n---\n8. Database Layer\n\nWhat needs to change:\n\n- Create or update stored procedures to set defaults for any payment type (not just credit cards)\n\n- Ensure the IsDefault flag works consistently across all payment types\n\n- Database operations should be payment-type agnostic\n\n---\n9. Cross-Cutting Concerns to Review\n\nDefault Payment Retrieval:\n\n- Anywhere the system fetches \"the default payment method\" to use automatically\n\n- Ensure no code assumes the default will always be a credit card type\n\nPayment Type Validation:\n\n- Look for validation logic that checks payment types\n\n- Ensure none inadvertently block PayPal or Apple Pay from being defaults\n\nMethod Naming:\n\n- Methods with names like \"SetCreditCardAsPrimary\" should either be renamed or verified to handle all payment types\n\nError Handling:\n\n- Ensure error messages make sense for all payment types\n\n- No error messages that say \"credit card\" when they mean \"payment method\"\n\n---\nTesting Notes\n\nUnit Tests Required\n\nTest Suite 1: Wallet Service Validation\n\nLocation: Internal Services/GolfNow.Services.Wallet/GolfNow.Services.Wallet.UnitTests/\n\nTests to Add:\n\nTest_SetDefaultWalletOption_PayPalDirect_Success\n- Arrange: Customer with active PayPal payment option\n- Act: Call SetDefaultWalletOption with PayPal wallet option ID\n- Assert: Returns true, no exception thrown\n\nTest_SetDefaultWalletOption_ApplePay_Success\n- Arrange: Customer with active Apple Pay payment option\n- Act: Call SetDefaultWalletOption with Apple Pay wallet option ID\n- Assert: Returns true, no exception thrown\n\nTest_SetDefaultWalletOption_ExpiredPayPal_Fails\n- Arrange: Customer with expired PayPal payment option\n- Act: Call SetDefaultWalletOption with expired PayPal ID\n- Assert: Throws WalletInvalidDataException with appropriate message\n\nTest_SetDefaultWalletOption_GuestWallet_PayPal_Fails\n- Arrange: Guest wallet with PayPal payment option\n- Act: Call SetDefaultWalletOption\n- Assert: Throws exception about guest wallets\n\nTest_SetDefaultWalletOption_SwitchFromCreditCardToPayPal\n- Arrange: Customer with credit card as default\n- Act: Set PayPal as default\n- Assert: Credit card IsDefault = false, PayPal IsDefault = true\n\nTest_SetDefaultWalletOption_SwitchFromPayPalToApplePay\n- Arrange: Customer with PayPal as default\n- Act: Set Apple Pay as default\n- Assert: PayPal IsDefault = false, Apple Pay IsDefault = true\n\nTest Suite 2: Customer Service Integration\n\nLocation: Internal Services/GolfNow.Services.Customer/GolfNow.Services.Customer.UnitTests/\n\nTests to Add:\n\nTest_SetDefaultPaymentOption_PayPal_IntegrationSuccess\nTest_SetDefaultPaymentOption_ApplePay_IntegrationSuccess\nTest_GetCustomerWallet_DefaultPayPalMarkedCorrectly\nTest_GetCustomerWallet_DefaultApplePayMarkedCorrectly\n\nIntegration Tests Required\n\nTest Scenario 1: Full Reservation Flow with Default PayPal\n\nSetup:\n\n- Create test customer with PayPal payment method\n\n- Set PayPal as default via API\n\n- Create reservation without specifying payment method\n\nExpected Results:\n\n- Reservation created successfully\n\n- Payment charged to PayPal account\n\n- Reservation payment_method_type = 16 (PayPal Direct)\n\n- Charge record shows PayPal wallet option ID\n\nTest Scenario 2: Full Reservation Flow with Default Apple Pay\n\nSetup:\n\n- Create test customer with Apple Pay payment method\n\n- Set Apple Pay as default via API\n\n- Create reservation without specifying payment method\n\nExpected Results:\n\n- Reservation created successfully\n\n- Payment charged to Apple Pay account\n\n- Reservation payment_method_type = 17 (Apple Pay)\n\n- Charge record shows Apple Pay wallet option ID\n\nTest Scenario 3: Scheduled Payment Execution\n\nSetup:\n\n- Create customer with scheduled payment\n\n- Customer has PayPal as default payment method\n\n- Trigger scheduled payment execution\n\nExpected Results:\n\n- Scheduled payment charges PayPal account\n\n- Transaction records show PayPal as payment method\n\n- No errors logged\n\nTest Scenario 4: Refund to PayPal Default\n\nSetup:\n\n- Complete reservation with default PayPal\n\n- Process full refund\n\nExpected Results:\n\n- Refund processes successfully\n\n- Refund goes to original PayPal account\n\n- Refund status updated correctly\n\nTest Scenario 5: No-Show Charge\n\nSetup:\n\n- Create reservation with default Apple Pay\n\n- Mark reservation as no-show\n\n- Process no-show charge\n\nExpected Results:\n\n- No-show charge processes to Apple Pay account\n\n- Charge successful\n\n- Reservation status updated\n\nTest Scenario 6: Multi-Currency Support\n\nSetup:\n\n- Set PayPal as default for customer in USD market\n\n- Set PayPal as default for customer in CAD market\n\n- Make reservations in both currencies\n\nExpected Results:\n\n- Both process successfully with correct currency\n\nManual QA Test Cases\n\nQA-1: Basic Set Default Functionality\n\nSteps:\n\n- Login as customer with multiple payment methods (CC, PayPal, Apple Pay)\n\n- Navigate to payment methods page\n\n- Set PayPal as default\n\n- Refresh page\n\n- Verify PayPal shows as default\n\n- Set Apple Pay as default\n\n- Verify only Apple Pay shows as default\n\nExpected: UI correctly shows default indicator, only one method is default at a time\n\nQA-2: Reservation Without Specifying Payment\n\nSteps:\n\n- Set PayPal as default payment method\n\n- Start new reservation booking\n\n- Proceed to payment WITHOUT selecting a payment method\n\n- Complete booking\n\nExpected: Booking uses PayPal by default, confirmation shows PayPal\n\nQA-3: Guest User Restriction\n\nSteps:\n\n- Login as guest user\n\n- Add PayPal payment method\n\n- Attempt to set as default\n\nExpected: Error message displayed, action blocked\n\nQA-4: Expired Payment Restriction\n\nSteps:\n\n- Have an expired PayPal payment method in wallet\n\n- Attempt to set as default\n\nExpected: Error message about expired payment method, action blocked\n\nQA-5: API Testing (Postman/Swagger)\n\nSteps:\n\n- Call SetDefaultWalletOption API with PayPal wallet option ID\n\n- Call GetCustomerWallet API\n\n- Verify response shows PayPal with IsDefault = true\n\n- Call SetDefaultWalletOption API with Apple Pay wallet option ID\n\n- Call GetCustomerWallet API\n\n- Verify response shows Apple Pay with IsDefault = true, PayPal with IsDefault = false\n\nExpected: API responses consistent with expectations\n\nQA-6: Scheduled Payment Renewal\n\nSteps:\n\n- Create subscription with scheduled renewal\n\n- Set Apple Pay as default\n\n- Wait for or trigger renewal\n\n- Check transaction records\n\nExpected: Renewal charges to Apple Pay successfully\n\nQA-7: Switch Default Multiple Times\n\nSteps:\n\n- Set Credit Card as default\n\n- Set PayPal as default\n\n- Set Apple Pay as default\n\n- Set Credit Card as default again\n\n- After each change, verify via API and UI\n\nExpected: Each switch works correctly, previous default is unset\n\nRegression Testing\n\nAreas to Regression Test:\n\n- Credit card as default still works (existing functionality)\n\n- Gift card wallet behavior unchanged\n\n- Account balance wallet behavior unchanged\n\n- Payment without default specified still prompts for payment selection\n\n- All existing reservation flows with explicit payment method selection\n\nPerformance Testing\n\nTests to Run:\n\n- Load test: 1000 concurrent SetDefaultWalletOption calls\n\n- Response time should be < 500ms for 95th percentile\n\n- Database connection pool handles load\n\n- No deadlocks when updating default payment methods concurrently",
-        "descriptionHtml": "<h3>Summary</h3><p>Currently, only credit cards can be set as default payment methods. This ticket adds support for PayPal Direct and Apple Pay to be set as default payment methods in customer wallets.</p><h3>Background</h3><p>The system currently restricts default payment methods to credit cards only (Payment Type ID = 2). This restriction is enforced in multiple layers:</p><ul><li><p>Wallet Service validation throws exception: &quot;Only credit card wallet options can be set as the default&quot;</p></li><li><p>Legacy WalletService explicitly rejects PayPal and Apple Pay in switch statement</p></li><li><p>Database layer only has <code>SetDefaultCreditCardInWallet</code> stored procedure</p></li></ul><p>Both PayPal Direct (type 16) and Apple Pay (type 17) are already fully implemented payment types in the system with complete payment processing support.</p><h3>Business Value</h3><ul><li><p>Allows customers to use their preferred payment method as default</p></li><li><p>Improves user experience for customers who prefer digital wallets</p></li><li><p>Aligns with industry standards where any valid payment method can be default</p></li></ul><hr><h3>Default Payment Method Support</h3><p><strong>What needs to work:</strong></p><ul><li><p>Users can set PayPal Direct (Payment Type 16) as their default payment method</p></li><li><p>Users can set Apple Pay (Payment Type 17) as their default payment method</p></li><li><p>Only one payment method can be default at a time per wallet</p></li><li><p>When a user sets a new default, the old one automatically gets unset</p></li><li><p>All current validations should remain such as the inability to set an inactive or expired payment method as a default</p></li><li><p><strong>If this will require a contract change to the existing Get Wallet endpoint, please create a brand new wallet endpoint or find a way to make it backwards compatible</strong></p><ul><li><p><strong>It is not expected UI teams will be able to support this in parallel </strong></p></li></ul></li></ul><h3>Checkout Integration</h3><h3>Scheduled Payments</h3><p><strong>Recurring charges need to work:</strong></p><ul><li><p>Scheduled payments should support PayPal and Apple Pay as defaults</p></li><li><p>Subscription renewals should support PayPal and Apple Pay as defaults</p></li></ul><h3>Payment Operations</h3><p><strong>These operations need to handle PayPal/Apple Pay defaults:</strong></p><ul><li><p>Refunds - should process correctly when refunding to a PayPal or Apple Pay default</p></li><li><p>No-show charges - should work when charging a PayPal or Apple Pay default</p></li><li><p>Manual charges - should work when charging a PayPal or Apple Pay default</p></li></ul><hr><h3>Implementation Areas</h3><h3>1. Wallet Service - Core Default Payment Logic</h3><p><strong>What needs to change:</strong></p><ul><li><p>Remove the restriction that only allows credit cards to be set as default</p></li><li><p>Update validation logic to accept PayPal Direct and Apple Pay as valid default payment types</p></li><li><p>Ensure database operations (stored procedures) can handle setting any payment type as default, not just credit cards</p></li></ul><hr><h3>2. Customer Service Integration</h3><p><strong>What needs to verify:</strong></p><ul><li><p>Ensure the service layer properly passes through PayPal and Apple Pay when setting defaults</p></li><li><p>No additional restrictions or assumptions at this layer</p></li></ul><hr><h3>3. TeeTimesAPI / API 2.1 Layer</h3><p><strong>What needs to change/verify:</strong></p><ul><li><p>Customer wallet management endpoints (methods with names like &quot;SetCreditCardAsPrimary&quot; may need updating)</p></li><li><p>Reservation creation logic when no payment method is specified (should fall back to default)</p></li><li><p>Order creation logic when no payment method is specified (should fall back to default)</p></li><li><p>Payment validation in reservation workflows</p></li></ul><hr><h3>4. Reservation Service Workflows</h3><p><strong>What needs to verify:</strong></p><ul><li><p>Payment validation activities accept PayPal and Apple Pay as defaults</p></li><li><p>Charge building activities handle all payment types equally</p></li><li><p>Payment capture activities work with PayPal and Apple Pay defaults</p></li><li><p>Default payment retrieval logic doesn't assume credit cards</p></li></ul><hr><h3>5. Scheduled Payments &amp; Recurring Charges</h3><p><strong>What needs to verify:</strong></p><ul><li><p>Scheduled payment execution can charge PayPal and Apple Pay defaults</p></li><li><p>Subscription renewal workflows support PayPal and Apple Pay</p></li><li><p>Payment method update workflows handle all payment types</p></li><li><p>Background job processors don't assume credit cards</p></li></ul><hr><h3>6. Refund Processing</h3><p><strong>What needs to verify:</strong></p><ul><li><p>Refund workflows can process refunds to PayPal and Apple Pay</p></li><li><p>Refund amount calculations work for all payment types</p></li><li><p>Scheduled payment refunds handle all payment types</p></li></ul><hr><h3>7. No-Show &amp; Manual Charge Workflows</h3><p><strong>What needs to verify:</strong></p><ul><li><p>No-show charge workflows can charge PayPal and Apple Pay defaults</p></li><li><p>Manual charge workflows accept PayPal and Apple Pay</p></li><li><p>Validation logic doesn't restrict to credit cards only</p></li></ul><hr><h3>8. Database Layer</h3><p><strong>What needs to change:</strong></p><ul><li><p>Create or update stored procedures to set defaults for any payment type (not just credit cards)</p></li><li><p>Ensure the <code>IsDefault</code> flag works consistently across all payment types</p></li><li><p>Database operations should be payment-type agnostic</p></li></ul><hr><h3>9. Cross-Cutting Concerns to Review</h3><p><strong>Default Payment Retrieval:</strong></p><ul><li><p>Anywhere the system fetches &quot;the default payment method&quot; to use automatically</p></li><li><p>Ensure no code assumes the default will always be a credit card type</p></li></ul><p><strong>Payment Type Validation:</strong></p><ul><li><p>Look for validation logic that checks payment types</p></li><li><p>Ensure none inadvertently block PayPal or Apple Pay from being defaults</p></li></ul><p><strong>Method Naming:</strong></p><ul><li><p>Methods with names like &quot;SetCreditCardAsPrimary&quot; should either be renamed or verified to handle all payment types</p></li></ul><p><strong>Error Handling:</strong></p><ul><li><p>Ensure error messages make sense for all payment types</p></li><li><p>No error messages that say &quot;credit card&quot; when they mean &quot;payment method&quot;</p></li></ul><hr><h3>Testing Notes</h3><h3>Unit Tests Required</h3><h4>Test Suite 1: Wallet Service Validation</h4><p><strong>Location:</strong> <code>Internal Services/GolfNow.Services.Wallet/GolfNow.Services.Wallet.UnitTests/</code></p><p><strong>Tests to Add:</strong></p><pre><code>Test_SetDefaultWalletOption_PayPalDirect_Success\n  - Arrange: Customer with active PayPal payment option\n  - Act: Call SetDefaultWalletOption with PayPal wallet option ID\n  - Assert: Returns true, no exception thrown\n\nTest_SetDefaultWalletOption_ApplePay_Success\n  - Arrange: Customer with active Apple Pay payment option\n  - Act: Call SetDefaultWalletOption with Apple Pay wallet option ID\n  - Assert: Returns true, no exception thrown\n\nTest_SetDefaultWalletOption_ExpiredPayPal_Fails\n  - Arrange: Customer with expired PayPal payment option\n  - Act: Call SetDefaultWalletOption with expired PayPal ID\n  - Assert: Throws WalletInvalidDataException with appropriate message\n\nTest_SetDefaultWalletOption_GuestWallet_PayPal_Fails\n  - Arrange: Guest wallet with PayPal payment option\n  - Act: Call SetDefaultWalletOption\n  - Assert: Throws exception about guest wallets\n\nTest_SetDefaultWalletOption_SwitchFromCreditCardToPayPal\n  - Arrange: Customer with credit card as default\n  - Act: Set PayPal as default\n  - Assert: Credit card IsDefault = false, PayPal IsDefault = true\n\nTest_SetDefaultWalletOption_SwitchFromPayPalToApplePay\n  - Arrange: Customer with PayPal as default\n  - Act: Set Apple Pay as default\n  - Assert: PayPal IsDefault = false, Apple Pay IsDefault = true\n</code></pre><h4>Test Suite 2: Customer Service Integration</h4><p><strong>Location:</strong> <code>Internal Services/GolfNow.Services.Customer/GolfNow.Services.Customer.UnitTests/</code></p><p><strong>Tests to Add:</strong></p><pre><code>Test_SetDefaultPaymentOption_PayPal_IntegrationSuccess\nTest_SetDefaultPaymentOption_ApplePay_IntegrationSuccess\nTest_GetCustomerWallet_DefaultPayPalMarkedCorrectly\nTest_GetCustomerWallet_DefaultApplePayMarkedCorrectly\n</code></pre><h3>Integration Tests Required</h3><h4>Test Scenario 1: Full Reservation Flow with Default PayPal</h4><p><strong>Setup:</strong></p><ol><li><p>Create test customer with PayPal payment method</p></li><li><p>Set PayPal as default via API</p></li><li><p>Create reservation without specifying payment method</p></li></ol><p><strong>Expected Results:</strong></p><ul><li><p>Reservation created successfully</p></li><li><p>Payment charged to PayPal account</p></li><li><p>Reservation payment_method_type = 16 (PayPal Direct)</p></li><li><p>Charge record shows PayPal wallet option ID</p></li></ul><h4>Test Scenario 2: Full Reservation Flow with Default Apple Pay</h4><p><strong>Setup:</strong></p><ol><li><p>Create test customer with Apple Pay payment method</p></li><li><p>Set Apple Pay as default via API</p></li><li><p>Create reservation without specifying payment method</p></li></ol><p><strong>Expected Results:</strong></p><ul><li><p>Reservation created successfully</p></li><li><p>Payment charged to Apple Pay account</p></li><li><p>Reservation payment_method_type = 17 (Apple Pay)</p></li><li><p>Charge record shows Apple Pay wallet option ID</p></li></ul><h4>Test Scenario 3: Scheduled Payment Execution</h4><p><strong>Setup:</strong></p><ol><li><p>Create customer with scheduled payment</p></li><li><p>Customer has PayPal as default payment method</p></li><li><p>Trigger scheduled payment execution</p></li></ol><p><strong>Expected Results:</strong></p><ul><li><p>Scheduled payment charges PayPal account</p></li><li><p>Transaction records show PayPal as payment method</p></li><li><p>No errors logged</p></li></ul><h4>Test Scenario 4: Refund to PayPal Default</h4><p><strong>Setup:</strong></p><ol><li><p>Complete reservation with default PayPal</p></li><li><p>Process full refund</p></li></ol><p><strong>Expected Results:</strong></p><ul><li><p>Refund processes successfully</p></li><li><p>Refund goes to original PayPal account</p></li><li><p>Refund status updated correctly</p></li></ul><h4>Test Scenario 5: No-Show Charge</h4><p><strong>Setup:</strong></p><ol><li><p>Create reservation with default Apple Pay</p></li><li><p>Mark reservation as no-show</p></li><li><p>Process no-show charge</p></li></ol><p><strong>Expected Results:</strong></p><ul><li><p>No-show charge processes to Apple Pay account</p></li><li><p>Charge successful</p></li><li><p>Reservation status updated</p></li></ul><h4>Test Scenario 6: Multi-Currency Support</h4><p><strong>Setup:</strong></p><ol><li><p>Set PayPal as default for customer in USD market</p></li><li><p>Set PayPal as default for customer in CAD market</p></li><li><p>Make reservations in both currencies</p></li></ol><p><strong>Expected Results:</strong></p><ul><li><p>Both process successfully with correct currency</p></li></ul><h3>Manual QA Test Cases</h3><h4>QA-1: Basic Set Default Functionality</h4><p><strong>Steps:</strong></p><ol><li><p>Login as customer with multiple payment methods (CC, PayPal, Apple Pay)</p></li><li><p>Navigate to payment methods page</p></li><li><p>Set PayPal as default</p></li><li><p>Refresh page</p></li><li><p>Verify PayPal shows as default</p></li><li><p>Set Apple Pay as default</p></li><li><p>Verify only Apple Pay shows as default</p></li></ol><p><strong>Expected:</strong> UI correctly shows default indicator, only one method is default at a time</p><h4>QA-2: Reservation Without Specifying Payment</h4><p><strong>Steps:</strong></p><ol><li><p>Set PayPal as default payment method</p></li><li><p>Start new reservation booking</p></li><li><p>Proceed to payment WITHOUT selecting a payment method</p></li><li><p>Complete booking</p></li></ol><p><strong>Expected:</strong> Booking uses PayPal by default, confirmation shows PayPal</p><h4>QA-3: Guest User Restriction</h4><p><strong>Steps:</strong></p><ol><li><p>Login as guest user</p></li><li><p>Add PayPal payment method</p></li><li><p>Attempt to set as default</p></li></ol><p><strong>Expected:</strong> Error message displayed, action blocked</p><h4>QA-4: Expired Payment Restriction</h4><p><strong>Steps:</strong></p><ol><li><p>Have an expired PayPal payment method in wallet</p></li><li><p>Attempt to set as default</p></li></ol><p><strong>Expected:</strong> Error message about expired payment method, action blocked</p><h4>QA-5: API Testing (Postman/Swagger)</h4><p><strong>Steps:</strong></p><ol><li><p>Call SetDefaultWalletOption API with PayPal wallet option ID</p></li><li><p>Call GetCustomerWallet API</p></li><li><p>Verify response shows PayPal with IsDefault = true</p></li><li><p>Call SetDefaultWalletOption API with Apple Pay wallet option ID</p></li><li><p>Call GetCustomerWallet API</p></li><li><p>Verify response shows Apple Pay with IsDefault = true, PayPal with IsDefault = false</p></li></ol><p><strong>Expected:</strong> API responses consistent with expectations</p><h4>QA-6: Scheduled Payment Renewal</h4><p><strong>Steps:</strong></p><ol><li><p>Create subscription with scheduled renewal</p></li><li><p>Set Apple Pay as default</p></li><li><p>Wait for or trigger renewal</p></li><li><p>Check transaction records</p></li></ol><p><strong>Expected:</strong> Renewal charges to Apple Pay successfully</p><h4>QA-7: Switch Default Multiple Times</h4><p><strong>Steps:</strong></p><ol><li><p>Set Credit Card as default</p></li><li><p>Set PayPal as default</p></li><li><p>Set Apple Pay as default</p></li><li><p>Set Credit Card as default again</p></li><li><p>After each change, verify via API and UI</p></li></ol><p><strong>Expected:</strong> Each switch works correctly, previous default is unset</p><h3>Regression Testing</h3><p><strong>Areas to Regression Test:</strong></p><ul><li><p>Credit card as default still works (existing functionality)</p></li><li><p>Gift card wallet behavior unchanged</p></li><li><p>Account balance wallet behavior unchanged</p></li><li><p>Payment without default specified still prompts for payment selection</p></li><li><p>All existing reservation flows with explicit payment method selection</p></li></ul><h3>Performance Testing</h3><p><strong>Tests to Run:</strong></p><ul><li><p>Load test: 1000 concurrent SetDefaultWalletOption calls</p></li><li><p>Response time should be &lt; 500ms for 95th percentile</p></li><li><p>Database connection pool handles load</p></li><li><p>No deadlocks when updating default payment methods concurrently</p></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1187017",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14355?focusedCommentId=1187017",
-            "author": "Yoel Martin Pardo",
-            "authorAccountId": "625571809e7380006fb29599",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-            "created": "2026-06-23T13:34:48.211-0400",
-            "createdDisplay": "Jun 23, 2026, 1:34 PM",
-            "updated": "2026-06-23T13:34:48.211-0400",
-            "updatedDisplay": "",
-            "hasMedia": true,
-            "mediaCount": 1,
-            "body": "Internal note: In this ticket we are only allowing to set Apple Pay payment method as default.\n\nDetails:\n\n- We added a new property SetAsDefault on ApplePayPayment payment info.\n\n- SetAsDefault will be false by default unless it is explicitly specified.\n\n- If specified as true in checkout endpoint. Apple Pay WalletOption with PaymentTypeID equal 17 will be set as default.\n\n- GetWallet endpoint in API 2.1 will now return a new collection called ApplePayPaymentOptionswith all Apple Pay WalletOptions.\n\nExample of the body:\n\n\"PaymentInformation\": [\n{\n\"__type\": \"ApplePayPayment:#GolfNow.API.Contracts.DataContracts\",\n\"PaymentDataToken\":\"\",\n\"PaymentMethodNetwork\": \"MasterCard\",\n\"SetAsDefault\" : true\n}",
-            "bodyHtml": "<p>Internal note: In this ticket we are only allowing to set Apple Pay payment method as default. </p><p><strong>Details:</strong></p><ul><li><p>We added a new property <code>SetAsDefault</code> on <code>ApplePayPayment</code> payment info.</p></li><li><p><code>SetAsDefault</code> will be <code>false</code> by default unless it is explicitly specified.</p></li><li><p>If specified as true in checkout endpoint. Apple Pay WalletOption with <code>PaymentTypeID</code> equal 17 will be set as default.</p></li><li><p><code>GetWallet</code> endpoint in API 2.1 will now return a new collection called <code>ApplePayPaymentOptions</code>with all Apple Pay WalletOptions.</p></li></ul><p>Example of the body:</p><pre><code>&quot;PaymentInformation&quot;: [    \n{\n    &quot;__type&quot;: &quot;ApplePayPayment:#GolfNow.API.Contracts.DataContracts&quot;,\n    &quot;PaymentDataToken&quot;:&quot;&quot;,\n    &quot;PaymentMethodNetwork&quot;: &quot;MasterCard&quot;,\n    &quot;SetAsDefault&quot; : true\n}</code></pre><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14355/comments/1187017/740724-image-20260623-172314.png\" alt=\"image-20260623-172314.png\" loading=\"lazy\"><figcaption>image-20260623-172314.png</figcaption></figure></div>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14355?focusedCommentId=1187017",
-        "lastCommentDisplay": "Jun 23, 2026, 1:34 PM",
-        "lastCommentAuthor": "Yoel Martin Pardo",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "QA Testing (DEV)",
-        "priority": "P3",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-06-24T10:48:16.934-0400",
-        "updatedDisplay": "Jun 24, 2026, 10:48 AM",
-        "created": "2026-04-01T21:28:01.191-0400",
-        "createdDisplay": "Apr 1, 2026, 9:28 PM",
-        "components": [
-          "Database",
-          "GolfNow.API.Customer",
-          "GolfNow.API.TR",
-          "GolfNow.Services.Wallet",
-          "GolfNowAPI"
-        ],
-        "fixVersions": [
-          "v3001.125.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "B2C-68",
-          "url": "https://golfnow.atlassian.net/browse/B2C-68",
-          "summary": "Apple Pay 2026",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
           "priority": "None"
         }
       },
@@ -32488,13 +32488,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-30T14:21:02.500Z",
-    "pulledAtDisplay": "Jun 30, 2026, 10:21 AM",
+    "pulledAt": "2026-06-30T14:26:02.713Z",
+    "pulledAtDisplay": "Jun 30, 2026, 10:26 AM",
     "window": {
-      "start": "2026-05-16T14:21:02.500Z",
-      "end": "2026-12-27T14:21:02.500Z",
-      "startDisplay": "May 16, 2026, 10:21 AM",
-      "endDisplay": "Dec 27, 2026, 9:21 AM"
+      "start": "2026-05-16T14:26:02.712Z",
+      "end": "2026-12-27T14:26:02.712Z",
+      "startDisplay": "May 16, 2026, 10:26 AM",
+      "endDisplay": "Dec 27, 2026, 9:26 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -32507,7 +32507,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-30T14:21:04.762Z",
+        "pulledAt": "2026-06-30T14:26:05.335Z",
         "eventCount": 87,
         "events": [
           {
@@ -32579,23 +32579,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
-            "start": "2026-05-26T18:00:00.000Z",
-            "end": "2026-05-26T19:55:00.000Z",
-            "startDate": "",
-            "endDate": "",
-            "startDisplay": "May 26, 2026, 2:00 PM",
-            "endDisplay": "May 26, 2026, 3:55 PM",
-            "allDay": false,
-            "type": "Scheduled Maintenance",
-            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
-            "description": "Slack: #itops_deployments",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -32610,6 +32593,23 @@
             "type": "Patching",
             "location": "https://golfnow.atlassian.net/browse/OPS-54241",
             "description": "Slack: #itops_patching_communications",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
+            "start": "2026-05-26T18:00:00.000Z",
+            "end": "2026-05-26T19:55:00.000Z",
+            "startDate": "",
+            "endDate": "",
+            "startDisplay": "May 26, 2026, 2:00 PM",
+            "endDisplay": "May 26, 2026, 3:55 PM",
+            "allDay": false,
+            "type": "Scheduled Maintenance",
+            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
+            "description": "Slack: #itops_deployments",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
@@ -33514,23 +33514,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Summer Bank Holiday (UK)",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-01T00:00:00.000Z",
-            "startDate": "2026-08-31",
-            "endDate": "2026-09-01",
-            "startDisplay": "Aug 31, 2026",
-            "endDisplay": "Sep 1, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -33543,6 +33526,23 @@
             "endDisplay": "Sep 8, 2026",
             "allDay": true,
             "type": "Golf Freeze",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Summer Bank Holiday (UK)",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-01T00:00:00.000Z",
+            "startDate": "2026-08-31",
+            "endDate": "2026-09-01",
+            "startDisplay": "Aug 31, 2026",
+            "endDisplay": "Sep 1, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -33871,6 +33871,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -33900,23 +33917,6 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -33995,10 +33995,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-30T14:17:32.191Z",
-    "previousPulledAtDisplay": "Jun 30, 2026, 10:17 AM",
-    "currentPulledAt": "2026-06-30T14:22:33.537Z",
-    "currentPulledAtDisplay": "Jun 30, 2026, 10:22 AM",
+    "previousPulledAt": "2026-06-30T14:22:33.537Z",
+    "previousPulledAtDisplay": "Jun 30, 2026, 10:22 AM",
+    "currentPulledAt": "2026-06-30T14:27:23.608Z",
+    "currentPulledAtDisplay": "Jun 30, 2026, 10:27 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -34006,6 +34006,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-30T14:22:33.537Z",
+      "previousPulledAtDisplay": "Jun 30, 2026, 10:22 AM",
+      "currentPulledAt": "2026-06-30T14:27:23.608Z",
+      "currentPulledAtDisplay": "Jun 30, 2026, 10:27 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-30T14:17:32.191Z",
       "previousPulledAtDisplay": "Jun 30, 2026, 10:17 AM",
@@ -35837,17 +35848,6 @@
       "previousPulledAtDisplay": "Jun 29, 2026, 8:22 PM",
       "currentPulledAt": "2026-06-30T00:27:28.370Z",
       "currentPulledAtDisplay": "Jun 29, 2026, 8:27 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-30T00:17:14.333Z",
-      "previousPulledAtDisplay": "Jun 29, 2026, 8:17 PM",
-      "currentPulledAt": "2026-06-30T00:22:08.369Z",
-      "currentPulledAtDisplay": "Jun 29, 2026, 8:22 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
