@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-30T12:03:32.310Z",
-  "pulledAtDisplay": "Jun 30, 2026, 8:03 AM",
+  "pulledAt": "2026-06-30T12:08:44.044Z",
+  "pulledAtDisplay": "Jun 30, 2026, 8:08 AM",
   "total": 24,
   "issues": [
     {
@@ -1794,8 +1794,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-30T12:03:32.310Z",
-    "pulledAtDisplay": "Jun 30, 2026, 8:03 AM",
+    "pulledAt": "2026-06-30T12:08:44.044Z",
+    "pulledAtDisplay": "Jun 30, 2026, 8:08 AM",
     "total": 418,
     "mainTotal": 388,
     "subtaskTotal": 30,
@@ -32472,13 +32472,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-30T12:01:00.879Z",
-    "pulledAtDisplay": "Jun 30, 2026, 8:01 AM",
+    "pulledAt": "2026-06-30T12:06:36.915Z",
+    "pulledAtDisplay": "Jun 30, 2026, 8:06 AM",
     "window": {
-      "start": "2026-05-16T12:01:00.879Z",
-      "end": "2026-12-27T12:01:00.879Z",
-      "startDisplay": "May 16, 2026, 8:01 AM",
-      "endDisplay": "Dec 27, 2026, 7:01 AM"
+      "start": "2026-05-16T12:06:36.915Z",
+      "end": "2026-12-27T12:06:36.915Z",
+      "startDisplay": "May 16, 2026, 8:06 AM",
+      "endDisplay": "Dec 27, 2026, 7:06 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -32491,7 +32491,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-30T12:01:02.758Z",
+        "pulledAt": "2026-06-30T12:06:38.991Z",
         "eventCount": 87,
         "events": [
           {
@@ -33979,10 +33979,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-30T11:58:09.799Z",
-    "previousPulledAtDisplay": "Jun 30, 2026, 7:58 AM",
-    "currentPulledAt": "2026-06-30T12:03:32.310Z",
-    "currentPulledAtDisplay": "Jun 30, 2026, 8:03 AM",
+    "previousPulledAt": "2026-06-30T12:03:32.310Z",
+    "previousPulledAtDisplay": "Jun 30, 2026, 8:03 AM",
+    "currentPulledAt": "2026-06-30T12:08:44.044Z",
+    "currentPulledAtDisplay": "Jun 30, 2026, 8:08 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -33990,6 +33990,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-30T12:03:32.310Z",
+      "previousPulledAtDisplay": "Jun 30, 2026, 8:03 AM",
+      "currentPulledAt": "2026-06-30T12:08:44.044Z",
+      "currentPulledAtDisplay": "Jun 30, 2026, 8:08 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-30T11:58:09.799Z",
       "previousPulledAtDisplay": "Jun 30, 2026, 7:58 AM",
@@ -35821,17 +35832,6 @@
       "previousPulledAtDisplay": "Jun 29, 2026, 6:02 PM",
       "currentPulledAt": "2026-06-29T22:07:14.671Z",
       "currentPulledAtDisplay": "Jun 29, 2026, 6:07 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-29T21:57:39.573Z",
-      "previousPulledAtDisplay": "Jun 29, 2026, 5:57 PM",
-      "currentPulledAt": "2026-06-29T22:02:43.762Z",
-      "currentPulledAtDisplay": "Jun 29, 2026, 6:02 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
