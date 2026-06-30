@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-30T14:13:15.876Z",
-  "pulledAtDisplay": "Jun 30, 2026, 10:13 AM",
+  "pulledAt": "2026-06-30T14:17:32.191Z",
+  "pulledAtDisplay": "Jun 30, 2026, 10:17 AM",
   "total": 24,
   "issues": [
     {
@@ -1794,8 +1794,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-30T14:13:15.876Z",
-    "pulledAtDisplay": "Jun 30, 2026, 10:13 AM",
+    "pulledAt": "2026-06-30T14:17:32.191Z",
+    "pulledAtDisplay": "Jun 30, 2026, 10:17 AM",
     "total": 418,
     "mainTotal": 388,
     "subtaskTotal": 30,
@@ -7831,6 +7831,137 @@
         }
       },
       {
+        "key": "CORE-14510",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14510",
+        "summary": "Surface IsWaivable and IsRefundable through the FeeConfiguration data access layer",
+        "description": "Summary\n\nCORE-14444 added IsWaivable and IsRefundable columns to Revenue.FeeConfiguration at the database level, but intentionally deferred the application-layer integration. This ticket connects those columns through the data access layer so they are available to downstream business logic (waiver decisions, refund calculations) in future tickets.\n\nThis is a data plumbing ticket — it makes the values available in-memory but does NOT change any business behavior. No customer-facing impact until future tickets consume these properties behind LaunchDarkly.\n\n---\nWhat This Connects To\n\nThese columns enable the Customizable Transaction Fees epic (CORE-13901) to support fees with different behaviors:\n\n- IsWaivable — Determines whether a GolfPass waived-fee-credit can be applied to this fee. Standard convenience fees are waivable; tourism/regulatory fees are not.\n\n- IsRefundable — Determines whether this fee is included in refund calculations on cancellation. Standard fees are refundable; certain regulatory fees are not.\n\nDownstream consumers (future tickets, not this one):\n\n- GolfPass waiver logic in Reservation Service (LoyaltyHelper)\n\n- Refund/cancellation workflow in Reservation Service (BuildRefundInvoiceActivity)\n\n- Admin UI in RMS for setting these values per fee configuration\n\n---\nAreas Touched\n\n- Stored Procedure — Revenue.GetFeeConfigurationByOwnerFacilityCourse needs to include IsWaivable and IsRefundable in its CTE and final SELECT output\n\n- Framework DTO — GolfNow.Framework.Pricing.Fees.Data.DTO.FeeConfiguration needs corresponding boolean properties\n\n- Sequencing — The GNDS stored procedure update should deploy before or simultaneously with the code change. DTO properties should default to true as a safety net during rolling deploys.\n\n---\nWhat This Does NOT Touch\n\n- No behavior changes — this is purely making data available\n\n- No admin UI changes (RMS models, GolfCourse Service models — separate future ticket)\n\n- No waiver logic changes\n\n- No refund logic changes\n\n- No other stored procedures need updating for this ticket (other sprocs that read/write FeeConfiguration don't need these columns yet — INSERT operations are protected by DEFAULT constraints, UPDATE operations don't touch these columns)\n\n---\nTechnical Reference\n\nA detailed investigation document is attached covering:\n\nPlease be sure to do your own investigation of course\n\n- Full stored procedure analysis (all 6 sprocs that touch the table)\n\n- Complete data flow diagram (DB → DAL → Provider → Consumer)\n\n- Caching assessment (confirmed: no caching on this path)\n\n- All FeeConfiguration model locations across the codebase\n\n- Risk assessment and sequencing considerations\n\n- Downstream consumer mapping for future tickets\n\n---\nAcceptance Criteria\n\n- The booking flow's fee configuration data includes IsWaivable and IsRefundable values from the database\n\n- Existing behavior is preserved — all current fees return true for both properties (matching the database defaults)\n\n- No customer-facing behavior changes\n\n- DTO property defaults ensure safe behavior during rolling deploys (default to true if column not present)\n\n---\nRelated\n\n- CORE-14444 — Database columns (prerequisite, CLOSED)\n\n- CORE-13901 — Parent epic\n\n- CORE-14332 — LaunchDarkly gating (foundation, CLOSED)\n\n- CORE-14117 — Fee messaging moved to post-calculation (foundation, CLOSED)",
+        "descriptionHtml": "<h3>Summary</h3><p>CORE-14444 added <code>IsWaivable</code> and <code>IsRefundable</code> columns to <code>Revenue.FeeConfiguration</code> at the database level, but intentionally deferred the application-layer integration. This ticket connects those columns through the data access layer so they are available to downstream business logic (waiver decisions, refund calculations) in future tickets.</p><p>This is a <strong>data plumbing</strong> ticket — it makes the values available in-memory but does NOT change any business behavior. No customer-facing impact until future tickets consume these properties behind LaunchDarkly.</p><hr><h3>What This Connects To</h3><p>These columns enable the Customizable Transaction Fees epic (CORE-13901) to support fees with different behaviors:</p><ul><li><p><strong>IsWaivable</strong> — Determines whether a GolfPass waived-fee-credit can be applied to this fee. Standard convenience fees are waivable; tourism/regulatory fees are not.</p></li><li><p><strong>IsRefundable</strong> — Determines whether this fee is included in refund calculations on cancellation. Standard fees are refundable; certain regulatory fees are not.</p></li></ul><p><strong>Downstream consumers (future tickets, not this one):</strong></p><ul><li><p>GolfPass waiver logic in Reservation Service (<code>LoyaltyHelper</code>)</p></li><li><p>Refund/cancellation workflow in Reservation Service (<code>BuildRefundInvoiceActivity</code>)</p></li><li><p>Admin UI in RMS for setting these values per fee configuration</p></li></ul><hr><h3>Areas Touched</h3><ol><li><p><strong>Stored Procedure</strong> — <code>Revenue.GetFeeConfigurationByOwnerFacilityCourse</code> needs to include <code>IsWaivable</code> and <code>IsRefundable</code> in its CTE and final SELECT output</p></li><li><p><strong>Framework DTO</strong> — <code>GolfNow.Framework.Pricing.Fees.Data.DTO.FeeConfiguration</code> needs corresponding boolean properties</p></li><li><p><strong>Sequencing</strong> — The GNDS stored procedure update should deploy before or simultaneously with the code change. DTO properties should default to <code>true</code> as a safety net during rolling deploys.</p></li></ol><hr><h3>What This Does NOT Touch</h3><ul><li><p>No behavior changes — this is purely making data available</p></li><li><p>No admin UI changes (RMS models, GolfCourse Service models — separate future ticket)</p></li><li><p>No waiver logic changes</p></li><li><p>No refund logic changes</p></li><li><p>No other stored procedures need updating for this ticket (other sprocs that read/write FeeConfiguration don't need these columns yet — INSERT operations are protected by DEFAULT constraints, UPDATE operations don't touch these columns)</p></li></ul><hr><h3>Technical Reference</h3><p>A detailed investigation document is attached covering:<br> <br><strong>Please be sure to do your own investigation of course</strong></p><ul><li><p>Full stored procedure analysis (all 6 sprocs that touch the table)</p></li><li><p>Complete data flow diagram (DB → DAL → Provider → Consumer)</p></li><li><p>Caching assessment (confirmed: no caching on this path)</p></li><li><p>All FeeConfiguration model locations across the codebase</p></li><li><p>Risk assessment and sequencing considerations</p></li><li><p>Downstream consumer mapping for future tickets</p></li></ul><hr><h3>Acceptance Criteria</h3><ol><li><p>The booking flow's fee configuration data includes IsWaivable and IsRefundable values from the database</p></li><li><p>Existing behavior is preserved — all current fees return <code>true</code> for both properties (matching the database defaults)</p></li><li><p>No customer-facing behavior changes</p></li><li><p>DTO property defaults ensure safe behavior during rolling deploys (default to true if column not present)</p></li></ol><hr><h3>Related</h3><ul><li><p><strong>CORE-14444</strong> — Database columns (prerequisite, CLOSED)</p></li><li><p><strong>CORE-13901</strong> — Parent epic</p></li><li><p><strong>CORE-14332</strong> — LaunchDarkly gating (foundation, CLOSED)</p></li><li><p><strong>CORE-14117</strong> — Fee messaging moved to post-calculation (foundation, CLOSED)</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 5,
+        "comments": [
+          {
+            "id": "1187146",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14510?focusedCommentId=1187146",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-06-23T16:55:30.795-0400",
+            "createdDisplay": "Jun 23, 2026, 4:55 PM",
+            "updated": "2026-06-23T16:55:30.795-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "I forgot to move this into in-development until now.  Sorry for the numbers being all over the place.",
+            "bodyHtml": "<p>I forgot to move this into in-development until now.  Sorry for the numbers being all over the place.</p>"
+          },
+          {
+            "id": "1187153",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14510?focusedCommentId=1187153",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-06-23T17:03:34.016-0400",
+            "createdDisplay": "Jun 23, 2026, 5:03 PM",
+            "updated": "2026-06-23T17:03:34.016-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Ready for Code Review",
+            "bodyHtml": "<p>Ready for Code Review</p>"
+          },
+          {
+            "id": "1188071",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14510?focusedCommentId=1188071",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-06-25T12:44:15.830-0400",
+            "createdDisplay": "Jun 25, 2026, 12:44 PM",
+            "updated": "2026-06-25T12:44:15.830-0400",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 1,
+            "body": "Post-PR-Merge Note:\nLike Yoel had mentioned, I too do not show my rollback master script changes for today’s merge:",
+            "bodyHtml": "<p>Post-PR-Merge Note:<br>Like Yoel had mentioned, I too do not show my rollback master script changes for today’s merge:</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14510/comments/1188071/741654-image-20260625-164412.png\" alt=\"image-20260625-164412.png\" loading=\"lazy\"><figcaption>image-20260625-164412.png</figcaption></figure></div>"
+          },
+          {
+            "id": "1188139",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14510?focusedCommentId=1188139",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-06-25T15:25:01.513-0400",
+            "createdDisplay": "Jun 25, 2026, 3:25 PM",
+            "updated": "2026-06-25T15:25:01.513-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "@Alex Wulff This has been resolved via a repost (push to master) with whitespace change to rollback script.  Should be good to go",
+            "bodyHtml": "<p>@Alex Wulff This has been resolved via a repost (push to master) with whitespace change to rollback script.  Should be good to go</p>"
+          },
+          {
+            "id": "1188143",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14510?focusedCommentId=1188143",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-06-25T15:34:13.171-0400",
+            "createdDisplay": "Jun 25, 2026, 3:34 PM",
+            "updated": "2026-06-25T15:34:13.171-0400",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 2,
+            "body": "Ready for release to development.\n\nTesting notes:\nThe change to GolfNow.API should not show any new fields in the response from:\napi.internal.main/rest/channel/<Channel>/tee-times/<TeeTimeId>/related-rates?players=<PlayerCount>&trade-only=<TradeOnly>\nas such, this should be a regression to make sure neither IsWaivable nor IsRefundable make their way to the end-user’s response.\n\nThe change to the database should be easy to test after release.  Here’s an example I have used:\n\nUSE [CRM]\n\nDECLARE @Contexts Revenue.udtFeeContext\nINSERT INTO @Contexts (OwnerId, GolfFacilityId, GolfCourseId)\nVALUES (\n20868, 5, 1255\n);\n\nexec [Revenue].[GetFeeConfigurationByOwnerFacilityCourse] @Contexts\n\nThis should return the following:\n\nAnd the rollback should match the results from before deployment:",
+            "bodyHtml": "<p>Ready for release to development.<br><br>Testing notes:<br>The change to GolfNow.API should not show any new fields in the response from:<br><code>api.internal.main/rest/channel/&lt;Channel&gt;/tee-times/&lt;TeeTimeId&gt;/related-rates?players=&lt;PlayerCount&gt;&amp;trade-only=&lt;TradeOnly&gt;</code><br>as such, this should be a regression to make sure neither IsWaivable nor IsRefundable make their way to the end-user’s response.<br><br>The change to the database should be easy to test after release.  Here’s an example I have used:<br></p><pre><code>USE [CRM]\n\nDECLARE @Contexts Revenue.udtFeeContext\nINSERT INTO @Contexts (OwnerId, GolfFacilityId, GolfCourseId)\nVALUES (\n20868, 5, 1255\n);\n\nexec [Revenue].[GetFeeConfigurationByOwnerFacilityCourse] @Contexts </code></pre><p>This should return the following:<br></p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14510/comments/1188143/741724-image-20260625-193320.png\" alt=\"image-20260625-193320.png\" loading=\"lazy\"><figcaption>image-20260625-193320.png</figcaption></figure></div><p>And the rollback should match the results from before deployment:<br></p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14510/comments/1188143/741723-image-20260625-193408.png\" alt=\"image-20260625-193408.png\" loading=\"lazy\"><figcaption>image-20260625-193408.png</figcaption></figure></div><p><br></p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14510?focusedCommentId=1188143",
+        "lastCommentDisplay": "Jun 25, 2026, 3:34 PM",
+        "lastCommentAuthor": "Alex Wulff",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "QA Testing (DEV)",
+        "priority": "P1",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Alex Wulff",
+        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "updated": "2026-06-30T10:14:31.176-0400",
+        "updatedDisplay": "Jun 30, 2026, 10:14 AM",
+        "created": "2026-06-09T14:38:37.276-0400",
+        "createdDisplay": "Jun 9, 2026, 2:38 PM",
+        "components": [
+          "Database",
+          "GolfNowAPI"
+        ],
+        "fixVersions": [
+          "v3001.125.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-13901",
+          "url": "https://golfnow.atlassian.net/browse/CORE-13901",
+          "summary": "Customizable transaction fees",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "P1"
+        }
+      },
+      {
         "key": "CORE-13228",
         "url": "https://golfnow.atlassian.net/browse/CORE-13228",
         "summary": "Retro stored procedure - remove hard coded values",
@@ -8386,137 +8517,6 @@
           "type": "Epic",
           "status": "Planning",
           "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14510",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14510",
-        "summary": "Surface IsWaivable and IsRefundable through the FeeConfiguration data access layer",
-        "description": "Summary\n\nCORE-14444 added IsWaivable and IsRefundable columns to Revenue.FeeConfiguration at the database level, but intentionally deferred the application-layer integration. This ticket connects those columns through the data access layer so they are available to downstream business logic (waiver decisions, refund calculations) in future tickets.\n\nThis is a data plumbing ticket — it makes the values available in-memory but does NOT change any business behavior. No customer-facing impact until future tickets consume these properties behind LaunchDarkly.\n\n---\nWhat This Connects To\n\nThese columns enable the Customizable Transaction Fees epic (CORE-13901) to support fees with different behaviors:\n\n- IsWaivable — Determines whether a GolfPass waived-fee-credit can be applied to this fee. Standard convenience fees are waivable; tourism/regulatory fees are not.\n\n- IsRefundable — Determines whether this fee is included in refund calculations on cancellation. Standard fees are refundable; certain regulatory fees are not.\n\nDownstream consumers (future tickets, not this one):\n\n- GolfPass waiver logic in Reservation Service (LoyaltyHelper)\n\n- Refund/cancellation workflow in Reservation Service (BuildRefundInvoiceActivity)\n\n- Admin UI in RMS for setting these values per fee configuration\n\n---\nAreas Touched\n\n- Stored Procedure — Revenue.GetFeeConfigurationByOwnerFacilityCourse needs to include IsWaivable and IsRefundable in its CTE and final SELECT output\n\n- Framework DTO — GolfNow.Framework.Pricing.Fees.Data.DTO.FeeConfiguration needs corresponding boolean properties\n\n- Sequencing — The GNDS stored procedure update should deploy before or simultaneously with the code change. DTO properties should default to true as a safety net during rolling deploys.\n\n---\nWhat This Does NOT Touch\n\n- No behavior changes — this is purely making data available\n\n- No admin UI changes (RMS models, GolfCourse Service models — separate future ticket)\n\n- No waiver logic changes\n\n- No refund logic changes\n\n- No other stored procedures need updating for this ticket (other sprocs that read/write FeeConfiguration don't need these columns yet — INSERT operations are protected by DEFAULT constraints, UPDATE operations don't touch these columns)\n\n---\nTechnical Reference\n\nA detailed investigation document is attached covering:\n\nPlease be sure to do your own investigation of course\n\n- Full stored procedure analysis (all 6 sprocs that touch the table)\n\n- Complete data flow diagram (DB → DAL → Provider → Consumer)\n\n- Caching assessment (confirmed: no caching on this path)\n\n- All FeeConfiguration model locations across the codebase\n\n- Risk assessment and sequencing considerations\n\n- Downstream consumer mapping for future tickets\n\n---\nAcceptance Criteria\n\n- The booking flow's fee configuration data includes IsWaivable and IsRefundable values from the database\n\n- Existing behavior is preserved — all current fees return true for both properties (matching the database defaults)\n\n- No customer-facing behavior changes\n\n- DTO property defaults ensure safe behavior during rolling deploys (default to true if column not present)\n\n---\nRelated\n\n- CORE-14444 — Database columns (prerequisite, CLOSED)\n\n- CORE-13901 — Parent epic\n\n- CORE-14332 — LaunchDarkly gating (foundation, CLOSED)\n\n- CORE-14117 — Fee messaging moved to post-calculation (foundation, CLOSED)",
-        "descriptionHtml": "<h3>Summary</h3><p>CORE-14444 added <code>IsWaivable</code> and <code>IsRefundable</code> columns to <code>Revenue.FeeConfiguration</code> at the database level, but intentionally deferred the application-layer integration. This ticket connects those columns through the data access layer so they are available to downstream business logic (waiver decisions, refund calculations) in future tickets.</p><p>This is a <strong>data plumbing</strong> ticket — it makes the values available in-memory but does NOT change any business behavior. No customer-facing impact until future tickets consume these properties behind LaunchDarkly.</p><hr><h3>What This Connects To</h3><p>These columns enable the Customizable Transaction Fees epic (CORE-13901) to support fees with different behaviors:</p><ul><li><p><strong>IsWaivable</strong> — Determines whether a GolfPass waived-fee-credit can be applied to this fee. Standard convenience fees are waivable; tourism/regulatory fees are not.</p></li><li><p><strong>IsRefundable</strong> — Determines whether this fee is included in refund calculations on cancellation. Standard fees are refundable; certain regulatory fees are not.</p></li></ul><p><strong>Downstream consumers (future tickets, not this one):</strong></p><ul><li><p>GolfPass waiver logic in Reservation Service (<code>LoyaltyHelper</code>)</p></li><li><p>Refund/cancellation workflow in Reservation Service (<code>BuildRefundInvoiceActivity</code>)</p></li><li><p>Admin UI in RMS for setting these values per fee configuration</p></li></ul><hr><h3>Areas Touched</h3><ol><li><p><strong>Stored Procedure</strong> — <code>Revenue.GetFeeConfigurationByOwnerFacilityCourse</code> needs to include <code>IsWaivable</code> and <code>IsRefundable</code> in its CTE and final SELECT output</p></li><li><p><strong>Framework DTO</strong> — <code>GolfNow.Framework.Pricing.Fees.Data.DTO.FeeConfiguration</code> needs corresponding boolean properties</p></li><li><p><strong>Sequencing</strong> — The GNDS stored procedure update should deploy before or simultaneously with the code change. DTO properties should default to <code>true</code> as a safety net during rolling deploys.</p></li></ol><hr><h3>What This Does NOT Touch</h3><ul><li><p>No behavior changes — this is purely making data available</p></li><li><p>No admin UI changes (RMS models, GolfCourse Service models — separate future ticket)</p></li><li><p>No waiver logic changes</p></li><li><p>No refund logic changes</p></li><li><p>No other stored procedures need updating for this ticket (other sprocs that read/write FeeConfiguration don't need these columns yet — INSERT operations are protected by DEFAULT constraints, UPDATE operations don't touch these columns)</p></li></ul><hr><h3>Technical Reference</h3><p>A detailed investigation document is attached covering:<br> <br><strong>Please be sure to do your own investigation of course</strong></p><ul><li><p>Full stored procedure analysis (all 6 sprocs that touch the table)</p></li><li><p>Complete data flow diagram (DB → DAL → Provider → Consumer)</p></li><li><p>Caching assessment (confirmed: no caching on this path)</p></li><li><p>All FeeConfiguration model locations across the codebase</p></li><li><p>Risk assessment and sequencing considerations</p></li><li><p>Downstream consumer mapping for future tickets</p></li></ul><hr><h3>Acceptance Criteria</h3><ol><li><p>The booking flow's fee configuration data includes IsWaivable and IsRefundable values from the database</p></li><li><p>Existing behavior is preserved — all current fees return <code>true</code> for both properties (matching the database defaults)</p></li><li><p>No customer-facing behavior changes</p></li><li><p>DTO property defaults ensure safe behavior during rolling deploys (default to true if column not present)</p></li></ol><hr><h3>Related</h3><ul><li><p><strong>CORE-14444</strong> — Database columns (prerequisite, CLOSED)</p></li><li><p><strong>CORE-13901</strong> — Parent epic</p></li><li><p><strong>CORE-14332</strong> — LaunchDarkly gating (foundation, CLOSED)</p></li><li><p><strong>CORE-14117</strong> — Fee messaging moved to post-calculation (foundation, CLOSED)</p></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 5,
-        "comments": [
-          {
-            "id": "1187146",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14510?focusedCommentId=1187146",
-            "author": "Alex Wulff",
-            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-            "created": "2026-06-23T16:55:30.795-0400",
-            "createdDisplay": "Jun 23, 2026, 4:55 PM",
-            "updated": "2026-06-23T16:55:30.795-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "I forgot to move this into in-development until now.  Sorry for the numbers being all over the place.",
-            "bodyHtml": "<p>I forgot to move this into in-development until now.  Sorry for the numbers being all over the place.</p>"
-          },
-          {
-            "id": "1187153",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14510?focusedCommentId=1187153",
-            "author": "Alex Wulff",
-            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-            "created": "2026-06-23T17:03:34.016-0400",
-            "createdDisplay": "Jun 23, 2026, 5:03 PM",
-            "updated": "2026-06-23T17:03:34.016-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Ready for Code Review",
-            "bodyHtml": "<p>Ready for Code Review</p>"
-          },
-          {
-            "id": "1188071",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14510?focusedCommentId=1188071",
-            "author": "Alex Wulff",
-            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-            "created": "2026-06-25T12:44:15.830-0400",
-            "createdDisplay": "Jun 25, 2026, 12:44 PM",
-            "updated": "2026-06-25T12:44:15.830-0400",
-            "updatedDisplay": "",
-            "hasMedia": true,
-            "mediaCount": 1,
-            "body": "Post-PR-Merge Note:\nLike Yoel had mentioned, I too do not show my rollback master script changes for today’s merge:",
-            "bodyHtml": "<p>Post-PR-Merge Note:<br>Like Yoel had mentioned, I too do not show my rollback master script changes for today’s merge:</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14510/comments/1188071/741654-image-20260625-164412.png\" alt=\"image-20260625-164412.png\" loading=\"lazy\"><figcaption>image-20260625-164412.png</figcaption></figure></div>"
-          },
-          {
-            "id": "1188139",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14510?focusedCommentId=1188139",
-            "author": "Alex Wulff",
-            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-            "created": "2026-06-25T15:25:01.513-0400",
-            "createdDisplay": "Jun 25, 2026, 3:25 PM",
-            "updated": "2026-06-25T15:25:01.513-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "@Alex Wulff This has been resolved via a repost (push to master) with whitespace change to rollback script.  Should be good to go",
-            "bodyHtml": "<p>@Alex Wulff This has been resolved via a repost (push to master) with whitespace change to rollback script.  Should be good to go</p>"
-          },
-          {
-            "id": "1188143",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14510?focusedCommentId=1188143",
-            "author": "Alex Wulff",
-            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-            "created": "2026-06-25T15:34:13.171-0400",
-            "createdDisplay": "Jun 25, 2026, 3:34 PM",
-            "updated": "2026-06-25T15:34:13.171-0400",
-            "updatedDisplay": "",
-            "hasMedia": true,
-            "mediaCount": 2,
-            "body": "Ready for release to development.\n\nTesting notes:\nThe change to GolfNow.API should not show any new fields in the response from:\napi.internal.main/rest/channel/<Channel>/tee-times/<TeeTimeId>/related-rates?players=<PlayerCount>&trade-only=<TradeOnly>\nas such, this should be a regression to make sure neither IsWaivable nor IsRefundable make their way to the end-user’s response.\n\nThe change to the database should be easy to test after release.  Here’s an example I have used:\n\nUSE [CRM]\n\nDECLARE @Contexts Revenue.udtFeeContext\nINSERT INTO @Contexts (OwnerId, GolfFacilityId, GolfCourseId)\nVALUES (\n20868, 5, 1255\n);\n\nexec [Revenue].[GetFeeConfigurationByOwnerFacilityCourse] @Contexts\n\nThis should return the following:\n\nAnd the rollback should match the results from before deployment:",
-            "bodyHtml": "<p>Ready for release to development.<br><br>Testing notes:<br>The change to GolfNow.API should not show any new fields in the response from:<br><code>api.internal.main/rest/channel/&lt;Channel&gt;/tee-times/&lt;TeeTimeId&gt;/related-rates?players=&lt;PlayerCount&gt;&amp;trade-only=&lt;TradeOnly&gt;</code><br>as such, this should be a regression to make sure neither IsWaivable nor IsRefundable make their way to the end-user’s response.<br><br>The change to the database should be easy to test after release.  Here’s an example I have used:<br></p><pre><code>USE [CRM]\n\nDECLARE @Contexts Revenue.udtFeeContext\nINSERT INTO @Contexts (OwnerId, GolfFacilityId, GolfCourseId)\nVALUES (\n20868, 5, 1255\n);\n\nexec [Revenue].[GetFeeConfigurationByOwnerFacilityCourse] @Contexts </code></pre><p>This should return the following:<br></p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14510/comments/1188143/741724-image-20260625-193320.png\" alt=\"image-20260625-193320.png\" loading=\"lazy\"><figcaption>image-20260625-193320.png</figcaption></figure></div><p>And the rollback should match the results from before deployment:<br></p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14510/comments/1188143/741723-image-20260625-193408.png\" alt=\"image-20260625-193408.png\" loading=\"lazy\"><figcaption>image-20260625-193408.png</figcaption></figure></div><p><br></p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14510?focusedCommentId=1188143",
-        "lastCommentDisplay": "Jun 25, 2026, 3:34 PM",
-        "lastCommentAuthor": "Alex Wulff",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Pending Deployment (DEV)",
-        "priority": "P1",
-        "assignee": "Alex Wulff",
-        "assigneeAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "assignedDeveloper": "Alex Wulff",
-        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "updated": "2026-06-25T15:34:13.171-0400",
-        "updatedDisplay": "Jun 25, 2026, 3:34 PM",
-        "created": "2026-06-09T14:38:37.276-0400",
-        "createdDisplay": "Jun 9, 2026, 2:38 PM",
-        "components": [
-          "Database",
-          "GolfNowAPI"
-        ],
-        "fixVersions": [
-          "v3001.125.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-13901",
-          "url": "https://golfnow.atlassian.net/browse/CORE-13901",
-          "summary": "Customizable transaction fees",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "P1"
         }
       },
       {
@@ -32488,13 +32488,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-30T14:11:14.883Z",
-    "pulledAtDisplay": "Jun 30, 2026, 10:11 AM",
+    "pulledAt": "2026-06-30T14:16:08.807Z",
+    "pulledAtDisplay": "Jun 30, 2026, 10:16 AM",
     "window": {
-      "start": "2026-05-16T14:11:14.883Z",
-      "end": "2026-12-27T14:11:14.883Z",
-      "startDisplay": "May 16, 2026, 10:11 AM",
-      "endDisplay": "Dec 27, 2026, 9:11 AM"
+      "start": "2026-05-16T14:16:08.806Z",
+      "end": "2026-12-27T14:16:08.806Z",
+      "startDisplay": "May 16, 2026, 10:16 AM",
+      "endDisplay": "Dec 27, 2026, 9:16 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -32507,7 +32507,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-30T14:11:17.961Z",
+        "pulledAt": "2026-06-30T14:16:10.809Z",
         "eventCount": 87,
         "events": [
           {
@@ -32528,23 +32528,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Spring Bank Holiday (UK)",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDate": "2026-05-25",
-            "endDate": "2026-05-26",
-            "startDisplay": "May 25, 2026",
-            "endDisplay": "May 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -32557,6 +32540,23 @@
             "endDisplay": "May 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Spring Bank Holiday (UK)",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDate": "2026-05-25",
+            "endDate": "2026-05-26",
+            "startDisplay": "May 25, 2026",
+            "endDisplay": "May 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -33956,23 +33956,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -33988,6 +33971,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -33995,10 +33995,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-30T14:07:31.007Z",
-    "previousPulledAtDisplay": "Jun 30, 2026, 10:07 AM",
-    "currentPulledAt": "2026-06-30T14:13:15.876Z",
-    "currentPulledAtDisplay": "Jun 30, 2026, 10:13 AM",
+    "previousPulledAt": "2026-06-30T14:13:15.876Z",
+    "previousPulledAtDisplay": "Jun 30, 2026, 10:13 AM",
+    "currentPulledAt": "2026-06-30T14:17:32.191Z",
+    "currentPulledAtDisplay": "Jun 30, 2026, 10:17 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -34006,6 +34006,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-30T14:13:15.876Z",
+      "previousPulledAtDisplay": "Jun 30, 2026, 10:13 AM",
+      "currentPulledAt": "2026-06-30T14:17:32.191Z",
+      "currentPulledAtDisplay": "Jun 30, 2026, 10:17 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-30T14:07:31.007Z",
       "previousPulledAtDisplay": "Jun 30, 2026, 10:07 AM",
@@ -35837,17 +35848,6 @@
       "previousPulledAtDisplay": "Jun 29, 2026, 8:12 PM",
       "currentPulledAt": "2026-06-30T00:17:14.333Z",
       "currentPulledAtDisplay": "Jun 29, 2026, 8:17 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-30T00:07:46.970Z",
-      "previousPulledAtDisplay": "Jun 29, 2026, 8:07 PM",
-      "currentPulledAt": "2026-06-30T00:12:19.061Z",
-      "currentPulledAtDisplay": "Jun 29, 2026, 8:12 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
