@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-30T14:47:35.772Z",
-  "pulledAtDisplay": "Jun 30, 2026, 10:47 AM",
+  "pulledAt": "2026-06-30T14:55:06.248Z",
+  "pulledAtDisplay": "Jun 30, 2026, 10:55 AM",
   "total": 24,
   "issues": [
     {
@@ -1794,8 +1794,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-30T14:47:35.772Z",
-    "pulledAtDisplay": "Jun 30, 2026, 10:47 AM",
+    "pulledAt": "2026-06-30T14:55:06.248Z",
+    "pulledAtDisplay": "Jun 30, 2026, 10:55 AM",
     "total": 418,
     "mainTotal": 388,
     "subtaskTotal": 30,
@@ -5013,302 +5013,6 @@
         }
       },
       {
-        "key": "CORE-14194",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14194",
-        "summary": "Booking Engine - Prod Reproduction - User can not use saved card in GolfId for transactions ",
-        "description": "Slack Converation : [https://versant-golfnow.slack.com/archives/C09LX72TTMM/p1770758394329919|https://versant-golfnow.slack.com/archives/C09LX72TTMM/p1770758394329919|smart-link] \n\n!image-20260224-142906.png|width=625,alt=\"image-20260224-142906.png\"!\n\n[https://app.datadoghq.com/apm/resource/golf365.phx-api-be-internal/express.request/301d390f52770b6a?dependencyMap.showNetworkMetrics=false&env=production&errors=qson%3A(data%3A(issueSort%3ATOTAL_COUNT)%2Cversion%3A\\!0)&fromUser=false&graphType=waterfall&groupMapByOperation=null&primaryTags=region%3A*%2Cbusiness_vertical%3A*%2Cfarm_friendly%3A*&shouldShowLegend=true&sp=[{\"mp\"%3A{\"size\"%3A\"lg\"}%2C\"p\"%3A{\"traceID\"%3A\"13835681974022196823\"}%2C\"i\"%3A\"apm_trace-explorer-trace-panel\"}]&spanID=16274289296479750188&summary=qson%3A(data%3A(visible%3A\\!t%2Cchanges%3A()%2Cerrors%3A(selected%3Acount%2CgroupBy%3A[])%2Chits%3A(selected%3Acount%2CgroupBy%3A[])%2Clatency%3A(selected%3Alatency%2Cslot%3A(agg%3A95)%2Cdistribution%3A(isLogScale%3A\\!f)%2CshowTraceOutliers%3A\\!t%2CgroupBy%3A[])%2Csublayer%3A(slot%3A(layers%3AserviceAndInferred)%2Cselected%3Apercentage)%2ClagMetrics%3A(selectedMetric%3A\\!s%2CselectedGroupBy%3A\\!s))%2Cversion%3A!1)&timeHint=1770730902818&trace=AwAAAZxHyVUijOVD7wAAABhBWnhIeVY3dUFBQU5kVElvUEdwV2lBTEEAAABdMTE5YzQ4MWQtZDliMS00YjNiLWIxZTYtYmNhNDEzN2I0YTZmLXN5bnRoZXRpYy10aW1lLTE3NzA3Mjg0MDAwMDAwMDAwMDBjLTE3NzA3MzY0NDE3NzcwMDAwMDFvAAEZbA&traceID=13835681974022196823&traceQuery=&start=1770730542780&end=1770734227509&paused=true|https://app.datadoghq.com/apm/resource/golf365.phx-api-be-internal/express.request/301d390f52770b6a?dependencyMap.showNetworkMetrics=false&env=production&errors=qson%3A%28data%3A%28issueSort%3ATOTAL_COUNT%29%2Cversion%3A%210%29&fromUser=false&graphType=waterfall&groupMapByOperation=null&primaryTags=region%3A%2A%2Cbusiness_vertical%3A%2A%2Cfarm_friendly%3A%2A&shouldShowLegend=true&sp=%5B%7B%22mp%22%3A%7B%22size%22%3A%22lg%22%7D%2C%22p%22%3A%7B%22traceID%22%3A%2213835681974022196823%22%7D%2C%22i%22%3A%22apm_trace-explorer-trace-panel%22%7D%5D&spanID=16274289296479750188&summary=qson%3A%28data%3A%28visible%3A%21t%2Cchanges%3A%28%29%2Cerrors%3A%28selected%3Acount%2CgroupBy%3A%5B%5D%29%2Chits%3A%28selected%3Acount%2CgroupBy%3A%5B%5D%29%2Clatency%3A%28selected%3Alatency%2Cslot%3A%28agg%3A95%29%2Cdistribution%3A%28isLogScale%3A%21f%29%2CshowTraceOutliers%3A%21t%2CgroupBy%3A%5B%5D%29%2Csublayer%3A%28slot%3A%28layers%3AserviceAndInferred%29%2Cselected%3Apercentage%29%2ClagMetrics%3A%28selectedMetric%3A%21s%2CselectedGroupBy%3A%21s%29%29%2Cversion%3A%211%29&timeHint=1770730902818&trace=AwAAAZxHyVUijOVD7wAAABhBWnhIeVY3dUFBQU5kVElvUEdwV2lBTEEAAABdMTE5YzQ4MWQtZDliMS00YjNiLWIxZTYtYmNhNDEzN2I0YTZmLXN5bnRoZXRpYy10aW1lLTE3NzA3Mjg0MDAwMDAwMDAwMDBjLTE3NzA3MzY0NDE3NzcwMDAwMDFvAAEZbA&traceID=13835681974022196823&traceQuery=&start=1770730542780&end=1770734227509&paused=true]",
-        "descriptionHtml": "<p>Slack Converation : [https://versant-golfnow.slack.com/archives/C09LX72TTMM/p1770758394329919|https://versant-golfnow.slack.com/archives/C09LX72TTMM/p1770758394329919|smart-link] </p><p>!image-20260224-142906.png|width=625,alt=&quot;image-20260224-142906.png&quot;!</p><p>[https://app.datadoghq.com/apm/resource/golf365.phx-api-be-internal/express.request/301d390f52770b6a?dependencyMap.showNetworkMetrics=false&amp;env=production&amp;errors=qson%3A(data%3A(issueSort%3ATOTAL_COUNT)%2Cversion%3A\\!0)&amp;fromUser=false&amp;graphType=waterfall&amp;groupMapByOperation=null&amp;primaryTags=region%3A*%2Cbusiness_vertical%3A*%2Cfarm_friendly%3A*&amp;shouldShowLegend=true&amp;sp=[{&quot;mp&quot;%3A{&quot;size&quot;%3A&quot;lg&quot;}%2C&quot;p&quot;%3A{&quot;traceID&quot;%3A&quot;13835681974022196823&quot;}%2C&quot;i&quot;%3A&quot;apm_trace-explorer-trace-panel&quot;}]&amp;spanID=16274289296479750188&amp;summary=qson%3A(data%3A(visible%3A\\!t%2Cchanges%3A()%2Cerrors%3A(selected%3Acount%2CgroupBy%3A[])%2Chits%3A(selected%3Acount%2CgroupBy%3A[])%2Clatency%3A(selected%3Alatency%2Cslot%3A(agg%3A95)%2Cdistribution%3A(isLogScale%3A\\!f)%2CshowTraceOutliers%3A\\!t%2CgroupBy%3A[])%2Csublayer%3A(slot%3A(layers%3AserviceAndInferred)%2Cselected%3Apercentage)%2ClagMetrics%3A(selectedMetric%3A\\!s%2CselectedGroupBy%3A\\!s))%2Cversion%3A!1)&amp;timeHint=1770730902818&amp;trace=AwAAAZxHyVUijOVD7wAAABhBWnhIeVY3dUFBQU5kVElvUEdwV2lBTEEAAABdMTE5YzQ4MWQtZDliMS00YjNiLWIxZTYtYmNhNDEzN2I0YTZmLXN5bnRoZXRpYy10aW1lLTE3NzA3Mjg0MDAwMDAwMDAwMDBjLTE3NzA3MzY0NDE3NzcwMDAwMDFvAAEZbA&amp;traceID=13835681974022196823&amp;traceQuery=&amp;start=1770730542780&amp;end=1770734227509&amp;paused=true|https://app.datadoghq.com/apm/resource/golf365.phx-api-be-internal/express.request/301d390f52770b6a?dependencyMap.showNetworkMetrics=false&amp;env=production&amp;errors=qson%3A%28data%3A%28issueSort%3ATOTAL_COUNT%29%2Cversion%3A%210%29&amp;fromUser=false&amp;graphType=waterfall&amp;groupMapByOperation=null&amp;primaryTags=region%3A%2A%2Cbusiness_vertical%3A%2A%2Cfarm_friendly%3A%2A&amp;shouldShowLegend=true&amp;sp=%5B%7B%22mp%22%3A%7B%22size%22%3A%22lg%22%7D%2C%22p%22%3A%7B%22traceID%22%3A%2213835681974022196823%22%7D%2C%22i%22%3A%22apm_trace-explorer-trace-panel%22%7D%5D&amp;spanID=16274289296479750188&amp;summary=qson%3A%28data%3A%28visible%3A%21t%2Cchanges%3A%28%29%2Cerrors%3A%28selected%3Acount%2CgroupBy%3A%5B%5D%29%2Chits%3A%28selected%3Acount%2CgroupBy%3A%5B%5D%29%2Clatency%3A%28selected%3Alatency%2Cslot%3A%28agg%3A95%29%2Cdistribution%3A%28isLogScale%3A%21f%29%2CshowTraceOutliers%3A%21t%2CgroupBy%3A%5B%5D%29%2Csublayer%3A%28slot%3A%28layers%3AserviceAndInferred%29%2Cselected%3Apercentage%29%2ClagMetrics%3A%28selectedMetric%3A%21s%2CselectedGroupBy%3A%21s%29%29%2Cversion%3A%211%29&amp;timeHint=1770730902818&amp;trace=AwAAAZxHyVUijOVD7wAAABhBWnhIeVY3dUFBQU5kVElvUEdwV2lBTEEAAABdMTE5YzQ4MWQtZDliMS00YjNiLWIxZTYtYmNhNDEzN2I0YTZmLXN5bnRoZXRpYy10aW1lLTE3NzA3Mjg0MDAwMDAwMDAwMDBjLTE3NzA3MzY0NDE3NzcwMDAwMDFvAAEZbA&amp;traceID=13835681974022196823&amp;traceQuery=&amp;start=1770730542780&amp;end=1770734227509&amp;paused=true]</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Side Quest",
-        "isSubtask": false,
-        "status": "In Progress",
-        "priority": "P0",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-30T10:32:58.730-0400",
-        "updatedDisplay": "Jun 30, 2026, 10:32 AM",
-        "created": "2026-02-24T09:29:58.704-0500",
-        "createdDisplay": "Feb 24, 2026, 9:29 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14228",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14228",
-        "summary": "EZRTS HF Assist - Bulk Sync ",
-        "description": "Assisting the EZLRTS / EZL / G1 team , in configuring a GNC location , where we needed to add rack times , check rate periods , interface configuration pages , and connection to tee sheet . \n\n*Current Issue :* EZL returning back an EZL 22 error code , where its saying “ Tee Time Not Available “ , despite the fact that the tee time was confirmed to be available and open on both the EZTP and EZRTS tee sheets . \n\n{color:#bf2600}*This is for an HF from the EZRTS team prospective on*{color} {{2026-03-02}}\n\n\n\n*Update* : They ended up using another location for the testing flows , and was able to sign off with that nj_atlantis .",
-        "descriptionHtml": "<p>Assisting the EZLRTS / EZL / G1 team , in configuring a GNC location , where we needed to add rack times , check rate periods , interface configuration pages , and connection to tee sheet . </p><p>*Current Issue :* EZL returning back an EZL 22 error code , where its saying “ Tee Time Not Available “ , despite the fact that the tee time was confirmed to be available and open on both the EZTP and EZRTS tee sheets . </p><p>{color:#bf2600}*This is for an HF from the EZRTS team prospective on*{color} {{2026-03-02}}</p><p>*Update* : They ended up using another location for the testing flows , and was able to sign off with that nj_atlantis .</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Side Quest",
-        "isSubtask": false,
-        "status": "In Progress",
-        "priority": "P0",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-30T10:32:59.086-0400",
-        "updatedDisplay": "Jun 30, 2026, 10:32 AM",
-        "created": "2026-02-28T02:01:32.263-0500",
-        "createdDisplay": "Feb 28, 2026, 2:01 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14235",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14235",
-        "summary": "AWS DEV - Trouble Shoot Issues in GNC and Test Fixes ",
-        "description": "We have started to see issues in AWS DEV GNC , after a few changes to resolve Snyk issues were pushed to AWS DEV . \n\nThese changes disrupted the ability to change facilities , navigate to other pages and load tee times . \n\nMost were JQuery issues , and were being resolved one by one , as the Developers local environment didn't show any of the issues , but they only popped up once the build was complete in AWS DEV .",
-        "descriptionHtml": "<p>We have started to see issues in AWS DEV GNC , after a few changes to resolve Snyk issues were pushed to AWS DEV . </p><p>These changes disrupted the ability to change facilities , navigate to other pages and load tee times . </p><p>Most were JQuery issues , and were being resolved one by one , as the Developers local environment didn't show any of the issues , but they only popped up once the build was complete in AWS DEV .</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Side Quest",
-        "isSubtask": false,
-        "status": "In Progress",
-        "priority": "P0",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-30T10:33:00.226-0400",
-        "updatedDisplay": "Jun 30, 2026, 10:33 AM",
-        "created": "2026-03-03T09:40:57.843-0500",
-        "createdDisplay": "Mar 3, 2026, 9:40 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14236",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14236",
-        "summary": "AWS DEV - Trouble Shoot Issues in API 2.1 / Customer Service ETC and Test Fixes ",
-        "description": "We saw issues in API 2.1 where we were not able to make new customers  , and in customer service where we could not look up customers in GNC . \n\nWe also saw issues in TR , where we couldn't get an TR token .",
-        "descriptionHtml": "<p>We saw issues in API 2.1 where we were not able to make new customers  , and in customer service where we could not look up customers in GNC . </p><p>We also saw issues in TR , where we couldn't get an TR token .</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Side Quest",
-        "isSubtask": false,
-        "status": "In Progress",
-        "priority": "P0",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-30T10:33:00.959-0400",
-        "updatedDisplay": "Jun 30, 2026, 10:33 AM",
-        "created": "2026-03-03T09:46:05.740-0500",
-        "createdDisplay": "Mar 3, 2026, 9:46 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14201",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14201",
-        "summary": "FinTech - PayStack - South Africa Payment Provider - AWS DEV Integration Testing",
-        "description": "Slack Conversation : [https://versant-golfnow.slack.com/archives/C0AGQ3P89DZ/p1771961131249149|https://versant-golfnow.slack.com/archives/C0AGQ3P89DZ/p1771961131249149|smart-link] \n\nAWS DEV GNC Location : \n\n!image-20260224-202121.png|width=533,alt=\"image-20260224-202121.png\"!\n\n# Once we get the ZAR Merchant Key , we will need a script from [~accountid:557058:24f78684-6276-42b4-9860-f81502d6d45e]  to insert the new ChargeBy record into CRM \n# Use GP-ZAR in the facility Settings page for the new Facility - Update Required in GNC \n# Load tee times \n# *BASELINE TESTING* : Book a tee time using 4242424242424242 in GNC \n# *BASELINE TESTING :* Cancel the Booking\n# *BASELINE TESTING :* Refund the reservation \n# *BASELINE TESTING* : Validate the CRMChargeDetails table in CRM , to see which Merchant Key was used , along with which payment processor .\n# *BASELINE TESTING :* Co-Ordinate with Payments QA on the Database validations on their side . \n\n\n\nCORE QA → *GN WEB UI Testing* : Contact the UI team to validate that the location which was generated in GNC , exists on WEB [golfnow.dev.io|http://golfnow.dev.io] . Once that is confirmed , do the Booking → Cancellation → Refund Flow for a future tee time on the web . \n\n💻  The Web Ui team will be conducting tests of their own for validating the new Payment Processor",
-        "descriptionHtml": "<p>Slack Conversation : [https://versant-golfnow.slack.com/archives/C0AGQ3P89DZ/p1771961131249149|https://versant-golfnow.slack.com/archives/C0AGQ3P89DZ/p1771961131249149|smart-link] </p><p>AWS DEV GNC Location : </p><p>!image-20260224-202121.png|width=533,alt=&quot;image-20260224-202121.png&quot;!</p><p># Once we get the ZAR Merchant Key , we will need a script from [~accountid:557058:24f78684-6276-42b4-9860-f81502d6d45e]  to insert the new ChargeBy record into CRM <br># Use GP-ZAR in the facility Settings page for the new Facility - Update Required in GNC <br># Load tee times <br># *BASELINE TESTING* : Book a tee time using 4242424242424242 in GNC <br># *BASELINE TESTING :* Cancel the Booking<br># *BASELINE TESTING :* Refund the reservation <br># *BASELINE TESTING* : Validate the CRMChargeDetails table in CRM , to see which Merchant Key was used , along with which payment processor .<br># *BASELINE TESTING :* Co-Ordinate with Payments QA on the Database validations on their side . </p><p>CORE QA → *GN WEB UI Testing* : Contact the UI team to validate that the location which was generated in GNC , exists on WEB [golfnow.dev.io|http://golfnow.dev.io] . Once that is confirmed , do the Booking → Cancellation → Refund Flow for a future tee time on the web . </p><p>💻  The Web Ui team will be conducting tests of their own for validating the new Payment Processor</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 3,
-        "comments": [
-          {
-            "id": "1131686",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14201?focusedCommentId=1131686",
-            "author": "Dewan Kabir",
-            "authorAccountId": "630fb06bb433b060db559bdb",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-            "created": "2026-02-26T17:34:47.342-0500",
-            "createdDisplay": "Feb 26, 2026, 5:34 PM",
-            "updated": "2026-02-26T17:34:47.342-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Still waiting on the ChargeBy Apply and RollBack Script from Raghav.",
-            "bodyHtml": "<p>Still waiting on the ChargeBy Apply and RollBack Script from Raghav. </p>"
-          },
-          {
-            "id": "1131717",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14201?focusedCommentId=1131717",
-            "author": "Raghav Kancherla",
-            "authorAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-            "created": "2026-02-26T20:08:05.002-0500",
-            "createdDisplay": "Feb 26, 2026, 8:08 PM",
-            "updated": "2026-02-26T20:08:05.002-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "@Dewan Kabir\n\nIF NOT EXISTS (SELECT 1 FROM dbo.CRMChargeBy WHERE ChargeByID = 132)\r\nBEGIN\r\nINSERT INTO CRMChargeBy (ChargeByID,\r\nCBStatus,\r\nCBName,\r\nCBChargeName,\r\nCBProcessor,\r\nCBPartner,\r\nCBUserName,\r\nCBPassword,\r\nCBOtherData,\r\nCBTransactionFee,\r\nCBTransactionPercent,\r\nUpdateUserPK,\r\n[TimeStamp],\r\nCBIsGolfNow,\r\nCBMerchantID,\r\nPaymentTypeID,\r\nCurrencyCode)\r\nVALUES (132, \r\n'Active',\r\n'GP - ZAR',\r\n'GolfNow Payments SA - ZAR',\r\n'Test',\r\nNULL,\r\n'GolfNowEcomm',\r\n'Password!23',\r\n'https://gp.dev.golfnow.io/',\r\nNULL,\r\nNULL,\r\n1,\r\nGETUTCDATE(),\r\n1,\r\n'16C3C4ED-B48D-42AD-A6F2-7B845C7B8ABB',\r\n2,\r\n'ZAR')\r\nEND\r\n\r\nGO",
-            "bodyHtml": "<p>@Dewan Kabir </p><pre><code>IF NOT EXISTS (SELECT 1 FROM dbo.CRMChargeBy WHERE ChargeByID = 132)\r\nBEGIN\r\n\tINSERT INTO CRMChargeBy (ChargeByID,\r\n\t\t\t\t\t\t\t CBStatus,\r\n\t\t\t\t\t\t\t CBName,\r\n\t\t\t\t\t\t\t CBChargeName,\r\n\t\t\t\t\t\t\t CBProcessor,\r\n\t\t\t\t\t\t\t CBPartner,\r\n\t\t\t\t\t\t\t CBUserName,\r\n\t\t\t\t\t\t\t CBPassword,\r\n\t\t\t\t\t\t\t CBOtherData,\r\n\t\t\t\t\t\t\t CBTransactionFee,\r\n\t\t\t\t\t\t\t CBTransactionPercent,\r\n\t\t\t\t\t\t\t UpdateUserPK,\r\n\t\t\t\t\t\t\t [TimeStamp],\r\n\t\t\t\t\t\t\t CBIsGolfNow,\r\n\t\t\t\t\t\t\t CBMerchantID,\r\n\t\t\t\t\t\t\t PaymentTypeID,\r\n\t\t\t\t\t\t\t CurrencyCode)\r\nVALUES (132, \r\n\t\t'Active',\r\n\t\t'GP - ZAR',\r\n\t\t'GolfNow Payments SA - ZAR',\r\n\t\t'Test',\r\n\t\tNULL,\r\n\t\t'GolfNowEcomm',\r\n\t\t'Password!23',\r\n\t\t'https://gp.dev.golfnow.io/',\r\n\t\tNULL,\r\n\t\tNULL,\r\n\t\t1,\r\n\t\tGETUTCDATE(),\r\n\t\t1,\r\n\t\t'16C3C4ED-B48D-42AD-A6F2-7B845C7B8ABB',\r\n\t\t2,\r\n\t\t'ZAR')\r\nEND\r\n\r\nGO</code></pre>"
-          },
-          {
-            "id": "1133656",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14201?focusedCommentId=1133656",
-            "author": "Dewan Kabir",
-            "authorAccountId": "630fb06bb433b060db559bdb",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-            "created": "2026-03-04T11:53:38.222-0500",
-            "createdDisplay": "Mar 4, 2026, 11:53 AM",
-            "updated": "2026-03-04T11:54:01.821-0500",
-            "updatedDisplay": "Mar 4, 2026, 11:54 AM",
-            "hasMedia": true,
-            "mediaCount": 1,
-            "body": "API 2.1 BOOKING :\n\nDATA :\n\n{\n\"PromotionalCodes\": [],\n\"GuestInfo\": {\n\"FirstName\": \"QA\",\n\"LastName\": \"Test\",\n\"PhoneNumber\": 4076578987,\n\"EmailAddress\": \"{{apiEmailaddyoc}}\"\n},\n\"Details\": [\n{\n\"__type\": \"TeeTimeOrderItemDetail:#GolfNow.API.Contracts.DataContracts.Order.Items\",\n\"ReferenceId\": \"REF1\",\n\"TeeTimeRateId\": \"1294971373\",\n\"Invoice\": {{Invoice}},\n\"FacilityId\": null,\n\"PlayerCount\": 1\n}\n],\n// \"Donations\": [\n//     {\n//         \"CharityID\": 2,\n//         \"CharityName\": \"Kids Building Character Inc\",\n//         \"EmployerIdentificationNumber\": \"27-0149539\",\n//         \"SelectedCharitySupportType\": 1\n//     }\n// ],\n\"PaymentInformation\": [\n// {\n//     \"__type\": \"GiftCardPayment:#GolfNow.API.Contracts.DataContracts\"\n// },\n//      {\n// \t\"__type\": \"AccountBalancePayment:#GolfNow.API.Contracts.DataContracts\",\n// \t\"WalletOptionId\" : {{AB1WalletOptionIdoc2}}\n// },\n{\n\"__type\": \"CreditCardPayment:#GolfNow.API.Contracts.DataContracts\",\n\"CreditCardNumber\": 4084084084084081,\n\"ExpirationMonth\": 11,\n\"ExpirationYear\": 2026,\n//\"CVVCode\" :408,\n\"BillingAddress\": {\n\"Line1\": \"123 Main St\",\n\"City\": \"Winter Garden\",\n\"Country\": \"US\",\n\"StateProvinceCode\": \"FL\",\n\"PostalCode\": 34787\n},\n\"CCVCode\": 408,\n\"BillingName\": \"Kristopher Warthen\",\n\"Amount\": {\n\"CurrencyCode\": \"ZAR\",\n\"Value\": {{dueOnlineoc}}\n}\n}\n],\n\"ReturnUrl\": \"https://www.golfnow.com\"\n}\n\nOBSERVATIONS :\n\n- Need to Pass in PayStack Credit Card\n\n- Need to Pass in PayStack CCVCode\n\n- Need to Pass in ZAR Currency Code",
-            "bodyHtml": "<div class=\"description-note\"><p>API 2.1 BOOKING : </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14201/comments/1133656/698654-image-20260304-165119.png\" alt=\"image-20260304-165119.png\" loading=\"lazy\"><figcaption>image-20260304-165119.png</figcaption></figure></div></div><p><strong>DATA : </strong></p><pre><code>{\n    &quot;PromotionalCodes&quot;: [],\n    &quot;GuestInfo&quot;: {\n        &quot;FirstName&quot;: &quot;QA&quot;,\n        &quot;LastName&quot;: &quot;Test&quot;,\n        &quot;PhoneNumber&quot;: 4076578987,\n        &quot;EmailAddress&quot;: &quot;{{apiEmailaddyoc}}&quot;\n    },\n    &quot;Details&quot;: [\n        {\n            &quot;__type&quot;: &quot;TeeTimeOrderItemDetail:#GolfNow.API.Contracts.DataContracts.Order.Items&quot;,\n            &quot;ReferenceId&quot;: &quot;REF1&quot;,\n            &quot;TeeTimeRateId&quot;: &quot;1294971373&quot;,\n            &quot;Invoice&quot;: {{Invoice}},\n            &quot;FacilityId&quot;: null,\n            &quot;PlayerCount&quot;: 1\n        }\n    ],\n    // &quot;Donations&quot;: [\n    //     {\n    //         &quot;CharityID&quot;: 2,\n    //         &quot;CharityName&quot;: &quot;Kids Building Character Inc&quot;,\n    //         &quot;EmployerIdentificationNumber&quot;: &quot;27-0149539&quot;,\n    //         &quot;SelectedCharitySupportType&quot;: 1\n    //     }\n    // ],\n    &quot;PaymentInformation&quot;: [\n        // {\n        //     &quot;__type&quot;: &quot;GiftCardPayment:#GolfNow.API.Contracts.DataContracts&quot;\n        // },\n        //      {\n        // \t&quot;__type&quot;: &quot;AccountBalancePayment:#GolfNow.API.Contracts.DataContracts&quot;,\n        // \t&quot;WalletOptionId&quot; : {{AB1WalletOptionIdoc2}} \n        // },\n        {\n            &quot;__type&quot;: &quot;CreditCardPayment:#GolfNow.API.Contracts.DataContracts&quot;,\n            &quot;CreditCardNumber&quot;: 4084084084084081,\n            &quot;ExpirationMonth&quot;: 11,\n            &quot;ExpirationYear&quot;: 2026,\n            //&quot;CVVCode&quot; :408,\n            &quot;BillingAddress&quot;: {\n                &quot;Line1&quot;: &quot;123 Main St&quot;,\n                &quot;City&quot;: &quot;Winter Garden&quot;,\n                &quot;Country&quot;: &quot;US&quot;,\n                &quot;StateProvinceCode&quot;: &quot;FL&quot;,\n                &quot;PostalCode&quot;: 34787\n            },\n            &quot;CCVCode&quot;: 408,\n            &quot;BillingName&quot;: &quot;Kristopher Warthen&quot;,\n            &quot;Amount&quot;: {\n                &quot;CurrencyCode&quot;: &quot;ZAR&quot;,\n                &quot;Value&quot;: {{dueOnlineoc}}\n            }\n        }\n    ],\n    &quot;ReturnUrl&quot;: &quot;https://www.golfnow.com&quot;\n}</code></pre><p><strong>OBSERVATIONS </strong>: </p><ol><li><p>Need to Pass in PayStack Credit Card </p></li><li><p>Need to Pass in PayStack CCVCode </p></li><li><p>Need to Pass in ZAR Currency Code </p></li></ol>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14201?focusedCommentId=1133656",
-        "lastCommentDisplay": "Mar 4, 2026, 11:53 AM",
-        "lastCommentAuthor": "Dewan Kabir",
-        "testChecklist": null,
-        "type": "Side Quest",
-        "isSubtask": false,
-        "status": "In Progress",
-        "priority": "P0",
-        "assignee": "Nicole Greer",
-        "assigneeAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-30T10:33:01.757-0400",
-        "updatedDisplay": "Jun 30, 2026, 10:33 AM",
-        "created": "2026-02-24T15:35:23.946-0500",
-        "createdDisplay": "Feb 24, 2026, 3:35 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
         "key": "CORE-13962",
         "url": "https://golfnow.atlassian.net/browse/CORE-13962",
         "summary": "(USGA-Blocking) strokeAdjustment update for Compete playerRound",
@@ -5535,56 +5239,6 @@
           "key": "CORE-14278",
           "url": "https://golfnow.atlassian.net/browse/CORE-14278",
           "summary": "gn-main Tech Debt & Cleanup",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14197",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14197",
-        "summary": "Commerce - Booking Engine - Align test Environments for Testing in AWS STG and Automation ",
-        "description": "Slack Conversation : [https://versant-golfnow.slack.com/archives/C0AA9LS3NP3/p1770218504243199|https://versant-golfnow.slack.com/archives/C0AA9LS3NP3/p1770218504243199|smart-link]",
-        "descriptionHtml": "<p>Slack Conversation : [https://versant-golfnow.slack.com/archives/C0AA9LS3NP3/p1770218504243199|https://versant-golfnow.slack.com/archives/C0AA9LS3NP3/p1770218504243199|smart-link]</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Side Quest",
-        "isSubtask": false,
-        "status": "Planning",
-        "priority": "P1",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-30T10:33:04.980-0400",
-        "updatedDisplay": "Jun 30, 2026, 10:33 AM",
-        "created": "2026-02-24T09:53:35.762-0500",
-        "createdDisplay": "Feb 24, 2026, 9:53 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
           "description": "",
           "type": "Epic",
           "status": "Planning",
@@ -6706,6 +6360,352 @@
           "type": "Epic",
           "status": "Planning",
           "priority": "P1"
+        }
+      },
+      {
+        "key": "CORE-14194",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14194",
+        "summary": "Booking Engine - Prod Reproduction - User can not use saved card in GolfId for transactions ",
+        "description": "Slack Converation : [https://versant-golfnow.slack.com/archives/C09LX72TTMM/p1770758394329919|https://versant-golfnow.slack.com/archives/C09LX72TTMM/p1770758394329919|smart-link] \n\n!image-20260224-142906.png|width=625,alt=\"image-20260224-142906.png\"!\n\n[https://app.datadoghq.com/apm/resource/golf365.phx-api-be-internal/express.request/301d390f52770b6a?dependencyMap.showNetworkMetrics=false&env=production&errors=qson%3A(data%3A(issueSort%3ATOTAL_COUNT)%2Cversion%3A\\!0)&fromUser=false&graphType=waterfall&groupMapByOperation=null&primaryTags=region%3A*%2Cbusiness_vertical%3A*%2Cfarm_friendly%3A*&shouldShowLegend=true&sp=[{\"mp\"%3A{\"size\"%3A\"lg\"}%2C\"p\"%3A{\"traceID\"%3A\"13835681974022196823\"}%2C\"i\"%3A\"apm_trace-explorer-trace-panel\"}]&spanID=16274289296479750188&summary=qson%3A(data%3A(visible%3A\\!t%2Cchanges%3A()%2Cerrors%3A(selected%3Acount%2CgroupBy%3A[])%2Chits%3A(selected%3Acount%2CgroupBy%3A[])%2Clatency%3A(selected%3Alatency%2Cslot%3A(agg%3A95)%2Cdistribution%3A(isLogScale%3A\\!f)%2CshowTraceOutliers%3A\\!t%2CgroupBy%3A[])%2Csublayer%3A(slot%3A(layers%3AserviceAndInferred)%2Cselected%3Apercentage)%2ClagMetrics%3A(selectedMetric%3A\\!s%2CselectedGroupBy%3A\\!s))%2Cversion%3A!1)&timeHint=1770730902818&trace=AwAAAZxHyVUijOVD7wAAABhBWnhIeVY3dUFBQU5kVElvUEdwV2lBTEEAAABdMTE5YzQ4MWQtZDliMS00YjNiLWIxZTYtYmNhNDEzN2I0YTZmLXN5bnRoZXRpYy10aW1lLTE3NzA3Mjg0MDAwMDAwMDAwMDBjLTE3NzA3MzY0NDE3NzcwMDAwMDFvAAEZbA&traceID=13835681974022196823&traceQuery=&start=1770730542780&end=1770734227509&paused=true|https://app.datadoghq.com/apm/resource/golf365.phx-api-be-internal/express.request/301d390f52770b6a?dependencyMap.showNetworkMetrics=false&env=production&errors=qson%3A%28data%3A%28issueSort%3ATOTAL_COUNT%29%2Cversion%3A%210%29&fromUser=false&graphType=waterfall&groupMapByOperation=null&primaryTags=region%3A%2A%2Cbusiness_vertical%3A%2A%2Cfarm_friendly%3A%2A&shouldShowLegend=true&sp=%5B%7B%22mp%22%3A%7B%22size%22%3A%22lg%22%7D%2C%22p%22%3A%7B%22traceID%22%3A%2213835681974022196823%22%7D%2C%22i%22%3A%22apm_trace-explorer-trace-panel%22%7D%5D&spanID=16274289296479750188&summary=qson%3A%28data%3A%28visible%3A%21t%2Cchanges%3A%28%29%2Cerrors%3A%28selected%3Acount%2CgroupBy%3A%5B%5D%29%2Chits%3A%28selected%3Acount%2CgroupBy%3A%5B%5D%29%2Clatency%3A%28selected%3Alatency%2Cslot%3A%28agg%3A95%29%2Cdistribution%3A%28isLogScale%3A%21f%29%2CshowTraceOutliers%3A%21t%2CgroupBy%3A%5B%5D%29%2Csublayer%3A%28slot%3A%28layers%3AserviceAndInferred%29%2Cselected%3Apercentage%29%2ClagMetrics%3A%28selectedMetric%3A%21s%2CselectedGroupBy%3A%21s%29%29%2Cversion%3A%211%29&timeHint=1770730902818&trace=AwAAAZxHyVUijOVD7wAAABhBWnhIeVY3dUFBQU5kVElvUEdwV2lBTEEAAABdMTE5YzQ4MWQtZDliMS00YjNiLWIxZTYtYmNhNDEzN2I0YTZmLXN5bnRoZXRpYy10aW1lLTE3NzA3Mjg0MDAwMDAwMDAwMDBjLTE3NzA3MzY0NDE3NzcwMDAwMDFvAAEZbA&traceID=13835681974022196823&traceQuery=&start=1770730542780&end=1770734227509&paused=true]",
+        "descriptionHtml": "<p>Slack Converation : [https://versant-golfnow.slack.com/archives/C09LX72TTMM/p1770758394329919|https://versant-golfnow.slack.com/archives/C09LX72TTMM/p1770758394329919|smart-link] </p><p>!image-20260224-142906.png|width=625,alt=&quot;image-20260224-142906.png&quot;!</p><p>[https://app.datadoghq.com/apm/resource/golf365.phx-api-be-internal/express.request/301d390f52770b6a?dependencyMap.showNetworkMetrics=false&amp;env=production&amp;errors=qson%3A(data%3A(issueSort%3ATOTAL_COUNT)%2Cversion%3A\\!0)&amp;fromUser=false&amp;graphType=waterfall&amp;groupMapByOperation=null&amp;primaryTags=region%3A*%2Cbusiness_vertical%3A*%2Cfarm_friendly%3A*&amp;shouldShowLegend=true&amp;sp=[{&quot;mp&quot;%3A{&quot;size&quot;%3A&quot;lg&quot;}%2C&quot;p&quot;%3A{&quot;traceID&quot;%3A&quot;13835681974022196823&quot;}%2C&quot;i&quot;%3A&quot;apm_trace-explorer-trace-panel&quot;}]&amp;spanID=16274289296479750188&amp;summary=qson%3A(data%3A(visible%3A\\!t%2Cchanges%3A()%2Cerrors%3A(selected%3Acount%2CgroupBy%3A[])%2Chits%3A(selected%3Acount%2CgroupBy%3A[])%2Clatency%3A(selected%3Alatency%2Cslot%3A(agg%3A95)%2Cdistribution%3A(isLogScale%3A\\!f)%2CshowTraceOutliers%3A\\!t%2CgroupBy%3A[])%2Csublayer%3A(slot%3A(layers%3AserviceAndInferred)%2Cselected%3Apercentage)%2ClagMetrics%3A(selectedMetric%3A\\!s%2CselectedGroupBy%3A\\!s))%2Cversion%3A!1)&amp;timeHint=1770730902818&amp;trace=AwAAAZxHyVUijOVD7wAAABhBWnhIeVY3dUFBQU5kVElvUEdwV2lBTEEAAABdMTE5YzQ4MWQtZDliMS00YjNiLWIxZTYtYmNhNDEzN2I0YTZmLXN5bnRoZXRpYy10aW1lLTE3NzA3Mjg0MDAwMDAwMDAwMDBjLTE3NzA3MzY0NDE3NzcwMDAwMDFvAAEZbA&amp;traceID=13835681974022196823&amp;traceQuery=&amp;start=1770730542780&amp;end=1770734227509&amp;paused=true|https://app.datadoghq.com/apm/resource/golf365.phx-api-be-internal/express.request/301d390f52770b6a?dependencyMap.showNetworkMetrics=false&amp;env=production&amp;errors=qson%3A%28data%3A%28issueSort%3ATOTAL_COUNT%29%2Cversion%3A%210%29&amp;fromUser=false&amp;graphType=waterfall&amp;groupMapByOperation=null&amp;primaryTags=region%3A%2A%2Cbusiness_vertical%3A%2A%2Cfarm_friendly%3A%2A&amp;shouldShowLegend=true&amp;sp=%5B%7B%22mp%22%3A%7B%22size%22%3A%22lg%22%7D%2C%22p%22%3A%7B%22traceID%22%3A%2213835681974022196823%22%7D%2C%22i%22%3A%22apm_trace-explorer-trace-panel%22%7D%5D&amp;spanID=16274289296479750188&amp;summary=qson%3A%28data%3A%28visible%3A%21t%2Cchanges%3A%28%29%2Cerrors%3A%28selected%3Acount%2CgroupBy%3A%5B%5D%29%2Chits%3A%28selected%3Acount%2CgroupBy%3A%5B%5D%29%2Clatency%3A%28selected%3Alatency%2Cslot%3A%28agg%3A95%29%2Cdistribution%3A%28isLogScale%3A%21f%29%2CshowTraceOutliers%3A%21t%2CgroupBy%3A%5B%5D%29%2Csublayer%3A%28slot%3A%28layers%3AserviceAndInferred%29%2Cselected%3Apercentage%29%2ClagMetrics%3A%28selectedMetric%3A%21s%2CselectedGroupBy%3A%21s%29%29%2Cversion%3A%211%29&amp;timeHint=1770730902818&amp;trace=AwAAAZxHyVUijOVD7wAAABhBWnhIeVY3dUFBQU5kVElvUEdwV2lBTEEAAABdMTE5YzQ4MWQtZDliMS00YjNiLWIxZTYtYmNhNDEzN2I0YTZmLXN5bnRoZXRpYy10aW1lLTE3NzA3Mjg0MDAwMDAwMDAwMDBjLTE3NzA3MzY0NDE3NzcwMDAwMDFvAAEZbA&amp;traceID=13835681974022196823&amp;traceQuery=&amp;start=1770730542780&amp;end=1770734227509&amp;paused=true]</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Side Quest",
+        "isSubtask": false,
+        "status": "In Progress",
+        "priority": "P0",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-06-30T10:50:52.554-0400",
+        "updatedDisplay": "Jun 30, 2026, 10:50 AM",
+        "created": "2026-02-24T09:29:58.704-0500",
+        "createdDisplay": "Feb 24, 2026, 9:29 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14228",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14228",
+        "summary": "EZRTS HF Assist - Bulk Sync ",
+        "description": "Assisting the EZLRTS / EZL / G1 team , in configuring a GNC location , where we needed to add rack times , check rate periods , interface configuration pages , and connection to tee sheet . \n\n*Current Issue :* EZL returning back an EZL 22 error code , where its saying “ Tee Time Not Available “ , despite the fact that the tee time was confirmed to be available and open on both the EZTP and EZRTS tee sheets . \n\n{color:#bf2600}*This is for an HF from the EZRTS team prospective on*{color} {{2026-03-02}}\n\n\n\n*Update* : They ended up using another location for the testing flows , and was able to sign off with that nj_atlantis .",
+        "descriptionHtml": "<p>Assisting the EZLRTS / EZL / G1 team , in configuring a GNC location , where we needed to add rack times , check rate periods , interface configuration pages , and connection to tee sheet . </p><p>*Current Issue :* EZL returning back an EZL 22 error code , where its saying “ Tee Time Not Available “ , despite the fact that the tee time was confirmed to be available and open on both the EZTP and EZRTS tee sheets . </p><p>{color:#bf2600}*This is for an HF from the EZRTS team prospective on*{color} {{2026-03-02}}</p><p>*Update* : They ended up using another location for the testing flows , and was able to sign off with that nj_atlantis .</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Side Quest",
+        "isSubtask": false,
+        "status": "In Progress",
+        "priority": "P0",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-06-30T10:50:52.870-0400",
+        "updatedDisplay": "Jun 30, 2026, 10:50 AM",
+        "created": "2026-02-28T02:01:32.263-0500",
+        "createdDisplay": "Feb 28, 2026, 2:01 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14235",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14235",
+        "summary": "AWS DEV - Trouble Shoot Issues in GNC and Test Fixes ",
+        "description": "We have started to see issues in AWS DEV GNC , after a few changes to resolve Snyk issues were pushed to AWS DEV . \n\nThese changes disrupted the ability to change facilities , navigate to other pages and load tee times . \n\nMost were JQuery issues , and were being resolved one by one , as the Developers local environment didn't show any of the issues , but they only popped up once the build was complete in AWS DEV .",
+        "descriptionHtml": "<p>We have started to see issues in AWS DEV GNC , after a few changes to resolve Snyk issues were pushed to AWS DEV . </p><p>These changes disrupted the ability to change facilities , navigate to other pages and load tee times . </p><p>Most were JQuery issues , and were being resolved one by one , as the Developers local environment didn't show any of the issues , but they only popped up once the build was complete in AWS DEV .</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Side Quest",
+        "isSubtask": false,
+        "status": "In Progress",
+        "priority": "P0",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-06-30T10:50:53.186-0400",
+        "updatedDisplay": "Jun 30, 2026, 10:50 AM",
+        "created": "2026-03-03T09:40:57.843-0500",
+        "createdDisplay": "Mar 3, 2026, 9:40 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14236",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14236",
+        "summary": "AWS DEV - Trouble Shoot Issues in API 2.1 / Customer Service ETC and Test Fixes ",
+        "description": "We saw issues in API 2.1 where we were not able to make new customers  , and in customer service where we could not look up customers in GNC . \n\nWe also saw issues in TR , where we couldn't get an TR token .",
+        "descriptionHtml": "<p>We saw issues in API 2.1 where we were not able to make new customers  , and in customer service where we could not look up customers in GNC . </p><p>We also saw issues in TR , where we couldn't get an TR token .</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Side Quest",
+        "isSubtask": false,
+        "status": "In Progress",
+        "priority": "P0",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-06-30T10:50:53.550-0400",
+        "updatedDisplay": "Jun 30, 2026, 10:50 AM",
+        "created": "2026-03-03T09:46:05.740-0500",
+        "createdDisplay": "Mar 3, 2026, 9:46 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14201",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14201",
+        "summary": "FinTech - PayStack - South Africa Payment Provider - AWS DEV Integration Testing",
+        "description": "Slack Conversation : [https://versant-golfnow.slack.com/archives/C0AGQ3P89DZ/p1771961131249149|https://versant-golfnow.slack.com/archives/C0AGQ3P89DZ/p1771961131249149|smart-link] \n\nAWS DEV GNC Location : \n\n!image-20260224-202121.png|width=533,alt=\"image-20260224-202121.png\"!\n\n# Once we get the ZAR Merchant Key , we will need a script from [~accountid:557058:24f78684-6276-42b4-9860-f81502d6d45e]  to insert the new ChargeBy record into CRM \n# Use GP-ZAR in the facility Settings page for the new Facility - Update Required in GNC \n# Load tee times \n# *BASELINE TESTING* : Book a tee time using 4242424242424242 in GNC \n# *BASELINE TESTING :* Cancel the Booking\n# *BASELINE TESTING :* Refund the reservation \n# *BASELINE TESTING* : Validate the CRMChargeDetails table in CRM , to see which Merchant Key was used , along with which payment processor .\n# *BASELINE TESTING :* Co-Ordinate with Payments QA on the Database validations on their side . \n\n\n\nCORE QA → *GN WEB UI Testing* : Contact the UI team to validate that the location which was generated in GNC , exists on WEB [golfnow.dev.io|http://golfnow.dev.io] . Once that is confirmed , do the Booking → Cancellation → Refund Flow for a future tee time on the web . \n\n💻  The Web Ui team will be conducting tests of their own for validating the new Payment Processor",
+        "descriptionHtml": "<p>Slack Conversation : [https://versant-golfnow.slack.com/archives/C0AGQ3P89DZ/p1771961131249149|https://versant-golfnow.slack.com/archives/C0AGQ3P89DZ/p1771961131249149|smart-link] </p><p>AWS DEV GNC Location : </p><p>!image-20260224-202121.png|width=533,alt=&quot;image-20260224-202121.png&quot;!</p><p># Once we get the ZAR Merchant Key , we will need a script from [~accountid:557058:24f78684-6276-42b4-9860-f81502d6d45e]  to insert the new ChargeBy record into CRM <br># Use GP-ZAR in the facility Settings page for the new Facility - Update Required in GNC <br># Load tee times <br># *BASELINE TESTING* : Book a tee time using 4242424242424242 in GNC <br># *BASELINE TESTING :* Cancel the Booking<br># *BASELINE TESTING :* Refund the reservation <br># *BASELINE TESTING* : Validate the CRMChargeDetails table in CRM , to see which Merchant Key was used , along with which payment processor .<br># *BASELINE TESTING :* Co-Ordinate with Payments QA on the Database validations on their side . </p><p>CORE QA → *GN WEB UI Testing* : Contact the UI team to validate that the location which was generated in GNC , exists on WEB [golfnow.dev.io|http://golfnow.dev.io] . Once that is confirmed , do the Booking → Cancellation → Refund Flow for a future tee time on the web . </p><p>💻  The Web Ui team will be conducting tests of their own for validating the new Payment Processor</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 3,
+        "comments": [
+          {
+            "id": "1131686",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14201?focusedCommentId=1131686",
+            "author": "Dewan Kabir",
+            "authorAccountId": "630fb06bb433b060db559bdb",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+            "created": "2026-02-26T17:34:47.342-0500",
+            "createdDisplay": "Feb 26, 2026, 5:34 PM",
+            "updated": "2026-02-26T17:34:47.342-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Still waiting on the ChargeBy Apply and RollBack Script from Raghav.",
+            "bodyHtml": "<p>Still waiting on the ChargeBy Apply and RollBack Script from Raghav. </p>"
+          },
+          {
+            "id": "1131717",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14201?focusedCommentId=1131717",
+            "author": "Raghav Kancherla",
+            "authorAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+            "created": "2026-02-26T20:08:05.002-0500",
+            "createdDisplay": "Feb 26, 2026, 8:08 PM",
+            "updated": "2026-02-26T20:08:05.002-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "@Dewan Kabir\n\nIF NOT EXISTS (SELECT 1 FROM dbo.CRMChargeBy WHERE ChargeByID = 132)\r\nBEGIN\r\nINSERT INTO CRMChargeBy (ChargeByID,\r\nCBStatus,\r\nCBName,\r\nCBChargeName,\r\nCBProcessor,\r\nCBPartner,\r\nCBUserName,\r\nCBPassword,\r\nCBOtherData,\r\nCBTransactionFee,\r\nCBTransactionPercent,\r\nUpdateUserPK,\r\n[TimeStamp],\r\nCBIsGolfNow,\r\nCBMerchantID,\r\nPaymentTypeID,\r\nCurrencyCode)\r\nVALUES (132, \r\n'Active',\r\n'GP - ZAR',\r\n'GolfNow Payments SA - ZAR',\r\n'Test',\r\nNULL,\r\n'GolfNowEcomm',\r\n'Password!23',\r\n'https://gp.dev.golfnow.io/',\r\nNULL,\r\nNULL,\r\n1,\r\nGETUTCDATE(),\r\n1,\r\n'16C3C4ED-B48D-42AD-A6F2-7B845C7B8ABB',\r\n2,\r\n'ZAR')\r\nEND\r\n\r\nGO",
+            "bodyHtml": "<p>@Dewan Kabir </p><pre><code>IF NOT EXISTS (SELECT 1 FROM dbo.CRMChargeBy WHERE ChargeByID = 132)\r\nBEGIN\r\n\tINSERT INTO CRMChargeBy (ChargeByID,\r\n\t\t\t\t\t\t\t CBStatus,\r\n\t\t\t\t\t\t\t CBName,\r\n\t\t\t\t\t\t\t CBChargeName,\r\n\t\t\t\t\t\t\t CBProcessor,\r\n\t\t\t\t\t\t\t CBPartner,\r\n\t\t\t\t\t\t\t CBUserName,\r\n\t\t\t\t\t\t\t CBPassword,\r\n\t\t\t\t\t\t\t CBOtherData,\r\n\t\t\t\t\t\t\t CBTransactionFee,\r\n\t\t\t\t\t\t\t CBTransactionPercent,\r\n\t\t\t\t\t\t\t UpdateUserPK,\r\n\t\t\t\t\t\t\t [TimeStamp],\r\n\t\t\t\t\t\t\t CBIsGolfNow,\r\n\t\t\t\t\t\t\t CBMerchantID,\r\n\t\t\t\t\t\t\t PaymentTypeID,\r\n\t\t\t\t\t\t\t CurrencyCode)\r\nVALUES (132, \r\n\t\t'Active',\r\n\t\t'GP - ZAR',\r\n\t\t'GolfNow Payments SA - ZAR',\r\n\t\t'Test',\r\n\t\tNULL,\r\n\t\t'GolfNowEcomm',\r\n\t\t'Password!23',\r\n\t\t'https://gp.dev.golfnow.io/',\r\n\t\tNULL,\r\n\t\tNULL,\r\n\t\t1,\r\n\t\tGETUTCDATE(),\r\n\t\t1,\r\n\t\t'16C3C4ED-B48D-42AD-A6F2-7B845C7B8ABB',\r\n\t\t2,\r\n\t\t'ZAR')\r\nEND\r\n\r\nGO</code></pre>"
+          },
+          {
+            "id": "1133656",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14201?focusedCommentId=1133656",
+            "author": "Dewan Kabir",
+            "authorAccountId": "630fb06bb433b060db559bdb",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+            "created": "2026-03-04T11:53:38.222-0500",
+            "createdDisplay": "Mar 4, 2026, 11:53 AM",
+            "updated": "2026-03-04T11:54:01.821-0500",
+            "updatedDisplay": "Mar 4, 2026, 11:54 AM",
+            "hasMedia": true,
+            "mediaCount": 1,
+            "body": "API 2.1 BOOKING :\n\nDATA :\n\n{\n\"PromotionalCodes\": [],\n\"GuestInfo\": {\n\"FirstName\": \"QA\",\n\"LastName\": \"Test\",\n\"PhoneNumber\": 4076578987,\n\"EmailAddress\": \"{{apiEmailaddyoc}}\"\n},\n\"Details\": [\n{\n\"__type\": \"TeeTimeOrderItemDetail:#GolfNow.API.Contracts.DataContracts.Order.Items\",\n\"ReferenceId\": \"REF1\",\n\"TeeTimeRateId\": \"1294971373\",\n\"Invoice\": {{Invoice}},\n\"FacilityId\": null,\n\"PlayerCount\": 1\n}\n],\n// \"Donations\": [\n//     {\n//         \"CharityID\": 2,\n//         \"CharityName\": \"Kids Building Character Inc\",\n//         \"EmployerIdentificationNumber\": \"27-0149539\",\n//         \"SelectedCharitySupportType\": 1\n//     }\n// ],\n\"PaymentInformation\": [\n// {\n//     \"__type\": \"GiftCardPayment:#GolfNow.API.Contracts.DataContracts\"\n// },\n//      {\n// \t\"__type\": \"AccountBalancePayment:#GolfNow.API.Contracts.DataContracts\",\n// \t\"WalletOptionId\" : {{AB1WalletOptionIdoc2}}\n// },\n{\n\"__type\": \"CreditCardPayment:#GolfNow.API.Contracts.DataContracts\",\n\"CreditCardNumber\": 4084084084084081,\n\"ExpirationMonth\": 11,\n\"ExpirationYear\": 2026,\n//\"CVVCode\" :408,\n\"BillingAddress\": {\n\"Line1\": \"123 Main St\",\n\"City\": \"Winter Garden\",\n\"Country\": \"US\",\n\"StateProvinceCode\": \"FL\",\n\"PostalCode\": 34787\n},\n\"CCVCode\": 408,\n\"BillingName\": \"Kristopher Warthen\",\n\"Amount\": {\n\"CurrencyCode\": \"ZAR\",\n\"Value\": {{dueOnlineoc}}\n}\n}\n],\n\"ReturnUrl\": \"https://www.golfnow.com\"\n}\n\nOBSERVATIONS :\n\n- Need to Pass in PayStack Credit Card\n\n- Need to Pass in PayStack CCVCode\n\n- Need to Pass in ZAR Currency Code",
+            "bodyHtml": "<div class=\"description-note\"><p>API 2.1 BOOKING : </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14201/comments/1133656/698654-image-20260304-165119.png\" alt=\"image-20260304-165119.png\" loading=\"lazy\"><figcaption>image-20260304-165119.png</figcaption></figure></div></div><p><strong>DATA : </strong></p><pre><code>{\n    &quot;PromotionalCodes&quot;: [],\n    &quot;GuestInfo&quot;: {\n        &quot;FirstName&quot;: &quot;QA&quot;,\n        &quot;LastName&quot;: &quot;Test&quot;,\n        &quot;PhoneNumber&quot;: 4076578987,\n        &quot;EmailAddress&quot;: &quot;{{apiEmailaddyoc}}&quot;\n    },\n    &quot;Details&quot;: [\n        {\n            &quot;__type&quot;: &quot;TeeTimeOrderItemDetail:#GolfNow.API.Contracts.DataContracts.Order.Items&quot;,\n            &quot;ReferenceId&quot;: &quot;REF1&quot;,\n            &quot;TeeTimeRateId&quot;: &quot;1294971373&quot;,\n            &quot;Invoice&quot;: {{Invoice}},\n            &quot;FacilityId&quot;: null,\n            &quot;PlayerCount&quot;: 1\n        }\n    ],\n    // &quot;Donations&quot;: [\n    //     {\n    //         &quot;CharityID&quot;: 2,\n    //         &quot;CharityName&quot;: &quot;Kids Building Character Inc&quot;,\n    //         &quot;EmployerIdentificationNumber&quot;: &quot;27-0149539&quot;,\n    //         &quot;SelectedCharitySupportType&quot;: 1\n    //     }\n    // ],\n    &quot;PaymentInformation&quot;: [\n        // {\n        //     &quot;__type&quot;: &quot;GiftCardPayment:#GolfNow.API.Contracts.DataContracts&quot;\n        // },\n        //      {\n        // \t&quot;__type&quot;: &quot;AccountBalancePayment:#GolfNow.API.Contracts.DataContracts&quot;,\n        // \t&quot;WalletOptionId&quot; : {{AB1WalletOptionIdoc2}} \n        // },\n        {\n            &quot;__type&quot;: &quot;CreditCardPayment:#GolfNow.API.Contracts.DataContracts&quot;,\n            &quot;CreditCardNumber&quot;: 4084084084084081,\n            &quot;ExpirationMonth&quot;: 11,\n            &quot;ExpirationYear&quot;: 2026,\n            //&quot;CVVCode&quot; :408,\n            &quot;BillingAddress&quot;: {\n                &quot;Line1&quot;: &quot;123 Main St&quot;,\n                &quot;City&quot;: &quot;Winter Garden&quot;,\n                &quot;Country&quot;: &quot;US&quot;,\n                &quot;StateProvinceCode&quot;: &quot;FL&quot;,\n                &quot;PostalCode&quot;: 34787\n            },\n            &quot;CCVCode&quot;: 408,\n            &quot;BillingName&quot;: &quot;Kristopher Warthen&quot;,\n            &quot;Amount&quot;: {\n                &quot;CurrencyCode&quot;: &quot;ZAR&quot;,\n                &quot;Value&quot;: {{dueOnlineoc}}\n            }\n        }\n    ],\n    &quot;ReturnUrl&quot;: &quot;https://www.golfnow.com&quot;\n}</code></pre><p><strong>OBSERVATIONS </strong>: </p><ol><li><p>Need to Pass in PayStack Credit Card </p></li><li><p>Need to Pass in PayStack CCVCode </p></li><li><p>Need to Pass in ZAR Currency Code </p></li></ol>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14201?focusedCommentId=1133656",
+        "lastCommentDisplay": "Mar 4, 2026, 11:53 AM",
+        "lastCommentAuthor": "Dewan Kabir",
+        "testChecklist": null,
+        "type": "Side Quest",
+        "isSubtask": false,
+        "status": "In Progress",
+        "priority": "P0",
+        "assignee": "Nicole Greer",
+        "assigneeAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-06-30T10:50:53.834-0400",
+        "updatedDisplay": "Jun 30, 2026, 10:50 AM",
+        "created": "2026-02-24T15:35:23.946-0500",
+        "createdDisplay": "Feb 24, 2026, 3:35 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14197",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14197",
+        "summary": "Commerce - Booking Engine - Align test Environments for Testing in AWS STG and Automation ",
+        "description": "Slack Conversation : [https://versant-golfnow.slack.com/archives/C0AA9LS3NP3/p1770218504243199|https://versant-golfnow.slack.com/archives/C0AA9LS3NP3/p1770218504243199|smart-link]",
+        "descriptionHtml": "<p>Slack Conversation : [https://versant-golfnow.slack.com/archives/C0AA9LS3NP3/p1770218504243199|https://versant-golfnow.slack.com/archives/C0AA9LS3NP3/p1770218504243199|smart-link]</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Side Quest",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "P1",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-06-30T10:50:54.146-0400",
+        "updatedDisplay": "Jun 30, 2026, 10:50 AM",
+        "created": "2026-02-24T09:53:35.762-0500",
+        "createdDisplay": "Feb 24, 2026, 9:53 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
         }
       },
       {
@@ -7831,6 +7831,306 @@
         }
       },
       {
+        "key": "CORE-14288",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14288",
+        "summary": "Commerce Blockers for GN CORE  03/10/2026 Review Call ",
+        "description": "Blocker 1:\nCORE-14211 / CORE-14287: Unable to add tee times for the current month to card\n\nAssigned to Andrew Horvat on GN CORE for review\n\nBlocker 2:\nGNCBE-10087 / CORE-14208: Unable to book tee times with Tax Inclusive enabled within GNC Config\n\nAssigned to Dewan to review with GN CORE and identify root cause.\n\nBlocker 3:\nGNCBE-10018 / CORE-14209: Unable to modify/cancel tee time with Due Now amount > $0 when booked via Commerce API\n\nAssigned to Andrew Horvat, but not yet reviewed.\n\nBlocker 4:\nCOM-647: If course is PayFac enabled, but reservation payment was 100% to GolfNow then GolfNow was unable to issue a refund for any part of the reservation.\n\nIn code review, scheduled for Dev deployment this afternoon. Prod deployment TBD.\n\nBlocker 5:\nGolfNow Wallet in BE\n\nPayment work completed and deployed today. Emanuel/Patrick to enable for testing in Dev.",
+        "descriptionHtml": "<p><strong>Blocker 1: </strong><br><a href=\"https://golfnow.atlassian.net/browse/CORE-14211\" target=\"_blank\" rel=\"noopener\">CORE-14211</a> / <a href=\"https://golfnow.atlassian.net/browse/CORE-14287\" target=\"_blank\" rel=\"noopener\">CORE-14287</a>: Unable to add tee times for the current month to card</p><p>Assigned to Andrew Horvat on GN CORE for review</p><p><strong>Blocker 2: </strong><br><a href=\"https://golfnow.atlassian.net/browse/GNCBE-10087\" target=\"_blank\" rel=\"noopener\">GNCBE-10087</a> / <a href=\"https://golfnow.atlassian.net/browse/CORE-14208\" target=\"_blank\" rel=\"noopener\">CORE-14208</a>: Unable to book tee times with Tax Inclusive enabled within GNC Config</p><p>Assigned to Dewan to review with GN CORE and identify root cause.</p><p><strong>Blocker 3: </strong><br><a href=\"https://golfnow.atlassian.net/browse/GNCBE-10018\" target=\"_blank\" rel=\"noopener\">GNCBE-10018</a> / <a href=\"https://golfnow.atlassian.net/browse/CORE-14209\" target=\"_blank\" rel=\"noopener\">CORE-14209</a>: Unable to modify/cancel tee time with Due Now amount &gt; $0 when booked via Commerce API</p><p>Assigned to Andrew Horvat, but not yet reviewed.</p><p><strong>Blocker 4: </strong><br><a href=\"https://golfnow.atlassian.net/browse/COM-647\" target=\"_blank\" rel=\"noopener\">COM-647</a>: If course is PayFac enabled, but reservation payment was 100% to GolfNow then GolfNow was unable to issue a refund for any part of the reservation. </p><p>In code review, scheduled for Dev deployment this afternoon. Prod deployment TBD.</p><p><strong>Blocker 5: </strong><br>GolfNow Wallet in BE</p><p>Payment work completed and deployed today. Emanuel/Patrick to enable for testing in Dev.</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Side Quest",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "P0",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-06-30T10:50:51.926-0400",
+        "updatedDisplay": "Jun 30, 2026, 10:50 AM",
+        "created": "2026-03-10T13:28:53.219-0400",
+        "createdDisplay": "Mar 10, 2026, 1:28 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14286",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14286",
+        "summary": "Urgent EZRTSGN AWS STG Facilities Spin Up ",
+        "description": "",
+        "descriptionHtml": "",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Side Quest",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "P0",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-06-30T10:50:51.531-0400",
+        "updatedDisplay": "Jun 30, 2026, 10:50 AM",
+        "created": "2026-03-10T13:11:15.702-0400",
+        "createdDisplay": "Mar 10, 2026, 1:11 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14225",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14225",
+        "summary": "SmartPlay F&B - Make it work in TEST Environment ",
+        "description": "Slack Conversation : https://versant-golfnow.slack.com/archives/C09HE58SJA1/p1770675006382949",
+        "descriptionHtml": "<p>Slack Conversation : <a href=\"https://versant-golfnow.slack.com/archives/C09HE58SJA1/p1770675006382949\" target=\"_blank\" rel=\"noopener\">https://versant-golfnow.slack.com/archives/C09HE58SJA1/p1770675006382949</a> </p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Side Quest",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "P0",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-06-30T10:50:51.074-0400",
+        "updatedDisplay": "Jun 30, 2026, 10:50 AM",
+        "created": "2026-02-26T17:44:56.065-0500",
+        "createdDisplay": "Feb 26, 2026, 5:44 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14224",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14224",
+        "summary": "New Loyalty - Make Documentation on all Reference Types for UI testing ",
+        "description": "For assisting in testing : https://golfnow.atlassian.net/browse/CORE-13234",
+        "descriptionHtml": "<div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14224/696828-image-20260226-224206.png\" alt=\"image-20260226-224206.png\" loading=\"lazy\"><figcaption>image-20260226-224206.png</figcaption></figure></div><p>For assisting in testing : <a href=\"https://golfnow.atlassian.net/browse/CORE-13234\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/CORE-13234</a> </p>",
+        "descriptionImageCount": 1,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 1,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Side Quest",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "P0",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-06-30T10:50:50.732-0400",
+        "updatedDisplay": "Jun 30, 2026, 10:50 AM",
+        "created": "2026-02-26T17:42:41.226-0500",
+        "createdDisplay": "Feb 26, 2026, 5:42 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14199",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14199",
+        "summary": "GN Deployment Meeting Slack Workflow ",
+        "description": "",
+        "descriptionHtml": "",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Side Quest",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "P0",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-06-30T10:50:50.331-0400",
+        "updatedDisplay": "Jun 30, 2026, 10:50 AM",
+        "created": "2026-02-24T09:59:39.085-0500",
+        "createdDisplay": "Feb 24, 2026, 9:59 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14198",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14198",
+        "summary": "Product Purchase Confirmation Emails not coming through in AWS DEV / STG ",
+        "description": "Product Purchase Confirmation Emails not coming through in AWS DEV / STG .\n\nWe started looking into this with Yoel , and saw that we are seeing the 255 success message from Mandrill, but we never got any email to come through , even after all Notification Services were validated to be operational .\n\nWe need access to the Mandril test environment.",
+        "descriptionHtml": "<p>Product Purchase Confirmation Emails not coming through in AWS DEV / STG .<br><br>We started looking into this with Yoel , and saw that we are seeing the 255 success message from Mandrill, but we never got any email to come through , even after all Notification Services were validated to be operational .<br><br><strong>We need access to the Mandril test environment. </strong></p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Side Quest",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "P0",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-06-30T10:50:49.913-0400",
+        "updatedDisplay": "Jun 30, 2026, 10:50 AM",
+        "created": "2026-02-24T09:58:47.334-0500",
+        "createdDisplay": "Feb 24, 2026, 9:58 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14048",
         "url": "https://golfnow.atlassian.net/browse/CORE-14048",
         "summary": "Error rate increased on the dbo.GetFeeMessagingConfigurationBDS resource in service:golfnow.api-bulkdataservice-sql-server",
@@ -8637,306 +8937,6 @@
           "type": "Epic",
           "status": "Planning",
           "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14288",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14288",
-        "summary": "Commerce Blockers for GN CORE  03/10/2026 Review Call ",
-        "description": "Blocker 1:\nCORE-14211 / CORE-14287: Unable to add tee times for the current month to card\n\nAssigned to Andrew Horvat on GN CORE for review\n\nBlocker 2:\nGNCBE-10087 / CORE-14208: Unable to book tee times with Tax Inclusive enabled within GNC Config\n\nAssigned to Dewan to review with GN CORE and identify root cause.\n\nBlocker 3:\nGNCBE-10018 / CORE-14209: Unable to modify/cancel tee time with Due Now amount > $0 when booked via Commerce API\n\nAssigned to Andrew Horvat, but not yet reviewed.\n\nBlocker 4:\nCOM-647: If course is PayFac enabled, but reservation payment was 100% to GolfNow then GolfNow was unable to issue a refund for any part of the reservation.\n\nIn code review, scheduled for Dev deployment this afternoon. Prod deployment TBD.\n\nBlocker 5:\nGolfNow Wallet in BE\n\nPayment work completed and deployed today. Emanuel/Patrick to enable for testing in Dev.",
-        "descriptionHtml": "<p><strong>Blocker 1: </strong><br><a href=\"https://golfnow.atlassian.net/browse/CORE-14211\" target=\"_blank\" rel=\"noopener\">CORE-14211</a> / <a href=\"https://golfnow.atlassian.net/browse/CORE-14287\" target=\"_blank\" rel=\"noopener\">CORE-14287</a>: Unable to add tee times for the current month to card</p><p>Assigned to Andrew Horvat on GN CORE for review</p><p><strong>Blocker 2: </strong><br><a href=\"https://golfnow.atlassian.net/browse/GNCBE-10087\" target=\"_blank\" rel=\"noopener\">GNCBE-10087</a> / <a href=\"https://golfnow.atlassian.net/browse/CORE-14208\" target=\"_blank\" rel=\"noopener\">CORE-14208</a>: Unable to book tee times with Tax Inclusive enabled within GNC Config</p><p>Assigned to Dewan to review with GN CORE and identify root cause.</p><p><strong>Blocker 3: </strong><br><a href=\"https://golfnow.atlassian.net/browse/GNCBE-10018\" target=\"_blank\" rel=\"noopener\">GNCBE-10018</a> / <a href=\"https://golfnow.atlassian.net/browse/CORE-14209\" target=\"_blank\" rel=\"noopener\">CORE-14209</a>: Unable to modify/cancel tee time with Due Now amount &gt; $0 when booked via Commerce API</p><p>Assigned to Andrew Horvat, but not yet reviewed.</p><p><strong>Blocker 4: </strong><br><a href=\"https://golfnow.atlassian.net/browse/COM-647\" target=\"_blank\" rel=\"noopener\">COM-647</a>: If course is PayFac enabled, but reservation payment was 100% to GolfNow then GolfNow was unable to issue a refund for any part of the reservation. </p><p>In code review, scheduled for Dev deployment this afternoon. Prod deployment TBD.</p><p><strong>Blocker 5: </strong><br>GolfNow Wallet in BE</p><p>Payment work completed and deployed today. Emanuel/Patrick to enable for testing in Dev.</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Side Quest",
-        "isSubtask": false,
-        "status": "Planning",
-        "priority": "P0",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-30T10:32:58.016-0400",
-        "updatedDisplay": "Jun 30, 2026, 10:32 AM",
-        "created": "2026-03-10T13:28:53.219-0400",
-        "createdDisplay": "Mar 10, 2026, 1:28 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14286",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14286",
-        "summary": "Urgent EZRTSGN AWS STG Facilities Spin Up ",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Side Quest",
-        "isSubtask": false,
-        "status": "Planning",
-        "priority": "P0",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-30T10:32:57.616-0400",
-        "updatedDisplay": "Jun 30, 2026, 10:32 AM",
-        "created": "2026-03-10T13:11:15.702-0400",
-        "createdDisplay": "Mar 10, 2026, 1:11 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14225",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14225",
-        "summary": "SmartPlay F&B - Make it work in TEST Environment ",
-        "description": "Slack Conversation : https://versant-golfnow.slack.com/archives/C09HE58SJA1/p1770675006382949",
-        "descriptionHtml": "<p>Slack Conversation : <a href=\"https://versant-golfnow.slack.com/archives/C09HE58SJA1/p1770675006382949\" target=\"_blank\" rel=\"noopener\">https://versant-golfnow.slack.com/archives/C09HE58SJA1/p1770675006382949</a> </p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Side Quest",
-        "isSubtask": false,
-        "status": "Planning",
-        "priority": "P0",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-30T10:32:57.212-0400",
-        "updatedDisplay": "Jun 30, 2026, 10:32 AM",
-        "created": "2026-02-26T17:44:56.065-0500",
-        "createdDisplay": "Feb 26, 2026, 5:44 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14224",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14224",
-        "summary": "New Loyalty - Make Documentation on all Reference Types for UI testing ",
-        "description": "For assisting in testing : https://golfnow.atlassian.net/browse/CORE-13234",
-        "descriptionHtml": "<div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14224/696828-image-20260226-224206.png\" alt=\"image-20260226-224206.png\" loading=\"lazy\"><figcaption>image-20260226-224206.png</figcaption></figure></div><p>For assisting in testing : <a href=\"https://golfnow.atlassian.net/browse/CORE-13234\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/CORE-13234</a> </p>",
-        "descriptionImageCount": 1,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Side Quest",
-        "isSubtask": false,
-        "status": "Planning",
-        "priority": "P0",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-30T10:32:56.671-0400",
-        "updatedDisplay": "Jun 30, 2026, 10:32 AM",
-        "created": "2026-02-26T17:42:41.226-0500",
-        "createdDisplay": "Feb 26, 2026, 5:42 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14199",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14199",
-        "summary": "GN Deployment Meeting Slack Workflow ",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Side Quest",
-        "isSubtask": false,
-        "status": "Planning",
-        "priority": "P0",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-30T10:32:56.295-0400",
-        "updatedDisplay": "Jun 30, 2026, 10:32 AM",
-        "created": "2026-02-24T09:59:39.085-0500",
-        "createdDisplay": "Feb 24, 2026, 9:59 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14198",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14198",
-        "summary": "Product Purchase Confirmation Emails not coming through in AWS DEV / STG ",
-        "description": "Product Purchase Confirmation Emails not coming through in AWS DEV / STG .\n\nWe started looking into this with Yoel , and saw that we are seeing the 255 success message from Mandrill, but we never got any email to come through , even after all Notification Services were validated to be operational .\n\nWe need access to the Mandril test environment.",
-        "descriptionHtml": "<p>Product Purchase Confirmation Emails not coming through in AWS DEV / STG .<br><br>We started looking into this with Yoel , and saw that we are seeing the 255 success message from Mandrill, but we never got any email to come through , even after all Notification Services were validated to be operational .<br><br><strong>We need access to the Mandril test environment. </strong></p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Side Quest",
-        "isSubtask": false,
-        "status": "Planning",
-        "priority": "P0",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-06-30T10:32:55.881-0400",
-        "updatedDisplay": "Jun 30, 2026, 10:32 AM",
-        "created": "2026-02-24T09:58:47.334-0500",
-        "createdDisplay": "Feb 24, 2026, 9:58 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
         }
       },
       {
@@ -32488,13 +32488,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-30T14:46:04.546Z",
-    "pulledAtDisplay": "Jun 30, 2026, 10:46 AM",
+    "pulledAt": "2026-06-30T14:53:26.604Z",
+    "pulledAtDisplay": "Jun 30, 2026, 10:53 AM",
     "window": {
-      "start": "2026-05-16T14:46:04.545Z",
-      "end": "2026-12-27T14:46:04.545Z",
-      "startDisplay": "May 16, 2026, 10:46 AM",
-      "endDisplay": "Dec 27, 2026, 9:46 AM"
+      "start": "2026-05-16T14:53:26.604Z",
+      "end": "2026-12-27T14:53:26.604Z",
+      "startDisplay": "May 16, 2026, 10:53 AM",
+      "endDisplay": "Dec 27, 2026, 9:53 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -32507,7 +32507,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-30T14:46:06.878Z",
+        "pulledAt": "2026-06-30T14:53:29.158Z",
         "eventCount": 87,
         "events": [
           {
@@ -33140,23 +33140,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.57",
-            "start": "2026-07-14T00:00:00.000Z",
-            "end": "2026-07-15T00:00:00.000Z",
-            "startDate": "2026-07-14",
-            "endDate": "2026-07-15",
-            "startDisplay": "Jul 14, 2026",
-            "endDisplay": "Jul 15, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221527Z-1432222737@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -33186,6 +33169,23 @@
             "endDisplay": "Jul 15, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.57",
+            "start": "2026-07-14T00:00:00.000Z",
+            "end": "2026-07-15T00:00:00.000Z",
+            "startDate": "2026-07-14",
+            "endDate": "2026-07-15",
+            "startDisplay": "Jul 14, 2026",
+            "endDisplay": "Jul 15, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -33599,23 +33599,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.59",
-            "start": "2026-09-15T00:00:00.000Z",
-            "end": "2026-09-16T00:00:00.000Z",
-            "startDate": "2026-09-15",
-            "endDate": "2026-09-16",
-            "startDisplay": "Sep 15, 2026",
-            "endDisplay": "Sep 16, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221627Z-1916149808@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -33645,6 +33628,23 @@
             "endDisplay": "Sep 16, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.59",
+            "start": "2026-09-15T00:00:00.000Z",
+            "end": "2026-09-16T00:00:00.000Z",
+            "startDate": "2026-09-15",
+            "endDate": "2026-09-16",
+            "startDisplay": "Sep 15, 2026",
+            "endDisplay": "Sep 16, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -33995,10 +33995,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-30T14:42:25.115Z",
-    "previousPulledAtDisplay": "Jun 30, 2026, 10:42 AM",
-    "currentPulledAt": "2026-06-30T14:47:35.772Z",
-    "currentPulledAtDisplay": "Jun 30, 2026, 10:47 AM",
+    "previousPulledAt": "2026-06-30T14:47:35.772Z",
+    "previousPulledAtDisplay": "Jun 30, 2026, 10:47 AM",
+    "currentPulledAt": "2026-06-30T14:55:06.248Z",
+    "currentPulledAtDisplay": "Jun 30, 2026, 10:55 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -34006,6 +34006,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-30T14:47:35.772Z",
+      "previousPulledAtDisplay": "Jun 30, 2026, 10:47 AM",
+      "currentPulledAt": "2026-06-30T14:55:06.248Z",
+      "currentPulledAtDisplay": "Jun 30, 2026, 10:55 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-30T14:42:25.115Z",
       "previousPulledAtDisplay": "Jun 30, 2026, 10:42 AM",
@@ -35884,17 +35895,6 @@
       "previousPulledAtDisplay": "Jun 29, 2026, 8:47 PM",
       "currentPulledAt": "2026-06-30T00:52:15.777Z",
       "currentPulledAtDisplay": "Jun 29, 2026, 8:52 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-30T00:43:05.089Z",
-      "previousPulledAtDisplay": "Jun 29, 2026, 8:43 PM",
-      "currentPulledAt": "2026-06-30T00:47:05.206Z",
-      "currentPulledAtDisplay": "Jun 29, 2026, 8:47 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
