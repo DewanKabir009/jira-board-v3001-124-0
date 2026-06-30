@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-06-30T15:43:12.316Z",
-  "pulledAtDisplay": "Jun 30, 2026, 11:43 AM",
+  "pulledAt": "2026-06-30T15:48:06.620Z",
+  "pulledAtDisplay": "Jun 30, 2026, 11:48 AM",
   "total": 24,
   "issues": [
     {
@@ -1794,8 +1794,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-06-30T15:43:12.316Z",
-    "pulledAtDisplay": "Jun 30, 2026, 11:43 AM",
+    "pulledAt": "2026-06-30T15:48:06.620Z",
+    "pulledAtDisplay": "Jun 30, 2026, 11:48 AM",
     "total": 418,
     "mainTotal": 388,
     "subtaskTotal": 30,
@@ -32488,13 +32488,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-06-30T15:41:12.025Z",
-    "pulledAtDisplay": "Jun 30, 2026, 11:41 AM",
+    "pulledAt": "2026-06-30T15:46:10.947Z",
+    "pulledAtDisplay": "Jun 30, 2026, 11:46 AM",
     "window": {
-      "start": "2026-05-16T15:41:12.025Z",
-      "end": "2026-12-27T15:41:12.025Z",
-      "startDisplay": "May 16, 2026, 11:41 AM",
-      "endDisplay": "Dec 27, 2026, 10:41 AM"
+      "start": "2026-05-16T15:46:10.947Z",
+      "end": "2026-12-27T15:46:10.947Z",
+      "startDisplay": "May 16, 2026, 11:46 AM",
+      "endDisplay": "Dec 27, 2026, 10:46 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -32507,7 +32507,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-06-30T15:41:18.042Z",
+        "pulledAt": "2026-06-30T15:46:14.118Z",
         "eventCount": 87,
         "events": [
           {
@@ -32579,23 +32579,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
-            "start": "2026-05-26T18:00:00.000Z",
-            "end": "2026-05-26T19:55:00.000Z",
-            "startDate": "",
-            "endDate": "",
-            "startDisplay": "May 26, 2026, 2:00 PM",
-            "endDisplay": "May 26, 2026, 3:55 PM",
-            "allDay": false,
-            "type": "Scheduled Maintenance",
-            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
-            "description": "Slack: #itops_deployments",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -32610,6 +32593,23 @@
             "type": "Patching",
             "location": "https://golfnow.atlassian.net/browse/OPS-54241",
             "description": "Slack: #itops_patching_communications",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
+            "start": "2026-05-26T18:00:00.000Z",
+            "end": "2026-05-26T19:55:00.000Z",
+            "startDate": "",
+            "endDate": "",
+            "startDisplay": "May 26, 2026, 2:00 PM",
+            "endDisplay": "May 26, 2026, 3:55 PM",
+            "allDay": false,
+            "type": "Scheduled Maintenance",
+            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
+            "description": "Slack: #itops_deployments",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
@@ -33995,10 +33995,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-06-30T15:37:45.896Z",
-    "previousPulledAtDisplay": "Jun 30, 2026, 11:37 AM",
-    "currentPulledAt": "2026-06-30T15:43:12.316Z",
-    "currentPulledAtDisplay": "Jun 30, 2026, 11:43 AM",
+    "previousPulledAt": "2026-06-30T15:43:12.316Z",
+    "previousPulledAtDisplay": "Jun 30, 2026, 11:43 AM",
+    "currentPulledAt": "2026-06-30T15:48:06.620Z",
+    "currentPulledAtDisplay": "Jun 30, 2026, 11:48 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -34006,6 +34006,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-06-30T15:43:12.316Z",
+      "previousPulledAtDisplay": "Jun 30, 2026, 11:43 AM",
+      "currentPulledAt": "2026-06-30T15:48:06.620Z",
+      "currentPulledAtDisplay": "Jun 30, 2026, 11:48 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-06-30T15:37:45.896Z",
       "previousPulledAtDisplay": "Jun 30, 2026, 11:37 AM",
@@ -35884,17 +35895,6 @@
       "previousPulledAtDisplay": "Jun 29, 2026, 9:37 PM",
       "currentPulledAt": "2026-06-30T01:42:35.920Z",
       "currentPulledAtDisplay": "Jun 29, 2026, 9:42 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-30T01:32:55.740Z",
-      "previousPulledAtDisplay": "Jun 29, 2026, 9:32 PM",
-      "currentPulledAt": "2026-06-30T01:37:17.914Z",
-      "currentPulledAtDisplay": "Jun 29, 2026, 9:37 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
