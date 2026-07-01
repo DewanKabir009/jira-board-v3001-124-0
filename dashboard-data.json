@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-01T03:17:04.390Z",
-  "pulledAtDisplay": "Jun 30, 2026, 11:17 PM",
+  "pulledAt": "2026-07-01T03:23:21.680Z",
+  "pulledAtDisplay": "Jun 30, 2026, 11:23 PM",
   "total": 24,
   "issues": [
     {
@@ -1102,126 +1102,7 @@
       "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1184542",
       "lastCommentDisplay": "Jun 17, 2026, 5:53 PM",
       "lastCommentAuthor": "Nicole Greer",
-      "testChecklist": {
-        "files": [
-          {
-            "id": "733040",
-            "filename": "QA_Test_Guide_CORE-14233.md",
-            "created": "2026-06-01T10:28:22.922-0400",
-            "author": "Luis Vallejo Mursuli"
-          }
-        ],
-        "commentIds": [
-          "1176866"
-        ],
-        "total": 6,
-        "testCases": [
-          {
-            "id": "A1",
-            "title": "GolfPass+ Member Confirmation Email - ProductId 36",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-A1 Priority: High Test Type: End-to-End Email Validation",
-            "checks": [
-              "Member benefits header is displayed",
-              "All 4 benefit bullet points are present",
-              "\"Earn or redeem GolfPass Points on tee time bookings\" text is correct (NOT \"Extra GolfPass Rewards Points\")",
-              "Phone number 833-465-3847 is displayed twice",
-              "Support contact text is displayed at the end of the section",
-              "No non-member benefits text is displayed"
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "A2",
-            "title": "GolfPass+ Member Confirmation Email - ProductId Variation",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-A2 Priority: High Test Type: End-to-End Email Validation",
-            "checks": [
-              "Email received successfully",
-              "Member benefits section displays correctly",
-              "All 4 benefit bullet points are present and correct",
-              "\"Earn or redeem GolfPass Points on tee time bookings\" text is displayed",
-              "No non-member benefits section visible"
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "B1",
-            "title": "Non-Member Confirmation Email - Standard Non-Member",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-B1 Priority: High Test Type: End-to-End Email Validation",
-            "checks": [
-              "Non-member header is displayed",
-              "Non-member benefits description is present",
-              "All 5 benefit bullet points are present",
-              "\"Earn GolfPass Points on tee time bookings and redeem for a discount on GolfPass+ membership\" text is correct (NOT \"Earn and redeem GolfPass Points…\")",
-              "Peacock benefit states \"Complimentary access to Peacock Premium (up to 12 months)\"",
-              "No \"$40 TaylorMade credit\" is mentioned anywhere",
-              "Call-to-action link to golfpass.com is present and clickable",
-              "No member benefits section is visible"
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "B2",
-            "title": "Non-Member Confirmation Email - Verify Removed Content",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-B2 Priority: High Test Type: Regression Test - Removed Content Validation",
-            "checks": [
-              "Search email for \"TaylorMade\" - should return 0 results",
-              "Search email for \"$40\" - should return 0 results",
-              "Search email for \"Extra GolfPass Rewards Points\" - should return 0 results",
-              "Search email for \"NBCUniversal\" - should return 0 results",
-              "Confirm new Peacock text includes \"Peacock Premium (up to 12 months)\""
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "C1",
-            "title": "ProductId Boundary Validation - ProductId 35 (Non-Member)",
-            "category": "4. Detailed Test Cases",
-            "blocking": false,
-            "description": "Test ID: TC-CORE14233-C1 Priority: Medium Test Type: Boundary Condition Test",
-            "checks": [
-              "Non-member header \"Looking to get even more out of your game?\" is displayed",
-              "Non-member benefits list (5 items) is present",
-              "Member benefits section is NOT visible",
-              "ProductId 35 correctly triggers non-member template (not member template)"
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          },
-          {
-            "id": "C2",
-            "title": "ProductTypeId Requirement Validation",
-            "category": "4. Detailed Test Cases",
-            "blocking": true,
-            "description": "Test ID: TC-CORE14233-C2 Priority: Medium Test Type: Conditional Logic Test",
-            "checks": [
-              "Email received successfully",
-              "GolfPass Value Prop section is NOT present",
-              "No member benefits section visible",
-              "No non-member benefits section visible",
-              "Standard reservation details are displayed correctly",
-              "ProductTypeId = 9 requirement is properly enforced",
-              "Development environment is accessible (https://dev.golfnow.com)",
-              "Test customer accounts are configured with correct ProductIds",
-              "Email inboxes are accessible for all test accounts",
-              "Select 2-3 test facilities with available tee times",
-              "Record facility names and available time slots",
-              "Verify pricing is configured correctly",
-              "Print or have digital copy of test cases ready",
-              "Email client open for quick verification",
-              "Screenshot tool ready for capturing email examples",
-              "Header: \"As a GolfPass+ member, every tee time you book includes exclusive benefits:\""
-            ],
-            "sourceFile": "QA_Test_Guide_CORE-14233.md"
-          }
-        ]
-      },
+      "testChecklist": null,
       "type": "Story",
       "isSubtask": false,
       "status": "Closed",
@@ -1809,8 +1690,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-01T03:17:04.390Z",
-    "pulledAtDisplay": "Jun 30, 2026, 11:17 PM",
+    "pulledAt": "2026-07-01T03:23:21.680Z",
+    "pulledAtDisplay": "Jun 30, 2026, 11:23 PM",
     "total": 418,
     "mainTotal": 388,
     "subtaskTotal": 30,
@@ -3760,126 +3641,7 @@
         "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14233?focusedCommentId=1184542",
         "lastCommentDisplay": "Jun 17, 2026, 5:53 PM",
         "lastCommentAuthor": "Nicole Greer",
-        "testChecklist": {
-          "files": [
-            {
-              "id": "733040",
-              "filename": "QA_Test_Guide_CORE-14233.md",
-              "created": "2026-06-01T10:28:22.922-0400",
-              "author": "Luis Vallejo Mursuli"
-            }
-          ],
-          "commentIds": [
-            "1176866"
-          ],
-          "total": 6,
-          "testCases": [
-            {
-              "id": "A1",
-              "title": "GolfPass+ Member Confirmation Email - ProductId 36",
-              "category": "4. Detailed Test Cases",
-              "blocking": false,
-              "description": "Test ID: TC-CORE14233-A1 Priority: High Test Type: End-to-End Email Validation",
-              "checks": [
-                "Member benefits header is displayed",
-                "All 4 benefit bullet points are present",
-                "\"Earn or redeem GolfPass Points on tee time bookings\" text is correct (NOT \"Extra GolfPass Rewards Points\")",
-                "Phone number 833-465-3847 is displayed twice",
-                "Support contact text is displayed at the end of the section",
-                "No non-member benefits text is displayed"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14233.md"
-            },
-            {
-              "id": "A2",
-              "title": "GolfPass+ Member Confirmation Email - ProductId Variation",
-              "category": "4. Detailed Test Cases",
-              "blocking": false,
-              "description": "Test ID: TC-CORE14233-A2 Priority: High Test Type: End-to-End Email Validation",
-              "checks": [
-                "Email received successfully",
-                "Member benefits section displays correctly",
-                "All 4 benefit bullet points are present and correct",
-                "\"Earn or redeem GolfPass Points on tee time bookings\" text is displayed",
-                "No non-member benefits section visible"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14233.md"
-            },
-            {
-              "id": "B1",
-              "title": "Non-Member Confirmation Email - Standard Non-Member",
-              "category": "4. Detailed Test Cases",
-              "blocking": false,
-              "description": "Test ID: TC-CORE14233-B1 Priority: High Test Type: End-to-End Email Validation",
-              "checks": [
-                "Non-member header is displayed",
-                "Non-member benefits description is present",
-                "All 5 benefit bullet points are present",
-                "\"Earn GolfPass Points on tee time bookings and redeem for a discount on GolfPass+ membership\" text is correct (NOT \"Earn and redeem GolfPass Points…\")",
-                "Peacock benefit states \"Complimentary access to Peacock Premium (up to 12 months)\"",
-                "No \"$40 TaylorMade credit\" is mentioned anywhere",
-                "Call-to-action link to golfpass.com is present and clickable",
-                "No member benefits section is visible"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14233.md"
-            },
-            {
-              "id": "B2",
-              "title": "Non-Member Confirmation Email - Verify Removed Content",
-              "category": "4. Detailed Test Cases",
-              "blocking": false,
-              "description": "Test ID: TC-CORE14233-B2 Priority: High Test Type: Regression Test - Removed Content Validation",
-              "checks": [
-                "Search email for \"TaylorMade\" - should return 0 results",
-                "Search email for \"$40\" - should return 0 results",
-                "Search email for \"Extra GolfPass Rewards Points\" - should return 0 results",
-                "Search email for \"NBCUniversal\" - should return 0 results",
-                "Confirm new Peacock text includes \"Peacock Premium (up to 12 months)\""
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14233.md"
-            },
-            {
-              "id": "C1",
-              "title": "ProductId Boundary Validation - ProductId 35 (Non-Member)",
-              "category": "4. Detailed Test Cases",
-              "blocking": false,
-              "description": "Test ID: TC-CORE14233-C1 Priority: Medium Test Type: Boundary Condition Test",
-              "checks": [
-                "Non-member header \"Looking to get even more out of your game?\" is displayed",
-                "Non-member benefits list (5 items) is present",
-                "Member benefits section is NOT visible",
-                "ProductId 35 correctly triggers non-member template (not member template)"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14233.md"
-            },
-            {
-              "id": "C2",
-              "title": "ProductTypeId Requirement Validation",
-              "category": "4. Detailed Test Cases",
-              "blocking": true,
-              "description": "Test ID: TC-CORE14233-C2 Priority: Medium Test Type: Conditional Logic Test",
-              "checks": [
-                "Email received successfully",
-                "GolfPass Value Prop section is NOT present",
-                "No member benefits section visible",
-                "No non-member benefits section visible",
-                "Standard reservation details are displayed correctly",
-                "ProductTypeId = 9 requirement is properly enforced",
-                "Development environment is accessible (https://dev.golfnow.com)",
-                "Test customer accounts are configured with correct ProductIds",
-                "Email inboxes are accessible for all test accounts",
-                "Select 2-3 test facilities with available tee times",
-                "Record facility names and available time slots",
-                "Verify pricing is configured correctly",
-                "Print or have digital copy of test cases ready",
-                "Email client open for quick verification",
-                "Screenshot tool ready for capturing email examples",
-                "Header: \"As a GolfPass+ member, every tee time you book includes exclusive benefits:\""
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14233.md"
-            }
-          ]
-        },
+        "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
         "status": "Closed",
@@ -10432,317 +10194,7 @@
         "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14332?focusedCommentId=1162678",
         "lastCommentDisplay": "May 11, 2026, 4:37 PM",
         "lastCommentAuthor": "Dewan Kabir",
-        "testChecklist": {
-          "files": [
-            {
-              "id": "718106",
-              "filename": "QA_Test_Guide_CORE-14117_CORE-14332.md",
-              "created": "2026-04-27T14:58:12.446-0400",
-              "author": "Luis Vallejo Mursuli"
-            }
-          ],
-          "commentIds": [
-            "1156736"
-          ],
-          "total": 25,
-          "testCases": [
-            {
-              "id": "A1",
-              "title": "Dynamic Fee Override Applied to Trade Rate (FF Enabled)",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify dynamic transaction fee override replaces default fee for trade rate when LaunchDarkly feature flag is enabled for Channel 331",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A2",
-              "title": "Non-Trade Rates Unchanged by Dynamic Fees",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify that non-trade rates (IsTrade = false) are NOT affected by dynamic transaction fee overrides",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A3",
-              "title": "Fee Messaging Reflects Final Calculated Fees ⚠️ BLOCKING",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": true,
-              "description": "Verify that FeeMessagingDisplayRates accurately reflects the final transaction fee totals after all calculations complete (validates CORE-14117 fix)",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A4",
-              "title": "Multiple Facilities with Different Fee Configurations",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify batch query optimization works when tee times span multiple facilities (tests performance optimization)",
-              "checks": [
-                "System optimizes database queries (single call for multiple facilities)",
-                "Each facility's dynamic fee configuration applied correctly"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A5",
-              "title": "Percentage-Based Dynamic Fee (Future/Optional)",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "If percentage-based fees are configured, verify they calculate correctly",
-              "checks": [
-                "TransactionFeesTotal.Value = 50.00 * 0.05 = $2.50"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A6",
-              "title": "9-Hole vs 18-Hole Rates",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify dynamic fees apply correctly to both 9-hole and 18-hole rates",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A7",
-              "title": "Pagination Consistency (Skip/Take)",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify dynamic fees apply consistently across paginated results",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A8",
-              "title": "GetInvoice Endpoint Fee Messaging",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify dynamic fees and fee messaging work correctly in GetInvoice endpoint",
-              "checks": [
-                "TransactionFeesTotal.Value = 1.99 (for trade rate)",
-                "FeeMessagingDisplayRates.TransactionFeesTotal = 1.99",
-                "Accurate total calculation"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A9",
-              "title": "TeeTimeInvoice with Multiple Players",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify dynamic fees applied correctly when multiple players are included in TeeTimeInvoice",
-              "checks": [
-                "Each player's transaction fee = 1.99 (if trade rate)",
-                "Total transaction fees = 1.99 * number_of_players",
-                "FeeMessagingDisplayRates accurate per player"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A10",
-              "title": "Dynamic Fee with Zero Value",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify system handles zero-value dynamic fees correctly",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A11",
-              "title": "LaunchDarkly Feature Flag ENABLED (Channel 331)",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify LaunchDarkly feature flag evaluation returns TRUE for Channel 331, enabling FeeConfiguration",
-              "checks": [
-                "LaunchDarkly evaluates flag for ChannelContext(331)",
-                "Flag returns true",
-                "FeeCalculationService.ApplyTransactionFees() executes (Line 1339)",
-                "Dynamic fees and fee messaging work as expected"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A12",
-              "title": "LaunchDarkly Feature Flag DISABLED (Channel 5151)",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify LaunchDarkly feature flag evaluation returns FALSE for Channel 5151, disabling FeeConfiguration",
-              "checks": [
-                "LaunchDarkly evaluates flag for ChannelContext(5151)",
-                "Flag returns false",
-                "FeeCalculationService.ApplyTransactionFees() SKIPPED",
-                "Legacy fee behavior used"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A13",
-              "title": "LaunchDarkly Fallback to CRMConfig ⚠️ BLOCKING",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": true,
-              "description": "Verify system falls back to TeeTime.FeeCalculation.Enabled (web.config) when LaunchDarkly is unavailable",
-              "checks": [
-                "LaunchDarkly call fails/times out",
-                "System falls back to CRMConfig",
-                "Reads TeeTime.FeeCalculation.Enabled from web.config",
-                "If true: FeeConfiguration still works",
-                "If false: Legacy behavior used"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A14",
-              "title": "Channel Context Differentiation",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify different channels receive different feature flag evaluations based on LaunchDarkly targeting rules",
-              "checks": [
-                "Channel 331: FeeConfiguration enabled, fees = 1.99",
-                "Channel 5151: FeeConfiguration disabled, fees = default (e.g., 3.49)"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A15",
-              "title": "Mixed Trade and Non-Trade Rates in Single Response",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify a single tee time response correctly handles both trade and non-trade rates with different fee treatments",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B1",
-              "title": "Legacy Behavior - Feature Flag Disabled ⚠️ BLOCKING",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": true,
-              "description": "Verify legacy tee time fee behavior works correctly when feature flag is disabled (Channel 5151)",
-              "checks": [
-                "LaunchDarkly returns false for channel 5151",
-                "FeeCalculationService SKIPPED",
-                "Legacy fee logic used",
-                "Transaction fees use default configuration (NOT dynamic overrides)"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B2",
-              "title": "Facility Without Dynamic Fee Configuration",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": false,
-              "description": "Verify facilities without dynamic fee configurations continue working normally",
-              "checks": [
-                "No dynamic overrides applied",
-                "Default fee logic used",
-                "Normal response returned"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B3",
-              "title": "Invalid Facility ID",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": false,
-              "description": "Verify appropriate error handling for non-existent facility IDs",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B4",
-              "title": "Multiple Date Ranges",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": false,
-              "description": "Verify dynamic fees apply correctly across different date ranges",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B5",
-              "title": "Empty Tee Time Results",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": false,
-              "description": "Verify system handles empty tee time results gracefully (no tee times available)",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B6",
-              "title": "Rate Set Differentiation",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": false,
-              "description": "Verify different rate sets within the same facility are handled correctly",
-              "checks": [
-                "Multiple rate sets may exist for same facility",
-                "Dynamic fee applies based on IsTrade flag, not rate set",
-                "Each rate set's trade rates get 1.99 fee",
-                "Each rate set's non-trade rates use default fees"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B7",
-              "title": "Currency Code Consistency",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": false,
-              "description": "Verify all Money objects maintain consistent currency codes throughout response",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B8",
-              "title": "Null or Missing Fee Configuration Fields",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": false,
-              "description": "Verify system handles database records with null or missing fields gracefully",
-              "checks": [
-                "System handles NULL/invalid fee values gracefully",
-                "Either skips the record with warning in logs, OR uses default fee value (0.00)",
-                "No unhandled exceptions"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B9",
-              "title": "Player Count Variations",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": false,
-              "description": "Verify dynamic fees work correctly with different player counts (1-4 players)",
-              "checks": [
-                "Transaction fee per player = 1.99 (for trade rate)",
-                "Total transaction fees = 1.99 * player_count"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B10",
-              "title": "Concurrent Requests Same Facility",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": true,
-              "description": "Verify system handles concurrent requests for the same facility without issues",
-              "checks": [
-                "Test environment identified (DEV / STG)",
-                "Database access confirmed",
-                "Application log access confirmed",
-                "Postman/REST client configured with authentication",
-                "LaunchDarkly access confirmed (optional)",
-                "Facility 1806 exists with tee times for 2026-04-22 to 2026-04-24",
-                "Dynamic fee configuration confirmed: Fee = $1.99 for Facility 1806 trade rates",
-                "Both trade and non-trade rates available for Facility 1806",
-                "Channel 331 LaunchDarkly flag returns TRUE (verified)",
-                "Channel 5151 LaunchDarkly flag returns FALSE (verified)",
-                "All BLOCKING tests passed (A3, A13, B1)",
-                "All Critical severity tests passed",
-                "All High severity tests passed or documented",
-                "Response times acceptable (< 2 seconds for standard requests)",
-                "Batch query verified (1 DB call per request, not N+1)",
-                "Concurrent request test passed (B10)"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            }
-          ]
-        },
+        "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
         "status": "Closed",
@@ -13230,228 +12682,7 @@
         "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14346?focusedCommentId=1148026",
         "lastCommentDisplay": "Apr 6, 2026, 7:00 PM",
         "lastCommentAuthor": "Dewan Kabir",
-        "testChecklist": {
-          "files": [
-            {
-              "id": "711097",
-              "filename": "QA_Test_Guide_CORE-14346.md",
-              "created": "2026-04-06T10:40:37.806-0400",
-              "author": "Luis Vallejo Mursuli"
-            }
-          ],
-          "commentIds": [
-            "1147806"
-          ],
-          "total": 21,
-          "testCases": [
-            {
-              "id": "A1",
-              "title": "Single Valid OwnerId",
-              "category": "4. New Feature Tests: OwnerIds Parameter",
-              "blocking": false,
-              "description": "Verify endpoint accepts a single valid owner ID",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "A2",
-              "title": "Multiple Valid OwnerIds",
-              "category": "4. New Feature Tests: OwnerIds Parameter",
-              "blocking": false,
-              "description": "Verify endpoint accepts multiple valid owner IDs",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "A3",
-              "title": "OwnerIds with Duplicates (Auto-Deduplication)",
-              "category": "4. New Feature Tests: OwnerIds Parameter",
-              "blocking": false,
-              "description": "Verify duplicate owner IDs are automatically removed before processing",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "A4",
-              "title": "Large List of OwnerIds",
-              "category": "4. New Feature Tests: OwnerIds Parameter",
-              "blocking": false,
-              "description": "Verify endpoint handles multiple owner IDs efficiently",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "A5",
-              "title": "OwnerId Not Enabled (Partial Success)",
-              "category": "4. New Feature Tests: OwnerIds Parameter",
-              "blocking": false,
-              "description": "Verify owners not enabled in system are skipped without failure",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "A6",
-              "title": "Missing OwnerIds Field (Required Validation)",
-              "category": "4. New Feature Tests: OwnerIds Parameter",
-              "blocking": false,
-              "description": "Verify endpoint rejects requests without OwnerIds field",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "A7",
-              "title": "Empty OwnerIds Array (MinLength Validation)",
-              "category": "4. New Feature Tests: OwnerIds Parameter",
-              "blocking": false,
-              "description": "Verify endpoint rejects empty OwnerIds arrays",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "A8",
-              "title": "OwnerIds Containing Zero",
-              "category": "4. New Feature Tests: OwnerIds Parameter",
-              "blocking": false,
-              "description": "Verify endpoint rejects owner ID of zero",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "A9",
-              "title": "OwnerIds Containing Negative Value",
-              "category": "4. New Feature Tests: OwnerIds Parameter",
-              "blocking": false,
-              "description": "Verify endpoint rejects negative owner IDs",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "A10",
-              "title": "Mixed Valid and Invalid OwnerIds",
-              "category": "4. New Feature Tests: OwnerIds Parameter",
-              "blocking": false,
-              "description": "Verify entire request fails if ANY owner ID is invalid",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "A11",
-              "title": "Multiple Invalid OwnerIds",
-              "category": "4. New Feature Tests: OwnerIds Parameter",
-              "blocking": false,
-              "description": "Verify endpoint rejects multiple invalid owner IDs",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "B1",
-              "title": "Active Flag False (PNAS Automation Disabled)",
-              "category": "5. Regression Tests: Existing Functionality",
-              "blocking": false,
-              "description": "Verify PNAS automation can be disabled using Active=false",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "B2",
-              "title": "FenceApproved Flag False",
-              "category": "5. Regression Tests: Existing Functionality",
-              "blocking": false,
-              "description": "Verify fence time settings are optional when FenceApproved=false",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "B3",
-              "title": "Missing GolfFacilityId",
-              "category": "5. Regression Tests: Existing Functionality",
-              "blocking": false,
-              "description": "Verify GolfFacilityId is required",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "B4",
-              "title": "IntervalsPerHour Out of Range",
-              "category": "5. Regression Tests: Existing Functionality",
-              "blocking": false,
-              "description": "Verify IntervalsPerHour must be between 1 and 10",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "B5",
-              "title": "TradeRollDiscount Out of Range",
-              "category": "5. Regression Tests: Existing Functionality",
-              "blocking": false,
-              "description": "Verify TradeRollDiscount must be between 0 and 100",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "B6",
-              "title": "FenceHour Out of Range",
-              "category": "5. Regression Tests: Existing Functionality",
-              "blocking": false,
-              "description": "Verify FenceHour must be between 0 and 23",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "B7",
-              "title": "FenceMinute Out of Range",
-              "category": "5. Regression Tests: Existing Functionality",
-              "blocking": false,
-              "description": "Verify FenceMinute must be between 0 and 59",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "B8",
-              "title": "Missing FenceHour/FenceMinute When Required",
-              "category": "5. Regression Tests: Existing Functionality",
-              "blocking": false,
-              "description": "Verify FenceHour and FenceMinute are required when FenceApproved=true",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "B9",
-              "title": "Golf Facility Does Not Exist",
-              "category": "5. Regression Tests: Existing Functionality",
-              "blocking": false,
-              "description": "Verify endpoint rejects requests for non-existent facilities",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            },
-            {
-              "id": "B10",
-              "title": "Cannot Update Master Facility",
-              "category": "5. Regression Tests: Existing Functionality",
-              "blocking": false,
-              "description": "Verify master facilities cannot have PNAS settings updated",
-              "checks": [
-                "A1: Single Valid OwnerId (Test #1)",
-                "A2: Multiple Valid OwnerIds (Test #10)",
-                "A3: OwnerIds with Duplicates - Auto-Deduplication (Test #11)",
-                "A4: Large List of OwnerIds (Test #12)",
-                "A5: OwnerId Not Enabled - Partial Success (Test #19)",
-                "A6: Missing OwnerIds Field (Test #13)",
-                "A7: Empty OwnerIds Array (Test #14)",
-                "A8: OwnerIds Containing Zero (Test #15)",
-                "A9: OwnerIds Containing Negative Value (Test #16)",
-                "A10: Mixed Valid and Invalid OwnerIds (Test #17)",
-                "A11: Multiple Invalid OwnerIds (Test #18)",
-                "B1: Active Flag False - PNAS Automation Disabled (Test #20)",
-                "B2: FenceApproved Flag False (Test #21)",
-                "B3: Missing GolfFacilityId (Test #4)",
-                "B4: IntervalsPerHour Out of Range (Test #5)",
-                "B5: TradeRollDiscount Out of Range (Test #6)"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14346.md"
-            }
-          ]
-        },
+        "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
         "status": "Closed",
@@ -32533,13 +31764,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-01T03:15:50.569Z",
-    "pulledAtDisplay": "Jun 30, 2026, 11:15 PM",
+    "pulledAt": "2026-07-01T03:20:54.762Z",
+    "pulledAtDisplay": "Jun 30, 2026, 11:20 PM",
     "window": {
-      "start": "2026-05-17T03:15:50.569Z",
-      "end": "2026-12-28T03:15:50.569Z",
-      "startDisplay": "May 16, 2026, 11:15 PM",
-      "endDisplay": "Dec 27, 2026, 10:15 PM"
+      "start": "2026-05-17T03:20:54.762Z",
+      "end": "2026-12-28T03:20:54.762Z",
+      "startDisplay": "May 16, 2026, 11:20 PM",
+      "endDisplay": "Dec 27, 2026, 10:20 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -32552,7 +31783,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-01T03:15:52.872Z",
+        "pulledAt": "2026-07-01T03:20:57.944Z",
         "eventCount": 89,
         "events": [
           {
@@ -32624,23 +31855,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Oak Brook Monthly Production Server Patching May 2026: Slack:\n#itops_patching_communications",
-            "start": "2026-05-26T18:00:00.000Z",
-            "end": "2026-05-27T19:55:00.000Z",
-            "startDate": "",
-            "endDate": "",
-            "startDisplay": "May 26, 2026, 2:00 PM",
-            "endDisplay": "May 27, 2026, 3:55 PM",
-            "allDay": false,
-            "type": "Patching",
-            "location": "https://golfnow.atlassian.net/browse/OPS-54241",
-            "description": "Slack: #itops_patching_communications",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -32655,6 +31869,23 @@
             "type": "Scheduled Maintenance",
             "location": "https://golfnow.atlassian.net/browse/OPS-54736",
             "description": "Slack: #itops_deployments",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Oak Brook Monthly Production Server Patching May 2026: Slack:\n#itops_patching_communications",
+            "start": "2026-05-26T18:00:00.000Z",
+            "end": "2026-05-27T19:55:00.000Z",
+            "startDate": "",
+            "endDate": "",
+            "startDisplay": "May 26, 2026, 2:00 PM",
+            "endDisplay": "May 27, 2026, 3:55 PM",
+            "allDay": false,
+            "type": "Patching",
+            "location": "https://golfnow.atlassian.net/browse/OPS-54241",
+            "description": "Slack: #itops_patching_communications",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
@@ -33202,23 +32433,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.57",
-            "start": "2026-07-14T00:00:00.000Z",
-            "end": "2026-07-15T00:00:00.000Z",
-            "startDate": "2026-07-14",
-            "endDate": "2026-07-15",
-            "startDisplay": "Jul 14, 2026",
-            "endDisplay": "Jul 15, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221527Z-1432222737@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -33248,6 +32462,23 @@
             "endDisplay": "Jul 15, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.57",
+            "start": "2026-07-14T00:00:00.000Z",
+            "end": "2026-07-15T00:00:00.000Z",
+            "startDate": "2026-07-14",
+            "endDate": "2026-07-15",
+            "startDisplay": "Jul 14, 2026",
+            "endDisplay": "Jul 15, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -33661,23 +32892,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.59",
-            "start": "2026-09-15T00:00:00.000Z",
-            "end": "2026-09-16T00:00:00.000Z",
-            "startDate": "2026-09-15",
-            "endDate": "2026-09-16",
-            "startDisplay": "Sep 15, 2026",
-            "endDisplay": "Sep 16, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221627Z-1916149808@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -33707,6 +32921,23 @@
             "endDisplay": "Sep 16, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.59",
+            "start": "2026-09-15T00:00:00.000Z",
+            "end": "2026-09-16T00:00:00.000Z",
+            "startDate": "2026-09-15",
+            "endDate": "2026-09-16",
+            "startDisplay": "Sep 15, 2026",
+            "endDisplay": "Sep 16, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -33933,23 +33164,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -33979,6 +33193,23 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34074,10 +33305,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-01T03:11:53.173Z",
-    "previousPulledAtDisplay": "Jun 30, 2026, 11:11 PM",
-    "currentPulledAt": "2026-07-01T03:17:04.390Z",
-    "currentPulledAtDisplay": "Jun 30, 2026, 11:17 PM",
+    "previousPulledAt": "2026-07-01T03:17:04.390Z",
+    "previousPulledAtDisplay": "Jun 30, 2026, 11:17 PM",
+    "currentPulledAt": "2026-07-01T03:23:21.680Z",
+    "currentPulledAtDisplay": "Jun 30, 2026, 11:23 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -34085,6 +33316,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-01T03:17:04.390Z",
+      "previousPulledAtDisplay": "Jun 30, 2026, 11:17 PM",
+      "currentPulledAt": "2026-07-01T03:23:21.680Z",
+      "currentPulledAtDisplay": "Jun 30, 2026, 11:23 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-01T03:11:53.173Z",
       "previousPulledAtDisplay": "Jun 30, 2026, 11:11 PM",
@@ -36053,17 +35295,6 @@
       "previousPulledAtDisplay": "Jun 30, 2026, 9:08 AM",
       "currentPulledAt": "2026-06-30T13:12:42.838Z",
       "currentPulledAtDisplay": "Jun 30, 2026, 9:12 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-06-30T13:03:25.301Z",
-      "previousPulledAtDisplay": "Jun 30, 2026, 9:03 AM",
-      "currentPulledAt": "2026-06-30T13:08:24.332Z",
-      "currentPulledAtDisplay": "Jun 30, 2026, 9:08 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
