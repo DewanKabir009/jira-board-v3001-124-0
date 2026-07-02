@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-02T15:42:23.453Z",
-  "pulledAtDisplay": "Jul 2, 2026, 11:42 AM",
+  "pulledAt": "2026-07-02T15:47:52.128Z",
+  "pulledAtDisplay": "Jul 2, 2026, 11:47 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-02T15:42:23.453Z",
-    "pulledAtDisplay": "Jul 2, 2026, 11:42 AM",
+    "pulledAt": "2026-07-02T15:47:52.128Z",
+    "pulledAtDisplay": "Jul 2, 2026, 11:47 AM",
     "total": 419,
     "mainTotal": 389,
     "subtaskTotal": 30,
@@ -7876,6 +7876,87 @@
         }
       },
       {
+        "key": "GNSCM-10015",
+        "url": "https://golfnow.atlassian.net/browse/GNSCM-10015",
+        "summary": "Green fee totals incorrect on ChatGPT App",
+        "description": "For facilities not configured for fee messaging, we are displaying a message that the rate includes 3.49 in fees. This is not accurate. The green fee is $29.99 and the fee is $3.49.\n\nWe have two options:\n\n- Recommended - If FeeMessagingDisplayRates is NULL, hide the “Includes $$$ in fees text” and use the green fee as the display\n\n- This will match GN logic\n\n- Do UI math to add the the fee amount to the green fee amount and keep the fee message\n\n---\nFor facilities configured for legal fee messaging (CA,NY, VA, etc), Hot Deals look to be miscalculated\n\n\"FeeMessagingDisplayRates\": {\n\"GreensFees\": 32.9900,\n\"TotalPrice\": 36.4800,\n\"TransactionFeesTotal\": 3.4900\n},\n\n- We need to use the FeeMessagingDisplayRates for both Course and Trade times when FeeMessagingDisplayRates is not null",
+        "descriptionHtml": "<p>For facilities not configured for fee messaging, we are displaying a message that the rate includes 3.49 in fees. This is not accurate. The green fee is $29.99 and the fee is $3.49.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/GNSCM-10015/736120-image-20260609-153333.png\" alt=\"image-20260609-153333.png\" loading=\"lazy\"><figcaption>image-20260609-153333.png</figcaption></figure></div><p>We have two options:</p><ul><li><p>Recommended - If FeeMessagingDisplayRates is NULL, hide the “Includes $$$ in fees text” and use the green fee as the display</p><ul><li><p>This will match GN logic</p></li></ul></li><li><p>Do UI math to add the the fee amount to the green fee amount and keep the fee message </p></li></ul><hr><p>For facilities configured for legal fee messaging (CA,NY, VA, etc), Hot Deals look to be miscalculated</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/GNSCM-10015/736121-image-20260609-153854.png\" alt=\"image-20260609-153854.png\" loading=\"lazy\"><figcaption>image-20260609-153854.png</figcaption></figure></div><pre><code>                    &quot;FeeMessagingDisplayRates&quot;: {\n                        &quot;GreensFees&quot;: 32.9900,\n                        &quot;TotalPrice&quot;: 36.4800,\n                        &quot;TransactionFeesTotal&quot;: 3.4900\n                    },</code></pre><ul><li><p>We need to use the <code>FeeMessagingDisplayRates</code> for both Course and Trade times when <code>FeeMessagingDisplayRates</code> is not null</p></li></ul>",
+        "descriptionImageCount": 2,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 2,
+        "commentCount": 2,
+        "comments": [
+          {
+            "id": "1187577",
+            "url": "https://golfnow.atlassian.net/browse/GNSCM-10015?focusedCommentId=1187577",
+            "author": "Brian Pugh",
+            "authorAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
+            "created": "2026-06-24T14:14:43.398-0400",
+            "createdDisplay": "Jun 24, 2026, 2:14 PM",
+            "updated": "2026-06-24T14:14:43.398-0400",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 2,
+            "body": "I am seeing prices on ChatGPT match GN\n\nFee Messaging matches expected results as well",
+            "bodyHtml": "<p>I am seeing prices on ChatGPT match GN </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/GNSCM-10015/comments/1187577/741219-image-20260624-141158.png\" alt=\"image-20260624-141158.png\" loading=\"lazy\"><figcaption>image-20260624-141158.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/GNSCM-10015/comments/1187577/741218-image-20260624-141211.png\" alt=\"image-20260624-141211.png\" loading=\"lazy\"><figcaption>image-20260624-141211.png</figcaption></figure></div><p>Fee Messaging matches expected results as well</p>"
+          },
+          {
+            "id": "1187580",
+            "url": "https://golfnow.atlassian.net/browse/GNSCM-10015?focusedCommentId=1187580",
+            "author": "Brian Pugh",
+            "authorAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
+            "created": "2026-06-24T14:16:02.338-0400",
+            "createdDisplay": "Jun 24, 2026, 2:16 PM",
+            "updated": "2026-06-24T14:16:02.338-0400",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 1,
+            "body": "@Marcus Briggs Last remaining issue seems to be that when the tee time expires on the day, it is still showing in the UI. The below image was taken at 8am. The API correctly removed the time once it expired.",
+            "bodyHtml": "<p>@Marcus Briggs Last remaining issue seems to be that when the tee time expires on the day, it is still showing in the UI. The below image was taken at 8am. The API correctly removed the time once it expired. </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/GNSCM-10015/comments/1187580/741221-image-20260624-181534.png\" alt=\"image-20260624-181534.png\" loading=\"lazy\"><figcaption>image-20260624-181534.png</figcaption></figure></div>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/GNSCM-10015?focusedCommentId=1187580",
+        "lastCommentDisplay": "Jun 24, 2026, 2:16 PM",
+        "lastCommentAuthor": "Brian Pugh",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Testing",
+        "priority": "None",
+        "assignee": "Brian Pugh",
+        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-07-02T11:46:04.237-0400",
+        "updatedDisplay": "Jul 2, 2026, 11:46 AM",
+        "created": "2026-06-09T11:30:28.787-0400",
+        "createdDisplay": "Jun 9, 2026, 11:30 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14096",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14096",
+          "summary": "ChatGPT - OpenAI Apps",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
         "key": "GNSCM-10108",
         "url": "https://golfnow.atlassian.net/browse/GNSCM-10108",
         "summary": "Support Apple Pay",
@@ -7940,87 +8021,6 @@
           "description": "",
           "type": "Epic",
           "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "GNSCM-10015",
-        "url": "https://golfnow.atlassian.net/browse/GNSCM-10015",
-        "summary": "Green fee totals incorrect on ChatGPT App",
-        "description": "For facilities not configured for fee messaging, we are displaying a message that the rate includes 3.49 in fees. This is not accurate. The green fee is $29.99 and the fee is $3.49.\n\nWe have two options:\n\n- Recommended - If FeeMessagingDisplayRates is NULL, hide the “Includes $$$ in fees text” and use the green fee as the display\n\n- This will match GN logic\n\n- Do UI math to add the the fee amount to the green fee amount and keep the fee message\n\n---\nFor facilities configured for legal fee messaging (CA,NY, VA, etc), Hot Deals look to be miscalculated\n\n\"FeeMessagingDisplayRates\": {\n\"GreensFees\": 32.9900,\n\"TotalPrice\": 36.4800,\n\"TransactionFeesTotal\": 3.4900\n},\n\n- We need to use the FeeMessagingDisplayRates for both Course and Trade times when FeeMessagingDisplayRates is not null",
-        "descriptionHtml": "<p>For facilities not configured for fee messaging, we are displaying a message that the rate includes 3.49 in fees. This is not accurate. The green fee is $29.99 and the fee is $3.49.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/GNSCM-10015/736120-image-20260609-153333.png\" alt=\"image-20260609-153333.png\" loading=\"lazy\"><figcaption>image-20260609-153333.png</figcaption></figure></div><p>We have two options:</p><ul><li><p>Recommended - If FeeMessagingDisplayRates is NULL, hide the “Includes $$$ in fees text” and use the green fee as the display</p><ul><li><p>This will match GN logic</p></li></ul></li><li><p>Do UI math to add the the fee amount to the green fee amount and keep the fee message </p></li></ul><hr><p>For facilities configured for legal fee messaging (CA,NY, VA, etc), Hot Deals look to be miscalculated</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/GNSCM-10015/736121-image-20260609-153854.png\" alt=\"image-20260609-153854.png\" loading=\"lazy\"><figcaption>image-20260609-153854.png</figcaption></figure></div><pre><code>                    &quot;FeeMessagingDisplayRates&quot;: {\n                        &quot;GreensFees&quot;: 32.9900,\n                        &quot;TotalPrice&quot;: 36.4800,\n                        &quot;TransactionFeesTotal&quot;: 3.4900\n                    },</code></pre><ul><li><p>We need to use the <code>FeeMessagingDisplayRates</code> for both Course and Trade times when <code>FeeMessagingDisplayRates</code> is not null</p></li></ul>",
-        "descriptionImageCount": 2,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 2,
-        "commentCount": 2,
-        "comments": [
-          {
-            "id": "1187577",
-            "url": "https://golfnow.atlassian.net/browse/GNSCM-10015?focusedCommentId=1187577",
-            "author": "Brian Pugh",
-            "authorAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-            "created": "2026-06-24T14:14:43.398-0400",
-            "createdDisplay": "Jun 24, 2026, 2:14 PM",
-            "updated": "2026-06-24T14:14:43.398-0400",
-            "updatedDisplay": "",
-            "hasMedia": true,
-            "mediaCount": 2,
-            "body": "I am seeing prices on ChatGPT match GN\n\nFee Messaging matches expected results as well",
-            "bodyHtml": "<p>I am seeing prices on ChatGPT match GN </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/GNSCM-10015/comments/1187577/741219-image-20260624-141158.png\" alt=\"image-20260624-141158.png\" loading=\"lazy\"><figcaption>image-20260624-141158.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/GNSCM-10015/comments/1187577/741218-image-20260624-141211.png\" alt=\"image-20260624-141211.png\" loading=\"lazy\"><figcaption>image-20260624-141211.png</figcaption></figure></div><p>Fee Messaging matches expected results as well</p>"
-          },
-          {
-            "id": "1187580",
-            "url": "https://golfnow.atlassian.net/browse/GNSCM-10015?focusedCommentId=1187580",
-            "author": "Brian Pugh",
-            "authorAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-            "created": "2026-06-24T14:16:02.338-0400",
-            "createdDisplay": "Jun 24, 2026, 2:16 PM",
-            "updated": "2026-06-24T14:16:02.338-0400",
-            "updatedDisplay": "",
-            "hasMedia": true,
-            "mediaCount": 1,
-            "body": "@Marcus Briggs Last remaining issue seems to be that when the tee time expires on the day, it is still showing in the UI. The below image was taken at 8am. The API correctly removed the time once it expired.",
-            "bodyHtml": "<p>@Marcus Briggs Last remaining issue seems to be that when the tee time expires on the day, it is still showing in the UI. The below image was taken at 8am. The API correctly removed the time once it expired. </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/GNSCM-10015/comments/1187580/741221-image-20260624-181534.png\" alt=\"image-20260624-181534.png\" loading=\"lazy\"><figcaption>image-20260624-181534.png</figcaption></figure></div>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/GNSCM-10015?focusedCommentId=1187580",
-        "lastCommentDisplay": "Jun 24, 2026, 2:16 PM",
-        "lastCommentAuthor": "Brian Pugh",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "Triage",
-        "priority": "None",
-        "assignee": "Marcus Briggs",
-        "assigneeAccountId": "557058:5a91a61f-c689-46bf-ad3b-c7291bcdbf7b",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/557058:5a91a61f-c689-46bf-ad3b-c7291bcdbf7b/b86e7099-e2b4-421f-83e5-99ade05e693f/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-07-01T18:51:31.047-0400",
-        "updatedDisplay": "Jul 1, 2026, 6:51 PM",
-        "created": "2026-06-09T11:30:28.787-0400",
-        "createdDisplay": "Jun 9, 2026, 11:30 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14096",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14096",
-          "summary": "ChatGPT - OpenAI Apps",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
           "priority": "None"
         }
       },
@@ -32631,13 +32631,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-02T15:41:08.516Z",
-    "pulledAtDisplay": "Jul 2, 2026, 11:41 AM",
+    "pulledAt": "2026-07-02T15:46:13.612Z",
+    "pulledAtDisplay": "Jul 2, 2026, 11:46 AM",
     "window": {
-      "start": "2026-05-18T15:41:08.516Z",
-      "end": "2026-12-29T15:41:08.516Z",
-      "startDisplay": "May 18, 2026, 11:41 AM",
-      "endDisplay": "Dec 29, 2026, 10:41 AM"
+      "start": "2026-05-18T15:46:13.611Z",
+      "end": "2026-12-29T15:46:13.611Z",
+      "startDisplay": "May 18, 2026, 11:46 AM",
+      "endDisplay": "Dec 29, 2026, 10:46 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -32650,7 +32650,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-02T15:41:13.590Z",
+        "pulledAt": "2026-07-02T15:46:16.031Z",
         "eventCount": 90,
         "events": [
           {
@@ -33691,23 +33691,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Holiday Freeze",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-08T00:00:00.000Z",
-            "startDate": "2026-08-31",
-            "endDate": "2026-09-08",
-            "startDisplay": "Aug 31, 2026",
-            "endDisplay": "Sep 8, 2026",
-            "allDay": true,
-            "type": "Golf Freeze",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -33720,6 +33703,23 @@
             "endDisplay": "Sep 1, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Holiday Freeze",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-08T00:00:00.000Z",
+            "startDate": "2026-08-31",
+            "endDate": "2026-09-08",
+            "startDisplay": "Aug 31, 2026",
+            "endDisplay": "Sep 8, 2026",
+            "allDay": true,
+            "type": "Golf Freeze",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34048,23 +34048,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -34094,6 +34077,23 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34189,10 +34189,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-02T15:37:26.508Z",
-    "previousPulledAtDisplay": "Jul 2, 2026, 11:37 AM",
-    "currentPulledAt": "2026-07-02T15:42:23.453Z",
-    "currentPulledAtDisplay": "Jul 2, 2026, 11:42 AM",
+    "previousPulledAt": "2026-07-02T15:42:23.453Z",
+    "previousPulledAtDisplay": "Jul 2, 2026, 11:42 AM",
+    "currentPulledAt": "2026-07-02T15:47:52.128Z",
+    "currentPulledAtDisplay": "Jul 2, 2026, 11:47 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -34200,6 +34200,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-02T15:42:23.453Z",
+      "previousPulledAtDisplay": "Jul 2, 2026, 11:42 AM",
+      "currentPulledAt": "2026-07-02T15:47:52.128Z",
+      "currentPulledAtDisplay": "Jul 2, 2026, 11:47 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-02T15:37:26.508Z",
       "previousPulledAtDisplay": "Jul 2, 2026, 11:37 AM",
@@ -36031,17 +36042,6 @@
       "previousPulledAtDisplay": "Jul 1, 2026, 9:26 PM",
       "currentPulledAt": "2026-07-02T01:32:46.651Z",
       "currentPulledAtDisplay": "Jul 1, 2026, 9:32 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-02T01:21:49.187Z",
-      "previousPulledAtDisplay": "Jul 1, 2026, 9:21 PM",
-      "currentPulledAt": "2026-07-02T01:26:58.600Z",
-      "currentPulledAtDisplay": "Jul 1, 2026, 9:26 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
