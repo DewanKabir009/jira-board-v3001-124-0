@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-06T13:38:24.764Z",
-  "pulledAtDisplay": "Jul 6, 2026, 9:38 AM",
+  "pulledAt": "2026-07-06T13:43:55.089Z",
+  "pulledAtDisplay": "Jul 6, 2026, 9:43 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-06T13:38:24.764Z",
-    "pulledAtDisplay": "Jul 6, 2026, 9:38 AM",
+    "pulledAt": "2026-07-06T13:43:55.089Z",
+    "pulledAtDisplay": "Jul 6, 2026, 9:43 AM",
     "total": 420,
     "mainTotal": 390,
     "subtaskTotal": 30,
@@ -7961,14 +7961,16 @@
         "assignedDeveloper": "Alex Wulff",
         "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
         "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "updated": "2026-07-06T09:36:02.623-0400",
-        "updatedDisplay": "Jul 6, 2026, 9:36 AM",
+        "updated": "2026-07-06T09:38:00.845-0400",
+        "updatedDisplay": "Jul 6, 2026, 9:38 AM",
         "created": "2025-03-10T12:01:29.088-0400",
         "createdDisplay": "Mar 10, 2025, 12:01 PM",
         "components": [
           "Database"
         ],
-        "fixVersions": [],
+        "fixVersions": [
+          "v3001.126.0"
+        ],
         "sprints": [
           {
             "name": "2026.8"
@@ -32694,13 +32696,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-06T13:36:15.307Z",
-    "pulledAtDisplay": "Jul 6, 2026, 9:36 AM",
+    "pulledAt": "2026-07-06T13:41:53.321Z",
+    "pulledAtDisplay": "Jul 6, 2026, 9:41 AM",
     "window": {
-      "start": "2026-05-22T13:36:15.307Z",
-      "end": "2027-01-02T13:36:15.307Z",
-      "startDisplay": "May 22, 2026, 9:36 AM",
-      "endDisplay": "Jan 2, 2027, 8:36 AM"
+      "start": "2026-05-22T13:41:53.321Z",
+      "end": "2027-01-02T13:41:53.321Z",
+      "startDisplay": "May 22, 2026, 9:41 AM",
+      "endDisplay": "Jan 2, 2027, 8:41 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -32713,7 +32715,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-06T13:36:18.446Z",
+        "pulledAt": "2026-07-06T13:41:56.347Z",
         "eventCount": 89,
         "events": [
           {
@@ -32768,23 +32770,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
-            "start": "2026-05-26T18:00:00.000Z",
-            "end": "2026-05-26T19:55:00.000Z",
-            "startDate": "",
-            "endDate": "",
-            "startDisplay": "May 26, 2026, 2:00 PM",
-            "endDisplay": "May 26, 2026, 3:55 PM",
-            "allDay": false,
-            "type": "Scheduled Maintenance",
-            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
-            "description": "Slack: #itops_deployments",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -32799,6 +32784,23 @@
             "type": "Patching",
             "location": "https://golfnow.atlassian.net/browse/OPS-54241",
             "description": "Slack: #itops_patching_communications",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "NCSI EC2 Inspector Findings Remediation: Slack:\n#itops_deployments",
+            "start": "2026-05-26T18:00:00.000Z",
+            "end": "2026-05-26T19:55:00.000Z",
+            "startDate": "",
+            "endDate": "",
+            "startDisplay": "May 26, 2026, 2:00 PM",
+            "endDisplay": "May 26, 2026, 3:55 PM",
+            "allDay": false,
+            "type": "Scheduled Maintenance",
+            "location": "https://golfnow.atlassian.net/browse/OPS-54736",
+            "description": "Slack: #itops_deployments",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
@@ -33737,23 +33739,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Summer Bank Holiday (UK)",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-01T00:00:00.000Z",
-            "startDate": "2026-08-31",
-            "endDate": "2026-09-01",
-            "startDisplay": "Aug 31, 2026",
-            "endDisplay": "Sep 1, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -33766,6 +33751,23 @@
             "endDisplay": "Sep 8, 2026",
             "allDay": true,
             "type": "Golf Freeze",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Summer Bank Holiday (UK)",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-01T00:00:00.000Z",
+            "startDate": "2026-08-31",
+            "endDate": "2026-09-01",
+            "startDisplay": "Aug 31, 2026",
+            "endDisplay": "Sep 1, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34235,10 +34237,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-06T13:32:34.065Z",
-    "previousPulledAtDisplay": "Jul 6, 2026, 9:32 AM",
-    "currentPulledAt": "2026-07-06T13:38:24.764Z",
-    "currentPulledAtDisplay": "Jul 6, 2026, 9:38 AM",
+    "previousPulledAt": "2026-07-06T13:38:24.764Z",
+    "previousPulledAtDisplay": "Jul 6, 2026, 9:38 AM",
+    "currentPulledAt": "2026-07-06T13:43:55.089Z",
+    "currentPulledAtDisplay": "Jul 6, 2026, 9:43 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -34246,6 +34248,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-06T13:38:24.764Z",
+      "previousPulledAtDisplay": "Jul 6, 2026, 9:38 AM",
+      "currentPulledAt": "2026-07-06T13:43:55.089Z",
+      "currentPulledAtDisplay": "Jul 6, 2026, 9:43 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-06T13:32:34.065Z",
       "previousPulledAtDisplay": "Jul 6, 2026, 9:32 AM",
@@ -36077,17 +36090,6 @@
       "previousPulledAtDisplay": "Jul 5, 2026, 7:32 PM",
       "currentPulledAt": "2026-07-05T23:37:09.611Z",
       "currentPulledAtDisplay": "Jul 5, 2026, 7:37 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-05T23:27:23.289Z",
-      "previousPulledAtDisplay": "Jul 5, 2026, 7:27 PM",
-      "currentPulledAt": "2026-07-05T23:32:12.646Z",
-      "currentPulledAtDisplay": "Jul 5, 2026, 7:32 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
