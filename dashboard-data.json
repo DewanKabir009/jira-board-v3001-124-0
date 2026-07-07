@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-07T14:07:57.170Z",
-  "pulledAtDisplay": "Jul 7, 2026, 10:07 AM",
+  "pulledAt": "2026-07-07T14:12:44.501Z",
+  "pulledAtDisplay": "Jul 7, 2026, 10:12 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-07T14:07:57.170Z",
-    "pulledAtDisplay": "Jul 7, 2026, 10:07 AM",
+    "pulledAt": "2026-07-07T14:12:44.501Z",
+    "pulledAtDisplay": "Jul 7, 2026, 10:12 AM",
     "total": 427,
     "mainTotal": 397,
     "subtaskTotal": 30,
@@ -5226,56 +5226,6 @@
         }
       },
       {
-        "key": "CORE-14151",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14151",
-        "summary": "Remove Deprecated Projects from gn-main",
-        "description": "Removing some end of life projects from gn-main repo.",
-        "descriptionHtml": "<p>Removing some end of life projects from gn-main repo.</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Task",
-        "isSubtask": false,
-        "status": "Pending Deployment (DEV)",
-        "priority": "P1",
-        "assignee": "Daniel McNaughton",
-        "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-        "assignedDeveloper": "Daniel McNaughton",
-        "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-        "updated": "2026-07-07T10:05:06.635-0400",
-        "updatedDisplay": "Jul 7, 2026, 10:05 AM",
-        "created": "2026-02-09T13:37:35.851-0500",
-        "createdDisplay": "Feb 9, 2026, 1:37 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14278",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14278",
-          "summary": "gn-main Tech Debt & Cleanup",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
         "key": "CORE-14427",
         "url": "https://golfnow.atlassian.net/browse/CORE-14427",
         "summary": "Home Course Selection/Management",
@@ -6145,111 +6095,6 @@
         }
       },
       {
-        "key": "CORE-14116",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14116",
-        "summary": "EZTP Tee sheet Pricing for $0 TT's Doesn't Load - Round 2",
-        "description": "This ticket was originally worked on in [https://golfnow.atlassian.net/browse/CORE-13275|https://golfnow.atlassian.net/browse/CORE-13275|smart-link]  but it does not look to be working in prod. We need to revisit this and confirm we have this working. Below is the cloned details from the original ticket.\n\n----\n\nWe have a request from the business to allow EZTP to create RackTimes at $0 for member rates. In this case, tee times should be blocked based on the player rule, not the price. Additionally, Tee Sheet Pricing should not affect the expected behavior.\n\n\n\n*Example 1:*\n\n* Tee Sheet Pricing is enabled\n** RackTime is sent to us with a price = $0 and at least one player availability\n*** RackTime should be left *unblocked*\n** RackTime is sent to us with a price = $0 and there is zero player availability\n*** RackTime should be *blocked*\n** RackTime is sent to us with a price > $0 and at least one player availability\n*** RackTime should be left *unblocked*\n** RackTime is sent to us with a price > $0 and there is zero player availability\n*** RackTime should be *blocked*\n\n*Example 2:* \n\n* Tee Sheet Pricing is disabled\n** RackTime is sent to us with a price = $0 and at least one player availability\n*** RackTime should be left *unblocked*\n** RackTime is sent to us with a price = $0 and there is zero player availability\n*** RackTime should be *blocked*\n** RackTime is sent to us with a price > $0 and at least one player availability\n*** RackTime should be left *unblocked*\n** RackTime is sent to us with a price > $0 and there is zero player availability\n*** RackTime should be *blocked*\n\n\n\n*QA:* \n\n* Please coordinate with EZL team and ask them to send in a $0 member rate with at least one available player, as well as a $0 member rate with zero player availability\n* Please test both Tee Sheet Pricing scenarios (enabled vs disabled)\n* Please test rates equal to $0, as well as rates greater than $0\n* As with all EZL tickets, full regressions ezl bookings",
-        "descriptionHtml": "<p>This ticket was originally worked on in [https://golfnow.atlassian.net/browse/CORE-13275|https://golfnow.atlassian.net/browse/CORE-13275|smart-link]  but it does not look to be working in prod. We need to revisit this and confirm we have this working. Below is the cloned details from the original ticket.</p><p>----</p><p>We have a request from the business to allow EZTP to create RackTimes at $0 for member rates. In this case, tee times should be blocked based on the player rule, not the price. Additionally, Tee Sheet Pricing should not affect the expected behavior.</p><p>*Example 1:*</p><p>* Tee Sheet Pricing is enabled<br>** RackTime is sent to us with a price = $0 and at least one player availability<br>*** RackTime should be left *unblocked*<br>** RackTime is sent to us with a price = $0 and there is zero player availability<br>*** RackTime should be *blocked*<br>** RackTime is sent to us with a price &gt; $0 and at least one player availability<br>*** RackTime should be left *unblocked*<br>** RackTime is sent to us with a price &gt; $0 and there is zero player availability<br>*** RackTime should be *blocked*</p><p>*Example 2:* </p><p>* Tee Sheet Pricing is disabled<br>** RackTime is sent to us with a price = $0 and at least one player availability<br>*** RackTime should be left *unblocked*<br>** RackTime is sent to us with a price = $0 and there is zero player availability<br>*** RackTime should be *blocked*<br>** RackTime is sent to us with a price &gt; $0 and at least one player availability<br>*** RackTime should be left *unblocked*<br>** RackTime is sent to us with a price &gt; $0 and there is zero player availability<br>*** RackTime should be *blocked*</p><p>*QA:* </p><p>* Please coordinate with EZL team and ask them to send in a $0 member rate with at least one available player, as well as a $0 member rate with zero player availability<br>* Please test both Tee Sheet Pricing scenarios (enabled vs disabled)<br>* Please test rates equal to $0, as well as rates greater than $0<br>* As with all EZL tickets, full regressions ezl bookings</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 4,
-        "comments": [
-          {
-            "id": "1140236",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14116?focusedCommentId=1140236",
-            "author": "Dewan Kabir",
-            "authorAccountId": "630fb06bb433b060db559bdb",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-            "created": "2026-03-18T19:01:03.291-0400",
-            "createdDisplay": "Mar 18, 2026, 7:01 PM",
-            "updated": "2026-03-18T19:01:03.291-0400",
-            "updatedDisplay": "",
-            "hasMedia": true,
-            "mediaCount": 2,
-            "body": "We tried to recreate the issue on AWS DEV , we used Cache Manager and XCS passing in different player counts > 0 , and prices to be 0 and > 0 as well , and as a result price and players were updated , but we do not block the rack time unless the tee sheet sends us 0 players ( We were not able to recreate the issue )",
-            "bodyHtml": "<p>We tried to recreate the issue on AWS DEV , we used Cache Manager and XCS passing in different player counts &gt; 0 , and prices to be 0 and &gt; 0 as well , and as a result price and players were updated , but we do not block the rack time unless the tee sheet sends us 0 players ( <em>We were not able to recreate the issue</em> ) <br><br></p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14116/comments/1140236/704064-image-20260318-230023.png\" alt=\"image-20260318-230023.png\" loading=\"lazy\"><figcaption>image-20260318-230023.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14116/comments/1140236/704063-image-20260318-230055.png\" alt=\"image-20260318-230055.png\" loading=\"lazy\"><figcaption>image-20260318-230055.png</figcaption></figure></div>"
-          },
-          {
-            "id": "1170399",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14116?focusedCommentId=1170399",
-            "author": "Joshua Marquess",
-            "authorAccountId": "557058:61c239b2-3f38-467e-afb0-40b29fe9aa94",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/JM-3.png",
-            "created": "2026-05-13T16:12:18.158-0400",
-            "createdDisplay": "May 13, 2026, 4:12 PM",
-            "updated": "2026-05-13T16:12:18.158-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Support provided examples for CORE-14116, but Core testing showed TSP/rack times are being returned successfully. Follow-up with BE found they were receiving the times but filtering them out, possibly due to negative TeeTimeIDs used for TSP rack times. We’ve asked Conor/BE for an update since Support is waiting.",
-            "bodyHtml": "<p>Support provided examples for CORE-14116, but Core testing showed TSP/rack times are being returned successfully. Follow-up with BE found they were receiving the times but filtering them out, possibly due to negative TeeTimeIDs used for TSP rack times. We’ve asked Conor/BE for an update since Support is waiting.</p>"
-          },
-          {
-            "id": "1170413",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14116?focusedCommentId=1170413",
-            "author": "Joshua Marquess",
-            "authorAccountId": "557058:61c239b2-3f38-467e-afb0-40b29fe9aa94",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/JM-3.png",
-            "created": "2026-05-13T16:44:33.651-0400",
-            "createdDisplay": "May 13, 2026, 4:44 PM",
-            "updated": "2026-05-13T16:44:33.651-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "https://bountiful-birdies.book.teeitup.com/?course=17859&date=2026-05-15&max=999999\n\ntesting with this example. Checking with dev",
-            "bodyHtml": "<p><a href=\"https://bountiful-birdies.book.teeitup.com/?course=17859&amp;date=2026-05-15&amp;max=999999\" target=\"_blank\" rel=\"noopener\">https://bountiful-birdies.book.teeitup.com/?course=17859&amp;date=2026-05-15&amp;max=999999</a><br><br>testing with this example. Checking with dev</p>"
-          },
-          {
-            "id": "1189466",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14116?focusedCommentId=1189466",
-            "author": "Joshua Marquess",
-            "authorAccountId": "557058:61c239b2-3f38-467e-afb0-40b29fe9aa94",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/JM-3.png",
-            "created": "2026-06-30T14:06:40.492-0400",
-            "createdDisplay": "Jun 30, 2026, 2:06 PM",
-            "updated": "2026-06-30T14:06:40.492-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Root Cause Analysis Complete - $0 Rack Time Filtering\n\nDeep code trace completed across the full search-to-booking pipeline. Root cause confirmed with 100% confidence.\n\n---\nPRIMARY ROOT CAUSE: Stored Procedure [Inventory].[GetRackTimes]\n\nThe WHERE clause contains hardcoded filters that explicitly exclude $0 rates at the database level:\n\nAND rt.RTRule > 0\nAND rt.RTValueRate > 0\nAND rt.RTBaseSpecialRate > 0\n\n`AND rt.RTBaseSpecialRate > 0` is the line that kills $0 member rates. The rack time never reaches the C# application code -- it's excluded at the SQL level before the Inventory WCF service returns results.\n\nThis proc is called by [Inventory].[GetTeeTimesUsingRateSets] which is the main search path.\n\n---\nSECONDARY ROOT CAUSE: C# Booking Path Gates\n\nEven if the SQL filter is fixed, two C# gates block $0 rack time bookings:\n\n1. `InvoiceService.cs` (lines 117-131):\n\nif (criterion is RackTimeCriterion)\n{\nif (invoices.Any(i => i.ValueRate <= decimal.Zero || i.SpecialRate <= decimal.Zero))\nthrow new BusinessException(BusinessErrorCode.InvalidTeeTimeData, ...);\n}\n\n2. `InventoryChannel.cs` (lines 1697-1713):\n\nSame check in an alternate booking path, returns Error result instead of throwing.\n\nThe developer comment in InvoiceService confirms: \"the saving of this rack time to CRMTeeTime is going to fail\" -- indicating a downstream DB constraint also needs addressing.\n\n---\nFIX REQUIRED (Three layers):\n\n- Database: Modify [Inventory].[GetRackTimes] WHERE clause to allow RTBaseSpecialRate = 0 and RTValueRate = 0. Must also guard the commission calculation against divide-by-zero.\n\n- C# Booking Path: Remove/modify the zero-rate guards in InvoiceService.cs:117-131 and InventoryChannel.cs:1697-1713 for legitimate $0 member rates.\n\n- CRM Materialization: Verify procINSCRMTeeTime can handle $0 values (the InvoiceService comment says it will fail).\n\n- Pricing Display: Review Extensions.cs:76-78 where $0 base rate gets a fabricated 1-cent value rate adjustment.\n\n---\nWhat Was Ruled Out:\n\n- TeeTimeRulesHandler: All rules are commented out in DI registration (no-op)\n\n- RemoveInvalidRates: Only activates with explicit price filter from consumer (default is null/no-op)\n\n- CreateTeeTime/ProcessTeeTimes: No price-based filtering\n\n- @PriceStart parameter: Defaults to null, proc defaults to 0.00 floor which includes $0\n\n---\nA full technical reference document has been prepared with complete file paths, line numbers, pipeline trace, fix implementation plan, and verification queries. Available for the assigned developer.",
-            "bodyHtml": "<h3>Root Cause Analysis Complete - $0 Rack Time Filtering</h3><p>Deep code trace completed across the full search-to-booking pipeline. Root cause confirmed with 100% confidence.</p><hr><h3>PRIMARY ROOT CAUSE: Stored Procedure <code>[Inventory].[GetRackTimes]</code></h3><p>The WHERE clause contains hardcoded filters that explicitly exclude $0 rates at the database level:</p><pre><code>AND rt.RTRule &gt; 0\nAND rt.RTValueRate &gt; 0\nAND rt.RTBaseSpecialRate &gt; 0</code></pre><p><strong>`AND rt.RTBaseSpecialRate &gt; 0`</strong> is the line that kills $0 member rates. The rack time never reaches the C# application code -- it's excluded at the SQL level before the Inventory WCF service returns results.</p><p>This proc is called by <code>[Inventory].[GetTeeTimesUsingRateSets]</code> which is the main search path.</p><hr><h3>SECONDARY ROOT CAUSE: C# Booking Path Gates</h3><p>Even if the SQL filter is fixed, two C# gates block $0 rack time bookings:</p><p><strong>1. `InvoiceService.cs` (lines 117-131):</strong></p><pre><code>if (criterion is RackTimeCriterion)\n{\n    if (invoices.Any(i =&gt; i.ValueRate &lt;= decimal.Zero || i.SpecialRate &lt;= decimal.Zero))\n        throw new BusinessException(BusinessErrorCode.InvalidTeeTimeData, ...);\n}</code></pre><p><strong>2. `InventoryChannel.cs` (lines 1697-1713):</strong></p><p>Same check in an alternate booking path, returns Error result instead of throwing.</p><p>The developer comment in InvoiceService confirms: &quot;the saving of this rack time to CRMTeeTime is going to fail&quot; -- indicating a downstream DB constraint also needs addressing.</p><hr><h3>FIX REQUIRED (Three layers):</h3><ol><li><p><strong>Database:</strong> Modify <code>[Inventory].[GetRackTimes]</code> WHERE clause to allow <code>RTBaseSpecialRate = 0</code> and <code>RTValueRate = 0</code>. Must also guard the commission calculation against divide-by-zero.</p></li></ol><ol><li><p><strong>C# Booking Path:</strong> Remove/modify the zero-rate guards in <code>InvoiceService.cs:117-131</code> and <code>InventoryChannel.cs:1697-1713</code> for legitimate $0 member rates.</p></li></ol><ol><li><p><strong>CRM Materialization:</strong> Verify <code>procINSCRMTeeTime</code> can handle $0 values (the InvoiceService comment says it will fail).</p></li></ol><ol><li><p><strong>Pricing Display:</strong> Review <code>Extensions.cs:76-78</code> where $0 base rate gets a fabricated 1-cent value rate adjustment.</p></li></ol><hr><h3>What Was Ruled Out:</h3><ul><li><p>TeeTimeRulesHandler: All rules are commented out in DI registration (no-op)</p></li><li><p>RemoveInvalidRates: Only activates with explicit price filter from consumer (default is null/no-op)</p></li><li><p>CreateTeeTime/ProcessTeeTimes: No price-based filtering</p></li><li><p>@PriceStart parameter: Defaults to null, proc defaults to 0.00 floor which includes $0</p></li></ul><hr><p>A full technical reference document has been prepared with complete file paths, line numbers, pipeline trace, fix implementation plan, and verification queries. Available for the assigned developer.</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14116?focusedCommentId=1189466",
-        "lastCommentDisplay": "Jun 30, 2026, 2:06 PM",
-        "lastCommentAuthor": "Joshua Marquess",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Development",
-        "priority": "P2",
-        "assignee": "Yoel Martin Pardo",
-        "assigneeAccountId": "625571809e7380006fb29599",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-06-30T14:06:40.492-0400",
-        "updatedDisplay": "Jun 30, 2026, 2:06 PM",
-        "created": "2026-01-27T16:43:06.874-0500",
-        "createdDisplay": "Jan 27, 2026, 4:43 PM",
-        "components": [
-          "Database"
-        ],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": null
-      },
-      {
         "key": "CORE-13982",
         "url": "https://golfnow.atlassian.net/browse/CORE-13982",
         "summary": "[Commerce] Add IsCaddyRequested to Commerce Proxy",
@@ -7104,6 +6949,161 @@
           "status": "Planning",
           "priority": "P1"
         }
+      },
+      {
+        "key": "CORE-14151",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14151",
+        "summary": "Remove Deprecated Projects from gn-main",
+        "description": "Removing some end of life projects from gn-main repo.",
+        "descriptionHtml": "<p>Removing some end of life projects from gn-main repo.</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Task",
+        "isSubtask": false,
+        "status": "Pending Deployment (DEV)",
+        "priority": "P1",
+        "assignee": "Daniel McNaughton",
+        "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+        "assignedDeveloper": "Daniel McNaughton",
+        "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+        "updated": "2026-07-07T10:05:06.635-0400",
+        "updatedDisplay": "Jul 7, 2026, 10:05 AM",
+        "created": "2026-02-09T13:37:35.851-0500",
+        "createdDisplay": "Feb 9, 2026, 1:37 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14278",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14278",
+          "summary": "gn-main Tech Debt & Cleanup",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14116",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14116",
+        "summary": "EZTP Tee sheet Pricing for $0 TT's Doesn't Load - Round 2",
+        "description": "This ticket was originally worked on in [https://golfnow.atlassian.net/browse/CORE-13275|https://golfnow.atlassian.net/browse/CORE-13275|smart-link]  but it does not look to be working in prod. We need to revisit this and confirm we have this working. Below is the cloned details from the original ticket.\n\n----\n\nWe have a request from the business to allow EZTP to create RackTimes at $0 for member rates. In this case, tee times should be blocked based on the player rule, not the price. Additionally, Tee Sheet Pricing should not affect the expected behavior.\n\n\n\n*Example 1:*\n\n* Tee Sheet Pricing is enabled\n** RackTime is sent to us with a price = $0 and at least one player availability\n*** RackTime should be left *unblocked*\n** RackTime is sent to us with a price = $0 and there is zero player availability\n*** RackTime should be *blocked*\n** RackTime is sent to us with a price > $0 and at least one player availability\n*** RackTime should be left *unblocked*\n** RackTime is sent to us with a price > $0 and there is zero player availability\n*** RackTime should be *blocked*\n\n*Example 2:* \n\n* Tee Sheet Pricing is disabled\n** RackTime is sent to us with a price = $0 and at least one player availability\n*** RackTime should be left *unblocked*\n** RackTime is sent to us with a price = $0 and there is zero player availability\n*** RackTime should be *blocked*\n** RackTime is sent to us with a price > $0 and at least one player availability\n*** RackTime should be left *unblocked*\n** RackTime is sent to us with a price > $0 and there is zero player availability\n*** RackTime should be *blocked*\n\n\n\n*QA:* \n\n* Please coordinate with EZL team and ask them to send in a $0 member rate with at least one available player, as well as a $0 member rate with zero player availability\n* Please test both Tee Sheet Pricing scenarios (enabled vs disabled)\n* Please test rates equal to $0, as well as rates greater than $0\n* As with all EZL tickets, full regressions ezl bookings",
+        "descriptionHtml": "<p>This ticket was originally worked on in [https://golfnow.atlassian.net/browse/CORE-13275|https://golfnow.atlassian.net/browse/CORE-13275|smart-link]  but it does not look to be working in prod. We need to revisit this and confirm we have this working. Below is the cloned details from the original ticket.</p><p>----</p><p>We have a request from the business to allow EZTP to create RackTimes at $0 for member rates. In this case, tee times should be blocked based on the player rule, not the price. Additionally, Tee Sheet Pricing should not affect the expected behavior.</p><p>*Example 1:*</p><p>* Tee Sheet Pricing is enabled<br>** RackTime is sent to us with a price = $0 and at least one player availability<br>*** RackTime should be left *unblocked*<br>** RackTime is sent to us with a price = $0 and there is zero player availability<br>*** RackTime should be *blocked*<br>** RackTime is sent to us with a price &gt; $0 and at least one player availability<br>*** RackTime should be left *unblocked*<br>** RackTime is sent to us with a price &gt; $0 and there is zero player availability<br>*** RackTime should be *blocked*</p><p>*Example 2:* </p><p>* Tee Sheet Pricing is disabled<br>** RackTime is sent to us with a price = $0 and at least one player availability<br>*** RackTime should be left *unblocked*<br>** RackTime is sent to us with a price = $0 and there is zero player availability<br>*** RackTime should be *blocked*<br>** RackTime is sent to us with a price &gt; $0 and at least one player availability<br>*** RackTime should be left *unblocked*<br>** RackTime is sent to us with a price &gt; $0 and there is zero player availability<br>*** RackTime should be *blocked*</p><p>*QA:* </p><p>* Please coordinate with EZL team and ask them to send in a $0 member rate with at least one available player, as well as a $0 member rate with zero player availability<br>* Please test both Tee Sheet Pricing scenarios (enabled vs disabled)<br>* Please test rates equal to $0, as well as rates greater than $0<br>* As with all EZL tickets, full regressions ezl bookings</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 4,
+        "comments": [
+          {
+            "id": "1140236",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14116?focusedCommentId=1140236",
+            "author": "Dewan Kabir",
+            "authorAccountId": "630fb06bb433b060db559bdb",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+            "created": "2026-03-18T19:01:03.291-0400",
+            "createdDisplay": "Mar 18, 2026, 7:01 PM",
+            "updated": "2026-03-18T19:01:03.291-0400",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 2,
+            "body": "We tried to recreate the issue on AWS DEV , we used Cache Manager and XCS passing in different player counts > 0 , and prices to be 0 and > 0 as well , and as a result price and players were updated , but we do not block the rack time unless the tee sheet sends us 0 players ( We were not able to recreate the issue )",
+            "bodyHtml": "<p>We tried to recreate the issue on AWS DEV , we used Cache Manager and XCS passing in different player counts &gt; 0 , and prices to be 0 and &gt; 0 as well , and as a result price and players were updated , but we do not block the rack time unless the tee sheet sends us 0 players ( <em>We were not able to recreate the issue</em> ) <br><br></p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14116/comments/1140236/704064-image-20260318-230023.png\" alt=\"image-20260318-230023.png\" loading=\"lazy\"><figcaption>image-20260318-230023.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14116/comments/1140236/704063-image-20260318-230055.png\" alt=\"image-20260318-230055.png\" loading=\"lazy\"><figcaption>image-20260318-230055.png</figcaption></figure></div>"
+          },
+          {
+            "id": "1170399",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14116?focusedCommentId=1170399",
+            "author": "Joshua Marquess",
+            "authorAccountId": "557058:61c239b2-3f38-467e-afb0-40b29fe9aa94",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/JM-3.png",
+            "created": "2026-05-13T16:12:18.158-0400",
+            "createdDisplay": "May 13, 2026, 4:12 PM",
+            "updated": "2026-05-13T16:12:18.158-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Support provided examples for CORE-14116, but Core testing showed TSP/rack times are being returned successfully. Follow-up with BE found they were receiving the times but filtering them out, possibly due to negative TeeTimeIDs used for TSP rack times. We’ve asked Conor/BE for an update since Support is waiting.",
+            "bodyHtml": "<p>Support provided examples for CORE-14116, but Core testing showed TSP/rack times are being returned successfully. Follow-up with BE found they were receiving the times but filtering them out, possibly due to negative TeeTimeIDs used for TSP rack times. We’ve asked Conor/BE for an update since Support is waiting.</p>"
+          },
+          {
+            "id": "1170413",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14116?focusedCommentId=1170413",
+            "author": "Joshua Marquess",
+            "authorAccountId": "557058:61c239b2-3f38-467e-afb0-40b29fe9aa94",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/JM-3.png",
+            "created": "2026-05-13T16:44:33.651-0400",
+            "createdDisplay": "May 13, 2026, 4:44 PM",
+            "updated": "2026-05-13T16:44:33.651-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "https://bountiful-birdies.book.teeitup.com/?course=17859&date=2026-05-15&max=999999\n\ntesting with this example. Checking with dev",
+            "bodyHtml": "<p><a href=\"https://bountiful-birdies.book.teeitup.com/?course=17859&amp;date=2026-05-15&amp;max=999999\" target=\"_blank\" rel=\"noopener\">https://bountiful-birdies.book.teeitup.com/?course=17859&amp;date=2026-05-15&amp;max=999999</a><br><br>testing with this example. Checking with dev</p>"
+          },
+          {
+            "id": "1189466",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14116?focusedCommentId=1189466",
+            "author": "Joshua Marquess",
+            "authorAccountId": "557058:61c239b2-3f38-467e-afb0-40b29fe9aa94",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/JM-3.png",
+            "created": "2026-06-30T14:06:40.492-0400",
+            "createdDisplay": "Jun 30, 2026, 2:06 PM",
+            "updated": "2026-06-30T14:06:40.492-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Root Cause Analysis Complete - $0 Rack Time Filtering\n\nDeep code trace completed across the full search-to-booking pipeline. Root cause confirmed with 100% confidence.\n\n---\nPRIMARY ROOT CAUSE: Stored Procedure [Inventory].[GetRackTimes]\n\nThe WHERE clause contains hardcoded filters that explicitly exclude $0 rates at the database level:\n\nAND rt.RTRule > 0\nAND rt.RTValueRate > 0\nAND rt.RTBaseSpecialRate > 0\n\n`AND rt.RTBaseSpecialRate > 0` is the line that kills $0 member rates. The rack time never reaches the C# application code -- it's excluded at the SQL level before the Inventory WCF service returns results.\n\nThis proc is called by [Inventory].[GetTeeTimesUsingRateSets] which is the main search path.\n\n---\nSECONDARY ROOT CAUSE: C# Booking Path Gates\n\nEven if the SQL filter is fixed, two C# gates block $0 rack time bookings:\n\n1. `InvoiceService.cs` (lines 117-131):\n\nif (criterion is RackTimeCriterion)\n{\nif (invoices.Any(i => i.ValueRate <= decimal.Zero || i.SpecialRate <= decimal.Zero))\nthrow new BusinessException(BusinessErrorCode.InvalidTeeTimeData, ...);\n}\n\n2. `InventoryChannel.cs` (lines 1697-1713):\n\nSame check in an alternate booking path, returns Error result instead of throwing.\n\nThe developer comment in InvoiceService confirms: \"the saving of this rack time to CRMTeeTime is going to fail\" -- indicating a downstream DB constraint also needs addressing.\n\n---\nFIX REQUIRED (Three layers):\n\n- Database: Modify [Inventory].[GetRackTimes] WHERE clause to allow RTBaseSpecialRate = 0 and RTValueRate = 0. Must also guard the commission calculation against divide-by-zero.\n\n- C# Booking Path: Remove/modify the zero-rate guards in InvoiceService.cs:117-131 and InventoryChannel.cs:1697-1713 for legitimate $0 member rates.\n\n- CRM Materialization: Verify procINSCRMTeeTime can handle $0 values (the InvoiceService comment says it will fail).\n\n- Pricing Display: Review Extensions.cs:76-78 where $0 base rate gets a fabricated 1-cent value rate adjustment.\n\n---\nWhat Was Ruled Out:\n\n- TeeTimeRulesHandler: All rules are commented out in DI registration (no-op)\n\n- RemoveInvalidRates: Only activates with explicit price filter from consumer (default is null/no-op)\n\n- CreateTeeTime/ProcessTeeTimes: No price-based filtering\n\n- @PriceStart parameter: Defaults to null, proc defaults to 0.00 floor which includes $0\n\n---\nA full technical reference document has been prepared with complete file paths, line numbers, pipeline trace, fix implementation plan, and verification queries. Available for the assigned developer.",
+            "bodyHtml": "<h3>Root Cause Analysis Complete - $0 Rack Time Filtering</h3><p>Deep code trace completed across the full search-to-booking pipeline. Root cause confirmed with 100% confidence.</p><hr><h3>PRIMARY ROOT CAUSE: Stored Procedure <code>[Inventory].[GetRackTimes]</code></h3><p>The WHERE clause contains hardcoded filters that explicitly exclude $0 rates at the database level:</p><pre><code>AND rt.RTRule &gt; 0\nAND rt.RTValueRate &gt; 0\nAND rt.RTBaseSpecialRate &gt; 0</code></pre><p><strong>`AND rt.RTBaseSpecialRate &gt; 0`</strong> is the line that kills $0 member rates. The rack time never reaches the C# application code -- it's excluded at the SQL level before the Inventory WCF service returns results.</p><p>This proc is called by <code>[Inventory].[GetTeeTimesUsingRateSets]</code> which is the main search path.</p><hr><h3>SECONDARY ROOT CAUSE: C# Booking Path Gates</h3><p>Even if the SQL filter is fixed, two C# gates block $0 rack time bookings:</p><p><strong>1. `InvoiceService.cs` (lines 117-131):</strong></p><pre><code>if (criterion is RackTimeCriterion)\n{\n    if (invoices.Any(i =&gt; i.ValueRate &lt;= decimal.Zero || i.SpecialRate &lt;= decimal.Zero))\n        throw new BusinessException(BusinessErrorCode.InvalidTeeTimeData, ...);\n}</code></pre><p><strong>2. `InventoryChannel.cs` (lines 1697-1713):</strong></p><p>Same check in an alternate booking path, returns Error result instead of throwing.</p><p>The developer comment in InvoiceService confirms: &quot;the saving of this rack time to CRMTeeTime is going to fail&quot; -- indicating a downstream DB constraint also needs addressing.</p><hr><h3>FIX REQUIRED (Three layers):</h3><ol><li><p><strong>Database:</strong> Modify <code>[Inventory].[GetRackTimes]</code> WHERE clause to allow <code>RTBaseSpecialRate = 0</code> and <code>RTValueRate = 0</code>. Must also guard the commission calculation against divide-by-zero.</p></li></ol><ol><li><p><strong>C# Booking Path:</strong> Remove/modify the zero-rate guards in <code>InvoiceService.cs:117-131</code> and <code>InventoryChannel.cs:1697-1713</code> for legitimate $0 member rates.</p></li></ol><ol><li><p><strong>CRM Materialization:</strong> Verify <code>procINSCRMTeeTime</code> can handle $0 values (the InvoiceService comment says it will fail).</p></li></ol><ol><li><p><strong>Pricing Display:</strong> Review <code>Extensions.cs:76-78</code> where $0 base rate gets a fabricated 1-cent value rate adjustment.</p></li></ol><hr><h3>What Was Ruled Out:</h3><ul><li><p>TeeTimeRulesHandler: All rules are commented out in DI registration (no-op)</p></li><li><p>RemoveInvalidRates: Only activates with explicit price filter from consumer (default is null/no-op)</p></li><li><p>CreateTeeTime/ProcessTeeTimes: No price-based filtering</p></li><li><p>@PriceStart parameter: Defaults to null, proc defaults to 0.00 floor which includes $0</p></li></ul><hr><p>A full technical reference document has been prepared with complete file paths, line numbers, pipeline trace, fix implementation plan, and verification queries. Available for the assigned developer.</p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14116?focusedCommentId=1189466",
+        "lastCommentDisplay": "Jun 30, 2026, 2:06 PM",
+        "lastCommentAuthor": "Joshua Marquess",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Development",
+        "priority": "P2",
+        "assignee": "Yoel Martin Pardo",
+        "assigneeAccountId": "625571809e7380006fb29599",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "assignedDeveloperAccountId": "625571809e7380006fb29599",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "updated": "2026-07-07T10:11:13.813-0400",
+        "updatedDisplay": "Jul 7, 2026, 10:11 AM",
+        "created": "2026-01-27T16:43:06.874-0500",
+        "createdDisplay": "Jan 27, 2026, 4:43 PM",
+        "components": [
+          "Database"
+        ],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": null
       },
       {
         "key": "CORE-14194",
@@ -33094,13 +33094,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-07T14:06:23.789Z",
-    "pulledAtDisplay": "Jul 7, 2026, 10:06 AM",
+    "pulledAt": "2026-07-07T14:11:21.060Z",
+    "pulledAtDisplay": "Jul 7, 2026, 10:11 AM",
     "window": {
-      "start": "2026-05-23T14:06:23.789Z",
-      "end": "2027-01-03T14:06:23.789Z",
-      "startDisplay": "May 23, 2026, 10:06 AM",
-      "endDisplay": "Jan 3, 2027, 9:06 AM"
+      "start": "2026-05-23T14:11:21.059Z",
+      "end": "2027-01-03T14:11:21.059Z",
+      "startDisplay": "May 23, 2026, 10:11 AM",
+      "endDisplay": "Jan 3, 2027, 9:11 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33113,7 +33113,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-07T14:06:26.193Z",
+        "pulledAt": "2026-07-07T14:11:25.177Z",
         "eventCount": 91,
         "events": [
           {
@@ -33168,23 +33168,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Oak Brook Monthly Production Server Patching May 2026: Slack:\n#itops_patching_communications",
-            "start": "2026-05-26T18:00:00.000Z",
-            "end": "2026-05-27T19:55:00.000Z",
-            "startDate": "",
-            "endDate": "",
-            "startDisplay": "May 26, 2026, 2:00 PM",
-            "endDisplay": "May 27, 2026, 3:55 PM",
-            "allDay": false,
-            "type": "Patching",
-            "location": "https://golfnow.atlassian.net/browse/OPS-54241",
-            "description": "Slack: #itops_patching_communications",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260522T164316Z--93169021@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -33199,6 +33182,23 @@
             "type": "Scheduled Maintenance",
             "location": "https://golfnow.atlassian.net/browse/OPS-54736",
             "description": "Slack: #itops_deployments",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140252Z-574520318@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Oak Brook Monthly Production Server Patching May 2026: Slack:\n#itops_patching_communications",
+            "start": "2026-05-26T18:00:00.000Z",
+            "end": "2026-05-27T19:55:00.000Z",
+            "startDate": "",
+            "endDate": "",
+            "startDisplay": "May 26, 2026, 2:00 PM",
+            "endDisplay": "May 27, 2026, 3:55 PM",
+            "allDay": false,
+            "type": "Patching",
+            "location": "https://golfnow.atlassian.net/browse/OPS-54241",
+            "description": "Slack: #itops_patching_communications",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
@@ -34669,10 +34669,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-07T14:02:55.507Z",
-    "previousPulledAtDisplay": "Jul 7, 2026, 10:02 AM",
-    "currentPulledAt": "2026-07-07T14:07:57.170Z",
-    "currentPulledAtDisplay": "Jul 7, 2026, 10:07 AM",
+    "previousPulledAt": "2026-07-07T14:07:57.170Z",
+    "previousPulledAtDisplay": "Jul 7, 2026, 10:07 AM",
+    "currentPulledAt": "2026-07-07T14:12:44.501Z",
+    "currentPulledAtDisplay": "Jul 7, 2026, 10:12 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -34680,6 +34680,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-07T14:07:57.170Z",
+      "previousPulledAtDisplay": "Jul 7, 2026, 10:07 AM",
+      "currentPulledAt": "2026-07-07T14:12:44.501Z",
+      "currentPulledAtDisplay": "Jul 7, 2026, 10:12 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-07T14:02:55.507Z",
       "previousPulledAtDisplay": "Jul 7, 2026, 10:02 AM",
@@ -36511,17 +36522,6 @@
       "previousPulledAtDisplay": "Jul 6, 2026, 7:58 PM",
       "currentPulledAt": "2026-07-07T00:03:23.060Z",
       "currentPulledAtDisplay": "Jul 6, 2026, 8:03 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-06T23:53:08.250Z",
-      "previousPulledAtDisplay": "Jul 6, 2026, 7:53 PM",
-      "currentPulledAt": "2026-07-06T23:58:28.646Z",
-      "currentPulledAtDisplay": "Jul 6, 2026, 7:58 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
