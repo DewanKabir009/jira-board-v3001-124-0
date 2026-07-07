@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-07T11:42:37.426Z",
-  "pulledAtDisplay": "Jul 7, 2026, 7:42 AM",
+  "pulledAt": "2026-07-07T11:47:41.408Z",
+  "pulledAtDisplay": "Jul 7, 2026, 7:47 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-07T11:42:37.426Z",
-    "pulledAtDisplay": "Jul 7, 2026, 7:42 AM",
+    "pulledAt": "2026-07-07T11:47:41.408Z",
+    "pulledAtDisplay": "Jul 7, 2026, 7:47 AM",
     "total": 427,
     "mainTotal": 397,
     "subtaskTotal": 30,
@@ -33094,13 +33094,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-07T11:41:11.165Z",
-    "pulledAtDisplay": "Jul 7, 2026, 7:41 AM",
+    "pulledAt": "2026-07-07T11:46:12.617Z",
+    "pulledAtDisplay": "Jul 7, 2026, 7:46 AM",
     "window": {
-      "start": "2026-05-23T11:41:11.165Z",
-      "end": "2027-01-03T11:41:11.165Z",
-      "startDisplay": "May 23, 2026, 7:41 AM",
-      "endDisplay": "Jan 3, 2027, 6:41 AM"
+      "start": "2026-05-23T11:46:12.617Z",
+      "end": "2027-01-03T11:46:12.617Z",
+      "startDisplay": "May 23, 2026, 7:46 AM",
+      "endDisplay": "Jan 3, 2027, 6:46 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33113,7 +33113,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-07T11:41:13.304Z",
+        "pulledAt": "2026-07-07T11:46:14.625Z",
         "eventCount": 91,
         "events": [
           {
@@ -34669,10 +34669,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-07T11:38:08.541Z",
-    "previousPulledAtDisplay": "Jul 7, 2026, 7:38 AM",
-    "currentPulledAt": "2026-07-07T11:42:37.426Z",
-    "currentPulledAtDisplay": "Jul 7, 2026, 7:42 AM",
+    "previousPulledAt": "2026-07-07T11:42:37.426Z",
+    "previousPulledAtDisplay": "Jul 7, 2026, 7:42 AM",
+    "currentPulledAt": "2026-07-07T11:47:41.408Z",
+    "currentPulledAtDisplay": "Jul 7, 2026, 7:47 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -34680,6 +34680,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-07T11:42:37.426Z",
+      "previousPulledAtDisplay": "Jul 7, 2026, 7:42 AM",
+      "currentPulledAt": "2026-07-07T11:47:41.408Z",
+      "currentPulledAtDisplay": "Jul 7, 2026, 7:47 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-07T11:38:08.541Z",
       "previousPulledAtDisplay": "Jul 7, 2026, 7:38 AM",
@@ -36515,37 +36526,6 @@
       "added": [],
       "removed": [],
       "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-06T21:33:16.225Z",
-      "previousPulledAtDisplay": "Jul 6, 2026, 5:33 PM",
-      "currentPulledAt": "2026-07-06T21:37:24.367Z",
-      "currentPulledAtDisplay": "Jul 6, 2026, 5:37 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [
-        {
-          "key": "CORE-14145",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14145",
-          "summary": "New Interface - PrimaGolf",
-          "changes": [
-            {
-              "field": "updatedDisplay",
-              "label": "Jira updated",
-              "before": "Jun 29, 2026, 10:20 AM",
-              "after": "Jul 6, 2026, 5:34 PM"
-            }
-          ],
-          "type": "Task",
-          "isSubtask": false,
-          "assignee": "Unassigned",
-          "assignedDeveloper": "Raghav Kancherla",
-          "status": "Closed",
-          "parent": null
-        }
-      ],
       "statusChanges": []
     }
   ],
