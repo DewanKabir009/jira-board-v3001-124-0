@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-07T03:32:30.531Z",
-  "pulledAtDisplay": "Jul 6, 2026, 11:32 PM",
+  "pulledAt": "2026-07-07T03:37:18.659Z",
+  "pulledAtDisplay": "Jul 6, 2026, 11:37 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-07T03:32:30.531Z",
-    "pulledAtDisplay": "Jul 6, 2026, 11:32 PM",
+    "pulledAt": "2026-07-07T03:37:18.659Z",
+    "pulledAtDisplay": "Jul 6, 2026, 11:37 PM",
     "total": 427,
     "mainTotal": 397,
     "subtaskTotal": 30,
@@ -7876,6 +7876,56 @@
         }
       },
       {
+        "key": "CORE-14518",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14518",
+        "summary": "Home Course Earn Multiplier",
+        "description": "We need to add a new loyalty points earn multiplier that will be awarded when a user selects a home course.\n\nRequirements:\n\n- Name: Home Course\n\n- Description: Home course members multiplier\n\n- Support a flat points addition or a percentage points multiplier\n\n- Example 1: Home course members receive 2000 additional points.\n\n- Example 2: Home course members receive 2x more points.\n\n- NOTE: This should be a configurable database value\n\n- Eligibility:\n\n- Anybody who has an active product subscription of a product with BenefitID X\n\n- Home course selected\n\n- Tee time booked at home course\n\n- TotalPromotionalEarnablePoints\n\n- Include this home course multiplier points total in TotalPromotionalEarnablePoints field in the LoyaltyEligibility object on the invoice, purchase response, and reservation details\n\n- Example 1 - Customer is receiving the home course multiplier points\n\n- Customer earns 3000 points as part of the standard loyalty multiplier\n\n- Customer earns 200 additional points as part of the home course multiplier\n\n- Old Behavior (DO NOT USE):\n\n- \"TotalBaseEarnablePoints\": 3000,\n\"TotalEarnablePoints\": 3200,\n\"TotalPromotionalEarnablePoints\": 3200\n\n- New Behavior (USE):\n\n- \"TotalBaseEarnablePoints\": 3000,\n\"TotalEarnablePoints\": 3200,\n\"TotalPromotionalEarnablePoints\": 0 or NULL\n\"TotalHomeCourseEarnablePoints\": 200\n\n- Example 2 - Customer is not receiving the home course multiplier points\n\n- Customer earns 3000 points as part of the standard loyalty multiplier\n\n- Customer does not earn the additional 200 home course multiplier points\n\n- \"TotalBaseEarnablePoints\": 3000,\n\"TotalEarnablePoints\": 3000,\n\"TotalPromotionalEarnablePoints\": 0 or NULL,\n\"TotalHomeCourseEarnablePoints\": 0 or NULL\n\n- Example 3 - Customer is  receiving the home course multiplier points AND there is a 2x promotion\n\n- Customer earns 3000 points as part of the standard loyalty multiplier\n\n- Customer earns 2x for base points\n\n- Customer earns the additional 200 home course multiplier points\n\n- \"TotalBaseEarnablePoints\": 3000,\n\"TotalEarnablePoints\": 6200,\n\"TotalPromotionalEarnablePoints\": 3000,\n\"TotalHomeCourseEarnablePoints\": 200\n\nTest scenarios:\n\n- Example 1\n\n- Purchase a product subscription that includes the home course benefit\n\n- Select a home course\n\n- Book a tee time\n\n- Home course multiplier should be applied\n\n- NOTE: confirm the multiplier applies for additional bookings, not just the first booking after the home course is selected\n\n- Example 2\n\n- Purchase a product subscription that does not include the home course benefit\n\n- Select a home course\n\n- Book a tee time\n\n- Home course multiplier should not be applied\n\n- Example 3\n\n- Have no active product subscription on your account\n\n- Select a home course\n\n- Book a tee time\n\n- Home course multiplier should not be applied\n\n- Example 4\n\n- Have no active product subscription on your account\n\n- Do not select a home course\n\n- Book a tee time\n\n- Home course multiplier should not be applied",
+        "descriptionHtml": "<p>We need to add a new loyalty points earn multiplier that will be awarded when a user selects a home course. </p><p><strong>Requirements:</strong></p><ul><li><p><strong>Name: </strong>Home Course</p></li><li><p><strong>Description:</strong> Home course members multiplier</p></li><li><p>Support a flat points addition or a percentage points multiplier</p><ul><li><p><strong>Example 1: </strong>Home course members receive 2000 additional points.</p></li><li><p><strong>Example 2:</strong> Home course members receive 2x more points.</p></li><li><p>NOTE: This should be a <strong>configurable</strong> database value</p></li></ul></li><li><p><strong>Eligibility:</strong></p><ul><li><p>Anybody who has an active product subscription of a product with BenefitID X</p></li><li><p>Home course selected</p></li><li><p>Tee time booked at home course</p></li></ul></li><li><p><strong>TotalPromotionalEarnablePoints</strong></p><ul><li><p>Include this home course multiplier points total in TotalPromotionalEarnablePoints field in the LoyaltyEligibility object on the invoice, purchase response, and reservation details</p><ul><li><p><strong>Example 1</strong> - Customer <strong>is </strong>receiving the home course multiplier points</p><ul><li><p>Customer earns 3000 points as part of the standard loyalty multiplier</p></li><li><p>Customer earns 200 additional points as part of the home course multiplier</p><ul><li><p>Old Behavior (DO NOT USE):</p></li><li><pre><code>&quot;TotalBaseEarnablePoints&quot;: 3000,\n&quot;TotalEarnablePoints&quot;: 3200,\n&quot;TotalPromotionalEarnablePoints&quot;: 3200</code></pre></li><li><p>New Behavior (USE):</p></li><li><pre><code>&quot;TotalBaseEarnablePoints&quot;: 3000,\n&quot;TotalEarnablePoints&quot;: 3200,\n&quot;TotalPromotionalEarnablePoints&quot;: 0 or NULL\n&quot;TotalHomeCourseEarnablePoints&quot;: 200</code></pre></li></ul></li></ul></li><li><p><strong>Example 2</strong> - Customer <strong>is not </strong>receiving the home course multiplier points</p><ul><li><p>Customer earns 3000 points as part of the standard loyalty multiplier</p></li><li><p>Customer <strong>does not </strong>earn the additional 200 home course multiplier points</p><ul><li><pre><code>&quot;TotalBaseEarnablePoints&quot;: 3000,\n&quot;TotalEarnablePoints&quot;: 3000,\n&quot;TotalPromotionalEarnablePoints&quot;: 0 or NULL,\n&quot;TotalHomeCourseEarnablePoints&quot;: 0 or NULL</code></pre></li></ul></li></ul></li><li><p><strong>Example 3</strong> - Customer <strong>is  </strong>receiving the home course multiplier points AND there is a 2x promotion</p><ul><li><p>Customer earns 3000 points as part of the standard loyalty multiplier</p></li><li><p>Customer earns 2x for base points</p></li><li><p>Customer earns the additional 200 home course multiplier points</p><ul><li><pre><code>&quot;TotalBaseEarnablePoints&quot;: 3000,\n&quot;TotalEarnablePoints&quot;: 6200,\n&quot;TotalPromotionalEarnablePoints&quot;: 3000,\n&quot;TotalHomeCourseEarnablePoints&quot;: 200</code></pre></li></ul></li></ul></li></ul></li></ul></li></ul><p><strong>Test scenarios:</strong></p><ol><li><p><strong>Example 1</strong></p><ol><li><p>Purchase a product subscription that includes the home course benefit</p></li><li><p>Select a home course</p></li><li><p>Book a tee time</p></li><li><p>Home course multiplier should be applied</p></li><li><p><strong>NOTE:</strong> confirm the multiplier applies for additional bookings, not just the first booking after the home course is selected</p></li></ol></li><li><p><strong>Example 2</strong></p><ol><li><p>Purchase a product subscription that does not include the home course benefit</p></li><li><p>Select a home course</p></li><li><p>Book a tee time</p></li><li><p>Home course multiplier should not be applied</p></li></ol></li><li><p><strong>Example 3</strong></p><ol><li><p>Have no active product subscription on your account</p></li><li><p>Select a home course</p></li><li><p>Book a tee time</p></li><li><p>Home course multiplier should not be applied</p></li></ol></li><li><p><strong>Example 4 </strong></p><ol><li><p>Have no active product subscription on your account</p></li><li><p>Do not select a home course</p></li><li><p>Book a tee time</p></li><li><p>Home course multiplier should not be applied</p></li></ol></li></ol>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Analysis",
+        "priority": "P1",
+        "assignee": "Luis Vallejo Mursuli",
+        "assigneeAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+        "assignedDeveloper": "Luis Vallejo Mursuli",
+        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+        "updated": "2026-07-06T23:36:10.232-0400",
+        "updatedDisplay": "Jul 6, 2026, 11:36 PM",
+        "created": "2026-06-15T11:15:42.403-0400",
+        "createdDisplay": "Jun 15, 2026, 11:15 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14301",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14301",
+          "summary": "GolfPass \"Home Course\": Phase I",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
         "key": "DS-22528",
         "url": "https://golfnow.atlassian.net/browse/DS-22528",
         "summary": "Push Home Course Data to Raptor and SFMC",
@@ -7965,56 +8015,6 @@
           "2026.8"
         ],
         "resolution": "Won't Do",
-        "parent": {
-          "key": "CORE-14301",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14301",
-          "summary": "GolfPass \"Home Course\": Phase I",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14518",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14518",
-        "summary": "Home Course Earn Multiplier",
-        "description": "We need to add a new loyalty points earn multiplier that will be awarded when a user selects a home course.\n\nRequirements:\n\n- Name: Home Course\n\n- Description: Home course members multiplier\n\n- Support a flat points addition or a percentage points multiplier\n\n- Example 1: Home course members receive 2000 additional points.\n\n- Example 2: Home course members receive 2x more points.\n\n- NOTE: This should be a configurable database value\n\n- Eligibility:\n\n- Anybody who has an active product subscription of a product with BenefitID X\n\n- Home course selected\n\n- Tee time booked at home course\n\n- TotalPromotionalEarnablePoints\n\n- Include this home course multiplier points total in TotalPromotionalEarnablePoints field in the LoyaltyEligibility object on the invoice, purchase response, and reservation details\n\n- Example 1 - Customer is receiving the home course multiplier points\n\n- Customer earns 3000 points as part of the standard loyalty multiplier\n\n- Customer earns 200 additional points as part of the home course multiplier\n\n- Old Behavior (DO NOT USE):\n\n- \"TotalBaseEarnablePoints\": 3000,\n\"TotalEarnablePoints\": 3200,\n\"TotalPromotionalEarnablePoints\": 3200\n\n- New Behavior (USE):\n\n- \"TotalBaseEarnablePoints\": 3000,\n\"TotalEarnablePoints\": 3200,\n\"TotalPromotionalEarnablePoints\": 0 or NULL\n\"TotalHomeCourseEarnablePoints\": 200\n\n- Example 2 - Customer is not receiving the home course multiplier points\n\n- Customer earns 3000 points as part of the standard loyalty multiplier\n\n- Customer does not earn the additional 200 home course multiplier points\n\n- \"TotalBaseEarnablePoints\": 3000,\n\"TotalEarnablePoints\": 3000,\n\"TotalPromotionalEarnablePoints\": 0 or NULL,\n\"TotalHomeCourseEarnablePoints\": 0 or NULL\n\n- Example 3 - Customer is  receiving the home course multiplier points AND there is a 2x promotion\n\n- Customer earns 3000 points as part of the standard loyalty multiplier\n\n- Customer earns 2x for base points\n\n- Customer earns the additional 200 home course multiplier points\n\n- \"TotalBaseEarnablePoints\": 3000,\n\"TotalEarnablePoints\": 6200,\n\"TotalPromotionalEarnablePoints\": 3000,\n\"TotalHomeCourseEarnablePoints\": 200\n\nTest scenarios:\n\n- Example 1\n\n- Purchase a product subscription that includes the home course benefit\n\n- Select a home course\n\n- Book a tee time\n\n- Home course multiplier should be applied\n\n- NOTE: confirm the multiplier applies for additional bookings, not just the first booking after the home course is selected\n\n- Example 2\n\n- Purchase a product subscription that does not include the home course benefit\n\n- Select a home course\n\n- Book a tee time\n\n- Home course multiplier should not be applied\n\n- Example 3\n\n- Have no active product subscription on your account\n\n- Select a home course\n\n- Book a tee time\n\n- Home course multiplier should not be applied\n\n- Example 4\n\n- Have no active product subscription on your account\n\n- Do not select a home course\n\n- Book a tee time\n\n- Home course multiplier should not be applied",
-        "descriptionHtml": "<p>We need to add a new loyalty points earn multiplier that will be awarded when a user selects a home course. </p><p><strong>Requirements:</strong></p><ul><li><p><strong>Name: </strong>Home Course</p></li><li><p><strong>Description:</strong> Home course members multiplier</p></li><li><p>Support a flat points addition or a percentage points multiplier</p><ul><li><p><strong>Example 1: </strong>Home course members receive 2000 additional points.</p></li><li><p><strong>Example 2:</strong> Home course members receive 2x more points.</p></li><li><p>NOTE: This should be a <strong>configurable</strong> database value</p></li></ul></li><li><p><strong>Eligibility:</strong></p><ul><li><p>Anybody who has an active product subscription of a product with BenefitID X</p></li><li><p>Home course selected</p></li><li><p>Tee time booked at home course</p></li></ul></li><li><p><strong>TotalPromotionalEarnablePoints</strong></p><ul><li><p>Include this home course multiplier points total in TotalPromotionalEarnablePoints field in the LoyaltyEligibility object on the invoice, purchase response, and reservation details</p><ul><li><p><strong>Example 1</strong> - Customer <strong>is </strong>receiving the home course multiplier points</p><ul><li><p>Customer earns 3000 points as part of the standard loyalty multiplier</p></li><li><p>Customer earns 200 additional points as part of the home course multiplier</p><ul><li><p>Old Behavior (DO NOT USE):</p></li><li><pre><code>&quot;TotalBaseEarnablePoints&quot;: 3000,\n&quot;TotalEarnablePoints&quot;: 3200,\n&quot;TotalPromotionalEarnablePoints&quot;: 3200</code></pre></li><li><p>New Behavior (USE):</p></li><li><pre><code>&quot;TotalBaseEarnablePoints&quot;: 3000,\n&quot;TotalEarnablePoints&quot;: 3200,\n&quot;TotalPromotionalEarnablePoints&quot;: 0 or NULL\n&quot;TotalHomeCourseEarnablePoints&quot;: 200</code></pre></li></ul></li></ul></li><li><p><strong>Example 2</strong> - Customer <strong>is not </strong>receiving the home course multiplier points</p><ul><li><p>Customer earns 3000 points as part of the standard loyalty multiplier</p></li><li><p>Customer <strong>does not </strong>earn the additional 200 home course multiplier points</p><ul><li><pre><code>&quot;TotalBaseEarnablePoints&quot;: 3000,\n&quot;TotalEarnablePoints&quot;: 3000,\n&quot;TotalPromotionalEarnablePoints&quot;: 0 or NULL,\n&quot;TotalHomeCourseEarnablePoints&quot;: 0 or NULL</code></pre></li></ul></li></ul></li><li><p><strong>Example 3</strong> - Customer <strong>is  </strong>receiving the home course multiplier points AND there is a 2x promotion</p><ul><li><p>Customer earns 3000 points as part of the standard loyalty multiplier</p></li><li><p>Customer earns 2x for base points</p></li><li><p>Customer earns the additional 200 home course multiplier points</p><ul><li><pre><code>&quot;TotalBaseEarnablePoints&quot;: 3000,\n&quot;TotalEarnablePoints&quot;: 6200,\n&quot;TotalPromotionalEarnablePoints&quot;: 3000,\n&quot;TotalHomeCourseEarnablePoints&quot;: 200</code></pre></li></ul></li></ul></li></ul></li></ul></li></ul><p><strong>Test scenarios:</strong></p><ol><li><p><strong>Example 1</strong></p><ol><li><p>Purchase a product subscription that includes the home course benefit</p></li><li><p>Select a home course</p></li><li><p>Book a tee time</p></li><li><p>Home course multiplier should be applied</p></li><li><p><strong>NOTE:</strong> confirm the multiplier applies for additional bookings, not just the first booking after the home course is selected</p></li></ol></li><li><p><strong>Example 2</strong></p><ol><li><p>Purchase a product subscription that does not include the home course benefit</p></li><li><p>Select a home course</p></li><li><p>Book a tee time</p></li><li><p>Home course multiplier should not be applied</p></li></ol></li><li><p><strong>Example 3</strong></p><ol><li><p>Have no active product subscription on your account</p></li><li><p>Select a home course</p></li><li><p>Book a tee time</p></li><li><p>Home course multiplier should not be applied</p></li></ol></li><li><p><strong>Example 4 </strong></p><ol><li><p>Have no active product subscription on your account</p></li><li><p>Do not select a home course</p></li><li><p>Book a tee time</p></li><li><p>Home course multiplier should not be applied</p></li></ol></li></ol>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Analysis",
-        "priority": "P1",
-        "assignee": "Luis Vallejo Mursuli",
-        "assigneeAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
-        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-07-06T13:39:04.483-0400",
-        "updatedDisplay": "Jul 6, 2026, 1:39 PM",
-        "created": "2026-06-15T11:15:42.403-0400",
-        "createdDisplay": "Jun 15, 2026, 11:15 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
         "parent": {
           "key": "CORE-14301",
           "url": "https://golfnow.atlassian.net/browse/CORE-14301",
@@ -33094,13 +33094,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-07T03:31:14.363Z",
-    "pulledAtDisplay": "Jul 6, 2026, 11:31 PM",
+    "pulledAt": "2026-07-07T03:36:10.049Z",
+    "pulledAtDisplay": "Jul 6, 2026, 11:36 PM",
     "window": {
-      "start": "2026-05-23T03:31:14.362Z",
-      "end": "2027-01-03T03:31:14.362Z",
-      "startDisplay": "May 22, 2026, 11:31 PM",
-      "endDisplay": "Jan 2, 2027, 10:31 PM"
+      "start": "2026-05-23T03:36:10.049Z",
+      "end": "2027-01-03T03:36:10.049Z",
+      "startDisplay": "May 22, 2026, 11:36 PM",
+      "endDisplay": "Jan 2, 2027, 10:36 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33113,26 +33113,9 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-07T03:31:16.428Z",
+        "pulledAt": "2026-07-07T03:36:11.923Z",
         "eventCount": 91,
         "events": [
-          {
-            "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Memorial Day - (US) Company Holiday",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDate": "2026-05-25",
-            "endDate": "2026-05-26",
-            "startDisplay": "May 25, 2026",
-            "endDisplay": "May 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
           {
             "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
             "calendarId": "gn-releases",
@@ -33146,6 +33129,23 @@
             "endDisplay": "May 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Memorial Day - (US) Company Holiday",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDate": "2026-05-25",
+            "endDate": "2026-05-26",
+            "startDisplay": "May 25, 2026",
+            "endDisplay": "May 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34613,23 +34613,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - US Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -34642,6 +34625,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - US Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34669,10 +34669,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-07T03:28:00.949Z",
-    "previousPulledAtDisplay": "Jul 6, 2026, 11:28 PM",
-    "currentPulledAt": "2026-07-07T03:32:30.531Z",
-    "currentPulledAtDisplay": "Jul 6, 2026, 11:32 PM",
+    "previousPulledAt": "2026-07-07T03:32:30.531Z",
+    "previousPulledAtDisplay": "Jul 6, 2026, 11:32 PM",
+    "currentPulledAt": "2026-07-07T03:37:18.659Z",
+    "currentPulledAtDisplay": "Jul 6, 2026, 11:37 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -34680,6 +34680,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-07T03:32:30.531Z",
+      "previousPulledAtDisplay": "Jul 6, 2026, 11:32 PM",
+      "currentPulledAt": "2026-07-07T03:37:18.659Z",
+      "currentPulledAtDisplay": "Jul 6, 2026, 11:37 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-07T03:28:00.949Z",
       "previousPulledAtDisplay": "Jul 6, 2026, 11:28 PM",
@@ -36531,17 +36542,6 @@
       "previousPulledAtDisplay": "Jul 6, 2026, 9:32 AM",
       "currentPulledAt": "2026-07-06T13:38:24.764Z",
       "currentPulledAtDisplay": "Jul 6, 2026, 9:38 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-06T13:27:33.735Z",
-      "previousPulledAtDisplay": "Jul 6, 2026, 9:27 AM",
-      "currentPulledAt": "2026-07-06T13:32:34.065Z",
-      "currentPulledAtDisplay": "Jul 6, 2026, 9:32 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
