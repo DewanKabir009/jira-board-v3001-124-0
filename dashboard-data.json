@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-08T16:28:31.987Z",
-  "pulledAtDisplay": "Jul 8, 2026, 12:28 PM",
+  "pulledAt": "2026-07-08T16:32:47.210Z",
+  "pulledAtDisplay": "Jul 8, 2026, 12:32 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-08T16:28:31.987Z",
-    "pulledAtDisplay": "Jul 8, 2026, 12:28 PM",
+    "pulledAt": "2026-07-08T16:32:47.210Z",
+    "pulledAtDisplay": "Jul 8, 2026, 12:32 PM",
     "total": 434,
     "mainTotal": 404,
     "subtaskTotal": 30,
@@ -7891,6 +7891,56 @@
         }
       },
       {
+        "key": "CORE-14568",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14568",
+        "summary": "[Commerce] Store Creation Automation",
+        "description": "- Create Store From Template - https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/CreateStoreFromTemplate\n\n- Update Store From Template - https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/UpdateStoreFromTemplate\n\n- Get Store Details - https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/GetStoreDetailsBySourceKeyAndName\n\n- GN Store Template Key - 687538b7d13e369f7369c4a3\n\n- Authenticate Using Application Credentials - https://gateway-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Security/operation/AuthenticatePrincipal\n\nNotes from Tyler\n\nWork with @Nick Ciccarino @Jason Lakhan",
+        "descriptionHtml": "<ul><li><p>Create Store From Template - <a href=\"https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/CreateStoreFromTemplate\" target=\"_blank\" rel=\"noopener\">https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/CreateStoreFromTemplate</a></p></li><li><p>Update Store From Template - <a href=\"https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/UpdateStoreFromTemplate\" target=\"_blank\" rel=\"noopener\">https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/UpdateStoreFromTemplate</a></p></li><li><p>Get Store Details - <a href=\"https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/GetStoreDetailsBySourceKeyAndName\" target=\"_blank\" rel=\"noopener\">https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/GetStoreDetailsBySourceKeyAndName</a></p></li><li><p>GN Store Template Key - 687538b7d13e369f7369c4a3</p></li><li><p>Authenticate Using Application Credentials - <a href=\"https://gateway-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Security/operation/AuthenticatePrincipal\" target=\"_blank\" rel=\"noopener\">https://gateway-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Security/operation/AuthenticatePrincipal</a></p></li></ul><p>Notes from Tyler</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14568/745774-image-20260708-163010.png\" alt=\"image-20260708-163010.png\" loading=\"lazy\"><figcaption>image-20260708-163010.png</figcaption></figure></div><p>Work with @Nick Ciccarino @Jason Lakhan </p>",
+        "descriptionImageCount": 1,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 1,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Pre Planning",
+        "priority": "None",
+        "assignee": "Brian Pugh",
+        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-07-08T12:30:15.912-0400",
+        "updatedDisplay": "Jul 8, 2026, 12:30 PM",
+        "created": "2026-07-08T10:07:12.338-0400",
+        "createdDisplay": "Jul 8, 2026, 10:07 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-13172",
+          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+          "summary": "Commerce Proxy API",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
         "key": "GNSCM-10177",
         "url": "https://golfnow.atlassian.net/browse/GNSCM-10177",
         "summary": "Update hardcoded cancellation reason for GP Cancellations",
@@ -8287,56 +8337,6 @@
           "type": "Epic",
           "status": "Planning",
           "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14568",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14568",
-        "summary": "[Commerce] Store Creation Automation",
-        "description": "- Create Store From Template - https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/CreateStoreFromTemplate\n\n- Update Store From Template - https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/UpdateStoreFromTemplate\n\n- Get Store Details - https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/GetStoreDetailsBySourceKeyAndName\n\n- GN Store Template Key - 687538b7d13e369f7369c4a3\n\n- Authenticate Using Application Credentials - https://gateway-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Security/operation/AuthenticatePrincipal\n\nWork with @Nick Ciccarino @Jason Lakhan",
-        "descriptionHtml": "<ul><li><p>Create Store From Template - <a href=\"https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/CreateStoreFromTemplate\" target=\"_blank\" rel=\"noopener\">https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/CreateStoreFromTemplate</a></p></li><li><p>Update Store From Template - <a href=\"https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/UpdateStoreFromTemplate\" target=\"_blank\" rel=\"noopener\">https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/UpdateStoreFromTemplate</a></p></li><li><p>Get Store Details - <a href=\"https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/GetStoreDetailsBySourceKeyAndName\" target=\"_blank\" rel=\"noopener\">https://commerce-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Store/operation/GetStoreDetailsBySourceKeyAndName</a></p></li><li><p>GN Store Template Key - 687538b7d13e369f7369c4a3</p></li><li><p>Authenticate Using Application Credentials - <a href=\"https://gateway-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Security/operation/AuthenticatePrincipal\" target=\"_blank\" rel=\"noopener\">https://gateway-api.dev.us-east-2.photondash.dev/management/v1/documentation/index.html#tag/Security/operation/AuthenticatePrincipal</a></p></li></ul><p>Work with @Nick Ciccarino @Jason Lakhan </p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Pre Planning",
-        "priority": "None",
-        "assignee": "Brian Pugh",
-        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-07-08T10:09:32.060-0400",
-        "updatedDisplay": "Jul 8, 2026, 10:09 AM",
-        "created": "2026-07-08T10:07:12.338-0400",
-        "createdDisplay": "Jul 8, 2026, 10:07 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-13172",
-          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
-          "summary": "Commerce Proxy API",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
         }
       },
       {
@@ -33492,13 +33492,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-08T16:26:37.344Z",
-    "pulledAtDisplay": "Jul 8, 2026, 12:26 PM",
+    "pulledAt": "2026-07-08T16:31:32.286Z",
+    "pulledAtDisplay": "Jul 8, 2026, 12:31 PM",
     "window": {
-      "start": "2026-05-24T16:26:37.344Z",
-      "end": "2027-01-04T16:26:37.344Z",
-      "startDisplay": "May 24, 2026, 12:26 PM",
-      "endDisplay": "Jan 4, 2027, 11:26 AM"
+      "start": "2026-05-24T16:31:32.286Z",
+      "end": "2027-01-04T16:31:32.286Z",
+      "startDisplay": "May 24, 2026, 12:31 PM",
+      "endDisplay": "Jan 4, 2027, 11:31 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33511,26 +33511,9 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-08T16:26:41.717Z",
+        "pulledAt": "2026-07-08T16:31:34.412Z",
         "eventCount": 91,
         "events": [
-          {
-            "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Memorial Day - (US) Company Holiday",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDate": "2026-05-25",
-            "endDate": "2026-05-26",
-            "startDisplay": "May 25, 2026",
-            "endDisplay": "May 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
           {
             "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
             "calendarId": "gn-releases",
@@ -33544,6 +33527,23 @@
             "endDisplay": "May 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Memorial Day - (US) Company Holiday",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDate": "2026-05-25",
+            "endDate": "2026-05-26",
+            "startDisplay": "May 25, 2026",
+            "endDisplay": "May 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34195,6 +34195,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.57",
+            "start": "2026-07-14T00:00:00.000Z",
+            "end": "2026-07-15T00:00:00.000Z",
+            "startDate": "2026-07-14",
+            "endDate": "2026-07-15",
+            "startDisplay": "Jul 14, 2026",
+            "endDisplay": "Jul 15, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221527Z-1432222737@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -34224,23 +34241,6 @@
             "endDisplay": "Jul 15, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.57",
-            "start": "2026-07-14T00:00:00.000Z",
-            "end": "2026-07-15T00:00:00.000Z",
-            "startDate": "2026-07-14",
-            "endDate": "2026-07-15",
-            "startDisplay": "Jul 14, 2026",
-            "endDisplay": "Jul 15, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34654,6 +34654,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.59",
+            "start": "2026-09-15T00:00:00.000Z",
+            "end": "2026-09-16T00:00:00.000Z",
+            "startDate": "2026-09-15",
+            "endDate": "2026-09-16",
+            "startDisplay": "Sep 15, 2026",
+            "endDisplay": "Sep 16, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221627Z-1916149808@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -34683,23 +34700,6 @@
             "endDisplay": "Sep 16, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.59",
-            "start": "2026-09-15T00:00:00.000Z",
-            "end": "2026-09-16T00:00:00.000Z",
-            "startDate": "2026-09-15",
-            "endDate": "2026-09-16",
-            "startDisplay": "Sep 15, 2026",
-            "endDisplay": "Sep 16, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34926,6 +34926,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -34955,23 +34972,6 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -35011,23 +35011,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - US Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -35040,6 +35023,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - US Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -35067,10 +35067,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-08T16:23:34.742Z",
-    "previousPulledAtDisplay": "Jul 8, 2026, 12:23 PM",
-    "currentPulledAt": "2026-07-08T16:28:31.987Z",
-    "currentPulledAtDisplay": "Jul 8, 2026, 12:28 PM",
+    "previousPulledAt": "2026-07-08T16:28:31.987Z",
+    "previousPulledAtDisplay": "Jul 8, 2026, 12:28 PM",
+    "currentPulledAt": "2026-07-08T16:32:47.210Z",
+    "currentPulledAtDisplay": "Jul 8, 2026, 12:32 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -35078,6 +35078,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-08T16:28:31.987Z",
+      "previousPulledAtDisplay": "Jul 8, 2026, 12:28 PM",
+      "currentPulledAt": "2026-07-08T16:32:47.210Z",
+      "currentPulledAtDisplay": "Jul 8, 2026, 12:32 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-08T16:23:34.742Z",
       "previousPulledAtDisplay": "Jul 8, 2026, 12:23 PM",
@@ -36909,17 +36920,6 @@
       "previousPulledAtDisplay": "Jul 7, 2026, 10:23 PM",
       "currentPulledAt": "2026-07-08T02:27:34.669Z",
       "currentPulledAtDisplay": "Jul 7, 2026, 10:27 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-08T02:17:20.538Z",
-      "previousPulledAtDisplay": "Jul 7, 2026, 10:17 PM",
-      "currentPulledAt": "2026-07-08T02:23:21.965Z",
-      "currentPulledAtDisplay": "Jul 7, 2026, 10:23 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
