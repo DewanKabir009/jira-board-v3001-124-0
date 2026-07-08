@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-08T20:28:45.308Z",
-  "pulledAtDisplay": "Jul 8, 2026, 4:28 PM",
+  "pulledAt": "2026-07-08T20:33:46.880Z",
+  "pulledAtDisplay": "Jul 8, 2026, 4:33 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-08T20:28:45.308Z",
-    "pulledAtDisplay": "Jul 8, 2026, 4:28 PM",
+    "pulledAt": "2026-07-08T20:33:46.880Z",
+    "pulledAtDisplay": "Jul 8, 2026, 4:33 PM",
     "total": 434,
     "mainTotal": 404,
     "subtaskTotal": 30,
@@ -33507,13 +33507,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-08T20:26:44.978Z",
-    "pulledAtDisplay": "Jul 8, 2026, 4:26 PM",
+    "pulledAt": "2026-07-08T20:31:40.451Z",
+    "pulledAtDisplay": "Jul 8, 2026, 4:31 PM",
     "window": {
-      "start": "2026-05-24T20:26:44.978Z",
-      "end": "2027-01-04T20:26:44.978Z",
-      "startDisplay": "May 24, 2026, 4:26 PM",
-      "endDisplay": "Jan 4, 2027, 3:26 PM"
+      "start": "2026-05-24T20:31:40.451Z",
+      "end": "2027-01-04T20:31:40.451Z",
+      "startDisplay": "May 24, 2026, 4:31 PM",
+      "endDisplay": "Jan 4, 2027, 3:31 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33526,26 +33526,9 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-08T20:26:48.098Z",
+        "pulledAt": "2026-07-08T20:31:43.833Z",
         "eventCount": 92,
         "events": [
-          {
-            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Spring Bank Holiday (UK)",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDate": "2026-05-25",
-            "endDate": "2026-05-26",
-            "startDisplay": "May 25, 2026",
-            "endDisplay": "May 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
           {
             "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
             "calendarId": "gn-releases",
@@ -33559,6 +33542,23 @@
             "endDisplay": "May 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Spring Bank Holiday (UK)",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDate": "2026-05-25",
+            "endDate": "2026-05-26",
+            "startDisplay": "May 25, 2026",
+            "endDisplay": "May 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34601,23 +34601,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Summer Bank Holiday (UK)",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-01T00:00:00.000Z",
-            "startDate": "2026-08-31",
-            "endDate": "2026-09-01",
-            "startDisplay": "Aug 31, 2026",
-            "endDisplay": "Sep 1, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -34630,6 +34613,23 @@
             "endDisplay": "Sep 8, 2026",
             "allDay": true,
             "type": "Golf Freeze",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Summer Bank Holiday (UK)",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-01T00:00:00.000Z",
+            "startDate": "2026-08-31",
+            "endDate": "2026-09-01",
+            "startDisplay": "Aug 31, 2026",
+            "endDisplay": "Sep 1, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -35043,23 +35043,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -35072,6 +35055,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -35099,10 +35099,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-08T20:22:47.302Z",
-    "previousPulledAtDisplay": "Jul 8, 2026, 4:22 PM",
-    "currentPulledAt": "2026-07-08T20:28:45.308Z",
-    "currentPulledAtDisplay": "Jul 8, 2026, 4:28 PM",
+    "previousPulledAt": "2026-07-08T20:28:45.308Z",
+    "previousPulledAtDisplay": "Jul 8, 2026, 4:28 PM",
+    "currentPulledAt": "2026-07-08T20:33:46.880Z",
+    "currentPulledAtDisplay": "Jul 8, 2026, 4:33 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -35110,6 +35110,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-08T20:28:45.308Z",
+      "previousPulledAtDisplay": "Jul 8, 2026, 4:28 PM",
+      "currentPulledAt": "2026-07-08T20:33:46.880Z",
+      "currentPulledAtDisplay": "Jul 8, 2026, 4:33 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-08T20:22:47.302Z",
       "previousPulledAtDisplay": "Jul 8, 2026, 4:22 PM",
@@ -36941,17 +36952,6 @@
       "previousPulledAtDisplay": "Jul 8, 2026, 2:27 AM",
       "currentPulledAt": "2026-07-08T06:32:27.954Z",
       "currentPulledAtDisplay": "Jul 8, 2026, 2:32 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-08T06:22:27.699Z",
-      "previousPulledAtDisplay": "Jul 8, 2026, 2:22 AM",
-      "currentPulledAt": "2026-07-08T06:27:28.926Z",
-      "currentPulledAtDisplay": "Jul 8, 2026, 2:27 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
