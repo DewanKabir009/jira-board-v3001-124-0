@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-08T15:47:46.949Z",
-  "pulledAtDisplay": "Jul 8, 2026, 11:47 AM",
+  "pulledAt": "2026-07-08T15:52:42.472Z",
+  "pulledAtDisplay": "Jul 8, 2026, 11:52 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,10 +1809,10 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-08T15:47:46.949Z",
-    "pulledAtDisplay": "Jul 8, 2026, 11:47 AM",
-    "total": 430,
-    "mainTotal": 400,
+    "pulledAt": "2026-07-08T15:52:42.472Z",
+    "pulledAtDisplay": "Jul 8, 2026, 11:52 AM",
+    "total": 433,
+    "mainTotal": 403,
     "subtaskTotal": 30,
     "issues": [
       {
@@ -7887,6 +7887,156 @@
           "description": "",
           "type": "Task",
           "status": "Development",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14572",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14572",
+        "summary": "CLONE - [Commerce] Playing Partner reservations get created under the main player's name instead of being generated separately for each added player",
+        "description": "Environment: QA\n\n- Enable Member Booking Limit is on in BE Settings > General\n\n- Enable Partner Booking is on in BE Settings > General\n\n- Alternate Rate is added to a Member Rate\n\n- Alternate rate can be available or not\n\nSTR:\n\n- Navigate to BE with enableCommerceApi feature flag on https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes\n\n- Log in\n\n- Select a tee time of a Member Rate with 2+ players\n\n- Add to cart\n\n- Click “Edit cart“ > Add at least 1 Playing Partner > Proceed to checkout\n\n- Fill in the payment form and click “complete your purchase“\n\nAR:\n\n- The main player receives all Confirmation emails\n\n- The main player’s name is displayed in G1 for all slots on the tee sheet\n\n- All the reservations are displayed under the main player’s name in GNC\n\n- The added players don’t see the reservation on the Reservations page after logging into the BE\n\nER:\n\n- Each added player should receive their own Confirmation email\n\n- All added players should be displayed on the G1 tee sheet\n\n- The added players should see the reservation on the Reservations page after logging into the BE\n\n- The added players should be able to cancel and check in for themselves\n\n- The reservations should be created for each added player in GNC\n\nSmartPlay flow",
+        "descriptionHtml": "<p><strong>Environment</strong>: QA</p><ul><li><p>Enable Member Booking Limit is on in BE Settings &gt; General</p></li><li><p>Enable Partner Booking is on in BE Settings &gt; General</p></li><li><p>Alternate Rate is added to a Member Rate</p></li><li><p>Alternate rate can be available or not</p></li></ul><p><strong>STR</strong>:</p><ol><li><p>Navigate to BE with <code>enableCommerceApi</code> feature flag on <a href=\"https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes\" target=\"_blank\" rel=\"noopener\">https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes</a></p></li><li><p>Log in </p></li><li><p>Select a tee time of a Member Rate with 2+ players</p></li><li><p>Add to cart</p></li><li><p>Click “Edit cart“ &gt; Add at least 1 Playing Partner &gt; Proceed to checkout</p></li><li><p>Fill in the payment form and click “complete your purchase“</p></li></ol><p><strong>AR</strong>: </p><ul><li><p>The main player receives all Confirmation emails</p></li><li><p>The main player’s name is displayed in G1 for all slots on the tee sheet</p></li><li><p>All the reservations are displayed under the main player’s name in GNC</p></li><li><p>The added players don’t see the reservation on the Reservations page after logging into the BE</p></li></ul><div class=\"description-media-group\"><figure class=\"description-media description-video\"><video src=\"assets/jira-media/CORE-14572/745751-Monosnap-Video-2025-11-13-10.0.mp4\" controls preload=\"metadata\"></video><figcaption>Monosnap Video 2025-11-13 10.0.mp4</figcaption></figure></div><p><strong>ER</strong>: </p><ul><li><p>Each added player should receive their own Confirmation email</p></li><li><p>All added players should be displayed on the G1 tee sheet</p></li><li><p>The added players should see the reservation on the Reservations page after logging into the BE</p></li><li><p>The added players should be able to cancel and check in for themselves</p></li><li><p>The reservations should be created for each added player in GNC</p></li></ul><p><strong>SmartPlay flow</strong></p><div class=\"description-media-group\"><figure class=\"description-media description-video\"><video src=\"assets/jira-media/CORE-14572/745750-Monosnap-Video-2025-11-13-10.01.mp4\" controls preload=\"metadata\"></video><figcaption>Monosnap Video 2025-11-13 10.01.mp4</figcaption></figure></div>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 2,
+        "descriptionMediaCount": 2,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "P3",
+        "assignee": "Andrew Horvat",
+        "assigneeAccountId": "712020:d714b2a6-3491-46da-89f1-9777e2d1ab70",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:d714b2a6-3491-46da-89f1-9777e2d1ab70/25dedc4a-09d9-4ec9-945c-34d31d771711/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-07-08T11:50:36.979-0400",
+        "updatedDisplay": "Jul 8, 2026, 11:50 AM",
+        "created": "2026-07-08T11:49:37.330-0400",
+        "createdDisplay": "Jul 8, 2026, 11:49 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-13172",
+          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+          "summary": "Commerce Proxy API",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14571",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14571",
+        "summary": "CLONE - [Commerce]The invoice call fails when proceeding to checkout with 3 tee time items where there are added multiple playing partners in each",
+        "description": "Environment: QA\n\n- Enable Member Booking Limit is on in BE Settings > General\n\n- Enable Partner Booking is on in BE Settings > General\n\n- Alternate Rate is added to a Member Rate\n\n- Alternate rate can be available or not\n\nSTR:\n\n- Navigate to BE with enableCommerceApi feature flag on https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes\n\n- Log in\n\n- Select 3 tee times of a Member Rate with 4 players each\n\n- Add to cart\n\n- Click “Edit cart“ > Add at least 3 Playing Partner to each tee time\n\n- Proceed to checkout\n\nAR: The invoice call fails with error: \"Failed to create invoice for cart b3b9dd22-7293-48c0-a679-9c4739de764b: {\\\"Error\\\":{\\\"ID\\\":10501,\\\"Type\\\":\\\"Generic\\\"},\\\"ErrorID\\\":\\\"10501\\\",\\\"ErrorType\\\":\\\"Generic\\\",\\\"ErrorMessages\\\":[\\\"An internal error has occurred and will require manual investigation.\\\\nException of type 'Ticketing.Service.Commerce.Providers.Exceptions.CommerceException' was thrown.\\\"],\\\"ErrorParts\\\":null}\"\n\nNote: Does not happen when there are no added playing partners\n\nER: User should be able to purchase up to 3 tee times with up to 3 added playing partners each",
+        "descriptionHtml": "<p><strong>Environment:</strong> QA</p><ul><li><p>Enable Member Booking Limit is on in BE Settings &gt; General</p></li><li><p>Enable Partner Booking is on in BE Settings &gt; General</p></li><li><p>Alternate Rate is added to a Member Rate</p></li><li><p>Alternate rate can be available or not</p></li></ul><p><strong>STR</strong>:</p><ol><li><p>Navigate to BE with <code>enableCommerceApi</code> feature flag on <a href=\"https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes\" target=\"_blank\" rel=\"noopener\">https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes</a></p></li><li><p>Log in </p></li><li><p>Select 3 tee times of a Member Rate with 4 players each</p></li><li><p>Add to cart</p></li><li><p>Click “Edit cart“ &gt; Add at least 3 Playing Partner to each tee time</p></li><li><p>Proceed to checkout</p></li></ol><p><strong>AR</strong>: The<code> invoice</code> call fails with <code>error: &quot;Failed to create invoice for cart b3b9dd22-7293-48c0-a679-9c4739de764b: {\\&quot;Error\\&quot;:{\\&quot;ID\\&quot;:10501,\\&quot;Type\\&quot;:\\&quot;Generic\\&quot;},\\&quot;ErrorID\\&quot;:\\&quot;10501\\&quot;,\\&quot;ErrorType\\&quot;:\\&quot;Generic\\&quot;,\\&quot;ErrorMessages\\&quot;:[\\&quot;An internal error has occurred and will require manual investigation.\\\\nException of type 'Ticketing.Service.Commerce.Providers.Exceptions.CommerceException' was thrown.\\&quot;],\\&quot;ErrorParts\\&quot;:null}&quot;</code></p><p><strong>Note</strong>: Does not happen when there are no added playing partners</p><div class=\"description-media-group\"><figure class=\"description-media description-video\"><video src=\"assets/jira-media/CORE-14571/745748-Monosnap-Video-2025-11-13-10.5.mp4\" controls preload=\"metadata\"></video><figcaption>Monosnap Video 2025-11-13 10.5.mp4</figcaption></figure></div><p><strong>ER</strong>: User should be able to purchase up to 3 tee times with up to 3 added playing partners each</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 1,
+        "descriptionMediaCount": 1,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "P3",
+        "assignee": "Andrew Horvat",
+        "assigneeAccountId": "712020:d714b2a6-3491-46da-89f1-9777e2d1ab70",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:d714b2a6-3491-46da-89f1-9777e2d1ab70/25dedc4a-09d9-4ec9-945c-34d31d771711/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-07-08T11:49:12.196-0400",
+        "updatedDisplay": "Jul 8, 2026, 11:49 AM",
+        "created": "2026-07-08T11:48:09.346-0400",
+        "createdDisplay": "Jul 8, 2026, 11:48 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-13172",
+          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+          "summary": "Commerce Proxy API",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14570",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14570",
+        "summary": "CLONE - [Commerce] Cannot add a tee time with a specific player rule to cart when an Alternate rate is applied",
+        "description": "Environment: QA\n\n- Ensure that in Interface Configuration the player rules for the rate set under interface config set to:\n\n- 1 player - 1 only\n\n- 2 players - 2 only\n\n- 3 players - 2-3 players only\n\n- 4 players - 2-4 players only\n\n- Enable Member Booking Limit is on in BE Settings > General\n\n- Alternate Rate is added to a Member Rate\n\nSTR:\n\n- Navigate to BE with enableCommerceApi feature flag on https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes\n\n- Log in\n\n- Select a tee time of a Member Rate with 4 players available\n\n- Select only 1 player to cart > proceed to checkout and complete a reservation\n\n- Go back to the tee times page\n\n- Find the same tee time where only 2, 3 players are available now\n\n- Select either 2 or 3 players and click “add to cart“\n\nAR: The cart-item call returns 500 Internal Server Error {error: \"Failed to add an item to the shopping cart 2b340c5d-2d86-421d-9e9a-ac60392cd3b0: {\\\"Error\\\":{\\\"ID\\\":10509,\\\"Type\\\":\\\"Generic\\\"},\\\"ErrorID\\\":\\\"10509\\\",\\\"ErrorType\\\":\\\"Generic\\\",\\\"ErrorMessages\\\":[\\\"The request itself is invalid and/or misconfigured.\\\",\\\"The selected player count is not valid for this tee time or the tee time is no longer available.\\\"],\\\"ErrorParts\\\":null}\"\n}\n\nER: User should be able to complete a reservation with any number of players both when an Alternate rate is set to a rate set and when it’s not.",
+        "descriptionHtml": "<p><strong>Environment:</strong> QA</p><ul><li><p>Ensure that in <a href=\"https://golfnowcentral.dev.golfnow.io/Administration/InterfaceConfiguration\" target=\"_blank\" rel=\"noopener\">Interface Configuration</a> the player rules for the rate set under interface config set to:</p><ul><li><p>1 player - 1 only</p></li><li><p>2 players - 2 only</p></li><li><p>3 players - 2-3 players only</p></li><li><p>4 players - 2-4 players only</p></li></ul></li><li><p>Enable Member Booking Limit is on in BE Settings &gt; General</p></li><li><p>Alternate Rate is added to a Member Rate</p></li></ul><p><strong>STR</strong>:</p><ol><li><p>Navigate to BE with <code>enableCommerceApi</code> feature flag on <a href=\"https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes\" target=\"_blank\" rel=\"noopener\">https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes</a></p></li><li><p>Log in </p></li><li><p>Select a tee time of a Member Rate with 4 players available</p></li><li><p>Select only 1 player to cart &gt; proceed to checkout and complete a reservation</p></li><li><p>Go back to the tee times page</p></li><li><p>Find the same tee time where only 2, 3 players are available now</p></li><li><p>Select either 2 or 3 players and click “add to cart“</p></li></ol><p><strong>AR</strong>: The <code>cart-item </code>call returns <code>500 Internal Server Error {error: &quot;Failed to add an item to the shopping cart 2b340c5d-2d86-421d-9e9a-ac60392cd3b0: {\\&quot;Error\\&quot;:{\\&quot;ID\\&quot;:10509,\\&quot;Type\\&quot;:\\&quot;Generic\\&quot;},\\&quot;ErrorID\\&quot;:\\&quot;10509\\&quot;,\\&quot;ErrorType\\&quot;:\\&quot;Generic\\&quot;,\\&quot;ErrorMessages\\&quot;:[\\&quot;The request itself is invalid and/or misconfigured.\\&quot;,\\&quot;The selected player count is not valid for this tee time or the tee time is no longer available.\\&quot;],\\&quot;ErrorParts\\&quot;:null}&quot;</code><br><code>}</code></p><div class=\"description-media-group\"><figure class=\"description-media description-video\"><video src=\"assets/jira-media/CORE-14570/745745-Monosnap-Video-2025-10-29-10.3.mp4\" controls preload=\"metadata\"></video><figcaption>Monosnap Video 2025-10-29 10.3.mp4</figcaption></figure></div><p><strong>ER</strong>: User should be able to complete a reservation with any number of players both when an Alternate rate is set to a rate set and when it’s not.</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 1,
+        "descriptionMediaCount": 1,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "P3",
+        "assignee": "Andrew Horvat",
+        "assigneeAccountId": "712020:d714b2a6-3491-46da-89f1-9777e2d1ab70",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:d714b2a6-3491-46da-89f1-9777e2d1ab70/25dedc4a-09d9-4ec9-945c-34d31d771711/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-07-08T11:47:44.496-0400",
+        "updatedDisplay": "Jul 8, 2026, 11:47 AM",
+        "created": "2026-07-08T11:46:28.966-0400",
+        "createdDisplay": "Jul 8, 2026, 11:46 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-13172",
+          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+          "summary": "Commerce Proxy API",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
           "priority": "None"
         }
       },
@@ -33292,13 +33442,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-08T15:46:21.189Z",
-    "pulledAtDisplay": "Jul 8, 2026, 11:46 AM",
+    "pulledAt": "2026-07-08T15:51:21.158Z",
+    "pulledAtDisplay": "Jul 8, 2026, 11:51 AM",
     "window": {
-      "start": "2026-05-24T15:46:21.188Z",
-      "end": "2027-01-04T15:46:21.188Z",
-      "startDisplay": "May 24, 2026, 11:46 AM",
-      "endDisplay": "Jan 4, 2027, 10:46 AM"
+      "start": "2026-05-24T15:51:21.157Z",
+      "end": "2027-01-04T15:51:21.157Z",
+      "startDisplay": "May 24, 2026, 11:51 AM",
+      "endDisplay": "Jan 4, 2027, 10:51 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33311,26 +33461,9 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-08T15:46:23.504Z",
+        "pulledAt": "2026-07-08T15:51:23.258Z",
         "eventCount": 91,
         "events": [
-          {
-            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Spring Bank Holiday (UK)",
-            "start": "2026-05-25T00:00:00.000Z",
-            "end": "2026-05-26T00:00:00.000Z",
-            "startDate": "2026-05-25",
-            "endDate": "2026-05-26",
-            "startDisplay": "May 25, 2026",
-            "endDisplay": "May 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
           {
             "id": "20251222T202855Z-603896049@golfnow.atlassian.net",
             "calendarId": "gn-releases",
@@ -33344,6 +33477,23 @@
             "endDisplay": "May 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203517Z--1343880433@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Spring Bank Holiday (UK)",
+            "start": "2026-05-25T00:00:00.000Z",
+            "end": "2026-05-26T00:00:00.000Z",
+            "startDate": "2026-05-25",
+            "endDate": "2026-05-26",
+            "startDisplay": "May 25, 2026",
+            "endDisplay": "May 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34369,23 +34519,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Summer Bank Holiday (UK)",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-01T00:00:00.000Z",
-            "startDate": "2026-08-31",
-            "endDate": "2026-09-01",
-            "startDisplay": "Aug 31, 2026",
-            "endDisplay": "Sep 1, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -34398,6 +34531,23 @@
             "endDisplay": "Sep 8, 2026",
             "allDay": true,
             "type": "Golf Freeze",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Summer Bank Holiday (UK)",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-01T00:00:00.000Z",
+            "startDate": "2026-08-31",
+            "endDate": "2026-09-01",
+            "startDisplay": "Aug 31, 2026",
+            "endDisplay": "Sep 1, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34811,23 +34961,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -34840,6 +34973,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34867,10 +35017,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-08T15:43:15.895Z",
-    "previousPulledAtDisplay": "Jul 8, 2026, 11:43 AM",
-    "currentPulledAt": "2026-07-08T15:47:46.949Z",
-    "currentPulledAtDisplay": "Jul 8, 2026, 11:47 AM",
+    "previousPulledAt": "2026-07-08T15:47:46.949Z",
+    "previousPulledAtDisplay": "Jul 8, 2026, 11:47 AM",
+    "currentPulledAt": "2026-07-08T15:52:42.472Z",
+    "currentPulledAtDisplay": "Jul 8, 2026, 11:52 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -34878,6 +35028,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-08T15:47:46.949Z",
+      "previousPulledAtDisplay": "Jul 8, 2026, 11:47 AM",
+      "currentPulledAt": "2026-07-08T15:52:42.472Z",
+      "currentPulledAtDisplay": "Jul 8, 2026, 11:52 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-08T15:43:15.895Z",
       "previousPulledAtDisplay": "Jul 8, 2026, 11:43 AM",
@@ -36709,17 +36870,6 @@
       "previousPulledAtDisplay": "Jul 7, 2026, 9:43 PM",
       "currentPulledAt": "2026-07-08T01:47:33.868Z",
       "currentPulledAtDisplay": "Jul 7, 2026, 9:47 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-08T01:37:24.995Z",
-      "previousPulledAtDisplay": "Jul 7, 2026, 9:37 PM",
-      "currentPulledAt": "2026-07-08T01:43:26.968Z",
-      "currentPulledAtDisplay": "Jul 7, 2026, 9:43 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
