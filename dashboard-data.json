@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-08T15:52:42.472Z",
-  "pulledAtDisplay": "Jul 8, 2026, 11:52 AM",
+  "pulledAt": "2026-07-08T15:57:40.862Z",
+  "pulledAtDisplay": "Jul 8, 2026, 11:57 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,10 +1809,10 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-08T15:52:42.472Z",
-    "pulledAtDisplay": "Jul 8, 2026, 11:52 AM",
-    "total": 433,
-    "mainTotal": 403,
+    "pulledAt": "2026-07-08T15:57:40.862Z",
+    "pulledAtDisplay": "Jul 8, 2026, 11:57 AM",
+    "total": 434,
+    "mainTotal": 404,
     "subtaskTotal": 30,
     "issues": [
       {
@@ -7891,56 +7891,6 @@
         }
       },
       {
-        "key": "CORE-14572",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14572",
-        "summary": "CLONE - [Commerce] Playing Partner reservations get created under the main player's name instead of being generated separately for each added player",
-        "description": "Environment: QA\n\n- Enable Member Booking Limit is on in BE Settings > General\n\n- Enable Partner Booking is on in BE Settings > General\n\n- Alternate Rate is added to a Member Rate\n\n- Alternate rate can be available or not\n\nSTR:\n\n- Navigate to BE with enableCommerceApi feature flag on https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes\n\n- Log in\n\n- Select a tee time of a Member Rate with 2+ players\n\n- Add to cart\n\n- Click “Edit cart“ > Add at least 1 Playing Partner > Proceed to checkout\n\n- Fill in the payment form and click “complete your purchase“\n\nAR:\n\n- The main player receives all Confirmation emails\n\n- The main player’s name is displayed in G1 for all slots on the tee sheet\n\n- All the reservations are displayed under the main player’s name in GNC\n\n- The added players don’t see the reservation on the Reservations page after logging into the BE\n\nER:\n\n- Each added player should receive their own Confirmation email\n\n- All added players should be displayed on the G1 tee sheet\n\n- The added players should see the reservation on the Reservations page after logging into the BE\n\n- The added players should be able to cancel and check in for themselves\n\n- The reservations should be created for each added player in GNC\n\nSmartPlay flow",
-        "descriptionHtml": "<p><strong>Environment</strong>: QA</p><ul><li><p>Enable Member Booking Limit is on in BE Settings &gt; General</p></li><li><p>Enable Partner Booking is on in BE Settings &gt; General</p></li><li><p>Alternate Rate is added to a Member Rate</p></li><li><p>Alternate rate can be available or not</p></li></ul><p><strong>STR</strong>:</p><ol><li><p>Navigate to BE with <code>enableCommerceApi</code> feature flag on <a href=\"https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes\" target=\"_blank\" rel=\"noopener\">https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes</a></p></li><li><p>Log in </p></li><li><p>Select a tee time of a Member Rate with 2+ players</p></li><li><p>Add to cart</p></li><li><p>Click “Edit cart“ &gt; Add at least 1 Playing Partner &gt; Proceed to checkout</p></li><li><p>Fill in the payment form and click “complete your purchase“</p></li></ol><p><strong>AR</strong>: </p><ul><li><p>The main player receives all Confirmation emails</p></li><li><p>The main player’s name is displayed in G1 for all slots on the tee sheet</p></li><li><p>All the reservations are displayed under the main player’s name in GNC</p></li><li><p>The added players don’t see the reservation on the Reservations page after logging into the BE</p></li></ul><div class=\"description-media-group\"><figure class=\"description-media description-video\"><video src=\"assets/jira-media/CORE-14572/745751-Monosnap-Video-2025-11-13-10.0.mp4\" controls preload=\"metadata\"></video><figcaption>Monosnap Video 2025-11-13 10.0.mp4</figcaption></figure></div><p><strong>ER</strong>: </p><ul><li><p>Each added player should receive their own Confirmation email</p></li><li><p>All added players should be displayed on the G1 tee sheet</p></li><li><p>The added players should see the reservation on the Reservations page after logging into the BE</p></li><li><p>The added players should be able to cancel and check in for themselves</p></li><li><p>The reservations should be created for each added player in GNC</p></li></ul><p><strong>SmartPlay flow</strong></p><div class=\"description-media-group\"><figure class=\"description-media description-video\"><video src=\"assets/jira-media/CORE-14572/745750-Monosnap-Video-2025-11-13-10.01.mp4\" controls preload=\"metadata\"></video><figcaption>Monosnap Video 2025-11-13 10.01.mp4</figcaption></figure></div>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 2,
-        "descriptionMediaCount": 2,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "Planning",
-        "priority": "P3",
-        "assignee": "Andrew Horvat",
-        "assigneeAccountId": "712020:d714b2a6-3491-46da-89f1-9777e2d1ab70",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:d714b2a6-3491-46da-89f1-9777e2d1ab70/25dedc4a-09d9-4ec9-945c-34d31d771711/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-07-08T11:50:36.979-0400",
-        "updatedDisplay": "Jul 8, 2026, 11:50 AM",
-        "created": "2026-07-08T11:49:37.330-0400",
-        "createdDisplay": "Jul 8, 2026, 11:49 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-13172",
-          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
-          "summary": "Commerce Proxy API",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
         "key": "CORE-14571",
         "url": "https://golfnow.atlassian.net/browse/CORE-14571",
         "summary": "CLONE - [Commerce]The invoice call fails when proceeding to checkout with 3 tee time items where there are added multiple playing partners in each",
@@ -7965,10 +7915,110 @@
         "assignedDeveloper": "Unassigned",
         "assignedDeveloperAccountId": "",
         "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-07-08T11:49:12.196-0400",
-        "updatedDisplay": "Jul 8, 2026, 11:49 AM",
+        "updated": "2026-07-08T11:52:48.928-0400",
+        "updatedDisplay": "Jul 8, 2026, 11:52 AM",
         "created": "2026-07-08T11:48:09.346-0400",
         "createdDisplay": "Jul 8, 2026, 11:48 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-13172",
+          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+          "summary": "Commerce Proxy API",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14572",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14572",
+        "summary": "CLONE - [Commerce] Playing Partner reservations get created under the main player's name instead of being generated separately for each added player",
+        "description": "Environment: QA\n\n- Enable Member Booking Limit is on in BE Settings > General\n\n- Enable Partner Booking is on in BE Settings > General\n\n- Alternate Rate is added to a Member Rate\n\n- Alternate rate can be available or not\n\nSTR:\n\n- Navigate to BE with enableCommerceApi feature flag on https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes\n\n- Log in\n\n- Select a tee time of a Member Rate with 2+ players\n\n- Add to cart\n\n- Click “Edit cart“ > Add at least 1 Playing Partner > Proceed to checkout\n\n- Fill in the payment form and click “complete your purchase“\n\nAR:\n\n- The main player receives all Confirmation emails\n\n- The main player’s name is displayed in G1 for all slots on the tee sheet\n\n- All the reservations are displayed under the main player’s name in GNC\n\n- The added players don’t see the reservation on the Reservations page after logging into the BE\n\nER:\n\n- Each added player should receive their own Confirmation email\n\n- All added players should be displayed on the G1 tee sheet\n\n- The added players should see the reservation on the Reservations page after logging into the BE\n\n- The added players should be able to cancel and check in for themselves\n\n- The reservations should be created for each added player in GNC\n\nSmartPlay flow",
+        "descriptionHtml": "<p><strong>Environment</strong>: QA</p><ul><li><p>Enable Member Booking Limit is on in BE Settings &gt; General</p></li><li><p>Enable Partner Booking is on in BE Settings &gt; General</p></li><li><p>Alternate Rate is added to a Member Rate</p></li><li><p>Alternate rate can be available or not</p></li></ul><p><strong>STR</strong>:</p><ol><li><p>Navigate to BE with <code>enableCommerceApi</code> feature flag on <a href=\"https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes\" target=\"_blank\" rel=\"noopener\">https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes</a></p></li><li><p>Log in </p></li><li><p>Select a tee time of a Member Rate with 2+ players</p></li><li><p>Add to cart</p></li><li><p>Click “Edit cart“ &gt; Add at least 1 Playing Partner &gt; Proceed to checkout</p></li><li><p>Fill in the payment form and click “complete your purchase“</p></li></ol><p><strong>AR</strong>: </p><ul><li><p>The main player receives all Confirmation emails</p></li><li><p>The main player’s name is displayed in G1 for all slots on the tee sheet</p></li><li><p>All the reservations are displayed under the main player’s name in GNC</p></li><li><p>The added players don’t see the reservation on the Reservations page after logging into the BE</p></li></ul><div class=\"description-media-group\"><figure class=\"description-media description-video\"><video src=\"assets/jira-media/CORE-14572/745751-Monosnap-Video-2025-11-13-10.0.mp4\" controls preload=\"metadata\"></video><figcaption>Monosnap Video 2025-11-13 10.0.mp4</figcaption></figure></div><p><strong>ER</strong>: </p><ul><li><p>Each added player should receive their own Confirmation email</p></li><li><p>All added players should be displayed on the G1 tee sheet</p></li><li><p>The added players should see the reservation on the Reservations page after logging into the BE</p></li><li><p>The added players should be able to cancel and check in for themselves</p></li><li><p>The reservations should be created for each added player in GNC</p></li></ul><p><strong>SmartPlay flow</strong></p><div class=\"description-media-group\"><figure class=\"description-media description-video\"><video src=\"assets/jira-media/CORE-14572/745750-Monosnap-Video-2025-11-13-10.01.mp4\" controls preload=\"metadata\"></video><figcaption>Monosnap Video 2025-11-13 10.01.mp4</figcaption></figure></div>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 2,
+        "descriptionMediaCount": 2,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "P3",
+        "assignee": "Andrew Horvat",
+        "assigneeAccountId": "712020:d714b2a6-3491-46da-89f1-9777e2d1ab70",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:d714b2a6-3491-46da-89f1-9777e2d1ab70/25dedc4a-09d9-4ec9-945c-34d31d771711/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-07-08T11:52:34.772-0400",
+        "updatedDisplay": "Jul 8, 2026, 11:52 AM",
+        "created": "2026-07-08T11:49:37.330-0400",
+        "createdDisplay": "Jul 8, 2026, 11:49 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-13172",
+          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+          "summary": "Commerce Proxy API",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14573",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14573",
+        "summary": "CLONE - [Commerce] CC used during checkout is not properly displayed in GNC for a respective reservation",
+        "description": "Environment: QA\n\nSTR:\n\n- Navigate to BE with enableCommerceApi feature flag on https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes\n\n- Log in\n\n- Select a tee time\n\n- Add to cart > proceed to checkout\n\n- Provide a new CC details in the payment form\n\n- Complete a purchase\n\n- Go to https://golfnowcentral.dev > Customer > Customers > Search for the customer from step 2 > Reservation History\n\n- Select the needed reservation > click “Edit“ > view the Reservation History table\n\nAR: Name on CC = scrubbed, CC Type = external, CC# = 0456, Exp. Date = October, 2017 (looks like this data is random or hardcoded)\n\nNote: Same issue if use pro payment methods during checkout\n\nER: CC data in GNC should match the one provided during checkout no matter if a reservation has been made only with a new CC or with a pro payment method",
+        "descriptionHtml": "<p><strong>Environment</strong>: QA</p><p><strong>STR</strong>:</p><ol><li><p>Navigate to BE with <code>enableCommerceApi</code> feature flag on <a href=\"https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes\" target=\"_blank\" rel=\"noopener\">https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes</a></p></li><li><p>Log in</p></li><li><p>Select a tee time</p></li><li><p>Add to cart &gt; proceed to checkout</p></li><li><p>Provide a new CC details in the payment form</p></li><li><p>Complete a purchase</p></li><li><p>Go to <a href=\"https://golfnowcentral.dev\" target=\"_blank\" rel=\"noopener\">https://golfnowcentral.dev</a> &gt; Customer &gt; Customers &gt; Search for the customer from step 2 &gt; Reservation History</p></li><li><p>Select the needed reservation &gt; click “Edit“ &gt; view the Reservation History table</p></li></ol><p><strong>AR</strong>: <strong>Name on CC</strong> = scrubbed, <strong>CC Type</strong> = external, <strong>CC#</strong> = 0456, <strong>Exp. Date</strong> = October, 2017 (looks like this data is random or hardcoded)</p><p><strong>Note:</strong> Same issue if use pro payment methods during checkout</p><div class=\"description-media-group\"><figure class=\"description-media description-video\"><video src=\"assets/jira-media/CORE-14573/745752-Monosnap-Video-2025-09-10-06.3.mp4\" controls preload=\"metadata\"></video><figcaption>Monosnap Video 2025-09-10 06.3.mp4</figcaption></figure></div><p><strong>ER</strong>: CC data in GNC should match the one provided during checkout no matter if a reservation has been made only with a new CC or with a pro payment method</p><div class=\"description-media-group\"><figure class=\"description-media description-video\"><video src=\"assets/jira-media/CORE-14573/745753-Monosnap-Video-2025-09-10-06.30.mp4\" controls preload=\"metadata\"></video><figcaption>Monosnap Video 2025-09-10 06.30.mp4</figcaption></figure></div>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 2,
+        "descriptionMediaCount": 2,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "P3",
+        "assignee": "Andrew Horvat",
+        "assigneeAccountId": "712020:d714b2a6-3491-46da-89f1-9777e2d1ab70",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:d714b2a6-3491-46da-89f1-9777e2d1ab70/25dedc4a-09d9-4ec9-945c-34d31d771711/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-07-08T11:52:13.980-0400",
+        "updatedDisplay": "Jul 8, 2026, 11:52 AM",
+        "created": "2026-07-08T11:51:12.119-0400",
+        "createdDisplay": "Jul 8, 2026, 11:51 AM",
         "components": [],
         "fixVersions": [],
         "sprints": [
@@ -33442,13 +33492,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-08T15:51:21.158Z",
-    "pulledAtDisplay": "Jul 8, 2026, 11:51 AM",
+    "pulledAt": "2026-07-08T15:56:25.912Z",
+    "pulledAtDisplay": "Jul 8, 2026, 11:56 AM",
     "window": {
-      "start": "2026-05-24T15:51:21.157Z",
-      "end": "2027-01-04T15:51:21.157Z",
-      "startDisplay": "May 24, 2026, 11:51 AM",
-      "endDisplay": "Jan 4, 2027, 10:51 AM"
+      "start": "2026-05-24T15:56:25.912Z",
+      "end": "2027-01-04T15:56:25.912Z",
+      "startDisplay": "May 24, 2026, 11:56 AM",
+      "endDisplay": "Jan 4, 2027, 10:56 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33461,7 +33511,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-08T15:51:23.258Z",
+        "pulledAt": "2026-07-08T15:56:27.963Z",
         "eventCount": 91,
         "events": [
           {
@@ -35017,10 +35067,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-08T15:47:46.949Z",
-    "previousPulledAtDisplay": "Jul 8, 2026, 11:47 AM",
-    "currentPulledAt": "2026-07-08T15:52:42.472Z",
-    "currentPulledAtDisplay": "Jul 8, 2026, 11:52 AM",
+    "previousPulledAt": "2026-07-08T15:52:42.472Z",
+    "previousPulledAtDisplay": "Jul 8, 2026, 11:52 AM",
+    "currentPulledAt": "2026-07-08T15:57:40.862Z",
+    "currentPulledAtDisplay": "Jul 8, 2026, 11:57 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -35028,6 +35078,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-08T15:52:42.472Z",
+      "previousPulledAtDisplay": "Jul 8, 2026, 11:52 AM",
+      "currentPulledAt": "2026-07-08T15:57:40.862Z",
+      "currentPulledAtDisplay": "Jul 8, 2026, 11:57 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-08T15:47:46.949Z",
       "previousPulledAtDisplay": "Jul 8, 2026, 11:47 AM",
@@ -36859,17 +36920,6 @@
       "previousPulledAtDisplay": "Jul 7, 2026, 9:47 PM",
       "currentPulledAt": "2026-07-08T01:53:14.842Z",
       "currentPulledAtDisplay": "Jul 7, 2026, 9:53 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-08T01:43:26.968Z",
-      "previousPulledAtDisplay": "Jul 7, 2026, 9:43 PM",
-      "currentPulledAt": "2026-07-08T01:47:33.868Z",
-      "currentPulledAtDisplay": "Jul 7, 2026, 9:47 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
