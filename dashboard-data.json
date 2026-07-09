@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-09T18:58:43.590Z",
-  "pulledAtDisplay": "Jul 9, 2026, 2:58 PM",
+  "pulledAt": "2026-07-09T19:02:58.894Z",
+  "pulledAtDisplay": "Jul 9, 2026, 3:02 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-09T18:58:43.590Z",
-    "pulledAtDisplay": "Jul 9, 2026, 2:58 PM",
+    "pulledAt": "2026-07-09T19:02:58.894Z",
+    "pulledAtDisplay": "Jul 9, 2026, 3:02 PM",
     "total": 434,
     "mainTotal": 404,
     "subtaskTotal": 30,
@@ -7906,6 +7906,91 @@
         }
       },
       {
+        "key": "APP-7176",
+        "url": "https://golfnow.atlassian.net/browse/APP-7176",
+        "summary": "Support GolfPass Cancellations",
+        "description": "In order to meet compliance for price increased products, we will need to expose a subscription cancellation option in the Membership Settings page. This cancellation option will be conditional based on some API attributes.\n\n- Design: https://www.figma.com/design/n4GhZL6oXgfk93DFUhn98h/Cancel-membership-button?node-id=373-19485&m=dev\n\n- We need to make a copy change that is different from the design\n\n- Current: Cancel your GolfPass+ Membership subscription immediately and get a full refund for the renewal period.\n\n- Change to: Cancel your GolfPass+ Membership subscription immediately and get a full refund for the subscription period.\n\n- APIs\n\n- Eligibility API - GET {{prod-api-base-url}}/GolfNowAPI.svc/rest/channel/{{ChannelId}}/customers/{{EmailAddress}}/subscriptions?productTypeId=9\n\n- Target Field: IsEligibleForCancellation\n\n- Cancel/Refund API: POST {{prod-api-base-url}}/GolfNowAPI.svc/rest/channel/{{ChannelId}}/customers/{{EmailAddress}}/subscriptions/{{CustomerSubscriptionId}}/cancelWithRefund\n\n- CustomerSubscriptionId is found in the first endpoint\n\n- Request Body:\n\n{\n\"CancellationReasonId\": 1,\n\"CancelEvenIfBenefitsUsed\": true,\n\"RefundType\": 1,\n\"SystemUserId\": 1\n}\n\n- Always pass in CancellationReasonId = 1\n\n- This means “Too Expensive”\n\n- Always pass in CancelEvenIfBenefitsUsed = true\n\n- Always Pass in RefundType = 0\n\n- This means “Full Refund”\n\n- Always pass in SystemUserId = 1\n\n- Logic\n\n- If IsEligibleForCancellation = true\n\n- Display the Cancel Subscription option\n\n- Tapping the button should open a bottom sheet with the option to confirm\n\n- Confirming should submit the Cancel/Refund API above\n\n- Membership settings should reload the page with the “No active memberships” treatment and we should make sure we resubmit any customer data in the app to make sure they are no longer recognized as a GP Member\n\n- Remove the PASS, show the non member version of member hub, etc\n\n- Currently this page is only accessible for members so a part of this work will be to make this Membership Settings page visible for all users\n\n- Non members will simply see the no memberships version in the design\n\n- To display the recently expired/cancelled subscription info, you can add these to the Get Subscription API: &cancelledIncluded=true&expiredIncluded=true\n\n- If you have an expired or canceled membership and no active memberships, display the following message below the header:\n\n- Your GolfPass membership has ended\n\n- This is not reflected in the design so please use ^^Change the copy in this box from the design\n\n- If IsEligibleForCancellation = false\n\n- Do not show the Cancel Subscription option and the page will remain as is\n\n- For the GolfPass CTA when you are not a member, link to the following product\n\n- GN US/TO Prod: /7129411482949\n\n- QA: /7129410862949\n\n- GN UK Prod: /4929411702949\n\n- QA: /492946602949\n\n- GN AU Prod: /4529411712949\n\n- QA: /452941462949\n\n- Testing\n\n- Most of the test cases are listed https://golfnow.atlassian.net/browse/CORE-14272\n\n- Happy Path\n\n- Create a user with a State of New York and billing address also in New York\n\n- Buy one of the $119 free trial products\n\n- Renew into the paid $119 product\n\n- The IsEligibleForCancellation should be true as long as today’s date is within 15 days of the renewal date\n\n- The Cancel Option should show",
+        "descriptionHtml": "<p>In order to meet compliance for price increased products, we will need to expose a subscription cancellation option in the Membership Settings page. This cancellation option will be conditional based on some API attributes.</p><ol><li><p>Design: <a href=\"https://www.figma.com/design/n4GhZL6oXgfk93DFUhn98h/Cancel-membership-button?node-id=373-19485&amp;m=dev\" target=\"_blank\" rel=\"noopener\">https://www.figma.com/design/n4GhZL6oXgfk93DFUhn98h/Cancel-membership-button?node-id=373-19485&amp;m=dev</a> </p><ol><li><p>We need to make a copy change that is different from the design</p><ul><li><p>Current: Cancel your GolfPass+ Membership subscription immediately and get a full refund for the renewal period.</p></li><li><p>Change to: Cancel your GolfPass+ Membership subscription immediately and get a full refund for the subscription period.</p></li></ul></li></ol></li><li><p>APIs</p><ol><li><p>Eligibility API - GET <code>{{prod-api-base-url}}/GolfNowAPI.svc/rest/channel/{{ChannelId}}/customers/{{EmailAddress}}/subscriptions?productTypeId=9</code></p><ol><li><p>Target Field: <code>IsEligibleForCancellation</code></p></li></ol></li><li><p>Cancel/Refund API: POST <code>{{prod-api-base-url}}/GolfNowAPI.svc/rest/channel/{{ChannelId}}/customers/{{EmailAddress}}/subscriptions/{{CustomerSubscriptionId}}/cancelWithRefund</code></p><ol><li><p><code>CustomerSubscriptionId</code> is found in the first endpoint</p></li><li><p>Request Body:</p><pre><code>{    \n    &quot;CancellationReasonId&quot;: 1,    \n    &quot;CancelEvenIfBenefitsUsed&quot;: true,\n    &quot;RefundType&quot;: 1,\n    &quot;SystemUserId&quot;: 1\n}</code></pre><ol><li><p>Always pass in <code>CancellationReasonId</code> = 1</p><ol><li><p>This means “Too Expensive”</p></li></ol></li><li><p>Always pass in <code>CancelEvenIfBenefitsUsed</code> = true</p></li><li><p>Always Pass in <code>RefundType</code> = 0</p><ol><li><p>This means “Full Refund”</p></li></ol></li><li><p>Always pass in <code>SystemUserId</code> = 1</p></li></ol></li></ol></li></ol></li><li><p>Logic</p><ol><li><p>If <code>IsEligibleForCancellation</code> = true</p><ol><li><p>Display the Cancel Subscription option</p></li><li><p>Tapping the button should open a bottom sheet with the option to confirm</p></li><li><p>Confirming should submit the Cancel/Refund API above</p></li><li><p>Membership settings should reload the page with the “No active memberships” treatment and we should make sure we resubmit any customer data in the app to make sure they are no longer recognized as a GP Member</p><ol><li><p>Remove the PASS, show the non member version of member hub, etc</p></li><li><p>Currently this page is only accessible for members so a part of this work will be to make this Membership Settings page visible for all users</p><ol><li><p>Non members will simply see the no memberships version in the design</p></li></ol></li><li><p>To display the recently expired/cancelled subscription info, you can add these to the Get Subscription API: <code>&amp;cancelledIncluded=true&amp;expiredIncluded=true</code></p><ol><li><p>If you have an expired or canceled membership and no active memberships, display the following message below the header:</p><ol><li><p>Your GolfPass membership has ended</p></li><li><p>This is not reflected in the design so please use ^^Change the copy in this box from the design</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/729386-image-20260520-163419.png\" alt=\"image-20260520-163419.png\" loading=\"lazy\"><figcaption>image-20260520-163419.png</figcaption></figure></div></li></ol></li></ol></li></ol></li></ol></li><li><p>If <code>IsEligibleForCancellation</code> = false</p><ol><li><p>Do not show the Cancel Subscription option and the page will remain as is </p></li></ol></li><li><p>For the GolfPass CTA when you are not a member, link to the following product</p><ol><li><p>GN US/TO Prod: <code>/7129411482949</code></p><ol><li><p>QA: <code>/7129410862949</code></p></li></ol></li><li><p>GN UK Prod: <code>/4929411702949</code></p><ol><li><p>QA: <code>/492946602949</code></p></li></ol></li><li><p>GN AU Prod: <code>/4529411712949</code></p><ol><li><p>QA: <code>/452941462949</code></p></li></ol></li></ol></li></ol></li><li><p>Testing</p><ol><li><p>Most of the test cases are listed <a href=\"https://golfnow.atlassian.net/browse/CORE-14272\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/CORE-14272</a> </p></li><li><p>Happy Path</p><ol><li><p>Create a user with a State of New York and billing address also in New York</p></li><li><p>Buy one of the $119 free trial products</p></li><li><p>Renew into the paid $119 product</p></li><li><p>The <code>IsEligibleForCancellation</code> should be true as long as today’s date is within 15 days of the renewal date</p></li><li><p>The Cancel Option should show</p></li></ol></li></ol></li></ol>",
+        "descriptionImageCount": 1,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 1,
+        "commentCount": 2,
+        "comments": [
+          {
+            "id": "1173409",
+            "url": "https://golfnow.atlassian.net/browse/APP-7176?focusedCommentId=1173409",
+            "author": "Alex McNay",
+            "authorAccountId": "61f80648f51e85007087aef1",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/61f80648f51e85007087aef1/be5ebe22-4108-4f10-97f0-4a02825274ee/32",
+            "created": "2026-05-21T13:24:14.983-0400",
+            "createdDisplay": "May 21, 2026, 1:24 PM",
+            "updated": "2026-05-28T12:50:17.638-0400",
+            "updatedDisplay": "May 28, 2026, 12:50 PM",
+            "hasMedia": true,
+            "mediaCount": 5,
+            "body": "Outstanding issues\n\nBuilds/Devices\n\n- Galaxy S22 | Droid 16\n\n- GNUS - 6.4.0(464)\n\n- TO - 6.4.0(449)\n\n- GNUK - 6.4.0(453)\n\n- GNAU - 6.4.0(445)\n\n- GNEU - 6.4.0(210)\n\n- iphone 16 | 26.3\n\n- GNUS - 6.4.0(451)\n\n- TO - 6.4.0(435)\n\n- GNUK - 6.4.0(443)\n\n- GNAU - 6.4.0(429)\n\n- GNEU - 6.4.0(207)\n\n- [Both] - Duplicate cancellation success message RESOLVED\n\n- [Both] - Golfpass purchase on successful cancellation redirects to incorrect product - send you to buy 99$ golfpass, should be the 119$ product RESOLVED\n\n- [iOS] confirm cancellation button is skinny compared to Droid and mock RESOLVED\n\n- [both] - gnus doesn’t pop the confirmation toast message at the top like Teeoff does - image below shows what happens on teeoff and not on gnus RESOLVED\n\n- [both] - teeoff purchase option redirectes to a prod golfnow page and not a product purchase page RESOLVED\n\n- [both] - Manage membership menu is missing for non-golfpass members - see point 3.a.iv.2 in the AC above RESOLVED\n\n- Copy change locations RESOLVED\n\n- main page - new message\n\n- Terms and conditions - remove VIP\n\n- no payment - remove VIP",
+            "bodyHtml": "<h3>Outstanding issues</h3><h3>Builds/Devices</h3><ul><li><p>Galaxy S22 | Droid 16</p><ul><li><p>GNUS - 6.4.0(464)</p></li><li><p>TO - 6.4.0(449)</p></li><li><p>GNUK - 6.4.0(453)</p></li><li><p>GNAU - 6.4.0(445)</p></li><li><p>GNEU - 6.4.0(210)</p></li></ul></li><li><p>iphone 16 | 26.3</p><ul><li><p>GNUS - 6.4.0(451)</p></li><li><p>TO - 6.4.0(435)</p></li><li><p>GNUK - 6.4.0(443)</p></li><li><p>GNAU - 6.4.0(429)</p></li><li><p>GNEU - 6.4.0(207)</p></li></ul></li></ul><ol><li><p><s>[Both] - Duplicate cancellation success message</s> RESOLVED</p></li></ol><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1173409/730078-image-20260521-170949.png\" alt=\"image-20260521-170949.png\" loading=\"lazy\"><figcaption>image-20260521-170949.png</figcaption></figure></div><ol><li><p><s>[Both] - Golfpass purchase on successful cancellation redirects to incorrect product - send you to buy 99$ golfpass, should be the 119$ product</s> RESOLVED</p></li></ol><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1173409/730080-image-20260521-171020.png\" alt=\"image-20260521-171020.png\" loading=\"lazy\"><figcaption>image-20260521-171020.png</figcaption></figure></div><ol><li><p><s>[iOS] confirm cancellation button is skinny compared to Droid and mock</s> RESOLVED</p></li></ol><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1173409/730081-image-20260521-172321.png\" alt=\"image-20260521-172321.png\" loading=\"lazy\"><figcaption>image-20260521-172321.png</figcaption></figure></div><ol><li><p><s>[both] - gnus doesn’t pop the confirmation toast message at the top like Teeoff does - image below shows what happens on teeoff and not on gnus </s>RESOLVED</p></li></ol><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1173409/730079-image-20260521-172345.png\" alt=\"image-20260521-172345.png\" loading=\"lazy\"><figcaption>image-20260521-172345.png</figcaption></figure></div><ol><li><p><s>[both] - teeoff purchase option redirectes to a prod golfnow page and not a product purchase page </s>RESOLVED</p></li></ol><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1173409/730077-image-20260521-172400.png\" alt=\"image-20260521-172400.png\" loading=\"lazy\"><figcaption>image-20260521-172400.png</figcaption></figure></div><ol><li><p><s>[both] - Manage membership menu is missing for non-golfpass members - see point 3.a.iv.2 in the AC above </s>RESOLVED</p></li><li><p><s>Copy change locations</s> RESOLVED</p><ol><li><p><s>main page - new message</s></p></li><li><p><s>Terms and conditions - remove VIP</s></p></li><li><p><s>no payment - remove VIP</s></p></li></ol></li></ol>"
+          },
+          {
+            "id": "1176117",
+            "url": "https://golfnow.atlassian.net/browse/APP-7176?focusedCommentId=1176117",
+            "author": "Alex McNay",
+            "authorAccountId": "61f80648f51e85007087aef1",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/61f80648f51e85007087aef1/be5ebe22-4108-4f10-97f0-4a02825274ee/32",
+            "created": "2026-05-28T18:26:51.286-0400",
+            "createdDisplay": "May 28, 2026, 6:26 PM",
+            "updated": "2026-05-28T18:26:51.286-0400",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 4,
+            "body": "QA approved\n\nbuild/devices\n\n- Galaxy S22 | Droid 16\n\n- GNUS - 6.4.0(465)\n\n- TO - 6.4.0(450)\n\n- GNUK - 6.4.0(454)\n\n- GNAU - 6.4.0(446)\n\n- iphone 16 | 26.3\n\n- GNUS - 6.4.0(452)\n\n- TO - 6.4.0(436)\n\n- GNUK - 6.4.0(444)\n\n- GNAU - 6.4.0(430)\n\nCorrectly seeing the cancellation option displaying on the newly exposed manage membership page. Cancel subscription option shown when correct api field IsEligibleForCancellation is set to true. All apps and OS’s above verified, with the exception of GNEU, since EU doesn’t have golfpass available the manage menu is not shown there.\n\nOnce cancelled the user is shown an interstitial creative to purchase the full paid product correlated with the channel the cancellation occurred on. When the user returns to the app all Golfpass treatment is removed.\n\nThe manage membership page is only exposed on the menu for users with active memberships. Cancellation is configurable but is currently only set for NY billing zip codes and specific products PPIDs that were automatically renewed into",
+            "bodyHtml": "<h3>QA approved</h3><h3>build/devices</h3><ul><li><p>Galaxy S22 | Droid 16</p><ul><li><p>GNUS - 6.4.0(465)</p></li><li><p>TO - 6.4.0(450)</p></li><li><p>GNUK - 6.4.0(454)</p></li><li><p>GNAU - 6.4.0(446)</p></li></ul></li><li><p>iphone 16 | 26.3</p><ul><li><p>GNUS - 6.4.0(452)</p></li><li><p>TO - 6.4.0(436)</p></li><li><p>GNUK - 6.4.0(444)</p></li><li><p>GNAU - 6.4.0(430)</p></li></ul></li></ul><p>Correctly seeing the cancellation option displaying on the newly exposed manage membership page. Cancel subscription option shown when correct api field <code>IsEligibleForCancellation</code> is set to true. All apps and OS’s above verified, with the exception of GNEU, since EU doesn’t have golfpass available the manage menu is not shown there.</p><p>Once cancelled the user is shown an interstitial creative to purchase the full paid product correlated with the channel the cancellation occurred on. When the user returns to the app all Golfpass treatment is removed.</p><p>The manage membership page is only exposed on the menu for users with active memberships. Cancellation is configurable but is currently only set for NY billing zip codes and specific products PPIDs that were automatically renewed into</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1176117/732396-image-20260528-222430.png\" alt=\"image-20260528-222430.png\" loading=\"lazy\"><figcaption>image-20260528-222430.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1176117/732394-image-20260528-222512.png\" alt=\"image-20260528-222512.png\" loading=\"lazy\"><figcaption>image-20260528-222512.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1176117/732393-image-20260528-222522.png\" alt=\"image-20260528-222522.png\" loading=\"lazy\"><figcaption>image-20260528-222522.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1176117/732395-image-20260528-222534.png\" alt=\"image-20260528-222534.png\" loading=\"lazy\"><figcaption>image-20260528-222534.png</figcaption></figure></div>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/APP-7176?focusedCommentId=1176117",
+        "lastCommentDisplay": "May 28, 2026, 6:26 PM",
+        "lastCommentAuthor": "Alex McNay",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Done",
+        "priority": "P0",
+        "assignee": "Brian Pugh",
+        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
+        "assignedDeveloper": "Jackson Hall",
+        "assignedDeveloperAccountId": "63a1fe19fa5fbde2ba42d527",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/63a1fe19fa5fbde2ba42d527/b39aed6b-7007-402a-b890-6c6d6fb4baf2/32",
+        "updated": "2026-07-09T14:56:55.365-0400",
+        "updatedDisplay": "Jul 9, 2026, 2:56 PM",
+        "created": "2026-04-28T12:26:24.612-0400",
+        "createdDisplay": "Apr 28, 2026, 12:26 PM",
+        "components": [
+          "All Apps"
+        ],
+        "fixVersions": [
+          "Mobile - 6.4.0 - All labels"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "B2C-70",
+          "url": "https://golfnow.atlassian.net/browse/B2C-70",
+          "summary": "NY Cancellation Validation",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-13228",
         "url": "https://golfnow.atlassian.net/browse/CORE-13228",
         "summary": "Retro stored procedure - remove hard coded values",
@@ -10594,91 +10679,6 @@
           "type": "Epic",
           "status": "Selected for Development",
           "priority": "Normal"
-        }
-      },
-      {
-        "key": "APP-7176",
-        "url": "https://golfnow.atlassian.net/browse/APP-7176",
-        "summary": "Support GolfPass Cancellations",
-        "description": "In order to meet compliance for price increased products, we will need to expose a subscription cancellation option in the Membership Settings page. This cancellation option will be conditional based on some API attributes.\n\n- Design: https://www.figma.com/design/n4GhZL6oXgfk93DFUhn98h/Cancel-membership-button?node-id=373-19485&m=dev\n\n- We need to make a copy change that is different from the design\n\n- Current: Cancel your GolfPass+ Membership subscription immediately and get a full refund for the renewal period.\n\n- Change to: Cancel your GolfPass+ Membership subscription immediately and get a full refund for the subscription period.\n\n- APIs\n\n- Eligibility API - GET {{prod-api-base-url}}/GolfNowAPI.svc/rest/channel/{{ChannelId}}/customers/{{EmailAddress}}/subscriptions?productTypeId=9\n\n- Target Field: IsEligibleForCancellation\n\n- Cancel/Refund API: POST {{prod-api-base-url}}/GolfNowAPI.svc/rest/channel/{{ChannelId}}/customers/{{EmailAddress}}/subscriptions/{{CustomerSubscriptionId}}/cancelWithRefund\n\n- CustomerSubscriptionId is found in the first endpoint\n\n- Request Body:\n\n{\n\"CancellationReasonId\": 1,\n\"CancelEvenIfBenefitsUsed\": true,\n\"RefundType\": 1,\n\"SystemUserId\": 1\n}\n\n- Always pass in CancellationReasonId = 1\n\n- This means “Too Expensive”\n\n- Always pass in CancelEvenIfBenefitsUsed = true\n\n- Always Pass in RefundType = 0\n\n- This means “Full Refund”\n\n- Always pass in SystemUserId = 1\n\n- Logic\n\n- If IsEligibleForCancellation = true\n\n- Display the Cancel Subscription option\n\n- Tapping the button should open a bottom sheet with the option to confirm\n\n- Confirming should submit the Cancel/Refund API above\n\n- Membership settings should reload the page with the “No active memberships” treatment and we should make sure we resubmit any customer data in the app to make sure they are no longer recognized as a GP Member\n\n- Remove the PASS, show the non member version of member hub, etc\n\n- Currently this page is only accessible for members so a part of this work will be to make this Membership Settings page visible for all users\n\n- Non members will simply see the no memberships version in the design\n\n- To display the recently expired/cancelled subscription info, you can add these to the Get Subscription API: &cancelledIncluded=true&expiredIncluded=true\n\n- If you have an expired or canceled membership and no active memberships, display the following message below the header:\n\n- Your GolfPass membership has ended\n\n- This is not reflected in the design so please use ^^Change the copy in this box from the design\n\n- If IsEligibleForCancellation = false\n\n- Do not show the Cancel Subscription option and the page will remain as is\n\n- For the GolfPass CTA when you are not a member, link to the following product\n\n- GN US/TO Prod: /7129411482949\n\n- QA: /7129410862949\n\n- GN UK Prod: /4929411702949\n\n- QA: /492946602949\n\n- GN AU Prod: /4529411712949\n\n- QA: /452941462949\n\n- Testing\n\n- Most of the test cases are listed https://golfnow.atlassian.net/browse/CORE-14272\n\n- Happy Path\n\n- Create a user with a State of New York and billing address also in New York\n\n- Buy one of the $119 free trial products\n\n- Renew into the paid $119 product\n\n- The IsEligibleForCancellation should be true as long as today’s date is within 15 days of the renewal date\n\n- The Cancel Option should show",
-        "descriptionHtml": "<p>In order to meet compliance for price increased products, we will need to expose a subscription cancellation option in the Membership Settings page. This cancellation option will be conditional based on some API attributes.</p><ol><li><p>Design: <a href=\"https://www.figma.com/design/n4GhZL6oXgfk93DFUhn98h/Cancel-membership-button?node-id=373-19485&amp;m=dev\" target=\"_blank\" rel=\"noopener\">https://www.figma.com/design/n4GhZL6oXgfk93DFUhn98h/Cancel-membership-button?node-id=373-19485&amp;m=dev</a> </p><ol><li><p>We need to make a copy change that is different from the design</p><ul><li><p>Current: Cancel your GolfPass+ Membership subscription immediately and get a full refund for the renewal period.</p></li><li><p>Change to: Cancel your GolfPass+ Membership subscription immediately and get a full refund for the subscription period.</p></li></ul></li></ol></li><li><p>APIs</p><ol><li><p>Eligibility API - GET <code>{{prod-api-base-url}}/GolfNowAPI.svc/rest/channel/{{ChannelId}}/customers/{{EmailAddress}}/subscriptions?productTypeId=9</code></p><ol><li><p>Target Field: <code>IsEligibleForCancellation</code></p></li></ol></li><li><p>Cancel/Refund API: POST <code>{{prod-api-base-url}}/GolfNowAPI.svc/rest/channel/{{ChannelId}}/customers/{{EmailAddress}}/subscriptions/{{CustomerSubscriptionId}}/cancelWithRefund</code></p><ol><li><p><code>CustomerSubscriptionId</code> is found in the first endpoint</p></li><li><p>Request Body:</p><pre><code>{    \n    &quot;CancellationReasonId&quot;: 1,    \n    &quot;CancelEvenIfBenefitsUsed&quot;: true,\n    &quot;RefundType&quot;: 1,\n    &quot;SystemUserId&quot;: 1\n}</code></pre><ol><li><p>Always pass in <code>CancellationReasonId</code> = 1</p><ol><li><p>This means “Too Expensive”</p></li></ol></li><li><p>Always pass in <code>CancelEvenIfBenefitsUsed</code> = true</p></li><li><p>Always Pass in <code>RefundType</code> = 0</p><ol><li><p>This means “Full Refund”</p></li></ol></li><li><p>Always pass in <code>SystemUserId</code> = 1</p></li></ol></li></ol></li></ol></li><li><p>Logic</p><ol><li><p>If <code>IsEligibleForCancellation</code> = true</p><ol><li><p>Display the Cancel Subscription option</p></li><li><p>Tapping the button should open a bottom sheet with the option to confirm</p></li><li><p>Confirming should submit the Cancel/Refund API above</p></li><li><p>Membership settings should reload the page with the “No active memberships” treatment and we should make sure we resubmit any customer data in the app to make sure they are no longer recognized as a GP Member</p><ol><li><p>Remove the PASS, show the non member version of member hub, etc</p></li><li><p>Currently this page is only accessible for members so a part of this work will be to make this Membership Settings page visible for all users</p><ol><li><p>Non members will simply see the no memberships version in the design</p></li></ol></li><li><p>To display the recently expired/cancelled subscription info, you can add these to the Get Subscription API: <code>&amp;cancelledIncluded=true&amp;expiredIncluded=true</code></p><ol><li><p>If you have an expired or canceled membership and no active memberships, display the following message below the header:</p><ol><li><p>Your GolfPass membership has ended</p></li><li><p>This is not reflected in the design so please use ^^Change the copy in this box from the design</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/729386-image-20260520-163419.png\" alt=\"image-20260520-163419.png\" loading=\"lazy\"><figcaption>image-20260520-163419.png</figcaption></figure></div></li></ol></li></ol></li></ol></li></ol></li><li><p>If <code>IsEligibleForCancellation</code> = false</p><ol><li><p>Do not show the Cancel Subscription option and the page will remain as is </p></li></ol></li><li><p>For the GolfPass CTA when you are not a member, link to the following product</p><ol><li><p>GN US/TO Prod: <code>/7129411482949</code></p><ol><li><p>QA: <code>/7129410862949</code></p></li></ol></li><li><p>GN UK Prod: <code>/4929411702949</code></p><ol><li><p>QA: <code>/492946602949</code></p></li></ol></li><li><p>GN AU Prod: <code>/4529411712949</code></p><ol><li><p>QA: <code>/452941462949</code></p></li></ol></li></ol></li></ol></li><li><p>Testing</p><ol><li><p>Most of the test cases are listed <a href=\"https://golfnow.atlassian.net/browse/CORE-14272\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/CORE-14272</a> </p></li><li><p>Happy Path</p><ol><li><p>Create a user with a State of New York and billing address also in New York</p></li><li><p>Buy one of the $119 free trial products</p></li><li><p>Renew into the paid $119 product</p></li><li><p>The <code>IsEligibleForCancellation</code> should be true as long as today’s date is within 15 days of the renewal date</p></li><li><p>The Cancel Option should show</p></li></ol></li></ol></li></ol>",
-        "descriptionImageCount": 1,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 2,
-        "comments": [
-          {
-            "id": "1173409",
-            "url": "https://golfnow.atlassian.net/browse/APP-7176?focusedCommentId=1173409",
-            "author": "Alex McNay",
-            "authorAccountId": "61f80648f51e85007087aef1",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/61f80648f51e85007087aef1/be5ebe22-4108-4f10-97f0-4a02825274ee/32",
-            "created": "2026-05-21T13:24:14.983-0400",
-            "createdDisplay": "May 21, 2026, 1:24 PM",
-            "updated": "2026-05-28T12:50:17.638-0400",
-            "updatedDisplay": "May 28, 2026, 12:50 PM",
-            "hasMedia": true,
-            "mediaCount": 5,
-            "body": "Outstanding issues\n\nBuilds/Devices\n\n- Galaxy S22 | Droid 16\n\n- GNUS - 6.4.0(464)\n\n- TO - 6.4.0(449)\n\n- GNUK - 6.4.0(453)\n\n- GNAU - 6.4.0(445)\n\n- GNEU - 6.4.0(210)\n\n- iphone 16 | 26.3\n\n- GNUS - 6.4.0(451)\n\n- TO - 6.4.0(435)\n\n- GNUK - 6.4.0(443)\n\n- GNAU - 6.4.0(429)\n\n- GNEU - 6.4.0(207)\n\n- [Both] - Duplicate cancellation success message RESOLVED\n\n- [Both] - Golfpass purchase on successful cancellation redirects to incorrect product - send you to buy 99$ golfpass, should be the 119$ product RESOLVED\n\n- [iOS] confirm cancellation button is skinny compared to Droid and mock RESOLVED\n\n- [both] - gnus doesn’t pop the confirmation toast message at the top like Teeoff does - image below shows what happens on teeoff and not on gnus RESOLVED\n\n- [both] - teeoff purchase option redirectes to a prod golfnow page and not a product purchase page RESOLVED\n\n- [both] - Manage membership menu is missing for non-golfpass members - see point 3.a.iv.2 in the AC above RESOLVED\n\n- Copy change locations RESOLVED\n\n- main page - new message\n\n- Terms and conditions - remove VIP\n\n- no payment - remove VIP",
-            "bodyHtml": "<h3>Outstanding issues</h3><h3>Builds/Devices</h3><ul><li><p>Galaxy S22 | Droid 16</p><ul><li><p>GNUS - 6.4.0(464)</p></li><li><p>TO - 6.4.0(449)</p></li><li><p>GNUK - 6.4.0(453)</p></li><li><p>GNAU - 6.4.0(445)</p></li><li><p>GNEU - 6.4.0(210)</p></li></ul></li><li><p>iphone 16 | 26.3</p><ul><li><p>GNUS - 6.4.0(451)</p></li><li><p>TO - 6.4.0(435)</p></li><li><p>GNUK - 6.4.0(443)</p></li><li><p>GNAU - 6.4.0(429)</p></li><li><p>GNEU - 6.4.0(207)</p></li></ul></li></ul><ol><li><p><s>[Both] - Duplicate cancellation success message</s> RESOLVED</p></li></ol><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1173409/730078-image-20260521-170949.png\" alt=\"image-20260521-170949.png\" loading=\"lazy\"><figcaption>image-20260521-170949.png</figcaption></figure></div><ol><li><p><s>[Both] - Golfpass purchase on successful cancellation redirects to incorrect product - send you to buy 99$ golfpass, should be the 119$ product</s> RESOLVED</p></li></ol><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1173409/730080-image-20260521-171020.png\" alt=\"image-20260521-171020.png\" loading=\"lazy\"><figcaption>image-20260521-171020.png</figcaption></figure></div><ol><li><p><s>[iOS] confirm cancellation button is skinny compared to Droid and mock</s> RESOLVED</p></li></ol><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1173409/730081-image-20260521-172321.png\" alt=\"image-20260521-172321.png\" loading=\"lazy\"><figcaption>image-20260521-172321.png</figcaption></figure></div><ol><li><p><s>[both] - gnus doesn’t pop the confirmation toast message at the top like Teeoff does - image below shows what happens on teeoff and not on gnus </s>RESOLVED</p></li></ol><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1173409/730079-image-20260521-172345.png\" alt=\"image-20260521-172345.png\" loading=\"lazy\"><figcaption>image-20260521-172345.png</figcaption></figure></div><ol><li><p><s>[both] - teeoff purchase option redirectes to a prod golfnow page and not a product purchase page </s>RESOLVED</p></li></ol><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1173409/730077-image-20260521-172400.png\" alt=\"image-20260521-172400.png\" loading=\"lazy\"><figcaption>image-20260521-172400.png</figcaption></figure></div><ol><li><p><s>[both] - Manage membership menu is missing for non-golfpass members - see point 3.a.iv.2 in the AC above </s>RESOLVED</p></li><li><p><s>Copy change locations</s> RESOLVED</p><ol><li><p><s>main page - new message</s></p></li><li><p><s>Terms and conditions - remove VIP</s></p></li><li><p><s>no payment - remove VIP</s></p></li></ol></li></ol>"
-          },
-          {
-            "id": "1176117",
-            "url": "https://golfnow.atlassian.net/browse/APP-7176?focusedCommentId=1176117",
-            "author": "Alex McNay",
-            "authorAccountId": "61f80648f51e85007087aef1",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/61f80648f51e85007087aef1/be5ebe22-4108-4f10-97f0-4a02825274ee/32",
-            "created": "2026-05-28T18:26:51.286-0400",
-            "createdDisplay": "May 28, 2026, 6:26 PM",
-            "updated": "2026-05-28T18:26:51.286-0400",
-            "updatedDisplay": "",
-            "hasMedia": true,
-            "mediaCount": 4,
-            "body": "QA approved\n\nbuild/devices\n\n- Galaxy S22 | Droid 16\n\n- GNUS - 6.4.0(465)\n\n- TO - 6.4.0(450)\n\n- GNUK - 6.4.0(454)\n\n- GNAU - 6.4.0(446)\n\n- iphone 16 | 26.3\n\n- GNUS - 6.4.0(452)\n\n- TO - 6.4.0(436)\n\n- GNUK - 6.4.0(444)\n\n- GNAU - 6.4.0(430)\n\nCorrectly seeing the cancellation option displaying on the newly exposed manage membership page. Cancel subscription option shown when correct api field IsEligibleForCancellation is set to true. All apps and OS’s above verified, with the exception of GNEU, since EU doesn’t have golfpass available the manage menu is not shown there.\n\nOnce cancelled the user is shown an interstitial creative to purchase the full paid product correlated with the channel the cancellation occurred on. When the user returns to the app all Golfpass treatment is removed.\n\nThe manage membership page is only exposed on the menu for users with active memberships. Cancellation is configurable but is currently only set for NY billing zip codes and specific products PPIDs that were automatically renewed into",
-            "bodyHtml": "<h3>QA approved</h3><h3>build/devices</h3><ul><li><p>Galaxy S22 | Droid 16</p><ul><li><p>GNUS - 6.4.0(465)</p></li><li><p>TO - 6.4.0(450)</p></li><li><p>GNUK - 6.4.0(454)</p></li><li><p>GNAU - 6.4.0(446)</p></li></ul></li><li><p>iphone 16 | 26.3</p><ul><li><p>GNUS - 6.4.0(452)</p></li><li><p>TO - 6.4.0(436)</p></li><li><p>GNUK - 6.4.0(444)</p></li><li><p>GNAU - 6.4.0(430)</p></li></ul></li></ul><p>Correctly seeing the cancellation option displaying on the newly exposed manage membership page. Cancel subscription option shown when correct api field <code>IsEligibleForCancellation</code> is set to true. All apps and OS’s above verified, with the exception of GNEU, since EU doesn’t have golfpass available the manage menu is not shown there.</p><p>Once cancelled the user is shown an interstitial creative to purchase the full paid product correlated with the channel the cancellation occurred on. When the user returns to the app all Golfpass treatment is removed.</p><p>The manage membership page is only exposed on the menu for users with active memberships. Cancellation is configurable but is currently only set for NY billing zip codes and specific products PPIDs that were automatically renewed into</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1176117/732396-image-20260528-222430.png\" alt=\"image-20260528-222430.png\" loading=\"lazy\"><figcaption>image-20260528-222430.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1176117/732394-image-20260528-222512.png\" alt=\"image-20260528-222512.png\" loading=\"lazy\"><figcaption>image-20260528-222512.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1176117/732393-image-20260528-222522.png\" alt=\"image-20260528-222522.png\" loading=\"lazy\"><figcaption>image-20260528-222522.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7176/comments/1176117/732395-image-20260528-222534.png\" alt=\"image-20260528-222534.png\" loading=\"lazy\"><figcaption>image-20260528-222534.png</figcaption></figure></div>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/APP-7176?focusedCommentId=1176117",
-        "lastCommentDisplay": "May 28, 2026, 6:26 PM",
-        "lastCommentAuthor": "Alex McNay",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Done",
-        "priority": "P0",
-        "assignee": "Brian Pugh",
-        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-        "assignedDeveloper": "Jackson Hall",
-        "assignedDeveloperAccountId": "63a1fe19fa5fbde2ba42d527",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/63a1fe19fa5fbde2ba42d527/b39aed6b-7007-402a-b890-6c6d6fb4baf2/32",
-        "updated": "2026-06-15T10:12:29.428-0400",
-        "updatedDisplay": "Jun 15, 2026, 10:12 AM",
-        "created": "2026-04-28T12:26:24.612-0400",
-        "createdDisplay": "Apr 28, 2026, 12:26 PM",
-        "components": [
-          "All Apps"
-        ],
-        "fixVersions": [
-          "Mobile - 6.4.0 - All labels"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "B2C-70",
-          "url": "https://golfnow.atlassian.net/browse/B2C-70",
-          "summary": "NY Cancellation Validation",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
         }
       },
       {
@@ -33522,13 +33522,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-09T18:56:45.291Z",
-    "pulledAtDisplay": "Jul 9, 2026, 2:56 PM",
+    "pulledAt": "2026-07-09T19:01:31.393Z",
+    "pulledAtDisplay": "Jul 9, 2026, 3:01 PM",
     "window": {
-      "start": "2026-05-25T18:56:45.291Z",
-      "end": "2027-01-05T18:56:45.291Z",
-      "startDisplay": "May 25, 2026, 2:56 PM",
-      "endDisplay": "Jan 5, 2027, 1:56 PM"
+      "start": "2026-05-25T19:01:31.393Z",
+      "end": "2027-01-05T19:01:31.393Z",
+      "startDisplay": "May 25, 2026, 3:01 PM",
+      "endDisplay": "Jan 5, 2027, 2:01 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33541,7 +33541,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-09T18:56:48.255Z",
+        "pulledAt": "2026-07-09T19:01:33.727Z",
         "eventCount": 91,
         "events": [
           {
@@ -34956,23 +34956,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -35002,6 +34985,23 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -35097,10 +35097,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-09T18:53:46.096Z",
-    "previousPulledAtDisplay": "Jul 9, 2026, 2:53 PM",
-    "currentPulledAt": "2026-07-09T18:58:43.590Z",
-    "currentPulledAtDisplay": "Jul 9, 2026, 2:58 PM",
+    "previousPulledAt": "2026-07-09T18:58:43.590Z",
+    "previousPulledAtDisplay": "Jul 9, 2026, 2:58 PM",
+    "currentPulledAt": "2026-07-09T19:02:58.894Z",
+    "currentPulledAtDisplay": "Jul 9, 2026, 3:02 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -35108,6 +35108,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-09T18:58:43.590Z",
+      "previousPulledAtDisplay": "Jul 9, 2026, 2:58 PM",
+      "currentPulledAt": "2026-07-09T19:02:58.894Z",
+      "currentPulledAtDisplay": "Jul 9, 2026, 3:02 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-09T18:53:46.096Z",
       "previousPulledAtDisplay": "Jul 9, 2026, 2:53 PM",
@@ -36939,17 +36950,6 @@
       "previousPulledAtDisplay": "Jul 8, 2026, 9:47 PM",
       "currentPulledAt": "2026-07-09T01:52:43.745Z",
       "currentPulledAtDisplay": "Jul 8, 2026, 9:52 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-09T01:42:48.065Z",
-      "previousPulledAtDisplay": "Jul 8, 2026, 9:42 PM",
-      "currentPulledAt": "2026-07-09T01:47:33.657Z",
-      "currentPulledAtDisplay": "Jul 8, 2026, 9:47 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
