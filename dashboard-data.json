@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-13T18:04:31.332Z",
-  "pulledAtDisplay": "Jul 13, 2026, 2:04 PM",
+  "pulledAt": "2026-07-13T18:08:47.741Z",
+  "pulledAtDisplay": "Jul 13, 2026, 2:08 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-13T18:04:31.332Z",
-    "pulledAtDisplay": "Jul 13, 2026, 2:04 PM",
+    "pulledAt": "2026-07-13T18:08:47.741Z",
+    "pulledAtDisplay": "Jul 13, 2026, 2:08 PM",
     "total": 434,
     "mainTotal": 404,
     "subtaskTotal": 30,
@@ -5234,7 +5234,7 @@
         "descriptionImageCount": 0,
         "descriptionVideoCount": 0,
         "descriptionMediaCount": 0,
-        "commentCount": 2,
+        "commentCount": 3,
         "comments": [
           {
             "id": "1168780",
@@ -5265,15 +5265,30 @@
             "mediaCount": 0,
             "body": "QA,\n\nHere are the instructions and the Postman collections (Customer service, API2.1 service) to test this ticket. Contact me if you have questions.\n\nThanks!",
             "bodyHtml": "<p>QA,</p><p>Here are the instructions and the Postman collections (Customer service, API2.1 service) to test this ticket. Contact me if you have questions.</p><p>Thanks!<br><br>   </p>"
+          },
+          {
+            "id": "1194556",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14427?focusedCommentId=1194556",
+            "author": "Dewan Kabir",
+            "authorAccountId": "630fb06bb433b060db559bdb",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+            "created": "2026-07-13T14:03:58.535-0400",
+            "createdDisplay": "Jul 13, 2026, 2:03 PM",
+            "updated": "2026-07-13T14:03:58.535-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "TESTING NOTES : https://zany-seer-d0e.notion.site/Home-Course-Selection-Management-39c1c22c0144806fa23ef5e2b6e59bc1",
+            "bodyHtml": "<p><strong>TESTING NOTES : </strong><a href=\"https://zany-seer-d0e.notion.site/Home-Course-Selection-Management-39c1c22c0144806fa23ef5e2b6e59bc1\" target=\"_blank\" rel=\"noopener\">https://zany-seer-d0e.notion.site/Home-Course-Selection-Management-39c1c22c0144806fa23ef5e2b6e59bc1</a><strong> </strong></p>"
           }
         ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14427?focusedCommentId=1188227",
-        "lastCommentDisplay": "Jun 25, 2026, 5:32 PM",
-        "lastCommentAuthor": "Luis Vallejo Mursuli",
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14427?focusedCommentId=1194556",
+        "lastCommentDisplay": "Jul 13, 2026, 2:03 PM",
+        "lastCommentAuthor": "Dewan Kabir",
         "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
-        "status": "QA Testing (DEV)",
+        "status": "Regression Testing (STG)",
         "priority": "P1",
         "assignee": "Dewan Kabir",
         "assigneeAccountId": "630fb06bb433b060db559bdb",
@@ -5281,8 +5296,8 @@
         "assignedDeveloper": "Luis Vallejo Mursuli",
         "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-06-30T16:23:31.650-0400",
-        "updatedDisplay": "Jun 30, 2026, 4:23 PM",
+        "updated": "2026-07-13T14:03:58.608-0400",
+        "updatedDisplay": "Jul 13, 2026, 2:03 PM",
         "created": "2026-04-30T09:20:28.579-0400",
         "createdDisplay": "Apr 30, 2026, 9:20 AM",
         "components": [
@@ -5331,7 +5346,7 @@
         "testChecklist": null,
         "type": "Developer Task (sub task)",
         "isSubtask": true,
-        "status": "QA Testing (DEV)",
+        "status": "Regression Testing (STG)",
         "priority": "P1",
         "assignee": "Dewan Kabir",
         "assigneeAccountId": "630fb06bb433b060db559bdb",
@@ -5339,8 +5354,8 @@
         "assignedDeveloper": "Luis Vallejo Mursuli",
         "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-06-30T10:33:05.768-0400",
-        "updatedDisplay": "Jun 30, 2026, 10:33 AM",
+        "updated": "2026-07-13T14:03:32.345-0400",
+        "updatedDisplay": "Jul 13, 2026, 2:03 PM",
         "created": "2026-05-19T19:23:19.189-0400",
         "createdDisplay": "May 19, 2026, 7:23 PM",
         "components": [
@@ -5367,7 +5382,7 @@
           "summary": "Home Course Selection/Management",
           "description": "",
           "type": "Story",
-          "status": "QA Testing (DEV)",
+          "status": "Regression Testing (STG)",
           "priority": "P1"
         }
       },
@@ -5388,7 +5403,7 @@
         "testChecklist": null,
         "type": "Developer Task (sub task)",
         "isSubtask": true,
-        "status": "QA Testing (DEV)",
+        "status": "Regression Testing (STG)",
         "priority": "P1",
         "assignee": "Dewan Kabir",
         "assigneeAccountId": "630fb06bb433b060db559bdb",
@@ -5396,8 +5411,8 @@
         "assignedDeveloper": "Luis Vallejo Mursuli",
         "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-06-30T10:33:06.137-0400",
-        "updatedDisplay": "Jun 30, 2026, 10:33 AM",
+        "updated": "2026-07-13T14:03:42.432-0400",
+        "updatedDisplay": "Jul 13, 2026, 2:03 PM",
         "created": "2026-06-04T10:22:05.148-0400",
         "createdDisplay": "Jun 4, 2026, 10:22 AM",
         "components": [
@@ -5421,7 +5436,7 @@
           "summary": "Home Course Selection/Management",
           "description": "",
           "type": "Story",
-          "status": "QA Testing (DEV)",
+          "status": "Regression Testing (STG)",
           "priority": "P1"
         }
       },
@@ -33570,13 +33585,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-13T18:02:23.130Z",
-    "pulledAtDisplay": "Jul 13, 2026, 2:02 PM",
+    "pulledAt": "2026-07-13T18:06:31.714Z",
+    "pulledAtDisplay": "Jul 13, 2026, 2:06 PM",
     "window": {
-      "start": "2026-05-29T18:02:23.130Z",
-      "end": "2027-01-09T18:02:23.130Z",
-      "startDisplay": "May 29, 2026, 2:02 PM",
-      "endDisplay": "Jan 9, 2027, 1:02 PM"
+      "start": "2026-05-29T18:06:31.714Z",
+      "end": "2027-01-09T18:06:31.714Z",
+      "startDisplay": "May 29, 2026, 2:06 PM",
+      "endDisplay": "Jan 9, 2027, 1:06 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33589,7 +33604,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-13T18:02:26.175Z",
+        "pulledAt": "2026-07-13T18:06:36.598Z",
         "eventCount": 87,
         "events": [
           {
@@ -34171,23 +34186,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.57",
-            "start": "2026-07-14T00:00:00.000Z",
-            "end": "2026-07-15T00:00:00.000Z",
-            "startDate": "2026-07-14",
-            "endDate": "2026-07-15",
-            "startDisplay": "Jul 14, 2026",
-            "endDisplay": "Jul 15, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221527Z-1432222737@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -34217,6 +34215,23 @@
             "endDisplay": "Jul 15, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.57",
+            "start": "2026-07-14T00:00:00.000Z",
+            "end": "2026-07-15T00:00:00.000Z",
+            "startDate": "2026-07-14",
+            "endDate": "2026-07-15",
+            "startDisplay": "Jul 14, 2026",
+            "endDisplay": "Jul 15, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34664,23 +34679,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.59",
-            "start": "2026-09-15T00:00:00.000Z",
-            "end": "2026-09-16T00:00:00.000Z",
-            "startDate": "2026-09-15",
-            "endDate": "2026-09-16",
-            "startDisplay": "Sep 15, 2026",
-            "endDisplay": "Sep 16, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221627Z-1916149808@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -34710,6 +34708,23 @@
             "endDisplay": "Sep 16, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.59",
+            "start": "2026-09-15T00:00:00.000Z",
+            "end": "2026-09-16T00:00:00.000Z",
+            "startDate": "2026-09-15",
+            "endDate": "2026-09-16",
+            "startDisplay": "Sep 15, 2026",
+            "endDisplay": "Sep 16, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -35077,10 +35092,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-13T17:58:28.642Z",
-    "previousPulledAtDisplay": "Jul 13, 2026, 1:58 PM",
-    "currentPulledAt": "2026-07-13T18:04:31.332Z",
-    "currentPulledAtDisplay": "Jul 13, 2026, 2:04 PM",
+    "previousPulledAt": "2026-07-13T18:04:31.332Z",
+    "previousPulledAtDisplay": "Jul 13, 2026, 2:04 PM",
+    "currentPulledAt": "2026-07-13T18:08:47.741Z",
+    "currentPulledAtDisplay": "Jul 13, 2026, 2:08 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -35088,6 +35103,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-13T18:04:31.332Z",
+      "previousPulledAtDisplay": "Jul 13, 2026, 2:04 PM",
+      "currentPulledAt": "2026-07-13T18:08:47.741Z",
+      "currentPulledAtDisplay": "Jul 13, 2026, 2:08 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-13T17:58:28.642Z",
       "previousPulledAtDisplay": "Jul 13, 2026, 1:58 PM",
@@ -36919,17 +36945,6 @@
       "previousPulledAtDisplay": "Jul 12, 2026, 11:47 PM",
       "currentPulledAt": "2026-07-13T03:53:47.781Z",
       "currentPulledAtDisplay": "Jul 12, 2026, 11:53 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-13T03:42:42.595Z",
-      "previousPulledAtDisplay": "Jul 12, 2026, 11:42 PM",
-      "currentPulledAt": "2026-07-13T03:47:32.515Z",
-      "currentPulledAtDisplay": "Jul 12, 2026, 11:47 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
