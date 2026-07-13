@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-13T15:03:09.861Z",
-  "pulledAtDisplay": "Jul 13, 2026, 11:03 AM",
+  "pulledAt": "2026-07-13T15:08:28.162Z",
+  "pulledAtDisplay": "Jul 13, 2026, 11:08 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-13T15:03:09.861Z",
-    "pulledAtDisplay": "Jul 13, 2026, 11:03 AM",
+    "pulledAt": "2026-07-13T15:08:28.162Z",
+    "pulledAtDisplay": "Jul 13, 2026, 11:08 AM",
     "total": 434,
     "mainTotal": 404,
     "subtaskTotal": 30,
@@ -7906,6 +7906,74 @@
         }
       },
       {
+        "key": "DS-22528",
+        "url": "https://golfnow.atlassian.net/browse/DS-22528",
+        "summary": "Push Home Course Data to Raptor and SFMC",
+        "description": "CORE has built a Home Course table to store the home course selections of customers. We would like this data to funnel down to Raptor and SFMC. It will probably be best to create an exact match table in Raptor to avoid any data translation concerns.\n\n- Source DB: CRM\n\n- Source Table: Customer.HomeCourse\n\n- Sync to raptor and SFMC every 20 mins or as fast as possible becuse they will be sending out welcome emails\n\n- Target Raptor Table: Something like DimHomeCourse or FactHomeCourse\n\n- Target Raptor Fields: Match all the same fields from CRM\n\n- Target SFMC DE: TBD - @Richard Padilla will provide\n\n- Fields to send to SFMC\n\n- CustomerNumber\n\n- GolfFacilityId\n\n- ChannelId\n\n- SelectionReason\n\n- WindowStartUtc\n\n- WindowEndUtc\n\n- CreatedOnUtc\n\n- IsActive",
+        "descriptionHtml": "<p>CORE has built a Home Course table to store the home course selections of customers. We would like this data to funnel down to Raptor and SFMC. It will probably be best to create an exact match table in Raptor to avoid any data translation concerns.</p><ul><li><p>Source DB: CRM</p></li><li><p>Source Table: Customer.HomeCourse</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/DS-22528/745881-image-20260708-185056.png\" alt=\"image-20260708-185056.png\" loading=\"lazy\"><figcaption>image-20260708-185056.png</figcaption></figure></div></li><li><p>Sync to raptor and SFMC every 20 mins or as fast as possible becuse they will be sending out welcome emails</p></li><li><p>Target Raptor Table: Something like DimHomeCourse or FactHomeCourse</p></li><li><p>Target Raptor Fields: Match all the same fields from CRM</p></li><li><p>Target SFMC DE: TBD - @Richard Padilla will provide</p></li><li><p>Fields to send to SFMC</p><ul><li><p>CustomerNumber</p></li><li><p>GolfFacilityId</p></li><li><p>ChannelId</p></li><li><p>SelectionReason</p></li><li><p>WindowStartUtc</p></li><li><p>WindowEndUtc</p></li><li><p>CreatedOnUtc</p></li><li><p>IsActive</p></li></ul></li></ul>",
+        "descriptionImageCount": 1,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 1,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1193679",
+            "url": "https://golfnow.atlassian.net/browse/DS-22528?focusedCommentId=1193679",
+            "author": "Richard Ly",
+            "authorAccountId": "5aa97ba80dcb662a46aabf2b",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RL-3.png",
+            "created": "2026-07-09T16:32:28.292-0400",
+            "createdDisplay": "Jul 9, 2026, 4:32 PM",
+            "updated": "2026-07-09T16:32:28.292-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Hey @Brian Pugh,\n\nI wasn't able to update the description in this ticket. Below is the update i was trying get in place:\n\n- Target SFMC DE: GolfHomeCourse",
+            "bodyHtml": "<p>Hey @Brian Pugh, </p><p>I wasn't able to update the description in this ticket. Below is the update i was trying get in place:</p><ul><li><p>Target SFMC DE: GolfHomeCourse</p></li></ul>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/DS-22528?focusedCommentId=1193679",
+        "lastCommentDisplay": "Jul 9, 2026, 4:32 PM",
+        "lastCommentAuthor": "Richard Ly",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "None",
+        "assignee": "Melissa.Barberio",
+        "assigneeAccountId": "5dc5d5167dcf390c6184af8c",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/M-6.png",
+        "assignedDeveloper": "Melissa.Barberio",
+        "assignedDeveloperAccountId": "5dc5d5167dcf390c6184af8c",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/M-6.png",
+        "updated": "2026-07-13T11:04:32.648-0400",
+        "updatedDisplay": "Jul 13, 2026, 11:04 AM",
+        "created": "2026-07-06T14:10:20.592-0400",
+        "createdDisplay": "Jul 6, 2026, 2:10 PM",
+        "components": [],
+        "fixVersions": [
+          "2026.07.21"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14301",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14301",
+          "summary": "GolfPass \"Home Course\": Phase I",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
         "key": "GNSCM-10177",
         "url": "https://golfnow.atlassian.net/browse/GNSCM-10177",
         "summary": "Update hardcoded cancellation reason for GP Cancellations",
@@ -7954,72 +8022,6 @@
           "description": "",
           "type": "Epic",
           "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "DS-22528",
-        "url": "https://golfnow.atlassian.net/browse/DS-22528",
-        "summary": "Push Home Course Data to Raptor and SFMC",
-        "description": "CORE has built a Home Course table to store the home course selections of customers. We would like this data to funnel down to Raptor and SFMC. It will probably be best to create an exact match table in Raptor to avoid any data translation concerns.\n\n- Source DB: CRM\n\n- Source Table: Customer.HomeCourse\n\n- Sync to raptor and SFMC every 20 mins or as fast as possible becuse they will be sending out welcome emails\n\n- Target Raptor Table: Something like DimHomeCourse or FactHomeCourse\n\n- Target Raptor Fields: Match all the same fields from CRM\n\n- Target SFMC DE: TBD - @Richard Padilla will provide\n\n- Fields to send to SFMC\n\n- CustomerNumber\n\n- GolfFacilityId\n\n- ChannelId\n\n- SelectionReason\n\n- WindowStartUtc\n\n- WindowEndUtc\n\n- CreatedOnUtc\n\n- IsActive",
-        "descriptionHtml": "<p>CORE has built a Home Course table to store the home course selections of customers. We would like this data to funnel down to Raptor and SFMC. It will probably be best to create an exact match table in Raptor to avoid any data translation concerns.</p><ul><li><p>Source DB: CRM</p></li><li><p>Source Table: Customer.HomeCourse</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/DS-22528/745881-image-20260708-185056.png\" alt=\"image-20260708-185056.png\" loading=\"lazy\"><figcaption>image-20260708-185056.png</figcaption></figure></div></li><li><p>Sync to raptor and SFMC every 20 mins or as fast as possible becuse they will be sending out welcome emails</p></li><li><p>Target Raptor Table: Something like DimHomeCourse or FactHomeCourse</p></li><li><p>Target Raptor Fields: Match all the same fields from CRM</p></li><li><p>Target SFMC DE: TBD - @Richard Padilla will provide</p></li><li><p>Fields to send to SFMC</p><ul><li><p>CustomerNumber</p></li><li><p>GolfFacilityId</p></li><li><p>ChannelId</p></li><li><p>SelectionReason</p></li><li><p>WindowStartUtc</p></li><li><p>WindowEndUtc</p></li><li><p>CreatedOnUtc</p></li><li><p>IsActive</p></li></ul></li></ul>",
-        "descriptionImageCount": 1,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1193679",
-            "url": "https://golfnow.atlassian.net/browse/DS-22528?focusedCommentId=1193679",
-            "author": "Richard Ly",
-            "authorAccountId": "5aa97ba80dcb662a46aabf2b",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RL-3.png",
-            "created": "2026-07-09T16:32:28.292-0400",
-            "createdDisplay": "Jul 9, 2026, 4:32 PM",
-            "updated": "2026-07-09T16:32:28.292-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Hey @Brian Pugh,\n\nI wasn't able to update the description in this ticket. Below is the update i was trying get in place:\n\n- Target SFMC DE: GolfHomeCourse",
-            "bodyHtml": "<p>Hey @Brian Pugh, </p><p>I wasn't able to update the description in this ticket. Below is the update i was trying get in place:</p><ul><li><p>Target SFMC DE: GolfHomeCourse</p></li></ul>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/DS-22528?focusedCommentId=1193679",
-        "lastCommentDisplay": "Jul 9, 2026, 4:32 PM",
-        "lastCommentAuthor": "Richard Ly",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Backlog",
-        "priority": "None",
-        "assignee": "Brian Pugh",
-        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-07-09T16:32:28.382-0400",
-        "updatedDisplay": "Jul 9, 2026, 4:32 PM",
-        "created": "2026-07-06T14:10:20.592-0400",
-        "createdDisplay": "Jul 6, 2026, 2:10 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14301",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14301",
-          "summary": "GolfPass \"Home Course\": Phase I",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
           "priority": "None"
         }
       },
@@ -33568,13 +33570,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-13T15:01:37.014Z",
-    "pulledAtDisplay": "Jul 13, 2026, 11:01 AM",
+    "pulledAt": "2026-07-13T15:06:42.779Z",
+    "pulledAtDisplay": "Jul 13, 2026, 11:06 AM",
     "window": {
-      "start": "2026-05-29T15:01:37.014Z",
-      "end": "2027-01-09T15:01:37.014Z",
-      "startDisplay": "May 29, 2026, 11:01 AM",
-      "endDisplay": "Jan 9, 2027, 10:01 AM"
+      "start": "2026-05-29T15:06:42.779Z",
+      "end": "2027-01-09T15:06:42.779Z",
+      "startDisplay": "May 29, 2026, 11:06 AM",
+      "endDisplay": "Jan 9, 2027, 10:06 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33587,7 +33589,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-13T15:01:39.343Z",
+        "pulledAt": "2026-07-13T15:06:45.787Z",
         "eventCount": 87,
         "events": [
           {
@@ -34934,23 +34936,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -34980,6 +34965,23 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -35075,10 +35077,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-13T14:58:41.105Z",
-    "previousPulledAtDisplay": "Jul 13, 2026, 10:58 AM",
-    "currentPulledAt": "2026-07-13T15:03:09.861Z",
-    "currentPulledAtDisplay": "Jul 13, 2026, 11:03 AM",
+    "previousPulledAt": "2026-07-13T15:03:09.861Z",
+    "previousPulledAtDisplay": "Jul 13, 2026, 11:03 AM",
+    "currentPulledAt": "2026-07-13T15:08:28.162Z",
+    "currentPulledAtDisplay": "Jul 13, 2026, 11:08 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -35086,6 +35088,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-13T15:03:09.861Z",
+      "previousPulledAtDisplay": "Jul 13, 2026, 11:03 AM",
+      "currentPulledAt": "2026-07-13T15:08:28.162Z",
+      "currentPulledAtDisplay": "Jul 13, 2026, 11:08 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-13T14:58:41.105Z",
       "previousPulledAtDisplay": "Jul 13, 2026, 10:58 AM",
@@ -36917,17 +36930,6 @@
       "previousPulledAtDisplay": "Jul 12, 2026, 8:57 PM",
       "currentPulledAt": "2026-07-13T01:02:58.978Z",
       "currentPulledAtDisplay": "Jul 12, 2026, 9:02 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-13T00:52:55.900Z",
-      "previousPulledAtDisplay": "Jul 12, 2026, 8:52 PM",
-      "currentPulledAt": "2026-07-13T00:57:12.040Z",
-      "currentPulledAtDisplay": "Jul 12, 2026, 8:57 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
