@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-14T14:37:14.663Z",
-  "pulledAtDisplay": "Jul 14, 2026, 10:37 AM",
+  "pulledAt": "2026-07-14T14:43:02.110Z",
+  "pulledAtDisplay": "Jul 14, 2026, 10:43 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-14T14:37:14.663Z",
-    "pulledAtDisplay": "Jul 14, 2026, 10:37 AM",
+    "pulledAt": "2026-07-14T14:43:02.110Z",
+    "pulledAtDisplay": "Jul 14, 2026, 10:43 AM",
     "total": 434,
     "mainTotal": 404,
     "subtaskTotal": 30,
@@ -7921,6 +7921,60 @@
         }
       },
       {
+        "key": "APP-7265",
+        "url": "https://golfnow.atlassian.net/browse/APP-7265",
+        "summary": "GolfPass Cancellation Analytics ",
+        "description": "- Log this event when you land on the manage memberships page and you see the the cancellation option\n\n- Analytics.logEvent(\"golfpass_cancellation\", parameters: [\n”Action”: “impression”\n])\n\n- Do not fire the event if you are a non member or a member and the cancellation option is not visible\n\n- If you have multiple active memberships on the screen and they both have the cancellation option, only fire the event one time\n\n- Log this event after the user successfully cancels\n\n- Analytics.logEvent(\"hot_deal_zone\", parameters: [\n”Action”: “submit”\n”Product”: “{ProductId|ProductPriceId}”\n])\n\n- Do not fire this event if the user simply clicks on the button but does not proceed to cancellation\n\n- Do not fire this event if the cancellation fails due to error\n\n- If the user has multiple memberships and the users submits multiple cancellations, log the event as many times as they successfully cancel",
+        "descriptionHtml": "<div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7265/737794-image-20260528-222512.png\" alt=\"image-20260528-222512.png\" loading=\"lazy\"><figcaption>image-20260528-222512.png</figcaption></figure></div><ol><li><p>Log this event when you land on the manage memberships page and you see the the cancellation option</p><ol><li><p><code>Analytics.logEvent(&quot;golfpass_cancellation&quot;, parameters: [</code><br><code>”Action”: “impression”</code><br><code>])</code></p></li><li><p>Do not fire the event if you are a non member or a member and the cancellation option is not visible</p></li><li><p>If you have multiple active memberships on the screen and they both have the cancellation option, only fire the event one time </p></li></ol></li><li><p>Log this event after the user successfully cancels</p><ol><li><p><code>Analytics.logEvent(&quot;hot_deal_zone&quot;, parameters: [</code><br><code>”Action”: “submit”</code><br><code>”Product”: “{ProductId|ProductPriceId}”</code><br><code>])</code></p></li><li><p>Do not fire this event if the user simply clicks on the button but does not proceed to cancellation</p></li><li><p>Do not fire this event if the cancellation fails due to error </p></li><li><p>If the user has multiple memberships and the users submits multiple cancellations, log the event as many times as they successfully cancel</p></li></ol></li></ol>",
+        "descriptionImageCount": 1,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 1,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Testing",
+        "priority": "P2",
+        "assignee": "Avi Dalvi",
+        "assigneeAccountId": "712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc/0d9eecf8-30cd-4531-a423-c63a37728e11/32",
+        "assignedDeveloper": "Nadya Malyavko",
+        "assignedDeveloperAccountId": "712020:76419ca4-24c1-477f-b8f2-f9cdabed32aa",
+        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/228031fab503c8796547a1dc4512fc27?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FNM-2.png",
+        "updated": "2026-07-14T10:39:08.773-0400",
+        "updatedDisplay": "Jul 14, 2026, 10:39 AM",
+        "created": "2026-06-15T08:49:15.208-0400",
+        "createdDisplay": "Jun 15, 2026, 8:49 AM",
+        "components": [
+          "All Apps"
+        ],
+        "fixVersions": [
+          "Mobile - 6.6.0 - All"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "B2C-70",
+          "url": "https://golfnow.atlassian.net/browse/B2C-70",
+          "summary": "NY Cancellation Validation",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14562",
         "url": "https://golfnow.atlassian.net/browse/CORE-14562",
         "summary": "GolfPass Waiver: Partial Fee Waiver Based on IsWaivable Flag",
@@ -7999,58 +8053,6 @@
           "type": "Epic",
           "status": "Planning",
           "priority": "P1"
-        }
-      },
-      {
-        "key": "APP-7265",
-        "url": "https://golfnow.atlassian.net/browse/APP-7265",
-        "summary": "GolfPass Cancellation Analytics ",
-        "description": "- Log this event when you land on the manage memberships page and you see the the cancellation option\n\n- Analytics.logEvent(\"golfpass_cancellation\", parameters: [\n”Action”: “impression”\n])\n\n- Do not fire the event if you are a non member or a member and the cancellation option is not visible\n\n- If you have multiple active memberships on the screen and they both have the cancellation option, only fire the event one time\n\n- Log this event after the user successfully cancels\n\n- Analytics.logEvent(\"hot_deal_zone\", parameters: [\n”Action”: “submit”\n”Product”: “{ProductId|ProductPriceId}”\n])\n\n- Do not fire this event if the user simply clicks on the button but does not proceed to cancellation\n\n- Do not fire this event if the cancellation fails due to error\n\n- If the user has multiple memberships and the users submits multiple cancellations, log the event as many times as they successfully cancel",
-        "descriptionHtml": "<div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7265/737794-image-20260528-222512.png\" alt=\"image-20260528-222512.png\" loading=\"lazy\"><figcaption>image-20260528-222512.png</figcaption></figure></div><ol><li><p>Log this event when you land on the manage memberships page and you see the the cancellation option</p><ol><li><p><code>Analytics.logEvent(&quot;golfpass_cancellation&quot;, parameters: [</code><br><code>”Action”: “impression”</code><br><code>])</code></p></li><li><p>Do not fire the event if you are a non member or a member and the cancellation option is not visible</p></li><li><p>If you have multiple active memberships on the screen and they both have the cancellation option, only fire the event one time </p></li></ol></li><li><p>Log this event after the user successfully cancels</p><ol><li><p><code>Analytics.logEvent(&quot;hot_deal_zone&quot;, parameters: [</code><br><code>”Action”: “submit”</code><br><code>”Product”: “{ProductId|ProductPriceId}”</code><br><code>])</code></p></li><li><p>Do not fire this event if the user simply clicks on the button but does not proceed to cancellation</p></li><li><p>Do not fire this event if the cancellation fails due to error </p></li><li><p>If the user has multiple memberships and the users submits multiple cancellations, log the event as many times as they successfully cancel</p></li></ol></li></ol>",
-        "descriptionImageCount": 1,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Testing",
-        "priority": "P2",
-        "assignee": "Avi Dalvi",
-        "assigneeAccountId": "712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc/0d9eecf8-30cd-4531-a423-c63a37728e11/32",
-        "assignedDeveloper": "Nadya Malyavko",
-        "assignedDeveloperAccountId": "712020:76419ca4-24c1-477f-b8f2-f9cdabed32aa",
-        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/228031fab503c8796547a1dc4512fc27?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FNM-2.png",
-        "updated": "2026-07-14T09:42:01.547-0400",
-        "updatedDisplay": "Jul 14, 2026, 9:42 AM",
-        "created": "2026-06-15T08:49:15.208-0400",
-        "createdDisplay": "Jun 15, 2026, 8:49 AM",
-        "components": [
-          "All Apps"
-        ],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "B2C-70",
-          "url": "https://golfnow.atlassian.net/browse/B2C-70",
-          "summary": "NY Cancellation Validation",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
         }
       },
       {
@@ -33585,13 +33587,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-14T14:35:50.572Z",
-    "pulledAtDisplay": "Jul 14, 2026, 10:35 AM",
+    "pulledAt": "2026-07-14T14:40:57.167Z",
+    "pulledAtDisplay": "Jul 14, 2026, 10:40 AM",
     "window": {
-      "start": "2026-05-30T14:35:50.572Z",
-      "end": "2027-01-10T14:35:50.572Z",
-      "startDisplay": "May 30, 2026, 10:35 AM",
-      "endDisplay": "Jan 10, 2027, 9:35 AM"
+      "start": "2026-05-30T14:40:57.167Z",
+      "end": "2027-01-10T14:40:57.167Z",
+      "startDisplay": "May 30, 2026, 10:40 AM",
+      "endDisplay": "Jan 10, 2027, 9:40 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33604,7 +33606,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-14T14:35:52.762Z",
+        "pulledAt": "2026-07-14T14:41:00.297Z",
         "eventCount": 87,
         "events": [
           {
@@ -34186,6 +34188,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.57",
+            "start": "2026-07-14T00:00:00.000Z",
+            "end": "2026-07-15T00:00:00.000Z",
+            "startDate": "2026-07-14",
+            "endDate": "2026-07-15",
+            "startDisplay": "Jul 14, 2026",
+            "endDisplay": "Jul 15, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221527Z-1432222737@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -34215,23 +34234,6 @@
             "endDisplay": "Jul 15, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260420T174203Z--1849071680@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.57",
-            "start": "2026-07-14T00:00:00.000Z",
-            "end": "2026-07-15T00:00:00.000Z",
-            "startDate": "2026-07-14",
-            "endDate": "2026-07-15",
-            "startDisplay": "Jul 14, 2026",
-            "endDisplay": "Jul 15, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34594,23 +34596,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Holiday Freeze",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-08T00:00:00.000Z",
-            "startDate": "2026-08-31",
-            "endDate": "2026-09-08",
-            "startDisplay": "Aug 31, 2026",
-            "endDisplay": "Sep 8, 2026",
-            "allDay": true,
-            "type": "Golf Freeze",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -34623,6 +34608,23 @@
             "endDisplay": "Sep 1, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Holiday Freeze",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-08T00:00:00.000Z",
+            "startDate": "2026-08-31",
+            "endDate": "2026-09-08",
+            "startDisplay": "Aug 31, 2026",
+            "endDisplay": "Sep 8, 2026",
+            "allDay": true,
+            "type": "Golf Freeze",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34679,6 +34681,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.59",
+            "start": "2026-09-15T00:00:00.000Z",
+            "end": "2026-09-16T00:00:00.000Z",
+            "startDate": "2026-09-15",
+            "endDate": "2026-09-16",
+            "startDisplay": "Sep 15, 2026",
+            "endDisplay": "Sep 16, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221627Z-1916149808@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -34708,23 +34727,6 @@
             "endDisplay": "Sep 16, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260420T174308Z-558122831@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.59",
-            "start": "2026-09-15T00:00:00.000Z",
-            "end": "2026-09-16T00:00:00.000Z",
-            "startDate": "2026-09-15",
-            "endDate": "2026-09-16",
-            "startDisplay": "Sep 15, 2026",
-            "endDisplay": "Sep 16, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -35092,10 +35094,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-14T14:32:34.649Z",
-    "previousPulledAtDisplay": "Jul 14, 2026, 10:32 AM",
-    "currentPulledAt": "2026-07-14T14:37:14.663Z",
-    "currentPulledAtDisplay": "Jul 14, 2026, 10:37 AM",
+    "previousPulledAt": "2026-07-14T14:37:14.663Z",
+    "previousPulledAtDisplay": "Jul 14, 2026, 10:37 AM",
+    "currentPulledAt": "2026-07-14T14:43:02.110Z",
+    "currentPulledAtDisplay": "Jul 14, 2026, 10:43 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -35103,6 +35105,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-14T14:37:14.663Z",
+      "previousPulledAtDisplay": "Jul 14, 2026, 10:37 AM",
+      "currentPulledAt": "2026-07-14T14:43:02.110Z",
+      "currentPulledAtDisplay": "Jul 14, 2026, 10:43 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-14T14:32:34.649Z",
       "previousPulledAtDisplay": "Jul 14, 2026, 10:32 AM",
@@ -36980,17 +36993,6 @@
       "previousPulledAtDisplay": "Jul 13, 2026, 8:27 PM",
       "currentPulledAt": "2026-07-14T00:32:37.035Z",
       "currentPulledAtDisplay": "Jul 13, 2026, 8:32 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-14T00:22:12.706Z",
-      "previousPulledAtDisplay": "Jul 13, 2026, 8:22 PM",
-      "currentPulledAt": "2026-07-14T00:27:30.130Z",
-      "currentPulledAtDisplay": "Jul 13, 2026, 8:27 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
