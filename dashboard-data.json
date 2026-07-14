@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-14T14:47:25.403Z",
-  "pulledAtDisplay": "Jul 14, 2026, 10:47 AM",
+  "pulledAt": "2026-07-14T14:52:23.578Z",
+  "pulledAtDisplay": "Jul 14, 2026, 10:52 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-14T14:47:25.403Z",
-    "pulledAtDisplay": "Jul 14, 2026, 10:47 AM",
+    "pulledAt": "2026-07-14T14:52:23.578Z",
+    "pulledAtDisplay": "Jul 14, 2026, 10:52 AM",
     "total": 434,
     "mainTotal": 404,
     "subtaskTotal": 30,
@@ -7921,6 +7921,74 @@
         }
       },
       {
+        "key": "APP-7170",
+        "url": "https://golfnow.atlassian.net/browse/APP-7170",
+        "summary": "Apple Pay Legal Follow Ups",
+        "description": "In order to meet legal compliance, we need to display free trial copy and renewal price information on the checkout line item and in the Apple Pay module for GolfPass.\n\n- Integrate with the GetProducts API\n\n- GET {{prod-api-base-url}}/GolfNowAPI.svc/rest/channel/5151/products/get?productTypeId=9\n\n- Partial Sample Response:\n\n[\n{\n\"Benefits\": [\n{\n\"BenefitID\": 10,\n\"BenefitMatrix\": [],\n\"BenefitSettings\": [],\n\"Description\": \"Remove Promo Code Restrictions\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 19,\n\"BenefitMatrix\": [],\n\"BenefitSettings\": [\n{\n\"BenefitID\": 19,\n\"BenefitTypeID\": 4,\n\"FacilityGroupID\": 4,\n\"Value\": null\n}\n],\n\"Description\": \"Free Hot Deal Promo Code - Monthly Send (GOLFPASS)\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 30,\n\"BenefitMatrix\": [\n{\n\"DisplayTemplate\": \"GolfPass Waived Fee Credit\",\n\"DomainTypeID\": 1,\n\"EndDaysOut\": 0,\n\"FlatAmount\": 0.0000,\n\"PercentAmount\": 100.0000,\n\"StartDaysOut\": 0\n}\n],\n\"BenefitSettings\": [],\n\"Description\": \"Waived Fee Credits - 10 Credits\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 29,\n\"BenefitMatrix\": [],\n\"BenefitSettings\": [],\n\"Description\": \"National Promotions - GOLFPASS Attribute Overrides\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 9,\n\"BenefitMatrix\": [],\n\"BenefitSettings\": [\n{\n\"BenefitID\": 9,\n\"BenefitTypeID\": 2,\n\"FacilityGroupID\": 2,\n\"Value\": 0\n}\n],\n\"Description\": \"Greens Fee Discount - Play Card Orlando\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 4,\n\"BenefitMatrix\": [\n{\n\"DisplayTemplate\": \"Worry Free\",\n\"DomainTypeID\": 16,\n\"EndDaysOut\": 0,\n\"FlatAmount\": 0.0000,\n\"PercentAmount\": 0.0000,\n\"StartDaysOut\": 0\n}\n],\n\"BenefitSettings\": [],\n\"Description\": \"Worry Free\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 5,\n\"BenefitMatrix\": [\n{\n\"DisplayTemplate\": \"Loyalty 1.25x\",\n\"DomainTypeID\": 8,\n\"EndDaysOut\": 0,\n\"FlatAmount\": 1.2500,\n\"PercentAmount\": 100.0000,\n\"StartDaysOut\": 0\n}\n],\n\"BenefitSettings\": [],\n\"Description\": \"Redeem GolfPass Points\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 46,\n\"BenefitMatrix\": [],\n\"BenefitSettings\": [],\n\"Description\": \"Member Pricing\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 32,\n\"BenefitMatrix\": [],\n\"BenefitSettings\": [],\n\"Description\": \"Referral Reward\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 35,\n\"BenefitMatrix\": [],\n\"BenefitSettings\": [\n{\n\"BenefitID\": 35,\n\"BenefitTypeID\": 5,\n\"FacilityGroupID\": 5,\n\"Value\": null\n}\n],\n\"Description\": \"Reservation Early Access\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 34,\n\"BenefitMatrix\": [],\n\"BenefitSettings\": [],\n\"Description\": \"Eligible for GolfPass restricted promo codes\",\n\"IsActive\": true\n}\n],\n\"Description\": \"GolfPass+\",\n\"PriceList\": [\n{\n\"CurrencyCode\": \"USD\",\n\"Description\": \"GolfPass+ - Annual - $99\",\n\"IsActive\": true,\n\"IsTaxIncluded\": false,\n\"Price\": 99.0000,\n\"PricingAttributes\": null,\n\"ProductID\": 36,\n\"ProductPriceID\": 64,\n\"ProductPricingTags\": {\n\"IsComplementary\": false,\n\"IsEmployee\": false,\n\"IsMilitary\": false,\n\"IsStudent\": false,\n\"IsTrial\": false\n},\n\"RenewalProductPricingID\": 64,\n\"Subscription\": {\n\"Duration\": 1,\n\"EndDate\": null,\n\"IsActive\": true,\n\"StartDate\": null,\n\"SubscriptionID\": 1,\n\"SubscriptionType\": {\n\"Description\": \"Annual Subscription\",\n\"IsActive\": true,\n\"Name\": \"Year\",\n\"RenewalReminderPeriod\": 30,\n\"SubscriptionTypeID\": 1\n}\n}\n},\n],\n\"ProductAttributes\": null,\n\"ProductID\": 36,\n\"ProductIsActive\": true,\n\"ProductName\": \"GolfPass+\",\n\"ProductTypeID\": 9,\n\"ProductTypeIsActive\": true,\n\"TaxClassification\": \"SUBSCR\"\n},\n\n- This response is very large and will need to be parsed to find the applicable information for the ProductPriceId that matches the checkout invoice. You will likely need to call this endpoint upon the start of the app session so we do not slow down checkout load times.\n\n- It is acceptable to cache this data but be very careful to limit to less than 1 hour because if a new product is created, the app will then fail to recognize it because it is using cached data.\n\n- Important data points\n\n- ProductId\n\n- ProductPriceId\n\n- ProductName\n\n- Price\n\n- ProductPricingTags\n\n- RenewalProductPricingId\n\n- SubscriptionType.Description\n\n- Expected UI - Sidecart checkout, standalone checkout, and the Apple Pay module need to all use the below logic\n\n- Logic- Very similar to https://golfnow.atlassian.net/browse/APP-7128\n\n- The line item should read as [ProductName] [SubscriptionType.Description OR IsTrial=True]\n\n- Example: GolfPass+ Annual Subscription, GolfPass+ Free Trial, GolfPass Video Monthly\n\n- This should update the the header section name on standalone and the line item in the invoice\n\n- If IsTrial=True, add either subtext below the main GolfPass line item or as a (parenthetical) on the same line\n\n- ($119/yr after free trial. Terms below)\n\n- This will only show in the invoice line item\n\n- To get the $119 value, you will take the RenewalProductPricingId of the ProductPriceId currently on the invoice and you will find the Price of that RenewalProductPriceId\n\n- To get /yr or /month, you will based that off SubscriptionType.Description of the RenewalProductPricingId\n\n- If Annual = /yr\n\n- If Monthly = /month\n\n2 other items to note:\n\n- Add JCB as a payment type and test it works\n\n- Add decimal ability 2 the text views in the Apple Pay Test View",
+        "descriptionHtml": "<p>In order to meet legal compliance, we need to display free trial copy and renewal price information on the checkout line item and in the Apple Pay module for GolfPass. </p><ol><li><p>Integrate with the GetProducts API</p><ol><li><p>GET <code>{{prod-api-base-url}}/GolfNowAPI.svc/rest/channel/5151/products/get?productTypeId=9</code></p></li><li><p>Partial Sample Response: </p><pre><code>[\n    {\n        &quot;Benefits&quot;: [\n            {\n                &quot;BenefitID&quot;: 10,\n                &quot;BenefitMatrix&quot;: [],\n                &quot;BenefitSettings&quot;: [],\n                &quot;Description&quot;: &quot;Remove Promo Code Restrictions&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 19,\n                &quot;BenefitMatrix&quot;: [],\n                &quot;BenefitSettings&quot;: [\n                    {\n                        &quot;BenefitID&quot;: 19,\n                        &quot;BenefitTypeID&quot;: 4,\n                        &quot;FacilityGroupID&quot;: 4,\n                        &quot;Value&quot;: null\n                    }\n                ],\n                &quot;Description&quot;: &quot;Free Hot Deal Promo Code - Monthly Send (GOLFPASS)&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 30,\n                &quot;BenefitMatrix&quot;: [\n                    {\n                        &quot;DisplayTemplate&quot;: &quot;GolfPass Waived Fee Credit&quot;,\n                        &quot;DomainTypeID&quot;: 1,\n                        &quot;EndDaysOut&quot;: 0,\n                        &quot;FlatAmount&quot;: 0.0000,\n                        &quot;PercentAmount&quot;: 100.0000,\n                        &quot;StartDaysOut&quot;: 0\n                    }\n                ],\n                &quot;BenefitSettings&quot;: [],\n                &quot;Description&quot;: &quot;Waived Fee Credits - 10 Credits&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 29,\n                &quot;BenefitMatrix&quot;: [],\n                &quot;BenefitSettings&quot;: [],\n                &quot;Description&quot;: &quot;National Promotions - GOLFPASS Attribute Overrides&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 9,\n                &quot;BenefitMatrix&quot;: [],\n                &quot;BenefitSettings&quot;: [\n                    {\n                        &quot;BenefitID&quot;: 9,\n                        &quot;BenefitTypeID&quot;: 2,\n                        &quot;FacilityGroupID&quot;: 2,\n                        &quot;Value&quot;: 0\n                    }\n                ],\n                &quot;Description&quot;: &quot;Greens Fee Discount - Play Card Orlando&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 4,\n                &quot;BenefitMatrix&quot;: [\n                    {\n                        &quot;DisplayTemplate&quot;: &quot;Worry Free&quot;,\n                        &quot;DomainTypeID&quot;: 16,\n                        &quot;EndDaysOut&quot;: 0,\n                        &quot;FlatAmount&quot;: 0.0000,\n                        &quot;PercentAmount&quot;: 0.0000,\n                        &quot;StartDaysOut&quot;: 0\n                    }\n                ],\n                &quot;BenefitSettings&quot;: [],\n                &quot;Description&quot;: &quot;Worry Free&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 5,\n                &quot;BenefitMatrix&quot;: [\n                    {\n                        &quot;DisplayTemplate&quot;: &quot;Loyalty 1.25x&quot;,\n                        &quot;DomainTypeID&quot;: 8,\n                        &quot;EndDaysOut&quot;: 0,\n                        &quot;FlatAmount&quot;: 1.2500,\n                        &quot;PercentAmount&quot;: 100.0000,\n                        &quot;StartDaysOut&quot;: 0\n                    }\n                ],\n                &quot;BenefitSettings&quot;: [],\n                &quot;Description&quot;: &quot;Redeem GolfPass Points&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 46,\n                &quot;BenefitMatrix&quot;: [],\n                &quot;BenefitSettings&quot;: [],\n                &quot;Description&quot;: &quot;Member Pricing&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 32,\n                &quot;BenefitMatrix&quot;: [],\n                &quot;BenefitSettings&quot;: [],\n                &quot;Description&quot;: &quot;Referral Reward&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 35,\n                &quot;BenefitMatrix&quot;: [],\n                &quot;BenefitSettings&quot;: [\n                    {\n                        &quot;BenefitID&quot;: 35,\n                        &quot;BenefitTypeID&quot;: 5,\n                        &quot;FacilityGroupID&quot;: 5,\n                        &quot;Value&quot;: null\n                    }\n                ],\n                &quot;Description&quot;: &quot;Reservation Early Access&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 34,\n                &quot;BenefitMatrix&quot;: [],\n                &quot;BenefitSettings&quot;: [],\n                &quot;Description&quot;: &quot;Eligible for GolfPass restricted promo codes&quot;,\n                &quot;IsActive&quot;: true\n            }\n        ],\n        &quot;Description&quot;: &quot;GolfPass+&quot;,\n        &quot;PriceList&quot;: [\n            {\n                &quot;CurrencyCode&quot;: &quot;USD&quot;,\n                &quot;Description&quot;: &quot;GolfPass+ - Annual - $99&quot;,\n                &quot;IsActive&quot;: true,\n                &quot;IsTaxIncluded&quot;: false,\n                &quot;Price&quot;: 99.0000,\n                &quot;PricingAttributes&quot;: null,\n                &quot;ProductID&quot;: 36,\n                &quot;ProductPriceID&quot;: 64,\n                &quot;ProductPricingTags&quot;: {\n                    &quot;IsComplementary&quot;: false,\n                    &quot;IsEmployee&quot;: false,\n                    &quot;IsMilitary&quot;: false,\n                    &quot;IsStudent&quot;: false,\n                    &quot;IsTrial&quot;: false\n                },\n                &quot;RenewalProductPricingID&quot;: 64,\n                &quot;Subscription&quot;: {\n                    &quot;Duration&quot;: 1,\n                    &quot;EndDate&quot;: null,\n                    &quot;IsActive&quot;: true,\n                    &quot;StartDate&quot;: null,\n                    &quot;SubscriptionID&quot;: 1,\n                    &quot;SubscriptionType&quot;: {\n                        &quot;Description&quot;: &quot;Annual Subscription&quot;,\n                        &quot;IsActive&quot;: true,\n                        &quot;Name&quot;: &quot;Year&quot;,\n                        &quot;RenewalReminderPeriod&quot;: 30,\n                        &quot;SubscriptionTypeID&quot;: 1\n                    }\n                }\n            },\n                    ],\n        &quot;ProductAttributes&quot;: null,\n        &quot;ProductID&quot;: 36,\n        &quot;ProductIsActive&quot;: true,\n        &quot;ProductName&quot;: &quot;GolfPass+&quot;,\n        &quot;ProductTypeID&quot;: 9,\n        &quot;ProductTypeIsActive&quot;: true,\n        &quot;TaxClassification&quot;: &quot;SUBSCR&quot;\n    },</code></pre></li><li><p>This response is very large and will need to be parsed to find the applicable information for the ProductPriceId that matches the checkout invoice. You will likely need to call this endpoint upon the start of the app session so we do not slow down checkout load times.</p><ol><li><p>It is acceptable to cache this data but be very careful to limit to less than 1 hour because if a new product is created, the app will then fail to recognize it because it is using cached data.</p></li></ol></li><li><p>Important data points</p><ol><li><p>ProductId</p></li><li><p>ProductPriceId</p></li><li><p>ProductName</p></li><li><p>Price</p></li><li><p>ProductPricingTags</p></li><li><p>RenewalProductPricingId</p></li><li><p>SubscriptionType.Description</p></li></ol></li></ol></li><li><p>Expected UI - Sidecart checkout, standalone checkout, and the Apple Pay module need to all use the below logic</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/717931-image-20260427-134402.png\" alt=\"image-20260427-134402.png\" loading=\"lazy\"><figcaption>image-20260427-134402.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/717932-image-20260427-134459.png\" alt=\"image-20260427-134459.png\" loading=\"lazy\"><figcaption>image-20260427-134459.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/717933-image-20260427-134529.png\" alt=\"image-20260427-134529.png\" loading=\"lazy\"><figcaption>image-20260427-134529.png</figcaption></figure></div></li><li><p>Logic- Very similar to <a href=\"https://golfnow.atlassian.net/browse/APP-7128\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/APP-7128</a> </p><ol><li><p>The line item should read as [ProductName] [SubscriptionType.Description OR IsTrial=True]</p><ol><li><p>Example: GolfPass+ Annual Subscription, GolfPass+ Free Trial, GolfPass Video Monthly</p></li><li><p>This should update the the header section name on standalone and the line item in the invoice</p></li></ol></li><li><p>If IsTrial=True, add either subtext below the main GolfPass line item or as a (parenthetical) on the same line</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/717934-image-20260427-135407.png\" alt=\"image-20260427-135407.png\" loading=\"lazy\"><figcaption>image-20260427-135407.png</figcaption></figure></div><ol><li><p>($119/yr after free trial. Terms below)</p></li><li><p>This will only show in the invoice line item</p></li></ol></li><li><p>To get the $119 value, you will take the RenewalProductPricingId of the ProductPriceId currently on the invoice and you will find the Price of that RenewalProductPriceId</p></li><li><p>To get /yr or /month, you will based that off SubscriptionType.Description of the RenewalProductPricingId</p><ol><li><p>If Annual = /yr </p></li><li><p>If Monthly = /month </p></li></ol></li></ol></li></ol><p>2 other items to note:</p><ul><li><p>Add JCB as a payment type and test it works</p></li><li><p>Add decimal ability 2 the text views in the Apple Pay Test View</p></li></ul>",
+        "descriptionImageCount": 4,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 4,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1187738",
+            "url": "https://golfnow.atlassian.net/browse/APP-7170?focusedCommentId=1187738",
+            "author": "Avi Dalvi",
+            "authorAccountId": "712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc/0d9eecf8-30cd-4531-a423-c63a37728e11/32",
+            "created": "2026-06-24T18:00:41.460-0400",
+            "createdDisplay": "Jun 24, 2026, 6:00 PM",
+            "updated": "2026-07-01T17:59:14.935-0400",
+            "updatedDisplay": "Jul 1, 2026, 5:59 PM",
+            "hasMedia": true,
+            "mediaCount": 8,
+            "body": "GN US :check_mark:\n\n---\nTO :check_mark:\n\nGN AU and UK[iOS and Android] :check_mark:",
+            "bodyHtml": "<p>GN US :check_mark: </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/comments/1187738/741342-IMG_0244.PNG\" alt=\"IMG_0244.PNG\" loading=\"lazy\"><figcaption>IMG_0244.PNG</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/comments/1187738/741345-IMG_0237.PNG\" alt=\"IMG_0237.PNG\" loading=\"lazy\"><figcaption>IMG_0237.PNG</figcaption></figure></div><hr><p>TO :check_mark: </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/comments/1187738/741344-IMG_0242.PNG\" alt=\"IMG_0242.PNG\" loading=\"lazy\"><figcaption>IMG_0242.PNG</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/comments/1187738/717934-image-20260427-135407.png\" alt=\"IMG_0244.PNG\" loading=\"lazy\"><figcaption>IMG_0244.PNG</figcaption></figure></div><p>GN AU and UK[iOS and Android] :check_mark: </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/comments/1187738/743434-IMG_0251.PNG\" alt=\"IMG_0251.PNG\" loading=\"lazy\"><figcaption>IMG_0251.PNG</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/comments/1187738/743436-IMG_0253.PNG\" alt=\"IMG_0253.PNG\" loading=\"lazy\"><figcaption>IMG_0253.PNG</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/comments/1187738/743437-IMG_0252.PNG\" alt=\"IMG_0252.PNG\" loading=\"lazy\"><figcaption>IMG_0252.PNG</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/comments/1187738/743435-IMG_0254.PNG\" alt=\"IMG_0254.PNG\" loading=\"lazy\"><figcaption>IMG_0254.PNG</figcaption></figure></div><p> </p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/APP-7170?focusedCommentId=1187738",
+        "lastCommentDisplay": "Jun 24, 2026, 6:00 PM",
+        "lastCommentAuthor": "Avi Dalvi",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Done",
+        "priority": "P1",
+        "assignee": "Brian Pugh",
+        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
+        "assignedDeveloper": "Giancarlo Molina",
+        "assignedDeveloperAccountId": "712020:ee05a4d1-74f1-43e2-a712-076cfbbd70d3",
+        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/eb4e93c93be49d7ab323d4379a5e65f5?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FGM-2.png",
+        "updated": "2026-07-14T10:50:02.027-0400",
+        "updatedDisplay": "Jul 14, 2026, 10:50 AM",
+        "created": "2026-04-27T09:22:31.748-0400",
+        "createdDisplay": "Apr 27, 2026, 9:22 AM",
+        "components": [
+          "All Apps"
+        ],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "B2C-68",
+          "url": "https://golfnow.atlassian.net/browse/B2C-68",
+          "summary": "Apple Pay 2026",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "APP-7265",
         "url": "https://golfnow.atlassian.net/browse/APP-7265",
         "summary": "GolfPass Cancellation Analytics ",
@@ -10099,74 +10167,6 @@
           "type": "Epic",
           "status": "Planning",
           "priority": "P1"
-        }
-      },
-      {
-        "key": "APP-7170",
-        "url": "https://golfnow.atlassian.net/browse/APP-7170",
-        "summary": "Apple Pay Legal Follow Ups",
-        "description": "In order to meet legal compliance, we need to display free trial copy and renewal price information on the checkout line item and in the Apple Pay module for GolfPass.\n\n- Integrate with the GetProducts API\n\n- GET {{prod-api-base-url}}/GolfNowAPI.svc/rest/channel/5151/products/get?productTypeId=9\n\n- Partial Sample Response:\n\n[\n{\n\"Benefits\": [\n{\n\"BenefitID\": 10,\n\"BenefitMatrix\": [],\n\"BenefitSettings\": [],\n\"Description\": \"Remove Promo Code Restrictions\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 19,\n\"BenefitMatrix\": [],\n\"BenefitSettings\": [\n{\n\"BenefitID\": 19,\n\"BenefitTypeID\": 4,\n\"FacilityGroupID\": 4,\n\"Value\": null\n}\n],\n\"Description\": \"Free Hot Deal Promo Code - Monthly Send (GOLFPASS)\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 30,\n\"BenefitMatrix\": [\n{\n\"DisplayTemplate\": \"GolfPass Waived Fee Credit\",\n\"DomainTypeID\": 1,\n\"EndDaysOut\": 0,\n\"FlatAmount\": 0.0000,\n\"PercentAmount\": 100.0000,\n\"StartDaysOut\": 0\n}\n],\n\"BenefitSettings\": [],\n\"Description\": \"Waived Fee Credits - 10 Credits\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 29,\n\"BenefitMatrix\": [],\n\"BenefitSettings\": [],\n\"Description\": \"National Promotions - GOLFPASS Attribute Overrides\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 9,\n\"BenefitMatrix\": [],\n\"BenefitSettings\": [\n{\n\"BenefitID\": 9,\n\"BenefitTypeID\": 2,\n\"FacilityGroupID\": 2,\n\"Value\": 0\n}\n],\n\"Description\": \"Greens Fee Discount - Play Card Orlando\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 4,\n\"BenefitMatrix\": [\n{\n\"DisplayTemplate\": \"Worry Free\",\n\"DomainTypeID\": 16,\n\"EndDaysOut\": 0,\n\"FlatAmount\": 0.0000,\n\"PercentAmount\": 0.0000,\n\"StartDaysOut\": 0\n}\n],\n\"BenefitSettings\": [],\n\"Description\": \"Worry Free\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 5,\n\"BenefitMatrix\": [\n{\n\"DisplayTemplate\": \"Loyalty 1.25x\",\n\"DomainTypeID\": 8,\n\"EndDaysOut\": 0,\n\"FlatAmount\": 1.2500,\n\"PercentAmount\": 100.0000,\n\"StartDaysOut\": 0\n}\n],\n\"BenefitSettings\": [],\n\"Description\": \"Redeem GolfPass Points\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 46,\n\"BenefitMatrix\": [],\n\"BenefitSettings\": [],\n\"Description\": \"Member Pricing\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 32,\n\"BenefitMatrix\": [],\n\"BenefitSettings\": [],\n\"Description\": \"Referral Reward\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 35,\n\"BenefitMatrix\": [],\n\"BenefitSettings\": [\n{\n\"BenefitID\": 35,\n\"BenefitTypeID\": 5,\n\"FacilityGroupID\": 5,\n\"Value\": null\n}\n],\n\"Description\": \"Reservation Early Access\",\n\"IsActive\": true\n},\n{\n\"BenefitID\": 34,\n\"BenefitMatrix\": [],\n\"BenefitSettings\": [],\n\"Description\": \"Eligible for GolfPass restricted promo codes\",\n\"IsActive\": true\n}\n],\n\"Description\": \"GolfPass+\",\n\"PriceList\": [\n{\n\"CurrencyCode\": \"USD\",\n\"Description\": \"GolfPass+ - Annual - $99\",\n\"IsActive\": true,\n\"IsTaxIncluded\": false,\n\"Price\": 99.0000,\n\"PricingAttributes\": null,\n\"ProductID\": 36,\n\"ProductPriceID\": 64,\n\"ProductPricingTags\": {\n\"IsComplementary\": false,\n\"IsEmployee\": false,\n\"IsMilitary\": false,\n\"IsStudent\": false,\n\"IsTrial\": false\n},\n\"RenewalProductPricingID\": 64,\n\"Subscription\": {\n\"Duration\": 1,\n\"EndDate\": null,\n\"IsActive\": true,\n\"StartDate\": null,\n\"SubscriptionID\": 1,\n\"SubscriptionType\": {\n\"Description\": \"Annual Subscription\",\n\"IsActive\": true,\n\"Name\": \"Year\",\n\"RenewalReminderPeriod\": 30,\n\"SubscriptionTypeID\": 1\n}\n}\n},\n],\n\"ProductAttributes\": null,\n\"ProductID\": 36,\n\"ProductIsActive\": true,\n\"ProductName\": \"GolfPass+\",\n\"ProductTypeID\": 9,\n\"ProductTypeIsActive\": true,\n\"TaxClassification\": \"SUBSCR\"\n},\n\n- This response is very large and will need to be parsed to find the applicable information for the ProductPriceId that matches the checkout invoice. You will likely need to call this endpoint upon the start of the app session so we do not slow down checkout load times.\n\n- It is acceptable to cache this data but be very careful to limit to less than 1 hour because if a new product is created, the app will then fail to recognize it because it is using cached data.\n\n- Important data points\n\n- ProductId\n\n- ProductPriceId\n\n- ProductName\n\n- Price\n\n- ProductPricingTags\n\n- RenewalProductPricingId\n\n- SubscriptionType.Description\n\n- Expected UI - Sidecart checkout, standalone checkout, and the Apple Pay module need to all use the below logic\n\n- Logic- Very similar to https://golfnow.atlassian.net/browse/APP-7128\n\n- The line item should read as [ProductName] [SubscriptionType.Description OR IsTrial=True]\n\n- Example: GolfPass+ Annual Subscription, GolfPass+ Free Trial, GolfPass Video Monthly\n\n- This should update the the header section name on standalone and the line item in the invoice\n\n- If IsTrial=True, add either subtext below the main GolfPass line item or as a (parenthetical) on the same line\n\n- ($119/yr after free trial. Terms below)\n\n- This will only show in the invoice line item\n\n- To get the $119 value, you will take the RenewalProductPricingId of the ProductPriceId currently on the invoice and you will find the Price of that RenewalProductPriceId\n\n- To get /yr or /month, you will based that off SubscriptionType.Description of the RenewalProductPricingId\n\n- If Annual = /yr\n\n- If Monthly = /month\n\n2 other items to note:\n\n- Add JCB as a payment type and test it works\n\n- Add decimal ability 2 the text views in the Apple Pay Test View",
-        "descriptionHtml": "<p>In order to meet legal compliance, we need to display free trial copy and renewal price information on the checkout line item and in the Apple Pay module for GolfPass. </p><ol><li><p>Integrate with the GetProducts API</p><ol><li><p>GET <code>{{prod-api-base-url}}/GolfNowAPI.svc/rest/channel/5151/products/get?productTypeId=9</code></p></li><li><p>Partial Sample Response: </p><pre><code>[\n    {\n        &quot;Benefits&quot;: [\n            {\n                &quot;BenefitID&quot;: 10,\n                &quot;BenefitMatrix&quot;: [],\n                &quot;BenefitSettings&quot;: [],\n                &quot;Description&quot;: &quot;Remove Promo Code Restrictions&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 19,\n                &quot;BenefitMatrix&quot;: [],\n                &quot;BenefitSettings&quot;: [\n                    {\n                        &quot;BenefitID&quot;: 19,\n                        &quot;BenefitTypeID&quot;: 4,\n                        &quot;FacilityGroupID&quot;: 4,\n                        &quot;Value&quot;: null\n                    }\n                ],\n                &quot;Description&quot;: &quot;Free Hot Deal Promo Code - Monthly Send (GOLFPASS)&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 30,\n                &quot;BenefitMatrix&quot;: [\n                    {\n                        &quot;DisplayTemplate&quot;: &quot;GolfPass Waived Fee Credit&quot;,\n                        &quot;DomainTypeID&quot;: 1,\n                        &quot;EndDaysOut&quot;: 0,\n                        &quot;FlatAmount&quot;: 0.0000,\n                        &quot;PercentAmount&quot;: 100.0000,\n                        &quot;StartDaysOut&quot;: 0\n                    }\n                ],\n                &quot;BenefitSettings&quot;: [],\n                &quot;Description&quot;: &quot;Waived Fee Credits - 10 Credits&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 29,\n                &quot;BenefitMatrix&quot;: [],\n                &quot;BenefitSettings&quot;: [],\n                &quot;Description&quot;: &quot;National Promotions - GOLFPASS Attribute Overrides&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 9,\n                &quot;BenefitMatrix&quot;: [],\n                &quot;BenefitSettings&quot;: [\n                    {\n                        &quot;BenefitID&quot;: 9,\n                        &quot;BenefitTypeID&quot;: 2,\n                        &quot;FacilityGroupID&quot;: 2,\n                        &quot;Value&quot;: 0\n                    }\n                ],\n                &quot;Description&quot;: &quot;Greens Fee Discount - Play Card Orlando&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 4,\n                &quot;BenefitMatrix&quot;: [\n                    {\n                        &quot;DisplayTemplate&quot;: &quot;Worry Free&quot;,\n                        &quot;DomainTypeID&quot;: 16,\n                        &quot;EndDaysOut&quot;: 0,\n                        &quot;FlatAmount&quot;: 0.0000,\n                        &quot;PercentAmount&quot;: 0.0000,\n                        &quot;StartDaysOut&quot;: 0\n                    }\n                ],\n                &quot;BenefitSettings&quot;: [],\n                &quot;Description&quot;: &quot;Worry Free&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 5,\n                &quot;BenefitMatrix&quot;: [\n                    {\n                        &quot;DisplayTemplate&quot;: &quot;Loyalty 1.25x&quot;,\n                        &quot;DomainTypeID&quot;: 8,\n                        &quot;EndDaysOut&quot;: 0,\n                        &quot;FlatAmount&quot;: 1.2500,\n                        &quot;PercentAmount&quot;: 100.0000,\n                        &quot;StartDaysOut&quot;: 0\n                    }\n                ],\n                &quot;BenefitSettings&quot;: [],\n                &quot;Description&quot;: &quot;Redeem GolfPass Points&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 46,\n                &quot;BenefitMatrix&quot;: [],\n                &quot;BenefitSettings&quot;: [],\n                &quot;Description&quot;: &quot;Member Pricing&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 32,\n                &quot;BenefitMatrix&quot;: [],\n                &quot;BenefitSettings&quot;: [],\n                &quot;Description&quot;: &quot;Referral Reward&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 35,\n                &quot;BenefitMatrix&quot;: [],\n                &quot;BenefitSettings&quot;: [\n                    {\n                        &quot;BenefitID&quot;: 35,\n                        &quot;BenefitTypeID&quot;: 5,\n                        &quot;FacilityGroupID&quot;: 5,\n                        &quot;Value&quot;: null\n                    }\n                ],\n                &quot;Description&quot;: &quot;Reservation Early Access&quot;,\n                &quot;IsActive&quot;: true\n            },\n            {\n                &quot;BenefitID&quot;: 34,\n                &quot;BenefitMatrix&quot;: [],\n                &quot;BenefitSettings&quot;: [],\n                &quot;Description&quot;: &quot;Eligible for GolfPass restricted promo codes&quot;,\n                &quot;IsActive&quot;: true\n            }\n        ],\n        &quot;Description&quot;: &quot;GolfPass+&quot;,\n        &quot;PriceList&quot;: [\n            {\n                &quot;CurrencyCode&quot;: &quot;USD&quot;,\n                &quot;Description&quot;: &quot;GolfPass+ - Annual - $99&quot;,\n                &quot;IsActive&quot;: true,\n                &quot;IsTaxIncluded&quot;: false,\n                &quot;Price&quot;: 99.0000,\n                &quot;PricingAttributes&quot;: null,\n                &quot;ProductID&quot;: 36,\n                &quot;ProductPriceID&quot;: 64,\n                &quot;ProductPricingTags&quot;: {\n                    &quot;IsComplementary&quot;: false,\n                    &quot;IsEmployee&quot;: false,\n                    &quot;IsMilitary&quot;: false,\n                    &quot;IsStudent&quot;: false,\n                    &quot;IsTrial&quot;: false\n                },\n                &quot;RenewalProductPricingID&quot;: 64,\n                &quot;Subscription&quot;: {\n                    &quot;Duration&quot;: 1,\n                    &quot;EndDate&quot;: null,\n                    &quot;IsActive&quot;: true,\n                    &quot;StartDate&quot;: null,\n                    &quot;SubscriptionID&quot;: 1,\n                    &quot;SubscriptionType&quot;: {\n                        &quot;Description&quot;: &quot;Annual Subscription&quot;,\n                        &quot;IsActive&quot;: true,\n                        &quot;Name&quot;: &quot;Year&quot;,\n                        &quot;RenewalReminderPeriod&quot;: 30,\n                        &quot;SubscriptionTypeID&quot;: 1\n                    }\n                }\n            },\n                    ],\n        &quot;ProductAttributes&quot;: null,\n        &quot;ProductID&quot;: 36,\n        &quot;ProductIsActive&quot;: true,\n        &quot;ProductName&quot;: &quot;GolfPass+&quot;,\n        &quot;ProductTypeID&quot;: 9,\n        &quot;ProductTypeIsActive&quot;: true,\n        &quot;TaxClassification&quot;: &quot;SUBSCR&quot;\n    },</code></pre></li><li><p>This response is very large and will need to be parsed to find the applicable information for the ProductPriceId that matches the checkout invoice. You will likely need to call this endpoint upon the start of the app session so we do not slow down checkout load times.</p><ol><li><p>It is acceptable to cache this data but be very careful to limit to less than 1 hour because if a new product is created, the app will then fail to recognize it because it is using cached data.</p></li></ol></li><li><p>Important data points</p><ol><li><p>ProductId</p></li><li><p>ProductPriceId</p></li><li><p>ProductName</p></li><li><p>Price</p></li><li><p>ProductPricingTags</p></li><li><p>RenewalProductPricingId</p></li><li><p>SubscriptionType.Description</p></li></ol></li></ol></li><li><p>Expected UI - Sidecart checkout, standalone checkout, and the Apple Pay module need to all use the below logic</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/717931-image-20260427-134402.png\" alt=\"image-20260427-134402.png\" loading=\"lazy\"><figcaption>image-20260427-134402.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/717932-image-20260427-134459.png\" alt=\"image-20260427-134459.png\" loading=\"lazy\"><figcaption>image-20260427-134459.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/717933-image-20260427-134529.png\" alt=\"image-20260427-134529.png\" loading=\"lazy\"><figcaption>image-20260427-134529.png</figcaption></figure></div></li><li><p>Logic- Very similar to <a href=\"https://golfnow.atlassian.net/browse/APP-7128\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/APP-7128</a> </p><ol><li><p>The line item should read as [ProductName] [SubscriptionType.Description OR IsTrial=True]</p><ol><li><p>Example: GolfPass+ Annual Subscription, GolfPass+ Free Trial, GolfPass Video Monthly</p></li><li><p>This should update the the header section name on standalone and the line item in the invoice</p></li></ol></li><li><p>If IsTrial=True, add either subtext below the main GolfPass line item or as a (parenthetical) on the same line</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/717934-image-20260427-135407.png\" alt=\"image-20260427-135407.png\" loading=\"lazy\"><figcaption>image-20260427-135407.png</figcaption></figure></div><ol><li><p>($119/yr after free trial. Terms below)</p></li><li><p>This will only show in the invoice line item</p></li></ol></li><li><p>To get the $119 value, you will take the RenewalProductPricingId of the ProductPriceId currently on the invoice and you will find the Price of that RenewalProductPriceId</p></li><li><p>To get /yr or /month, you will based that off SubscriptionType.Description of the RenewalProductPricingId</p><ol><li><p>If Annual = /yr </p></li><li><p>If Monthly = /month </p></li></ol></li></ol></li></ol><p>2 other items to note:</p><ul><li><p>Add JCB as a payment type and test it works</p></li><li><p>Add decimal ability 2 the text views in the Apple Pay Test View</p></li></ul>",
-        "descriptionImageCount": 4,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 4,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1187738",
-            "url": "https://golfnow.atlassian.net/browse/APP-7170?focusedCommentId=1187738",
-            "author": "Avi Dalvi",
-            "authorAccountId": "712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc/0d9eecf8-30cd-4531-a423-c63a37728e11/32",
-            "created": "2026-06-24T18:00:41.460-0400",
-            "createdDisplay": "Jun 24, 2026, 6:00 PM",
-            "updated": "2026-07-01T17:59:14.935-0400",
-            "updatedDisplay": "Jul 1, 2026, 5:59 PM",
-            "hasMedia": true,
-            "mediaCount": 8,
-            "body": "GN US :check_mark:\n\n---\nTO :check_mark:\n\nGN AU and UK[iOS and Android] :check_mark:",
-            "bodyHtml": "<p>GN US :check_mark: </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/comments/1187738/741342-IMG_0244.PNG\" alt=\"IMG_0244.PNG\" loading=\"lazy\"><figcaption>IMG_0244.PNG</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/comments/1187738/741345-IMG_0237.PNG\" alt=\"IMG_0237.PNG\" loading=\"lazy\"><figcaption>IMG_0237.PNG</figcaption></figure></div><hr><p>TO :check_mark: </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/comments/1187738/741344-IMG_0242.PNG\" alt=\"IMG_0242.PNG\" loading=\"lazy\"><figcaption>IMG_0242.PNG</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/comments/1187738/717934-image-20260427-135407.png\" alt=\"IMG_0244.PNG\" loading=\"lazy\"><figcaption>IMG_0244.PNG</figcaption></figure></div><p>GN AU and UK[iOS and Android] :check_mark: </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/comments/1187738/743434-IMG_0251.PNG\" alt=\"IMG_0251.PNG\" loading=\"lazy\"><figcaption>IMG_0251.PNG</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/comments/1187738/743436-IMG_0253.PNG\" alt=\"IMG_0253.PNG\" loading=\"lazy\"><figcaption>IMG_0253.PNG</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/comments/1187738/743437-IMG_0252.PNG\" alt=\"IMG_0252.PNG\" loading=\"lazy\"><figcaption>IMG_0252.PNG</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7170/comments/1187738/743435-IMG_0254.PNG\" alt=\"IMG_0254.PNG\" loading=\"lazy\"><figcaption>IMG_0254.PNG</figcaption></figure></div><p> </p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/APP-7170?focusedCommentId=1187738",
-        "lastCommentDisplay": "Jun 24, 2026, 6:00 PM",
-        "lastCommentAuthor": "Avi Dalvi",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Ready for PO review",
-        "priority": "P1",
-        "assignee": "Brian Pugh",
-        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-        "assignedDeveloper": "Giancarlo Molina",
-        "assignedDeveloperAccountId": "712020:ee05a4d1-74f1-43e2-a712-076cfbbd70d3",
-        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/eb4e93c93be49d7ab323d4379a5e65f5?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FGM-2.png",
-        "updated": "2026-07-01T17:59:14.966-0400",
-        "updatedDisplay": "Jul 1, 2026, 5:59 PM",
-        "created": "2026-04-27T09:22:31.748-0400",
-        "createdDisplay": "Apr 27, 2026, 9:22 AM",
-        "components": [
-          "All Apps"
-        ],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "B2C-68",
-          "url": "https://golfnow.atlassian.net/browse/B2C-68",
-          "summary": "Apple Pay 2026",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
         }
       },
       {
@@ -33587,13 +33587,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-14T14:45:51.848Z",
-    "pulledAtDisplay": "Jul 14, 2026, 10:45 AM",
+    "pulledAt": "2026-07-14T14:50:52.552Z",
+    "pulledAtDisplay": "Jul 14, 2026, 10:50 AM",
     "window": {
-      "start": "2026-05-30T14:45:51.848Z",
-      "end": "2027-01-10T14:45:51.848Z",
-      "startDisplay": "May 30, 2026, 10:45 AM",
-      "endDisplay": "Jan 10, 2027, 9:45 AM"
+      "start": "2026-05-30T14:50:52.552Z",
+      "end": "2027-01-10T14:50:52.552Z",
+      "startDisplay": "May 30, 2026, 10:50 AM",
+      "endDisplay": "Jan 10, 2027, 9:50 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33606,7 +33606,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-14T14:45:54.428Z",
+        "pulledAt": "2026-07-14T14:50:55.368Z",
         "eventCount": 87,
         "events": [
           {
@@ -34596,23 +34596,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Summer Bank Holiday (UK)",
-            "start": "2026-08-31T00:00:00.000Z",
-            "end": "2026-09-01T00:00:00.000Z",
-            "startDate": "2026-08-31",
-            "endDate": "2026-09-01",
-            "startDisplay": "Aug 31, 2026",
-            "endDisplay": "Sep 1, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251208T183401Z-161505358@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -34625,6 +34608,23 @@
             "endDisplay": "Sep 8, 2026",
             "allDay": true,
             "type": "Golf Freeze",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203501Z-978102817@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Summer Bank Holiday (UK)",
+            "start": "2026-08-31T00:00:00.000Z",
+            "end": "2026-09-01T00:00:00.000Z",
+            "startDate": "2026-08-31",
+            "endDate": "2026-09-01",
+            "startDisplay": "Aug 31, 2026",
+            "endDisplay": "Sep 1, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -35038,23 +35038,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -35067,6 +35050,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -35094,10 +35094,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-14T14:43:02.110Z",
-    "previousPulledAtDisplay": "Jul 14, 2026, 10:43 AM",
-    "currentPulledAt": "2026-07-14T14:47:25.403Z",
-    "currentPulledAtDisplay": "Jul 14, 2026, 10:47 AM",
+    "previousPulledAt": "2026-07-14T14:47:25.403Z",
+    "previousPulledAtDisplay": "Jul 14, 2026, 10:47 AM",
+    "currentPulledAt": "2026-07-14T14:52:23.578Z",
+    "currentPulledAtDisplay": "Jul 14, 2026, 10:52 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -35105,6 +35105,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-14T14:47:25.403Z",
+      "previousPulledAtDisplay": "Jul 14, 2026, 10:47 AM",
+      "currentPulledAt": "2026-07-14T14:52:23.578Z",
+      "currentPulledAtDisplay": "Jul 14, 2026, 10:52 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-14T14:43:02.110Z",
       "previousPulledAtDisplay": "Jul 14, 2026, 10:43 AM",
@@ -36982,17 +36993,6 @@
       "previousPulledAtDisplay": "Jul 13, 2026, 8:38 PM",
       "currentPulledAt": "2026-07-14T00:42:13.567Z",
       "currentPulledAtDisplay": "Jul 13, 2026, 8:42 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-14T00:32:37.035Z",
-      "previousPulledAtDisplay": "Jul 13, 2026, 8:32 PM",
-      "currentPulledAt": "2026-07-14T00:38:10.403Z",
-      "currentPulledAtDisplay": "Jul 13, 2026, 8:38 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
