@@ -58,6 +58,8 @@ const WORKER_ROUTES = [
   "POST /api/board/refresh",
   "GET /api/asana/status",
   "POST /api/asana/intake",
+  "GET /api/asana/open-tasks",
+  "POST /api/asana/complete",
   "GET /api/slack/status",
   "GET /api/slack/activity",
   "POST /api/slack/send",
@@ -135,6 +137,23 @@ export default {
 
       return handleAsanaIntake(request, env, url);
     }
+
+    if (url.pathname === "/api/asana/open-tasks") {
+      if (request.method !== "GET") {
+        return jsonResponse({ ok: false, message: "Use GET for open Asana tickets." }, 405);
+      }
+
+      return handleAsanaOpenTasks(request, env, url);
+    }
+
+    if (url.pathname === "/api/asana/complete") {
+      if (request.method !== "POST") {
+        return jsonResponse({ ok: false, message: "Use POST to complete an Asana ticket." }, 405);
+      }
+
+      return handleAsanaComplete(request, env, url);
+    }
+
 
     if (url.pathname === "/api/slack/status") {
       return handleSlackStatus(env, url);
@@ -1560,6 +1579,198 @@ async function handleAsanaIntake(request, env, url) {
     slack: slackResult,
     warnings
   });
+}
+
+async function handleAsanaOpenTasks(request, env, url) {
+  const config = getAsanaConfig(env);
+  if (!config.tokenConfigured) {
+    return jsonResponse({
+      ok: false,
+      provider: "Asana API",
+      message: "ASANA_ACCESS_TOKEN is not configured as a Cloudflare Worker secret on Legacy HQ.",
+      tasks: [],
+      count: 0
+    }, 503);
+  }
+
+  if (!config.projectGid) {
+    return jsonResponse({
+      ok: false,
+      provider: "Asana API",
+      message: "ASANA_PROJECT_GID is not configured.",
+      tasks: [],
+      count: 0
+    }, 503);
+  }
+
+  try {
+    const tasks = await listAsanaOpenProjectTasks(env, config);
+    return jsonResponse({
+      ok: true,
+      provider: "Asana API",
+      source: "legacy-hq",
+      projectName: config.projectName,
+      workspaceName: config.workspaceName,
+      count: tasks.length,
+      refreshedAt: new Date().toISOString(),
+      tasks
+    });
+  } catch (error) {
+    return jsonResponse({
+      ok: false,
+      provider: "Asana API",
+      message: sanitizePlainText(error?.message || "Failed to load open Asana tickets.", 320),
+      tasks: [],
+      count: 0
+    }, 502);
+  }
+}
+
+async function handleAsanaComplete(request, env, url) {
+  const config = getAsanaConfig(env);
+  if (!config.tokenConfigured) {
+    return jsonResponse({
+      ok: false,
+      provider: "Asana API",
+      message: "ASANA_ACCESS_TOKEN is not configured as a Cloudflare Worker secret on Legacy HQ."
+    }, 503);
+  }
+
+  const body = await safeJson(request);
+  const taskGid = sanitizeAsanaGid(body.taskGid || body.gid || body.id || body.taskId || "");
+  if (!taskGid) {
+    return jsonResponse({
+      ok: false,
+      message: "A task id is required to complete an Asana ticket."
+    }, 400);
+  }
+
+  try {
+    const completed = await completeAsanaTask(env, config, taskGid);
+    return jsonResponse({
+      ok: true,
+      provider: "Asana API",
+      source: "legacy-hq",
+      message: `Closed ${completed.name || "Asana ticket"}.`,
+      task: completed
+    });
+  } catch (error) {
+    return jsonResponse({
+      ok: false,
+      provider: "Asana API",
+      message: sanitizePlainText(error?.message || "Failed to complete Asana ticket.", 320)
+    }, 502);
+  }
+}
+
+async function listAsanaOpenProjectTasks(env, config) {
+  const optFields = [
+    "gid",
+    "name",
+    "completed",
+    "assignee.name",
+    "due_on",
+    "due_at",
+    "permalink_url",
+    "created_at",
+    "modified_at",
+    "memberships.section.name",
+    "memberships.project.name",
+    "memberships.project.gid",
+    "custom_fields.name",
+    "custom_fields.display_value",
+    "custom_fields.enum_value.name",
+    "custom_fields.text_value",
+    "custom_fields.number_value"
+  ].join(",");
+
+  const tasks = [];
+  let path = `/projects/${config.projectGid}/tasks?completed_since=now&limit=100&opt_fields=${encodeURIComponent(optFields)}`;
+  for (let page = 0; page < 10 && path; page += 1) {
+    const payload = await asanaFetchJson(env, path);
+    for (const task of payload.data || []) {
+      if (task?.completed) continue;
+      tasks.push(normalizeAsanaKdsTask(task, config));
+    }
+    path = payload.next_page?.path || "";
+  }
+
+  tasks.sort((a, b) => {
+    const dueA = a.dueOn || a.dueAt || "";
+    const dueB = b.dueOn || b.dueAt || "";
+    if (dueA && dueB && dueA !== dueB) return dueA < dueB ? -1 : 1;
+    if (dueA && !dueB) return -1;
+    if (!dueA && dueB) return 1;
+    return String(a.createdAt || "").localeCompare(String(b.createdAt || ""));
+  });
+
+  return tasks;
+}
+
+function normalizeAsanaKdsTask(task, config) {
+  const customFields = Array.isArray(task?.custom_fields) ? task.custom_fields : [];
+  const priority = pickAsanaCustomFieldDisplay(customFields, ["Priority", "priority"]) || "";
+  const status = pickAsanaCustomFieldDisplay(customFields, ["Status", "status"]) || "Open";
+  const memberships = Array.isArray(task?.memberships) ? task.memberships : [];
+  const projectMembership = memberships.find((entry) => {
+    const projectGid = sanitizeAsanaGid(entry?.project?.gid || "");
+    return projectGid && projectGid === config.projectGid;
+  }) || memberships[0] || null;
+
+  return {
+    id: sanitizeAsanaGid(task?.gid || ""),
+    name: sanitizePlainText(task?.name || "Untitled ticket", 220),
+    assignee: sanitizePlainText(task?.assignee?.name || "Unassigned", 120),
+    project: sanitizePlainText(projectMembership?.project?.name || config.projectName, 160),
+    section: sanitizePlainText(projectMembership?.section?.name || "No section", 120),
+    dueOn: sanitizePlainText(task?.due_on || "", 32),
+    dueAt: sanitizePlainText(task?.due_at || "", 64),
+    priority: sanitizePlainText(priority, 80),
+    status: sanitizePlainText(status, 80),
+    url: sanitizeUrl(task?.permalink_url || ""),
+    createdAt: sanitizePlainText(task?.created_at || "", 64),
+    modifiedAt: sanitizePlainText(task?.modified_at || "", 64)
+  };
+}
+
+function pickAsanaCustomFieldDisplay(fields, names) {
+  const wanted = new Set(names.map((name) => normalizeAsanaName(name)));
+  for (const field of fields) {
+    if (!wanted.has(normalizeAsanaName(field?.name || ""))) continue;
+    const display =
+      field.display_value ||
+      field.enum_value?.name ||
+      field.text_value ||
+      (field.number_value != null ? String(field.number_value) : "");
+    if (display) return String(display);
+  }
+  return "";
+}
+
+async function completeAsanaTask(env, config, taskGid) {
+  const optFields = "gid,name,completed,permalink_url,projects.gid,projects.name";
+  const existing = await asanaFetchJson(
+    env,
+    `/tasks/${encodeURIComponent(taskGid)}?opt_fields=${encodeURIComponent(optFields)}`
+  );
+  const task = existing.data || {};
+  const projectGids = (task.projects || []).map((project) => sanitizeAsanaGid(project?.gid || "")).filter(Boolean);
+  if (config.projectGid && projectGids.length && !projectGids.includes(config.projectGid)) {
+    throw new Error("That ticket is outside the configured HQ Asana project and cannot be closed from KDS.");
+  }
+
+  const updated = await asanaFetchJson(env, `/tasks/${encodeURIComponent(taskGid)}`, {
+    method: "PUT",
+    body: JSON.stringify({ data: { completed: true } })
+  });
+
+  return {
+    id: sanitizeAsanaGid(updated.data?.gid || taskGid),
+    name: sanitizePlainText(updated.data?.name || task.name || "Asana ticket", 220),
+    completed: Boolean(updated.data?.completed ?? true),
+    url: sanitizeUrl(updated.data?.permalink_url || task.permalink_url || ""),
+    project: sanitizePlainText(config.projectName, 160)
+  };
 }
 
 function getAsanaConfig(env) {
