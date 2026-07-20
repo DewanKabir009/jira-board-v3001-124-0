@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-20T18:23:10.246Z",
-  "pulledAtDisplay": "Jul 20, 2026, 2:23 PM",
+  "pulledAt": "2026-07-20T18:27:56.526Z",
+  "pulledAtDisplay": "Jul 20, 2026, 2:27 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-20T18:23:10.246Z",
-    "pulledAtDisplay": "Jul 20, 2026, 2:23 PM",
+    "pulledAt": "2026-07-20T18:27:56.526Z",
+    "pulledAtDisplay": "Jul 20, 2026, 2:27 PM",
     "total": 434,
     "mainTotal": 404,
     "subtaskTotal": 30,
@@ -7918,7 +7918,7 @@
       {
         "key": "CORE-14499",
         "url": "https://golfnow.atlassian.net/browse/CORE-14499",
-        "summary": "FeeMessaging Not Working After Move",
+        "summary": "Update Stored Procedure to Display Correct Fee Messaging for PNAS Times",
         "description": "",
         "descriptionHtml": "",
         "descriptionImageCount": 0,
@@ -7934,14 +7934,14 @@
         "isSubtask": false,
         "status": "Planning",
         "priority": "None",
-        "assignee": "Corrie Thomas",
-        "assigneeAccountId": "6278785f0e2c490069024297",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/6278785f0e2c490069024297/9a824d75-70de-4965-81ef-ce64794798ce/32",
+        "assignee": "Yoel Martin Pardo",
+        "assigneeAccountId": "625571809e7380006fb29599",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
         "assignedDeveloper": "Unassigned",
         "assignedDeveloperAccountId": "",
         "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-07-15T13:27:35.319-0400",
-        "updatedDisplay": "Jul 15, 2026, 1:27 PM",
+        "updated": "2026-07-20T14:24:59.756-0400",
+        "updatedDisplay": "Jul 20, 2026, 2:24 PM",
         "created": "2026-05-26T09:28:07.660-0400",
         "createdDisplay": "May 26, 2026, 9:28 AM",
         "components": [],
@@ -33726,13 +33726,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-20T18:21:37.467Z",
-    "pulledAtDisplay": "Jul 20, 2026, 2:21 PM",
+    "pulledAt": "2026-07-20T18:26:33.667Z",
+    "pulledAtDisplay": "Jul 20, 2026, 2:26 PM",
     "window": {
-      "start": "2026-06-05T18:21:37.467Z",
-      "end": "2027-01-16T18:21:37.467Z",
-      "startDisplay": "Jun 5, 2026, 2:21 PM",
-      "endDisplay": "Jan 16, 2027, 1:21 PM"
+      "start": "2026-06-05T18:26:33.667Z",
+      "end": "2027-01-16T18:26:33.667Z",
+      "startDisplay": "Jun 5, 2026, 2:26 PM",
+      "endDisplay": "Jan 16, 2027, 1:26 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33745,7 +33745,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-20T18:21:39.756Z",
+        "pulledAt": "2026-07-20T18:26:35.652Z",
         "eventCount": 80,
         "events": [
           {
@@ -35114,10 +35114,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-20T18:17:55.690Z",
-    "previousPulledAtDisplay": "Jul 20, 2026, 2:17 PM",
-    "currentPulledAt": "2026-07-20T18:23:10.246Z",
-    "currentPulledAtDisplay": "Jul 20, 2026, 2:23 PM",
+    "previousPulledAt": "2026-07-20T18:23:10.246Z",
+    "previousPulledAtDisplay": "Jul 20, 2026, 2:23 PM",
+    "currentPulledAt": "2026-07-20T18:27:56.526Z",
+    "currentPulledAtDisplay": "Jul 20, 2026, 2:27 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -35125,6 +35125,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-20T18:23:10.246Z",
+      "previousPulledAtDisplay": "Jul 20, 2026, 2:23 PM",
+      "currentPulledAt": "2026-07-20T18:27:56.526Z",
+      "currentPulledAtDisplay": "Jul 20, 2026, 2:27 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-20T18:17:55.690Z",
       "previousPulledAtDisplay": "Jul 20, 2026, 2:17 PM",
@@ -36956,17 +36967,6 @@
       "previousPulledAtDisplay": "Jul 20, 2026, 12:22 AM",
       "currentPulledAt": "2026-07-20T04:27:49.185Z",
       "currentPulledAtDisplay": "Jul 20, 2026, 12:27 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-20T04:17:47.662Z",
-      "previousPulledAtDisplay": "Jul 20, 2026, 12:17 AM",
-      "currentPulledAt": "2026-07-20T04:22:39.811Z",
-      "currentPulledAtDisplay": "Jul 20, 2026, 12:22 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
