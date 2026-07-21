@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-21T16:32:21.838Z",
-  "pulledAtDisplay": "Jul 21, 2026, 12:32 PM",
+  "pulledAt": "2026-07-21T16:37:01.453Z",
+  "pulledAtDisplay": "Jul 21, 2026, 12:37 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-21T16:32:21.838Z",
-    "pulledAtDisplay": "Jul 21, 2026, 12:32 PM",
+    "pulledAt": "2026-07-21T16:37:01.453Z",
+    "pulledAtDisplay": "Jul 21, 2026, 12:37 PM",
     "total": 434,
     "mainTotal": 404,
     "subtaskTotal": 30,
@@ -7966,6 +7966,166 @@
         }
       },
       {
+        "key": "APP-6990",
+        "url": "https://golfnow.atlassian.net/browse/APP-6990",
+        "summary": "Support Apple Pay Transactions",
+        "description": "Apple Pay supports the ability for multi merchant transactions. We need to update our current Apple Pay logic to support this as well. This will be used for tee time + GolfPass transactions in sidecart. We very likely need to revisit our original apple pay workflow and clean it up.\n\nApple Pay Docs: https://applepaydemo.apple.com/ , https://developer.apple.com/design/human-interface-guidelines/apple-pay , https://developer.apple.com/apple-pay/marketing/ , https://developer.apple.com/apple-pay/sandbox-testing/\n\n- Expose Apple Pay on the UI\n\n- Design: https://www.figma.com/design/mOWXt8yuZAaHEXULT5utOa/Apple-Pay---MVP?node-id=59-117&p=f&m=dev\n\n- When a user attempts to purchase a standalone tee time or standalone golfpass product, submit the single cryptogram to API 2.1\n\n- API: TBD\n\n- When a user attempts to purchase a tee time + golfpass sidecart, submit the cryptograms to API 2.1\n\n- API Logic: TBD\n\n- Create a remote config to enable/disable Apple Pay per app\n\n- Labels in the Apple Pay module\n\n- When we the GolfPass+ line item in this view, we need to label it as Free Trial\n\n- In the invoice response, there is the following object\n\n\"ProductPricingTags\": {\n\"IsComplementary\": false,\n\"IsEmployee\": false,\n\"IsMilitary\": false,\n\"IsStudent\": false,\n\"IsTrial\": true\n},\n\n- If IsTrial=true, label = GolfPass+ Annual Free Trial\n\n- If IsTrial=false, label = GolfPass+ Annual\n\nDev Testing:\n\n- This should have the same validations as a credit card transaction where GolfPass is processed first\n\n- This should have the same validations as a credit card transaction where if the tee time fails, the GolfPass can still succeed and purchased\n\n- Ensure that standalone tee time (course prepaid and trade) transactions function with all payment methods including Apple Pay\n\n- Ensure that standalone GolfPass transactions function with all payment methods including Apple Pay\n\n- Test with Hot Deals, Course times, Prepaid Course Times, Prepaid times with GN & GC revenue allocation all in combination with and without GolfPass\n\n- Ensure the correct amounts get charged when using points, gift card and account credits\n\n- With and without promo codes\n\n- Test on EUR, GBP, CAD and AUD currency\n\n- This will require full regression of Checkout\n\nProd TestFlight - Post 4/28 CORE Release\n\n- Keep track and document all ReservationIds and GolfPass subscriptions/customers used to test. We will need these for data/payments validation downstream\n\n- Hot Deal\n\n- Refund a hot deal\n\n- Course time, due at course\n\n- Use EZ Greens 1 - Loyalty rate set\n\n- Submit a no show after the play date has passed - Brian can do this\n\n- Course time, prepaid\n\n- Use EZ Greens 1 - Prepaid - 18 Holes rate set\n\n- Standalone GolfPass Free Trial\n\n- do not cancel\n\n- Wait until the following day and then we will force a renewal in GNC to the paid product\n\n- Standalone GolfPass Paid\n\n- Sidecart Hot Deal Instant Savings\n\n- Sidecart Course Free trial",
+        "descriptionHtml": "<p>Apple Pay supports the ability for multi merchant transactions. We need to update our current Apple Pay logic to support this as well. This will be used for tee time + GolfPass transactions in sidecart. We very likely need to revisit our original apple pay workflow and clean it up.</p><p>Apple Pay Docs: <a href=\"https://applepaydemo.apple.com/\" target=\"_blank\" rel=\"noopener\">https://applepaydemo.apple.com/</a> , <a href=\"https://developer.apple.com/design/human-interface-guidelines/apple-pay\" target=\"_blank\" rel=\"noopener\">https://developer.apple.com/design/human-interface-guidelines/apple-pay</a> , <a href=\"https://developer.apple.com/apple-pay/marketing/\" target=\"_blank\" rel=\"noopener\">https://developer.apple.com/apple-pay/marketing/</a> , <a href=\"https://developer.apple.com/apple-pay/sandbox-testing/\" target=\"_blank\" rel=\"noopener\">https://developer.apple.com/apple-pay/sandbox-testing/</a> </p><ul><li><p>Expose Apple Pay on the UI </p><ul><li><p>Design: <a href=\"https://www.figma.com/design/mOWXt8yuZAaHEXULT5utOa/Apple-Pay---MVP?node-id=59-117&amp;p=f&amp;m=dev\" target=\"_blank\" rel=\"noopener\">https://www.figma.com/design/mOWXt8yuZAaHEXULT5utOa/Apple-Pay---MVP?node-id=59-117&amp;p=f&amp;m=dev</a> </p></li></ul></li><li><p>When a user attempts to purchase a standalone tee time or standalone golfpass product, submit the single cryptogram to API 2.1</p><ul><li><p>API: TBD</p></li></ul></li><li><p>When a user attempts to purchase a tee time + golfpass sidecart, submit the cryptograms to API 2.1 </p><ul><li><p>API Logic: TBD</p></li></ul></li><li><p>Create a remote config to enable/disable Apple Pay per app</p></li><li><p>Labels in the Apple Pay module</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-6990/717460-image-20260424-145413.png\" alt=\"image-20260424-145413.png\" loading=\"lazy\"><figcaption>image-20260424-145413.png</figcaption></figure></div><ul><li><p>When we the GolfPass+ line item in this view, we need to label it as Free Trial</p></li><li><p>In the invoice response, there is the following object</p><pre><code>                &quot;ProductPricingTags&quot;: {\n                    &quot;IsComplementary&quot;: false,\n                    &quot;IsEmployee&quot;: false,\n                    &quot;IsMilitary&quot;: false,\n                    &quot;IsStudent&quot;: false,\n                    &quot;IsTrial&quot;: true\n                },</code></pre></li><li><p>If IsTrial=true, label = GolfPass+ Annual Free Trial</p></li><li><p>If IsTrial=false, label = GolfPass+ Annual</p></li></ul></li></ul><p>Dev Testing:</p><ul><li><p>This should have the same validations as a credit card transaction where GolfPass is processed first</p></li><li><p>This should have the same validations as a credit card transaction where if the tee time fails, the GolfPass can still succeed and purchased</p></li><li><p>Ensure that standalone tee time (course prepaid and trade) transactions function with all payment methods including Apple Pay</p></li><li><p>Ensure that standalone GolfPass transactions function with all payment methods including Apple Pay</p></li><li><p>Test with Hot Deals, Course times, Prepaid Course Times, Prepaid times with GN &amp; GC revenue allocation all in combination with and without GolfPass</p></li><li><p>Ensure the correct amounts get charged when using points, gift card and account credits</p><ul><li><p>With and without promo codes</p></li></ul></li><li><p>Test on EUR, GBP, CAD and AUD currency</p></li><li><p>This will require full regression of Checkout</p></li></ul><p>Prod TestFlight - Post 4/28 CORE Release</p><ul><li><p>Keep track and document all ReservationIds and GolfPass subscriptions/customers used to test. We will need these for data/payments validation downstream</p></li><li><p>Hot Deal</p></li><li><p>Refund a hot deal</p></li><li><p>Course time, due at course</p><ul><li><p>Use EZ Greens 1 - Loyalty rate set</p></li><li><p>Submit a no show after the play date has passed - Brian can do this</p></li></ul></li><li><p>Course time, prepaid</p><ul><li><p>Use EZ Greens 1 - Prepaid - 18 Holes rate set </p></li></ul></li><li><p>Standalone GolfPass Free Trial</p><ul><li><p>do not cancel</p></li><li><p>Wait until the following day and then we will force a renewal in GNC to the paid product</p></li></ul></li><li><p>Standalone GolfPass Paid</p></li><li><p>Sidecart Hot Deal Instant Savings</p></li><li><p>Sidecart Course Free trial</p></li></ul>",
+        "descriptionImageCount": 1,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 1,
+        "commentCount": 7,
+        "comments": [
+          {
+            "id": "1156086",
+            "url": "https://golfnow.atlassian.net/browse/APP-6990?focusedCommentId=1156086",
+            "author": "Brian Pugh",
+            "authorAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
+            "created": "2026-04-24T11:01:58.356-0400",
+            "createdDisplay": "Apr 24, 2026, 11:01 AM",
+            "updated": "2026-04-24T11:01:58.356-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "@Giancarlo Molina @Avi Dalvi i needed to add the Apple Pay module labels piece to this ticket to meet legal compliance. There will be a follow up ticket next sprint to support a more flexible and permanent fix",
+            "bodyHtml": "<p>@Giancarlo Molina @Avi Dalvi i needed to add the Apple Pay module labels piece to this ticket to meet legal compliance. There will be a follow up ticket next sprint to support a more flexible and permanent fix</p>"
+          },
+          {
+            "id": "1158251",
+            "url": "https://golfnow.atlassian.net/browse/APP-6990?focusedCommentId=1158251",
+            "author": "Avi Dalvi",
+            "authorAccountId": "712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc/0d9eecf8-30cd-4531-a423-c63a37728e11/32",
+            "created": "2026-04-30T10:44:45.582-0400",
+            "createdDisplay": "Apr 30, 2026, 10:44 AM",
+            "updated": "2026-04-30T10:44:45.582-0400",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 1,
+            "body": "ApplePay payment fails when applying any promo code ('qa1', 'qa2')",
+            "bodyHtml": "<p>ApplePay payment fails when applying any promo code ('qa1', 'qa2')</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-6990/comments/1158251/719103-Screenshot-2026-04-30-at-9.43.06-AM.png\" alt=\"Screenshot 2026-04-30 at 9.43.06 AM.png\" loading=\"lazy\"><figcaption>Screenshot 2026-04-30 at 9.43.06 AM.png</figcaption></figure></div>"
+          },
+          {
+            "id": "1159961",
+            "url": "https://golfnow.atlassian.net/browse/APP-6990?focusedCommentId=1159961",
+            "author": "Avi Dalvi",
+            "authorAccountId": "712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc/0d9eecf8-30cd-4531-a423-c63a37728e11/32",
+            "created": "2026-05-05T10:13:18.368-0400",
+            "createdDisplay": "May 5, 2026, 10:13 AM",
+            "updated": "2026-05-05T11:21:49.814-0400",
+            "updatedDisplay": "May 5, 2026, 11:21 AM",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "GN US - Apple Pay Transactions\n\n- Trade times :check_mark:\n\n- Course times :check_mark:\n\n- Giftcard :check_mark:\n\n- Promocode :check_mark:\n\n- Account balance :check_mark:\n\n- Free Trial Product :check_mark:\n\n- Paid Product :check_mark:\n\n- Prepaid Times :check_mark:\n\n- Free Trail Sidecart :cross_mark:\n\n- Paid Instant savings sidecart :cross_mark:\n\n- GP points",
+            "bodyHtml": "<p>GN US - Apple Pay Transactions</p><ul><li><p>Trade times :check_mark: </p></li><li><p>Course times :check_mark: </p></li><li><p>Giftcard :check_mark: </p></li><li><p>Promocode :check_mark: </p></li><li><p>Account balance :check_mark: </p></li><li><p>Free Trial Product :check_mark: </p></li><li><p>Paid Product :check_mark: </p></li><li><p>Prepaid Times :check_mark: </p></li><li><p>Free Trail Sidecart :cross_mark: </p></li><li><p>Paid Instant savings sidecart :cross_mark: </p></li><li><p>GP points </p></li></ul>"
+          },
+          {
+            "id": "1160130",
+            "url": "https://golfnow.atlassian.net/browse/APP-6990?focusedCommentId=1160130",
+            "author": "Avi Dalvi",
+            "authorAccountId": "712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc/0d9eecf8-30cd-4531-a423-c63a37728e11/32",
+            "created": "2026-05-05T13:56:15.282-0400",
+            "createdDisplay": "May 5, 2026, 1:56 PM",
+            "updated": "2026-05-05T13:56:15.282-0400",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 1,
+            "body": "App crashes for international rates with Apple Pay",
+            "bodyHtml": "<p>App crashes for international rates with Apple Pay</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-6990/comments/1160130/717460-image-20260424-145413.png\" alt=\"ScreenRecording_05-05-2026 13-54-57_1.MP4\" loading=\"lazy\"><figcaption>ScreenRecording_05-05-2026 13-54-57_1.MP4</figcaption></figure></div>"
+          },
+          {
+            "id": "1160161",
+            "url": "https://golfnow.atlassian.net/browse/APP-6990?focusedCommentId=1160161",
+            "author": "Avi Dalvi",
+            "authorAccountId": "712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc/0d9eecf8-30cd-4531-a423-c63a37728e11/32",
+            "created": "2026-05-05T14:47:08.759-0400",
+            "createdDisplay": "May 5, 2026, 2:47 PM",
+            "updated": "2026-05-05T14:47:08.759-0400",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 1,
+            "body": "User cannot select Apple Pay payment method for Pay & Checkin  flow",
+            "bodyHtml": "<p>User cannot select Apple Pay payment method for Pay &amp; Checkin  flow</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-6990/comments/1160161/717460-image-20260424-145413.png\" alt=\"ScreenRecording_05-05-2026 14-45-14_1.MP4\" loading=\"lazy\"><figcaption>ScreenRecording_05-05-2026 14-45-14_1.MP4</figcaption></figure></div>"
+          },
+          {
+            "id": "1160196",
+            "url": "https://golfnow.atlassian.net/browse/APP-6990?focusedCommentId=1160196",
+            "author": "Lara Golovachenko",
+            "authorAccountId": "557058:949a46b9-28b8-4a1d-9abc-8a403e8836aa",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/557058:949a46b9-28b8-4a1d-9abc-8a403e8836aa/631edf5e-a1b0-4f2e-82f3-74b047a90ac7/32",
+            "created": "2026-05-05T15:37:46.391-0400",
+            "createdDisplay": "May 5, 2026, 3:37 PM",
+            "updated": "2026-05-05T15:37:46.391-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Per @Brian Pugh hiding Apple pay from smartplay workflow in a meantime.\n\ncc @Jackson Hall",
+            "bodyHtml": "<p>Per @Brian Pugh hiding Apple pay from smartplay workflow in a meantime.</p><p>cc @Jackson Hall </p>"
+          },
+          {
+            "id": "1169608",
+            "url": "https://golfnow.atlassian.net/browse/APP-6990?focusedCommentId=1169608",
+            "author": "Avi Dalvi",
+            "authorAccountId": "712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc/0d9eecf8-30cd-4531-a423-c63a37728e11/32",
+            "created": "2026-05-13T05:33:20.700-0400",
+            "createdDisplay": "May 13, 2026, 5:33 AM",
+            "updated": "2026-05-13T05:33:20.700-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "GN US - Apple Pay Transactions\n\n- Trade times :check_mark:\n\n- Course times :check_mark:\n\n- Giftcard :check_mark:\n\n- Promocode :check_mark:\n\n- Account balance :check_mark:\n\n- Free Trial Product :check_mark:\n\n- Paid Product :check_mark:\n\n- Prepaid Times :check_mark:\n\n- Guest checkout :check_mark:\n\n- Free Trail Sidecart :cross_mark:\n\n- Paid Instant savings sidecart :cross_mark:\n\n- GP points\n\n- International Currencies, AUD, EUR, GBP and CAD :check_mark:",
+            "bodyHtml": "<p>GN US - Apple Pay Transactions</p><ul><li><p>Trade times :check_mark: </p></li><li><p>Course times :check_mark: </p></li><li><p>Giftcard :check_mark: </p></li><li><p>Promocode :check_mark: </p></li><li><p>Account balance :check_mark: </p></li><li><p>Free Trial Product :check_mark: </p></li><li><p>Paid Product :check_mark: </p></li><li><p>Prepaid Times :check_mark: </p></li><li><p>Guest checkout :check_mark: </p></li><li><p>Free Trail Sidecart :cross_mark: </p></li><li><p>Paid Instant savings sidecart :cross_mark: </p></li><li><p>GP points </p></li><li><p>International Currencies, AUD, EUR, GBP and CAD :check_mark: </p></li></ul>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/APP-6990?focusedCommentId=1169608",
+        "lastCommentDisplay": "May 13, 2026, 5:33 AM",
+        "lastCommentAuthor": "Avi Dalvi",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Done",
+        "priority": "None",
+        "assignee": "Brian Pugh",
+        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
+        "assignedDeveloper": "Giancarlo Molina",
+        "assignedDeveloperAccountId": "712020:ee05a4d1-74f1-43e2-a712-076cfbbd70d3",
+        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/eb4e93c93be49d7ab323d4379a5e65f5?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FGM-2.png",
+        "updated": "2026-07-21T12:31:27.926-0400",
+        "updatedDisplay": "Jul 21, 2026, 12:31 PM",
+        "created": "2026-01-30T10:01:33.489-0500",
+        "createdDisplay": "Jan 30, 2026, 10:01 AM",
+        "components": [
+          "All Apps"
+        ],
+        "fixVersions": [
+          "Mobile - 5.17.0 - US/UK/AU/TeeOff"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "B2C-68",
+          "url": "https://golfnow.atlassian.net/browse/B2C-68",
+          "summary": "Apple Pay 2026",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "UXD-1264",
         "url": "https://golfnow.atlassian.net/browse/UXD-1264",
         "summary": "[Design] Apple Pay - MVP",
@@ -12061,166 +12221,6 @@
         "created": "2023-04-14T09:30:06.527-0400",
         "createdDisplay": "Apr 14, 2023, 9:30 AM",
         "components": [],
-        "fixVersions": [
-          "Mobile - 5.17.0 - US/UK/AU/TeeOff"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "B2C-68",
-          "url": "https://golfnow.atlassian.net/browse/B2C-68",
-          "summary": "Apple Pay 2026",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "APP-6990",
-        "url": "https://golfnow.atlassian.net/browse/APP-6990",
-        "summary": "Support Apple Pay Transactions",
-        "description": "Apple Pay supports the ability for multi merchant transactions. We need to update our current Apple Pay logic to support this as well. This will be used for tee time + GolfPass transactions in sidecart. We very likely need to revisit our original apple pay workflow and clean it up.\n\nApple Pay Docs: https://applepaydemo.apple.com/ , https://developer.apple.com/design/human-interface-guidelines/apple-pay , https://developer.apple.com/apple-pay/marketing/ , https://developer.apple.com/apple-pay/sandbox-testing/\n\n- Expose Apple Pay on the UI\n\n- Design: https://www.figma.com/design/mOWXt8yuZAaHEXULT5utOa/Apple-Pay---MVP?node-id=59-117&p=f&m=dev\n\n- When a user attempts to purchase a standalone tee time or standalone golfpass product, submit the single cryptogram to API 2.1\n\n- API: TBD\n\n- When a user attempts to purchase a tee time + golfpass sidecart, submit the cryptograms to API 2.1\n\n- API Logic: TBD\n\n- Create a remote config to enable/disable Apple Pay per app\n\n- Labels in the Apple Pay module\n\n- When we the GolfPass+ line item in this view, we need to label it as Free Trial\n\n- In the invoice response, there is the following object\n\n\"ProductPricingTags\": {\n\"IsComplementary\": false,\n\"IsEmployee\": false,\n\"IsMilitary\": false,\n\"IsStudent\": false,\n\"IsTrial\": true\n},\n\n- If IsTrial=true, label = GolfPass+ Annual Free Trial\n\n- If IsTrial=false, label = GolfPass+ Annual\n\nDev Testing:\n\n- This should have the same validations as a credit card transaction where GolfPass is processed first\n\n- This should have the same validations as a credit card transaction where if the tee time fails, the GolfPass can still succeed and purchased\n\n- Ensure that standalone tee time (course prepaid and trade) transactions function with all payment methods including Apple Pay\n\n- Ensure that standalone GolfPass transactions function with all payment methods including Apple Pay\n\n- Test with Hot Deals, Course times, Prepaid Course Times, Prepaid times with GN & GC revenue allocation all in combination with and without GolfPass\n\n- Ensure the correct amounts get charged when using points, gift card and account credits\n\n- With and without promo codes\n\n- Test on EUR, GBP, CAD and AUD currency\n\n- This will require full regression of Checkout\n\nProd TestFlight - Post 4/28 CORE Release\n\n- Keep track and document all ReservationIds and GolfPass subscriptions/customers used to test. We will need these for data/payments validation downstream\n\n- Hot Deal\n\n- Refund a hot deal\n\n- Course time, due at course\n\n- Use EZ Greens 1 - Loyalty rate set\n\n- Submit a no show after the play date has passed - Brian can do this\n\n- Course time, prepaid\n\n- Use EZ Greens 1 - Prepaid - 18 Holes rate set\n\n- Standalone GolfPass Free Trial\n\n- do not cancel\n\n- Wait until the following day and then we will force a renewal in GNC to the paid product\n\n- Standalone GolfPass Paid\n\n- Sidecart Hot Deal Instant Savings\n\n- Sidecart Course Free trial",
-        "descriptionHtml": "<p>Apple Pay supports the ability for multi merchant transactions. We need to update our current Apple Pay logic to support this as well. This will be used for tee time + GolfPass transactions in sidecart. We very likely need to revisit our original apple pay workflow and clean it up.</p><p>Apple Pay Docs: <a href=\"https://applepaydemo.apple.com/\" target=\"_blank\" rel=\"noopener\">https://applepaydemo.apple.com/</a> , <a href=\"https://developer.apple.com/design/human-interface-guidelines/apple-pay\" target=\"_blank\" rel=\"noopener\">https://developer.apple.com/design/human-interface-guidelines/apple-pay</a> , <a href=\"https://developer.apple.com/apple-pay/marketing/\" target=\"_blank\" rel=\"noopener\">https://developer.apple.com/apple-pay/marketing/</a> , <a href=\"https://developer.apple.com/apple-pay/sandbox-testing/\" target=\"_blank\" rel=\"noopener\">https://developer.apple.com/apple-pay/sandbox-testing/</a> </p><ul><li><p>Expose Apple Pay on the UI </p><ul><li><p>Design: <a href=\"https://www.figma.com/design/mOWXt8yuZAaHEXULT5utOa/Apple-Pay---MVP?node-id=59-117&amp;p=f&amp;m=dev\" target=\"_blank\" rel=\"noopener\">https://www.figma.com/design/mOWXt8yuZAaHEXULT5utOa/Apple-Pay---MVP?node-id=59-117&amp;p=f&amp;m=dev</a> </p></li></ul></li><li><p>When a user attempts to purchase a standalone tee time or standalone golfpass product, submit the single cryptogram to API 2.1</p><ul><li><p>API: TBD</p></li></ul></li><li><p>When a user attempts to purchase a tee time + golfpass sidecart, submit the cryptograms to API 2.1 </p><ul><li><p>API Logic: TBD</p></li></ul></li><li><p>Create a remote config to enable/disable Apple Pay per app</p></li><li><p>Labels in the Apple Pay module</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-6990/717460-image-20260424-145413.png\" alt=\"image-20260424-145413.png\" loading=\"lazy\"><figcaption>image-20260424-145413.png</figcaption></figure></div><ul><li><p>When we the GolfPass+ line item in this view, we need to label it as Free Trial</p></li><li><p>In the invoice response, there is the following object</p><pre><code>                &quot;ProductPricingTags&quot;: {\n                    &quot;IsComplementary&quot;: false,\n                    &quot;IsEmployee&quot;: false,\n                    &quot;IsMilitary&quot;: false,\n                    &quot;IsStudent&quot;: false,\n                    &quot;IsTrial&quot;: true\n                },</code></pre></li><li><p>If IsTrial=true, label = GolfPass+ Annual Free Trial</p></li><li><p>If IsTrial=false, label = GolfPass+ Annual</p></li></ul></li></ul><p>Dev Testing:</p><ul><li><p>This should have the same validations as a credit card transaction where GolfPass is processed first</p></li><li><p>This should have the same validations as a credit card transaction where if the tee time fails, the GolfPass can still succeed and purchased</p></li><li><p>Ensure that standalone tee time (course prepaid and trade) transactions function with all payment methods including Apple Pay</p></li><li><p>Ensure that standalone GolfPass transactions function with all payment methods including Apple Pay</p></li><li><p>Test with Hot Deals, Course times, Prepaid Course Times, Prepaid times with GN &amp; GC revenue allocation all in combination with and without GolfPass</p></li><li><p>Ensure the correct amounts get charged when using points, gift card and account credits</p><ul><li><p>With and without promo codes</p></li></ul></li><li><p>Test on EUR, GBP, CAD and AUD currency</p></li><li><p>This will require full regression of Checkout</p></li></ul><p>Prod TestFlight - Post 4/28 CORE Release</p><ul><li><p>Keep track and document all ReservationIds and GolfPass subscriptions/customers used to test. We will need these for data/payments validation downstream</p></li><li><p>Hot Deal</p></li><li><p>Refund a hot deal</p></li><li><p>Course time, due at course</p><ul><li><p>Use EZ Greens 1 - Loyalty rate set</p></li><li><p>Submit a no show after the play date has passed - Brian can do this</p></li></ul></li><li><p>Course time, prepaid</p><ul><li><p>Use EZ Greens 1 - Prepaid - 18 Holes rate set </p></li></ul></li><li><p>Standalone GolfPass Free Trial</p><ul><li><p>do not cancel</p></li><li><p>Wait until the following day and then we will force a renewal in GNC to the paid product</p></li></ul></li><li><p>Standalone GolfPass Paid</p></li><li><p>Sidecart Hot Deal Instant Savings</p></li><li><p>Sidecart Course Free trial</p></li></ul>",
-        "descriptionImageCount": 1,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 7,
-        "comments": [
-          {
-            "id": "1156086",
-            "url": "https://golfnow.atlassian.net/browse/APP-6990?focusedCommentId=1156086",
-            "author": "Brian Pugh",
-            "authorAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-            "created": "2026-04-24T11:01:58.356-0400",
-            "createdDisplay": "Apr 24, 2026, 11:01 AM",
-            "updated": "2026-04-24T11:01:58.356-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "@Giancarlo Molina @Avi Dalvi i needed to add the Apple Pay module labels piece to this ticket to meet legal compliance. There will be a follow up ticket next sprint to support a more flexible and permanent fix",
-            "bodyHtml": "<p>@Giancarlo Molina @Avi Dalvi i needed to add the Apple Pay module labels piece to this ticket to meet legal compliance. There will be a follow up ticket next sprint to support a more flexible and permanent fix</p>"
-          },
-          {
-            "id": "1158251",
-            "url": "https://golfnow.atlassian.net/browse/APP-6990?focusedCommentId=1158251",
-            "author": "Avi Dalvi",
-            "authorAccountId": "712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc/0d9eecf8-30cd-4531-a423-c63a37728e11/32",
-            "created": "2026-04-30T10:44:45.582-0400",
-            "createdDisplay": "Apr 30, 2026, 10:44 AM",
-            "updated": "2026-04-30T10:44:45.582-0400",
-            "updatedDisplay": "",
-            "hasMedia": true,
-            "mediaCount": 1,
-            "body": "ApplePay payment fails when applying any promo code ('qa1', 'qa2')",
-            "bodyHtml": "<p>ApplePay payment fails when applying any promo code ('qa1', 'qa2')</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-6990/comments/1158251/719103-Screenshot-2026-04-30-at-9.43.06-AM.png\" alt=\"Screenshot 2026-04-30 at 9.43.06 AM.png\" loading=\"lazy\"><figcaption>Screenshot 2026-04-30 at 9.43.06 AM.png</figcaption></figure></div>"
-          },
-          {
-            "id": "1159961",
-            "url": "https://golfnow.atlassian.net/browse/APP-6990?focusedCommentId=1159961",
-            "author": "Avi Dalvi",
-            "authorAccountId": "712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc/0d9eecf8-30cd-4531-a423-c63a37728e11/32",
-            "created": "2026-05-05T10:13:18.368-0400",
-            "createdDisplay": "May 5, 2026, 10:13 AM",
-            "updated": "2026-05-05T11:21:49.814-0400",
-            "updatedDisplay": "May 5, 2026, 11:21 AM",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "GN US - Apple Pay Transactions\n\n- Trade times :check_mark:\n\n- Course times :check_mark:\n\n- Giftcard :check_mark:\n\n- Promocode :check_mark:\n\n- Account balance :check_mark:\n\n- Free Trial Product :check_mark:\n\n- Paid Product :check_mark:\n\n- Prepaid Times :check_mark:\n\n- Free Trail Sidecart :cross_mark:\n\n- Paid Instant savings sidecart :cross_mark:\n\n- GP points",
-            "bodyHtml": "<p>GN US - Apple Pay Transactions</p><ul><li><p>Trade times :check_mark: </p></li><li><p>Course times :check_mark: </p></li><li><p>Giftcard :check_mark: </p></li><li><p>Promocode :check_mark: </p></li><li><p>Account balance :check_mark: </p></li><li><p>Free Trial Product :check_mark: </p></li><li><p>Paid Product :check_mark: </p></li><li><p>Prepaid Times :check_mark: </p></li><li><p>Free Trail Sidecart :cross_mark: </p></li><li><p>Paid Instant savings sidecart :cross_mark: </p></li><li><p>GP points </p></li></ul>"
-          },
-          {
-            "id": "1160130",
-            "url": "https://golfnow.atlassian.net/browse/APP-6990?focusedCommentId=1160130",
-            "author": "Avi Dalvi",
-            "authorAccountId": "712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc/0d9eecf8-30cd-4531-a423-c63a37728e11/32",
-            "created": "2026-05-05T13:56:15.282-0400",
-            "createdDisplay": "May 5, 2026, 1:56 PM",
-            "updated": "2026-05-05T13:56:15.282-0400",
-            "updatedDisplay": "",
-            "hasMedia": true,
-            "mediaCount": 1,
-            "body": "App crashes for international rates with Apple Pay",
-            "bodyHtml": "<p>App crashes for international rates with Apple Pay</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-6990/comments/1160130/717460-image-20260424-145413.png\" alt=\"ScreenRecording_05-05-2026 13-54-57_1.MP4\" loading=\"lazy\"><figcaption>ScreenRecording_05-05-2026 13-54-57_1.MP4</figcaption></figure></div>"
-          },
-          {
-            "id": "1160161",
-            "url": "https://golfnow.atlassian.net/browse/APP-6990?focusedCommentId=1160161",
-            "author": "Avi Dalvi",
-            "authorAccountId": "712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc/0d9eecf8-30cd-4531-a423-c63a37728e11/32",
-            "created": "2026-05-05T14:47:08.759-0400",
-            "createdDisplay": "May 5, 2026, 2:47 PM",
-            "updated": "2026-05-05T14:47:08.759-0400",
-            "updatedDisplay": "",
-            "hasMedia": true,
-            "mediaCount": 1,
-            "body": "User cannot select Apple Pay payment method for Pay & Checkin  flow",
-            "bodyHtml": "<p>User cannot select Apple Pay payment method for Pay &amp; Checkin  flow</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-6990/comments/1160161/717460-image-20260424-145413.png\" alt=\"ScreenRecording_05-05-2026 14-45-14_1.MP4\" loading=\"lazy\"><figcaption>ScreenRecording_05-05-2026 14-45-14_1.MP4</figcaption></figure></div>"
-          },
-          {
-            "id": "1160196",
-            "url": "https://golfnow.atlassian.net/browse/APP-6990?focusedCommentId=1160196",
-            "author": "Lara Golovachenko",
-            "authorAccountId": "557058:949a46b9-28b8-4a1d-9abc-8a403e8836aa",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/557058:949a46b9-28b8-4a1d-9abc-8a403e8836aa/631edf5e-a1b0-4f2e-82f3-74b047a90ac7/32",
-            "created": "2026-05-05T15:37:46.391-0400",
-            "createdDisplay": "May 5, 2026, 3:37 PM",
-            "updated": "2026-05-05T15:37:46.391-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Per @Brian Pugh hiding Apple pay from smartplay workflow in a meantime.\n\ncc @Jackson Hall",
-            "bodyHtml": "<p>Per @Brian Pugh hiding Apple pay from smartplay workflow in a meantime.</p><p>cc @Jackson Hall </p>"
-          },
-          {
-            "id": "1169608",
-            "url": "https://golfnow.atlassian.net/browse/APP-6990?focusedCommentId=1169608",
-            "author": "Avi Dalvi",
-            "authorAccountId": "712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:3526404f-15b0-4a69-a5a7-4eef9241d9cc/0d9eecf8-30cd-4531-a423-c63a37728e11/32",
-            "created": "2026-05-13T05:33:20.700-0400",
-            "createdDisplay": "May 13, 2026, 5:33 AM",
-            "updated": "2026-05-13T05:33:20.700-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "GN US - Apple Pay Transactions\n\n- Trade times :check_mark:\n\n- Course times :check_mark:\n\n- Giftcard :check_mark:\n\n- Promocode :check_mark:\n\n- Account balance :check_mark:\n\n- Free Trial Product :check_mark:\n\n- Paid Product :check_mark:\n\n- Prepaid Times :check_mark:\n\n- Guest checkout :check_mark:\n\n- Free Trail Sidecart :cross_mark:\n\n- Paid Instant savings sidecart :cross_mark:\n\n- GP points\n\n- International Currencies, AUD, EUR, GBP and CAD :check_mark:",
-            "bodyHtml": "<p>GN US - Apple Pay Transactions</p><ul><li><p>Trade times :check_mark: </p></li><li><p>Course times :check_mark: </p></li><li><p>Giftcard :check_mark: </p></li><li><p>Promocode :check_mark: </p></li><li><p>Account balance :check_mark: </p></li><li><p>Free Trial Product :check_mark: </p></li><li><p>Paid Product :check_mark: </p></li><li><p>Prepaid Times :check_mark: </p></li><li><p>Guest checkout :check_mark: </p></li><li><p>Free Trail Sidecart :cross_mark: </p></li><li><p>Paid Instant savings sidecart :cross_mark: </p></li><li><p>GP points </p></li><li><p>International Currencies, AUD, EUR, GBP and CAD :check_mark: </p></li></ul>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/APP-6990?focusedCommentId=1169608",
-        "lastCommentDisplay": "May 13, 2026, 5:33 AM",
-        "lastCommentAuthor": "Avi Dalvi",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Done",
-        "priority": "None",
-        "assignee": "Brian Pugh",
-        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-        "assignedDeveloper": "Giancarlo Molina",
-        "assignedDeveloperAccountId": "712020:ee05a4d1-74f1-43e2-a712-076cfbbd70d3",
-        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/eb4e93c93be49d7ab323d4379a5e65f5?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FGM-2.png",
-        "updated": "2026-05-26T13:41:46.596-0400",
-        "updatedDisplay": "May 26, 2026, 1:41 PM",
-        "created": "2026-01-30T10:01:33.489-0500",
-        "createdDisplay": "Jan 30, 2026, 10:01 AM",
-        "components": [
-          "All Apps"
-        ],
         "fixVersions": [
           "Mobile - 5.17.0 - US/UK/AU/TeeOff"
         ],
@@ -33765,13 +33765,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-21T16:30:50.258Z",
-    "pulledAtDisplay": "Jul 21, 2026, 12:30 PM",
+    "pulledAt": "2026-07-21T16:35:44.244Z",
+    "pulledAtDisplay": "Jul 21, 2026, 12:35 PM",
     "window": {
-      "start": "2026-06-06T16:30:50.258Z",
-      "end": "2027-01-17T16:30:50.258Z",
-      "startDisplay": "Jun 6, 2026, 12:30 PM",
-      "endDisplay": "Jan 17, 2027, 11:30 AM"
+      "start": "2026-06-06T16:35:44.244Z",
+      "end": "2027-01-17T16:35:44.244Z",
+      "startDisplay": "Jun 6, 2026, 12:35 PM",
+      "endDisplay": "Jan 17, 2027, 11:35 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33784,7 +33784,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-21T16:30:52.138Z",
+        "pulledAt": "2026-07-21T16:35:48.066Z",
         "eventCount": 80,
         "events": [
           {
@@ -35153,10 +35153,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-21T16:27:10.916Z",
-    "previousPulledAtDisplay": "Jul 21, 2026, 12:27 PM",
-    "currentPulledAt": "2026-07-21T16:32:21.838Z",
-    "currentPulledAtDisplay": "Jul 21, 2026, 12:32 PM",
+    "previousPulledAt": "2026-07-21T16:32:21.838Z",
+    "previousPulledAtDisplay": "Jul 21, 2026, 12:32 PM",
+    "currentPulledAt": "2026-07-21T16:37:01.453Z",
+    "currentPulledAtDisplay": "Jul 21, 2026, 12:37 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -35164,6 +35164,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-21T16:32:21.838Z",
+      "previousPulledAtDisplay": "Jul 21, 2026, 12:32 PM",
+      "currentPulledAt": "2026-07-21T16:37:01.453Z",
+      "currentPulledAtDisplay": "Jul 21, 2026, 12:37 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-21T16:27:10.916Z",
       "previousPulledAtDisplay": "Jul 21, 2026, 12:27 PM",
@@ -36995,17 +37006,6 @@
       "previousPulledAtDisplay": "Jul 20, 2026, 10:32 PM",
       "currentPulledAt": "2026-07-21T02:37:58.490Z",
       "currentPulledAtDisplay": "Jul 20, 2026, 10:37 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-21T02:28:54.117Z",
-      "previousPulledAtDisplay": "Jul 20, 2026, 10:28 PM",
-      "currentPulledAt": "2026-07-21T02:32:59.545Z",
-      "currentPulledAtDisplay": "Jul 20, 2026, 10:32 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
