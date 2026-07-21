@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-21T18:57:41.933Z",
-  "pulledAtDisplay": "Jul 21, 2026, 2:57 PM",
+  "pulledAt": "2026-07-21T19:03:46.928Z",
+  "pulledAtDisplay": "Jul 21, 2026, 3:03 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-21T18:57:41.933Z",
-    "pulledAtDisplay": "Jul 21, 2026, 2:57 PM",
+    "pulledAt": "2026-07-21T19:03:46.928Z",
+    "pulledAtDisplay": "Jul 21, 2026, 3:03 PM",
     "total": 434,
     "mainTotal": 404,
     "subtaskTotal": 30,
@@ -7966,6 +7966,56 @@
         }
       },
       {
+        "key": "CORE-13959",
+        "url": "https://golfnow.atlassian.net/browse/CORE-13959",
+        "summary": "[Commerce] Total tax equals $0 in GNC on the reservation edit screen after completing a reservation in BE",
+        "description": "Best Guess\n\nBest guess as to cause is this data is being ingested incorrectly from commerce and we’re not mapping a field correctly to have it display in GNC.\n\nEnvironment: QA\n\nSTR:\n\n- Navigate to a BE with commerce API enabled https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes\n\n- Log in\n\n- Add a tee time to cart (reproduces for all rate types: non-prepay, prepaid, partially prepaid)\n\n- Proceed to checkout\n\n- View the summary section and verify that tax is calculated properly\n\n- Fill in the payment form and complete a reservation\n\n- Go to https://golfnowcentral.dev.golfnow.io/ > Customers > Search for the user from step 2\n\n- View the reservation history and click “edit” for the needed one\n\n- View the reservation summary above the transaction history\n\nAR: The total tax value = $0 despite the taxes get calculated properly in the transaction history\n\nNote: Does not reproduce for non-commerce BEs\n\nPrepaid reservation\n\nNon-Prepay reservation\n\nER: Total tax field should show correct total tax value in GNC",
+        "descriptionHtml": "<h3>Best Guess</h3><p>Best guess as to cause is this data is being ingested incorrectly from commerce and we’re not mapping a field correctly to have it display in GNC.</p><p><strong>Environment:</strong> QA</p><p><strong>STR</strong>:</p><ol><li><p>Navigate to a BE with commerce API enabled <a href=\"https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes\" target=\"_blank\" rel=\"noopener\">https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes</a> </p></li><li><p>Log in</p></li><li><p>Add a tee time to cart (reproduces for all rate types:<strong><em> non-prepay, prepaid, partially prepaid</em></strong>)</p></li><li><p>Proceed to checkout</p></li><li><p>View the summary section and verify that tax is calculated properly</p></li><li><p>Fill in the payment form and complete a reservation</p></li><li><p>Go to <a href=\"https://golfnowcentral.dev.golfnow.io/\" target=\"_blank\" rel=\"noopener\">https://golfnowcentral.dev.golfnow.io/</a> &gt; Customers &gt; Search for the user from step 2</p></li><li><p>View the reservation history and click “edit” for the needed one</p></li><li><p>View the reservation summary above the transaction history</p></li></ol><p><strong>AR</strong>: The total tax value = $0 despite the taxes get calculated properly in the transaction history</p><p><strong>Note</strong>: Does not reproduce for non-commerce BEs</p><p><strong>Prepaid reservation</strong></p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-13959/519157-Monosnap-Checkout-Google-Chrome-2025-12-08-12.22.png\" alt=\"Monosnap Video 2025-12-08 11.3.mp4\" loading=\"lazy\"><figcaption>Monosnap Video 2025-12-08 11.3.mp4</figcaption></figure></div><p><strong>Non-Prepay reservation</strong></p><div class=\"description-media-group\"><div class=\"description-media-missing\">Monosnap Checkout - Google Chrome 2025-12-08 12.22.png could not be embedded.</div></div><p><strong>ER</strong>: Total tax field should show correct total tax value in GNC</p>",
+        "descriptionImageCount": 1,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 1,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "P3",
+        "assignee": "Andrew Horvat",
+        "assigneeAccountId": "712020:d714b2a6-3491-46da-89f1-9777e2d1ab70",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:d714b2a6-3491-46da-89f1-9777e2d1ab70/25dedc4a-09d9-4ec9-945c-34d31d771711/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-07-21T14:57:17.362-0400",
+        "updatedDisplay": "Jul 21, 2026, 2:57 PM",
+        "created": "2025-12-08T13:12:52.064-0500",
+        "createdDisplay": "Dec 8, 2025, 1:12 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-13172",
+          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
+          "summary": "Commerce Proxy API",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
         "key": "APP-6990",
         "url": "https://golfnow.atlassian.net/browse/APP-6990",
         "summary": "Support Apple Pay Transactions",
@@ -8767,56 +8817,6 @@
           "key": "CORE-14301",
           "url": "https://golfnow.atlassian.net/browse/CORE-14301",
           "summary": "GolfPass \"Home Course\": Phase I",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-13959",
-        "url": "https://golfnow.atlassian.net/browse/CORE-13959",
-        "summary": "[Commerce] Total tax equals $0 in GNC on the reservation edit screen after completing a reservation in BE",
-        "description": "Best Guess\n\nBest guess as to cause is this data is being ingested incorrectly from commerce and we’re not mapping a field correctly to have it display in GNC.\n\nEnvironment: QA\n\nSTR:\n\n- Navigate to a BE with commerce API enabled https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes\n\n- Log in\n\n- Add a tee time to cart (reproduces for all rate types: non-prepay, prepaid, partially prepaid)\n\n- Proceed to checkout\n\n- View the summary section and verify that tax is calculated properly\n\n- Fill in the payment form and complete a reservation\n\n- Go to https://golfnowcentral.dev.golfnow.io/ > Customers > Search for the user from step 2\n\n- View the reservation history and click “edit” for the needed one\n\n- View the reservation summary above the transaction history\n\nAR: The total tax value = $0 despite the taxes get calculated properly in the transaction history\n\nNote: Does not reproduce for non-commerce BEs\n\nPrepaid reservation\n\nNon-Prepay reservation\n\nER: Total tax field should show correct total tax value in GNC",
-        "descriptionHtml": "<h3>Best Guess</h3><p>Best guess as to cause is this data is being ingested incorrectly from commerce and we’re not mapping a field correctly to have it display in GNC.</p><p><strong>Environment:</strong> QA</p><p><strong>STR</strong>:</p><ol><li><p>Navigate to a BE with commerce API enabled <a href=\"https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes\" target=\"_blank\" rel=\"noopener\">https://xyz-david-clark-smartplay-commerce.qa-phx-ui-be.svc.golf/teetimes</a> </p></li><li><p>Log in</p></li><li><p>Add a tee time to cart (reproduces for all rate types:<strong><em> non-prepay, prepaid, partially prepaid</em></strong>)</p></li><li><p>Proceed to checkout</p></li><li><p>View the summary section and verify that tax is calculated properly</p></li><li><p>Fill in the payment form and complete a reservation</p></li><li><p>Go to <a href=\"https://golfnowcentral.dev.golfnow.io/\" target=\"_blank\" rel=\"noopener\">https://golfnowcentral.dev.golfnow.io/</a> &gt; Customers &gt; Search for the user from step 2</p></li><li><p>View the reservation history and click “edit” for the needed one</p></li><li><p>View the reservation summary above the transaction history</p></li></ol><p><strong>AR</strong>: The total tax value = $0 despite the taxes get calculated properly in the transaction history</p><p><strong>Note</strong>: Does not reproduce for non-commerce BEs</p><p><strong>Prepaid reservation</strong></p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-13959/519157-Monosnap-Checkout-Google-Chrome-2025-12-08-12.22.png\" alt=\"Monosnap Video 2025-12-08 11.3.mp4\" loading=\"lazy\"><figcaption>Monosnap Video 2025-12-08 11.3.mp4</figcaption></figure></div><p><strong>Non-Prepay reservation</strong></p><div class=\"description-media-group\"><div class=\"description-media-missing\">Monosnap Checkout - Google Chrome 2025-12-08 12.22.png could not be embedded.</div></div><p><strong>ER</strong>: Total tax field should show correct total tax value in GNC</p>",
-        "descriptionImageCount": 1,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "Planning",
-        "priority": "P3",
-        "assignee": "Andrew Horvat",
-        "assigneeAccountId": "712020:d714b2a6-3491-46da-89f1-9777e2d1ab70",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:d714b2a6-3491-46da-89f1-9777e2d1ab70/25dedc4a-09d9-4ec9-945c-34d31d771711/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-07-16T10:19:31.630-0400",
-        "updatedDisplay": "Jul 16, 2026, 10:19 AM",
-        "created": "2025-12-08T13:12:52.064-0500",
-        "createdDisplay": "Dec 8, 2025, 1:12 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-13172",
-          "url": "https://golfnow.atlassian.net/browse/CORE-13172",
-          "summary": "Commerce Proxy API",
           "description": "",
           "type": "Epic",
           "status": "Planning",
@@ -33765,13 +33765,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-21T18:55:48.679Z",
-    "pulledAtDisplay": "Jul 21, 2026, 2:55 PM",
+    "pulledAt": "2026-07-21T19:01:49.055Z",
+    "pulledAtDisplay": "Jul 21, 2026, 3:01 PM",
     "window": {
-      "start": "2026-06-06T18:55:48.678Z",
-      "end": "2027-01-17T18:55:48.678Z",
-      "startDisplay": "Jun 6, 2026, 2:55 PM",
-      "endDisplay": "Jan 17, 2027, 1:55 PM"
+      "start": "2026-06-06T19:01:49.055Z",
+      "end": "2027-01-17T19:01:49.055Z",
+      "startDisplay": "Jun 6, 2026, 3:01 PM",
+      "endDisplay": "Jan 17, 2027, 2:01 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33784,7 +33784,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-21T18:55:51.886Z",
+        "pulledAt": "2026-07-21T19:01:52.137Z",
         "eventCount": 80,
         "events": [
           {
@@ -34371,16 +34371,16 @@
             "calendarName": "GN Releases",
             "title": "EZRTSv1.41.0",
             "start": "2026-07-21T23:30:00.000Z",
-            "end": "2026-07-22T03:30:00.000Z",
+            "end": "2026-07-22T02:30:00.000Z",
             "startDate": "",
             "endDate": "",
             "startDisplay": "Jul 21, 2026, 7:30 PM",
-            "endDisplay": "Jul 21, 2026, 11:30 PM",
+            "endDisplay": "Jul 21, 2026, 10:30 PM",
             "allDay": false,
             "type": "EZLinks",
-            "location": "",
+            "location": "https://versantmedia.enterprise.slack.com/archives/C09MCNPDT8A",
             "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+            "url": "https://golfnow.atlassian.net/browse/OPS-56117"
           },
           {
             "id": "20260509T195945Z-1231655867@golfnow.atlassian.net",
@@ -35012,6 +35012,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -35041,23 +35058,6 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -35153,10 +35153,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-21T18:52:53.164Z",
-    "previousPulledAtDisplay": "Jul 21, 2026, 2:52 PM",
-    "currentPulledAt": "2026-07-21T18:57:41.933Z",
-    "currentPulledAtDisplay": "Jul 21, 2026, 2:57 PM",
+    "previousPulledAt": "2026-07-21T18:57:41.933Z",
+    "previousPulledAtDisplay": "Jul 21, 2026, 2:57 PM",
+    "currentPulledAt": "2026-07-21T19:03:46.928Z",
+    "currentPulledAtDisplay": "Jul 21, 2026, 3:03 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -35164,6 +35164,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-21T18:57:41.933Z",
+      "previousPulledAtDisplay": "Jul 21, 2026, 2:57 PM",
+      "currentPulledAt": "2026-07-21T19:03:46.928Z",
+      "currentPulledAtDisplay": "Jul 21, 2026, 3:03 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-21T18:52:53.164Z",
       "previousPulledAtDisplay": "Jul 21, 2026, 2:52 PM",
@@ -36995,17 +37006,6 @@
       "previousPulledAtDisplay": "Jul 21, 2026, 12:57 AM",
       "currentPulledAt": "2026-07-21T05:02:40.454Z",
       "currentPulledAtDisplay": "Jul 21, 2026, 1:02 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-21T04:52:50.421Z",
-      "previousPulledAtDisplay": "Jul 21, 2026, 12:52 AM",
-      "currentPulledAt": "2026-07-21T04:57:09.937Z",
-      "currentPulledAtDisplay": "Jul 21, 2026, 12:57 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
