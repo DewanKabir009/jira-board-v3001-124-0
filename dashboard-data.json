@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-22T14:33:10.828Z",
-  "pulledAtDisplay": "Jul 22, 2026, 10:33 AM",
+  "pulledAt": "2026-07-22T14:38:20.333Z",
+  "pulledAtDisplay": "Jul 22, 2026, 10:38 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-22T14:33:10.828Z",
-    "pulledAtDisplay": "Jul 22, 2026, 10:33 AM",
+    "pulledAt": "2026-07-22T14:38:20.333Z",
+    "pulledAtDisplay": "Jul 22, 2026, 10:38 AM",
     "total": 434,
     "mainTotal": 404,
     "subtaskTotal": 30,
@@ -8872,7 +8872,7 @@
         "descriptionImageCount": 0,
         "descriptionVideoCount": 0,
         "descriptionMediaCount": 0,
-        "commentCount": 1,
+        "commentCount": 2,
         "comments": [
           {
             "id": "1190260",
@@ -8888,11 +8888,26 @@
             "mediaCount": 0,
             "body": "Created five technical planning subtasks based on the GNSCM-10108 requirements, current GolfNowWeb code paths, and Apple Pay documentation review.\n\nThese subtasks are intended as a refinement breakdown under the current parent ticket. Sprint commitment and story points should be decided by the team before implementation; if the team chooses to track delivery as separate stories, these subtasks can be converted or used as the source breakdown.\n\nSubtasks created:\n\n- GNSCM-10152 - Implement Apple Pay eligibility and tenant currency configuration\n\n- GNSCM-10153 - Add Apple Pay wallet option mapping and default payment selection\n\n- GNSCM-10154 - Build Apple Pay checkout UI and device/browser gating\n\n- GNSCM-10155 - Integrate Apple Pay web session, token capture, and reservation order submission\n\n- GNSCM-10156 - Extend Apple Pay to standalone product checkout and complete QA readiness",
             "bodyHtml": "<p>Created five technical planning subtasks based on the GNSCM-10108 requirements, current GolfNowWeb code paths, and Apple Pay documentation review.</p><p>These subtasks are intended as a refinement breakdown under the current parent ticket. Sprint commitment and story points should be decided by the team before implementation; if the team chooses to track delivery as separate stories, these subtasks can be converted or used as the source breakdown.</p><p>Subtasks created:</p><ul><li><p>GNSCM-10152 - Implement Apple Pay eligibility and tenant currency configuration</p></li><li><p>GNSCM-10153 - Add Apple Pay wallet option mapping and default payment selection</p></li><li><p>GNSCM-10154 - Build Apple Pay checkout UI and device/browser gating</p></li><li><p>GNSCM-10155 - Integrate Apple Pay web session, token capture, and reservation order submission</p></li><li><p>GNSCM-10156 - Extend Apple Pay to standalone product checkout and complete QA readiness</p></li></ul>"
+          },
+          {
+            "id": "1198462",
+            "url": "https://golfnow.atlassian.net/browse/GNSCM-10108?focusedCommentId=1198462",
+            "author": "Ryan Sullivan",
+            "authorAccountId": "712020:0eaa1c81-135c-4a89-bd51-a66cf3f5e3de",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:0eaa1c81-135c-4a89-bd51-a66cf3f5e3de/01f8bdd3-f8fd-4430-a48f-a347157de4fc/32",
+            "created": "2026-07-22T10:36:47.585-0400",
+            "createdDisplay": "Jul 22, 2026, 10:36 AM",
+            "updated": "2026-07-22T10:36:47.585-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Apple Pay – QA Testing Notes\n\n⚠️ Known limitation: Apple Pay is disabled for guest checkout. The OrderCheckout endpoint requires a phone number, which guest users on web are never prompted for (unlike the mobile app, which requires phone + email before checkout). Until CORE/product decides how to handle this, Apple Pay only shows for logged-in/full customers on Checkout. Guest users won't see the Apple Pay option — this is expected, not a bug.\n\nTesting account required\n\n- You'll need an Apple Pay sandbox testing account to test on a physical iPhone. Ask Giancarlo or Avi for an existing one, or go through Apple's own signup process (may require ID verification + Giancarlo granting access).\n\n- Without this account, Apple Pay cannot be tested at all.\n\nScope for this round of testing\n\n- Applies to Checkout (tee time / sidecart) and the Standalone Membership page, for GNUS and GNUK.\n\n- Confirm Apple Pay hidden on mobile/tablet Android (expected — Apple Pay doesn't support this).\n\n- Confirm Apple Pay hidden when the item's currency isn't in the allowed list (USD, CAD, GBP, AUD, EUR, CHF) or when PaymentTypeId 17 isn't present on the invoice.\n\nPR: https://github.com/GolfNowEng/GolfNowWeb/pull/10181",
+            "bodyHtml": "<p><strong>Apple Pay – QA Testing Notes</strong></p><p><strong>⚠️ Known limitation: Apple Pay is disabled for guest checkout.</strong> The <code>OrderCheckout</code> endpoint requires a phone number, which guest users on web are never prompted for (unlike the mobile app, which requires phone + email before checkout). Until CORE/product decides how to handle this, Apple Pay only shows for <strong>logged-in/full customers</strong> on Checkout. Guest users won't see the Apple Pay option — this is expected, not a bug.</p><p><strong>Testing account required</strong></p><ul><li><p>You'll need an Apple Pay sandbox testing account to test on a physical iPhone. Ask Giancarlo or Avi for an existing one, or go through Apple's own signup process (may require ID verification + Giancarlo granting access).</p></li><li><p>Without this account, Apple Pay cannot be tested at all.</p></li></ul><p><strong>Scope for this round of testing</strong></p><ul><li><p>Applies to Checkout (tee time / sidecart) and the Standalone Membership page, for GNUS and GNUK.</p></li><li><p>Confirm Apple Pay hidden on mobile/tablet Android (expected — Apple Pay doesn't support this).</p></li><li><p>Confirm Apple Pay hidden when the item's currency isn't in the allowed list (USD, CAD, GBP, AUD, EUR, CHF) or when PaymentTypeId 17 isn't present on the invoice.</p></li></ul><p><strong>PR:</strong> https://github.com/GolfNowEng/GolfNowWeb/pull/10181</p>"
           }
         ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/GNSCM-10108?focusedCommentId=1190260",
-        "lastCommentDisplay": "Jul 1, 2026, 8:33 PM",
-        "lastCommentAuthor": "Luis Perez",
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/GNSCM-10108?focusedCommentId=1198462",
+        "lastCommentDisplay": "Jul 22, 2026, 10:36 AM",
+        "lastCommentAuthor": "Ryan Sullivan",
         "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
@@ -33805,13 +33820,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-22T14:30:54.543Z",
-    "pulledAtDisplay": "Jul 22, 2026, 10:30 AM",
+    "pulledAt": "2026-07-22T14:36:10.189Z",
+    "pulledAtDisplay": "Jul 22, 2026, 10:36 AM",
     "window": {
-      "start": "2026-06-07T14:30:54.542Z",
-      "end": "2027-01-18T14:30:54.542Z",
-      "startDisplay": "Jun 7, 2026, 10:30 AM",
-      "endDisplay": "Jan 18, 2027, 9:30 AM"
+      "start": "2026-06-07T14:36:10.189Z",
+      "end": "2027-01-18T14:36:10.189Z",
+      "startDisplay": "Jun 7, 2026, 10:36 AM",
+      "endDisplay": "Jan 18, 2027, 9:36 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33824,7 +33839,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-22T14:30:58.015Z",
+        "pulledAt": "2026-07-22T14:36:13.429Z",
         "eventCount": 80,
         "events": [
           {
@@ -35137,23 +35152,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -35166,6 +35164,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -35193,10 +35208,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-22T14:28:16.662Z",
-    "previousPulledAtDisplay": "Jul 22, 2026, 10:28 AM",
-    "currentPulledAt": "2026-07-22T14:33:10.828Z",
-    "currentPulledAtDisplay": "Jul 22, 2026, 10:33 AM",
+    "previousPulledAt": "2026-07-22T14:33:10.828Z",
+    "previousPulledAtDisplay": "Jul 22, 2026, 10:33 AM",
+    "currentPulledAt": "2026-07-22T14:38:20.333Z",
+    "currentPulledAtDisplay": "Jul 22, 2026, 10:38 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -35204,6 +35219,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-22T14:33:10.828Z",
+      "previousPulledAtDisplay": "Jul 22, 2026, 10:33 AM",
+      "currentPulledAt": "2026-07-22T14:38:20.333Z",
+      "currentPulledAtDisplay": "Jul 22, 2026, 10:38 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-22T14:28:16.662Z",
       "previousPulledAtDisplay": "Jul 22, 2026, 10:28 AM",
@@ -37035,17 +37061,6 @@
       "previousPulledAtDisplay": "Jul 21, 2026, 8:22 PM",
       "currentPulledAt": "2026-07-22T00:27:34.503Z",
       "currentPulledAtDisplay": "Jul 21, 2026, 8:27 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-22T00:17:16.673Z",
-      "previousPulledAtDisplay": "Jul 21, 2026, 8:17 PM",
-      "currentPulledAt": "2026-07-22T00:22:45.538Z",
-      "currentPulledAtDisplay": "Jul 21, 2026, 8:22 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
