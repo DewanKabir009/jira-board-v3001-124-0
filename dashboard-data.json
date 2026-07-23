@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-07-23T22:38:36.170Z",
-  "pulledAtDisplay": "Jul 23, 2026, 6:38 PM",
+  "pulledAt": "2026-07-23T22:42:58.506Z",
+  "pulledAtDisplay": "Jul 23, 2026, 6:42 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-07-23T22:38:36.170Z",
-    "pulledAtDisplay": "Jul 23, 2026, 6:38 PM",
+    "pulledAt": "2026-07-23T22:42:58.506Z",
+    "pulledAtDisplay": "Jul 23, 2026, 6:42 PM",
     "total": 433,
     "mainTotal": 403,
     "subtaskTotal": 30,
@@ -8009,7 +8009,7 @@
         "descriptionImageCount": 0,
         "descriptionVideoCount": 0,
         "descriptionMediaCount": 0,
-        "commentCount": 2,
+        "commentCount": 3,
         "comments": [
           {
             "id": "1190260",
@@ -8040,24 +8040,39 @@
             "mediaCount": 0,
             "body": "Apple Pay – QA Testing Notes\n\n⚠️ Known limitation: Apple Pay is disabled for guest checkout. The OrderCheckout endpoint requires a phone number, which guest users on web are never prompted for (unlike the mobile app, which requires phone + email before checkout). Until CORE/product decides how to handle this, Apple Pay only shows for logged-in/full customers on Checkout. Guest users won't see the Apple Pay option — this is expected, not a bug.\n\nTesting account required\n\n- You'll need an Apple Pay sandbox testing account to test on a physical iPhone. Ask Giancarlo or Avi for an existing one, or go through Apple's own signup process (may require ID verification + Giancarlo granting access).\n\n- Without this account, Apple Pay cannot be tested at all.\n\nScope for this round of testing\n\n- Applies to Checkout (tee time / sidecart) and the Standalone Membership page, for GNUS and GNUK.\n\n- Confirm Apple Pay hidden on mobile/tablet Android (expected — Apple Pay doesn't support this).\n\n- Confirm Apple Pay hidden when the item's currency isn't in the allowed list (USD, CAD, GBP, AUD, EUR, CHF) or when PaymentTypeId 17 isn't present on the invoice.\n\nPRs:\n\n- https://github.com/GolfNowEng/GolfNowWeb/pull/10181\n\n- https://github.com/GolfNowEng/golfnow-web-cloudstorage/pull/2922",
             "bodyHtml": "<p><strong>Apple Pay – QA Testing Notes</strong></p><p><strong>⚠️ Known limitation: Apple Pay is disabled for guest checkout.</strong> The <code>OrderCheckout</code> endpoint requires a phone number, which guest users on web are never prompted for (unlike the mobile app, which requires phone + email before checkout). Until CORE/product decides how to handle this, Apple Pay only shows for <strong>logged-in/full customers</strong> on Checkout. Guest users won't see the Apple Pay option — this is expected, not a bug.</p><p><strong>Testing account required</strong></p><ul><li><p>You'll need an Apple Pay sandbox testing account to test on a physical iPhone. Ask Giancarlo or Avi for an existing one, or go through Apple's own signup process (may require ID verification + Giancarlo granting access).</p></li><li><p>Without this account, Apple Pay cannot be tested at all.</p></li></ul><p><strong>Scope for this round of testing</strong></p><ul><li><p>Applies to Checkout (tee time / sidecart) and the Standalone Membership page, for GNUS and GNUK.</p></li><li><p>Confirm Apple Pay hidden on mobile/tablet Android (expected — Apple Pay doesn't support this).</p></li><li><p>Confirm Apple Pay hidden when the item's currency isn't in the allowed list (USD, CAD, GBP, AUD, EUR, CHF) or when PaymentTypeId 17 isn't present on the invoice.</p></li></ul><p><strong>PRs:</strong> </p><ul><li><p><a href=\"https://github.com/GolfNowEng/GolfNowWeb/pull/10181\" target=\"_blank\" rel=\"noopener\">https://github.com/GolfNowEng/GolfNowWeb/pull/10181</a> </p></li><li><p><a href=\"https://github.com/GolfNowEng/golfnow-web-cloudstorage/pull/2922\" target=\"_blank\" rel=\"noopener\">https://github.com/GolfNowEng/golfnow-web-cloudstorage/pull/2922</a></p></li></ul>"
+          },
+          {
+            "id": "1199498",
+            "url": "https://golfnow.atlassian.net/browse/GNSCM-10108?focusedCommentId=1199498",
+            "author": "Jake Hart",
+            "authorAccountId": "5bfc10be10c30e4ac8c8a4e3",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/JH-1.png",
+            "created": "2026-07-23T18:37:35.405-0400",
+            "createdDisplay": "Jul 23, 2026, 6:37 PM",
+            "updated": "2026-07-23T18:37:35.405-0400",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 3,
+            "body": "Issues Found:\n\n1. Macbook (desktop), iPad (tablet) and iPhone (mobile) → All devices have an Apple Pay sandbox test user logged in → GolfPass & tee time checkout → Apply pay submission UI pops up but immediately gets an error\n\nTest Apple pay sandbox user = jakegolfnow24@gmail.com / Vivi2486!420 (Test user has an apple pay test credit card added)\nTest GN user = jakegolfnow24@gmail.com / qwertyuiop1\n\n2.  Desktop browsers (Windows PC with chrome firefox and edge;  Macbook chrome & firefox browsers) → Apple Pay option not displayed → Unable to test QA code scan option",
+            "bodyHtml": "<p><strong>Issues Found: </strong><br><br><strong>1.</strong> Macbook (desktop), iPad (tablet) and iPhone (mobile) → All devices have an Apple Pay sandbox test user logged in → GolfPass &amp; tee time checkout → Apply pay submission UI pops up but immediately gets an error<br><br>Test Apple pay sandbox user = <a href=\"mailto:jakegolfnow24@gmail.com\" target=\"_blank\" rel=\"noopener\">jakegolfnow24@gmail.com</a> / Vivi2486!420 (Test user has an apple pay test credit card added)<br>Test GN user = <a href=\"mailto:jakegolfnow24@gmail.com\" target=\"_blank\" rel=\"noopener\">jakegolfnow24@gmail.com</a> / qwertyuiop1</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/GNSCM-10108/comments/1199498/741264-ApplePayWeb_Selected.png\" alt=\"ApplePayWeb_Selected.png\" loading=\"lazy\"><figcaption>ApplePayWeb_Selected.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/GNSCM-10108/comments/1199498/741263-ApplePayWeb_Unselected.png\" alt=\"ApplePayWeb_Unselected.png\" loading=\"lazy\"><figcaption>ApplePayWeb_Unselected.png</figcaption></figure></div><p><strong>2.</strong>  Desktop browsers (Windows PC with chrome firefox and edge;  Macbook chrome &amp; firefox browsers) → Apple Pay option not displayed → Unable to test QA code scan option</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/GNSCM-10108/comments/1199498/745825-figure-top-ios-18-will-let-you-use-apple-pay-on-any-browser-on-any-pc.webp\" alt=\"figure-top-ios-18-will-let-you-use-apple-pay-on-any-browser-on-any-pc.webp\" loading=\"lazy\"><figcaption>figure-top-ios-18-will-let-you-use-apple-pay-on-any-browser-on-any-pc.webp</figcaption></figure></div>"
           }
         ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/GNSCM-10108?focusedCommentId=1198462",
-        "lastCommentDisplay": "Jul 22, 2026, 10:36 AM",
-        "lastCommentAuthor": "Ryan Sullivan",
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/GNSCM-10108?focusedCommentId=1199498",
+        "lastCommentDisplay": "Jul 23, 2026, 6:37 PM",
+        "lastCommentAuthor": "Jake Hart",
         "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
-        "status": "Testing",
+        "status": "Triage",
         "priority": "P1",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
+        "assignee": "Luis Perez",
+        "assigneeAccountId": "712020:3415ce18-f7ca-4289-921e-4c797c2be9f5",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:3415ce18-f7ca-4289-921e-4c797c2be9f5/eab45982-3ac0-424f-9242-b06b22b200c4/32",
         "assignedDeveloper": "Luis Perez",
         "assignedDeveloperAccountId": "712020:3415ce18-f7ca-4289-921e-4c797c2be9f5",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:3415ce18-f7ca-4289-921e-4c797c2be9f5/eab45982-3ac0-424f-9242-b06b22b200c4/32",
-        "updated": "2026-07-23T18:22:42.461-0400",
-        "updatedDisplay": "Jul 23, 2026, 6:22 PM",
+        "updated": "2026-07-23T18:38:18.014-0400",
+        "updatedDisplay": "Jul 23, 2026, 6:38 PM",
         "created": "2026-06-24T09:20:50.224-0400",
         "createdDisplay": "Jun 24, 2026, 9:20 AM",
         "components": [
@@ -33660,13 +33675,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-07-23T22:36:22.118Z",
-    "pulledAtDisplay": "Jul 23, 2026, 6:36 PM",
+    "pulledAt": "2026-07-23T22:41:24.503Z",
+    "pulledAtDisplay": "Jul 23, 2026, 6:41 PM",
     "window": {
-      "start": "2026-06-08T22:36:22.118Z",
-      "end": "2027-01-19T22:36:22.118Z",
-      "startDisplay": "Jun 8, 2026, 6:36 PM",
-      "endDisplay": "Jan 19, 2027, 5:36 PM"
+      "start": "2026-06-08T22:41:24.502Z",
+      "end": "2027-01-19T22:41:24.502Z",
+      "startDisplay": "Jun 8, 2026, 6:41 PM",
+      "endDisplay": "Jan 19, 2027, 5:41 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -33679,7 +33694,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-07-23T22:36:27.408Z",
+        "pulledAt": "2026-07-23T22:41:27.008Z",
         "eventCount": 79,
         "events": [
           {
@@ -34890,6 +34905,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -34919,23 +34951,6 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -34975,23 +34990,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -35004,6 +35002,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -35031,10 +35046,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-07-23T22:32:57.495Z",
-    "previousPulledAtDisplay": "Jul 23, 2026, 6:32 PM",
-    "currentPulledAt": "2026-07-23T22:38:36.170Z",
-    "currentPulledAtDisplay": "Jul 23, 2026, 6:38 PM",
+    "previousPulledAt": "2026-07-23T22:38:36.170Z",
+    "previousPulledAtDisplay": "Jul 23, 2026, 6:38 PM",
+    "currentPulledAt": "2026-07-23T22:42:58.506Z",
+    "currentPulledAtDisplay": "Jul 23, 2026, 6:42 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -35042,6 +35057,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-07-23T22:38:36.170Z",
+      "previousPulledAtDisplay": "Jul 23, 2026, 6:38 PM",
+      "currentPulledAt": "2026-07-23T22:42:58.506Z",
+      "currentPulledAtDisplay": "Jul 23, 2026, 6:42 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-07-23T22:32:57.495Z",
       "previousPulledAtDisplay": "Jul 23, 2026, 6:32 PM",
@@ -36873,17 +36899,6 @@
       "previousPulledAtDisplay": "Jul 23, 2026, 4:17 AM",
       "currentPulledAt": "2026-07-23T08:21:55.739Z",
       "currentPulledAtDisplay": "Jul 23, 2026, 4:21 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-23T08:12:48.100Z",
-      "previousPulledAtDisplay": "Jul 23, 2026, 4:12 AM",
-      "currentPulledAt": "2026-07-23T08:17:38.889Z",
-      "currentPulledAtDisplay": "Jul 23, 2026, 4:17 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
