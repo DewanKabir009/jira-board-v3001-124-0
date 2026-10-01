@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-10-01T06:03:35.024Z",
-  "pulledAtDisplay": "Oct 1, 2026, 2:03 AM",
+  "pulledAt": "2026-10-01T14:28:30.184Z",
+  "pulledAtDisplay": "Oct 1, 2026, 10:28 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,10 +1809,10 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-10-01T06:03:35.024Z",
-    "pulledAtDisplay": "Oct 1, 2026, 2:03 AM",
-    "total": 536,
-    "mainTotal": 506,
+    "pulledAt": "2026-10-01T14:28:30.184Z",
+    "pulledAtDisplay": "Oct 1, 2026, 10:28 AM",
+    "total": 537,
+    "mainTotal": 507,
     "subtaskTotal": 30,
     "issues": [
       {
@@ -8114,7 +8114,7 @@
         "descriptionImageCount": 1,
         "descriptionVideoCount": 0,
         "descriptionMediaCount": 1,
-        "commentCount": 8,
+        "commentCount": 9,
         "comments": [
           {
             "id": "1216135",
@@ -8235,11 +8235,26 @@
             "mediaCount": 0,
             "body": "@Brian Pugh Wanted to check in and see if there were any updates.  Thanks!",
             "bodyHtml": "<p>@Brian Pugh Wanted to check in and see if there were any updates.  Thanks!</p>"
+          },
+          {
+            "id": "1225905",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14753?focusedCommentId=1225905",
+            "author": "Marcus A Prophete",
+            "authorAccountId": "557058:3653c83e-5bf9-49ca-9737-9a51f1fb7187",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/318aa1cb643701b2e76f6eabad5c49d8?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FMP-4.png",
+            "created": "2026-10-01T10:06:09.271-0400",
+            "createdDisplay": "Oct 1, 2026, 10:06 AM",
+            "updated": "2026-10-01T10:06:09.271-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "@Brian Pugh Following up on this due to the impact on partners and leadership involvement. Do we have a new target release date?",
+            "bodyHtml": "<p>@Brian Pugh Following up on this due to the impact on partners and leadership involvement. Do we have a new target release date?</p>"
           }
         ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14753?focusedCommentId=1224965",
-        "lastCommentDisplay": "Sep 29, 2026, 1:11 PM",
-        "lastCommentAuthor": "Andrew Lounsberry",
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14753?focusedCommentId=1225905",
+        "lastCommentDisplay": "Oct 1, 2026, 10:06 AM",
+        "lastCommentAuthor": "Marcus A Prophete",
         "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
@@ -8251,8 +8266,8 @@
         "assignedDeveloper": "Yoel Martin Pardo",
         "assignedDeveloperAccountId": "625571809e7380006fb29599",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-09-30T13:32:38.495-0400",
-        "updatedDisplay": "Sep 30, 2026, 1:32 PM",
+        "updated": "2026-10-01T10:06:09.271-0400",
+        "updatedDisplay": "Oct 1, 2026, 10:06 AM",
         "created": "2026-09-03T11:40:24.371-0400",
         "createdDisplay": "Sep 3, 2026, 11:40 AM",
         "components": [
@@ -8262,6 +8277,110 @@
         "fixVersions": [
           "v3001.128.0"
         ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14640",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14640",
+        "summary": "Display Home Course bonus points as an additional data point on transaction history",
+        "description": "In https://golfnow.atlassian.net/browse/CORE-14518, we created the concept of breaking out the points type so they can be shown on invoice and checkout. Specifically the Home Course points.\n\n\"TotalBaseEarnablePoints\": 3000,\n\"TotalEarnablePoints\": 3200,\n\"TotalPromotionalEarnablePoints\": 0 or NULL\n\"TotalHomeCourseEarnablePoints\": 200\n\nHowever on transaction history, we will still only see the total grouped points value with no indication of how many points were attributed to Home Course.\n\nObjective:\n\n- Return a data point on loyalty transaction history API that will identify for the UI teams that a reservation line item had the base points + home course points\n\n- API used by UI: GET {{api-base-url}}/GolfNowAPI.svc/rest/customers/{{EmailAddress}}/loyalty/rewards/transactions?channelId=331&page=1&recordsPerPage=1000\n\n- This would only apply to tee time reservation booking entries\n\n- Base and Promotional can be combined in to one value if needed\n\n- Home Course should be the one that is on its own\n\n- If you transact somewhere outside your home course, i’d expect the value to be null or empty or 0\n\n- We need the data stored in the database so Raptor can pick it up and associate to loyalty records\n\n- Potential idea:\n\n{\n\"Transactions\": {\n\"Page\": 1,\n\"RecordsPerPage\": 1000,\n\"Items\": [\n{\n\"ChannelId\": 5151,\n\"CreatedOnUtc\": \"/Date(1785184359230+0000)/\",\n\"CustomerId\": \"a2a0dde8-a3b5-42e7-afef-4d1ab74a2648\",\n\"Description\": \"TeeTime Reservation - 419822833\",\n\"ExpiresOnUtc\": \"/Date(1817125200000+0000)/\",\n\"IsProcessed\": false,\n\"PointsForAction\": null,\n\"PointsTransactionId\": 32791953,\n\"PointsValue\": 850.9500,\n\"PointsBreakdown\": [       /// Proposed new field\n\"Base\": 250.95,\n\"Promotional\":100,\n\"HomeCourse\": 500\n]\n\"ProcessedOnUtc\": null,\n\"ProgramId\": 2,\n\"ReferenceId\": \"419822833\",\n\"ReferenceType\": {\n\"Action\": \"Purchase\",\n\"ReferenceTypeId\": 1,\n\"Source\": \"TeeTime.Reservation\"\n},\n\"RunningBalance\": null\n},\n\nTest Cases\n\n- Happy Path no home course\n\n- Promotional and HomeCourse breakdown data should be 0 or null\n\n- Base should match PointsValue\n\n- Happy Path Home Course\n\n- Promotional should be 0 or null\n\n- Home Course should be 500\n\n- PointsValue would be Base+500",
+        "descriptionHtml": "<p>In <a href=\"https://golfnow.atlassian.net/browse/CORE-14518\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/CORE-14518</a>, we created the concept of breaking out the points type so they can be shown on invoice and checkout. Specifically the Home Course points.</p><pre><code>&quot;TotalBaseEarnablePoints&quot;: 3000,\n&quot;TotalEarnablePoints&quot;: 3200,\n&quot;TotalPromotionalEarnablePoints&quot;: 0 or NULL\n&quot;TotalHomeCourseEarnablePoints&quot;: 200</code></pre><p>However on transaction history, we will still only see the total grouped points value with no indication of how many points were attributed to Home Course.</p><p>Objective:</p><ul><li><p>Return a data point on loyalty transaction history API that will identify for the UI teams that a reservation line item had the base points + home course points</p><ul><li><p>API used by UI: GET <code>{{api-base-url}}/GolfNowAPI.svc/rest/customers/{{EmailAddress}}/loyalty/rewards/transactions?channelId=331&amp;page=1&amp;recordsPerPage=1000</code></p></li><li><p>This would only apply to tee time reservation booking entries</p></li><li><p>Base and Promotional can be combined in to one value if needed</p></li><li><p>Home Course should be the one that is on its own</p></li><li><p>If you transact somewhere outside your home course, i’d expect the value to be null or empty or 0</p></li></ul></li><li><p>We need the data stored in the database so Raptor can pick it up and associate to loyalty records</p></li><li><p>Potential idea:</p><pre><code>{\n    &quot;Transactions&quot;: {\n        &quot;Page&quot;: 1,\n        &quot;RecordsPerPage&quot;: 1000,\n        &quot;Items&quot;: [\n            {\n                &quot;ChannelId&quot;: 5151,\n                &quot;CreatedOnUtc&quot;: &quot;/Date(1785184359230+0000)/&quot;,\n                &quot;CustomerId&quot;: &quot;a2a0dde8-a3b5-42e7-afef-4d1ab74a2648&quot;,\n                &quot;Description&quot;: &quot;TeeTime Reservation - 419822833&quot;,\n                &quot;ExpiresOnUtc&quot;: &quot;/Date(1817125200000+0000)/&quot;,\n                &quot;IsProcessed&quot;: false,\n                &quot;PointsForAction&quot;: null,\n                &quot;PointsTransactionId&quot;: 32791953,\n                &quot;PointsValue&quot;: 850.9500,\n                &quot;PointsBreakdown&quot;: [       /// Proposed new field\n                     &quot;Base&quot;: 250.95,\n                     &quot;Promotional&quot;:100, \n                     &quot;HomeCourse&quot;: 500\n                ]\n                &quot;ProcessedOnUtc&quot;: null,\n                &quot;ProgramId&quot;: 2,\n                &quot;ReferenceId&quot;: &quot;419822833&quot;,\n                &quot;ReferenceType&quot;: {\n                    &quot;Action&quot;: &quot;Purchase&quot;,\n                    &quot;ReferenceTypeId&quot;: 1,\n                    &quot;Source&quot;: &quot;TeeTime.Reservation&quot;\n                },\n                &quot;RunningBalance&quot;: null\n            },</code></pre></li></ul><p><strong>Test Cases</strong></p><ul><li><p>Happy Path no home course</p><ul><li><p>Promotional and HomeCourse breakdown data should be 0 or null</p></li><li><p>Base should match PointsValue</p></li></ul></li><li><p>Happy Path Home Course</p><ul><li><p>Promotional should be 0 or null</p></li><li><p>Home Course should be 500</p></li><li><p>PointsValue would be Base+500</p></li></ul></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Pending Deployment (DEV)",
+        "priority": "P1",
+        "assignee": "Daniel McNaughton",
+        "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+        "assignedDeveloper": "Daniel McNaughton",
+        "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+        "updated": "2026-10-01T09:43:29.206-0400",
+        "updatedDisplay": "Oct 1, 2026, 9:43 AM",
+        "created": "2026-08-04T17:58:31.905-0400",
+        "createdDisplay": "Aug 4, 2026, 5:58 PM",
+        "components": [
+          "Golf.Svc.Loyalty"
+        ],
+        "fixVersions": [
+          "v3001.129.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14301",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14301",
+          "summary": "GolfPass \"Home Course\": Phase I",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14829",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14829",
+        "summary": "ApplicationPrincipal auth client throws 500 instead of returning 401 on invalid credentials",
+        "description": "Problem\n\nWhen a consuming service uses the GolfNow.Services.Auth.Identity.ApplicationPrincipal NuGet package and a request sends HTTP Basic credentials for a login that doesn't exist, the auth handler throws instead of returning a failed auth result. The caller gets a 500 with a stack trace when they should get a 401.\n\nSystem.InvalidOperationException: Error calling Auth API: AppPrincipal not found.\nat ...ApplicationPrincipalAuthRestService.SendAndUnpackRequestAsync[T](...)\nat ...ApplicationPrincipalAuthRestService.AuthenticateApplicationPrincipalLoginNamePassword(...)\nat ...ApplicationPrincipalAuthenticationHandler.HandleBasicAuthenticationAsync(...)\nat ...ApplicationPrincipalAuthenticationHandler.HandleAuthenticateAsync()\n\nRoot Cause\n\n- Server (gn-svc-auth, Auth API): ApplicationPrincipalProvider.ValidateApplicationPrincipalCredentials returns 404 for an unknown login but 200 + IsAuthenticated=false for a wrong password. This also lets anyone enumerate valid login names.\n\n- Client package: ApplicationPrincipalAuthRestService.SendAndUnpackRequestAsync throws InvalidOperationException on any non-2xx response.\n\n- Client handler: ApplicationPrincipalAuthenticationHandler doesn't catch errors from the Basic or Bearer paths. The Bearer path has the same bug for an unknown access key kid, and so do malformed headers (bad base64, missing :, non-GUID kid).\n\nProposed Fix\n\n- Server: Return the same IsAuthenticated=false / \"Credentials do not match an active account.\" response for an unknown login as for a wrong password.\n\n- Client REST service: Treat 404 from the authenticate and accessKey endpoints as not authenticated / not found (false / null) instead of throwing. This keeps the client working against servers that haven't been updated.\n\n- Client handler: Fail closed. Any exception during credential validation becomes AuthenticateResult.Fail and a 401. Auth API outages (5xx, timeouts) are logged at Error so they stay visible. Malformed headers are logged at Information.\n\n- Bump the ApplicationPrincipal package version.\n\nAcceptance Criteria\n\n- Basic auth with an unknown login returns 401 JSON, with no exception or stack trace\n\n- Basic auth with a valid login and wrong password returns 401 (unchanged)\n\n- Bearer token with an unknown access key kid returns 401\n\n- Malformed Basic or Bearer headers return 401, not 500\n\n- An unreachable Auth API or a 5xx response returns 401 to the caller, with the exception logged at Error level\n\n- POST api/v1/applicationPrincipal/authenticate returns the same response shape for an unknown login and a wrong password\n\n- Unit tests cover the provider, the REST service (404 handling plus a 5xx regression check), and the handler fail-closed behavior\n\n- New ApplicationPrincipal package version published",
+        "descriptionHtml": "<h3>Problem</h3><p>When a consuming service uses the <code>GolfNow.Services.Auth.Identity.ApplicationPrincipal</code> NuGet package and a request sends HTTP Basic credentials for a login that doesn't exist, the auth handler throws instead of returning a failed auth result. The caller gets a 500 with a stack trace when they should get a 401.</p><pre><code>System.InvalidOperationException: Error calling Auth API: AppPrincipal not found.\n   at ...ApplicationPrincipalAuthRestService.SendAndUnpackRequestAsync[T](...)\n   at ...ApplicationPrincipalAuthRestService.AuthenticateApplicationPrincipalLoginNamePassword(...)\n   at ...ApplicationPrincipalAuthenticationHandler.HandleBasicAuthenticationAsync(...)\n   at ...ApplicationPrincipalAuthenticationHandler.HandleAuthenticateAsync()</code></pre><h3>Root Cause</h3><ol><li><p><strong>Server (gn-svc-auth, Auth API):</strong> <code>ApplicationPrincipalProvider.ValidateApplicationPrincipalCredentials</code> returns <strong>404</strong> for an unknown login but <strong>200 + IsAuthenticated=false</strong> for a wrong password. This also lets anyone enumerate valid login names.</p></li><li><p><strong>Client package:</strong> <code>ApplicationPrincipalAuthRestService.SendAndUnpackRequestAsync</code> throws <code>InvalidOperationException</code> on any non-2xx response.</p></li><li><p><strong>Client handler:</strong> <code>ApplicationPrincipalAuthenticationHandler</code> doesn't catch errors from the Basic or Bearer paths. The Bearer path has the same bug for an unknown access key <code>kid</code>, and so do malformed headers (bad base64, missing <code>:</code>, non-GUID kid).</p></li></ol><h3>Proposed Fix</h3><ul><li><p><strong>Server:</strong> Return the same <code>IsAuthenticated=false</code> / &quot;Credentials do not match an active account.&quot; response for an unknown login as for a wrong password.</p></li><li><p><strong>Client REST service:</strong> Treat 404 from the <code>authenticate</code> and <code>accessKey</code> endpoints as not authenticated / not found (<code>false</code> / <code>null</code>) instead of throwing. This keeps the client working against servers that haven't been updated.</p></li><li><p><strong>Client handler:</strong> Fail closed. Any exception during credential validation becomes <code>AuthenticateResult.Fail</code> and a 401. Auth API outages (5xx, timeouts) are logged at Error so they stay visible. Malformed headers are logged at Information.</p></li><li><p>Bump the ApplicationPrincipal package version.</p></li></ul><h3>Acceptance Criteria</h3><ul><li><p>Basic auth with an unknown login returns 401 JSON, with no exception or stack trace</p></li><li><p>Basic auth with a valid login and wrong password returns 401 (unchanged)</p></li><li><p>Bearer token with an unknown access key kid returns 401</p></li><li><p>Malformed Basic or Bearer headers return 401, not 500</p></li><li><p>An unreachable Auth API or a 5xx response returns 401 to the caller, with the exception logged at Error level</p></li><li><p><code>POST api/v1/applicationPrincipal/authenticate</code> returns the same response shape for an unknown login and a wrong password</p></li><li><p>Unit tests cover the provider, the REST service (404 handling plus a 5xx regression check), and the handler fail-closed behavior</p></li><li><p>New ApplicationPrincipal package version published</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Pre Planning",
+        "priority": "None",
+        "assignee": "Daniel McNaughton",
+        "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-10-01T07:32:17.017-0400",
+        "updatedDisplay": "Oct 1, 2026, 7:32 AM",
+        "created": "2026-10-01T07:32:13.847-0400",
+        "createdDisplay": "Oct 1, 2026, 7:32 AM",
+        "components": [],
+        "fixVersions": [],
         "sprints": [
           {
             "name": "2026.8"
@@ -13789,56 +13908,6 @@
         "fixVersions": [
           "v3001.127.0"
         ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14301",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14301",
-          "summary": "GolfPass \"Home Course\": Phase I",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14640",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14640",
-        "summary": "Display Home Course bonus points as an additional data point on transaction history",
-        "description": "In https://golfnow.atlassian.net/browse/CORE-14518, we created the concept of breaking out the points type so they can be shown on invoice and checkout. Specifically the Home Course points.\n\n\"TotalBaseEarnablePoints\": 3000,\n\"TotalEarnablePoints\": 3200,\n\"TotalPromotionalEarnablePoints\": 0 or NULL\n\"TotalHomeCourseEarnablePoints\": 200\n\nHowever on transaction history, we will still only see the total grouped points value with no indication of how many points were attributed to Home Course.\n\nObjective:\n\n- Return a data point on loyalty transaction history API that will identify for the UI teams that a reservation line item had the base points + home course points\n\n- API used by UI: GET {{api-base-url}}/GolfNowAPI.svc/rest/customers/{{EmailAddress}}/loyalty/rewards/transactions?channelId=331&page=1&recordsPerPage=1000\n\n- This would only apply to tee time reservation booking entries\n\n- Base and Promotional can be combined in to one value if needed\n\n- Home Course should be the one that is on its own\n\n- If you transact somewhere outside your home course, i’d expect the value to be null or empty or 0\n\n- We need the data stored in the database so Raptor can pick it up and associate to loyalty records\n\n- Potential idea:\n\n{\n\"Transactions\": {\n\"Page\": 1,\n\"RecordsPerPage\": 1000,\n\"Items\": [\n{\n\"ChannelId\": 5151,\n\"CreatedOnUtc\": \"/Date(1785184359230+0000)/\",\n\"CustomerId\": \"a2a0dde8-a3b5-42e7-afef-4d1ab74a2648\",\n\"Description\": \"TeeTime Reservation - 419822833\",\n\"ExpiresOnUtc\": \"/Date(1817125200000+0000)/\",\n\"IsProcessed\": false,\n\"PointsForAction\": null,\n\"PointsTransactionId\": 32791953,\n\"PointsValue\": 850.9500,\n\"PointsBreakdown\": [       /// Proposed new field\n\"Base\": 250.95,\n\"Promotional\":100,\n\"HomeCourse\": 500\n]\n\"ProcessedOnUtc\": null,\n\"ProgramId\": 2,\n\"ReferenceId\": \"419822833\",\n\"ReferenceType\": {\n\"Action\": \"Purchase\",\n\"ReferenceTypeId\": 1,\n\"Source\": \"TeeTime.Reservation\"\n},\n\"RunningBalance\": null\n},\n\nTest Cases\n\n- Happy Path no home course\n\n- Promotional and HomeCourse breakdown data should be 0 or null\n\n- Base should match PointsValue\n\n- Happy Path Home Course\n\n- Promotional should be 0 or null\n\n- Home Course should be 500\n\n- PointsValue would be Base+500",
-        "descriptionHtml": "<p>In <a href=\"https://golfnow.atlassian.net/browse/CORE-14518\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/CORE-14518</a>, we created the concept of breaking out the points type so they can be shown on invoice and checkout. Specifically the Home Course points.</p><pre><code>&quot;TotalBaseEarnablePoints&quot;: 3000,\n&quot;TotalEarnablePoints&quot;: 3200,\n&quot;TotalPromotionalEarnablePoints&quot;: 0 or NULL\n&quot;TotalHomeCourseEarnablePoints&quot;: 200</code></pre><p>However on transaction history, we will still only see the total grouped points value with no indication of how many points were attributed to Home Course.</p><p>Objective:</p><ul><li><p>Return a data point on loyalty transaction history API that will identify for the UI teams that a reservation line item had the base points + home course points</p><ul><li><p>API used by UI: GET <code>{{api-base-url}}/GolfNowAPI.svc/rest/customers/{{EmailAddress}}/loyalty/rewards/transactions?channelId=331&amp;page=1&amp;recordsPerPage=1000</code></p></li><li><p>This would only apply to tee time reservation booking entries</p></li><li><p>Base and Promotional can be combined in to one value if needed</p></li><li><p>Home Course should be the one that is on its own</p></li><li><p>If you transact somewhere outside your home course, i’d expect the value to be null or empty or 0</p></li></ul></li><li><p>We need the data stored in the database so Raptor can pick it up and associate to loyalty records</p></li><li><p>Potential idea:</p><pre><code>{\n    &quot;Transactions&quot;: {\n        &quot;Page&quot;: 1,\n        &quot;RecordsPerPage&quot;: 1000,\n        &quot;Items&quot;: [\n            {\n                &quot;ChannelId&quot;: 5151,\n                &quot;CreatedOnUtc&quot;: &quot;/Date(1785184359230+0000)/&quot;,\n                &quot;CustomerId&quot;: &quot;a2a0dde8-a3b5-42e7-afef-4d1ab74a2648&quot;,\n                &quot;Description&quot;: &quot;TeeTime Reservation - 419822833&quot;,\n                &quot;ExpiresOnUtc&quot;: &quot;/Date(1817125200000+0000)/&quot;,\n                &quot;IsProcessed&quot;: false,\n                &quot;PointsForAction&quot;: null,\n                &quot;PointsTransactionId&quot;: 32791953,\n                &quot;PointsValue&quot;: 850.9500,\n                &quot;PointsBreakdown&quot;: [       /// Proposed new field\n                     &quot;Base&quot;: 250.95,\n                     &quot;Promotional&quot;:100, \n                     &quot;HomeCourse&quot;: 500\n                ]\n                &quot;ProcessedOnUtc&quot;: null,\n                &quot;ProgramId&quot;: 2,\n                &quot;ReferenceId&quot;: &quot;419822833&quot;,\n                &quot;ReferenceType&quot;: {\n                    &quot;Action&quot;: &quot;Purchase&quot;,\n                    &quot;ReferenceTypeId&quot;: 1,\n                    &quot;Source&quot;: &quot;TeeTime.Reservation&quot;\n                },\n                &quot;RunningBalance&quot;: null\n            },</code></pre></li></ul><p><strong>Test Cases</strong></p><ul><li><p>Happy Path no home course</p><ul><li><p>Promotional and HomeCourse breakdown data should be 0 or null</p></li><li><p>Base should match PointsValue</p></li></ul></li><li><p>Happy Path Home Course</p><ul><li><p>Promotional should be 0 or null</p></li><li><p>Home Course should be 500</p></li><li><p>PointsValue would be Base+500</p></li></ul></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Development",
-        "priority": "P1",
-        "assignee": "Daniel McNaughton",
-        "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-        "assignedDeveloper": "Daniel McNaughton",
-        "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-        "updated": "2026-09-15T12:00:24.158-0400",
-        "updatedDisplay": "Sep 15, 2026, 12:00 PM",
-        "created": "2026-08-04T17:58:31.905-0400",
-        "createdDisplay": "Aug 4, 2026, 5:58 PM",
-        "components": [],
-        "fixVersions": [],
         "sprints": [
           {
             "name": "2026.8"
@@ -41614,13 +41683,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-10-01T06:01:32.029Z",
-    "pulledAtDisplay": "Oct 1, 2026, 2:01 AM",
+    "pulledAt": "2026-10-01T14:26:42.942Z",
+    "pulledAtDisplay": "Oct 1, 2026, 10:26 AM",
     "window": {
-      "start": "2026-08-17T06:01:32.029Z",
-      "end": "2027-03-30T06:01:32.029Z",
-      "startDisplay": "Aug 17, 2026, 2:01 AM",
-      "endDisplay": "Mar 30, 2027, 2:01 AM"
+      "start": "2026-08-17T14:26:42.942Z",
+      "end": "2027-03-30T14:26:42.942Z",
+      "startDisplay": "Aug 17, 2026, 10:26 AM",
+      "endDisplay": "Mar 30, 2027, 10:26 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -41633,7 +41702,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-10-01T06:01:37.246Z",
+        "pulledAt": "2026-10-01T14:26:48.569Z",
         "eventCount": 74,
         "events": [
           {
@@ -42900,10 +42969,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-09-28T18:54:41.399Z",
-    "previousPulledAtDisplay": "Sep 28, 2026, 2:54 PM",
-    "currentPulledAt": "2026-10-01T06:03:35.024Z",
-    "currentPulledAtDisplay": "Oct 1, 2026, 2:03 AM",
+    "previousPulledAt": "2026-10-01T06:03:35.024Z",
+    "previousPulledAtDisplay": "Oct 1, 2026, 2:03 AM",
+    "currentPulledAt": "2026-10-01T14:28:30.184Z",
+    "currentPulledAtDisplay": "Oct 1, 2026, 10:28 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -42911,6 +42980,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-10-01T06:03:35.024Z",
+      "previousPulledAtDisplay": "Oct 1, 2026, 2:03 AM",
+      "currentPulledAt": "2026-10-01T14:28:30.184Z",
+      "currentPulledAtDisplay": "Oct 1, 2026, 10:28 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-09-28T18:54:41.399Z",
       "previousPulledAtDisplay": "Sep 28, 2026, 2:54 PM",
@@ -44818,17 +44898,6 @@
       "previousPulledAtDisplay": "Jul 24, 2026, 6:33 PM",
       "currentPulledAt": "2026-07-24T22:38:24.240Z",
       "currentPulledAtDisplay": "Jul 24, 2026, 6:38 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-24T22:28:36.984Z",
-      "previousPulledAtDisplay": "Jul 24, 2026, 6:28 PM",
-      "currentPulledAt": "2026-07-24T22:33:31.316Z",
-      "currentPulledAtDisplay": "Jul 24, 2026, 6:33 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
