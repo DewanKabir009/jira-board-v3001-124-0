@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-10-22T19:52:55.206Z",
-  "pulledAtDisplay": "Oct 22, 2026, 3:52 PM",
+  "pulledAt": "2026-10-22T19:58:51.801Z",
+  "pulledAtDisplay": "Oct 22, 2026, 3:58 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-10-22T19:52:55.206Z",
-    "pulledAtDisplay": "Oct 22, 2026, 3:52 PM",
+    "pulledAt": "2026-10-22T19:58:51.801Z",
+    "pulledAtDisplay": "Oct 22, 2026, 3:58 PM",
     "total": 555,
     "mainTotal": 525,
     "subtaskTotal": 30,
@@ -8107,6 +8107,72 @@
         }
       },
       {
+        "key": "CORE-14882",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14882",
+        "summary": "Remove GeoPlaces searchability of Lavender Links Golf Club",
+        "description": "Remove the following facility from searchability:\n\n- Lavender Links Golf Club\n\n- FacilityId 19026",
+        "descriptionHtml": "<p>Remove the following facility from searchability:</p><ul><li><p>Lavender Links Golf Club</p></li><li><p>FacilityId 19026</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1234781",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14882?focusedCommentId=1234781",
+            "author": "Sebastian Calzadilla Gonzalez",
+            "authorAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
+            "created": "2026-10-22T15:54:25.934-0400",
+            "createdDisplay": "Oct 22, 2026, 3:54 PM",
+            "updated": "2026-10-22T15:54:25.934-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Attaching scripts to disable searchability for Lavender Links Golf Club Facility Id 19026",
+            "bodyHtml": "<p>Attaching scripts to disable searchability for Lavender Links Golf Club Facility Id 19026<br><br> </p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14882?focusedCommentId=1234781",
+        "lastCommentDisplay": "Oct 22, 2026, 3:54 PM",
+        "lastCommentAuthor": "Sebastian Calzadilla Gonzalez",
+        "testChecklist": null,
+        "type": "Task",
+        "isSubtask": false,
+        "status": "Development",
+        "priority": "None",
+        "assignee": "Sebastian Calzadilla Gonzalez",
+        "assigneeAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
+        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
+        "assignedDeveloper": "Sebastian Calzadilla Gonzalez",
+        "assignedDeveloperAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
+        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
+        "updated": "2026-10-22T15:54:47.690-0400",
+        "updatedDisplay": "Oct 22, 2026, 3:54 PM",
+        "created": "2026-10-22T13:17:40.890-0400",
+        "createdDisplay": "Oct 22, 2026, 1:17 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14857",
         "url": "https://golfnow.atlassian.net/browse/CORE-14857",
         "summary": "GNC Mass Cancellations | Show facility name and date range on the Cancel confirmation popup",
@@ -8468,56 +8534,6 @@
         "fixVersions": [
           "v3001.128.0"
         ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14882",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14882",
-        "summary": "Remove GeoPlaces searchability of Lavender Links Golf Club",
-        "description": "Remove the following facility from searchability:\n\n- Lavender Links Golf Club\n\n- FacilityId 19026",
-        "descriptionHtml": "<p>Remove the following facility from searchability:</p><ul><li><p>Lavender Links Golf Club</p></li><li><p>FacilityId 19026</p></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Task",
-        "isSubtask": false,
-        "status": "Pre Planning",
-        "priority": "None",
-        "assignee": "Sebastian Calzadilla Gonzalez",
-        "assigneeAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
-        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-10-22T13:18:44.171-0400",
-        "updatedDisplay": "Oct 22, 2026, 1:18 PM",
-        "created": "2026-10-22T13:17:40.890-0400",
-        "createdDisplay": "Oct 22, 2026, 1:17 PM",
-        "components": [],
-        "fixVersions": [],
         "sprints": [
           {
             "name": "2026.8"
@@ -43108,13 +43124,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-10-22T19:51:12.626Z",
-    "pulledAtDisplay": "Oct 22, 2026, 3:51 PM",
+    "pulledAt": "2026-10-22T19:56:20.497Z",
+    "pulledAtDisplay": "Oct 22, 2026, 3:56 PM",
     "window": {
-      "start": "2026-09-07T19:51:12.625Z",
-      "end": "2027-04-20T19:51:12.625Z",
-      "startDisplay": "Sep 7, 2026, 3:51 PM",
-      "endDisplay": "Apr 20, 2027, 3:51 PM"
+      "start": "2026-09-07T19:56:20.497Z",
+      "end": "2027-04-20T19:56:20.497Z",
+      "startDisplay": "Sep 7, 2026, 3:56 PM",
+      "endDisplay": "Apr 20, 2027, 3:56 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43127,7 +43143,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-10-22T19:51:17.376Z",
+        "pulledAt": "2026-10-22T19:56:23.950Z",
         "eventCount": 65,
         "events": [
           {
@@ -44066,23 +44082,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - US Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44095,6 +44094,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - US Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44202,23 +44218,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.66",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-03T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-03",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 3, 2027",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44234,6 +44233,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.66",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-03T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-03",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 3, 2027",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -44241,10 +44257,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-10-22T19:48:41.901Z",
-    "previousPulledAtDisplay": "Oct 22, 2026, 3:48 PM",
-    "currentPulledAt": "2026-10-22T19:52:55.206Z",
-    "currentPulledAtDisplay": "Oct 22, 2026, 3:52 PM",
+    "previousPulledAt": "2026-10-22T19:52:55.206Z",
+    "previousPulledAtDisplay": "Oct 22, 2026, 3:52 PM",
+    "currentPulledAt": "2026-10-22T19:58:51.801Z",
+    "currentPulledAtDisplay": "Oct 22, 2026, 3:58 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44252,6 +44268,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-10-22T19:52:55.206Z",
+      "previousPulledAtDisplay": "Oct 22, 2026, 3:52 PM",
+      "currentPulledAt": "2026-10-22T19:58:51.801Z",
+      "currentPulledAtDisplay": "Oct 22, 2026, 3:58 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-10-22T19:48:41.901Z",
       "previousPulledAtDisplay": "Oct 22, 2026, 3:48 PM",
@@ -46187,17 +46214,6 @@
       "previousPulledAtDisplay": "Jul 24, 2026, 10:03 PM",
       "currentPulledAt": "2026-07-25T02:07:51.582Z",
       "currentPulledAtDisplay": "Jul 24, 2026, 10:07 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-25T01:57:57.754Z",
-      "previousPulledAtDisplay": "Jul 24, 2026, 9:57 PM",
-      "currentPulledAt": "2026-07-25T02:03:06.270Z",
-      "currentPulledAtDisplay": "Jul 24, 2026, 10:03 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
