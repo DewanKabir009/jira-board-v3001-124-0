@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-10-22T17:57:53.830Z",
-  "pulledAtDisplay": "Oct 22, 2026, 1:57 PM",
+  "pulledAt": "2026-10-22T19:08:46.666Z",
+  "pulledAtDisplay": "Oct 22, 2026, 3:08 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-10-22T17:57:53.830Z",
-    "pulledAtDisplay": "Oct 22, 2026, 1:57 PM",
+    "pulledAt": "2026-10-22T19:08:46.666Z",
+    "pulledAtDisplay": "Oct 22, 2026, 3:08 PM",
     "total": 555,
     "mainTotal": 525,
     "subtaskTotal": 30,
@@ -8107,6 +8107,56 @@
         }
       },
       {
+        "key": "CORE-14857",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14857",
+        "summary": "GNC Mass Cancellations | Show facility name and date range on the Cancel confirmation popup",
+        "description": "Goal\n\nThe Cancel Selected confirmation popup on the GNC Mass Cancellations page clearly shows the facility and date range about to be cancelled, so a specialist cannot cancel the wrong course by accident.\n\n---\nProblem\n\nMember Care often searches a course and date range, selects all, and uses Copy Email Addresses to send course condition notices (aeration, walking only, etc). On the next case they can forget to change the facility or dates and click Cancel Selected, which cancels a batch of tee times in error. The current popup does not say which course is being cancelled.\n\n---\nBusiness Impact\n\n- ~4 revenue-impacting wrong-course mass cancellations in the past few months\n\n- Each one forces an urgent, manual recovery effort for Member Care\n\n- Golfers lose their booked rounds and the facility loses revenue until it is fixed\n\n---\nProposed Popup Text\n\nAdd a bold, highly visible block at the top of the existing confirmation popup (screenshot of the results page the popup opens from is attached):\n\nYou are about to CANCEL 138 reservations at:\n\nDUBSDREAD GOLF COURSE\nWed, Jun 03, 2026 to Wed, Jun 10, 2026\n\nRound types: Course only   (or: Course and Trade)\n\nPlease confirm this is the correct course and date range for this case.\n\n- Existing Submit Refund option and Confirm button stay as they are\n\n- Facility name should be large and stand out (for example bold, colored banner)\n\n- Optional extra: require typing or confirming the facility name before the Confirm button enables\n\n---\nAcceptance Criteria\n\n- Popup shows the selected facility name in large, bold text above the refund option\n\n- Popup shows the start and end date of the search and the reservation count\n\n- Popup states whether Include Trade was on (Course only vs Course and Trade)\n\n- Facility name shown matches the facility used for the search results\n\n- Existing refund and cancel behavior is unchanged\n\n---\nTechnical Details\n\nFront-end change to the confirmation modal on the GNC Mass Cancellations page (CORE-13954). Facility, dates, and Include Trade value are already on the page. Source: #consumercare-development thread. Page reference: https://golfnow.atlassian.net/wiki/spaces/PD/pages/11363123203\n\n---\nRelated Tickets\n\n- CORE-13954 original Mass Cancellation page\n\n- CORE-13890 Mass Cancellation epic",
+        "descriptionHtml": "<h3>Goal</h3><p>The Cancel Selected confirmation popup on the GNC Mass Cancellations page clearly shows the facility and date range about to be cancelled, so a specialist cannot cancel the wrong course by accident.</p><hr><h3>Problem</h3><p>Member Care often searches a course and date range, selects all, and uses Copy Email Addresses to send course condition notices (aeration, walking only, etc). On the next case they can forget to change the facility or dates and click Cancel Selected, which cancels a batch of tee times in error. The current popup does not say which course is being cancelled.</p><hr><h3>Business Impact</h3><ul><li><p>~4 revenue-impacting wrong-course mass cancellations in the past few months</p></li><li><p>Each one forces an urgent, manual recovery effort for Member Care</p></li><li><p>Golfers lose their booked rounds and the facility loses revenue until it is fixed</p></li></ul><hr><h3>Proposed Popup Text</h3><p>Add a bold, highly visible block at the top of the existing confirmation popup (screenshot of the results page the popup opens from is attached):</p><pre><code>You are about to CANCEL 138 reservations at:\n\nDUBSDREAD GOLF COURSE\nWed, Jun 03, 2026 to Wed, Jun 10, 2026\n\nRound types: Course only   (or: Course and Trade)\n\nPlease confirm this is the correct course and date range for this case.</code></pre><ul><li><p>Existing Submit Refund option and Confirm button stay as they are</p></li><li><p>Facility name should be large and stand out (for example bold, colored banner)</p></li><li><p>Optional extra: require typing or confirming the facility name before the Confirm button enables</p></li></ul><hr><h3>Acceptance Criteria</h3><ul><li><p>Popup shows the selected facility name in large, bold text above the refund option</p></li><li><p>Popup shows the start and end date of the search and the reservation count</p></li><li><p>Popup states whether Include Trade was on (Course only vs Course and Trade)</p></li><li><p>Facility name shown matches the facility used for the search results</p></li><li><p>Existing refund and cancel behavior is unchanged</p></li></ul><hr><h3>Technical Details</h3><p>Front-end change to the confirmation modal on the GNC Mass Cancellations page (<a href=\"https://golfnow.atlassian.net/browse/CORE-13954\" target=\"_blank\" rel=\"noopener\">CORE-13954</a>). Facility, dates, and Include Trade value are already on the page. Source: #consumercare-development thread. Page reference: https://golfnow.atlassian.net/wiki/spaces/PD/pages/11363123203</p><hr><h3>Related Tickets</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-13954\" target=\"_blank\" rel=\"noopener\">CORE-13954</a> original Mass Cancellation page</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-13890\" target=\"_blank\" rel=\"noopener\">CORE-13890</a> Mass Cancellation epic</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "P2",
+        "assignee": "Luis Vallejo Mursuli",
+        "assigneeAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-10-22T14:02:05.837-0400",
+        "updatedDisplay": "Oct 22, 2026, 2:02 PM",
+        "created": "2026-10-13T17:48:36.268-0400",
+        "createdDisplay": "Oct 13, 2026, 5:48 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14720",
         "url": "https://golfnow.atlassian.net/browse/CORE-14720",
         "summary": "GNC | Show custom transaction-fee refundability in Course Reservation Edit",
@@ -9224,56 +9274,6 @@
         "updatedDisplay": "Oct 20, 2026, 5:39 PM",
         "created": "2026-10-20T17:24:27.881-0400",
         "createdDisplay": "Oct 20, 2026, 5:24 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14857",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14857",
-        "summary": "GNC Mass Cancellations | Show facility name and date range on the Cancel confirmation popup",
-        "description": "Goal\n\nThe Cancel Selected confirmation popup on the GNC Mass Cancellations page clearly shows the facility and date range about to be cancelled, so a specialist cannot cancel the wrong course by accident.\n\n---\nProblem\n\nMember Care often searches a course and date range, selects all, and uses Copy Email Addresses to send course condition notices (aeration, walking only, etc). On the next case they can forget to change the facility or dates and click Cancel Selected, which cancels a batch of tee times in error. The current popup does not say which course is being cancelled.\n\n---\nBusiness Impact\n\n- ~4 revenue-impacting wrong-course mass cancellations in the past few months\n\n- Each one forces an urgent, manual recovery effort for Member Care\n\n- Golfers lose their booked rounds and the facility loses revenue until it is fixed\n\n---\nProposed Popup Text\n\nAdd a bold, highly visible block at the top of the existing confirmation popup (screenshot of the results page the popup opens from is attached):\n\nYou are about to CANCEL 138 reservations at:\n\nDUBSDREAD GOLF COURSE\nWed, Jun 03, 2026 to Wed, Jun 10, 2026\n\nRound types: Course only   (or: Course and Trade)\n\nPlease confirm this is the correct course and date range for this case.\n\n- Existing Submit Refund option and Confirm button stay as they are\n\n- Facility name should be large and stand out (for example bold, colored banner)\n\n- Optional extra: require typing or confirming the facility name before the Confirm button enables\n\n---\nAcceptance Criteria\n\n- Popup shows the selected facility name in large, bold text above the refund option\n\n- Popup shows the start and end date of the search and the reservation count\n\n- Popup states whether Include Trade was on (Course only vs Course and Trade)\n\n- Facility name shown matches the facility used for the search results\n\n- Existing refund and cancel behavior is unchanged\n\n---\nTechnical Details\n\nFront-end change to the confirmation modal on the GNC Mass Cancellations page (CORE-13954). Facility, dates, and Include Trade value are already on the page. Source: #consumercare-development thread. Page reference: https://golfnow.atlassian.net/wiki/spaces/PD/pages/11363123203\n\n---\nRelated Tickets\n\n- CORE-13954 original Mass Cancellation page\n\n- CORE-13890 Mass Cancellation epic",
-        "descriptionHtml": "<h3>Goal</h3><p>The Cancel Selected confirmation popup on the GNC Mass Cancellations page clearly shows the facility and date range about to be cancelled, so a specialist cannot cancel the wrong course by accident.</p><hr><h3>Problem</h3><p>Member Care often searches a course and date range, selects all, and uses Copy Email Addresses to send course condition notices (aeration, walking only, etc). On the next case they can forget to change the facility or dates and click Cancel Selected, which cancels a batch of tee times in error. The current popup does not say which course is being cancelled.</p><hr><h3>Business Impact</h3><ul><li><p>~4 revenue-impacting wrong-course mass cancellations in the past few months</p></li><li><p>Each one forces an urgent, manual recovery effort for Member Care</p></li><li><p>Golfers lose their booked rounds and the facility loses revenue until it is fixed</p></li></ul><hr><h3>Proposed Popup Text</h3><p>Add a bold, highly visible block at the top of the existing confirmation popup (screenshot of the results page the popup opens from is attached):</p><pre><code>You are about to CANCEL 138 reservations at:\n\nDUBSDREAD GOLF COURSE\nWed, Jun 03, 2026 to Wed, Jun 10, 2026\n\nRound types: Course only   (or: Course and Trade)\n\nPlease confirm this is the correct course and date range for this case.</code></pre><ul><li><p>Existing Submit Refund option and Confirm button stay as they are</p></li><li><p>Facility name should be large and stand out (for example bold, colored banner)</p></li><li><p>Optional extra: require typing or confirming the facility name before the Confirm button enables</p></li></ul><hr><h3>Acceptance Criteria</h3><ul><li><p>Popup shows the selected facility name in large, bold text above the refund option</p></li><li><p>Popup shows the start and end date of the search and the reservation count</p></li><li><p>Popup states whether Include Trade was on (Course only vs Course and Trade)</p></li><li><p>Facility name shown matches the facility used for the search results</p></li><li><p>Existing refund and cancel behavior is unchanged</p></li></ul><hr><h3>Technical Details</h3><p>Front-end change to the confirmation modal on the GNC Mass Cancellations page (<a href=\"https://golfnow.atlassian.net/browse/CORE-13954\" target=\"_blank\" rel=\"noopener\">CORE-13954</a>). Facility, dates, and Include Trade value are already on the page. Source: #consumercare-development thread. Page reference: https://golfnow.atlassian.net/wiki/spaces/PD/pages/11363123203</p><hr><h3>Related Tickets</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-13954\" target=\"_blank\" rel=\"noopener\">CORE-13954</a> original Mass Cancellation page</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-13890\" target=\"_blank\" rel=\"noopener\">CORE-13890</a> Mass Cancellation epic</p></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Planning",
-        "priority": "P2",
-        "assignee": "Luis Vallejo Mursuli",
-        "assigneeAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-10-20T10:35:35.440-0400",
-        "updatedDisplay": "Oct 20, 2026, 10:35 AM",
-        "created": "2026-10-13T17:48:36.268-0400",
-        "createdDisplay": "Oct 13, 2026, 5:48 PM",
         "components": [],
         "fixVersions": [],
         "sprints": [
@@ -43108,13 +43108,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-10-22T17:56:10.919Z",
-    "pulledAtDisplay": "Oct 22, 2026, 1:56 PM",
+    "pulledAt": "2026-10-22T19:06:33.188Z",
+    "pulledAtDisplay": "Oct 22, 2026, 3:06 PM",
     "window": {
-      "start": "2026-09-07T17:56:10.919Z",
-      "end": "2027-04-20T17:56:10.919Z",
-      "startDisplay": "Sep 7, 2026, 1:56 PM",
-      "endDisplay": "Apr 20, 2027, 1:56 PM"
+      "start": "2026-09-07T19:06:33.188Z",
+      "end": "2027-04-20T19:06:33.188Z",
+      "startDisplay": "Sep 7, 2026, 3:06 PM",
+      "endDisplay": "Apr 20, 2027, 3:06 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43127,7 +43127,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-10-22T17:56:13.117Z",
+        "pulledAt": "2026-10-22T19:06:38.886Z",
         "eventCount": 65,
         "events": [
           {
@@ -43794,6 +43794,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -43823,23 +43840,6 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -43930,23 +43930,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -43976,6 +43959,23 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44066,23 +44066,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44095,6 +44078,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44117,23 +44117,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "GN: v3001.133.0",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44146,6 +44129,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "GN: v3001.133.0",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44202,23 +44202,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Pro Dev/Stage Swap",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-10T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-10",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 10, 2027",
-            "allDay": true,
-            "type": "Scheduled Maintenance",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44234,6 +44217,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Pro Dev/Stage Swap",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-10T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-10",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 10, 2027",
+            "allDay": true,
+            "type": "Scheduled Maintenance",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -44241,10 +44241,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-10-22T17:53:08.562Z",
-    "previousPulledAtDisplay": "Oct 22, 2026, 1:53 PM",
-    "currentPulledAt": "2026-10-22T17:57:53.830Z",
-    "currentPulledAtDisplay": "Oct 22, 2026, 1:57 PM",
+    "previousPulledAt": "2026-10-22T17:57:53.830Z",
+    "previousPulledAtDisplay": "Oct 22, 2026, 1:57 PM",
+    "currentPulledAt": "2026-10-22T19:08:46.666Z",
+    "currentPulledAtDisplay": "Oct 22, 2026, 3:08 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44252,6 +44252,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-10-22T17:57:53.830Z",
+      "previousPulledAtDisplay": "Oct 22, 2026, 1:57 PM",
+      "currentPulledAt": "2026-10-22T19:08:46.666Z",
+      "currentPulledAtDisplay": "Oct 22, 2026, 3:08 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-10-22T17:53:08.562Z",
       "previousPulledAtDisplay": "Oct 22, 2026, 1:53 PM",
@@ -46187,17 +46198,6 @@
       "previousPulledAtDisplay": "Jul 24, 2026, 9:12 PM",
       "currentPulledAt": "2026-07-25T01:17:53.110Z",
       "currentPulledAtDisplay": "Jul 24, 2026, 9:17 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-07-25T01:08:39.515Z",
-      "previousPulledAtDisplay": "Jul 24, 2026, 9:08 PM",
-      "currentPulledAt": "2026-07-25T01:12:58.984Z",
-      "currentPulledAtDisplay": "Jul 24, 2026, 9:12 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
