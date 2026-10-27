@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-10-27T20:59:36.946Z",
-  "pulledAtDisplay": "Oct 27, 2026, 4:59 PM",
+  "pulledAt": "2026-10-27T21:04:41.741Z",
+  "pulledAtDisplay": "Oct 27, 2026, 5:04 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-10-27T20:59:36.946Z",
-    "pulledAtDisplay": "Oct 27, 2026, 4:59 PM",
+    "pulledAt": "2026-10-27T21:04:41.741Z",
+    "pulledAtDisplay": "Oct 27, 2026, 5:04 PM",
     "total": 556,
     "mainTotal": 526,
     "subtaskTotal": 30,
@@ -8107,6 +8107,89 @@
         }
       },
       {
+        "key": "DS-23026",
+        "url": "https://golfnow.atlassian.net/browse/DS-23026",
+        "summary": "Additional Home Course Data",
+        "description": "CORE will be creating a new table that has a points breakdown of the ledger record. For example, you earned 3000 points on the hot deal purchase but it was 2500 base points and 500 home course points. This table will store the breakout line items of each. DS will likely need to make a Fact table to push to raptor and ultimately SFMC.\n\n- Source Table:\n\nUSE [Loyalty];\nGO\n\nIF OBJECT_ID('Rewards.PointsTransactionBreakdown') IS NULL\nBEGIN\n\nCREATE TABLE [Rewards].[PointsTransactionBreakdown]\n(\n[PointsTransactionId] BIGINT      NOT NULL,\n[SourceKey]           VARCHAR(50) NOT NULL,\n[PointsValue]         MONEY       NOT NULL,\nCONSTRAINT [PK_PointsTransactionBreakdown]\nPRIMARY KEY CLUSTERED (\n[PointsTransactionId],\n[SourceKey]\n),\nCONSTRAINT [FK_PointsTransactionBreakdown_PointsTransactionId]\nFOREIGN KEY ([PointsTransactionId])\nREFERENCES [Rewards].[PointsTransaction] ([PointsTransactionId])\n);\n\nEND;\nGO\n\nIF TYPE_ID('Rewards.udtPointsTransactionBreakdown') IS NULL\nBEGIN\n\nCREATE TYPE [Rewards].[udtPointsTransactionBreakdown] AS TABLE\n(\n[SourceKey]   VARCHAR(50) NOT NULL,\n[PointsValue] MONEY       NOT NULL\n);\n\nEND;\nGO\n\n- Raptor Target Table:\n\n- Create a new FactTable to push this data to\n\n- The goal is that i can join a FactRewards (or DimRewards, i cannot remember the table name) record to this new table and see the total amount of points from the FactRewards and then the breakdown of the points from the new table\n\n- This should populate on the same frequency as FactRewards\n\n- Data will need to be backfilled starting on 10/6/2026\n\n- SFMC Target\n\n- SFMC Data Extension: Loyalty_Ledger_w_email\nData Services File: golfpassloyalty[Date+Timestamp]\n\n- Create two new columns\n\n- BasePoints_Latest_Transaction\n\n- Key from CRM: BasePoints\n\n- HomeCourse_Latest_Transaction (nullable)\n\n- Key from CRM: HomeCourse",
+        "descriptionHtml": "<p>CORE will be creating a new table that has a points breakdown of the ledger record. For example, you earned 3000 points on the hot deal purchase but it was 2500 base points and 500 home course points. This table will store the breakout line items of each. DS will likely need to make a Fact table to push to raptor and ultimately SFMC.</p><ul><li><p>Source Table: </p><pre><code>USE [Loyalty];\nGO\n\nIF OBJECT_ID('Rewards.PointsTransactionBreakdown') IS NULL\nBEGIN\n\n    CREATE TABLE [Rewards].[PointsTransactionBreakdown]\n    (\n        [PointsTransactionId] BIGINT      NOT NULL,\n        [SourceKey]           VARCHAR(50) NOT NULL,\n        [PointsValue]         MONEY       NOT NULL,\n        CONSTRAINT [PK_PointsTransactionBreakdown]\n            PRIMARY KEY CLUSTERED (\n                                      [PointsTransactionId],\n                                      [SourceKey]\n                                  ),\n        CONSTRAINT [FK_PointsTransactionBreakdown_PointsTransactionId]\n            FOREIGN KEY ([PointsTransactionId])\n            REFERENCES [Rewards].[PointsTransaction] ([PointsTransactionId])\n    );\n\nEND;\nGO\n\n\nIF TYPE_ID('Rewards.udtPointsTransactionBreakdown') IS NULL\nBEGIN\n\n    CREATE TYPE [Rewards].[udtPointsTransactionBreakdown] AS TABLE\n    (\n        [SourceKey]   VARCHAR(50) NOT NULL,\n        [PointsValue] MONEY       NOT NULL\n    );\n\nEND;\nGO\n</code></pre></li><li><p>Raptor Target Table: </p><ul><li><p>Create a new FactTable to push this data to</p></li><li><p>The goal is that i can join a FactRewards (or DimRewards, i cannot remember the table name) record to this new table and see the total amount of points from the FactRewards and then the breakdown of the points from the new table</p></li><li><p>This should populate on the same frequency as FactRewards</p></li><li><p>Data will need to be backfilled starting on 10/6/2026 </p></li></ul></li><li><p>SFMC Target</p><ul><li><p>SFMC Data Extension: Loyalty_Ledger_w_email<br>Data Services File: golfpassloyalty[Date+Timestamp]</p></li><li><p>Create two new columns</p><ul><li><p><code>BasePoints_Latest_Transaction</code></p><ul><li><p>Key from CRM: <code>BasePoints</code></p></li></ul></li><li><p><code>HomeCourse_Latest_Transaction</code> (nullable)</p><ul><li><p>Key from CRM: <code>HomeCourse</code></p></li></ul></li></ul></li></ul></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 2,
+        "comments": [
+          {
+            "id": "1235835",
+            "url": "https://golfnow.atlassian.net/browse/DS-23026?focusedCommentId=1235835",
+            "author": "Zachary Swedeen",
+            "authorAccountId": "616d8d165800630069ec4128",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/616d8d165800630069ec4128/d0a0ab3c-d6d2-46c8-9e4b-ccb75621342d/32",
+            "created": "2026-10-27T01:27:28.935-0400",
+            "createdDisplay": "Oct 27, 2026, 1:27 AM",
+            "updated": "2026-10-27T01:27:28.935-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Code is complete and the PRs are ready for review.\n\nPRs\n\n- ds-gn-sql: https://github.com/GolfNowEng/ds-gn-sql/pull/1472\n\n- gnds-airflow: https://github.com/GolfNowEng/gnds-airflow/pull/873\n\n- ds-gn-marketing-redshift: https://github.com/GolfNowEng/ds-gn-marketing-redshift/pull/73\n\nWhat changed\n\n- Raptor: new table dbo.FactRewardPointsBreakdown, one row per points transaction per SourceKey (BasePoints, HomeCourse). SourceSystemKey is 28 and the business key is PointsTransactionId + 100000000000, the same padded key FactReward uses for the Loyalty data. It joins to FactReward on SourceSystemKey and SourceSystemBusinessKey.\n\n- Airflow: new SQLtoSQL feed raptor_fact_reward_points_breakdown, hourly at :13 to match the FactReward DAG (df_raptor_loyalty_facts_golfnow). It reads Loyalty.Rewards.PointsTransactionBreakdown from VDBMR with the same filters as FactReward (IsProcessed = 1, CountsTowardsLifetime = 1). The breakdown table has no modified column, so it filters on the parent transaction's ProcessedOnUtc/CreatedOnUtc with a 1-day lookback. The MERGE is idempotent.\n\n- RaptorStage: seeds the RaptorController watermark for the new feed at 2026-01-01T00:00:00Z, only if the row is missing or empty. The first run picks up everything from the source, which only has data from 10/6 onward, so the 10/6 backfill needs no separate script.\n\n- SFMC: sfmc.GolfPassLoyaltyExtract now returns BasePoints_Latest_Transaction and HomeCourse_Latest_Transaction as the last two columns. They come from the breakdown of the customer's latest reward and are NULL when no breakdown exists. The Redshift staging table, final table and merge proc carry the two new columns. The SFMC file comes from df_sfmc-daily via ds-powershell, which needs no code change.\n\nDeploy order\n\n- ds-gn-marketing-redshift\n\n- ds-gn-sql (Raptor and RaptorStage together)\n\n- gnds-airflow\nds-gn-aws is not affected.\n\nTesting\n\n- The Raptor and RaptorStage Apply and Rollback scripts were run in dev.\n\n- The Redshift PR's dev deploy check passed. The Airflow feed has not run in dev yet.\n\n- Copilot reviewed all three PRs and had two findings, both fixed: the row hash lost MONEY precision beyond 2 decimals, and the Redshift proc changelog was missing its formatted-SQL header. Both are resolved.\n\nBefore the prod deploy\n\n- Digital Marketing needs to accept the two new columns in SFMC (Loyalty_Ledger_w_email) before the Raptor proc goes to prod, since the next df_sfmc-daily file will include them.\n\n- Run the Airflow feed in dev and confirm rows land in FactRewardPointsBreakdown and join to FactReward.\n\nNote: the existing PointsEarned_Latest_Transaction column is a sum of all rewards before today, not the latest transaction. The new columns use the latest reward group, so the two will not reconcile. I left the existing column alone.",
+            "bodyHtml": "<p>Code is complete and the PRs are ready for review.</p><p>PRs</p><ul><li><p>ds-gn-sql: <a href=\"https://github.com/GolfNowEng/ds-gn-sql/pull/1472\" target=\"_blank\" rel=\"noopener\">https://github.com/GolfNowEng/ds-gn-sql/pull/1472</a></p></li><li><p>gnds-airflow: <a href=\"https://github.com/GolfNowEng/gnds-airflow/pull/873\" target=\"_blank\" rel=\"noopener\">https://github.com/GolfNowEng/gnds-airflow/pull/873</a></p></li><li><p>ds-gn-marketing-redshift: <a href=\"https://github.com/GolfNowEng/ds-gn-marketing-redshift/pull/73\" target=\"_blank\" rel=\"noopener\">https://github.com/GolfNowEng/ds-gn-marketing-redshift/pull/73</a></p></li></ul><p>What changed</p><ul><li><p>Raptor: new table dbo.FactRewardPointsBreakdown, one row per points transaction per SourceKey (BasePoints, HomeCourse). SourceSystemKey is 28 and the business key is PointsTransactionId + 100000000000, the same padded key FactReward uses for the Loyalty data. It joins to FactReward on SourceSystemKey and SourceSystemBusinessKey.</p></li><li><p>Airflow: new SQLtoSQL feed raptor_fact_reward_points_breakdown, hourly at :13 to match the FactReward DAG (df_raptor_loyalty_facts_golfnow). It reads Loyalty.Rewards.PointsTransactionBreakdown from VDBMR with the same filters as FactReward (IsProcessed = 1, CountsTowardsLifetime = 1). The breakdown table has no modified column, so it filters on the parent transaction's ProcessedOnUtc/CreatedOnUtc with a 1-day lookback. The MERGE is idempotent.</p></li><li><p>RaptorStage: seeds the RaptorController watermark for the new feed at 2026-01-01T00:00:00Z, only if the row is missing or empty. The first run picks up everything from the source, which only has data from 10/6 onward, so the 10/6 backfill needs no separate script.</p></li><li><p>SFMC: sfmc.GolfPassLoyaltyExtract now returns BasePoints_Latest_Transaction and HomeCourse_Latest_Transaction as the last two columns. They come from the breakdown of the customer's latest reward and are NULL when no breakdown exists. The Redshift staging table, final table and merge proc carry the two new columns. The SFMC file comes from df_sfmc-daily via ds-powershell, which needs no code change.</p></li></ul><p>Deploy order</p><ol><li><p>ds-gn-marketing-redshift</p></li><li><p>ds-gn-sql (Raptor and RaptorStage together)</p></li><li><p>gnds-airflow\nds-gn-aws is not affected.</p></li></ol><p>Testing</p><ul><li><p>The Raptor and RaptorStage Apply and Rollback scripts were run in dev.</p></li><li><p>The Redshift PR's dev deploy check passed. The Airflow feed has not run in dev yet.</p></li><li><p>Copilot reviewed all three PRs and had two findings, both fixed: the row hash lost MONEY precision beyond 2 decimals, and the Redshift proc changelog was missing its formatted-SQL header. Both are resolved.</p></li></ul><p>Before the prod deploy</p><ul><li><p>Digital Marketing needs to accept the two new columns in SFMC (Loyalty_Ledger_w_email) before the Raptor proc goes to prod, since the next df_sfmc-daily file will include them.</p></li><li><p>Run the Airflow feed in dev and confirm rows land in FactRewardPointsBreakdown and join to FactReward.</p></li></ul><p>Note: the existing PointsEarned_Latest_Transaction column is a sum of all rewards before today, not the latest transaction. The new columns use the latest reward group, so the two will not reconcile. I left the existing column alone.</p>"
+          },
+          {
+            "id": "1236439",
+            "url": "https://golfnow.atlassian.net/browse/DS-23026?focusedCommentId=1236439",
+            "author": "Zachary Swedeen",
+            "authorAccountId": "616d8d165800630069ec4128",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/616d8d165800630069ec4128/d0a0ab3c-d6d2-46c8-9e4b-ccb75621342d/32",
+            "created": "2026-10-27T17:01:21.090-0400",
+            "createdDisplay": "Oct 27, 2026, 5:01 PM",
+            "updated": "2026-10-27T17:01:21.090-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Deployed to production\n\n- DAG sqltosql_ingest_raptor_fact_reward_points_breakdown enabled and running as expected\n\n- 516,087 records imported into Raptor.dbo.FactRewardPointsBreakdown on initial load\n\n- Incremental pulls moving forward; subsequent pull ~30min later retrieved 76 records\n\n- DAG will run on the 13th minute of every hour",
+            "bodyHtml": "<div class=\"description-note\"><p>Deployed to production</p><ul><li><p>DAG <a href=\"https://e7aca456-ab4a-4b26-a353-13af6e1437e9.c1.airflow.us-west-2.on.aws/dags/sqltosql_ingest_raptor_fact_reward_points_breakdown/grid\" target=\"_blank\" rel=\"noopener\">sqltosql_ingest_raptor_fact_reward_points_breakdown</a> enabled and running as expected</p></li><li><p>516,087 records imported into <code>Raptor.dbo.FactRewardPointsBreakdown</code> on initial load</p></li><li><p>Incremental pulls moving forward; subsequent pull ~30min later retrieved 76 records</p></li><li><p>DAG will run on the 13th minute of every hour</p></li></ul></div>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/DS-23026?focusedCommentId=1236439",
+        "lastCommentDisplay": "Oct 27, 2026, 5:01 PM",
+        "lastCommentAuthor": "Zachary Swedeen",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Testing",
+        "priority": "Moderate",
+        "assignee": "Zachary Swedeen",
+        "assigneeAccountId": "616d8d165800630069ec4128",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/616d8d165800630069ec4128/d0a0ab3c-d6d2-46c8-9e4b-ccb75621342d/32",
+        "assignedDeveloper": "Zachary Swedeen",
+        "assignedDeveloperAccountId": "616d8d165800630069ec4128",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/616d8d165800630069ec4128/d0a0ab3c-d6d2-46c8-9e4b-ccb75621342d/32",
+        "updated": "2026-10-27T17:01:21.090-0400",
+        "updatedDisplay": "Oct 27, 2026, 5:01 PM",
+        "created": "2026-08-27T09:13:26.806-0400",
+        "createdDisplay": "Aug 27, 2026, 9:13 AM",
+        "components": [],
+        "fixVersions": [
+          "2026.10.27"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14301",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14301",
+          "summary": "GolfPass \"Home Course\": Phase I",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14874",
         "url": "https://golfnow.atlassian.net/browse/CORE-14874",
         "summary": "Add Pagination to GNC Loyalty Ledger & Update Sort Order",
@@ -8154,74 +8237,6 @@
           "key": "CORE-14268",
           "url": "https://golfnow.atlassian.net/browse/CORE-14268",
           "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "DS-23026",
-        "url": "https://golfnow.atlassian.net/browse/DS-23026",
-        "summary": "Additional Home Course Data",
-        "description": "CORE will be creating a new table that has a points breakdown of the ledger record. For example, you earned 3000 points on the hot deal purchase but it was 2500 base points and 500 home course points. This table will store the breakout line items of each. DS will likely need to make a Fact table to push to raptor and ultimately SFMC.\n\n- Source Table:\n\nUSE [Loyalty];\nGO\n\nIF OBJECT_ID('Rewards.PointsTransactionBreakdown') IS NULL\nBEGIN\n\nCREATE TABLE [Rewards].[PointsTransactionBreakdown]\n(\n[PointsTransactionId] BIGINT      NOT NULL,\n[SourceKey]           VARCHAR(50) NOT NULL,\n[PointsValue]         MONEY       NOT NULL,\nCONSTRAINT [PK_PointsTransactionBreakdown]\nPRIMARY KEY CLUSTERED (\n[PointsTransactionId],\n[SourceKey]\n),\nCONSTRAINT [FK_PointsTransactionBreakdown_PointsTransactionId]\nFOREIGN KEY ([PointsTransactionId])\nREFERENCES [Rewards].[PointsTransaction] ([PointsTransactionId])\n);\n\nEND;\nGO\n\nIF TYPE_ID('Rewards.udtPointsTransactionBreakdown') IS NULL\nBEGIN\n\nCREATE TYPE [Rewards].[udtPointsTransactionBreakdown] AS TABLE\n(\n[SourceKey]   VARCHAR(50) NOT NULL,\n[PointsValue] MONEY       NOT NULL\n);\n\nEND;\nGO\n\n- Raptor Target Table:\n\n- Create a new FactTable to push this data to\n\n- The goal is that i can join a FactRewards (or DimRewards, i cannot remember the table name) record to this new table and see the total amount of points from the FactRewards and then the breakdown of the points from the new table\n\n- This should populate on the same frequency as FactRewards\n\n- Data will need to be backfilled starting on 10/6/2026\n\n- SFMC Target\n\n- SFMC Data Extension: Loyalty_Ledger_w_email\nData Services File: golfpassloyalty[Date+Timestamp]\n\n- Create two new columns\n\n- BasePoints_Latest_Transaction\n\n- Key from CRM: BasePoints\n\n- HomeCourse_Latest_Transaction (nullable)\n\n- Key from CRM: HomeCourse",
-        "descriptionHtml": "<p>CORE will be creating a new table that has a points breakdown of the ledger record. For example, you earned 3000 points on the hot deal purchase but it was 2500 base points and 500 home course points. This table will store the breakout line items of each. DS will likely need to make a Fact table to push to raptor and ultimately SFMC.</p><ul><li><p>Source Table: </p><pre><code>USE [Loyalty];\nGO\n\nIF OBJECT_ID('Rewards.PointsTransactionBreakdown') IS NULL\nBEGIN\n\n    CREATE TABLE [Rewards].[PointsTransactionBreakdown]\n    (\n        [PointsTransactionId] BIGINT      NOT NULL,\n        [SourceKey]           VARCHAR(50) NOT NULL,\n        [PointsValue]         MONEY       NOT NULL,\n        CONSTRAINT [PK_PointsTransactionBreakdown]\n            PRIMARY KEY CLUSTERED (\n                                      [PointsTransactionId],\n                                      [SourceKey]\n                                  ),\n        CONSTRAINT [FK_PointsTransactionBreakdown_PointsTransactionId]\n            FOREIGN KEY ([PointsTransactionId])\n            REFERENCES [Rewards].[PointsTransaction] ([PointsTransactionId])\n    );\n\nEND;\nGO\n\n\nIF TYPE_ID('Rewards.udtPointsTransactionBreakdown') IS NULL\nBEGIN\n\n    CREATE TYPE [Rewards].[udtPointsTransactionBreakdown] AS TABLE\n    (\n        [SourceKey]   VARCHAR(50) NOT NULL,\n        [PointsValue] MONEY       NOT NULL\n    );\n\nEND;\nGO\n</code></pre></li><li><p>Raptor Target Table: </p><ul><li><p>Create a new FactTable to push this data to</p></li><li><p>The goal is that i can join a FactRewards (or DimRewards, i cannot remember the table name) record to this new table and see the total amount of points from the FactRewards and then the breakdown of the points from the new table</p></li><li><p>This should populate on the same frequency as FactRewards</p></li><li><p>Data will need to be backfilled starting on 10/6/2026 </p></li></ul></li><li><p>SFMC Target</p><ul><li><p>SFMC Data Extension: Loyalty_Ledger_w_email<br>Data Services File: golfpassloyalty[Date+Timestamp]</p></li><li><p>Create two new columns</p><ul><li><p><code>BasePoints_Latest_Transaction</code></p><ul><li><p>Key from CRM: <code>BasePoints</code></p></li></ul></li><li><p><code>HomeCourse_Latest_Transaction</code> (nullable)</p><ul><li><p>Key from CRM: <code>HomeCourse</code></p></li></ul></li></ul></li></ul></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1235835",
-            "url": "https://golfnow.atlassian.net/browse/DS-23026?focusedCommentId=1235835",
-            "author": "Zachary Swedeen",
-            "authorAccountId": "616d8d165800630069ec4128",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/616d8d165800630069ec4128/d0a0ab3c-d6d2-46c8-9e4b-ccb75621342d/32",
-            "created": "2026-10-27T01:27:28.935-0400",
-            "createdDisplay": "Oct 27, 2026, 1:27 AM",
-            "updated": "2026-10-27T01:27:28.935-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Code is complete and the PRs are ready for review.\n\nPRs\n\n- ds-gn-sql: https://github.com/GolfNowEng/ds-gn-sql/pull/1472\n\n- gnds-airflow: https://github.com/GolfNowEng/gnds-airflow/pull/873\n\n- ds-gn-marketing-redshift: https://github.com/GolfNowEng/ds-gn-marketing-redshift/pull/73\n\nWhat changed\n\n- Raptor: new table dbo.FactRewardPointsBreakdown, one row per points transaction per SourceKey (BasePoints, HomeCourse). SourceSystemKey is 28 and the business key is PointsTransactionId + 100000000000, the same padded key FactReward uses for the Loyalty data. It joins to FactReward on SourceSystemKey and SourceSystemBusinessKey.\n\n- Airflow: new SQLtoSQL feed raptor_fact_reward_points_breakdown, hourly at :13 to match the FactReward DAG (df_raptor_loyalty_facts_golfnow). It reads Loyalty.Rewards.PointsTransactionBreakdown from VDBMR with the same filters as FactReward (IsProcessed = 1, CountsTowardsLifetime = 1). The breakdown table has no modified column, so it filters on the parent transaction's ProcessedOnUtc/CreatedOnUtc with a 1-day lookback. The MERGE is idempotent.\n\n- RaptorStage: seeds the RaptorController watermark for the new feed at 2026-01-01T00:00:00Z, only if the row is missing or empty. The first run picks up everything from the source, which only has data from 10/6 onward, so the 10/6 backfill needs no separate script.\n\n- SFMC: sfmc.GolfPassLoyaltyExtract now returns BasePoints_Latest_Transaction and HomeCourse_Latest_Transaction as the last two columns. They come from the breakdown of the customer's latest reward and are NULL when no breakdown exists. The Redshift staging table, final table and merge proc carry the two new columns. The SFMC file comes from df_sfmc-daily via ds-powershell, which needs no code change.\n\nDeploy order\n\n- ds-gn-marketing-redshift\n\n- ds-gn-sql (Raptor and RaptorStage together)\n\n- gnds-airflow\nds-gn-aws is not affected.\n\nTesting\n\n- The Raptor and RaptorStage Apply and Rollback scripts were run in dev.\n\n- The Redshift PR's dev deploy check passed. The Airflow feed has not run in dev yet.\n\n- Copilot reviewed all three PRs and had two findings, both fixed: the row hash lost MONEY precision beyond 2 decimals, and the Redshift proc changelog was missing its formatted-SQL header. Both are resolved.\n\nBefore the prod deploy\n\n- Digital Marketing needs to accept the two new columns in SFMC (Loyalty_Ledger_w_email) before the Raptor proc goes to prod, since the next df_sfmc-daily file will include them.\n\n- Run the Airflow feed in dev and confirm rows land in FactRewardPointsBreakdown and join to FactReward.\n\nNote: the existing PointsEarned_Latest_Transaction column is a sum of all rewards before today, not the latest transaction. The new columns use the latest reward group, so the two will not reconcile. I left the existing column alone.",
-            "bodyHtml": "<p>Code is complete and the PRs are ready for review.</p><p>PRs</p><ul><li><p>ds-gn-sql: <a href=\"https://github.com/GolfNowEng/ds-gn-sql/pull/1472\" target=\"_blank\" rel=\"noopener\">https://github.com/GolfNowEng/ds-gn-sql/pull/1472</a></p></li><li><p>gnds-airflow: <a href=\"https://github.com/GolfNowEng/gnds-airflow/pull/873\" target=\"_blank\" rel=\"noopener\">https://github.com/GolfNowEng/gnds-airflow/pull/873</a></p></li><li><p>ds-gn-marketing-redshift: <a href=\"https://github.com/GolfNowEng/ds-gn-marketing-redshift/pull/73\" target=\"_blank\" rel=\"noopener\">https://github.com/GolfNowEng/ds-gn-marketing-redshift/pull/73</a></p></li></ul><p>What changed</p><ul><li><p>Raptor: new table dbo.FactRewardPointsBreakdown, one row per points transaction per SourceKey (BasePoints, HomeCourse). SourceSystemKey is 28 and the business key is PointsTransactionId + 100000000000, the same padded key FactReward uses for the Loyalty data. It joins to FactReward on SourceSystemKey and SourceSystemBusinessKey.</p></li><li><p>Airflow: new SQLtoSQL feed raptor_fact_reward_points_breakdown, hourly at :13 to match the FactReward DAG (df_raptor_loyalty_facts_golfnow). It reads Loyalty.Rewards.PointsTransactionBreakdown from VDBMR with the same filters as FactReward (IsProcessed = 1, CountsTowardsLifetime = 1). The breakdown table has no modified column, so it filters on the parent transaction's ProcessedOnUtc/CreatedOnUtc with a 1-day lookback. The MERGE is idempotent.</p></li><li><p>RaptorStage: seeds the RaptorController watermark for the new feed at 2026-01-01T00:00:00Z, only if the row is missing or empty. The first run picks up everything from the source, which only has data from 10/6 onward, so the 10/6 backfill needs no separate script.</p></li><li><p>SFMC: sfmc.GolfPassLoyaltyExtract now returns BasePoints_Latest_Transaction and HomeCourse_Latest_Transaction as the last two columns. They come from the breakdown of the customer's latest reward and are NULL when no breakdown exists. The Redshift staging table, final table and merge proc carry the two new columns. The SFMC file comes from df_sfmc-daily via ds-powershell, which needs no code change.</p></li></ul><p>Deploy order</p><ol><li><p>ds-gn-marketing-redshift</p></li><li><p>ds-gn-sql (Raptor and RaptorStage together)</p></li><li><p>gnds-airflow\nds-gn-aws is not affected.</p></li></ol><p>Testing</p><ul><li><p>The Raptor and RaptorStage Apply and Rollback scripts were run in dev.</p></li><li><p>The Redshift PR's dev deploy check passed. The Airflow feed has not run in dev yet.</p></li><li><p>Copilot reviewed all three PRs and had two findings, both fixed: the row hash lost MONEY precision beyond 2 decimals, and the Redshift proc changelog was missing its formatted-SQL header. Both are resolved.</p></li></ul><p>Before the prod deploy</p><ul><li><p>Digital Marketing needs to accept the two new columns in SFMC (Loyalty_Ledger_w_email) before the Raptor proc goes to prod, since the next df_sfmc-daily file will include them.</p></li><li><p>Run the Airflow feed in dev and confirm rows land in FactRewardPointsBreakdown and join to FactReward.</p></li></ul><p>Note: the existing PointsEarned_Latest_Transaction column is a sum of all rewards before today, not the latest transaction. The new columns use the latest reward group, so the two will not reconcile. I left the existing column alone.</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/DS-23026?focusedCommentId=1235835",
-        "lastCommentDisplay": "Oct 27, 2026, 1:27 AM",
-        "lastCommentAuthor": "Zachary Swedeen",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Testing",
-        "priority": "Moderate",
-        "assignee": "Zachary Swedeen",
-        "assigneeAccountId": "616d8d165800630069ec4128",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/616d8d165800630069ec4128/d0a0ab3c-d6d2-46c8-9e4b-ccb75621342d/32",
-        "assignedDeveloper": "Zachary Swedeen",
-        "assignedDeveloperAccountId": "616d8d165800630069ec4128",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/616d8d165800630069ec4128/d0a0ab3c-d6d2-46c8-9e4b-ccb75621342d/32",
-        "updated": "2026-10-27T13:58:59.138-0400",
-        "updatedDisplay": "Oct 27, 2026, 1:58 PM",
-        "created": "2026-08-27T09:13:26.806-0400",
-        "createdDisplay": "Aug 27, 2026, 9:13 AM",
-        "components": [],
-        "fixVersions": [
-          "2026.10.27"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14301",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14301",
-          "summary": "GolfPass \"Home Course\": Phase I",
           "description": "",
           "type": "Epic",
           "status": "Planning",
@@ -43275,13 +43290,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-10-27T20:56:48.644Z",
-    "pulledAtDisplay": "Oct 27, 2026, 4:56 PM",
+    "pulledAt": "2026-10-27T21:02:35.631Z",
+    "pulledAtDisplay": "Oct 27, 2026, 5:02 PM",
     "window": {
-      "start": "2026-09-12T20:56:48.644Z",
-      "end": "2027-04-25T20:56:48.644Z",
-      "startDisplay": "Sep 12, 2026, 4:56 PM",
-      "endDisplay": "Apr 25, 2027, 4:56 PM"
+      "start": "2026-09-12T21:02:35.631Z",
+      "end": "2027-04-25T21:02:35.631Z",
+      "startDisplay": "Sep 12, 2026, 5:02 PM",
+      "endDisplay": "Apr 25, 2027, 5:02 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43294,7 +43309,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-10-27T20:56:51.472Z",
+        "pulledAt": "2026-10-27T21:02:40.577Z",
         "eventCount": 64,
         "events": [
           {
@@ -43893,23 +43908,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20261026T193601Z-1177941235@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN001 - v100.62",
-            "start": "2026-11-16T00:00:00.000Z",
-            "end": "2026-11-17T00:00:00.000Z",
-            "startDate": "2026-11-16",
-            "endDate": "2026-11-17",
-            "startDisplay": "Nov 16, 2026",
-            "endDisplay": "Nov 17, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260112T140521Z--1474957234@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -43922,6 +43920,23 @@
             "endDisplay": "Nov 19, 2026",
             "allDay": true,
             "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20261026T193601Z-1177941235@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN001 - v100.62",
+            "start": "2026-11-16T00:00:00.000Z",
+            "end": "2026-11-17T00:00:00.000Z",
+            "startDate": "2026-11-16",
+            "endDate": "2026-11-17",
+            "startDisplay": "Nov 16, 2026",
+            "endDisplay": "Nov 17, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44046,6 +44061,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44075,23 +44107,6 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44391,10 +44406,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-10-27T20:54:19.264Z",
-    "previousPulledAtDisplay": "Oct 27, 2026, 4:54 PM",
-    "currentPulledAt": "2026-10-27T20:59:36.946Z",
-    "currentPulledAtDisplay": "Oct 27, 2026, 4:59 PM",
+    "previousPulledAt": "2026-10-27T20:59:36.946Z",
+    "previousPulledAtDisplay": "Oct 27, 2026, 4:59 PM",
+    "currentPulledAt": "2026-10-27T21:04:41.741Z",
+    "currentPulledAtDisplay": "Oct 27, 2026, 5:04 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44402,6 +44417,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-10-27T20:59:36.946Z",
+      "previousPulledAtDisplay": "Oct 27, 2026, 4:59 PM",
+      "currentPulledAt": "2026-10-27T21:04:41.741Z",
+      "currentPulledAtDisplay": "Oct 27, 2026, 5:04 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-10-27T20:54:19.264Z",
       "previousPulledAtDisplay": "Oct 27, 2026, 4:54 PM",
@@ -46261,17 +46287,6 @@
       "previousPulledAtDisplay": "Oct 27, 2026, 1:18 AM",
       "currentPulledAt": "2026-10-27T05:23:25.288Z",
       "currentPulledAtDisplay": "Oct 27, 2026, 1:23 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-10-27T05:13:03.603Z",
-      "previousPulledAtDisplay": "Oct 27, 2026, 1:13 AM",
-      "currentPulledAt": "2026-10-27T05:18:09.591Z",
-      "currentPulledAtDisplay": "Oct 27, 2026, 1:18 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
