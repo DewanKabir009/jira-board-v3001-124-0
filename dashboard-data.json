@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-10-27T11:33:08.070Z",
-  "pulledAtDisplay": "Oct 27, 2026, 7:33 AM",
+  "pulledAt": "2026-10-27T11:38:27.434Z",
+  "pulledAtDisplay": "Oct 27, 2026, 7:38 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-10-27T11:33:08.070Z",
-    "pulledAtDisplay": "Oct 27, 2026, 7:33 AM",
+    "pulledAt": "2026-10-27T11:38:27.434Z",
+    "pulledAtDisplay": "Oct 27, 2026, 7:38 AM",
     "total": 556,
     "mainTotal": 526,
     "subtaskTotal": 30,
@@ -8107,6 +8107,122 @@
         }
       },
       {
+        "key": "CORE-14769",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14769",
+        "summary": "EZL/Integrators API | Provide prepaid payment token, card details, and charge-on-booking status",
+        "description": "Goal\n\nGive EZL access to prepaid online transaction payment details (payment-token reference, card type, expiration, last four digits, charge-on-booking status) through the Integrators API.\n\n---\nProblem\n\nEZL currently has no way to retrieve payment-token and card-detail fields for prepaid online transactions through the Integrators API. Courses that need to reconcile prepaid vs charge-on-booking amounts cannot do so through this API today.\n\n---\nBusiness Impact\n\n- Blocks EZL-side reconciliation of prepaid vs charge-on-booking amounts for transactions made via the Integrators API\n\n- Raised during the EZL/CORE monthly integration sync (7/7/26) as needed to keep moving courses toward the new API instead of the legacy one\n\n---\nConfidence Boundaries\n\n- Scope below is reconstructed from a prior distillation of the 7/7/26 EZL/CORE meeting notes; the source canvas itself lives in a Slack workspace this session could not access, so it has not been re-verified against the original notes.\n\n- No confirmed implementation approach yet; this is a new-capability request, not a bug fix.\n\n---\nAcceptance Criteria\n\n- Integrators API request for book tee time is the only API updated\n\n- Legacy reservation API is not in scope\n\n- Request includes card type and expiration\n\n- Request includes card last four digits\n\n- Request includes charge-on-booking status always set to false\n\n- Only send the data for Credit Card transactions\n\n- Do not send data for Hot Deals\n\n- Send the data for due at course rounds and prepaid rounds\n\n---\nTechnical Details\n\nScope is limited to the Integrators API payload; legacy EZL API behavior is out of scope for this ticket.\n\n- EZL Doc: https://integrations.ezlinksgolf.com/swagger/index.html#:~:text=tee-time/-,book,-Book a tee\n\n- New payload additions\n\n\"payment\": {\n\"card_type\": \"string\",\n\"expiration\": \"MMYY\",\n\"last4\": \"string\",\n\"charge_on_book\": false,\n\"token\": \"GolfNowToken\"\n},\n\n- card_type\n\n-\n\n- We need to pass in the CCType letter that matches our Card Type stored in our wallets\n\n- Example: If we reserve with Visa, we request card_type: \"V\"in the api request field\n\n- We likely will need to create a mapping table on our side to send the correct value\n\n- This will only apply to credit cards. If the transaction was made through Apple Pay, PayPal, Gift Card, etc do not attempt to send the data in the API\n\n- expiration - use the MMYY format\n\n- Example: 0127\n\n- last4 - This will be the last 4 digits from the wallet option\n\n- charge_on_book - This will always be sent as false\n\n- token - always pass in the string “GolfNowToken”\n\n- It was decided with EZL team that this field is now required but since we dont use tokens, we will pass in a dummy value\n\nTesting:\n\n- Confirm with EZL team on all transactions to make sure they see expected data\n\n- test 100% prepaid to GC\n\n- test split prepaid to GC and GN\n\n- For Hot Deals, do not send in any of this data as this since EZL does not own the transaction\n\n- For 100% due at course/$0 due online rounds, we should still send the data",
+        "descriptionHtml": "<h3>Goal</h3><p>Give EZL access to prepaid online transaction payment details (payment-token reference, card type, expiration, last four digits, charge-on-booking status) through the Integrators API.</p><hr><h3>Problem</h3><p>EZL currently has no way to retrieve payment-token and card-detail fields for prepaid online transactions through the Integrators API. Courses that need to reconcile prepaid vs charge-on-booking amounts cannot do so through this API today.</p><hr><h3>Business Impact</h3><ul><li><p>Blocks EZL-side reconciliation of prepaid vs charge-on-booking amounts for transactions made via the Integrators API</p></li><li><p>Raised during the EZL/CORE monthly integration sync (7/7/26) as needed to keep moving courses toward the new API instead of the legacy one</p></li></ul><hr><h3>Confidence Boundaries</h3><ul><li><p>Scope below is reconstructed from a prior distillation of the 7/7/26 EZL/CORE meeting notes; the source canvas itself lives in a Slack workspace this session could not access, so it has not been re-verified against the original notes.</p></li><li><p>No confirmed implementation approach yet; this is a new-capability request, not a bug fix.</p></li></ul><hr><h3>Acceptance Criteria</h3><ul><li><p>Integrators API request for book tee time is the only API updated</p><ul><li><p>Legacy reservation API is not in scope</p></li></ul></li><li><p>Request includes card type and expiration</p></li><li><p>Request includes card last four digits</p></li><li><p>Request includes charge-on-booking status always set to false</p></li><li><p>Only send the data for Credit Card transactions</p></li><li><p>Do not send data for Hot Deals</p></li><li><p>Send the data for due at course rounds and prepaid rounds</p></li></ul><hr><h3>Technical Details</h3><p>Scope is limited to the Integrators API payload; legacy EZL API behavior is out of scope for this ticket.</p><ul><li><p>EZL Doc: <a href=\"https://integrations.ezlinksgolf.com/swagger/index.html#:~:text=tee%2Dtime/-,book,-Book%20a%20tee\" target=\"_blank\" rel=\"noopener\">https://integrations.ezlinksgolf.com/swagger/index.html#:~:text=tee-time/-,book,-Book a tee</a></p></li><li><p>New payload additions </p><pre><code>  &quot;payment&quot;: {\n    &quot;card_type&quot;: &quot;string&quot;,\n    &quot;expiration&quot;: &quot;MMYY&quot;,\n    &quot;last4&quot;: &quot;string&quot;,\n    &quot;charge_on_book&quot;: false,\n    &quot;token&quot;: &quot;GolfNowToken&quot;\n  },</code></pre></li><li><p><code>card_type</code> </p><ul><li><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14769/768433-image-20260923-182919.png\" alt=\"image-20260923-182919.png\" loading=\"lazy\"><figcaption>image-20260923-182919.png</figcaption></figure></div></li><li><p>We need to pass in the CCType letter that matches our Card Type stored in our wallets</p></li><li><p>Example: If we reserve with Visa, we request <code>card_type: &quot;V&quot;</code>in the api request field</p></li><li><p>We likely will need to create a mapping table on our side to send the correct value</p></li><li><p>This will only apply to credit cards. If the transaction was made through Apple Pay, PayPal, Gift Card, etc do not attempt to send the data in the API</p></li></ul></li><li><p><code>expiration</code> - use the MMYY format</p><ul><li><p>Example: 0127</p></li></ul></li><li><p><code>last4</code> - This will be the last 4 digits from the wallet option</p></li><li><p><code>charge_on_book</code> - This will always be sent as false</p></li><li><p><code>token</code> - always pass in the string “GolfNowToken”</p><ul><li><p>It was decided with EZL team that this field is now required but since we dont use tokens, we will pass in a dummy value</p></li></ul></li></ul><p><strong>Testing:</strong></p><ul><li><p>Confirm with EZL team on all transactions to make sure they see expected data</p></li><li><p>test 100% prepaid to GC</p></li><li><p>test split prepaid to GC and GN</p></li><li><p>For Hot Deals, do not send in any of this data as this since EZL does not own the transaction </p></li><li><p>For 100% due at course/$0 due online rounds, we should still send the data</p></li></ul>",
+        "descriptionImageCount": 1,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 1,
+        "commentCount": 4,
+        "comments": [
+          {
+            "id": "1219373",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14769?focusedCommentId=1219373",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-09-15T02:08:18.163-0400",
+            "createdDisplay": "Sep 15, 2026, 2:08 AM",
+            "updated": "2026-09-15T02:08:18.163-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "This appears to extend the request used on /v1/tee-time/book.  I will begin my work there.",
+            "bodyHtml": "<p>This appears to extend the request used on <code>/v1/tee-time/book</code>.  I will begin my work there.</p>"
+          },
+          {
+            "id": "1219522",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14769?focusedCommentId=1219522",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-09-15T09:18:37.468-0400",
+            "createdDisplay": "Sep 15, 2026, 9:18 AM",
+            "updated": "2026-09-15T09:18:37.468-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "On pause, per Brian until we get some needed info.",
+            "bodyHtml": "<p>On pause, per Brian until we get some needed info.</p>"
+          },
+          {
+            "id": "1222304",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14769?focusedCommentId=1222304",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-09-22T10:43:54.232-0400",
+            "createdDisplay": "Sep 22, 2026, 10:43 AM",
+            "updated": "2026-09-22T10:43:54.232-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Advised to pause on this work until the team can define their Apple-pay / GiftCard capture of supplemental data.",
+            "bodyHtml": "<p>Advised to pause on this work until the team can define their Apple-pay / GiftCard capture of supplemental data.</p>"
+          },
+          {
+            "id": "1223480",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14769?focusedCommentId=1223480",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-09-24T06:12:55.974-0400",
+            "createdDisplay": "Sep 24, 2026, 6:12 AM",
+            "updated": "2026-09-24T06:12:55.974-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Thanks for the updated information, @Brian Pugh.  Do you happen to know what table your screenshot for “card_type“ comes from?  I cannot seem to find anything that matches in the CRM database or any of the Payment* databases in VDBMY.",
+            "bodyHtml": "<p>Thanks for the updated information, @Brian Pugh.  Do you happen to know what table your screenshot for “card_type“ comes from?  I cannot seem to find anything that matches in the CRM database or any of the Payment* databases in VDBMY.</p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14769?focusedCommentId=1223480",
+        "lastCommentDisplay": "Sep 24, 2026, 6:12 AM",
+        "lastCommentAuthor": "Alex Wulff",
+        "testChecklist": null,
+        "type": "Task",
+        "isSubtask": false,
+        "status": "Parking Lot",
+        "priority": "P2",
+        "assignee": "Alex Wulff",
+        "assigneeAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "assignedDeveloper": "Alex Wulff",
+        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "updated": "2026-10-27T07:34:53.680-0400",
+        "updatedDisplay": "Oct 27, 2026, 7:34 AM",
+        "created": "2026-09-08T11:04:46.125-0400",
+        "createdDisplay": "Sep 8, 2026, 11:04 AM",
+        "components": [
+          "GolfNow.Services.Reservation",
+          "GolfNow.Services.TeeSheet"
+        ],
+        "fixVersions": [
+          "v3001.130.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
         "key": "APP-7560",
         "url": "https://golfnow.atlassian.net/browse/APP-7560",
         "summary": "Update/add checkout flow labels for additional fees/non-refundable deposits",
@@ -8856,122 +8972,6 @@
         "createdDisplay": "Oct 7, 2026, 12:41 PM",
         "components": [
           "Geoplaces"
-        ],
-        "fixVersions": [
-          "v3001.130.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14769",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14769",
-        "summary": "EZL/Integrators API | Provide prepaid payment token, card details, and charge-on-booking status",
-        "description": "Goal\n\nGive EZL access to prepaid online transaction payment details (payment-token reference, card type, expiration, last four digits, charge-on-booking status) through the Integrators API.\n\n---\nProblem\n\nEZL currently has no way to retrieve payment-token and card-detail fields for prepaid online transactions through the Integrators API. Courses that need to reconcile prepaid vs charge-on-booking amounts cannot do so through this API today.\n\n---\nBusiness Impact\n\n- Blocks EZL-side reconciliation of prepaid vs charge-on-booking amounts for transactions made via the Integrators API\n\n- Raised during the EZL/CORE monthly integration sync (7/7/26) as needed to keep moving courses toward the new API instead of the legacy one\n\n---\nConfidence Boundaries\n\n- Scope below is reconstructed from a prior distillation of the 7/7/26 EZL/CORE meeting notes; the source canvas itself lives in a Slack workspace this session could not access, so it has not been re-verified against the original notes.\n\n- No confirmed implementation approach yet; this is a new-capability request, not a bug fix.\n\n---\nAcceptance Criteria\n\n- Integrators API request for book tee time is the only API updated\n\n- Legacy reservation API is not in scope\n\n- Request includes card type and expiration\n\n- Request includes card last four digits\n\n- Request includes charge-on-booking status always set to false\n\n- Only send the data for Credit Card transactions\n\n- Do not send data for Hot Deals\n\n- Send the data for due at course rounds and prepaid rounds\n\n---\nTechnical Details\n\nScope is limited to the Integrators API payload; legacy EZL API behavior is out of scope for this ticket.\n\n- EZL Doc: https://integrations.ezlinksgolf.com/swagger/index.html#:~:text=tee-time/-,book,-Book a tee\n\n- New payload additions\n\n\"payment\": {\n\"card_type\": \"string\",\n\"expiration\": \"MMYY\",\n\"last4\": \"string\",\n\"charge_on_book\": false,\n\"token\": \"GolfNowToken\"\n},\n\n- card_type\n\n-\n\n- We need to pass in the CCType letter that matches our Card Type stored in our wallets\n\n- Example: If we reserve with Visa, we request card_type: \"V\"in the api request field\n\n- We likely will need to create a mapping table on our side to send the correct value\n\n- This will only apply to credit cards. If the transaction was made through Apple Pay, PayPal, Gift Card, etc do not attempt to send the data in the API\n\n- expiration - use the MMYY format\n\n- Example: 0127\n\n- last4 - This will be the last 4 digits from the wallet option\n\n- charge_on_book - This will always be sent as false\n\n- token - always pass in the string “GolfNowToken”\n\n- It was decided with EZL team that this field is now required but since we dont use tokens, we will pass in a dummy value\n\nTesting:\n\n- Confirm with EZL team on all transactions to make sure they see expected data\n\n- test 100% prepaid to GC\n\n- test split prepaid to GC and GN\n\n- For Hot Deals, do not send in any of this data as this since EZL does not own the transaction\n\n- For 100% due at course/$0 due online rounds, we should still send the data",
-        "descriptionHtml": "<h3>Goal</h3><p>Give EZL access to prepaid online transaction payment details (payment-token reference, card type, expiration, last four digits, charge-on-booking status) through the Integrators API.</p><hr><h3>Problem</h3><p>EZL currently has no way to retrieve payment-token and card-detail fields for prepaid online transactions through the Integrators API. Courses that need to reconcile prepaid vs charge-on-booking amounts cannot do so through this API today.</p><hr><h3>Business Impact</h3><ul><li><p>Blocks EZL-side reconciliation of prepaid vs charge-on-booking amounts for transactions made via the Integrators API</p></li><li><p>Raised during the EZL/CORE monthly integration sync (7/7/26) as needed to keep moving courses toward the new API instead of the legacy one</p></li></ul><hr><h3>Confidence Boundaries</h3><ul><li><p>Scope below is reconstructed from a prior distillation of the 7/7/26 EZL/CORE meeting notes; the source canvas itself lives in a Slack workspace this session could not access, so it has not been re-verified against the original notes.</p></li><li><p>No confirmed implementation approach yet; this is a new-capability request, not a bug fix.</p></li></ul><hr><h3>Acceptance Criteria</h3><ul><li><p>Integrators API request for book tee time is the only API updated</p><ul><li><p>Legacy reservation API is not in scope</p></li></ul></li><li><p>Request includes card type and expiration</p></li><li><p>Request includes card last four digits</p></li><li><p>Request includes charge-on-booking status always set to false</p></li><li><p>Only send the data for Credit Card transactions</p></li><li><p>Do not send data for Hot Deals</p></li><li><p>Send the data for due at course rounds and prepaid rounds</p></li></ul><hr><h3>Technical Details</h3><p>Scope is limited to the Integrators API payload; legacy EZL API behavior is out of scope for this ticket.</p><ul><li><p>EZL Doc: <a href=\"https://integrations.ezlinksgolf.com/swagger/index.html#:~:text=tee%2Dtime/-,book,-Book%20a%20tee\" target=\"_blank\" rel=\"noopener\">https://integrations.ezlinksgolf.com/swagger/index.html#:~:text=tee-time/-,book,-Book a tee</a></p></li><li><p>New payload additions </p><pre><code>  &quot;payment&quot;: {\n    &quot;card_type&quot;: &quot;string&quot;,\n    &quot;expiration&quot;: &quot;MMYY&quot;,\n    &quot;last4&quot;: &quot;string&quot;,\n    &quot;charge_on_book&quot;: false,\n    &quot;token&quot;: &quot;GolfNowToken&quot;\n  },</code></pre></li><li><p><code>card_type</code> </p><ul><li><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14769/768433-image-20260923-182919.png\" alt=\"image-20260923-182919.png\" loading=\"lazy\"><figcaption>image-20260923-182919.png</figcaption></figure></div></li><li><p>We need to pass in the CCType letter that matches our Card Type stored in our wallets</p></li><li><p>Example: If we reserve with Visa, we request <code>card_type: &quot;V&quot;</code>in the api request field</p></li><li><p>We likely will need to create a mapping table on our side to send the correct value</p></li><li><p>This will only apply to credit cards. If the transaction was made through Apple Pay, PayPal, Gift Card, etc do not attempt to send the data in the API</p></li></ul></li><li><p><code>expiration</code> - use the MMYY format</p><ul><li><p>Example: 0127</p></li></ul></li><li><p><code>last4</code> - This will be the last 4 digits from the wallet option</p></li><li><p><code>charge_on_book</code> - This will always be sent as false</p></li><li><p><code>token</code> - always pass in the string “GolfNowToken”</p><ul><li><p>It was decided with EZL team that this field is now required but since we dont use tokens, we will pass in a dummy value</p></li></ul></li></ul><p><strong>Testing:</strong></p><ul><li><p>Confirm with EZL team on all transactions to make sure they see expected data</p></li><li><p>test 100% prepaid to GC</p></li><li><p>test split prepaid to GC and GN</p></li><li><p>For Hot Deals, do not send in any of this data as this since EZL does not own the transaction </p></li><li><p>For 100% due at course/$0 due online rounds, we should still send the data</p></li></ul>",
-        "descriptionImageCount": 1,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 4,
-        "comments": [
-          {
-            "id": "1219373",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14769?focusedCommentId=1219373",
-            "author": "Alex Wulff",
-            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-            "created": "2026-09-15T02:08:18.163-0400",
-            "createdDisplay": "Sep 15, 2026, 2:08 AM",
-            "updated": "2026-09-15T02:08:18.163-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "This appears to extend the request used on /v1/tee-time/book.  I will begin my work there.",
-            "bodyHtml": "<p>This appears to extend the request used on <code>/v1/tee-time/book</code>.  I will begin my work there.</p>"
-          },
-          {
-            "id": "1219522",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14769?focusedCommentId=1219522",
-            "author": "Alex Wulff",
-            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-            "created": "2026-09-15T09:18:37.468-0400",
-            "createdDisplay": "Sep 15, 2026, 9:18 AM",
-            "updated": "2026-09-15T09:18:37.468-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "On pause, per Brian until we get some needed info.",
-            "bodyHtml": "<p>On pause, per Brian until we get some needed info.</p>"
-          },
-          {
-            "id": "1222304",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14769?focusedCommentId=1222304",
-            "author": "Alex Wulff",
-            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-            "created": "2026-09-22T10:43:54.232-0400",
-            "createdDisplay": "Sep 22, 2026, 10:43 AM",
-            "updated": "2026-09-22T10:43:54.232-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Advised to pause on this work until the team can define their Apple-pay / GiftCard capture of supplemental data.",
-            "bodyHtml": "<p>Advised to pause on this work until the team can define their Apple-pay / GiftCard capture of supplemental data.</p>"
-          },
-          {
-            "id": "1223480",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14769?focusedCommentId=1223480",
-            "author": "Alex Wulff",
-            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-            "created": "2026-09-24T06:12:55.974-0400",
-            "createdDisplay": "Sep 24, 2026, 6:12 AM",
-            "updated": "2026-09-24T06:12:55.974-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Thanks for the updated information, @Brian Pugh.  Do you happen to know what table your screenshot for “card_type“ comes from?  I cannot seem to find anything that matches in the CRM database or any of the Payment* databases in VDBMY.",
-            "bodyHtml": "<p>Thanks for the updated information, @Brian Pugh.  Do you happen to know what table your screenshot for “card_type“ comes from?  I cannot seem to find anything that matches in the CRM database or any of the Payment* databases in VDBMY.</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14769?focusedCommentId=1223480",
-        "lastCommentDisplay": "Sep 24, 2026, 6:12 AM",
-        "lastCommentAuthor": "Alex Wulff",
-        "testChecklist": null,
-        "type": "Task",
-        "isSubtask": false,
-        "status": "Development",
-        "priority": "P2",
-        "assignee": "Alex Wulff",
-        "assigneeAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "assignedDeveloper": "Alex Wulff",
-        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "updated": "2026-10-26T15:35:50.218-0400",
-        "updatedDisplay": "Oct 26, 2026, 3:35 PM",
-        "created": "2026-09-08T11:04:46.125-0400",
-        "createdDisplay": "Sep 8, 2026, 11:04 AM",
-        "components": [
-          "GolfNow.Services.Reservation",
-          "GolfNow.Services.TeeSheet"
         ],
         "fixVersions": [
           "v3001.130.0"
@@ -43273,13 +43273,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-10-27T11:31:30.085Z",
-    "pulledAtDisplay": "Oct 27, 2026, 7:31 AM",
+    "pulledAt": "2026-10-27T11:36:23.587Z",
+    "pulledAtDisplay": "Oct 27, 2026, 7:36 AM",
     "window": {
-      "start": "2026-09-12T11:31:30.085Z",
-      "end": "2027-04-25T11:31:30.085Z",
-      "startDisplay": "Sep 12, 2026, 7:31 AM",
-      "endDisplay": "Apr 25, 2027, 7:31 AM"
+      "start": "2026-09-12T11:36:23.587Z",
+      "end": "2027-04-25T11:36:23.587Z",
+      "startDisplay": "Sep 12, 2026, 7:36 AM",
+      "endDisplay": "Apr 25, 2027, 7:36 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43292,7 +43292,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-10-27T11:31:31.740Z",
+        "pulledAt": "2026-10-27T11:36:25.837Z",
         "eventCount": 63,
         "events": [
           {
@@ -44333,23 +44333,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.66",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-03T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-03",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 3, 2027",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44365,6 +44348,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.66",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-03T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-03",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 3, 2027",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -44372,10 +44372,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-10-27T11:28:04.705Z",
-    "previousPulledAtDisplay": "Oct 27, 2026, 7:28 AM",
-    "currentPulledAt": "2026-10-27T11:33:08.070Z",
-    "currentPulledAtDisplay": "Oct 27, 2026, 7:33 AM",
+    "previousPulledAt": "2026-10-27T11:33:08.070Z",
+    "previousPulledAtDisplay": "Oct 27, 2026, 7:33 AM",
+    "currentPulledAt": "2026-10-27T11:38:27.434Z",
+    "currentPulledAtDisplay": "Oct 27, 2026, 7:38 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44383,6 +44383,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-10-27T11:33:08.070Z",
+      "previousPulledAtDisplay": "Oct 27, 2026, 7:33 AM",
+      "currentPulledAt": "2026-10-27T11:38:27.434Z",
+      "currentPulledAtDisplay": "Oct 27, 2026, 7:38 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-10-27T11:28:04.705Z",
       "previousPulledAtDisplay": "Oct 27, 2026, 7:28 AM",
@@ -46214,17 +46225,6 @@
       "previousPulledAtDisplay": "Oct 26, 2026, 5:28 PM",
       "currentPulledAt": "2026-10-26T21:34:07.199Z",
       "currentPulledAtDisplay": "Oct 26, 2026, 5:34 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-10-26T21:23:10.623Z",
-      "previousPulledAtDisplay": "Oct 26, 2026, 5:23 PM",
-      "currentPulledAt": "2026-10-26T21:28:27.167Z",
-      "currentPulledAtDisplay": "Oct 26, 2026, 5:28 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
