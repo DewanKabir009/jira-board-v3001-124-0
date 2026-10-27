@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-10-27T01:19:18.621Z",
-  "pulledAtDisplay": "Oct 26, 2026, 9:19 PM",
+  "pulledAt": "2026-10-27T01:24:20.635Z",
+  "pulledAtDisplay": "Oct 26, 2026, 9:24 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-10-27T01:19:18.621Z",
-    "pulledAtDisplay": "Oct 26, 2026, 9:19 PM",
+    "pulledAt": "2026-10-27T01:24:20.635Z",
+    "pulledAtDisplay": "Oct 26, 2026, 9:24 PM",
     "total": 556,
     "mainTotal": 526,
     "subtaskTotal": 30,
@@ -8107,6 +8107,58 @@
         }
       },
       {
+        "key": "CORE-14824",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14824",
+        "summary": "[GeoSearch] Cities with multiple hyphens are not returned in search when fully typed",
+        "description": "When city with hyphens typed without them the results returned just fine, but if you type everything exactly as city name is, we are no longer returning that result.\n\nExample: Howey-in-the-Hills, Florida, US\n\nSimilar issue : Saintes-Maries-de-la-Mer. No result when copy and paste with hyphens.",
+        "descriptionHtml": "<p>When city with hyphens typed without them the results returned just fine, but if you type everything exactly as city name is, we are no longer returning that result.</p><p>Example: <code>Howey-in-the-Hills,</code> Florida, US</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14824/769707-Screenshot-2026-09-29-at-21.49.10.png\" alt=\"Screenshot 2026-09-29 at 21.49.10.png\" loading=\"lazy\"><figcaption>Screenshot 2026-09-29 at 21.49.10.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14824/769706-Screenshot-2026-09-29-at-21.44.03.png\" alt=\"Screenshot 2026-09-29 at 21.44.03.png\" loading=\"lazy\"><figcaption>Screenshot 2026-09-29 at 21.44.03.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14824/769705-Screenshot-2026-09-29-at-21.44.19.png\" alt=\"Screenshot 2026-09-29 at 21.44.19.png\" loading=\"lazy\"><figcaption>Screenshot 2026-09-29 at 21.44.19.png</figcaption></figure></div><p>Similar issue : Saintes-Maries-de-la-Mer. No result when copy and paste with hyphens.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14824/776508-image-20261027-011917.png\" alt=\"image-20261027-011917.png\" loading=\"lazy\"><figcaption>image-20261027-011917.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14824/776509-image-20261027-012003.png\" alt=\"image-20261027-012003.png\" loading=\"lazy\"><figcaption>image-20261027-012003.png</figcaption></figure></div>",
+        "descriptionImageCount": 5,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 5,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Pre Planning",
+        "priority": "P2",
+        "assignee": "Yu-Sheng Tu",
+        "assigneeAccountId": "60d0cfa7d5dde8007174dd0b",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60d0cfa7d5dde8007174dd0b/25cdd204-3aea-49fd-97fb-2f563849c2ed/32",
+        "assignedDeveloper": "Yu-Sheng Tu",
+        "assignedDeveloperAccountId": "60d0cfa7d5dde8007174dd0b",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60d0cfa7d5dde8007174dd0b/25cdd204-3aea-49fd-97fb-2f563849c2ed/32",
+        "updated": "2026-10-26T21:20:08.644-0400",
+        "updatedDisplay": "Oct 26, 2026, 9:20 PM",
+        "created": "2026-09-29T21:47:25.933-0400",
+        "createdDisplay": "Sep 29, 2026, 9:47 PM",
+        "components": [
+          "Geoplaces.NET"
+        ],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14893",
         "url": "https://golfnow.atlassian.net/browse/CORE-14893",
         "summary": "Topgolf Facility Tag",
@@ -10715,58 +10767,6 @@
         "created": "2026-09-14T02:01:57.822-0400",
         "createdDisplay": "Sep 14, 2026, 2:01 AM",
         "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14824",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14824",
-        "summary": "[GeoSearch] Cities with multiple hyphens are not returned in search when fully typed",
-        "description": "When city with hyphens typed without them the results returned just fine, but if you type everything exactly as city name is, we are no longer returning that result.\n\nExample: Howey-in-the-Hills, Florida, US",
-        "descriptionHtml": "<p>When city with hyphens typed without them the results returned just fine, but if you type everything exactly as city name is, we are no longer returning that result.</p><p>Example: <code>Howey-in-the-Hills,</code> Florida, US</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14824/769707-Screenshot-2026-09-29-at-21.49.10.png\" alt=\"Screenshot 2026-09-29 at 21.49.10.png\" loading=\"lazy\"><figcaption>Screenshot 2026-09-29 at 21.49.10.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14824/769706-Screenshot-2026-09-29-at-21.44.03.png\" alt=\"Screenshot 2026-09-29 at 21.44.03.png\" loading=\"lazy\"><figcaption>Screenshot 2026-09-29 at 21.44.03.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14824/769705-Screenshot-2026-09-29-at-21.44.19.png\" alt=\"Screenshot 2026-09-29 at 21.44.19.png\" loading=\"lazy\"><figcaption>Screenshot 2026-09-29 at 21.44.19.png</figcaption></figure></div>",
-        "descriptionImageCount": 3,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 3,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Pre Planning",
-        "priority": "P2",
-        "assignee": "Yu-Sheng Tu",
-        "assigneeAccountId": "60d0cfa7d5dde8007174dd0b",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60d0cfa7d5dde8007174dd0b/25cdd204-3aea-49fd-97fb-2f563849c2ed/32",
-        "assignedDeveloper": "Yu-Sheng Tu",
-        "assignedDeveloperAccountId": "60d0cfa7d5dde8007174dd0b",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/60d0cfa7d5dde8007174dd0b/25cdd204-3aea-49fd-97fb-2f563849c2ed/32",
-        "updated": "2026-10-19T11:11:17.075-0400",
-        "updatedDisplay": "Oct 19, 2026, 11:11 AM",
-        "created": "2026-09-29T21:47:25.933-0400",
-        "createdDisplay": "Sep 29, 2026, 9:47 PM",
-        "components": [
-          "Geoplaces.NET"
-        ],
         "fixVersions": [],
         "sprints": [
           {
@@ -43257,13 +43257,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-10-27T01:16:49.255Z",
-    "pulledAtDisplay": "Oct 26, 2026, 9:16 PM",
+    "pulledAt": "2026-10-27T01:21:32.075Z",
+    "pulledAtDisplay": "Oct 26, 2026, 9:21 PM",
     "window": {
-      "start": "2026-09-12T01:16:49.255Z",
-      "end": "2027-04-25T01:16:49.255Z",
-      "startDisplay": "Sep 11, 2026, 9:16 PM",
-      "endDisplay": "Apr 24, 2027, 9:16 PM"
+      "start": "2026-09-12T01:21:32.074Z",
+      "end": "2027-04-25T01:21:32.074Z",
+      "startDisplay": "Sep 11, 2026, 9:21 PM",
+      "endDisplay": "Apr 24, 2027, 9:21 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43276,7 +43276,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-10-27T01:16:52.491Z",
+        "pulledAt": "2026-10-27T01:21:34.734Z",
         "eventCount": 63,
         "events": [
           {
@@ -44356,10 +44356,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-10-27T01:13:22.928Z",
-    "previousPulledAtDisplay": "Oct 26, 2026, 9:13 PM",
-    "currentPulledAt": "2026-10-27T01:19:18.621Z",
-    "currentPulledAtDisplay": "Oct 26, 2026, 9:19 PM",
+    "previousPulledAt": "2026-10-27T01:19:18.621Z",
+    "previousPulledAtDisplay": "Oct 26, 2026, 9:19 PM",
+    "currentPulledAt": "2026-10-27T01:24:20.635Z",
+    "currentPulledAtDisplay": "Oct 26, 2026, 9:24 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44367,6 +44367,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-10-27T01:19:18.621Z",
+      "previousPulledAtDisplay": "Oct 26, 2026, 9:19 PM",
+      "currentPulledAt": "2026-10-27T01:24:20.635Z",
+      "currentPulledAtDisplay": "Oct 26, 2026, 9:24 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-10-27T01:13:22.928Z",
       "previousPulledAtDisplay": "Oct 26, 2026, 9:13 PM",
@@ -46198,17 +46209,6 @@
       "previousPulledAtDisplay": "Oct 26, 2026, 7:08 AM",
       "currentPulledAt": "2026-10-26T11:13:32.771Z",
       "currentPulledAtDisplay": "Oct 26, 2026, 7:13 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-10-26T11:04:25.040Z",
-      "previousPulledAtDisplay": "Oct 26, 2026, 7:04 AM",
-      "currentPulledAt": "2026-10-26T11:08:29.158Z",
-      "currentPulledAtDisplay": "Oct 26, 2026, 7:08 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
