@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-10-27T14:29:32.346Z",
-  "pulledAtDisplay": "Oct 27, 2026, 10:29 AM",
+  "pulledAt": "2026-10-27T14:33:33.401Z",
+  "pulledAtDisplay": "Oct 27, 2026, 10:33 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-10-27T14:29:32.346Z",
-    "pulledAtDisplay": "Oct 27, 2026, 10:29 AM",
+    "pulledAt": "2026-10-27T14:33:33.401Z",
+    "pulledAtDisplay": "Oct 27, 2026, 10:33 AM",
     "total": 556,
     "mainTotal": 526,
     "subtaskTotal": 30,
@@ -8107,6 +8107,109 @@
         }
       },
       {
+        "key": "CORE-14559",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14559",
+        "summary": "New PFA Bonus - Book 3 Home Course Tee Times in a Row",
+        "description": "We need to create a new PFA bonus that will award customers for making three reservations at their selected home course in a row.\n\nThree Consecutive Bookings at Home Course\n\n- Campaign Name: Home Course Streak\n\n- Campaign Description: Book your home course 3 times in a row to receive a streak bonus\n\n- Action:\n\n- GolfFacilityID where the reservations are made exists in the Customer.HomeCourse table and is tied to that specific customer\n\n- Applies to both course and trade rounds\n\n- The three bookings must be consecutive and made at the originally select home course\n\n- Customer cannot make second or third booking outside of the home course\n\n- Streak cannot transfer from FID to FID if the customer switches home course\n\n- Streak is based on PlayDate of booking not the BookDate\n\n- Max Use Per Customer: Unlimited\n\n- Max Use Per Campaign: 0\n\n- Points: 500\n\n- OwnerIDs: 331, 5151, 7886, 21405, 21406, 21407\n\nNOTE: Bookings on non applicable owners do not hurt ability to receive bonus\n\nTest Scenarios:\n\n- Customer does not have GP+ subscription and no home course selected\n\n- Customer makes three course reservations at any facility\n\n- Customer should not receive bonus\n\n- Customer makes three trade reservations at any facility\n\n- Customer should not receive bonus\n\n- Customer does not have a GP+ subscription and has a home course selected\n\n- Customer makes three consecutive course reservations at the home course facility\n\n- Customer should receive bonus\n\n- Customer makes three consecutive trade reservations at the home course facility\n\n- Customer should receive bonus\n\n- Customer makes one course or trade reservation at the home facility, a second course or trade reservation at a non home course facility, and then two additional course or trade reservations at the home course facility\n\n- Customer should not receive bonus\n\n- Customer makes one course or trade reservation at the home facility on 331 (applicable ownerID), a second reservation on 20972 (nonapplicable ownerID), and two additional reservations at the home facility on 5151 (applicable ownerID)\n\n- Customer should receive bonus\n\n- Customer has a GP+ subscription and no home course selected\n\n- Customer makes three consecutive course reservations at any facility\n\n- Customer should not receive bonus\n\n- Customer makes three consecutive trade reservations at any facility\n\n- Customer should not receive bonus\n\n- Customer has a GP+ subscription and has a home course selected\n\n- Customer makes three consecutive course reservations at the home course facility\n\n- Customer should receive bonus\n\n- Customer makes three consecutive trade reservations at the home course facility\n\n- Customer should receive bonus\n\n- Customer makes one course or trade reservation at the home facility, a second course or trade reservation at a non home course facility, and then two additional course or trade reservations at the home course facility\n\n- Customer should not receive bonus\n\n- Customer makes one course or trade reservation at the home facility on 331 (applicable ownerID), a second reservation on 20972 (nonapplicable ownerID), and two additional reservations at the home facility on 5151 (applicable ownerID)\n\n- Customer should receive bonus\n\n- Customer has a home course selected\n\n- Customer makes 3 bookings on monday for play dates on Thursday, Friday and Sunday at their home course\n\n- Customer makes another booking on tuesday for play date of Saturday at a non-home course\n\n- Customer should receive bonus because the 3 initial bookings were made prior to the none home course booking\n\n- Points would be awarded for the streak on Sunday play date",
+        "descriptionHtml": "<p>We need to create a new PFA bonus that will award customers for making three reservations at their selected home course in a row.</p><p> </p><p><strong>Three Consecutive Bookings at Home Course</strong></p><ol><li><p><strong>Campaign Name: </strong>Home Course Streak</p></li><li><p><strong>Campaign Description:</strong> Book your home course 3 times in a row to receive a streak bonus</p></li><li><p><strong>Action: </strong></p><ol><li><p>GolfFacilityID where the reservations are made exists in the Customer.HomeCourse table and is tied to that specific customer</p><ol><li><p>Applies to both course and trade rounds</p></li></ol></li><li><p>The three bookings must be consecutive and made at the originally select home course</p><ol><li><p>Customer cannot make second or third booking outside of the home course</p></li><li><p>Streak cannot transfer from FID to FID if the customer switches home course</p></li><li><p>Streak is based on PlayDate of booking not the BookDate</p></li></ol></li></ol></li><li><p><strong>Max Use Per Customer:</strong> Unlimited</p></li><li><p><strong>Max Use Per Campaign:</strong> 0</p></li><li><p><strong>Points: </strong>500</p></li><li><p><strong>OwnerIDs:</strong> 331, 5151, 7886, 21405, 21406, 21407</p></li></ol><p>NOTE: Bookings on non applicable owners do not hurt ability to receive bonus</p><p><strong>Test Scenarios:</strong></p><ol><li><p><strong>Customer does not have GP+ subscription and no home course selected</strong></p><ol><li><p>Customer makes three course reservations at any facility</p><ol><li><p>Customer <strong>should not</strong> receive bonus</p></li></ol></li><li><p>Customer makes three trade reservations at any facility</p><ol><li><p>Customer <strong>should not</strong> receive bonus</p></li></ol></li></ol></li><li><p><strong>Customer does not have a GP+ subscription and has a home course selected</strong></p><ol><li><p>Customer makes three consecutive course reservations at the home course facility</p><ol><li><p>Customer <strong>should</strong> receive bonus </p></li></ol></li><li><p>Customer makes three consecutive trade reservations at the home course facility</p><ol><li><p>Customer <strong>should</strong> receive bonus </p></li></ol></li><li><p>Customer makes one course or trade reservation at the home facility, a second course or trade reservation at a non home course facility, and then two additional course or trade reservations at the home course facility</p><ol><li><p>Customer <strong>should not</strong> receive bonus</p></li></ol></li><li><p>Customer makes one course or trade reservation at the home facility on 331 (applicable ownerID), a second reservation on 20972 (nonapplicable ownerID), and two additional reservations at the home facility on 5151 (applicable ownerID)</p><ol><li><p>Customer <strong>should </strong>receive bonus</p></li></ol></li></ol></li><li><p><strong>Customer has a GP+ subscription and no home course selected</strong></p><ol><li><p>Customer makes three consecutive course reservations at any facility</p><ol><li><p>Customer <strong>should not</strong> receive bonus</p></li></ol></li><li><p>Customer makes three consecutive trade reservations at any facility</p><ol><li><p>Customer <strong>should not</strong> receive bonus</p></li></ol></li></ol></li><li><p><strong>Customer has a GP+ subscription and has a home course selected</strong></p><ol><li><p>Customer makes three consecutive course reservations at the home course facility</p><ol><li><p>Customer <strong>should </strong>receive bonus</p></li></ol></li><li><p>Customer makes three consecutive trade reservations at the home course facility</p><ol><li><p>Customer <strong>should </strong>receive bonus</p></li></ol></li><li><p>Customer makes one course or trade reservation at the home facility, a second course or trade reservation at a non home course facility, and then two additional course or trade reservations at the home course facility</p><ol><li><p>Customer <strong>should not</strong> receive bonus</p></li></ol></li><li><p>Customer makes one course or trade reservation at the home facility on 331 (applicable ownerID), a second reservation on 20972 (nonapplicable ownerID), and two additional reservations at the home facility on 5151 (applicable ownerID)</p><ol><li><p>Customer <strong>should </strong>receive bonus</p></li></ol></li></ol></li><li><p><strong>Customer has a home course selected</strong></p><ol><li><p>Customer makes 3 bookings on monday for play dates on Thursday, Friday and Sunday at their home course</p></li><li><p>Customer makes another booking on tuesday for play date of Saturday at a non-home course</p></li><li><p>Customer <strong>should </strong>receive bonus because the 3 initial bookings were made prior to the none home course booking</p></li><li><p>Points would be awarded for the streak on Sunday play date</p></li></ol></li></ol>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 3,
+        "comments": [
+          {
+            "id": "1219369",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14559?focusedCommentId=1219369",
+            "author": "Nicole Greer",
+            "authorAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
+            "created": "2026-09-15T00:28:11.973-0400",
+            "createdDisplay": "Sep 15, 2026, 12:28 AM",
+            "updated": "2026-09-15T00:28:11.973-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Relevant Testing Queries:\n\nSELECT * FROM [LoyaltyActions].[ActionQueue] WHERE CustomerID = 'customer ID'\n\n//check loyalty task is running\nSELECT top 10 * from [Rewards].[DailyTaskExecution]  order by 1 desc\n\nSpecific for  Streak Bonus\n\nSelect top 10 * from [LoyaltyActions].[StreakBookingEvent] where CustomerId = 'customer ID'\nselect top 10 * from [LoyaltyActions].[StreakProgressSnapshot] where CustomerId = 'customer ID'",
+            "bodyHtml": "<p>Relevant Testing Queries:<br><br>SELECT * FROM [LoyaltyActions].[ActionQueue] WHERE CustomerID = 'customer ID'<br><br>//check loyalty task is running<br>SELECT top 10 * from [Rewards].[DailyTaskExecution]  order by 1 desc<br><br>Specific for  Streak Bonus<br><br>Select top 10 * from [LoyaltyActions].[StreakBookingEvent] where CustomerId = 'customer ID'<br>select top 10 * from [LoyaltyActions].[StreakProgressSnapshot] where CustomerId = 'customer ID'</p>"
+          },
+          {
+            "id": "1220559",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14559?focusedCommentId=1220559",
+            "author": "Nicole Greer",
+            "authorAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
+            "created": "2026-09-16T14:19:29.288-0400",
+            "createdDisplay": "Sep 16, 2026, 2:19 PM",
+            "updated": "2026-09-16T14:19:29.288-0400",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 1,
+            "body": "You can remote in in AWS to USE2GNDW001002 to check on the loyaltyActionProcessor task",
+            "bodyHtml": "<p>You can remote in in AWS to USE2GNDW001002 to check on the loyaltyActionProcessor task</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14559/comments/1220559/766650-loyaltyprocessortask.png\" alt=\"loyaltyprocessortask.png\" loading=\"lazy\"><figcaption>loyaltyprocessortask.png</figcaption></figure></div>"
+          },
+          {
+            "id": "1224626",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14559?focusedCommentId=1224626",
+            "author": "Nicole Greer",
+            "authorAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
+            "created": "2026-09-28T17:12:48.112-0400",
+            "createdDisplay": "Sep 28, 2026, 5:12 PM",
+            "updated": "2026-09-28T17:12:48.112-0400",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 3,
+            "body": "Tested working now. Home Course 3-Streak Bonus is now being rewarded. Issue was a break rule condition in GNC, that once it was removed, allowed points to be awarded (after running loyalty processor task).",
+            "bodyHtml": "<p>Tested working now. Home Course 3-Streak Bonus is now being rewarded. Issue was a break rule condition in GNC, that once it was removed, allowed points to be awarded (after running loyalty processor task). </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14559/comments/1224626/769256-homebonusworkingstreak.png\" alt=\"homebonusworkingstreak.png\" loading=\"lazy\"><figcaption>homebonusworkingstreak.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14559/comments/1224626/769258-hoemcourseBreakCondition.png\" alt=\"hoemcourseBreakCondition.png\" loading=\"lazy\"><figcaption>hoemcourseBreakCondition.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14559/comments/1224626/769257-loyaltyTaskRemote.png\" alt=\"loyaltyTaskRemote.png\" loading=\"lazy\"><figcaption>loyaltyTaskRemote.png</figcaption></figure></div>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14559?focusedCommentId=1224626",
+        "lastCommentDisplay": "Sep 28, 2026, 5:12 PM",
+        "lastCommentAuthor": "Nicole Greer",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "PO Review",
+        "priority": "P2",
+        "assignee": "Raghav Kancherla",
+        "assigneeAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+        "assignedDeveloper": "Raghav Kancherla",
+        "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+        "updated": "2026-10-27T10:30:26.705-0400",
+        "updatedDisplay": "Oct 27, 2026, 10:30 AM",
+        "created": "2026-07-06T10:00:25.748-0400",
+        "createdDisplay": "Jul 6, 2026, 10:00 AM",
+        "components": [
+          "Golf.Svc.Loyalty",
+          "Golf.Task.LoyaltyActionsProcessor",
+          "GolfNow.Services.Reservation",
+          "SQL"
+        ],
+        "fixVersions": [
+          "v3001.128.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14301",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14301",
+          "summary": "GolfPass \"Home Course\": Phase I",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14812",
         "url": "https://golfnow.atlassian.net/browse/CORE-14812",
         "summary": "[GeoSearch] Issue with irrelevant or nearby results given for course suggestions",
@@ -9619,109 +9722,6 @@
         ],
         "fixVersions": [
           "v3001.127.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14301",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14301",
-          "summary": "GolfPass \"Home Course\": Phase I",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14559",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14559",
-        "summary": "New PFA Bonus - Book 3 Home Course Tee Times in a Row",
-        "description": "We need to create a new PFA bonus that will award customers for making three reservations at their selected home course in a row.\n\nThree Consecutive Bookings at Home Course\n\n- Campaign Name: Home Course Streak\n\n- Campaign Description: Book your home course 3 times in a row to receive a streak bonus\n\n- Action:\n\n- GolfFacilityID where the reservations are made exists in the Customer.HomeCourse table and is tied to that specific customer\n\n- Applies to both course and trade rounds\n\n- The three bookings must be consecutive and made at the originally select home course\n\n- Customer cannot make second or third booking outside of the home course\n\n- Streak cannot transfer from FID to FID if the customer switches home course\n\n- Streak is based on PlayDate of booking not the BookDate\n\n- Max Use Per Customer: Unlimited\n\n- Max Use Per Campaign: 0\n\n- Points: 500\n\n- OwnerIDs: 331, 5151, 7886, 21405, 21406, 21407\n\nNOTE: Bookings on non applicable owners do not hurt ability to receive bonus\n\nTest Scenarios:\n\n- Customer does not have GP+ subscription and no home course selected\n\n- Customer makes three course reservations at any facility\n\n- Customer should not receive bonus\n\n- Customer makes three trade reservations at any facility\n\n- Customer should not receive bonus\n\n- Customer does not have a GP+ subscription and has a home course selected\n\n- Customer makes three consecutive course reservations at the home course facility\n\n- Customer should receive bonus\n\n- Customer makes three consecutive trade reservations at the home course facility\n\n- Customer should receive bonus\n\n- Customer makes one course or trade reservation at the home facility, a second course or trade reservation at a non home course facility, and then two additional course or trade reservations at the home course facility\n\n- Customer should not receive bonus\n\n- Customer makes one course or trade reservation at the home facility on 331 (applicable ownerID), a second reservation on 20972 (nonapplicable ownerID), and two additional reservations at the home facility on 5151 (applicable ownerID)\n\n- Customer should receive bonus\n\n- Customer has a GP+ subscription and no home course selected\n\n- Customer makes three consecutive course reservations at any facility\n\n- Customer should not receive bonus\n\n- Customer makes three consecutive trade reservations at any facility\n\n- Customer should not receive bonus\n\n- Customer has a GP+ subscription and has a home course selected\n\n- Customer makes three consecutive course reservations at the home course facility\n\n- Customer should receive bonus\n\n- Customer makes three consecutive trade reservations at the home course facility\n\n- Customer should receive bonus\n\n- Customer makes one course or trade reservation at the home facility, a second course or trade reservation at a non home course facility, and then two additional course or trade reservations at the home course facility\n\n- Customer should not receive bonus\n\n- Customer makes one course or trade reservation at the home facility on 331 (applicable ownerID), a second reservation on 20972 (nonapplicable ownerID), and two additional reservations at the home facility on 5151 (applicable ownerID)\n\n- Customer should receive bonus\n\n- Customer has a home course selected\n\n- Customer makes 3 bookings on monday for play dates on Thursday, Friday and Sunday at their home course\n\n- Customer makes another booking on tuesday for play date of Saturday at a non-home course\n\n- Customer should receive bonus because the 3 initial bookings were made prior to the none home course booking\n\n- Points would be awarded for the streak on Sunday play date",
-        "descriptionHtml": "<p>We need to create a new PFA bonus that will award customers for making three reservations at their selected home course in a row.</p><p> </p><p><strong>Three Consecutive Bookings at Home Course</strong></p><ol><li><p><strong>Campaign Name: </strong>Home Course Streak</p></li><li><p><strong>Campaign Description:</strong> Book your home course 3 times in a row to receive a streak bonus</p></li><li><p><strong>Action: </strong></p><ol><li><p>GolfFacilityID where the reservations are made exists in the Customer.HomeCourse table and is tied to that specific customer</p><ol><li><p>Applies to both course and trade rounds</p></li></ol></li><li><p>The three bookings must be consecutive and made at the originally select home course</p><ol><li><p>Customer cannot make second or third booking outside of the home course</p></li><li><p>Streak cannot transfer from FID to FID if the customer switches home course</p></li><li><p>Streak is based on PlayDate of booking not the BookDate</p></li></ol></li></ol></li><li><p><strong>Max Use Per Customer:</strong> Unlimited</p></li><li><p><strong>Max Use Per Campaign:</strong> 0</p></li><li><p><strong>Points: </strong>500</p></li><li><p><strong>OwnerIDs:</strong> 331, 5151, 7886, 21405, 21406, 21407</p></li></ol><p>NOTE: Bookings on non applicable owners do not hurt ability to receive bonus</p><p><strong>Test Scenarios:</strong></p><ol><li><p><strong>Customer does not have GP+ subscription and no home course selected</strong></p><ol><li><p>Customer makes three course reservations at any facility</p><ol><li><p>Customer <strong>should not</strong> receive bonus</p></li></ol></li><li><p>Customer makes three trade reservations at any facility</p><ol><li><p>Customer <strong>should not</strong> receive bonus</p></li></ol></li></ol></li><li><p><strong>Customer does not have a GP+ subscription and has a home course selected</strong></p><ol><li><p>Customer makes three consecutive course reservations at the home course facility</p><ol><li><p>Customer <strong>should</strong> receive bonus </p></li></ol></li><li><p>Customer makes three consecutive trade reservations at the home course facility</p><ol><li><p>Customer <strong>should</strong> receive bonus </p></li></ol></li><li><p>Customer makes one course or trade reservation at the home facility, a second course or trade reservation at a non home course facility, and then two additional course or trade reservations at the home course facility</p><ol><li><p>Customer <strong>should not</strong> receive bonus</p></li></ol></li><li><p>Customer makes one course or trade reservation at the home facility on 331 (applicable ownerID), a second reservation on 20972 (nonapplicable ownerID), and two additional reservations at the home facility on 5151 (applicable ownerID)</p><ol><li><p>Customer <strong>should </strong>receive bonus</p></li></ol></li></ol></li><li><p><strong>Customer has a GP+ subscription and no home course selected</strong></p><ol><li><p>Customer makes three consecutive course reservations at any facility</p><ol><li><p>Customer <strong>should not</strong> receive bonus</p></li></ol></li><li><p>Customer makes three consecutive trade reservations at any facility</p><ol><li><p>Customer <strong>should not</strong> receive bonus</p></li></ol></li></ol></li><li><p><strong>Customer has a GP+ subscription and has a home course selected</strong></p><ol><li><p>Customer makes three consecutive course reservations at the home course facility</p><ol><li><p>Customer <strong>should </strong>receive bonus</p></li></ol></li><li><p>Customer makes three consecutive trade reservations at the home course facility</p><ol><li><p>Customer <strong>should </strong>receive bonus</p></li></ol></li><li><p>Customer makes one course or trade reservation at the home facility, a second course or trade reservation at a non home course facility, and then two additional course or trade reservations at the home course facility</p><ol><li><p>Customer <strong>should not</strong> receive bonus</p></li></ol></li><li><p>Customer makes one course or trade reservation at the home facility on 331 (applicable ownerID), a second reservation on 20972 (nonapplicable ownerID), and two additional reservations at the home facility on 5151 (applicable ownerID)</p><ol><li><p>Customer <strong>should </strong>receive bonus</p></li></ol></li></ol></li><li><p><strong>Customer has a home course selected</strong></p><ol><li><p>Customer makes 3 bookings on monday for play dates on Thursday, Friday and Sunday at their home course</p></li><li><p>Customer makes another booking on tuesday for play date of Saturday at a non-home course</p></li><li><p>Customer <strong>should </strong>receive bonus because the 3 initial bookings were made prior to the none home course booking</p></li><li><p>Points would be awarded for the streak on Sunday play date</p></li></ol></li></ol>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 3,
-        "comments": [
-          {
-            "id": "1219369",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14559?focusedCommentId=1219369",
-            "author": "Nicole Greer",
-            "authorAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
-            "created": "2026-09-15T00:28:11.973-0400",
-            "createdDisplay": "Sep 15, 2026, 12:28 AM",
-            "updated": "2026-09-15T00:28:11.973-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Relevant Testing Queries:\n\nSELECT * FROM [LoyaltyActions].[ActionQueue] WHERE CustomerID = 'customer ID'\n\n//check loyalty task is running\nSELECT top 10 * from [Rewards].[DailyTaskExecution]  order by 1 desc\n\nSpecific for  Streak Bonus\n\nSelect top 10 * from [LoyaltyActions].[StreakBookingEvent] where CustomerId = 'customer ID'\nselect top 10 * from [LoyaltyActions].[StreakProgressSnapshot] where CustomerId = 'customer ID'",
-            "bodyHtml": "<p>Relevant Testing Queries:<br><br>SELECT * FROM [LoyaltyActions].[ActionQueue] WHERE CustomerID = 'customer ID'<br><br>//check loyalty task is running<br>SELECT top 10 * from [Rewards].[DailyTaskExecution]  order by 1 desc<br><br>Specific for  Streak Bonus<br><br>Select top 10 * from [LoyaltyActions].[StreakBookingEvent] where CustomerId = 'customer ID'<br>select top 10 * from [LoyaltyActions].[StreakProgressSnapshot] where CustomerId = 'customer ID'</p>"
-          },
-          {
-            "id": "1220559",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14559?focusedCommentId=1220559",
-            "author": "Nicole Greer",
-            "authorAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
-            "created": "2026-09-16T14:19:29.288-0400",
-            "createdDisplay": "Sep 16, 2026, 2:19 PM",
-            "updated": "2026-09-16T14:19:29.288-0400",
-            "updatedDisplay": "",
-            "hasMedia": true,
-            "mediaCount": 1,
-            "body": "You can remote in in AWS to USE2GNDW001002 to check on the loyaltyActionProcessor task",
-            "bodyHtml": "<p>You can remote in in AWS to USE2GNDW001002 to check on the loyaltyActionProcessor task</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14559/comments/1220559/766650-loyaltyprocessortask.png\" alt=\"loyaltyprocessortask.png\" loading=\"lazy\"><figcaption>loyaltyprocessortask.png</figcaption></figure></div>"
-          },
-          {
-            "id": "1224626",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14559?focusedCommentId=1224626",
-            "author": "Nicole Greer",
-            "authorAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
-            "created": "2026-09-28T17:12:48.112-0400",
-            "createdDisplay": "Sep 28, 2026, 5:12 PM",
-            "updated": "2026-09-28T17:12:48.112-0400",
-            "updatedDisplay": "",
-            "hasMedia": true,
-            "mediaCount": 3,
-            "body": "Tested working now. Home Course 3-Streak Bonus is now being rewarded. Issue was a break rule condition in GNC, that once it was removed, allowed points to be awarded (after running loyalty processor task).",
-            "bodyHtml": "<p>Tested working now. Home Course 3-Streak Bonus is now being rewarded. Issue was a break rule condition in GNC, that once it was removed, allowed points to be awarded (after running loyalty processor task). </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14559/comments/1224626/769256-homebonusworkingstreak.png\" alt=\"homebonusworkingstreak.png\" loading=\"lazy\"><figcaption>homebonusworkingstreak.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14559/comments/1224626/769258-hoemcourseBreakCondition.png\" alt=\"hoemcourseBreakCondition.png\" loading=\"lazy\"><figcaption>hoemcourseBreakCondition.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14559/comments/1224626/769257-loyaltyTaskRemote.png\" alt=\"loyaltyTaskRemote.png\" loading=\"lazy\"><figcaption>loyaltyTaskRemote.png</figcaption></figure></div>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14559?focusedCommentId=1224626",
-        "lastCommentDisplay": "Sep 28, 2026, 5:12 PM",
-        "lastCommentAuthor": "Nicole Greer",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Triage (STG)",
-        "priority": "P2",
-        "assignee": "Raghav Kancherla",
-        "assigneeAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "assignedDeveloper": "Raghav Kancherla",
-        "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "updated": "2026-10-27T08:01:44.334-0400",
-        "updatedDisplay": "Oct 27, 2026, 8:01 AM",
-        "created": "2026-07-06T10:00:25.748-0400",
-        "createdDisplay": "Jul 6, 2026, 10:00 AM",
-        "components": [
-          "Golf.Svc.Loyalty",
-          "Golf.Task.LoyaltyActionsProcessor",
-          "GolfNow.Services.Reservation",
-          "SQL"
-        ],
-        "fixVersions": [
-          "v3001.128.0"
         ],
         "sprints": [
           {
@@ -43273,13 +43273,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-10-27T14:26:43.571Z",
-    "pulledAtDisplay": "Oct 27, 2026, 10:26 AM",
+    "pulledAt": "2026-10-27T14:31:34.382Z",
+    "pulledAtDisplay": "Oct 27, 2026, 10:31 AM",
     "window": {
-      "start": "2026-09-12T14:26:43.570Z",
-      "end": "2027-04-25T14:26:43.570Z",
-      "startDisplay": "Sep 12, 2026, 10:26 AM",
-      "endDisplay": "Apr 25, 2027, 10:26 AM"
+      "start": "2026-09-12T14:31:34.382Z",
+      "end": "2027-04-25T14:31:34.382Z",
+      "startDisplay": "Sep 12, 2026, 10:31 AM",
+      "endDisplay": "Apr 25, 2027, 10:31 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43292,7 +43292,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-10-27T14:26:46.594Z",
+        "pulledAt": "2026-10-27T14:31:39.525Z",
         "eventCount": 63,
         "events": [
           {
@@ -43925,23 +43925,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN000 - v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -43971,6 +43954,23 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN000 - v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44061,23 +44061,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44107,6 +44090,23 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44197,23 +44197,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44226,6 +44209,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44248,23 +44248,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.64",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44277,6 +44260,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.64",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44372,10 +44372,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-10-27T14:24:15.632Z",
-    "previousPulledAtDisplay": "Oct 27, 2026, 10:24 AM",
-    "currentPulledAt": "2026-10-27T14:29:32.346Z",
-    "currentPulledAtDisplay": "Oct 27, 2026, 10:29 AM",
+    "previousPulledAt": "2026-10-27T14:29:32.346Z",
+    "previousPulledAtDisplay": "Oct 27, 2026, 10:29 AM",
+    "currentPulledAt": "2026-10-27T14:33:33.401Z",
+    "currentPulledAtDisplay": "Oct 27, 2026, 10:33 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44383,6 +44383,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-10-27T14:29:32.346Z",
+      "previousPulledAtDisplay": "Oct 27, 2026, 10:29 AM",
+      "currentPulledAt": "2026-10-27T14:33:33.401Z",
+      "currentPulledAtDisplay": "Oct 27, 2026, 10:33 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-10-27T14:24:15.632Z",
       "previousPulledAtDisplay": "Oct 27, 2026, 10:24 AM",
@@ -46242,17 +46253,6 @@
       "previousPulledAtDisplay": "Oct 26, 2026, 8:08 PM",
       "currentPulledAt": "2026-10-27T00:13:33.997Z",
       "currentPulledAtDisplay": "Oct 26, 2026, 8:13 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-10-27T00:03:30.294Z",
-      "previousPulledAtDisplay": "Oct 26, 2026, 8:03 PM",
-      "currentPulledAt": "2026-10-27T00:08:34.162Z",
-      "currentPulledAtDisplay": "Oct 26, 2026, 8:08 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
