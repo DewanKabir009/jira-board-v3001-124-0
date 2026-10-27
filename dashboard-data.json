@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-10-27T21:43:39.006Z",
-  "pulledAtDisplay": "Oct 27, 2026, 5:43 PM",
+  "pulledAt": "2026-10-27T21:48:12.560Z",
+  "pulledAtDisplay": "Oct 27, 2026, 5:48 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-10-27T21:43:39.006Z",
-    "pulledAtDisplay": "Oct 27, 2026, 5:43 PM",
+    "pulledAt": "2026-10-27T21:48:12.560Z",
+    "pulledAtDisplay": "Oct 27, 2026, 5:48 PM",
     "total": 556,
     "mainTotal": 526,
     "subtaskTotal": 30,
@@ -8115,7 +8115,7 @@
         "descriptionImageCount": 0,
         "descriptionVideoCount": 0,
         "descriptionMediaCount": 0,
-        "commentCount": 2,
+        "commentCount": 3,
         "comments": [
           {
             "id": "1235835",
@@ -8146,24 +8146,39 @@
             "mediaCount": 0,
             "body": "Deployed to production\n\n- DAG sqltosql_ingest_raptor_fact_reward_points_breakdown enabled and running as expected\n\n- 516,087 records imported into Raptor.dbo.FactRewardPointsBreakdown on initial load\n\n- Incremental pulls moving forward; subsequent pull ~30min later retrieved 76 records\n\n- DAG will run on the 13th minute of every hour",
             "bodyHtml": "<div class=\"description-note\"><p>Deployed to production</p><ul><li><p>DAG <a href=\"https://e7aca456-ab4a-4b26-a353-13af6e1437e9.c1.airflow.us-west-2.on.aws/dags/sqltosql_ingest_raptor_fact_reward_points_breakdown/grid\" target=\"_blank\" rel=\"noopener\">sqltosql_ingest_raptor_fact_reward_points_breakdown</a> enabled and running as expected</p></li><li><p>516,087 records imported into <code>Raptor.dbo.FactRewardPointsBreakdown</code> on initial load</p></li><li><p>Incremental pulls moving forward; subsequent pull ~30min later retrieved 76 records</p></li><li><p>DAG will run on the 13th minute of every hour</p></li></ul></div>"
+          },
+          {
+            "id": "1236452",
+            "url": "https://golfnow.atlassian.net/browse/DS-23026?focusedCommentId=1236452",
+            "author": "Ari Bullard",
+            "authorAccountId": "712020:25bfc041-7aee-485c-920f-8216ffb6689a",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/9424f4c8b31bdf244eb589ef1e95fffb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAB-6.png",
+            "created": "2026-10-27T17:43:50.490-0400",
+            "createdDisplay": "Oct 27, 2026, 5:43 PM",
+            "updated": "2026-10-27T17:43:50.490-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "@Brian Pugh",
+            "bodyHtml": "<p>@Brian Pugh </p>"
           }
         ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/DS-23026?focusedCommentId=1236439",
-        "lastCommentDisplay": "Oct 27, 2026, 5:01 PM",
-        "lastCommentAuthor": "Zachary Swedeen",
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/DS-23026?focusedCommentId=1236452",
+        "lastCommentDisplay": "Oct 27, 2026, 5:43 PM",
+        "lastCommentAuthor": "Ari Bullard",
         "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
         "status": "Finished",
         "priority": "Moderate",
-        "assignee": "Zachary Swedeen",
-        "assigneeAccountId": "616d8d165800630069ec4128",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/616d8d165800630069ec4128/d0a0ab3c-d6d2-46c8-9e4b-ccb75621342d/32",
+        "assignee": "Brian Pugh",
+        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
         "assignedDeveloper": "Zachary Swedeen",
         "assignedDeveloperAccountId": "616d8d165800630069ec4128",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/616d8d165800630069ec4128/d0a0ab3c-d6d2-46c8-9e4b-ccb75621342d/32",
-        "updated": "2026-10-27T17:11:05.937-0400",
-        "updatedDisplay": "Oct 27, 2026, 5:11 PM",
+        "updated": "2026-10-27T17:43:50.563-0400",
+        "updatedDisplay": "Oct 27, 2026, 5:43 PM",
         "created": "2026-08-27T09:13:26.806-0400",
         "createdDisplay": "Aug 27, 2026, 9:13 AM",
         "components": [],
@@ -43290,13 +43305,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-10-27T21:41:28.031Z",
-    "pulledAtDisplay": "Oct 27, 2026, 5:41 PM",
+    "pulledAt": "2026-10-27T21:46:28.313Z",
+    "pulledAtDisplay": "Oct 27, 2026, 5:46 PM",
     "window": {
-      "start": "2026-09-12T21:41:28.031Z",
-      "end": "2027-04-25T21:41:28.031Z",
-      "startDisplay": "Sep 12, 2026, 5:41 PM",
-      "endDisplay": "Apr 25, 2027, 5:41 PM"
+      "start": "2026-09-12T21:46:28.313Z",
+      "end": "2027-04-25T21:46:28.313Z",
+      "startDisplay": "Sep 12, 2026, 5:46 PM",
+      "endDisplay": "Apr 25, 2027, 5:46 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43309,7 +43324,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-10-27T21:41:30.614Z",
+        "pulledAt": "2026-10-27T21:46:30.156Z",
         "eventCount": 64,
         "events": [
           {
@@ -44061,23 +44076,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44107,6 +44105,23 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44406,10 +44421,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-10-27T21:38:35.978Z",
-    "previousPulledAtDisplay": "Oct 27, 2026, 5:38 PM",
-    "currentPulledAt": "2026-10-27T21:43:39.006Z",
-    "currentPulledAtDisplay": "Oct 27, 2026, 5:43 PM",
+    "previousPulledAt": "2026-10-27T21:43:39.006Z",
+    "previousPulledAtDisplay": "Oct 27, 2026, 5:43 PM",
+    "currentPulledAt": "2026-10-27T21:48:12.560Z",
+    "currentPulledAtDisplay": "Oct 27, 2026, 5:48 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44417,6 +44432,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-10-27T21:43:39.006Z",
+      "previousPulledAtDisplay": "Oct 27, 2026, 5:43 PM",
+      "currentPulledAt": "2026-10-27T21:48:12.560Z",
+      "currentPulledAtDisplay": "Oct 27, 2026, 5:48 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-10-27T21:38:35.978Z",
       "previousPulledAtDisplay": "Oct 27, 2026, 5:38 PM",
@@ -46276,17 +46302,6 @@
       "previousPulledAtDisplay": "Oct 27, 2026, 2:03 AM",
       "currentPulledAt": "2026-10-27T06:08:31.266Z",
       "currentPulledAtDisplay": "Oct 27, 2026, 2:08 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-10-27T05:58:25.813Z",
-      "previousPulledAtDisplay": "Oct 27, 2026, 1:58 AM",
-      "currentPulledAt": "2026-10-27T06:03:21.543Z",
-      "currentPulledAtDisplay": "Oct 27, 2026, 2:03 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
