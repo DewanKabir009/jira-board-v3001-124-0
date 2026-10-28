@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-10-28T13:23:17.072Z",
-  "pulledAtDisplay": "Oct 28, 2026, 9:23 AM",
+  "pulledAt": "2026-10-28T13:28:28.454Z",
+  "pulledAtDisplay": "Oct 28, 2026, 9:28 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-10-28T13:23:17.072Z",
-    "pulledAtDisplay": "Oct 28, 2026, 9:23 AM",
+    "pulledAt": "2026-10-28T13:28:28.454Z",
+    "pulledAtDisplay": "Oct 28, 2026, 9:28 AM",
     "total": 556,
     "mainTotal": 526,
     "subtaskTotal": 30,
@@ -8107,6 +8107,94 @@
         }
       },
       {
+        "key": "CORE-14822",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14822",
+        "summary": "Topgolf - New Interface",
+        "description": "Goal\n\nDocument and validate the Topgolf tee-sheet interface contract required for GolfNow activation.\n\nThis is a new-interface assessment and activation ticket. It defines the intended availability, hold, booking, payment, and cancellation behavior, plus the interface conditions that must be validated before a facility is enabled.\n\n---\nIntended Interface Flow\n\n- Tee Time Availability API\n\n- Returns an opaque TeeTimeRateID, facility, time, duration, group-size limit, available-bay information, and TotalDue.\n\n- GolfNow preserves the returned TeeTimeRateID as the selected offer reference. GolfNow does not need to select a named bay if Topgolf allocates a valid bay internally.\n\n- Create Booking Hold\n\n- POST /rest/create-booking-hold\n\n- Request includes TeeTimeRateID, FacilityID, and total PlayerCount.\n\n- Response includes HoldId, TotalDue, Fee, and HoldExpiresAt.\n\n- HoldId must be used as the checkout reference through final booking.\n\n- Final Booking\n\n- bookWithoutPayment\n\n- Booking requires the primary customer’s first name, last name, email, and unmasked phone number.\n\n- Successful response returns ConfirmationNumber, ShortCode, booking status, and paid-online/due-at-venue amounts.\n\n- Store the full ConfirmationNumber verbatim as the canonical provider booking reference. ShortCode may be used for display only unless Topgolf confirms it supports read, cancellation, refund, and reconciliation operations.\n\n- Cancellation\n\n- PUT /rest/cancel/{confirmationNumber}?cancellationReasonId={id}\n\n- Current request shape includes the confirmation reference, customer email, channel, cancellation reason ID, message, and player count.\n\n- Cancellation is not currently functional in STG, so it is not part of the usable interface path yet.\n\n---\nCommercial Requirements\n\n- GolfNow will use the Topgolf price returned by availability and hold.\n\n- Final booking must enforce the selected TotalDue as the authoritative reservation total.\n\n- GolfNow must send payment amounts that reconcile exactly:\n\nAmountPaidOnline + AmountDueAtVenue = TotalDue\n\n- Confirm currency, rounding, tax, and fee treatment so the calculated split matches the provider total without a price mismatch.\n\n- Validate prepaid and due-at-venue flows when each is in scope for activation.\n\n---\nFindings and Interface Conditions\n\nAvailability and Capacity\n\n- A confirmed booking was followed by the same interval being returned as open with NumberOfBays: 1.\n\n- A second hold could then be created, while final booking later failed.\n\n- Topgolf must define whether NumberOfBays represents remaining or configured capacity.\n\n- After confirmed allocation, availability must either remove the offer or return zero remaining capacity before GolfNow can offer it again.\n\nHold Reliability\n\n- A hold can succeed, then final booking can fail with RESERVATION_ALREADY_BOOKED_FOR_THIS_SHIFT.\n\n- Hold creation can intermittently return retryable ARGOS_UNAVAILABLE, while the identical request succeeds on a later retry.\n\n- Topgolf must document hold expiry/release behavior, idempotency or correlation-key behavior, whether failed holds can consume capacity, safe retry timing, and a status/reconciliation path for ambiguous outcomes.\n\n- A successful hold cannot be represented to the golfer as a guaranteed booking unless it validates the same deterministic capacity and eligibility rules as final booking, or an equivalent pre-payment validation does.\n\nBooking and Error Atomicity\n\n- Missing required customer fields correctly return non-retryable validation errors.\n\n- Every non-retryable booking error must be side-effect-free. It must not create a reservation, consume inventory, retain a hold, create a duplicate marker, or leave a partial customer/order record.\n\n- The interface needs a controlled STG test proving that an intentionally invalid request does not create a tee-sheet reservation and that a corrected request produces exactly one booking.\n\nPrice-Matching Behavior\n\n- Confirm the accepted booking fields, exact rounding behavior, and whether the provider expects the submitted paid-online and due-at-venue amounts to sum to the held TotalDue.\n\nPayment Modes\n\n- Validate that Topgolf supports the agreed payment split and that the final booking response retains the correct AmountPaidOnline and AmountDueAtVenue.\n\nCancellation\n\n- Cancellation is not currently functional in STG, so it is not part of the usable interface path yet.\n\n- Confirm the authoritative mapping for cancellationReasonId, including whether it is a CORE mapping, a Topgolf mapping, or both.\n\n- Confirm why customer email is required when the canonical confirmation number is supplied.\n\n- Confirm whether the free-text cancellation message affects Topgolf behavior or is audit-only.\n\n- Before activation, validate full cancellation, payment/refund handling, inventory release, retry behavior, and a durable cancellation audit response.\n\n---\nAPI Header Logic\n\nWe need to pass in the following headers on the availability calls made by CacheManager, Hold and Booking\n\n- \"TG-CLIENT-SESSIONID\"\n\n- \"TG-CLIENT-REQUESTID\"\n\nCacheManager\n\n- TG-CLIENT-SESSIONID - Every time CacheManger runs, create a unique string using the word CacheManger+EpochTimestamp\n\n- Example: CacheManager_1792420125\n\n- Log this in our existing cachemanager logs or expose to datadog or log in a place where it can be troubleshooted if we have issues. The goal here is we could provide the SessionId to TopGolf and they can match to the call on their side\n\n- TG-CLIENT-REQUESTID- Every time CacheManger runs, create a unique GUID\n\n- Log this in our existing cachemanager logs or expose to datadog or log in a place where it can be troubleshooted if we have issues. The goal here is we could provide the RequestId to TopGolf and they can match to the call on their side\n\n- TG-CLIENT-REQUESTID should always be a unique random GUID for each unique call\n\nHold\n\n- TG-CLIENT-SESSIONID - When the Hold API is called by a single user, create a unique string using the CustomerNumber_Timestamp\n\n- Example: 16989823_1792420125\n\n- Log this in mongo for failures so we can send this ID to Topgolf for troubleshooting\n\n- TG-CLIENT-REQUESTID- When the Hold API is called by a single user, create a unique GUID\n\n- - Log this in mongo for failures so we can send this ID to Topgolf for troubleshooting. The goal here is we could provide the RequestId to TopGolf and they can match to the call on their side\n\n- TG-CLIENT-REQUESTID should always be a unique random GUID for each unique call\n\nBooking\n\n- Log the exact same TG-CLIENT-SESSIONID used from the Hold call by the same user\n\n- So if 16989823_1792420125 was used on the hold call by the user, use the same exact string on the Booking call\n\n- Log this in mongo for failures so we can send this ID to Topgolf for troubleshooting. The goal here is we could provide the RequestId to TopGolf and they can match to the call on their side\n\n- TG-CLIENT-REQUESTID - When the Booking API is called by a single user, create a unique GUID\n\n- Log this in mongo for failures so we can send this ID to Topgolf for troubleshooting. The goal here is we could provide the RequestId to TopGolf and they can match to the call on their side\n\n- TG-CLIENT-REQUESTID should always be a unique random GUID for each unique call. DO NOT REPEAT the same REQUESTID on multiple calls\n\n---\nActivation Criteria\n\n- [ ] Facility mapping and Topgolf test configuration are documented.\n\n- [ ] Availability returns reliable remaining capacity after booking, cancellation, and hold expiry.\n\n- [ ] Hold creation has documented expiry, idempotency, retry, and reconciliation behavior.\n\n- [ ] Final booking accepts the required customer data and returns a durable confirmation reference.\n\n- [ ] GolfNow uses the Topgolf TotalDue, with AmountPaidOnline + AmountDueAtVenue matching it exactly.\n\n- [ ] Currency, taxes, fees, and rounding are documented and validated.\n\n- [ ] Prepaid and due-at-venue scenarios are validated when in scope.\n\n- [ ] Failed booking requests are proven side-effect-free.\n\n- [ ] A booking-read/reconciliation path is available for ambiguous booking or hold outcomes.\n\n- [ ] STG cancellation is functional and successfully tested for a confirmed reservation.\n\n- [ ] Full cancellation behavior, reason mapping, payment handling, inventory release, and audit response are documented and validated.\n\n- [ ] Controlled STG lifecycle evidence exists for availability, hold, booking, payment, cancellation, and inventory release.",
+        "descriptionHtml": "<h3>Goal</h3><p>Document and validate the Topgolf tee-sheet interface contract required for GolfNow activation.</p><p>This is a new-interface assessment and activation ticket. It defines the intended availability, hold, booking, payment, and cancellation behavior, plus the interface conditions that must be validated before a facility is enabled.</p><hr><h3>Intended Interface Flow</h3><ol><li><p><strong>Tee Time Availability API</strong></p><ul><li><p>Returns an opaque <code>TeeTimeRateID</code>, facility, time, duration, group-size limit, available-bay information, and <code>TotalDue</code>.</p></li><li><p>GolfNow preserves the returned <code>TeeTimeRateID</code> as the selected offer reference. GolfNow does not need to select a named bay if Topgolf allocates a valid bay internally.</p></li></ul></li><li><p><strong>Create Booking Hold</strong></p><ul><li><p><code>POST /rest/create-booking-hold</code></p></li><li><p>Request includes <code>TeeTimeRateID</code>, <code>FacilityID</code>, and total <code>PlayerCount</code>.</p></li><li><p>Response includes <code>HoldId</code>, <code>TotalDue</code>, <code>Fee</code>, and <code>HoldExpiresAt</code>.</p></li><li><p><code>HoldId</code> must be used as the checkout reference through final booking.</p></li></ul></li><li><p><strong>Final Booking</strong></p><ul><li><p><code>bookWithoutPayment</code></p></li><li><p>Booking requires the primary customer’s first name, last name, email, and unmasked phone number.</p></li><li><p>Successful response returns <code>ConfirmationNumber</code>, <code>ShortCode</code>, booking status, and paid-online/due-at-venue amounts.</p></li><li><p>Store the full <code>ConfirmationNumber</code> verbatim as the canonical provider booking reference. <code>ShortCode</code> may be used for display only unless Topgolf confirms it supports read, cancellation, refund, and reconciliation operations.</p></li></ul></li><li><p><strong>Cancellation</strong></p><ul><li><p><code>PUT /rest/cancel/{confirmationNumber}?cancellationReasonId={id}</code></p></li><li><p>Current request shape includes the confirmation reference, customer email, channel, cancellation reason ID, message, and player count.</p></li><li><p>Cancellation is not currently functional in STG, so it is not part of the usable interface path yet.</p></li></ul></li></ol><hr><h3>Commercial Requirements</h3><ul><li><p>GolfNow will use the Topgolf price returned by availability and hold.</p></li><li><p>Final booking must enforce the selected <code>TotalDue</code> as the authoritative reservation total.</p></li><li><p>GolfNow must send payment amounts that reconcile exactly:</p><p><code>AmountPaidOnline + AmountDueAtVenue = TotalDue</code></p></li><li><p>Confirm currency, rounding, tax, and fee treatment so the calculated split matches the provider total without a price mismatch.</p></li><li><p>Validate prepaid and due-at-venue flows when each is in scope for activation.</p></li></ul><hr><h3>Findings and Interface Conditions</h3><h3>Availability and Capacity</h3><ul><li><p>A confirmed booking was followed by the same interval being returned as open with <code>NumberOfBays: 1</code>.</p></li><li><p>A second hold could then be created, while final booking later failed.</p></li><li><p>Topgolf must define whether <code>NumberOfBays</code> represents remaining or configured capacity.</p></li><li><p>After confirmed allocation, availability must either remove the offer or return zero remaining capacity before GolfNow can offer it again.</p></li></ul><h3>Hold Reliability</h3><ul><li><p>A hold can succeed, then final booking can fail with <code>RESERVATION_ALREADY_BOOKED_FOR_THIS_SHIFT</code>.</p></li><li><p>Hold creation can intermittently return retryable <code>ARGOS_UNAVAILABLE</code>, while the identical request succeeds on a later retry.</p></li><li><p>Topgolf must document hold expiry/release behavior, idempotency or correlation-key behavior, whether failed holds can consume capacity, safe retry timing, and a status/reconciliation path for ambiguous outcomes.</p></li><li><p>A successful hold cannot be represented to the golfer as a guaranteed booking unless it validates the same deterministic capacity and eligibility rules as final booking, or an equivalent pre-payment validation does.</p></li></ul><h3>Booking and Error Atomicity</h3><ul><li><p>Missing required customer fields correctly return non-retryable validation errors.</p></li><li><p>Every non-retryable booking error must be side-effect-free. It must not create a reservation, consume inventory, retain a hold, create a duplicate marker, or leave a partial customer/order record.</p></li><li><p>The interface needs a controlled STG test proving that an intentionally invalid request does not create a tee-sheet reservation and that a corrected request produces exactly one booking.</p></li></ul><h3>Price-Matching Behavior</h3><ul><li><p>Confirm the accepted booking fields, exact rounding behavior, and whether the provider expects the submitted paid-online and due-at-venue amounts to sum to the held <code>TotalDue</code>.</p></li></ul><h3>Payment Modes</h3><ul><li><p>Validate that Topgolf supports the agreed payment split and that the final booking response retains the correct <code>AmountPaidOnline</code> and <code>AmountDueAtVenue</code>.</p></li></ul><h3>Cancellation</h3><ul><li><p>Cancellation is not currently functional in STG, so it is not part of the usable interface path yet.</p></li><li><p>Confirm the authoritative mapping for <code>cancellationReasonId</code>, including whether it is a CORE mapping, a Topgolf mapping, or both.</p></li><li><p>Confirm why customer email is required when the canonical confirmation number is supplied.</p></li><li><p>Confirm whether the free-text cancellation message affects Topgolf behavior or is audit-only.</p></li><li><p>Before activation, validate full cancellation, payment/refund handling, inventory release, retry behavior, and a durable cancellation audit response.</p></li></ul><hr><h3>API Header Logic</h3><p>We need to pass in the following headers on the availability calls made by CacheManager, Hold and Booking</p><ul><li><p>&quot;TG-CLIENT-SESSIONID&quot;</p></li><li><p>&quot;TG-CLIENT-REQUESTID&quot;</p></li></ul><p><strong>CacheManager</strong></p><ul><li><p><code>TG-CLIENT-SESSIONID</code> - Every time CacheManger runs, create a unique string using the word CacheManger+EpochTimestamp</p><ul><li><p>Example: CacheManager_1792420125</p></li><li><p>Log this in our existing cachemanager logs or expose to datadog or log in a place where it can be troubleshooted if we have issues. The goal here is we could provide the SessionId to TopGolf and they can match to the call on their side</p></li></ul></li><li><p><code>TG-CLIENT-REQUESTID</code>- Every time CacheManger runs, create a unique GUID</p><ul><li><p>Log this in our existing cachemanager logs or expose to datadog or log in a place where it can be troubleshooted if we have issues. The goal here is we could provide the RequestId to TopGolf and they can match to the call on their side</p></li><li><p><code>TG-CLIENT-REQUESTID</code> should always be a unique random GUID for each unique call</p></li></ul></li></ul><p><strong>Hold</strong></p><ul><li><p><code>TG-CLIENT-SESSIONID</code> - When the Hold API is called by a single user, create a unique string using the CustomerNumber_Timestamp </p><ul><li><p>Example: <code>16989823_1792420125</code></p></li><li><p>Log this in mongo for failures so we can send this ID to Topgolf for troubleshooting</p></li></ul></li><li><p><code>TG-CLIENT-REQUESTID</code>- When the Hold API is called by a single user, create a unique GUID</p><ul><li><ul><li><p>Log this in mongo for failures so we can send this ID to Topgolf for troubleshooting. The goal here is we could provide the RequestId to TopGolf and they can match to the call on their side</p></li><li><p><code>TG-CLIENT-REQUESTID</code> should always be a unique random GUID for each unique call</p></li></ul></li></ul></li></ul><p><strong>Booking</strong></p><ul><li><p>Log the exact same <code>TG-CLIENT-SESSIONID</code> used from the Hold call by the same user</p><ul><li><p>So if <code>16989823_1792420125</code> was used on the hold call by the user, use the same exact string on the Booking call </p></li><li><p>Log this in mongo for failures so we can send this ID to Topgolf for troubleshooting. The goal here is we could provide the RequestId to TopGolf and they can match to the call on their side</p></li></ul></li><li><p><code>TG-CLIENT-REQUESTID</code> - When the Booking API is called by a single user, create a unique GUID</p><ul><li><p>Log this in mongo for failures so we can send this ID to Topgolf for troubleshooting. The goal here is we could provide the RequestId to TopGolf and they can match to the call on their side</p></li><li><p><code>TG-CLIENT-REQUESTID</code> should always be a unique random GUID for each unique call. DO NOT REPEAT the same REQUESTID on multiple calls</p></li></ul></li></ul><hr><h3>Activation Criteria</h3><ul><li><p>[ ] Facility mapping and Topgolf test configuration are documented.</p></li><li><p>[ ] Availability returns reliable remaining capacity after booking, cancellation, and hold expiry.</p></li><li><p>[ ] Hold creation has documented expiry, idempotency, retry, and reconciliation behavior.</p></li><li><p>[ ] Final booking accepts the required customer data and returns a durable confirmation reference.</p></li><li><p>[ ] GolfNow uses the Topgolf <code>TotalDue</code>, with <code>AmountPaidOnline + AmountDueAtVenue</code> matching it exactly.</p></li><li><p>[ ] Currency, taxes, fees, and rounding are documented and validated.</p></li><li><p>[ ] Prepaid and due-at-venue scenarios are validated when in scope.</p></li><li><p>[ ] Failed booking requests are proven side-effect-free.</p></li><li><p>[ ] A booking-read/reconciliation path is available for ambiguous booking or hold outcomes.</p></li><li><p>[ ] STG cancellation is functional and successfully tested for a confirmed reservation.</p></li><li><p>[ ] Full cancellation behavior, reason mapping, payment handling, inventory release, and audit response are documented and validated.</p></li><li><p>[ ] Controlled STG lifecycle evidence exists for availability, hold, booking, payment, cancellation, and inventory release.</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 2,
+        "comments": [
+          {
+            "id": "1231334",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14822?focusedCommentId=1231334",
+            "author": "Yoel Martin Pardo",
+            "authorAccountId": "625571809e7380006fb29599",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+            "created": "2026-10-15T15:18:38.282-0400",
+            "createdDisplay": "Oct 15, 2026, 3:18 PM",
+            "updated": "2026-10-28T09:21:34.048-0400",
+            "updatedDisplay": "Oct 28, 2026, 9:21 AM",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "USE[CRM]\n\nGO\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'https://argos-preprod-partners-783764608446.auth.us-east-1.amazoncognito.com'\nWHERE AttributeName = 'TPG_AUTHENTICATION_URL'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'https://preprod.reservation-gateway.topgolf.com'\nWHERE AttributeName = 'TPG_API_URL'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = '38lctdon3bo700hci0r1jmk69j'\nWHERE AttributeName = 'TPG_CLIENT_ID'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = '1po6dvmijrq5edj39nmo6c13v2bfgih4nlv1i1lgbjjcv452rpeu'\nWHERE AttributeName = 'TPG_CLIENT_SECRET'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'reservation-gateway/partner'\nWHERE AttributeName = 'TPG_SCOPE'\n\nGO",
+            "bodyHtml": "<pre><code>USE[CRM]\n\nGO\n  \nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'https://argos-preprod-partners-783764608446.auth.us-east-1.amazoncognito.com'\nWHERE AttributeName = 'TPG_AUTHENTICATION_URL'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'https://preprod.reservation-gateway.topgolf.com'\nWHERE AttributeName = 'TPG_API_URL'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = '38lctdon3bo700hci0r1jmk69j'\nWHERE AttributeName = 'TPG_CLIENT_ID'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = '1po6dvmijrq5edj39nmo6c13v2bfgih4nlv1i1lgbjjcv452rpeu'\nWHERE AttributeName = 'TPG_CLIENT_SECRET'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'reservation-gateway/partner'\nWHERE AttributeName = 'TPG_SCOPE'\n\nGO</code></pre>"
+          },
+          {
+            "id": "1235344",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14822?focusedCommentId=1235344",
+            "author": "Dewan Kabir",
+            "authorAccountId": "630fb06bb433b060db559bdb",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+            "created": "2026-10-26T09:11:41.908-0400",
+            "createdDisplay": "Oct 26, 2026, 9:11 AM",
+            "updated": "2026-10-26T09:11:41.908-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "We are blocked on waiting for test credentials from Topgolf .",
+            "bodyHtml": "<p>We are blocked on waiting for test credentials from Topgolf . </p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14822?focusedCommentId=1235344",
+        "lastCommentDisplay": "Oct 26, 2026, 9:11 AM",
+        "lastCommentAuthor": "Dewan Kabir",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Blocked",
+        "priority": "P1",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "assignedDeveloperAccountId": "625571809e7380006fb29599",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "updated": "2026-10-28T09:21:34.081-0400",
+        "updatedDisplay": "Oct 28, 2026, 9:21 AM",
+        "created": "2026-09-28T14:05:07.766-0400",
+        "createdDisplay": "Sep 28, 2026, 2:05 PM",
+        "components": [
+          "Cache Manager",
+          "GolfNow.Services.Reservation",
+          "GolfNow.Services.TeeSheet",
+          "GolfNowCentral"
+        ],
+        "fixVersions": [
+          "v3001.130.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14875",
         "url": "https://golfnow.atlassian.net/browse/CORE-14875",
         "summary": "Create Troon facility tag",
@@ -10382,94 +10470,6 @@
           "key": "CORE-14096",
           "url": "https://golfnow.atlassian.net/browse/CORE-14096",
           "summary": "ChatGPT - OpenAI Apps",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14822",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14822",
-        "summary": "Topgolf - New Interface",
-        "description": "Goal\n\nDocument and validate the Topgolf tee-sheet interface contract required for GolfNow activation.\n\nThis is a new-interface assessment and activation ticket. It defines the intended availability, hold, booking, payment, and cancellation behavior, plus the interface conditions that must be validated before a facility is enabled.\n\n---\nIntended Interface Flow\n\n- Tee Time Availability API\n\n- Returns an opaque TeeTimeRateID, facility, time, duration, group-size limit, available-bay information, and TotalDue.\n\n- GolfNow preserves the returned TeeTimeRateID as the selected offer reference. GolfNow does not need to select a named bay if Topgolf allocates a valid bay internally.\n\n- Create Booking Hold\n\n- POST /rest/create-booking-hold\n\n- Request includes TeeTimeRateID, FacilityID, and total PlayerCount.\n\n- Response includes HoldId, TotalDue, Fee, and HoldExpiresAt.\n\n- HoldId must be used as the checkout reference through final booking.\n\n- Final Booking\n\n- bookWithoutPayment\n\n- Booking requires the primary customer’s first name, last name, email, and unmasked phone number.\n\n- Successful response returns ConfirmationNumber, ShortCode, booking status, and paid-online/due-at-venue amounts.\n\n- Store the full ConfirmationNumber verbatim as the canonical provider booking reference. ShortCode may be used for display only unless Topgolf confirms it supports read, cancellation, refund, and reconciliation operations.\n\n- Cancellation\n\n- PUT /rest/cancel/{confirmationNumber}?cancellationReasonId={id}\n\n- Current request shape includes the confirmation reference, customer email, channel, cancellation reason ID, message, and player count.\n\n- Cancellation is not currently functional in STG, so it is not part of the usable interface path yet.\n\n---\nCommercial Requirements\n\n- GolfNow will use the Topgolf price returned by availability and hold.\n\n- Final booking must enforce the selected TotalDue as the authoritative reservation total.\n\n- GolfNow must send payment amounts that reconcile exactly:\n\nAmountPaidOnline + AmountDueAtVenue = TotalDue\n\n- Confirm currency, rounding, tax, and fee treatment so the calculated split matches the provider total without a price mismatch.\n\n- Validate prepaid and due-at-venue flows when each is in scope for activation.\n\n---\nFindings and Interface Conditions\n\nAvailability and Capacity\n\n- A confirmed booking was followed by the same interval being returned as open with NumberOfBays: 1.\n\n- A second hold could then be created, while final booking later failed.\n\n- Topgolf must define whether NumberOfBays represents remaining or configured capacity.\n\n- After confirmed allocation, availability must either remove the offer or return zero remaining capacity before GolfNow can offer it again.\n\nHold Reliability\n\n- A hold can succeed, then final booking can fail with RESERVATION_ALREADY_BOOKED_FOR_THIS_SHIFT.\n\n- Hold creation can intermittently return retryable ARGOS_UNAVAILABLE, while the identical request succeeds on a later retry.\n\n- Topgolf must document hold expiry/release behavior, idempotency or correlation-key behavior, whether failed holds can consume capacity, safe retry timing, and a status/reconciliation path for ambiguous outcomes.\n\n- A successful hold cannot be represented to the golfer as a guaranteed booking unless it validates the same deterministic capacity and eligibility rules as final booking, or an equivalent pre-payment validation does.\n\nBooking and Error Atomicity\n\n- Missing required customer fields correctly return non-retryable validation errors.\n\n- Every non-retryable booking error must be side-effect-free. It must not create a reservation, consume inventory, retain a hold, create a duplicate marker, or leave a partial customer/order record.\n\n- The interface needs a controlled STG test proving that an intentionally invalid request does not create a tee-sheet reservation and that a corrected request produces exactly one booking.\n\nPrice-Matching Behavior\n\n- Confirm the accepted booking fields, exact rounding behavior, and whether the provider expects the submitted paid-online and due-at-venue amounts to sum to the held TotalDue.\n\nPayment Modes\n\n- Validate that Topgolf supports the agreed payment split and that the final booking response retains the correct AmountPaidOnline and AmountDueAtVenue.\n\nCancellation\n\n- Cancellation is not currently functional in STG, so it is not part of the usable interface path yet.\n\n- Confirm the authoritative mapping for cancellationReasonId, including whether it is a CORE mapping, a Topgolf mapping, or both.\n\n- Confirm why customer email is required when the canonical confirmation number is supplied.\n\n- Confirm whether the free-text cancellation message affects Topgolf behavior or is audit-only.\n\n- Before activation, validate full cancellation, payment/refund handling, inventory release, retry behavior, and a durable cancellation audit response.\n\n---\nAPI Header Logic\n\nWe need to pass in the following headers on the availability calls made by CacheManager, Hold and Booking\n\n- \"TG-CLIENT-SESSIONID\"\n\n- \"TG-CLIENT-REQUESTID\"\n\nCacheManager\n\n- TG-CLIENT-SESSIONID - Every time CacheManger runs, create a unique string using the word CacheManger+EpochTimestamp\n\n- Example: CacheManager_1792420125\n\n- Log this in our existing cachemanager logs or expose to datadog or log in a place where it can be troubleshooted if we have issues. The goal here is we could provide the SessionId to TopGolf and they can match to the call on their side\n\n- TG-CLIENT-REQUESTID- Every time CacheManger runs, create a unique GUID\n\n- Log this in our existing cachemanager logs or expose to datadog or log in a place where it can be troubleshooted if we have issues. The goal here is we could provide the RequestId to TopGolf and they can match to the call on their side\n\n- TG-CLIENT-REQUESTID should always be a unique random GUID for each unique call\n\nHold\n\n- TG-CLIENT-SESSIONID - When the Hold API is called by a single user, create a unique string using the CustomerNumber_Timestamp\n\n- Example: 16989823_1792420125\n\n- Log this in mongo for failures so we can send this ID to Topgolf for troubleshooting\n\n- TG-CLIENT-REQUESTID- When the Hold API is called by a single user, create a unique GUID\n\n- - Log this in mongo for failures so we can send this ID to Topgolf for troubleshooting. The goal here is we could provide the RequestId to TopGolf and they can match to the call on their side\n\n- TG-CLIENT-REQUESTID should always be a unique random GUID for each unique call\n\nBooking\n\n- Log the exact same TG-CLIENT-SESSIONID used from the Hold call by the same user\n\n- So if 16989823_1792420125 was used on the hold call by the user, use the same exact string on the Booking call\n\n- Log this in mongo for failures so we can send this ID to Topgolf for troubleshooting. The goal here is we could provide the RequestId to TopGolf and they can match to the call on their side\n\n- TG-CLIENT-REQUESTID - When the Booking API is called by a single user, create a unique GUID\n\n- Log this in mongo for failures so we can send this ID to Topgolf for troubleshooting. The goal here is we could provide the RequestId to TopGolf and they can match to the call on their side\n\n- TG-CLIENT-REQUESTID should always be a unique random GUID for each unique call. DO NOT REPEAT the same REQUESTID on multiple calls\n\n---\nActivation Criteria\n\n- [ ] Facility mapping and Topgolf test configuration are documented.\n\n- [ ] Availability returns reliable remaining capacity after booking, cancellation, and hold expiry.\n\n- [ ] Hold creation has documented expiry, idempotency, retry, and reconciliation behavior.\n\n- [ ] Final booking accepts the required customer data and returns a durable confirmation reference.\n\n- [ ] GolfNow uses the Topgolf TotalDue, with AmountPaidOnline + AmountDueAtVenue matching it exactly.\n\n- [ ] Currency, taxes, fees, and rounding are documented and validated.\n\n- [ ] Prepaid and due-at-venue scenarios are validated when in scope.\n\n- [ ] Failed booking requests are proven side-effect-free.\n\n- [ ] A booking-read/reconciliation path is available for ambiguous booking or hold outcomes.\n\n- [ ] STG cancellation is functional and successfully tested for a confirmed reservation.\n\n- [ ] Full cancellation behavior, reason mapping, payment handling, inventory release, and audit response are documented and validated.\n\n- [ ] Controlled STG lifecycle evidence exists for availability, hold, booking, payment, cancellation, and inventory release.",
-        "descriptionHtml": "<h3>Goal</h3><p>Document and validate the Topgolf tee-sheet interface contract required for GolfNow activation.</p><p>This is a new-interface assessment and activation ticket. It defines the intended availability, hold, booking, payment, and cancellation behavior, plus the interface conditions that must be validated before a facility is enabled.</p><hr><h3>Intended Interface Flow</h3><ol><li><p><strong>Tee Time Availability API</strong></p><ul><li><p>Returns an opaque <code>TeeTimeRateID</code>, facility, time, duration, group-size limit, available-bay information, and <code>TotalDue</code>.</p></li><li><p>GolfNow preserves the returned <code>TeeTimeRateID</code> as the selected offer reference. GolfNow does not need to select a named bay if Topgolf allocates a valid bay internally.</p></li></ul></li><li><p><strong>Create Booking Hold</strong></p><ul><li><p><code>POST /rest/create-booking-hold</code></p></li><li><p>Request includes <code>TeeTimeRateID</code>, <code>FacilityID</code>, and total <code>PlayerCount</code>.</p></li><li><p>Response includes <code>HoldId</code>, <code>TotalDue</code>, <code>Fee</code>, and <code>HoldExpiresAt</code>.</p></li><li><p><code>HoldId</code> must be used as the checkout reference through final booking.</p></li></ul></li><li><p><strong>Final Booking</strong></p><ul><li><p><code>bookWithoutPayment</code></p></li><li><p>Booking requires the primary customer’s first name, last name, email, and unmasked phone number.</p></li><li><p>Successful response returns <code>ConfirmationNumber</code>, <code>ShortCode</code>, booking status, and paid-online/due-at-venue amounts.</p></li><li><p>Store the full <code>ConfirmationNumber</code> verbatim as the canonical provider booking reference. <code>ShortCode</code> may be used for display only unless Topgolf confirms it supports read, cancellation, refund, and reconciliation operations.</p></li></ul></li><li><p><strong>Cancellation</strong></p><ul><li><p><code>PUT /rest/cancel/{confirmationNumber}?cancellationReasonId={id}</code></p></li><li><p>Current request shape includes the confirmation reference, customer email, channel, cancellation reason ID, message, and player count.</p></li><li><p>Cancellation is not currently functional in STG, so it is not part of the usable interface path yet.</p></li></ul></li></ol><hr><h3>Commercial Requirements</h3><ul><li><p>GolfNow will use the Topgolf price returned by availability and hold.</p></li><li><p>Final booking must enforce the selected <code>TotalDue</code> as the authoritative reservation total.</p></li><li><p>GolfNow must send payment amounts that reconcile exactly:</p><p><code>AmountPaidOnline + AmountDueAtVenue = TotalDue</code></p></li><li><p>Confirm currency, rounding, tax, and fee treatment so the calculated split matches the provider total without a price mismatch.</p></li><li><p>Validate prepaid and due-at-venue flows when each is in scope for activation.</p></li></ul><hr><h3>Findings and Interface Conditions</h3><h3>Availability and Capacity</h3><ul><li><p>A confirmed booking was followed by the same interval being returned as open with <code>NumberOfBays: 1</code>.</p></li><li><p>A second hold could then be created, while final booking later failed.</p></li><li><p>Topgolf must define whether <code>NumberOfBays</code> represents remaining or configured capacity.</p></li><li><p>After confirmed allocation, availability must either remove the offer or return zero remaining capacity before GolfNow can offer it again.</p></li></ul><h3>Hold Reliability</h3><ul><li><p>A hold can succeed, then final booking can fail with <code>RESERVATION_ALREADY_BOOKED_FOR_THIS_SHIFT</code>.</p></li><li><p>Hold creation can intermittently return retryable <code>ARGOS_UNAVAILABLE</code>, while the identical request succeeds on a later retry.</p></li><li><p>Topgolf must document hold expiry/release behavior, idempotency or correlation-key behavior, whether failed holds can consume capacity, safe retry timing, and a status/reconciliation path for ambiguous outcomes.</p></li><li><p>A successful hold cannot be represented to the golfer as a guaranteed booking unless it validates the same deterministic capacity and eligibility rules as final booking, or an equivalent pre-payment validation does.</p></li></ul><h3>Booking and Error Atomicity</h3><ul><li><p>Missing required customer fields correctly return non-retryable validation errors.</p></li><li><p>Every non-retryable booking error must be side-effect-free. It must not create a reservation, consume inventory, retain a hold, create a duplicate marker, or leave a partial customer/order record.</p></li><li><p>The interface needs a controlled STG test proving that an intentionally invalid request does not create a tee-sheet reservation and that a corrected request produces exactly one booking.</p></li></ul><h3>Price-Matching Behavior</h3><ul><li><p>Confirm the accepted booking fields, exact rounding behavior, and whether the provider expects the submitted paid-online and due-at-venue amounts to sum to the held <code>TotalDue</code>.</p></li></ul><h3>Payment Modes</h3><ul><li><p>Validate that Topgolf supports the agreed payment split and that the final booking response retains the correct <code>AmountPaidOnline</code> and <code>AmountDueAtVenue</code>.</p></li></ul><h3>Cancellation</h3><ul><li><p>Cancellation is not currently functional in STG, so it is not part of the usable interface path yet.</p></li><li><p>Confirm the authoritative mapping for <code>cancellationReasonId</code>, including whether it is a CORE mapping, a Topgolf mapping, or both.</p></li><li><p>Confirm why customer email is required when the canonical confirmation number is supplied.</p></li><li><p>Confirm whether the free-text cancellation message affects Topgolf behavior or is audit-only.</p></li><li><p>Before activation, validate full cancellation, payment/refund handling, inventory release, retry behavior, and a durable cancellation audit response.</p></li></ul><hr><h3>API Header Logic</h3><p>We need to pass in the following headers on the availability calls made by CacheManager, Hold and Booking</p><ul><li><p>&quot;TG-CLIENT-SESSIONID&quot;</p></li><li><p>&quot;TG-CLIENT-REQUESTID&quot;</p></li></ul><p><strong>CacheManager</strong></p><ul><li><p><code>TG-CLIENT-SESSIONID</code> - Every time CacheManger runs, create a unique string using the word CacheManger+EpochTimestamp</p><ul><li><p>Example: CacheManager_1792420125</p></li><li><p>Log this in our existing cachemanager logs or expose to datadog or log in a place where it can be troubleshooted if we have issues. The goal here is we could provide the SessionId to TopGolf and they can match to the call on their side</p></li></ul></li><li><p><code>TG-CLIENT-REQUESTID</code>- Every time CacheManger runs, create a unique GUID</p><ul><li><p>Log this in our existing cachemanager logs or expose to datadog or log in a place where it can be troubleshooted if we have issues. The goal here is we could provide the RequestId to TopGolf and they can match to the call on their side</p></li><li><p><code>TG-CLIENT-REQUESTID</code> should always be a unique random GUID for each unique call</p></li></ul></li></ul><p><strong>Hold</strong></p><ul><li><p><code>TG-CLIENT-SESSIONID</code> - When the Hold API is called by a single user, create a unique string using the CustomerNumber_Timestamp </p><ul><li><p>Example: <code>16989823_1792420125</code></p></li><li><p>Log this in mongo for failures so we can send this ID to Topgolf for troubleshooting</p></li></ul></li><li><p><code>TG-CLIENT-REQUESTID</code>- When the Hold API is called by a single user, create a unique GUID</p><ul><li><ul><li><p>Log this in mongo for failures so we can send this ID to Topgolf for troubleshooting. The goal here is we could provide the RequestId to TopGolf and they can match to the call on their side</p></li><li><p><code>TG-CLIENT-REQUESTID</code> should always be a unique random GUID for each unique call</p></li></ul></li></ul></li></ul><p><strong>Booking</strong></p><ul><li><p>Log the exact same <code>TG-CLIENT-SESSIONID</code> used from the Hold call by the same user</p><ul><li><p>So if <code>16989823_1792420125</code> was used on the hold call by the user, use the same exact string on the Booking call </p></li><li><p>Log this in mongo for failures so we can send this ID to Topgolf for troubleshooting. The goal here is we could provide the RequestId to TopGolf and they can match to the call on their side</p></li></ul></li><li><p><code>TG-CLIENT-REQUESTID</code> - When the Booking API is called by a single user, create a unique GUID</p><ul><li><p>Log this in mongo for failures so we can send this ID to Topgolf for troubleshooting. The goal here is we could provide the RequestId to TopGolf and they can match to the call on their side</p></li><li><p><code>TG-CLIENT-REQUESTID</code> should always be a unique random GUID for each unique call. DO NOT REPEAT the same REQUESTID on multiple calls</p></li></ul></li></ul><hr><h3>Activation Criteria</h3><ul><li><p>[ ] Facility mapping and Topgolf test configuration are documented.</p></li><li><p>[ ] Availability returns reliable remaining capacity after booking, cancellation, and hold expiry.</p></li><li><p>[ ] Hold creation has documented expiry, idempotency, retry, and reconciliation behavior.</p></li><li><p>[ ] Final booking accepts the required customer data and returns a durable confirmation reference.</p></li><li><p>[ ] GolfNow uses the Topgolf <code>TotalDue</code>, with <code>AmountPaidOnline + AmountDueAtVenue</code> matching it exactly.</p></li><li><p>[ ] Currency, taxes, fees, and rounding are documented and validated.</p></li><li><p>[ ] Prepaid and due-at-venue scenarios are validated when in scope.</p></li><li><p>[ ] Failed booking requests are proven side-effect-free.</p></li><li><p>[ ] A booking-read/reconciliation path is available for ambiguous booking or hold outcomes.</p></li><li><p>[ ] STG cancellation is functional and successfully tested for a confirmed reservation.</p></li><li><p>[ ] Full cancellation behavior, reason mapping, payment handling, inventory release, and audit response are documented and validated.</p></li><li><p>[ ] Controlled STG lifecycle evidence exists for availability, hold, booking, payment, cancellation, and inventory release.</p></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 2,
-        "comments": [
-          {
-            "id": "1231334",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14822?focusedCommentId=1231334",
-            "author": "Yoel Martin Pardo",
-            "authorAccountId": "625571809e7380006fb29599",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-            "created": "2026-10-15T15:18:38.282-0400",
-            "createdDisplay": "Oct 15, 2026, 3:18 PM",
-            "updated": "2026-10-28T09:21:34.048-0400",
-            "updatedDisplay": "Oct 28, 2026, 9:21 AM",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "USE[CRM]\n\nGO\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'https://argos-preprod-partners-783764608446.auth.us-east-1.amazoncognito.com'\nWHERE AttributeName = 'TPG_AUTHENTICATION_URL'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'https://preprod.reservation-gateway.topgolf.com'\nWHERE AttributeName = 'TPG_API_URL'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = '38lctdon3bo700hci0r1jmk69j'\nWHERE AttributeName = 'TPG_CLIENT_ID'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = '1po6dvmijrq5edj39nmo6c13v2bfgih4nlv1i1lgbjjcv452rpeu'\nWHERE AttributeName = 'TPG_CLIENT_SECRET'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'reservation-gateway/partner'\nWHERE AttributeName = 'TPG_SCOPE'\n\nGO",
-            "bodyHtml": "<pre><code>USE[CRM]\n\nGO\n  \nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'https://argos-preprod-partners-783764608446.auth.us-east-1.amazoncognito.com'\nWHERE AttributeName = 'TPG_AUTHENTICATION_URL'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'https://preprod.reservation-gateway.topgolf.com'\nWHERE AttributeName = 'TPG_API_URL'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = '38lctdon3bo700hci0r1jmk69j'\nWHERE AttributeName = 'TPG_CLIENT_ID'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = '1po6dvmijrq5edj39nmo6c13v2bfgih4nlv1i1lgbjjcv452rpeu'\nWHERE AttributeName = 'TPG_CLIENT_SECRET'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'reservation-gateway/partner'\nWHERE AttributeName = 'TPG_SCOPE'\n\nGO</code></pre>"
-          },
-          {
-            "id": "1235344",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14822?focusedCommentId=1235344",
-            "author": "Dewan Kabir",
-            "authorAccountId": "630fb06bb433b060db559bdb",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-            "created": "2026-10-26T09:11:41.908-0400",
-            "createdDisplay": "Oct 26, 2026, 9:11 AM",
-            "updated": "2026-10-26T09:11:41.908-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "We are blocked on waiting for test credentials from Topgolf .",
-            "bodyHtml": "<p>We are blocked on waiting for test credentials from Topgolf . </p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14822?focusedCommentId=1235344",
-        "lastCommentDisplay": "Oct 26, 2026, 9:11 AM",
-        "lastCommentAuthor": "Dewan Kabir",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Blocked",
-        "priority": "P1",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-10-28T09:21:34.081-0400",
-        "updatedDisplay": "Oct 28, 2026, 9:21 AM",
-        "created": "2026-09-28T14:05:07.766-0400",
-        "createdDisplay": "Sep 28, 2026, 2:05 PM",
-        "components": [
-          "Cache Manager",
-          "GolfNow.Services.Reservation",
-          "GolfNow.Services.TeeSheet",
-          "GolfNowCentral"
-        ],
-        "fixVersions": [
-          "v3001.130.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
           "description": "",
           "type": "Epic",
           "status": "Planning",
@@ -43321,13 +43321,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-10-28T13:21:27.878Z",
-    "pulledAtDisplay": "Oct 28, 2026, 9:21 AM",
+    "pulledAt": "2026-10-28T13:26:30.754Z",
+    "pulledAtDisplay": "Oct 28, 2026, 9:26 AM",
     "window": {
-      "start": "2026-09-13T13:21:27.878Z",
-      "end": "2027-04-26T13:21:27.878Z",
-      "startDisplay": "Sep 13, 2026, 9:21 AM",
-      "endDisplay": "Apr 26, 2027, 9:21 AM"
+      "start": "2026-09-13T13:26:30.754Z",
+      "end": "2027-04-26T13:26:30.754Z",
+      "startDisplay": "Sep 13, 2026, 9:26 AM",
+      "endDisplay": "Apr 26, 2027, 9:26 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43340,7 +43340,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-10-28T13:21:29.959Z",
+        "pulledAt": "2026-10-28T13:26:33.376Z",
         "eventCount": 64,
         "events": [
           {
@@ -43939,23 +43939,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20261026T193601Z-1177941235@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN001 - v100.62",
-            "start": "2026-11-16T00:00:00.000Z",
-            "end": "2026-11-17T00:00:00.000Z",
-            "startDate": "2026-11-16",
-            "endDate": "2026-11-17",
-            "startDisplay": "Nov 16, 2026",
-            "endDisplay": "Nov 17, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260112T140521Z--1474957234@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -43968,6 +43951,23 @@
             "endDisplay": "Nov 19, 2026",
             "allDay": true,
             "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20261026T193601Z-1177941235@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN001 - v100.62",
+            "start": "2026-11-16T00:00:00.000Z",
+            "end": "2026-11-17T00:00:00.000Z",
+            "startDate": "2026-11-16",
+            "endDate": "2026-11-17",
+            "startDisplay": "Nov 16, 2026",
+            "endDisplay": "Nov 17, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44092,6 +44092,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44121,23 +44138,6 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44437,10 +44437,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-10-28T13:20:21.149Z",
-    "previousPulledAtDisplay": "Oct 28, 2026, 9:20 AM",
-    "currentPulledAt": "2026-10-28T13:23:17.072Z",
-    "currentPulledAtDisplay": "Oct 28, 2026, 9:23 AM",
+    "previousPulledAt": "2026-10-28T13:23:17.072Z",
+    "previousPulledAtDisplay": "Oct 28, 2026, 9:23 AM",
+    "currentPulledAt": "2026-10-28T13:28:28.454Z",
+    "currentPulledAtDisplay": "Oct 28, 2026, 9:28 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44448,6 +44448,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-10-28T13:23:17.072Z",
+      "previousPulledAtDisplay": "Oct 28, 2026, 9:23 AM",
+      "currentPulledAt": "2026-10-28T13:28:28.454Z",
+      "currentPulledAtDisplay": "Oct 28, 2026, 9:28 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-10-28T13:20:21.149Z",
       "previousPulledAtDisplay": "Oct 28, 2026, 9:20 AM",
@@ -46279,17 +46290,6 @@
       "previousPulledAtDisplay": "Oct 27, 2026, 7:24 PM",
       "currentPulledAt": "2026-10-27T23:28:34.209Z",
       "currentPulledAtDisplay": "Oct 27, 2026, 7:28 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-10-27T23:18:26.279Z",
-      "previousPulledAtDisplay": "Oct 27, 2026, 7:18 PM",
-      "currentPulledAt": "2026-10-27T23:24:09.188Z",
-      "currentPulledAtDisplay": "Oct 27, 2026, 7:24 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
