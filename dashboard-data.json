@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-10-28T13:20:21.149Z",
-  "pulledAtDisplay": "Oct 28, 2026, 9:20 AM",
+  "pulledAt": "2026-10-28T13:23:17.072Z",
+  "pulledAtDisplay": "Oct 28, 2026, 9:23 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-10-28T13:20:21.149Z",
-    "pulledAtDisplay": "Oct 28, 2026, 9:20 AM",
+    "pulledAt": "2026-10-28T13:23:17.072Z",
+    "pulledAtDisplay": "Oct 28, 2026, 9:23 AM",
     "total": 556,
     "mainTotal": 526,
     "subtaskTotal": 30,
@@ -10407,12 +10407,12 @@
             "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
             "created": "2026-10-15T15:18:38.282-0400",
             "createdDisplay": "Oct 15, 2026, 3:18 PM",
-            "updated": "2026-10-15T15:18:38.282-0400",
-            "updatedDisplay": "",
+            "updated": "2026-10-28T09:21:34.048-0400",
+            "updatedDisplay": "Oct 28, 2026, 9:21 AM",
             "hasMedia": false,
             "mediaCount": 0,
-            "body": "USE[CRM]\n\nGO\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'https://argos-preprod-partners-783764608446.auth.us-east-1.amazoncognito.com'\nWHERE AttributeName = 'TPG_AUTHENTICATION_URL'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'https://preprod.reservation-gateway.topgolf.com'\nWHERE AttributeName = 'TPG_API_URL'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = ''\nWHERE AttributeName = 'TPG_CLIENT_ID'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = ''\nWHERE AttributeName = 'TPG_CLIENT_SECRET'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = ''\nWHERE AttributeName = 'TPG_SCOPE'\n\nGO",
-            "bodyHtml": "<pre><code>USE[CRM]\n\nGO\n  \nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'https://argos-preprod-partners-783764608446.auth.us-east-1.amazoncognito.com'\nWHERE AttributeName = 'TPG_AUTHENTICATION_URL'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'https://preprod.reservation-gateway.topgolf.com'\nWHERE AttributeName = 'TPG_API_URL'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = ''\nWHERE AttributeName = 'TPG_CLIENT_ID'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = ''\nWHERE AttributeName = 'TPG_CLIENT_SECRET'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = ''\nWHERE AttributeName = 'TPG_SCOPE'\n\nGO</code></pre>"
+            "body": "USE[CRM]\n\nGO\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'https://argos-preprod-partners-783764608446.auth.us-east-1.amazoncognito.com'\nWHERE AttributeName = 'TPG_AUTHENTICATION_URL'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'https://preprod.reservation-gateway.topgolf.com'\nWHERE AttributeName = 'TPG_API_URL'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = '38lctdon3bo700hci0r1jmk69j'\nWHERE AttributeName = 'TPG_CLIENT_ID'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = '1po6dvmijrq5edj39nmo6c13v2bfgih4nlv1i1lgbjjcv452rpeu'\nWHERE AttributeName = 'TPG_CLIENT_SECRET'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'reservation-gateway/partner'\nWHERE AttributeName = 'TPG_SCOPE'\n\nGO",
+            "bodyHtml": "<pre><code>USE[CRM]\n\nGO\n  \nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'https://argos-preprod-partners-783764608446.auth.us-east-1.amazoncognito.com'\nWHERE AttributeName = 'TPG_AUTHENTICATION_URL'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'https://preprod.reservation-gateway.topgolf.com'\nWHERE AttributeName = 'TPG_API_URL'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = '38lctdon3bo700hci0r1jmk69j'\nWHERE AttributeName = 'TPG_CLIENT_ID'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = '1po6dvmijrq5edj39nmo6c13v2bfgih4nlv1i1lgbjjcv452rpeu'\nWHERE AttributeName = 'TPG_CLIENT_SECRET'\n\nUPDATE [CRM].[dbo].[CRMInterfaceAttribute]\nSET AttributeValue = 'reservation-gateway/partner'\nWHERE AttributeName = 'TPG_SCOPE'\n\nGO</code></pre>"
           },
           {
             "id": "1235344",
@@ -10444,8 +10444,8 @@
         "assignedDeveloper": "Yoel Martin Pardo",
         "assignedDeveloperAccountId": "625571809e7380006fb29599",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-10-27T08:01:34.925-0400",
-        "updatedDisplay": "Oct 27, 2026, 8:01 AM",
+        "updated": "2026-10-28T09:21:34.081-0400",
+        "updatedDisplay": "Oct 28, 2026, 9:21 AM",
         "created": "2026-09-28T14:05:07.766-0400",
         "createdDisplay": "Sep 28, 2026, 2:05 PM",
         "components": [
@@ -43321,13 +43321,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-10-28T13:17:43.236Z",
-    "pulledAtDisplay": "Oct 28, 2026, 9:17 AM",
+    "pulledAt": "2026-10-28T13:21:27.878Z",
+    "pulledAtDisplay": "Oct 28, 2026, 9:21 AM",
     "window": {
-      "start": "2026-09-13T13:17:43.235Z",
-      "end": "2027-04-26T13:17:43.235Z",
-      "startDisplay": "Sep 13, 2026, 9:17 AM",
-      "endDisplay": "Apr 26, 2027, 9:17 AM"
+      "start": "2026-09-13T13:21:27.878Z",
+      "end": "2027-04-26T13:21:27.878Z",
+      "startDisplay": "Sep 13, 2026, 9:21 AM",
+      "endDisplay": "Apr 26, 2027, 9:21 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43340,7 +43340,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-10-28T13:17:46.496Z",
+        "pulledAt": "2026-10-28T13:21:29.959Z",
         "eventCount": 64,
         "events": [
           {
@@ -44437,10 +44437,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-10-28T13:14:18.424Z",
-    "previousPulledAtDisplay": "Oct 28, 2026, 9:14 AM",
-    "currentPulledAt": "2026-10-28T13:20:21.149Z",
-    "currentPulledAtDisplay": "Oct 28, 2026, 9:20 AM",
+    "previousPulledAt": "2026-10-28T13:20:21.149Z",
+    "previousPulledAtDisplay": "Oct 28, 2026, 9:20 AM",
+    "currentPulledAt": "2026-10-28T13:23:17.072Z",
+    "currentPulledAtDisplay": "Oct 28, 2026, 9:23 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44448,6 +44448,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-10-28T13:20:21.149Z",
+      "previousPulledAtDisplay": "Oct 28, 2026, 9:20 AM",
+      "currentPulledAt": "2026-10-28T13:23:17.072Z",
+      "currentPulledAtDisplay": "Oct 28, 2026, 9:23 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-10-28T13:14:18.424Z",
       "previousPulledAtDisplay": "Oct 28, 2026, 9:14 AM",
@@ -46279,17 +46290,6 @@
       "previousPulledAtDisplay": "Oct 27, 2026, 7:18 PM",
       "currentPulledAt": "2026-10-27T23:24:09.188Z",
       "currentPulledAtDisplay": "Oct 27, 2026, 7:24 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-10-27T23:13:06.308Z",
-      "previousPulledAtDisplay": "Oct 27, 2026, 7:13 PM",
-      "currentPulledAt": "2026-10-27T23:18:26.279Z",
-      "currentPulledAtDisplay": "Oct 27, 2026, 7:18 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
