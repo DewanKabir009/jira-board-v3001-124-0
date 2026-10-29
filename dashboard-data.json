@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-10-29T17:28:17.455Z",
-  "pulledAtDisplay": "Oct 29, 2026, 1:28 PM",
+  "pulledAt": "2026-10-29T17:34:15.489Z",
+  "pulledAtDisplay": "Oct 29, 2026, 1:34 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-10-29T17:28:17.455Z",
-    "pulledAtDisplay": "Oct 29, 2026, 1:28 PM",
+    "pulledAt": "2026-10-29T17:34:15.489Z",
+    "pulledAtDisplay": "Oct 29, 2026, 1:34 PM",
     "total": 556,
     "mainTotal": 526,
     "subtaskTotal": 30,
@@ -8107,6 +8107,78 @@
         "parent": null
       },
       {
+        "key": "CORE-14783",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14783",
+        "summary": "Revenue Allocation | Support Transaction Fee Allocation to Course",
+        "description": "Goal\n\nSupport revenue allocation to the course for transaction fees.\n\n---\nProblem\n\nTransaction fee revenue allocation currently only sends money to GolfNow. If a transaction fee is configured to allocate revenue to the golf course, that configuration is ignored.\n\nGreens fees already support revenue allocation to either GolfNow or the golf course. Transaction fees should support the same options.\n\n---\nAcceptance Criteria\n\n- A transaction fee configured with revenue allocation to the course sends the configured share to the golf course.\n\n- A transaction fee configured with revenue allocation to GolfNow continues to work as it does today.\n\n- Existing greens-fee revenue allocation behavior is unchanged.",
+        "descriptionHtml": "<h3>Goal</h3><p>Support revenue allocation to the course for transaction fees.</p><hr><h3>Problem</h3><p>Transaction fee revenue allocation currently only sends money to GolfNow. If a transaction fee is configured to allocate revenue to the golf course, that configuration is ignored.</p><p>Greens fees already support revenue allocation to either GolfNow or the golf course. Transaction fees should support the same options.</p><hr><h3>Acceptance Criteria</h3><ul><li><p>A transaction fee configured with revenue allocation to the course sends the configured share to the golf course.</p></li><li><p>A transaction fee configured with revenue allocation to GolfNow continues to work as it does today.</p></li><li><p>Existing greens-fee revenue allocation behavior is unchanged.</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1230150",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14783?focusedCommentId=1230150",
+            "author": "Yoel Martin Pardo",
+            "authorAccountId": "625571809e7380006fb29599",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+            "created": "2026-10-13T16:58:40.644-0400",
+            "createdDisplay": "Oct 13, 2026, 4:58 PM",
+            "updated": "2026-10-13T16:58:40.644-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "QA: We are now following revenue allocation for fees. Neither Cancellation protection or Sensible Weather are going to follow revenue allocations. If there is not revenue allocations configured for fees then everything will be distributed to GolfNow.\n\nVery important: In this ticket we will need to do regression of pretty much everything and after that we will need to test the revenue allocations for fees. We will need to make sure to test the flowing always checking the values on vertex:\n\nReservations (from GNC, API, TR and you can use multiple payments):\n\n- Greens fee with distributions(split and stand alone) and without distribution.\n\n- Greens fee + cart fee with distributions(split and stand alone) and without distribution.\n\n- Transaction fee without fee configuration.\n\n- Transaction fee with fee configuration.\n\n- GetTeetimes endpoints (fee messaging)\n\n- We will also needs to check the data (distribution received on payment processing database)\n\n- Make sure that we send the correct value to theesheets and orders (G1 and EZRTS) Note: We should not be sending the fees.\n\n- Coupon codes.\n\n- Funded coupon codes.\n\n- Loyalty redemption.\n\nRefunds (from GNC and API):\n\n- Partial refunds\n\n- Full refunds.\n\nReversals\n\nNoShows:\n\n- We will need to check NoShows.\n\nQuery to get some payment data (if this doesn’t help then we will need to reach out to payment processing to validate the data):\n\nSELECT * FROM dbo.Journal JN\nINNER JOIN dbo.JournalEntry JE ON JE.JournalID = JN.JournalID\nINNER JOIN dbo.JournalPayment JP ON JP.JournalID = JN.JournalID\nINNER JOIN dbo.JournalDistribution JD ON JD.JournalEntryID = JE.JournalEntryID\nINNER JOIN dbo.DistributionChannel DC ON DC.DistributionChannelID = JD.DistributionChannelID\nINNER JOIN dbo.Transmission TT ON JP.TransmissionID = TT.TransmissionID\nINNER JOIN dbo.JournalDistributionType JDT ON JDT.JournalDistributionTypeID = JD.JournalDistributionTypeID\nWHERE JN.ConfirmationID = '80d94609-dbab-4603-8f54-6056094f34e6'\n\nQuery to validate distribution:\n\nSELECT\ncd.ChargeDetailID,\nReservationID,\ncd.CDTransType,\ncd.CDChargeType,\ncd.CDAmount,\nPaymentType,\nrd.RevenueDetailId,\nISNULL(dd.Amount, cd.CDAmount) RevenueAmount,\nISNULL(rt.SourceId, 1) SourceId,\ncd.CDRelatedCDID,\ndd.IsRefundable\nFROM dbo.CRMChargeDetail cd WITH (NOLOCK)\nLEFT JOIN dbo.DistributionDetail dd WITH (NOLOCK)\nON dd.ChargeDetailId = cd.ChargeDetailID\nLEFT JOIN dbo.RevenueDetail rd WITH (NOLOCK)\nON rd.RevenueDetailId = dd.RevenueDetailId\nLEFT JOIN dbo.RevenueType rt WITH (NOLOCK)\nON rt.RevenueTypeId = rd.RevenueTypeId\nWHERE ReservationID in ( #ReservationId)\nORDER BY cd.ChargeDetailID",
+            "bodyHtml": "<p>QA: We are now following revenue allocation for fees. Neither Cancellation protection or Sensible Weather are going to follow revenue allocations. If there is not revenue allocations configured for fees then everything will be distributed to GolfNow. </p><p><strong>Very important: </strong>In this ticket we will need to do regression of pretty much everything and after that we will need to test the revenue allocations for fees. We will need to make sure to test the flowing always checking the values on vertex:</p><p><strong>Reservations </strong>(from GNC, API, TR and you can use multiple payments):</p><ul><li><p>Greens fee with distributions(split and stand alone) and without distribution.</p></li><li><p>Greens fee + cart fee with distributions(split and stand alone) and without distribution.</p></li><li><p>Transaction fee without fee configuration.</p></li><li><p>Transaction fee with fee configuration.</p></li><li><p>GetTeetimes endpoints (fee messaging)</p></li><li><p>We will also needs to check the data (distribution received on payment processing database)</p></li><li><p>Make sure that we send the correct value to theesheets and orders (G1 and EZRTS) Note: We should not be sending the fees.</p></li><li><p>Coupon codes.</p></li><li><p>Funded coupon codes.</p></li><li><p>Loyalty redemption.</p></li></ul><p><strong>Refunds </strong>(from GNC and API):</p><ul><li><p>Partial refunds</p></li><li><p>Full refunds.</p></li></ul><p><strong>Reversals</strong></p><p><strong>NoShows</strong>:</p><ul><li><p>We will need to check NoShows.</p></li></ul><p><strong>Query to get some payment data (if this doesn’t help then we will need to reach out to payment processing to validate the data):</strong></p><pre><code>SELECT * FROM dbo.Journal JN\nINNER JOIN dbo.JournalEntry JE ON JE.JournalID = JN.JournalID\nINNER JOIN dbo.JournalPayment JP ON JP.JournalID = JN.JournalID\nINNER JOIN dbo.JournalDistribution JD ON JD.JournalEntryID = JE.JournalEntryID\nINNER JOIN dbo.DistributionChannel DC ON DC.DistributionChannelID = JD.DistributionChannelID\nINNER JOIN dbo.Transmission TT ON JP.TransmissionID = TT.TransmissionID\nINNER JOIN dbo.JournalDistributionType JDT ON JDT.JournalDistributionTypeID = JD.JournalDistributionTypeID\nWHERE JN.ConfirmationID = '80d94609-dbab-4603-8f54-6056094f34e6'</code></pre><p><strong>Query to validate distribution:</strong></p><pre><code>SELECT\ncd.ChargeDetailID,\nReservationID,\ncd.CDTransType,\ncd.CDChargeType,\ncd.CDAmount,\nPaymentType,\nrd.RevenueDetailId,\nISNULL(dd.Amount, cd.CDAmount) RevenueAmount,\nISNULL(rt.SourceId, 1) SourceId,\ncd.CDRelatedCDID,\ndd.IsRefundable\nFROM dbo.CRMChargeDetail cd WITH (NOLOCK)\nLEFT JOIN dbo.DistributionDetail dd WITH (NOLOCK)\n    ON dd.ChargeDetailId = cd.ChargeDetailID\nLEFT JOIN dbo.RevenueDetail rd WITH (NOLOCK)\n    ON rd.RevenueDetailId = dd.RevenueDetailId\nLEFT JOIN dbo.RevenueType rt WITH (NOLOCK)\n    ON rt.RevenueTypeId = rd.RevenueTypeId\nWHERE ReservationID in ( #ReservationId)\nORDER BY cd.ChargeDetailID</code></pre>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14783?focusedCommentId=1230150",
+        "lastCommentDisplay": "Oct 13, 2026, 4:58 PM",
+        "lastCommentAuthor": "Yoel Martin Pardo",
+        "testChecklist": null,
+        "type": "Developer Task",
+        "isSubtask": false,
+        "status": "QA Testing (DEV)",
+        "priority": "P1",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "assignedDeveloperAccountId": "625571809e7380006fb29599",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "updated": "2026-10-29T13:30:54.495-0400",
+        "updatedDisplay": "Oct 29, 2026, 1:30 PM",
+        "created": "2026-09-14T02:58:17.040-0400",
+        "createdDisplay": "Sep 14, 2026, 2:58 AM",
+        "components": [
+          "GolfNow.Services.Reservation",
+          "GolfNowAPI",
+          "GolfNowCentral"
+        ],
+        "fixVersions": [
+          "v3001.130.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-13901",
+          "url": "https://golfnow.atlassian.net/browse/CORE-13901",
+          "summary": "Customizable transaction fees",
+          "description": "",
+          "type": "Epic",
+          "status": "Planning",
+          "priority": "P1"
+        }
+      },
+      {
         "key": "CORE-14773",
         "url": "https://golfnow.atlassian.net/browse/CORE-14773",
         "summary": "Add new param to non-auth invoice for Home Course",
@@ -10271,78 +10343,6 @@
           "type": "Epic",
           "status": "Planning",
           "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14783",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14783",
-        "summary": "Revenue Allocation | Support Transaction Fee Allocation to Course",
-        "description": "Goal\n\nSupport revenue allocation to the course for transaction fees.\n\n---\nProblem\n\nTransaction fee revenue allocation currently only sends money to GolfNow. If a transaction fee is configured to allocate revenue to the golf course, that configuration is ignored.\n\nGreens fees already support revenue allocation to either GolfNow or the golf course. Transaction fees should support the same options.\n\n---\nAcceptance Criteria\n\n- A transaction fee configured with revenue allocation to the course sends the configured share to the golf course.\n\n- A transaction fee configured with revenue allocation to GolfNow continues to work as it does today.\n\n- Existing greens-fee revenue allocation behavior is unchanged.",
-        "descriptionHtml": "<h3>Goal</h3><p>Support revenue allocation to the course for transaction fees.</p><hr><h3>Problem</h3><p>Transaction fee revenue allocation currently only sends money to GolfNow. If a transaction fee is configured to allocate revenue to the golf course, that configuration is ignored.</p><p>Greens fees already support revenue allocation to either GolfNow or the golf course. Transaction fees should support the same options.</p><hr><h3>Acceptance Criteria</h3><ul><li><p>A transaction fee configured with revenue allocation to the course sends the configured share to the golf course.</p></li><li><p>A transaction fee configured with revenue allocation to GolfNow continues to work as it does today.</p></li><li><p>Existing greens-fee revenue allocation behavior is unchanged.</p></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1230150",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14783?focusedCommentId=1230150",
-            "author": "Yoel Martin Pardo",
-            "authorAccountId": "625571809e7380006fb29599",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-            "created": "2026-10-13T16:58:40.644-0400",
-            "createdDisplay": "Oct 13, 2026, 4:58 PM",
-            "updated": "2026-10-13T16:58:40.644-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "QA: We are now following revenue allocation for fees. Neither Cancellation protection or Sensible Weather are going to follow revenue allocations. If there is not revenue allocations configured for fees then everything will be distributed to GolfNow.\n\nVery important: In this ticket we will need to do regression of pretty much everything and after that we will need to test the revenue allocations for fees. We will need to make sure to test the flowing always checking the values on vertex:\n\nReservations (from GNC, API, TR and you can use multiple payments):\n\n- Greens fee with distributions(split and stand alone) and without distribution.\n\n- Greens fee + cart fee with distributions(split and stand alone) and without distribution.\n\n- Transaction fee without fee configuration.\n\n- Transaction fee with fee configuration.\n\n- GetTeetimes endpoints (fee messaging)\n\n- We will also needs to check the data (distribution received on payment processing database)\n\n- Make sure that we send the correct value to theesheets and orders (G1 and EZRTS) Note: We should not be sending the fees.\n\n- Coupon codes.\n\n- Funded coupon codes.\n\n- Loyalty redemption.\n\nRefunds (from GNC and API):\n\n- Partial refunds\n\n- Full refunds.\n\nReversals\n\nNoShows:\n\n- We will need to check NoShows.\n\nQuery to get some payment data (if this doesn’t help then we will need to reach out to payment processing to validate the data):\n\nSELECT * FROM dbo.Journal JN\nINNER JOIN dbo.JournalEntry JE ON JE.JournalID = JN.JournalID\nINNER JOIN dbo.JournalPayment JP ON JP.JournalID = JN.JournalID\nINNER JOIN dbo.JournalDistribution JD ON JD.JournalEntryID = JE.JournalEntryID\nINNER JOIN dbo.DistributionChannel DC ON DC.DistributionChannelID = JD.DistributionChannelID\nINNER JOIN dbo.Transmission TT ON JP.TransmissionID = TT.TransmissionID\nINNER JOIN dbo.JournalDistributionType JDT ON JDT.JournalDistributionTypeID = JD.JournalDistributionTypeID\nWHERE JN.ConfirmationID = '80d94609-dbab-4603-8f54-6056094f34e6'\n\nQuery to validate distribution:\n\nSELECT\ncd.ChargeDetailID,\nReservationID,\ncd.CDTransType,\ncd.CDChargeType,\ncd.CDAmount,\nPaymentType,\nrd.RevenueDetailId,\nISNULL(dd.Amount, cd.CDAmount) RevenueAmount,\nISNULL(rt.SourceId, 1) SourceId,\ncd.CDRelatedCDID,\ndd.IsRefundable\nFROM dbo.CRMChargeDetail cd WITH (NOLOCK)\nLEFT JOIN dbo.DistributionDetail dd WITH (NOLOCK)\nON dd.ChargeDetailId = cd.ChargeDetailID\nLEFT JOIN dbo.RevenueDetail rd WITH (NOLOCK)\nON rd.RevenueDetailId = dd.RevenueDetailId\nLEFT JOIN dbo.RevenueType rt WITH (NOLOCK)\nON rt.RevenueTypeId = rd.RevenueTypeId\nWHERE ReservationID in ( #ReservationId)\nORDER BY cd.ChargeDetailID",
-            "bodyHtml": "<p>QA: We are now following revenue allocation for fees. Neither Cancellation protection or Sensible Weather are going to follow revenue allocations. If there is not revenue allocations configured for fees then everything will be distributed to GolfNow. </p><p><strong>Very important: </strong>In this ticket we will need to do regression of pretty much everything and after that we will need to test the revenue allocations for fees. We will need to make sure to test the flowing always checking the values on vertex:</p><p><strong>Reservations </strong>(from GNC, API, TR and you can use multiple payments):</p><ul><li><p>Greens fee with distributions(split and stand alone) and without distribution.</p></li><li><p>Greens fee + cart fee with distributions(split and stand alone) and without distribution.</p></li><li><p>Transaction fee without fee configuration.</p></li><li><p>Transaction fee with fee configuration.</p></li><li><p>GetTeetimes endpoints (fee messaging)</p></li><li><p>We will also needs to check the data (distribution received on payment processing database)</p></li><li><p>Make sure that we send the correct value to theesheets and orders (G1 and EZRTS) Note: We should not be sending the fees.</p></li><li><p>Coupon codes.</p></li><li><p>Funded coupon codes.</p></li><li><p>Loyalty redemption.</p></li></ul><p><strong>Refunds </strong>(from GNC and API):</p><ul><li><p>Partial refunds</p></li><li><p>Full refunds.</p></li></ul><p><strong>Reversals</strong></p><p><strong>NoShows</strong>:</p><ul><li><p>We will need to check NoShows.</p></li></ul><p><strong>Query to get some payment data (if this doesn’t help then we will need to reach out to payment processing to validate the data):</strong></p><pre><code>SELECT * FROM dbo.Journal JN\nINNER JOIN dbo.JournalEntry JE ON JE.JournalID = JN.JournalID\nINNER JOIN dbo.JournalPayment JP ON JP.JournalID = JN.JournalID\nINNER JOIN dbo.JournalDistribution JD ON JD.JournalEntryID = JE.JournalEntryID\nINNER JOIN dbo.DistributionChannel DC ON DC.DistributionChannelID = JD.DistributionChannelID\nINNER JOIN dbo.Transmission TT ON JP.TransmissionID = TT.TransmissionID\nINNER JOIN dbo.JournalDistributionType JDT ON JDT.JournalDistributionTypeID = JD.JournalDistributionTypeID\nWHERE JN.ConfirmationID = '80d94609-dbab-4603-8f54-6056094f34e6'</code></pre><p><strong>Query to validate distribution:</strong></p><pre><code>SELECT\ncd.ChargeDetailID,\nReservationID,\ncd.CDTransType,\ncd.CDChargeType,\ncd.CDAmount,\nPaymentType,\nrd.RevenueDetailId,\nISNULL(dd.Amount, cd.CDAmount) RevenueAmount,\nISNULL(rt.SourceId, 1) SourceId,\ncd.CDRelatedCDID,\ndd.IsRefundable\nFROM dbo.CRMChargeDetail cd WITH (NOLOCK)\nLEFT JOIN dbo.DistributionDetail dd WITH (NOLOCK)\n    ON dd.ChargeDetailId = cd.ChargeDetailID\nLEFT JOIN dbo.RevenueDetail rd WITH (NOLOCK)\n    ON rd.RevenueDetailId = dd.RevenueDetailId\nLEFT JOIN dbo.RevenueType rt WITH (NOLOCK)\n    ON rt.RevenueTypeId = rd.RevenueTypeId\nWHERE ReservationID in ( #ReservationId)\nORDER BY cd.ChargeDetailID</code></pre>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14783?focusedCommentId=1230150",
-        "lastCommentDisplay": "Oct 13, 2026, 4:58 PM",
-        "lastCommentAuthor": "Yoel Martin Pardo",
-        "testChecklist": null,
-        "type": "Developer Task",
-        "isSubtask": false,
-        "status": "QA Testing (DEV)",
-        "priority": "P1",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-10-27T08:01:38.280-0400",
-        "updatedDisplay": "Oct 27, 2026, 8:01 AM",
-        "created": "2026-09-14T02:58:17.040-0400",
-        "createdDisplay": "Sep 14, 2026, 2:58 AM",
-        "components": [
-          "GolfNow.Services.Reservation",
-          "GolfNowAPI",
-          "GolfNowCentral"
-        ],
-        "fixVersions": [
-          "v3001.130.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-13901",
-          "url": "https://golfnow.atlassian.net/browse/CORE-13901",
-          "summary": "Customizable transaction fees",
-          "description": "",
-          "type": "Epic",
-          "status": "Planning",
-          "priority": "P1"
         }
       },
       {
@@ -43321,13 +43321,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-10-29T17:26:35.288Z",
-    "pulledAtDisplay": "Oct 29, 2026, 1:26 PM",
+    "pulledAt": "2026-10-29T17:31:38.976Z",
+    "pulledAtDisplay": "Oct 29, 2026, 1:31 PM",
     "window": {
-      "start": "2026-09-14T17:26:35.288Z",
-      "end": "2027-04-27T17:26:35.288Z",
-      "startDisplay": "Sep 14, 2026, 1:26 PM",
-      "endDisplay": "Apr 27, 2027, 1:26 PM"
+      "start": "2026-09-14T17:31:38.976Z",
+      "end": "2027-04-27T17:31:38.976Z",
+      "startDisplay": "Sep 14, 2026, 1:31 PM",
+      "endDisplay": "Apr 27, 2027, 1:31 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43340,7 +43340,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-10-29T17:26:37.802Z",
+        "pulledAt": "2026-10-29T17:31:42.045Z",
         "eventCount": 64,
         "events": [
           {
@@ -43939,23 +43939,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20261026T193601Z-1177941235@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN001 - v100.62",
-            "start": "2026-11-16T00:00:00.000Z",
-            "end": "2026-11-17T00:00:00.000Z",
-            "startDate": "2026-11-16",
-            "endDate": "2026-11-17",
-            "startDisplay": "Nov 16, 2026",
-            "endDisplay": "Nov 17, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260112T140521Z--1474957234@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -43973,16 +43956,16 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
+            "id": "20261026T193601Z-1177941235@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
-            "title": "TN000 - v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
+            "title": "TN001 - v100.62",
+            "start": "2026-11-16T00:00:00.000Z",
+            "end": "2026-11-17T00:00:00.000Z",
+            "startDate": "2026-11-16",
+            "endDate": "2026-11-17",
+            "startDisplay": "Nov 16, 2026",
+            "endDisplay": "Nov 17, 2026",
             "allDay": true,
             "type": "Pro Release",
             "location": "",
@@ -44019,6 +44002,23 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN000 - v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44092,23 +44092,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44138,6 +44121,23 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44296,23 +44296,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.64",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44325,6 +44308,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.64",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44398,23 +44398,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.66",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-03T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-03",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 3, 2027",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44430,6 +44413,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.66",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-03T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-03",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 3, 2027",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -44437,10 +44437,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-10-29T17:23:42.484Z",
-    "previousPulledAtDisplay": "Oct 29, 2026, 1:23 PM",
-    "currentPulledAt": "2026-10-29T17:28:17.455Z",
-    "currentPulledAtDisplay": "Oct 29, 2026, 1:28 PM",
+    "previousPulledAt": "2026-10-29T17:28:17.455Z",
+    "previousPulledAtDisplay": "Oct 29, 2026, 1:28 PM",
+    "currentPulledAt": "2026-10-29T17:34:15.489Z",
+    "currentPulledAtDisplay": "Oct 29, 2026, 1:34 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44448,6 +44448,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-10-29T17:28:17.455Z",
+      "previousPulledAtDisplay": "Oct 29, 2026, 1:28 PM",
+      "currentPulledAt": "2026-10-29T17:34:15.489Z",
+      "currentPulledAtDisplay": "Oct 29, 2026, 1:34 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-10-29T17:23:42.484Z",
       "previousPulledAtDisplay": "Oct 29, 2026, 1:23 PM",
@@ -46279,17 +46290,6 @@
       "previousPulledAtDisplay": "Oct 28, 2026, 11:14 PM",
       "currentPulledAt": "2026-10-29T03:18:46.046Z",
       "currentPulledAtDisplay": "Oct 28, 2026, 11:18 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-10-29T03:08:24.174Z",
-      "previousPulledAtDisplay": "Oct 28, 2026, 11:08 PM",
-      "currentPulledAt": "2026-10-29T03:14:08.406Z",
-      "currentPulledAtDisplay": "Oct 28, 2026, 11:14 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
