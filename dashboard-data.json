@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-02T14:13:34.079Z",
-  "pulledAtDisplay": "Nov 2, 2026, 9:13 AM",
+  "pulledAt": "2026-11-02T14:18:23.587Z",
+  "pulledAtDisplay": "Nov 2, 2026, 9:18 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-02T14:13:34.079Z",
-    "pulledAtDisplay": "Nov 2, 2026, 9:13 AM",
+    "pulledAt": "2026-11-02T14:18:23.587Z",
+    "pulledAtDisplay": "Nov 2, 2026, 9:18 AM",
     "total": 562,
     "mainTotal": 532,
     "subtaskTotal": 30,
@@ -8107,6 +8107,76 @@
         "parent": null
       },
       {
+        "key": "CORE-14870",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14870",
+        "summary": "Issue with waived-fee credit being applied to multiple teetimes in the cart even if the customer has only one remaining - Shopping Cart",
+        "description": "",
+        "descriptionHtml": "",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1233880",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14870?focusedCommentId=1233880",
+            "author": "Yoel Martin Pardo",
+            "authorAccountId": "625571809e7380006fb29599",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+            "created": "2026-10-21T14:26:59.657-0400",
+            "createdDisplay": "Oct 21, 2026, 2:26 PM",
+            "updated": "2026-10-21T14:26:59.657-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "QA: We fixed the issue found on commerce proxy related to waive fee credit. We are need to do regression on shopping cart. This means that we need to test applying discounts, loyalty points, checking the numbers, with golfPass member and with a side cart. make sure the numbers looks correct, for example if you apply loyalty points and after that you add a product to the cart then you should get waive fee credit and loyalty should change. Please pay attention to the numbers while testing shopping cart.",
+            "bodyHtml": "<p>QA: We fixed the issue found on commerce proxy related to waive fee credit. We are need to do regression on shopping cart. This means that we need to test applying discounts, loyalty points, checking the numbers, with golfPass member and with a side cart. make sure the numbers looks correct, for example if you apply loyalty points and after that you add a product to the cart then you should get waive fee credit and loyalty should change. Please pay attention to the numbers while testing shopping cart.</p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14870?focusedCommentId=1233880",
+        "lastCommentDisplay": "Oct 21, 2026, 2:26 PM",
+        "lastCommentAuthor": "Yoel Martin Pardo",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "QA Testing (DEV)",
+        "priority": "None",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "assignedDeveloperAccountId": "625571809e7380006fb29599",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "updated": "2026-11-02T09:14:25.951-0500",
+        "updatedDisplay": "Nov 2, 2026, 9:14 AM",
+        "created": "2026-10-15T16:26:14.468-0400",
+        "createdDisplay": "Oct 15, 2026, 4:26 PM",
+        "components": [
+          "GolfNowAPI"
+        ],
+        "fixVersions": [
+          "v3001.130.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14944",
         "url": "https://golfnow.atlassian.net/browse/CORE-14944",
         "summary": "Fee Messaging on SCA transactions causes booking failures",
@@ -10066,76 +10136,6 @@
         "createdDisplay": "Aug 29, 2026, 10:12 AM",
         "components": [],
         "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14870",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14870",
-        "summary": "Issue with waived-fee credit being applied to multiple teetimes in the cart even if the customer has only one remaining.",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1233880",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14870?focusedCommentId=1233880",
-            "author": "Yoel Martin Pardo",
-            "authorAccountId": "625571809e7380006fb29599",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-            "created": "2026-10-21T14:26:59.657-0400",
-            "createdDisplay": "Oct 21, 2026, 2:26 PM",
-            "updated": "2026-10-21T14:26:59.657-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "QA: We fixed the issue found on commerce proxy related to waive fee credit. We are need to do regression on shopping cart. This means that we need to test applying discounts, loyalty points, checking the numbers, with golfPass member and with a side cart. make sure the numbers looks correct, for example if you apply loyalty points and after that you add a product to the cart then you should get waive fee credit and loyalty should change. Please pay attention to the numbers while testing shopping cart.",
-            "bodyHtml": "<p>QA: We fixed the issue found on commerce proxy related to waive fee credit. We are need to do regression on shopping cart. This means that we need to test applying discounts, loyalty points, checking the numbers, with golfPass member and with a side cart. make sure the numbers looks correct, for example if you apply loyalty points and after that you add a product to the cart then you should get waive fee credit and loyalty should change. Please pay attention to the numbers while testing shopping cart.</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14870?focusedCommentId=1233880",
-        "lastCommentDisplay": "Oct 21, 2026, 2:26 PM",
-        "lastCommentAuthor": "Yoel Martin Pardo",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "QA Testing (DEV)",
-        "priority": "None",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-10-27T08:02:07.800-0400",
-        "updatedDisplay": "Oct 27, 2026, 8:02 AM",
-        "created": "2026-10-15T16:26:14.468-0400",
-        "createdDisplay": "Oct 15, 2026, 4:26 PM",
-        "components": [
-          "GolfNowAPI"
-        ],
-        "fixVersions": [
-          "v3001.130.0"
-        ],
         "sprints": [
           {
             "name": "2026.8"
@@ -43636,13 +43636,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-02T14:10:48.446Z",
-    "pulledAtDisplay": "Nov 2, 2026, 9:10 AM",
+    "pulledAt": "2026-11-02T14:15:55.005Z",
+    "pulledAtDisplay": "Nov 2, 2026, 9:15 AM",
     "window": {
-      "start": "2026-09-18T14:10:48.446Z",
-      "end": "2027-05-01T14:10:48.446Z",
-      "startDisplay": "Sep 18, 2026, 10:10 AM",
-      "endDisplay": "May 1, 2027, 10:10 AM"
+      "start": "2026-09-18T14:15:55.005Z",
+      "end": "2027-05-01T14:15:55.005Z",
+      "startDisplay": "Sep 18, 2026, 10:15 AM",
+      "endDisplay": "May 1, 2027, 10:15 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43655,7 +43655,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-02T14:10:52.150Z",
+        "pulledAt": "2026-11-02T14:15:58.220Z",
         "eventCount": 60,
         "events": [
           {
@@ -44186,23 +44186,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260112T140521Z--1474957234@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Prod Patching",
-            "start": "2026-11-16T00:00:00.000Z",
-            "end": "2026-11-19T00:00:00.000Z",
-            "startDate": "2026-11-16",
-            "endDate": "2026-11-19",
-            "startDisplay": "Nov 16, 2026",
-            "endDisplay": "Nov 19, 2026",
-            "allDay": true,
-            "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20261026T193601Z-1177941235@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44215,6 +44198,23 @@
             "endDisplay": "Nov 17, 2026",
             "allDay": true,
             "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260112T140521Z--1474957234@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Prod Patching",
+            "start": "2026-11-16T00:00:00.000Z",
+            "end": "2026-11-19T00:00:00.000Z",
+            "startDate": "2026-11-16",
+            "endDate": "2026-11-19",
+            "startDisplay": "Nov 16, 2026",
+            "endDisplay": "Nov 19, 2026",
+            "allDay": true,
+            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44684,10 +44684,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-02T14:08:40.849Z",
-    "previousPulledAtDisplay": "Nov 2, 2026, 9:08 AM",
-    "currentPulledAt": "2026-11-02T14:13:34.079Z",
-    "currentPulledAtDisplay": "Nov 2, 2026, 9:13 AM",
+    "previousPulledAt": "2026-11-02T14:13:34.079Z",
+    "previousPulledAtDisplay": "Nov 2, 2026, 9:13 AM",
+    "currentPulledAt": "2026-11-02T14:18:23.587Z",
+    "currentPulledAtDisplay": "Nov 2, 2026, 9:18 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44695,6 +44695,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-02T14:13:34.079Z",
+      "previousPulledAtDisplay": "Nov 2, 2026, 9:13 AM",
+      "currentPulledAt": "2026-11-02T14:18:23.587Z",
+      "currentPulledAtDisplay": "Nov 2, 2026, 9:18 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-02T14:08:40.849Z",
       "previousPulledAtDisplay": "Nov 2, 2026, 9:08 AM",
@@ -46526,17 +46537,6 @@
       "previousPulledAtDisplay": "Nov 1, 2026, 7:07 PM",
       "currentPulledAt": "2026-11-02T00:13:38.023Z",
       "currentPulledAtDisplay": "Nov 1, 2026, 7:13 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-02T00:03:27.469Z",
-      "previousPulledAtDisplay": "Nov 1, 2026, 7:03 PM",
-      "currentPulledAt": "2026-11-02T00:07:51.130Z",
-      "currentPulledAtDisplay": "Nov 1, 2026, 7:07 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
