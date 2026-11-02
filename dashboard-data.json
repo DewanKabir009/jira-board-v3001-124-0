@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-02T00:17:29.825Z",
-  "pulledAtDisplay": "Nov 1, 2026, 7:17 PM",
+  "pulledAt": "2026-11-02T00:23:05.183Z",
+  "pulledAtDisplay": "Nov 1, 2026, 7:23 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-02T00:17:29.825Z",
-    "pulledAtDisplay": "Nov 1, 2026, 7:17 PM",
+    "pulledAt": "2026-11-02T00:23:05.183Z",
+    "pulledAtDisplay": "Nov 1, 2026, 7:23 PM",
     "total": 562,
     "mainTotal": 532,
     "subtaskTotal": 30,
@@ -22249,317 +22249,7 @@
         "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14332?focusedCommentId=1162678",
         "lastCommentDisplay": "May 11, 2026, 4:37 PM",
         "lastCommentAuthor": "Dewan Kabir",
-        "testChecklist": {
-          "files": [
-            {
-              "id": "718106",
-              "filename": "QA_Test_Guide_CORE-14117_CORE-14332.md",
-              "created": "2026-04-27T14:58:12.446-0400",
-              "author": "Luis Vallejo Mursuli"
-            }
-          ],
-          "commentIds": [
-            "1156736"
-          ],
-          "total": 25,
-          "testCases": [
-            {
-              "id": "A1",
-              "title": "Dynamic Fee Override Applied to Trade Rate (FF Enabled)",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify dynamic transaction fee override replaces default fee for trade rate when LaunchDarkly feature flag is enabled for Channel 331",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A2",
-              "title": "Non-Trade Rates Unchanged by Dynamic Fees",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify that non-trade rates (IsTrade = false) are NOT affected by dynamic transaction fee overrides",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A3",
-              "title": "Fee Messaging Reflects Final Calculated Fees ⚠️ BLOCKING",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": true,
-              "description": "Verify that FeeMessagingDisplayRates accurately reflects the final transaction fee totals after all calculations complete (validates CORE-14117 fix)",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A4",
-              "title": "Multiple Facilities with Different Fee Configurations",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify batch query optimization works when tee times span multiple facilities (tests performance optimization)",
-              "checks": [
-                "System optimizes database queries (single call for multiple facilities)",
-                "Each facility's dynamic fee configuration applied correctly"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A5",
-              "title": "Percentage-Based Dynamic Fee (Future/Optional)",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "If percentage-based fees are configured, verify they calculate correctly",
-              "checks": [
-                "TransactionFeesTotal.Value = 50.00 * 0.05 = $2.50"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A6",
-              "title": "9-Hole vs 18-Hole Rates",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify dynamic fees apply correctly to both 9-hole and 18-hole rates",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A7",
-              "title": "Pagination Consistency (Skip/Take)",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify dynamic fees apply consistently across paginated results",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A8",
-              "title": "GetInvoice Endpoint Fee Messaging",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify dynamic fees and fee messaging work correctly in GetInvoice endpoint",
-              "checks": [
-                "TransactionFeesTotal.Value = 1.99 (for trade rate)",
-                "FeeMessagingDisplayRates.TransactionFeesTotal = 1.99",
-                "Accurate total calculation"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A9",
-              "title": "TeeTimeInvoice with Multiple Players",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify dynamic fees applied correctly when multiple players are included in TeeTimeInvoice",
-              "checks": [
-                "Each player's transaction fee = 1.99 (if trade rate)",
-                "Total transaction fees = 1.99 * number_of_players",
-                "FeeMessagingDisplayRates accurate per player"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A10",
-              "title": "Dynamic Fee with Zero Value",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify system handles zero-value dynamic fees correctly",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A11",
-              "title": "LaunchDarkly Feature Flag ENABLED (Channel 331)",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify LaunchDarkly feature flag evaluation returns TRUE for Channel 331, enabling FeeConfiguration",
-              "checks": [
-                "LaunchDarkly evaluates flag for ChannelContext(331)",
-                "Flag returns true",
-                "FeeCalculationService.ApplyTransactionFees() executes (Line 1339)",
-                "Dynamic fees and fee messaging work as expected"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A12",
-              "title": "LaunchDarkly Feature Flag DISABLED (Channel 5151)",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify LaunchDarkly feature flag evaluation returns FALSE for Channel 5151, disabling FeeConfiguration",
-              "checks": [
-                "LaunchDarkly evaluates flag for ChannelContext(5151)",
-                "Flag returns false",
-                "FeeCalculationService.ApplyTransactionFees() SKIPPED",
-                "Legacy fee behavior used"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A13",
-              "title": "LaunchDarkly Fallback to CRMConfig ⚠️ BLOCKING",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": true,
-              "description": "Verify system falls back to TeeTime.FeeCalculation.Enabled (web.config) when LaunchDarkly is unavailable",
-              "checks": [
-                "LaunchDarkly call fails/times out",
-                "System falls back to CRMConfig",
-                "Reads TeeTime.FeeCalculation.Enabled from web.config",
-                "If true: FeeConfiguration still works",
-                "If false: Legacy behavior used"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A14",
-              "title": "Channel Context Differentiation",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify different channels receive different feature flag evaluations based on LaunchDarkly targeting rules",
-              "checks": [
-                "Channel 331: FeeConfiguration enabled, fees = 1.99",
-                "Channel 5151: FeeConfiguration disabled, fees = default (e.g., 3.49)"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "A15",
-              "title": "Mixed Trade and Non-Trade Rates in Single Response",
-              "category": "4. New Feature Tests: Dynamic Fees & LaunchDarkly",
-              "blocking": false,
-              "description": "Verify a single tee time response correctly handles both trade and non-trade rates with different fee treatments",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B1",
-              "title": "Legacy Behavior - Feature Flag Disabled ⚠️ BLOCKING",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": true,
-              "description": "Verify legacy tee time fee behavior works correctly when feature flag is disabled (Channel 5151)",
-              "checks": [
-                "LaunchDarkly returns false for channel 5151",
-                "FeeCalculationService SKIPPED",
-                "Legacy fee logic used",
-                "Transaction fees use default configuration (NOT dynamic overrides)"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B2",
-              "title": "Facility Without Dynamic Fee Configuration",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": false,
-              "description": "Verify facilities without dynamic fee configurations continue working normally",
-              "checks": [
-                "No dynamic overrides applied",
-                "Default fee logic used",
-                "Normal response returned"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B3",
-              "title": "Invalid Facility ID",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": false,
-              "description": "Verify appropriate error handling for non-existent facility IDs",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B4",
-              "title": "Multiple Date Ranges",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": false,
-              "description": "Verify dynamic fees apply correctly across different date ranges",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B5",
-              "title": "Empty Tee Time Results",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": false,
-              "description": "Verify system handles empty tee time results gracefully (no tee times available)",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B6",
-              "title": "Rate Set Differentiation",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": false,
-              "description": "Verify different rate sets within the same facility are handled correctly",
-              "checks": [
-                "Multiple rate sets may exist for same facility",
-                "Dynamic fee applies based on IsTrade flag, not rate set",
-                "Each rate set's trade rates get 1.99 fee",
-                "Each rate set's non-trade rates use default fees"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B7",
-              "title": "Currency Code Consistency",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": false,
-              "description": "Verify all Money objects maintain consistent currency codes throughout response",
-              "checks": [],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B8",
-              "title": "Null or Missing Fee Configuration Fields",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": false,
-              "description": "Verify system handles database records with null or missing fields gracefully",
-              "checks": [
-                "System handles NULL/invalid fee values gracefully",
-                "Either skips the record with warning in logs, OR uses default fee value (0.00)",
-                "No unhandled exceptions"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B9",
-              "title": "Player Count Variations",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": false,
-              "description": "Verify dynamic fees work correctly with different player counts (1-4 players)",
-              "checks": [
-                "Transaction fee per player = 1.99 (for trade rate)",
-                "Total transaction fees = 1.99 * player_count"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            },
-            {
-              "id": "B10",
-              "title": "Concurrent Requests Same Facility",
-              "category": "5. Regression Tests: Backward Compatibility",
-              "blocking": true,
-              "description": "Verify system handles concurrent requests for the same facility without issues",
-              "checks": [
-                "Test environment identified (DEV / STG)",
-                "Database access confirmed",
-                "Application log access confirmed",
-                "Postman/REST client configured with authentication",
-                "LaunchDarkly access confirmed (optional)",
-                "Facility 1806 exists with tee times for 2026-04-22 to 2026-04-24",
-                "Dynamic fee configuration confirmed: Fee = $1.99 for Facility 1806 trade rates",
-                "Both trade and non-trade rates available for Facility 1806",
-                "Channel 331 LaunchDarkly flag returns TRUE (verified)",
-                "Channel 5151 LaunchDarkly flag returns FALSE (verified)",
-                "All BLOCKING tests passed (A3, A13, B1)",
-                "All Critical severity tests passed",
-                "All High severity tests passed or documented",
-                "Response times acceptable (< 2 seconds for standard requests)",
-                "Batch query verified (1 DB call per request, not N+1)",
-                "Concurrent request test passed (B10)"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14117_CORE-14332.md"
-            }
-          ]
-        },
+        "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
         "status": "Closed",
@@ -43636,13 +43326,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-02T00:15:56.838Z",
-    "pulledAtDisplay": "Nov 1, 2026, 7:15 PM",
+    "pulledAt": "2026-11-02T00:21:05.902Z",
+    "pulledAtDisplay": "Nov 1, 2026, 7:21 PM",
     "window": {
-      "start": "2026-09-18T00:15:56.837Z",
-      "end": "2027-05-01T00:15:56.837Z",
-      "startDisplay": "Sep 17, 2026, 8:15 PM",
-      "endDisplay": "Apr 30, 2027, 8:15 PM"
+      "start": "2026-09-18T00:21:05.902Z",
+      "end": "2027-05-01T00:21:05.902Z",
+      "startDisplay": "Sep 17, 2026, 8:21 PM",
+      "endDisplay": "Apr 30, 2027, 8:21 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43655,7 +43345,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-02T00:15:58.919Z",
+        "pulledAt": "2026-11-02T00:21:08.124Z",
         "eventCount": 59,
         "events": [
           {
@@ -44169,6 +43859,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20261026T193601Z-1177941235@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN001 - v100.62",
+            "start": "2026-11-16T00:00:00.000Z",
+            "end": "2026-11-17T00:00:00.000Z",
+            "startDate": "2026-11-16",
+            "endDate": "2026-11-17",
+            "startDisplay": "Nov 16, 2026",
+            "endDisplay": "Nov 17, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260112T140521Z--1474957234@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44186,16 +43893,16 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20261026T193601Z-1177941235@golfnow.atlassian.net",
+            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
-            "title": "TN001 - v100.62",
-            "start": "2026-11-16T00:00:00.000Z",
-            "end": "2026-11-17T00:00:00.000Z",
-            "startDate": "2026-11-16",
-            "endDate": "2026-11-17",
-            "startDisplay": "Nov 16, 2026",
-            "endDisplay": "Nov 17, 2026",
+            "title": "TN000 - v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Pro Release",
             "location": "",
@@ -44232,23 +43939,6 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN000 - v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44526,23 +44216,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "GN: v3001.133.0",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44555,6 +44228,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "GN: v3001.133.0",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44628,23 +44318,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Pro Dev/Stage Swap",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-10T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-10",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 10, 2027",
-            "allDay": true,
-            "type": "Scheduled Maintenance",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44660,6 +44333,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Pro Dev/Stage Swap",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-10T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-10",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 10, 2027",
+            "allDay": true,
+            "type": "Scheduled Maintenance",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -44667,10 +44357,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-02T00:13:38.023Z",
-    "previousPulledAtDisplay": "Nov 1, 2026, 7:13 PM",
-    "currentPulledAt": "2026-11-02T00:17:29.825Z",
-    "currentPulledAtDisplay": "Nov 1, 2026, 7:17 PM",
+    "previousPulledAt": "2026-11-02T00:17:29.825Z",
+    "previousPulledAtDisplay": "Nov 1, 2026, 7:17 PM",
+    "currentPulledAt": "2026-11-02T00:23:05.183Z",
+    "currentPulledAtDisplay": "Nov 1, 2026, 7:23 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44678,6 +44368,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-02T00:17:29.825Z",
+      "previousPulledAtDisplay": "Nov 1, 2026, 7:17 PM",
+      "currentPulledAt": "2026-11-02T00:23:05.183Z",
+      "currentPulledAtDisplay": "Nov 1, 2026, 7:23 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-02T00:13:38.023Z",
       "previousPulledAtDisplay": "Nov 1, 2026, 7:13 PM",
@@ -46509,17 +46210,6 @@
       "previousPulledAtDisplay": "Nov 1, 2026, 5:17 AM",
       "currentPulledAt": "2026-11-01T10:23:32.355Z",
       "currentPulledAtDisplay": "Nov 1, 2026, 5:23 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-01T10:13:21.330Z",
-      "previousPulledAtDisplay": "Nov 1, 2026, 5:13 AM",
-      "currentPulledAt": "2026-11-01T10:17:27.549Z",
-      "currentPulledAtDisplay": "Nov 1, 2026, 5:17 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
