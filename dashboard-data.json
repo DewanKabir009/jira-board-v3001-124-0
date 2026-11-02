@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-02T14:03:04.982Z",
-  "pulledAtDisplay": "Nov 2, 2026, 9:03 AM",
+  "pulledAt": "2026-11-02T14:08:40.849Z",
+  "pulledAtDisplay": "Nov 2, 2026, 9:08 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-02T14:03:04.982Z",
-    "pulledAtDisplay": "Nov 2, 2026, 9:03 AM",
+    "pulledAt": "2026-11-02T14:08:40.849Z",
+    "pulledAtDisplay": "Nov 2, 2026, 9:08 AM",
     "total": 562,
     "mainTotal": 532,
     "subtaskTotal": 30,
@@ -8107,6 +8107,56 @@
         "parent": null
       },
       {
+        "key": "CORE-14881",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14881",
+        "summary": "CVV not validating with with Payments",
+        "description": "We have confirmed that not all CVV requests are being sent to Payments to be processed/validated. This creates unnecessary exposure for fraud because transactions will succeed with invalid CVVs. Below is a chart of CVVs checked from a previous period. Our most popular booking channel 5151 is not on here, 7886 and 331 are very low.\n\nExpected:\n\n- Any time a CVV is sent into API 2.1, we should be sending that to payments for validation\n\n- This does not mean that CVV should be required on all transactions\n\n- We should continue using the rolling 90 CVV required check on wallet options\n\n- If the UI has their own configuration to display CVV outside of the 90 days, we should send that one to payments too\n\n- ValidateCVV_Product is a CRMOwnerConfig currently enabled on a few channels, if this is enabled, require CVV on all product transactions for that Owner\n\n- ValidateCVV_TeeTimeis a CRMOwnerConfig that exists but is not currently in use. This requires CVV on all tee time transactions. When tested in STG, this was working as expected but it is not a config we woudl like to use in prod\n\n- Payments team should have a way to confirm that a CVV was checked so validate test reservations with them to confirm\n\n- https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-- Test CVV Codes",
+        "descriptionHtml": "<p>We have confirmed that not all CVV requests are being sent to Payments to be processed/validated. This creates unnecessary exposure for fraud because transactions will succeed with invalid CVVs. Below is a chart of CVVs checked from a previous period. Our most popular booking channel 5151 is not on here, 7886 and 331 are very low.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14881/775664-image-20261022-125108.png\" alt=\"image-20261022-125108.png\" loading=\"lazy\"><figcaption>image-20261022-125108.png</figcaption></figure></div><p><strong>Expected:</strong></p><ul><li><p>Any time a CVV is sent into API 2.1, we should be sending that to payments for validation</p></li><li><p>This does not mean that CVV should be required on all transactions</p></li><li><p>We should continue using the rolling 90 CVV required check on wallet options</p></li><li><p>If the UI has their own configuration to display CVV outside of the 90 days, we should send that one to payments too</p></li><li><p><code>ValidateCVV_Product</code> is a CRMOwnerConfig currently enabled on a few channels, if this is enabled, require CVV on all product transactions for that Owner</p></li><li><p><code>ValidateCVV_TeeTime</code>is a CRMOwnerConfig that exists but is not currently in use. This requires CVV on all tee time transactions. When tested in STG, this was working as expected but it is not a config we woudl like to use in prod</p></li><li><p>Payments team should have a way to confirm that a CVV was checked so validate test reservations with them to confirm</p></li><li><p><a href=\"https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-%2D%20Test%20CVV%20Codes\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-- Test CVV Codes</a></p></li></ul>",
+        "descriptionImageCount": 1,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 1,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "P1",
+        "assignee": "Luis Vallejo Mursuli",
+        "assigneeAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-11-02T09:03:59.994-0500",
+        "updatedDisplay": "Nov 2, 2026, 9:03 AM",
+        "created": "2026-10-22T08:50:22.261-0400",
+        "createdDisplay": "Oct 22, 2026, 8:50 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "GNSCM-11010",
         "url": "https://golfnow.atlassian.net/browse/GNSCM-11010",
         "summary": "Update Checkout flow to add fee warning for new transaction fee type",
@@ -11945,56 +11995,6 @@
         "fixVersions": [
           "v3001.128.0"
         ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14881",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14881",
-        "summary": "CVV not validating with with Payments",
-        "description": "We have confirmed that not all CVV requests are being sent to Payments to be processed/validated. This creates unnecessary exposure for fraud because transactions will succeed with invalid CVVs. Below is a chart of CVVs checked from a previous period. Our most popular booking channel 5151 is not on here, 7886 and 331 are very low.\n\nExpected:\n\n- Any time a CVV is sent into API 2.1, we should be sending that to payments for validation\n\n- This does not mean that CVV should be required on all transactions\n\n- We should continue using the rolling 90 CVV required check on wallet options\n\n- If the UI has their own configuration to display CVV outside of the 90 days, we should send that one to payments too\n\n- ValidateCVV_Product is a CRMOwnerConfig currently enabled on a few channels, if this is enabled, require CVV on all product transactions for that Owner\n\n- ValidateCVV_TeeTimeis a CRMOwnerConfig that exists but is not currently in use. This requires CVV on all tee time transactions. When tested in STG, this was working as expected but it is not a config we woudl like to use in prod\n\n- Payments team should have a way to confirm that a CVV was checked so validate test reservations with them to confirm\n\n- https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-- Test CVV Codes",
-        "descriptionHtml": "<p>We have confirmed that not all CVV requests are being sent to Payments to be processed/validated. This creates unnecessary exposure for fraud because transactions will succeed with invalid CVVs. Below is a chart of CVVs checked from a previous period. Our most popular booking channel 5151 is not on here, 7886 and 331 are very low.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14881/775664-image-20261022-125108.png\" alt=\"image-20261022-125108.png\" loading=\"lazy\"><figcaption>image-20261022-125108.png</figcaption></figure></div><p><strong>Expected:</strong></p><ul><li><p>Any time a CVV is sent into API 2.1, we should be sending that to payments for validation</p></li><li><p>This does not mean that CVV should be required on all transactions</p></li><li><p>We should continue using the rolling 90 CVV required check on wallet options</p></li><li><p>If the UI has their own configuration to display CVV outside of the 90 days, we should send that one to payments too</p></li><li><p><code>ValidateCVV_Product</code> is a CRMOwnerConfig currently enabled on a few channels, if this is enabled, require CVV on all product transactions for that Owner</p></li><li><p><code>ValidateCVV_TeeTime</code>is a CRMOwnerConfig that exists but is not currently in use. This requires CVV on all tee time transactions. When tested in STG, this was working as expected but it is not a config we woudl like to use in prod</p></li><li><p>Payments team should have a way to confirm that a CVV was checked so validate test reservations with them to confirm</p></li><li><p><a href=\"https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-%2D%20Test%20CVV%20Codes\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-- Test CVV Codes</a></p></li></ul>",
-        "descriptionImageCount": 1,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "Pre Planning",
-        "priority": "P1",
-        "assignee": "Luis Vallejo Mursuli",
-        "assigneeAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-10-22T09:50:09.897-0400",
-        "updatedDisplay": "Oct 22, 2026, 9:50 AM",
-        "created": "2026-10-22T08:50:22.261-0400",
-        "createdDisplay": "Oct 22, 2026, 8:50 AM",
-        "components": [],
-        "fixVersions": [],
         "sprints": [
           {
             "name": "2026.8"
@@ -43636,13 +43636,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-02T14:00:44.817Z",
-    "pulledAtDisplay": "Nov 2, 2026, 9:00 AM",
+    "pulledAt": "2026-11-02T14:05:45.992Z",
+    "pulledAtDisplay": "Nov 2, 2026, 9:05 AM",
     "window": {
-      "start": "2026-09-18T14:00:44.817Z",
-      "end": "2027-05-01T14:00:44.817Z",
-      "startDisplay": "Sep 18, 2026, 10:00 AM",
-      "endDisplay": "May 1, 2027, 10:00 AM"
+      "start": "2026-09-18T14:05:45.992Z",
+      "end": "2027-05-01T14:05:45.992Z",
+      "startDisplay": "Sep 18, 2026, 10:05 AM",
+      "endDisplay": "May 1, 2027, 10:05 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43655,7 +43655,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-02T14:00:47.751Z",
+        "pulledAt": "2026-11-02T14:05:48.589Z",
         "eventCount": 60,
         "events": [
           {
@@ -44475,23 +44475,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - US Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44504,6 +44487,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - US Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44684,10 +44684,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-02T13:58:04.255Z",
-    "previousPulledAtDisplay": "Nov 2, 2026, 8:58 AM",
-    "currentPulledAt": "2026-11-02T14:03:04.982Z",
-    "currentPulledAtDisplay": "Nov 2, 2026, 9:03 AM",
+    "previousPulledAt": "2026-11-02T14:03:04.982Z",
+    "previousPulledAtDisplay": "Nov 2, 2026, 9:03 AM",
+    "currentPulledAt": "2026-11-02T14:08:40.849Z",
+    "currentPulledAtDisplay": "Nov 2, 2026, 9:08 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44695,6 +44695,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-02T14:03:04.982Z",
+      "previousPulledAtDisplay": "Nov 2, 2026, 9:03 AM",
+      "currentPulledAt": "2026-11-02T14:08:40.849Z",
+      "currentPulledAtDisplay": "Nov 2, 2026, 9:08 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-02T13:58:04.255Z",
       "previousPulledAtDisplay": "Nov 2, 2026, 8:58 AM",
@@ -46526,17 +46537,6 @@
       "previousPulledAtDisplay": "Nov 1, 2026, 6:58 PM",
       "currentPulledAt": "2026-11-02T00:03:27.469Z",
       "currentPulledAtDisplay": "Nov 1, 2026, 7:03 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-01T23:53:37.669Z",
-      "previousPulledAtDisplay": "Nov 1, 2026, 6:53 PM",
-      "currentPulledAt": "2026-11-01T23:58:00.142Z",
-      "currentPulledAtDisplay": "Nov 1, 2026, 6:58 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
