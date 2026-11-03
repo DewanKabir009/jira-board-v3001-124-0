@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-03T18:57:29.429Z",
-  "pulledAtDisplay": "Nov 3, 2026, 1:57 PM",
+  "pulledAt": "2026-11-03T19:13:19.902Z",
+  "pulledAtDisplay": "Nov 3, 2026, 2:13 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-03T18:57:29.429Z",
-    "pulledAtDisplay": "Nov 3, 2026, 1:57 PM",
+    "pulledAt": "2026-11-03T19:13:19.902Z",
+    "pulledAtDisplay": "Nov 3, 2026, 2:13 PM",
     "total": 563,
     "mainTotal": 533,
     "subtaskTotal": 30,
@@ -8107,55 +8107,39 @@
         "parent": null
       },
       {
-        "key": "CORE-14881",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14881",
-        "summary": "CVV not validating with with Payments",
-        "description": "We have confirmed that not all CVV requests are being sent to Payments to be processed/validated. This creates unnecessary exposure for fraud because transactions will succeed with invalid CVVs. Below is a chart of CVVs checked from a previous period. Our most popular booking channel 5151 is not on here, 7886 and 331 are very low.\n\nExpected:\n\n- Any time a CVV is sent into API 2.1, we should be sending that to payments for validation\n\n- This does not mean that CVV should be required on all transactions\n\n- We should continue using the rolling 90 CVV required check on wallet options\n\n- If the UI has their own configuration to display CVV outside of the 90 days, we should send that one to payments too\n\n- ValidateCVV_Product is a CRMOwnerConfig currently enabled on a few channels, if this is enabled, require CVV on all product transactions for that Owner\n\n- ValidateCVV_TeeTimeis a CRMOwnerConfig that exists but is not currently in use. This requires CVV on all tee time transactions. When tested in STG, this was working as expected but it is not a config we woudl like to use in prod\n\n- Payments team should have a way to confirm that a CVV was checked so validate test reservations with them to confirm\n\n- https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-- Test CVV Codes",
-        "descriptionHtml": "<p>We have confirmed that not all CVV requests are being sent to Payments to be processed/validated. This creates unnecessary exposure for fraud because transactions will succeed with invalid CVVs. Below is a chart of CVVs checked from a previous period. Our most popular booking channel 5151 is not on here, 7886 and 331 are very low.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14881/775664-image-20261022-125108.png\" alt=\"image-20261022-125108.png\" loading=\"lazy\"><figcaption>image-20261022-125108.png</figcaption></figure></div><p><strong>Expected:</strong></p><ul><li><p>Any time a CVV is sent into API 2.1, we should be sending that to payments for validation</p></li><li><p>This does not mean that CVV should be required on all transactions</p></li><li><p>We should continue using the rolling 90 CVV required check on wallet options</p></li><li><p>If the UI has their own configuration to display CVV outside of the 90 days, we should send that one to payments too</p></li><li><p><code>ValidateCVV_Product</code> is a CRMOwnerConfig currently enabled on a few channels, if this is enabled, require CVV on all product transactions for that Owner</p></li><li><p><code>ValidateCVV_TeeTime</code>is a CRMOwnerConfig that exists but is not currently in use. This requires CVV on all tee time transactions. When tested in STG, this was working as expected but it is not a config we woudl like to use in prod</p></li><li><p>Payments team should have a way to confirm that a CVV was checked so validate test reservations with them to confirm</p></li><li><p><a href=\"https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-%2D%20Test%20CVV%20Codes\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-- Test CVV Codes</a></p></li></ul>",
-        "descriptionImageCount": 1,
+        "key": "CORE-14944",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14944",
+        "summary": "Fee Messaging on SCA transactions causes booking failures",
+        "description": "Steps to recreate:\n\n- Enable FeeMessaging for a country that will trigger SCA transactions\n\n- Book using a card that will trigger SCA\n\n- QA has these\n\n- See the reported error\n\nNewtonsoft.Json.JsonSerializationException: Unable to find a constructor to use for type GolfNow.API.Business.Entities.FeeMessagingDisplayRates. A class should either have a default constructor, one constructor with arguments or a constructor marked with the JsonConstructor attribute. Path 'DiscountedTeeTimeRateDetail.DiscountedRate.FeeMessagingDisplayRates.GreensFees', line 653, position 21.     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateNewObject(JsonReader reader, JsonObjectContract objectContract, JsonProperty containerMember, JsonProperty containerProperty, String id, Boolean& createdFromNonDefaultCreator)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)     at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)     at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)     at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)     at GolfNow.API.Business.Reservation.ReservationService.MakeStagedReservation(Guid stagedOrderId, Boolean bookAsGuestOverride)     at GolfNow.API.Business.Order.Processors.TeeTimeProcessor.ProcessItem(OrderStagedDetail orderStagedDetail, CustomerContext customerContext)",
+        "descriptionHtml": "<p>Steps to recreate:</p><ol><li><p>Enable FeeMessaging for a country that will trigger SCA transactions</p></li><li><p>Book using a card that will trigger SCA</p><ol><li><p>QA has these</p></li></ol></li><li><p>See the reported error</p></li></ol><pre><code>Newtonsoft.Json.JsonSerializationException: Unable to find a constructor to use for type GolfNow.API.Business.Entities.FeeMessagingDisplayRates. A class should either have a default constructor, one constructor with arguments or a constructor marked with the JsonConstructor attribute. Path 'DiscountedTeeTimeRateDetail.DiscountedRate.FeeMessagingDisplayRates.GreensFees', line 653, position 21.     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateNewObject(JsonReader reader, JsonObjectContract objectContract, JsonProperty containerMember, JsonProperty containerProperty, String id, Boolean&amp; createdFromNonDefaultCreator)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)     at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)     at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)     at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)     at GolfNow.API.Business.Reservation.ReservationService.MakeStagedReservation(Guid stagedOrderId, Boolean bookAsGuestOverride)     at GolfNow.API.Business.Order.Processors.TeeTimeProcessor.ProcessItem(OrderStagedDetail orderStagedDetail, CustomerContext customerContext)</code></pre>",
+        "descriptionImageCount": 0,
         "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1239645",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14881?focusedCommentId=1239645",
-            "author": "Luis Vallejo Mursuli",
-            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-            "created": "2026-11-03T13:19:28.140-0500",
-            "createdDisplay": "Nov 3, 2026, 1:19 PM",
-            "updated": "2026-11-03T13:19:28.140-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "QA,\n\nBelow the guide to test this changes. Please let me know if you have any questions.",
-            "bodyHtml": "<p>QA,</p><p>Below the guide to test this changes. Please let me know if you have any questions.<br><br> </p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14881?focusedCommentId=1239645",
-        "lastCommentDisplay": "Nov 3, 2026, 1:19 PM",
-        "lastCommentAuthor": "Luis Vallejo Mursuli",
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
         "testChecklist": null,
         "type": "Bug",
         "isSubtask": false,
-        "status": "QA Testing (DEV)",
-        "priority": "P1",
+        "status": "PO Review",
+        "priority": "None",
         "assignee": "Dewan Kabir",
         "assigneeAccountId": "630fb06bb433b060db559bdb",
         "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
-        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-11-03T13:22:12.520-0500",
-        "updatedDisplay": "Nov 3, 2026, 1:22 PM",
-        "created": "2026-10-22T08:50:22.261-0400",
-        "createdDisplay": "Oct 22, 2026, 8:50 AM",
+        "assignedDeveloper": "Raghav Kancherla",
+        "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+        "updated": "2026-11-03T14:08:17.829-0500",
+        "updatedDisplay": "Nov 3, 2026, 2:08 PM",
+        "created": "2026-10-30T10:42:43.938-0400",
+        "createdDisplay": "Oct 30, 2026, 10:42 AM",
         "components": [
-          "GolfNow.Services.Reservation"
+          "GolfNowAPI"
         ],
         "fixVersions": [
-          "v3001.131.0"
+          "v3001.130.0"
         ],
         "sprints": [
           {
@@ -8166,6 +8150,106 @@
           "2026.8"
         ],
         "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14882",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14882",
+        "summary": "Remove GeoPlaces searchability of Lavender Links Golf Club",
+        "description": "Remove the following facility from searchability:\n\n- Lavender Links Golf Club\n\n- FacilityId 19026",
+        "descriptionHtml": "<p>Remove the following facility from searchability:</p><ul><li><p>Lavender Links Golf Club</p></li><li><p>FacilityId 19026</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 3,
+        "comments": [
+          {
+            "id": "1234781",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14882?focusedCommentId=1234781",
+            "author": "Sebastian Calzadilla Gonzalez",
+            "authorAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
+            "created": "2026-10-22T15:54:25.934-0400",
+            "createdDisplay": "Oct 22, 2026, 3:54 PM",
+            "updated": "2026-10-22T15:54:25.934-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Attaching scripts to disable searchability for Lavender Links Golf Club Facility Id 19026",
+            "bodyHtml": "<p>Attaching scripts to disable searchability for Lavender Links Golf Club Facility Id 19026<br><br> </p>"
+          },
+          {
+            "id": "1234786",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14882?focusedCommentId=1234786",
+            "author": "Sebastian Calzadilla Gonzalez",
+            "authorAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
+            "created": "2026-10-22T15:59:39.130-0400",
+            "createdDisplay": "Oct 22, 2026, 3:59 PM",
+            "updated": "2026-10-22T15:59:39.130-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Ran apply script on STG and PRD",
+            "bodyHtml": "<p>Ran apply script on STG and PRD</p>"
+          },
+          {
+            "id": "1234844",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14882?focusedCommentId=1234844",
+            "author": "Brian Pugh",
+            "authorAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
+            "created": "2026-10-22T17:22:55.180-0400",
+            "createdDisplay": "Oct 22, 2026, 5:22 PM",
+            "updated": "2026-10-22T17:22:55.180-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "confirmed the facility is removed from geoplaces",
+            "bodyHtml": "<p>confirmed the facility is removed from geoplaces</p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14882?focusedCommentId=1234844",
+        "lastCommentDisplay": "Oct 22, 2026, 5:22 PM",
+        "lastCommentAuthor": "Brian Pugh",
+        "testChecklist": null,
+        "type": "Task",
+        "isSubtask": false,
+        "status": "Closed",
+        "priority": "None",
+        "assignee": "Unassigned",
+        "assigneeAccountId": "",
+        "assigneeAvatarUrl": "",
+        "assignedDeveloper": "Sebastian Calzadilla Gonzalez",
+        "assignedDeveloperAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
+        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
+        "updated": "2026-11-03T14:06:02.468-0500",
+        "updatedDisplay": "Nov 3, 2026, 2:06 PM",
+        "created": "2026-10-22T13:17:40.890-0400",
+        "createdDisplay": "Oct 22, 2026, 1:17 PM",
+        "components": [
+          "Geoplaces"
+        ],
+        "fixVersions": [
+          "v3001.130.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "Done",
         "parent": {
           "key": "CORE-14268",
           "url": "https://golfnow.atlassian.net/browse/CORE-14268",
@@ -8217,64 +8301,10 @@
         "assignedDeveloper": "Yoel Martin Pardo",
         "assignedDeveloperAccountId": "625571809e7380006fb29599",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-11-03T13:04:55.851-0500",
-        "updatedDisplay": "Nov 3, 2026, 1:04 PM",
+        "updated": "2026-11-03T14:05:06.309-0500",
+        "updatedDisplay": "Nov 3, 2026, 2:05 PM",
         "created": "2026-10-15T16:26:14.468-0400",
         "createdDisplay": "Oct 15, 2026, 4:26 PM",
-        "components": [
-          "GolfNowAPI"
-        ],
-        "fixVersions": [
-          "v3001.130.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14944",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14944",
-        "summary": "Fee Messaging on SCA transactions causes booking failures",
-        "description": "Steps to recreate:\n\n- Enable FeeMessaging for a country that will trigger SCA transactions\n\n- Book using a card that will trigger SCA\n\n- QA has these\n\n- See the reported error\n\nNewtonsoft.Json.JsonSerializationException: Unable to find a constructor to use for type GolfNow.API.Business.Entities.FeeMessagingDisplayRates. A class should either have a default constructor, one constructor with arguments or a constructor marked with the JsonConstructor attribute. Path 'DiscountedTeeTimeRateDetail.DiscountedRate.FeeMessagingDisplayRates.GreensFees', line 653, position 21.     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateNewObject(JsonReader reader, JsonObjectContract objectContract, JsonProperty containerMember, JsonProperty containerProperty, String id, Boolean& createdFromNonDefaultCreator)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)     at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)     at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)     at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)     at GolfNow.API.Business.Reservation.ReservationService.MakeStagedReservation(Guid stagedOrderId, Boolean bookAsGuestOverride)     at GolfNow.API.Business.Order.Processors.TeeTimeProcessor.ProcessItem(OrderStagedDetail orderStagedDetail, CustomerContext customerContext)",
-        "descriptionHtml": "<p>Steps to recreate:</p><ol><li><p>Enable FeeMessaging for a country that will trigger SCA transactions</p></li><li><p>Book using a card that will trigger SCA</p><ol><li><p>QA has these</p></li></ol></li><li><p>See the reported error</p></li></ol><pre><code>Newtonsoft.Json.JsonSerializationException: Unable to find a constructor to use for type GolfNow.API.Business.Entities.FeeMessagingDisplayRates. A class should either have a default constructor, one constructor with arguments or a constructor marked with the JsonConstructor attribute. Path 'DiscountedTeeTimeRateDetail.DiscountedRate.FeeMessagingDisplayRates.GreensFees', line 653, position 21.     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateNewObject(JsonReader reader, JsonObjectContract objectContract, JsonProperty containerMember, JsonProperty containerProperty, String id, Boolean&amp; createdFromNonDefaultCreator)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.SetPropertyValue(JsonProperty property, JsonConverter propertyConverter, JsonContainerContract containerContract, JsonProperty containerProperty, JsonReader reader, Object target)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.PopulateObject(Object newObject, JsonReader reader, JsonObjectContract contract, JsonProperty member, String id)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateObject(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.CreateValueInternal(JsonReader reader, Type objectType, JsonContract contract, JsonProperty member, JsonContainerContract containerContract, JsonProperty containerMember, Object existingValue)     at Newtonsoft.Json.Serialization.JsonSerializerInternalReader.Deserialize(JsonReader reader, Type objectType, Boolean checkAdditionalContent)     at Newtonsoft.Json.JsonSerializer.DeserializeInternal(JsonReader reader, Type objectType)     at Newtonsoft.Json.JsonConvert.DeserializeObject(String value, Type type, JsonSerializerSettings settings)     at Newtonsoft.Json.JsonConvert.DeserializeObject[T](String value, JsonSerializerSettings settings)     at GolfNow.API.Business.Reservation.ReservationService.MakeStagedReservation(Guid stagedOrderId, Boolean bookAsGuestOverride)     at GolfNow.API.Business.Order.Processors.TeeTimeProcessor.ProcessItem(OrderStagedDetail orderStagedDetail, CustomerContext customerContext)</code></pre>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "PO Review",
-        "priority": "None",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Raghav Kancherla",
-        "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "updated": "2026-11-03T13:04:23.540-0500",
-        "updatedDisplay": "Nov 3, 2026, 1:04 PM",
-        "created": "2026-10-30T10:42:43.938-0400",
-        "createdDisplay": "Oct 30, 2026, 10:42 AM",
         "components": [
           "GolfNowAPI"
         ],
@@ -8341,12 +8371,127 @@
         "assignedDeveloper": "Yoel Martin Pardo",
         "assignedDeveloperAccountId": "625571809e7380006fb29599",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-11-03T13:03:12.007-0500",
-        "updatedDisplay": "Nov 3, 2026, 1:03 PM",
+        "updated": "2026-11-03T14:04:35.046-0500",
+        "updatedDisplay": "Nov 3, 2026, 2:04 PM",
         "created": "2026-10-12T17:17:31.885-0400",
         "createdDisplay": "Oct 12, 2026, 5:17 PM",
         "components": [
           "GolfNowAPI"
+        ],
+        "fixVersions": [
+          "v3001.130.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14851",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14851",
+        "summary": "Remove searchability of test facilities from GeoPlaces 2.0",
+        "description": "Remove searchability from the following in GeoPlaces 2.0:\n\n- Any facility containing the term “Pro Demo”\n\n- We have removed many of these but they keep making more\n\n- Any facility containing the word “Standalone”\n\n- fl_be_auto_ezrts_1 - FID 20444\n\n- Western Golf Demo - FID 21034\n\n- Manoir Richelieu Tadoussac-DEMO - FID 21075\n\n- Custom Connect Standard Demo - FID 21136\n\n- Kemper Demo - FID 21002",
+        "descriptionHtml": "<p>Remove searchability from the following in GeoPlaces 2.0:</p><ul><li><p>Any facility containing the term “Pro Demo”</p><ul><li><p>We have removed many of these but they keep making more</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14851/771651-image-20261007-164434.png\" alt=\"image-20261007-164434.png\" loading=\"lazy\"><figcaption>image-20261007-164434.png</figcaption></figure></div></li></ul></li><li><p>Any facility containing the word “Standalone” </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14851/771652-image-20261007-164414.png\" alt=\"image-20261007-164414.png\" loading=\"lazy\"><figcaption>image-20261007-164414.png</figcaption></figure></div></li><li><p>fl_be_auto_ezrts_1 - FID 20444</p></li><li><p>Western Golf Demo - FID 21034</p></li><li><p>Manoir Richelieu Tadoussac-DEMO - FID 21075</p></li><li><p>Custom Connect Standard Demo - FID 21136</p></li><li><p>Kemper Demo - FID 21002</p></li></ul>",
+        "descriptionImageCount": 2,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 2,
+        "commentCount": 4,
+        "comments": [
+          {
+            "id": "1228579",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14851?focusedCommentId=1228579",
+            "author": "Sebastian Calzadilla Gonzalez",
+            "authorAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
+            "created": "2026-10-08T14:34:58.264-0400",
+            "createdDisplay": "Oct 8, 2026, 2:34 PM",
+            "updated": "2026-10-08T14:35:11.270-0400",
+            "updatedDisplay": "Oct 8, 2026, 2:35 PM",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Found following records on STG and PRD. Confirming with Brian if it looks all good to disable for standalone and 'Pro Demo'",
+            "bodyHtml": "<p>Found following records on STG and PRD. Confirming with Brian if it looks all good to disable for standalone and 'Pro Demo'</p><p> </p><p> </p>"
+          },
+          {
+            "id": "1228603",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14851?focusedCommentId=1228603",
+            "author": "Sebastian Calzadilla Gonzalez",
+            "authorAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
+            "created": "2026-10-08T15:06:18.790-0400",
+            "createdDisplay": "Oct 8, 2026, 3:06 PM",
+            "updated": "2026-10-08T15:26:53.788-0400",
+            "updatedDisplay": "Oct 8, 2026, 3:26 PM",
+            "hasMedia": true,
+            "mediaCount": 4,
+            "body": "Attaching apply and rollback scripts for this effort\n\nPRD:\n\nSTG:",
+            "bodyHtml": "<p>Attaching apply and rollback scripts for this effort</p><p>PRD:</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14851/comments/1228603/771652-image-20261007-164414.png\" alt=\"image-20261007-164414.png\" loading=\"lazy\"><figcaption>image-20261007-164414.png</figcaption></figure><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14851/comments/1228603/771651-image-20261007-164434.png\" alt=\"image-20261007-164434.png\" loading=\"lazy\"><figcaption>image-20261007-164434.png</figcaption></figure></div><p>STG:</p><div class=\"description-media-group\"><a class=\"description-media-missing\" href=\"https://golfnow.atlassian.net/browse/CORE-14851?focusedCommentId=1228603\" target=\"_blank\" rel=\"noopener\">Jira description media could not be embedded. Open in Jira.</a><a class=\"description-media-missing\" href=\"https://golfnow.atlassian.net/browse/CORE-14851?focusedCommentId=1228603\" target=\"_blank\" rel=\"noopener\">Jira description media could not be embedded. Open in Jira.</a></div>"
+          },
+          {
+            "id": "1228610",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14851?focusedCommentId=1228610",
+            "author": "Sebastian Calzadilla Gonzalez",
+            "authorAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
+            "created": "2026-10-08T15:12:50.030-0400",
+            "createdDisplay": "Oct 8, 2026, 3:12 PM",
+            "updated": "2026-10-08T15:12:50.030-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Script applied to STG and PRD\n\n110 facilities disabled in STG\n\n16 facilities disabled in PRD",
+            "bodyHtml": "<p>Script applied to STG and PRD</p><p>110 facilities disabled in STG</p><p>16 facilities disabled in PRD</p>"
+          },
+          {
+            "id": "1228679",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14851?focusedCommentId=1228679",
+            "author": "Brian Pugh",
+            "authorAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
+            "created": "2026-10-08T16:41:14.317-0400",
+            "createdDisplay": "Oct 8, 2026, 4:41 PM",
+            "updated": "2026-10-08T16:41:14.317-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Confirmed GeoPlaces results have been removed",
+            "bodyHtml": "<p>Confirmed GeoPlaces results have been removed</p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14851?focusedCommentId=1228679",
+        "lastCommentDisplay": "Oct 8, 2026, 4:41 PM",
+        "lastCommentAuthor": "Brian Pugh",
+        "testChecklist": null,
+        "type": "Task",
+        "isSubtask": false,
+        "status": "PO Review",
+        "priority": "None",
+        "assignee": "Brian Pugh",
+        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
+        "assignedDeveloper": "Sebastian Calzadilla Gonzalez",
+        "assignedDeveloperAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
+        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
+        "updated": "2026-11-03T14:01:18.695-0500",
+        "updatedDisplay": "Nov 3, 2026, 2:01 PM",
+        "created": "2026-10-07T12:41:33.102-0400",
+        "createdDisplay": "Oct 7, 2026, 12:41 PM",
+        "components": [
+          "Geoplaces"
         ],
         "fixVersions": [
           "v3001.130.0"
@@ -8426,8 +8571,8 @@
         "assignedDeveloper": "Yoel Martin Pardo",
         "assignedDeveloperAccountId": "625571809e7380006fb29599",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-11-03T13:02:20.257-0500",
-        "updatedDisplay": "Nov 3, 2026, 1:02 PM",
+        "updated": "2026-11-03T14:00:07.441-0500",
+        "updatedDisplay": "Nov 3, 2026, 2:00 PM",
         "created": "2026-09-28T14:05:07.766-0400",
         "createdDisplay": "Sep 28, 2026, 2:05 PM",
         "components": [
@@ -8438,6 +8583,163 @@
         ],
         "fixVersions": [
           "v3001.130.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14780",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14780",
+        "summary": "SFMC Confirmation Email Follow Ups",
+        "description": "- For Golf Course Operator emails, use the LocaleId from CRMGolfFacility and pass that into the LanguageID payload field\n\n- Use the Locale of the PlayFacility\n\n- CRMGolfFacility.LocaleId\n\n- This will be used to determine the Facility language translation for golf course emails\n\n- IsTrade looks to not be sending properly so we need to make sure we are sending IsTrade =true for hot deals and false for course times\n\n- Golf Course emails are sending both CORE and SFMC versions\n\n- If SFMC is enabled, we need to only send the one version",
+        "descriptionHtml": "<ol><li><p>For Golf Course Operator emails, use the LocaleId from CRMGolfFacility and pass that into the LanguageID payload field</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14780/765555-image-20260911-171208.png\" alt=\"image-20260911-171208.png\" loading=\"lazy\"><figcaption>image-20260911-171208.png</figcaption></figure></div><ol><li><p><strong>Use the Locale of the PlayFacility </strong></p><ol><li><p>CRMGolfFacility.LocaleId</p></li></ol></li><li><p>This will be used to determine the Facility language translation for golf course emails</p></li></ol></li><li><p>IsTrade looks to not be sending properly so we need to make sure we are sending IsTrade =true for hot deals and false for course times</p></li><li><p><s>Golf Course emails are sending both CORE and SFMC versions</s></p><ol><li><p><s>If SFMC is enabled, we need to only send the one version</s></p></li></ol></li></ol>",
+        "descriptionImageCount": 1,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 1,
+        "commentCount": 2,
+        "comments": [
+          {
+            "id": "1226321",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14780?focusedCommentId=1226321",
+            "author": "Brian Pugh",
+            "authorAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
+            "created": "2026-10-02T11:43:53.436-0400",
+            "createdDisplay": "Oct 2, 2026, 11:43 AM",
+            "updated": "2026-10-02T11:43:53.436-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Paul cannot reproduce #3",
+            "bodyHtml": "<p>Paul cannot reproduce #3</p>"
+          },
+          {
+            "id": "1226787",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14780?focusedCommentId=1226787",
+            "author": "Tyler Olechnowicz",
+            "authorAccountId": "5d2396c1ea26c40c2043fc92",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+            "created": "2026-10-05T11:52:13.733-0400",
+            "createdDisplay": "Oct 5, 2026, 11:52 AM",
+            "updated": "2026-10-05T11:52:13.733-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "QA Test Instructions\n\nBefore testing\nConfirm the database scripts for this ticket are applied in the test environment (course locale change to Notification.GetReservationDetail, and the IsTrade provider attribute for the SFMC providers).\n\nTest 1: Trade / hot-deal reservation\n\n- Book a trade or hot-deal tee time at a course whose language/locale differs from its master facility.\n\n- Open the course operator email that is sent.\n\n- Expected: the email is in the language of the course being played (the play facility), not the master facility.\n\nTest 2: Course with no locale set\n\n- Book a tee time at a course that has no locale configured.\n\n- Open the course operator email.\n\n- Expected: the email is still sent, in the default language. No errors.\n\nTest 3: Regular tee time (regression)\n\n- Book a normal tee time (not a trade/hot deal).\n\n- Open the course operator email and the customer confirmation.\n\n- Expected: language and content are the same as before this change.\n\nTest 4: End-to-end notification check\n\n- Make a booking, then cancel it.\n\n- Expected: the related notification emails are sent and nothing is stuck in the queue.\n\nTest 5: IsTrade attribute\n\n- Book a trade / hot-deal tee time that triggers an SFMC-sent notification. Note the reservation ID and the time of the booking.\n\n- Book a regular (non-trade) tee time. Note the reservation ID and the time of the booking.\n\n- Check dbo.MessageAttribute for the message created for each booking.\n\n- Expected: IsTrade is present on both messages, with a value of true for the trade booking and false for the regular booking.\n\n- Find the RecipientSendId SFMC returned for each send. It is stored in the SendID column of dbo.Envelope for that message.\n\n- Send the RecipientSendIds to the SFMC team and ask them to confirm the payloads for those sends include IsTrade with the same values. Include the reservation IDs and booking times as well, in case they help. SFMC can check at any time and report back.\n\n- If a send failed or no RecipientSendId was returned, flag the failed send instead of testing IsTrade on it.",
+            "bodyHtml": "<h3>QA Test Instructions</h3><p><strong>Before testing</strong>\nConfirm the database scripts for this ticket are applied in the test environment (course locale change to <code>Notification.GetReservationDetail</code>, and the <code>IsTrade</code> provider attribute for the SFMC providers).</p><p><strong>Test 1: Trade / hot-deal reservation</strong></p><ol><li><p>Book a trade or hot-deal tee time at a course whose language/locale differs from its master facility.</p></li><li><p>Open the course operator email that is sent.</p></li><li><p>Expected: the email is in the language of the course being played (the play facility), not the master facility.</p></li></ol><p><strong>Test 2: Course with no locale set</strong></p><ol><li><p>Book a tee time at a course that has no locale configured.</p></li><li><p>Open the course operator email.</p></li><li><p>Expected: the email is still sent, in the default language. No errors.</p></li></ol><p><strong>Test 3: Regular tee time (regression)</strong></p><ol><li><p>Book a normal tee time (not a trade/hot deal).</p></li><li><p>Open the course operator email and the customer confirmation.</p></li><li><p>Expected: language and content are the same as before this change.</p></li></ol><p><strong>Test 4: End-to-end notification check</strong></p><ol><li><p>Make a booking, then cancel it.</p></li><li><p>Expected: the related notification emails are sent and nothing is stuck in the queue.</p></li></ol><p><strong>Test 5: IsTrade attribute</strong></p><ol><li><p>Book a trade / hot-deal tee time that triggers an SFMC-sent notification. Note the reservation ID and the time of the booking.</p></li><li><p>Book a regular (non-trade) tee time. Note the reservation ID and the time of the booking.</p></li><li><p>Check <code>dbo.MessageAttribute</code> for the message created for each booking.</p></li><li><p>Expected: <code>IsTrade</code> is present on both messages, with a value of <code>true</code> for the trade booking and <code>false</code> for the regular booking.</p></li><li><p>Find the <code>RecipientSendId</code> SFMC returned for each send. It is stored in the <code>SendID</code> column of <code>dbo.Envelope</code> for that message.</p></li><li><p>Send the RecipientSendIds to the SFMC team and ask them to confirm the payloads for those sends include <code>IsTrade</code> with the same values. Include the reservation IDs and booking times as well, in case they help. SFMC can check at any time and report back.</p></li><li><p>If a send failed or no RecipientSendId was returned, flag the failed send instead of testing IsTrade on it.</p></li></ol>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14780?focusedCommentId=1226787",
+        "lastCommentDisplay": "Oct 5, 2026, 11:52 AM",
+        "lastCommentAuthor": "Tyler Olechnowicz",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "PO Review",
+        "priority": "P0",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+        "updated": "2026-11-03T13:58:15.873-0500",
+        "updatedDisplay": "Nov 3, 2026, 1:58 PM",
+        "created": "2026-09-11T13:10:27.223-0400",
+        "createdDisplay": "Sep 11, 2026, 1:10 PM",
+        "components": [
+          "Database",
+          "GolfNow.Notification (Windows Service)",
+          "GolfNow.Services.Notification (Web)"
+        ],
+        "fixVersions": [
+          "v3001.130.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14881",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14881",
+        "summary": "CVV not validating with with Payments",
+        "description": "We have confirmed that not all CVV requests are being sent to Payments to be processed/validated. This creates unnecessary exposure for fraud because transactions will succeed with invalid CVVs. Below is a chart of CVVs checked from a previous period. Our most popular booking channel 5151 is not on here, 7886 and 331 are very low.\n\nExpected:\n\n- Any time a CVV is sent into API 2.1, we should be sending that to payments for validation\n\n- This does not mean that CVV should be required on all transactions\n\n- We should continue using the rolling 90 CVV required check on wallet options\n\n- If the UI has their own configuration to display CVV outside of the 90 days, we should send that one to payments too\n\n- ValidateCVV_Product is a CRMOwnerConfig currently enabled on a few channels, if this is enabled, require CVV on all product transactions for that Owner\n\n- ValidateCVV_TeeTimeis a CRMOwnerConfig that exists but is not currently in use. This requires CVV on all tee time transactions. When tested in STG, this was working as expected but it is not a config we woudl like to use in prod\n\n- Payments team should have a way to confirm that a CVV was checked so validate test reservations with them to confirm\n\n- https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-- Test CVV Codes",
+        "descriptionHtml": "<p>We have confirmed that not all CVV requests are being sent to Payments to be processed/validated. This creates unnecessary exposure for fraud because transactions will succeed with invalid CVVs. Below is a chart of CVVs checked from a previous period. Our most popular booking channel 5151 is not on here, 7886 and 331 are very low.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14881/775664-image-20261022-125108.png\" alt=\"image-20261022-125108.png\" loading=\"lazy\"><figcaption>image-20261022-125108.png</figcaption></figure></div><p><strong>Expected:</strong></p><ul><li><p>Any time a CVV is sent into API 2.1, we should be sending that to payments for validation</p></li><li><p>This does not mean that CVV should be required on all transactions</p></li><li><p>We should continue using the rolling 90 CVV required check on wallet options</p></li><li><p>If the UI has their own configuration to display CVV outside of the 90 days, we should send that one to payments too</p></li><li><p><code>ValidateCVV_Product</code> is a CRMOwnerConfig currently enabled on a few channels, if this is enabled, require CVV on all product transactions for that Owner</p></li><li><p><code>ValidateCVV_TeeTime</code>is a CRMOwnerConfig that exists but is not currently in use. This requires CVV on all tee time transactions. When tested in STG, this was working as expected but it is not a config we woudl like to use in prod</p></li><li><p>Payments team should have a way to confirm that a CVV was checked so validate test reservations with them to confirm</p></li><li><p><a href=\"https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-%2D%20Test%20CVV%20Codes\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-- Test CVV Codes</a></p></li></ul>",
+        "descriptionImageCount": 1,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 1,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1239645",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14881?focusedCommentId=1239645",
+            "author": "Luis Vallejo Mursuli",
+            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+            "created": "2026-11-03T13:19:28.140-0500",
+            "createdDisplay": "Nov 3, 2026, 1:19 PM",
+            "updated": "2026-11-03T13:19:28.140-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "QA,\n\nBelow the guide to test this changes. Please let me know if you have any questions.",
+            "bodyHtml": "<p>QA,</p><p>Below the guide to test this changes. Please let me know if you have any questions.<br><br> </p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14881?focusedCommentId=1239645",
+        "lastCommentDisplay": "Nov 3, 2026, 1:19 PM",
+        "lastCommentAuthor": "Luis Vallejo Mursuli",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "QA Testing (DEV)",
+        "priority": "P1",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Luis Vallejo Mursuli",
+        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+        "updated": "2026-11-03T13:22:12.520-0500",
+        "updatedDisplay": "Nov 3, 2026, 1:22 PM",
+        "created": "2026-10-22T08:50:22.261-0400",
+        "createdDisplay": "Oct 22, 2026, 8:50 AM",
+        "components": [
+          "GolfNow.Services.Reservation"
+        ],
+        "fixVersions": [
+          "v3001.131.0"
         ],
         "sprints": [
           {
@@ -8528,93 +8830,6 @@
           "type": "Epic",
           "status": "Backlog",
           "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14780",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14780",
-        "summary": "SFMC Confirmation Email Follow Ups",
-        "description": "- For Golf Course Operator emails, use the LocaleId from CRMGolfFacility and pass that into the LanguageID payload field\n\n- Use the Locale of the PlayFacility\n\n- CRMGolfFacility.LocaleId\n\n- This will be used to determine the Facility language translation for golf course emails\n\n- IsTrade looks to not be sending properly so we need to make sure we are sending IsTrade =true for hot deals and false for course times\n\n- Golf Course emails are sending both CORE and SFMC versions\n\n- If SFMC is enabled, we need to only send the one version",
-        "descriptionHtml": "<ol><li><p>For Golf Course Operator emails, use the LocaleId from CRMGolfFacility and pass that into the LanguageID payload field</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14780/765555-image-20260911-171208.png\" alt=\"image-20260911-171208.png\" loading=\"lazy\"><figcaption>image-20260911-171208.png</figcaption></figure></div><ol><li><p><strong>Use the Locale of the PlayFacility </strong></p><ol><li><p>CRMGolfFacility.LocaleId</p></li></ol></li><li><p>This will be used to determine the Facility language translation for golf course emails</p></li></ol></li><li><p>IsTrade looks to not be sending properly so we need to make sure we are sending IsTrade =true for hot deals and false for course times</p></li><li><p><s>Golf Course emails are sending both CORE and SFMC versions</s></p><ol><li><p><s>If SFMC is enabled, we need to only send the one version</s></p></li></ol></li></ol>",
-        "descriptionImageCount": 1,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 2,
-        "comments": [
-          {
-            "id": "1226321",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14780?focusedCommentId=1226321",
-            "author": "Brian Pugh",
-            "authorAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-            "created": "2026-10-02T11:43:53.436-0400",
-            "createdDisplay": "Oct 2, 2026, 11:43 AM",
-            "updated": "2026-10-02T11:43:53.436-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Paul cannot reproduce #3",
-            "bodyHtml": "<p>Paul cannot reproduce #3</p>"
-          },
-          {
-            "id": "1226787",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14780?focusedCommentId=1226787",
-            "author": "Tyler Olechnowicz",
-            "authorAccountId": "5d2396c1ea26c40c2043fc92",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-            "created": "2026-10-05T11:52:13.733-0400",
-            "createdDisplay": "Oct 5, 2026, 11:52 AM",
-            "updated": "2026-10-05T11:52:13.733-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "QA Test Instructions\n\nBefore testing\nConfirm the database scripts for this ticket are applied in the test environment (course locale change to Notification.GetReservationDetail, and the IsTrade provider attribute for the SFMC providers).\n\nTest 1: Trade / hot-deal reservation\n\n- Book a trade or hot-deal tee time at a course whose language/locale differs from its master facility.\n\n- Open the course operator email that is sent.\n\n- Expected: the email is in the language of the course being played (the play facility), not the master facility.\n\nTest 2: Course with no locale set\n\n- Book a tee time at a course that has no locale configured.\n\n- Open the course operator email.\n\n- Expected: the email is still sent, in the default language. No errors.\n\nTest 3: Regular tee time (regression)\n\n- Book a normal tee time (not a trade/hot deal).\n\n- Open the course operator email and the customer confirmation.\n\n- Expected: language and content are the same as before this change.\n\nTest 4: End-to-end notification check\n\n- Make a booking, then cancel it.\n\n- Expected: the related notification emails are sent and nothing is stuck in the queue.\n\nTest 5: IsTrade attribute\n\n- Book a trade / hot-deal tee time that triggers an SFMC-sent notification. Note the reservation ID and the time of the booking.\n\n- Book a regular (non-trade) tee time. Note the reservation ID and the time of the booking.\n\n- Check dbo.MessageAttribute for the message created for each booking.\n\n- Expected: IsTrade is present on both messages, with a value of true for the trade booking and false for the regular booking.\n\n- Find the RecipientSendId SFMC returned for each send. It is stored in the SendID column of dbo.Envelope for that message.\n\n- Send the RecipientSendIds to the SFMC team and ask them to confirm the payloads for those sends include IsTrade with the same values. Include the reservation IDs and booking times as well, in case they help. SFMC can check at any time and report back.\n\n- If a send failed or no RecipientSendId was returned, flag the failed send instead of testing IsTrade on it.",
-            "bodyHtml": "<h3>QA Test Instructions</h3><p><strong>Before testing</strong>\nConfirm the database scripts for this ticket are applied in the test environment (course locale change to <code>Notification.GetReservationDetail</code>, and the <code>IsTrade</code> provider attribute for the SFMC providers).</p><p><strong>Test 1: Trade / hot-deal reservation</strong></p><ol><li><p>Book a trade or hot-deal tee time at a course whose language/locale differs from its master facility.</p></li><li><p>Open the course operator email that is sent.</p></li><li><p>Expected: the email is in the language of the course being played (the play facility), not the master facility.</p></li></ol><p><strong>Test 2: Course with no locale set</strong></p><ol><li><p>Book a tee time at a course that has no locale configured.</p></li><li><p>Open the course operator email.</p></li><li><p>Expected: the email is still sent, in the default language. No errors.</p></li></ol><p><strong>Test 3: Regular tee time (regression)</strong></p><ol><li><p>Book a normal tee time (not a trade/hot deal).</p></li><li><p>Open the course operator email and the customer confirmation.</p></li><li><p>Expected: language and content are the same as before this change.</p></li></ol><p><strong>Test 4: End-to-end notification check</strong></p><ol><li><p>Make a booking, then cancel it.</p></li><li><p>Expected: the related notification emails are sent and nothing is stuck in the queue.</p></li></ol><p><strong>Test 5: IsTrade attribute</strong></p><ol><li><p>Book a trade / hot-deal tee time that triggers an SFMC-sent notification. Note the reservation ID and the time of the booking.</p></li><li><p>Book a regular (non-trade) tee time. Note the reservation ID and the time of the booking.</p></li><li><p>Check <code>dbo.MessageAttribute</code> for the message created for each booking.</p></li><li><p>Expected: <code>IsTrade</code> is present on both messages, with a value of <code>true</code> for the trade booking and <code>false</code> for the regular booking.</p></li><li><p>Find the <code>RecipientSendId</code> SFMC returned for each send. It is stored in the <code>SendID</code> column of <code>dbo.Envelope</code> for that message.</p></li><li><p>Send the RecipientSendIds to the SFMC team and ask them to confirm the payloads for those sends include <code>IsTrade</code> with the same values. Include the reservation IDs and booking times as well, in case they help. SFMC can check at any time and report back.</p></li><li><p>If a send failed or no RecipientSendId was returned, flag the failed send instead of testing IsTrade on it.</p></li></ol>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14780?focusedCommentId=1226787",
-        "lastCommentDisplay": "Oct 5, 2026, 11:52 AM",
-        "lastCommentAuthor": "Tyler Olechnowicz",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "PO Review",
-        "priority": "P0",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Tyler Olechnowicz",
-        "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-        "updated": "2026-11-03T12:59:58.188-0500",
-        "updatedDisplay": "Nov 3, 2026, 12:59 PM",
-        "created": "2026-09-11T13:10:27.223-0400",
-        "createdDisplay": "Sep 11, 2026, 1:10 PM",
-        "components": [
-          "Database",
-          "GolfNow.Notification (Windows Service)",
-          "GolfNow.Services.Notification (Web)"
-        ],
-        "fixVersions": [
-          "v3001.130.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
         }
       },
       {
@@ -10032,121 +10247,6 @@
           "key": "CORE-13172",
           "url": "https://golfnow.atlassian.net/browse/CORE-13172",
           "summary": "Commerce Proxy API",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14851",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14851",
-        "summary": "Remove searchability of test facilities from GeoPlaces 2.0",
-        "description": "Remove searchability from the following in GeoPlaces 2.0:\n\n- Any facility containing the term “Pro Demo”\n\n- We have removed many of these but they keep making more\n\n- Any facility containing the word “Standalone”\n\n- fl_be_auto_ezrts_1 - FID 20444\n\n- Western Golf Demo - FID 21034\n\n- Manoir Richelieu Tadoussac-DEMO - FID 21075\n\n- Custom Connect Standard Demo - FID 21136\n\n- Kemper Demo - FID 21002",
-        "descriptionHtml": "<p>Remove searchability from the following in GeoPlaces 2.0:</p><ul><li><p>Any facility containing the term “Pro Demo”</p><ul><li><p>We have removed many of these but they keep making more</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14851/771651-image-20261007-164434.png\" alt=\"image-20261007-164434.png\" loading=\"lazy\"><figcaption>image-20261007-164434.png</figcaption></figure></div></li></ul></li><li><p>Any facility containing the word “Standalone” </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14851/771652-image-20261007-164414.png\" alt=\"image-20261007-164414.png\" loading=\"lazy\"><figcaption>image-20261007-164414.png</figcaption></figure></div></li><li><p>fl_be_auto_ezrts_1 - FID 20444</p></li><li><p>Western Golf Demo - FID 21034</p></li><li><p>Manoir Richelieu Tadoussac-DEMO - FID 21075</p></li><li><p>Custom Connect Standard Demo - FID 21136</p></li><li><p>Kemper Demo - FID 21002</p></li></ul>",
-        "descriptionImageCount": 2,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 2,
-        "commentCount": 4,
-        "comments": [
-          {
-            "id": "1228579",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14851?focusedCommentId=1228579",
-            "author": "Sebastian Calzadilla Gonzalez",
-            "authorAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
-            "created": "2026-10-08T14:34:58.264-0400",
-            "createdDisplay": "Oct 8, 2026, 2:34 PM",
-            "updated": "2026-10-08T14:35:11.270-0400",
-            "updatedDisplay": "Oct 8, 2026, 2:35 PM",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Found following records on STG and PRD. Confirming with Brian if it looks all good to disable for standalone and 'Pro Demo'",
-            "bodyHtml": "<p>Found following records on STG and PRD. Confirming with Brian if it looks all good to disable for standalone and 'Pro Demo'</p><p> </p><p> </p>"
-          },
-          {
-            "id": "1228603",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14851?focusedCommentId=1228603",
-            "author": "Sebastian Calzadilla Gonzalez",
-            "authorAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
-            "created": "2026-10-08T15:06:18.790-0400",
-            "createdDisplay": "Oct 8, 2026, 3:06 PM",
-            "updated": "2026-10-08T15:26:53.788-0400",
-            "updatedDisplay": "Oct 8, 2026, 3:26 PM",
-            "hasMedia": true,
-            "mediaCount": 4,
-            "body": "Attaching apply and rollback scripts for this effort\n\nPRD:\n\nSTG:",
-            "bodyHtml": "<p>Attaching apply and rollback scripts for this effort</p><p>PRD:</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14851/comments/1228603/771652-image-20261007-164414.png\" alt=\"image-20261007-164414.png\" loading=\"lazy\"><figcaption>image-20261007-164414.png</figcaption></figure><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14851/comments/1228603/771651-image-20261007-164434.png\" alt=\"image-20261007-164434.png\" loading=\"lazy\"><figcaption>image-20261007-164434.png</figcaption></figure></div><p>STG:</p><div class=\"description-media-group\"><a class=\"description-media-missing\" href=\"https://golfnow.atlassian.net/browse/CORE-14851?focusedCommentId=1228603\" target=\"_blank\" rel=\"noopener\">Jira description media could not be embedded. Open in Jira.</a><a class=\"description-media-missing\" href=\"https://golfnow.atlassian.net/browse/CORE-14851?focusedCommentId=1228603\" target=\"_blank\" rel=\"noopener\">Jira description media could not be embedded. Open in Jira.</a></div>"
-          },
-          {
-            "id": "1228610",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14851?focusedCommentId=1228610",
-            "author": "Sebastian Calzadilla Gonzalez",
-            "authorAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
-            "created": "2026-10-08T15:12:50.030-0400",
-            "createdDisplay": "Oct 8, 2026, 3:12 PM",
-            "updated": "2026-10-08T15:12:50.030-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Script applied to STG and PRD\n\n110 facilities disabled in STG\n\n16 facilities disabled in PRD",
-            "bodyHtml": "<p>Script applied to STG and PRD</p><p>110 facilities disabled in STG</p><p>16 facilities disabled in PRD</p>"
-          },
-          {
-            "id": "1228679",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14851?focusedCommentId=1228679",
-            "author": "Brian Pugh",
-            "authorAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-            "created": "2026-10-08T16:41:14.317-0400",
-            "createdDisplay": "Oct 8, 2026, 4:41 PM",
-            "updated": "2026-10-08T16:41:14.317-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Confirmed GeoPlaces results have been removed",
-            "bodyHtml": "<p>Confirmed GeoPlaces results have been removed</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14851?focusedCommentId=1228679",
-        "lastCommentDisplay": "Oct 8, 2026, 4:41 PM",
-        "lastCommentAuthor": "Brian Pugh",
-        "testChecklist": null,
-        "type": "Task",
-        "isSubtask": false,
-        "status": "PO Review",
-        "priority": "None",
-        "assignee": "Brian Pugh",
-        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-        "assignedDeveloper": "Sebastian Calzadilla Gonzalez",
-        "assignedDeveloperAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
-        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
-        "updated": "2026-10-27T08:02:13.973-0400",
-        "updatedDisplay": "Oct 27, 2026, 8:02 AM",
-        "created": "2026-10-07T12:41:33.102-0400",
-        "createdDisplay": "Oct 7, 2026, 12:41 PM",
-        "components": [
-          "Geoplaces"
-        ],
-        "fixVersions": [
-          "v3001.130.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
           "description": "",
           "type": "Epic",
           "status": "Backlog",
@@ -11663,106 +11763,6 @@
           "2026.8"
         ],
         "resolution": "Completed",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14882",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14882",
-        "summary": "Remove GeoPlaces searchability of Lavender Links Golf Club",
-        "description": "Remove the following facility from searchability:\n\n- Lavender Links Golf Club\n\n- FacilityId 19026",
-        "descriptionHtml": "<p>Remove the following facility from searchability:</p><ul><li><p>Lavender Links Golf Club</p></li><li><p>FacilityId 19026</p></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 3,
-        "comments": [
-          {
-            "id": "1234781",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14882?focusedCommentId=1234781",
-            "author": "Sebastian Calzadilla Gonzalez",
-            "authorAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
-            "created": "2026-10-22T15:54:25.934-0400",
-            "createdDisplay": "Oct 22, 2026, 3:54 PM",
-            "updated": "2026-10-22T15:54:25.934-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Attaching scripts to disable searchability for Lavender Links Golf Club Facility Id 19026",
-            "bodyHtml": "<p>Attaching scripts to disable searchability for Lavender Links Golf Club Facility Id 19026<br><br> </p>"
-          },
-          {
-            "id": "1234786",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14882?focusedCommentId=1234786",
-            "author": "Sebastian Calzadilla Gonzalez",
-            "authorAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
-            "created": "2026-10-22T15:59:39.130-0400",
-            "createdDisplay": "Oct 22, 2026, 3:59 PM",
-            "updated": "2026-10-22T15:59:39.130-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Ran apply script on STG and PRD",
-            "bodyHtml": "<p>Ran apply script on STG and PRD</p>"
-          },
-          {
-            "id": "1234844",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14882?focusedCommentId=1234844",
-            "author": "Brian Pugh",
-            "authorAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-            "created": "2026-10-22T17:22:55.180-0400",
-            "createdDisplay": "Oct 22, 2026, 5:22 PM",
-            "updated": "2026-10-22T17:22:55.180-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "confirmed the facility is removed from geoplaces",
-            "bodyHtml": "<p>confirmed the facility is removed from geoplaces</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14882?focusedCommentId=1234844",
-        "lastCommentDisplay": "Oct 22, 2026, 5:22 PM",
-        "lastCommentAuthor": "Brian Pugh",
-        "testChecklist": null,
-        "type": "Task",
-        "isSubtask": false,
-        "status": "Closed",
-        "priority": "None",
-        "assignee": "Unassigned",
-        "assigneeAccountId": "",
-        "assigneeAvatarUrl": "",
-        "assignedDeveloper": "Sebastian Calzadilla Gonzalez",
-        "assignedDeveloperAccountId": "712020:99d14cf5-150b-43f9-9207-31630f8747f0",
-        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/4bc51cc1e5078afe30e9a981c8f3cd62?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FSG-3.png",
-        "updated": "2026-10-26T15:35:50.176-0400",
-        "updatedDisplay": "Oct 26, 2026, 3:35 PM",
-        "created": "2026-10-22T13:17:40.890-0400",
-        "createdDisplay": "Oct 22, 2026, 1:17 PM",
-        "components": [
-          "Geoplaces"
-        ],
-        "fixVersions": [
-          "v3001.130.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "Done",
         "parent": {
           "key": "CORE-14268",
           "url": "https://golfnow.atlassian.net/browse/CORE-14268",
@@ -43726,13 +43726,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-03T18:55:42.218Z",
-    "pulledAtDisplay": "Nov 3, 2026, 1:55 PM",
+    "pulledAt": "2026-11-03T19:10:42.493Z",
+    "pulledAtDisplay": "Nov 3, 2026, 2:10 PM",
     "window": {
-      "start": "2026-09-19T18:55:42.217Z",
-      "end": "2027-05-02T18:55:42.217Z",
-      "startDisplay": "Sep 19, 2026, 2:55 PM",
-      "endDisplay": "May 2, 2027, 2:55 PM"
+      "start": "2026-09-19T19:10:42.493Z",
+      "end": "2027-05-02T19:10:42.493Z",
+      "startDisplay": "Sep 19, 2026, 3:10 PM",
+      "endDisplay": "May 2, 2027, 3:10 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43745,7 +43745,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-03T18:55:46.082Z",
+        "pulledAt": "2026-11-03T19:10:45.540Z",
         "eventCount": 58,
         "events": [
           {
@@ -44276,6 +44276,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN000 - v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44305,23 +44322,6 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN000 - v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44599,23 +44599,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "GN: v3001.133.0",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44628,6 +44611,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "GN: v3001.133.0",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44740,10 +44740,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-03T18:44:42.505Z",
-    "previousPulledAtDisplay": "Nov 3, 2026, 1:44 PM",
-    "currentPulledAt": "2026-11-03T18:57:29.429Z",
-    "currentPulledAtDisplay": "Nov 3, 2026, 1:57 PM",
+    "previousPulledAt": "2026-11-03T18:57:29.429Z",
+    "previousPulledAtDisplay": "Nov 3, 2026, 1:57 PM",
+    "currentPulledAt": "2026-11-03T19:13:19.902Z",
+    "currentPulledAtDisplay": "Nov 3, 2026, 2:13 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44751,6 +44751,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-03T18:57:29.429Z",
+      "previousPulledAtDisplay": "Nov 3, 2026, 1:57 PM",
+      "currentPulledAt": "2026-11-03T19:13:19.902Z",
+      "currentPulledAtDisplay": "Nov 3, 2026, 2:13 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-03T18:44:42.505Z",
       "previousPulledAtDisplay": "Nov 3, 2026, 1:44 PM",
@@ -46582,17 +46593,6 @@
       "previousPulledAtDisplay": "Nov 2, 2026, 9:37 PM",
       "currentPulledAt": "2026-11-03T02:43:11.840Z",
       "currentPulledAtDisplay": "Nov 2, 2026, 9:43 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-03T02:32:10.591Z",
-      "previousPulledAtDisplay": "Nov 2, 2026, 9:32 PM",
-      "currentPulledAt": "2026-11-03T02:37:15.893Z",
-      "currentPulledAtDisplay": "Nov 2, 2026, 9:37 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
