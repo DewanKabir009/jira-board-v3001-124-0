@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-04T00:52:16.651Z",
-  "pulledAtDisplay": "Nov 3, 2026, 7:52 PM",
+  "pulledAt": "2026-11-04T00:58:36.502Z",
+  "pulledAtDisplay": "Nov 3, 2026, 7:58 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-04T00:52:16.651Z",
-    "pulledAtDisplay": "Nov 3, 2026, 7:52 PM",
+    "pulledAt": "2026-11-04T00:58:36.502Z",
+    "pulledAtDisplay": "Nov 3, 2026, 7:58 PM",
     "total": 563,
     "mainTotal": 533,
     "subtaskTotal": 30,
@@ -8107,6 +8107,121 @@
         "parent": null
       },
       {
+        "key": "CORE-14805",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14805",
+        "summary": "GNC | Waivable and Refundable flags do not persist on Fee Configuration create or update",
+        "description": "Goal\n\nWaivable and Refundable settings must save to the database when a Fee Configuration is created or edited.\n\n---\nProblem\n\nIn GNC, saving a Fee Configuration with Waivable or Refundable unchecked does not update the stored values; the database remains unchanged. Tax Included does persist when toggled, isolating the failure to the Waivable and Refundable flags.\n\nNew configurations default both toggles on. If an admin turns either off and saves, the corresponding database field should be 0; if turned on, it should be 1.\n\n---\nBusiness Impact\n\n- Admins cannot reliably control whether a fee can be waived or refunded\n\n- Incorrect stored flags can cause fees to be waived or refunded contrary to the intended configuration\n\n- The UI gives no indication that the two settings failed to persist\n\n- The issue affects Fee Configuration create and update flows\n\n---\nRoot Cause\n\nThe GNC save path passes Waivable and Refundable values, but the database values do not change after save while Tax Included does. Prior investigation points to the FeeConfiguration upsert path; confirm the deployed service and database write behavior during implementation.\n\n---\nConfidence Boundaries\n\n- The exact production stored procedure update logic and deployed service version should be confirmed because the database routine is not in source control\n\n- Current evidence confirms the UI/database mismatch, but does not establish whether every configuration scope is affected\n\n---\nAcceptance Criteria\n\n- Creating a fee with Waivable unchecked stores IsWaivable = 0\n\n- Creating a fee with Refundable unchecked stores IsRefundable = 0\n\n- Creating a fee with either toggle checked stores the corresponding value as 1\n\n- Editing either toggle and saving persists the new value after reload\n\n- Tax Included continues to persist correctly when toggled on or off\n\n- Waivable and Refundable save behavior is verified for Owner, Facility, and Rate Set configurations\n\n---\nTest Matrix\n\nScenario\n\nExpected database result\n\nCreate with both toggles off\n\nIsWaivable = 0, IsRefundable = 0\n\nCreate with only Waivable on\n\nIsWaivable = 1, IsRefundable = 0\n\nCreate with only Refundable on\n\nIsWaivable = 0, IsRefundable = 1\n\nEdit either toggle off then save\n\nCorresponding field changes to 0\n\nEdit either toggle on then save\n\nCorresponding field changes to 1\n\nToggle Tax Included and save\n\nIsTaxIncluded continues to match the UI\n\n---\nTechnical Details\n\nThe existing technical writeup is attached and documents the GNC save path and prior FeeConfiguration upsert investigation. The new report confirms Tax Included updates while the Waivable and Refundable database values remain unchanged.\n\n---\nRelated Tickets\n\n- CORE-14564 - Added Waivable/Refundable checkboxes to GNC\n\n- CORE-14712 - Prior database adjustment for fee flags\n\n- CORE-14713 - Bound fee flags to frontend save payload\n\n- CORE-14510 - Plumbed fee flags through DAL and DTO",
+        "descriptionHtml": "<h3>Goal</h3><p>Waivable and Refundable settings must save to the database when a Fee Configuration is created or edited.</p><hr><h3>Problem</h3><p>In GNC, saving a Fee Configuration with Waivable or Refundable unchecked does not update the stored values; the database remains unchanged. Tax Included does persist when toggled, isolating the failure to the Waivable and Refundable flags.</p><p>New configurations default both toggles on. If an admin turns either off and saves, the corresponding database field should be 0; if turned on, it should be 1.</p><hr><h3>Business Impact</h3><ul><li><p>Admins cannot reliably control whether a fee can be waived or refunded</p></li><li><p>Incorrect stored flags can cause fees to be waived or refunded contrary to the intended configuration</p></li><li><p>The UI gives no indication that the two settings failed to persist</p></li><li><p>The issue affects Fee Configuration create and update flows</p></li></ul><hr><h3>Root Cause</h3><p>The GNC save path passes Waivable and Refundable values, but the database values do not change after save while Tax Included does. Prior investigation points to the FeeConfiguration upsert path; confirm the deployed service and database write behavior during implementation.</p><hr><h3>Confidence Boundaries</h3><ul><li><p>The exact production stored procedure update logic and deployed service version should be confirmed because the database routine is not in source control</p></li><li><p>Current evidence confirms the UI/database mismatch, but does not establish whether every configuration scope is affected</p></li></ul><hr><h3>Acceptance Criteria</h3><ul><li><p>Creating a fee with Waivable unchecked stores <code>IsWaivable = 0</code></p></li><li><p>Creating a fee with Refundable unchecked stores <code>IsRefundable = 0</code></p></li><li><p>Creating a fee with either toggle checked stores the corresponding value as 1</p></li><li><p>Editing either toggle and saving persists the new value after reload</p></li><li><p>Tax Included continues to persist correctly when toggled on or off</p></li><li><p>Waivable and Refundable save behavior is verified for Owner, Facility, and Rate Set configurations</p></li></ul><hr><h3>Test Matrix</h3><div class=\"description-table-wrap\"><table><tr><th><p>Scenario</p></th><th><p>Expected database result</p></th></tr><tr><td><p>Create with both toggles off</p></td><td><p><code>IsWaivable = 0</code>, <code>IsRefundable = 0</code></p></td></tr><tr><td><p>Create with only Waivable on</p></td><td><p><code>IsWaivable = 1</code>, <code>IsRefundable = 0</code></p></td></tr><tr><td><p>Create with only Refundable on</p></td><td><p><code>IsWaivable = 0</code>, <code>IsRefundable = 1</code></p></td></tr><tr><td><p>Edit either toggle off then save</p></td><td><p>Corresponding field changes to 0</p></td></tr><tr><td><p>Edit either toggle on then save</p></td><td><p>Corresponding field changes to 1</p></td></tr><tr><td><p>Toggle Tax Included and save</p></td><td><p><code>IsTaxIncluded</code> continues to match the UI</p></td></tr></table></div><hr><h3>Technical Details</h3><p>The existing technical writeup is attached and documents the GNC save path and prior FeeConfiguration upsert investigation. The new report confirms Tax Included updates while the Waivable and Refundable database values remain unchanged.</p><hr><h3>Related Tickets</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-14564\" target=\"_blank\" rel=\"noopener\">CORE-14564</a> - Added Waivable/Refundable checkboxes to GNC</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-14712\" target=\"_blank\" rel=\"noopener\">CORE-14712</a> - Prior database adjustment for fee flags</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-14713\" target=\"_blank\" rel=\"noopener\">CORE-14713</a> - Bound fee flags to frontend save payload</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-14510\" target=\"_blank\" rel=\"noopener\">CORE-14510</a> - Plumbed fee flags through DAL and DTO</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 4,
+        "comments": [
+          {
+            "id": "1226920",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14805?focusedCommentId=1226920",
+            "author": "Luis Vallejo Mursuli",
+            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+            "created": "2026-10-05T14:50:31.413-0400",
+            "createdDisplay": "Oct 5, 2026, 2:50 PM",
+            "updated": "2026-10-05T14:50:31.413-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "@Joshua Marquess ,\nI tried to replicate the issue in our sandbox environment and I couldn’t. Can you confirm with the business if this is still happening? I also reviewed top-down the code involved in the functionality and everything looks good from UI to DB.\nLooking forward to your comments",
+            "bodyHtml": "<p>@Joshua Marquess ,<br>I tried to replicate the issue in our sandbox environment and I couldn’t. Can you confirm with the business if this is still happening? I also reviewed top-down the code involved in the functionality and everything looks good from UI to DB.<br>Looking forward to your comments</p>"
+          },
+          {
+            "id": "1227047",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14805?focusedCommentId=1227047",
+            "author": "Luis Vallejo Mursuli",
+            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+            "created": "2026-10-05T17:54:17.879-0400",
+            "createdDisplay": "Oct 5, 2026, 5:54 PM",
+            "updated": "2026-10-05T17:54:17.879-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "This issue is fixed; we could not reproduce it.",
+            "bodyHtml": "<p>This issue is fixed; we could not reproduce it.</p>"
+          },
+          {
+            "id": "1230040",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14805?focusedCommentId=1230040",
+            "author": "Brian Pugh",
+            "authorAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
+            "created": "2026-10-13T13:41:32.146-0400",
+            "createdDisplay": "Oct 13, 2026, 1:41 PM",
+            "updated": "2026-10-13T13:41:32.146-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "@Luis Vallejo Mursuli @Yoel Martin Pardo @Joshua Marquess We found that this is working in DEV/STG but not working in prod. Yoel and I saw it with our own eyes are and are not going crazy. Can we please reopen this. We need to check both the Owner setting page and the Rate Set setting page to confirm they are both working and saving to the db and UI correctly.",
+            "bodyHtml": "<p>@Luis Vallejo Mursuli @Yoel Martin Pardo @Joshua Marquess We found that this is working in DEV/STG but not working in prod. Yoel and I saw it with our own eyes are and are not going crazy. Can we please reopen this. We need to check both the Owner setting page and the Rate Set setting page to confirm they are both working and saving to the db and UI correctly. </p>"
+          },
+          {
+            "id": "1230624",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14805?focusedCommentId=1230624",
+            "author": "Luis Vallejo Mursuli",
+            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+            "created": "2026-10-14T13:22:47.271-0400",
+            "createdDisplay": "Oct 14, 2026, 1:22 PM",
+            "updated": "2026-10-14T13:22:47.271-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "@Brian Pugh, after reviewing the Prod deployment logs and the components listed in the original ticket (https://golfnow.atlassian.net/browse/CORE-14564), we determined the functionality works in lower environments (AWS Dev and Stg) but not in Prod because the GolfNow.Services.GolfCourse service was not deployed in the release v3001.128.0. That happened because the component wasn’t included in the ticket’s component list. The recommended fix is to run the Prod deployment during the next suitable release window to avoid interruptions. The other components (GolfNowCentral and the DB changes) were deployed successfully in the release v3001.128.0 and are live in Prod.\n@Dewan Kabir, I can move this ticket to Regression Testing (STG) for a quick verification. According to @Brian Pugh, it works on STG. Please confirm if that works for you.",
+            "bodyHtml": "<p>@Brian Pugh, after reviewing the Prod deployment logs and the components listed in the original ticket (<a href=\"https://golfnow.atlassian.net/browse/CORE-14564\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/CORE-14564</a>), we determined the functionality works in lower environments (AWS Dev and Stg) but not in Prod because the <code>GolfNow.Services.GolfCourse</code> service was not deployed in the release <code>v3001.128.0</code>. That happened because the component wasn’t included in the ticket’s component list. The recommended fix is to run the Prod deployment during the next suitable release window to avoid interruptions. The other components (<code>GolfNowCentral</code> and the <code>DB changes</code>) were deployed successfully in the release <code>v3001.128.0</code> and are live in Prod.<br>@Dewan Kabir, I can move this ticket to <code>Regression Testing (STG)</code> for a quick verification. According to @Brian Pugh, it works on STG. Please confirm if that works for you.</p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14805?focusedCommentId=1230624",
+        "lastCommentDisplay": "Oct 14, 2026, 1:22 PM",
+        "lastCommentAuthor": "Luis Vallejo Mursuli",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Regression Testing (STG)",
+        "priority": "P1",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Luis Vallejo Mursuli",
+        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+        "updated": "2026-11-03T19:54:17.990-0500",
+        "updatedDisplay": "Nov 3, 2026, 7:54 PM",
+        "created": "2026-09-22T17:41:38.695-0400",
+        "createdDisplay": "Sep 22, 2026, 5:41 PM",
+        "components": [
+          "Database",
+          "GolfNow.Services.GolfCourse",
+          "GolfNowCentral"
+        ],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "Cannot Reproduce",
+        "parent": {
+          "key": "CORE-13901",
+          "url": "https://golfnow.atlassian.net/browse/CORE-13901",
+          "summary": "Customizable transaction fees",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "P1"
+        }
+      },
+      {
         "key": "CORE-14821",
         "url": "https://golfnow.atlassian.net/browse/CORE-14821",
         "summary": "GNC | Fee Configuration: ID search, facility-wide scope, and save failure after revenue allocation changes",
@@ -11422,121 +11537,6 @@
           "type": "Epic",
           "status": "Backlog",
           "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14805",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14805",
-        "summary": "GNC | Waivable/Refundable checkboxes on Fee Configuration don't persist on edit; also update unclear \"Waivable\" label text",
-        "description": "Goal\n\nEditing an existing Fee Configuration's Waivable or Refundable checkbox in GNC should actually persist the change, and the \"Waivable\" checkbox label should clearly state what it controls.\n\n---\nProblem\n\nWhen a user toggles the \"Waivable\" or \"Refundable\" checkbox on an existing Fee Configuration and saves, the change does not stick. The checkbox appears to save with no error, but the stored value is unchanged.\nThe TOGGLES below do not update the values:\n\n---\nBusiness Impact\n\n- Admins believe they've changed a fee's waivable/refundable behavior but the old value silently remains in effect\n\n- Affects any owner/facility/rate-set level fee configuration edited through GNC\n\n- No error is surfaced, so this can go unnoticed until a customer-facing discrepancy (wrong refund, wrong loyalty waiver) is reported\n\n---\nRoot Cause\n\nGolfCourse.FeeConfigurationUpsert only appears to act on @IsTaxIncluded in its update logic and ignores the @IsWaivable / @IsRefundable parameters, even though the C# caller (GolfCourseRepo.SetFeeConfiguration, GolfCourseRepo.cs ~line 1844) already passes all three flags on every call. See attached writeup for the confirmed C# code and the repro exec statement.\n\n---\nConfidence Boundaries\n\n- The stored procedure body itself isn't in source control, only in the live database, so the exact missing column list in the UPDATE/MERGE statement needs to be confirmed via SSMS (sp_helptext) before coding the fix\n\n- CORE-14712 (\"Core-14564-Database-Adjustment\") was supposed to cover this exact proc and is marked Closed, so this may be an incomplete fix from that ticket rather than a net-new regression\n\n---\nAcceptance Criteria\n\n- Toggling \"Waivable\" on an existing Fee Configuration and saving persists the new value on reload\n\n- Toggling \"Refundable\" on an existing Fee Configuration and saving persists the new value on reload\n\n- Existing behavior for IsTaxIncluded and Amount updates is unchanged\n\n- \"Waivable\" checkbox label text is updated to: \"Waived Fee Credits can be redeemed to fully discount this fee\" everywhere it appears (_AddFeeConfiguration.cshtml x3, _FeeRevenue.cshtml x1)\n\n---\nTechnical Details\n\nSee attached writeup for the confirmed C# parameter-passing code, repro exec statement, exact file/line references for the UI text (_AddFeeConfiguration.cshtml lines 704/811/939, _FeeRevenue.cshtml line 649), and suggested proc fix.\n\n---\nRelated Tickets\n\n- CORE-14564 - Added the Waivable/Refundable checkboxes to GNC\n\n- CORE-14712 - Prior attempt at updating FeeConfigurationSelect/Upsert for these columns\n\n- CORE-14713 - Bound the checkboxes to the GNC frontend save payload\n\n- CORE-14510 - Plumbed IsWaivable/IsRefundable through the DAL/DTO",
-        "descriptionHtml": "<h3>Goal</h3><p>Editing an existing Fee Configuration's Waivable or Refundable checkbox in GNC should actually persist the change, and the &quot;Waivable&quot; checkbox label should clearly state what it controls.</p><hr><h3>Problem</h3><p>When a user toggles the &quot;Waivable&quot; or &quot;Refundable&quot; checkbox on an existing Fee Configuration and saves, the change does not stick. The checkbox appears to save with no error, but the stored value is unchanged.<br>The TOGGLES below do not update the values:</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14805/768093-image-20260922-221026.png\" alt=\"image-20260922-221026.png\" loading=\"lazy\"><figcaption>image-20260922-221026.png</figcaption></figure></div><hr><h3>Business Impact</h3><ul><li><p>Admins believe they've changed a fee's waivable/refundable behavior but the old value silently remains in effect</p></li><li><p>Affects any owner/facility/rate-set level fee configuration edited through GNC</p></li><li><p>No error is surfaced, so this can go unnoticed until a customer-facing discrepancy (wrong refund, wrong loyalty waiver) is reported</p></li></ul><hr><h3>Root Cause</h3><p><code>GolfCourse.FeeConfigurationUpsert</code> only appears to act on <code>@IsTaxIncluded</code> in its update logic and ignores the <code>@IsWaivable</code> / <code>@IsRefundable</code> parameters, even though the C# caller (<code>GolfCourseRepo.SetFeeConfiguration</code>, <code>GolfCourseRepo.cs</code> ~line 1844) already passes all three flags on every call. See attached writeup for the confirmed C# code and the repro exec statement.</p><hr><h3>Confidence Boundaries</h3><ul><li><p>The stored procedure body itself isn't in source control, only in the live database, so the exact missing column list in the UPDATE/MERGE statement needs to be confirmed via SSMS (<code>sp_helptext</code>) before coding the fix</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-14712\" target=\"_blank\" rel=\"noopener\">CORE-14712</a> (&quot;Core-14564-Database-Adjustment&quot;) was supposed to cover this exact proc and is marked Closed, so this may be an incomplete fix from that ticket rather than a net-new regression</p></li></ul><hr><h3>Acceptance Criteria</h3><ul><li><p>Toggling &quot;Waivable&quot; on an existing Fee Configuration and saving persists the new value on reload</p></li><li><p>Toggling &quot;Refundable&quot; on an existing Fee Configuration and saving persists the new value on reload</p></li><li><p>Existing behavior for <code>IsTaxIncluded</code> and Amount updates is unchanged</p></li><li><p>&quot;Waivable&quot; checkbox label text is updated to: &quot;Waived Fee Credits can be redeemed to fully discount this fee&quot; everywhere it appears (<code>_AddFeeConfiguration.cshtml</code> x3, <code>_FeeRevenue.cshtml</code> x1)<br></p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14805/768094-image-20260922-220819.png\" alt=\"image-20260922-220819.png\" loading=\"lazy\"><figcaption>image-20260922-220819.png</figcaption></figure></div></li></ul><hr><h3>Technical Details</h3><p>See attached writeup for the confirmed C# parameter-passing code, repro <code>exec</code> statement, exact file/line references for the UI text (<code>_AddFeeConfiguration.cshtml</code> lines 704/811/939, <code>_FeeRevenue.cshtml</code> line 649), and suggested proc fix.</p><hr><h3>Related Tickets</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-14564\" target=\"_blank\" rel=\"noopener\">CORE-14564</a> - Added the Waivable/Refundable checkboxes to GNC</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-14712\" target=\"_blank\" rel=\"noopener\">CORE-14712</a> - Prior attempt at updating FeeConfigurationSelect/Upsert for these columns</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-14713\" target=\"_blank\" rel=\"noopener\">CORE-14713</a> - Bound the checkboxes to the GNC frontend save payload</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-14510\" target=\"_blank\" rel=\"noopener\">CORE-14510</a> - Plumbed IsWaivable/IsRefundable through the DAL/DTO</p></li></ul>",
-        "descriptionImageCount": 2,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 2,
-        "commentCount": 4,
-        "comments": [
-          {
-            "id": "1226920",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14805?focusedCommentId=1226920",
-            "author": "Luis Vallejo Mursuli",
-            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-            "created": "2026-10-05T14:50:31.413-0400",
-            "createdDisplay": "Oct 5, 2026, 2:50 PM",
-            "updated": "2026-10-05T14:50:31.413-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "@Joshua Marquess ,\nI tried to replicate the issue in our sandbox environment and I couldn’t. Can you confirm with the business if this is still happening? I also reviewed top-down the code involved in the functionality and everything looks good from UI to DB.\nLooking forward to your comments",
-            "bodyHtml": "<p>@Joshua Marquess ,<br>I tried to replicate the issue in our sandbox environment and I couldn’t. Can you confirm with the business if this is still happening? I also reviewed top-down the code involved in the functionality and everything looks good from UI to DB.<br>Looking forward to your comments</p>"
-          },
-          {
-            "id": "1227047",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14805?focusedCommentId=1227047",
-            "author": "Luis Vallejo Mursuli",
-            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-            "created": "2026-10-05T17:54:17.879-0400",
-            "createdDisplay": "Oct 5, 2026, 5:54 PM",
-            "updated": "2026-10-05T17:54:17.879-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "This issue is fixed; we could not reproduce it.",
-            "bodyHtml": "<p>This issue is fixed; we could not reproduce it.</p>"
-          },
-          {
-            "id": "1230040",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14805?focusedCommentId=1230040",
-            "author": "Brian Pugh",
-            "authorAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-            "created": "2026-10-13T13:41:32.146-0400",
-            "createdDisplay": "Oct 13, 2026, 1:41 PM",
-            "updated": "2026-10-13T13:41:32.146-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "@Luis Vallejo Mursuli @Yoel Martin Pardo @Joshua Marquess We found that this is working in DEV/STG but not working in prod. Yoel and I saw it with our own eyes are and are not going crazy. Can we please reopen this. We need to check both the Owner setting page and the Rate Set setting page to confirm they are both working and saving to the db and UI correctly.",
-            "bodyHtml": "<p>@Luis Vallejo Mursuli @Yoel Martin Pardo @Joshua Marquess We found that this is working in DEV/STG but not working in prod. Yoel and I saw it with our own eyes are and are not going crazy. Can we please reopen this. We need to check both the Owner setting page and the Rate Set setting page to confirm they are both working and saving to the db and UI correctly. </p>"
-          },
-          {
-            "id": "1230624",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14805?focusedCommentId=1230624",
-            "author": "Luis Vallejo Mursuli",
-            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-            "created": "2026-10-14T13:22:47.271-0400",
-            "createdDisplay": "Oct 14, 2026, 1:22 PM",
-            "updated": "2026-10-14T13:22:47.271-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "@Brian Pugh, after reviewing the Prod deployment logs and the components listed in the original ticket (https://golfnow.atlassian.net/browse/CORE-14564), we determined the functionality works in lower environments (AWS Dev and Stg) but not in Prod because the GolfNow.Services.GolfCourse service was not deployed in the release v3001.128.0. That happened because the component wasn’t included in the ticket’s component list. The recommended fix is to run the Prod deployment during the next suitable release window to avoid interruptions. The other components (GolfNowCentral and the DB changes) were deployed successfully in the release v3001.128.0 and are live in Prod.\n@Dewan Kabir, I can move this ticket to Regression Testing (STG) for a quick verification. According to @Brian Pugh, it works on STG. Please confirm if that works for you.",
-            "bodyHtml": "<p>@Brian Pugh, after reviewing the Prod deployment logs and the components listed in the original ticket (<a href=\"https://golfnow.atlassian.net/browse/CORE-14564\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/browse/CORE-14564</a>), we determined the functionality works in lower environments (AWS Dev and Stg) but not in Prod because the <code>GolfNow.Services.GolfCourse</code> service was not deployed in the release <code>v3001.128.0</code>. That happened because the component wasn’t included in the ticket’s component list. The recommended fix is to run the Prod deployment during the next suitable release window to avoid interruptions. The other components (<code>GolfNowCentral</code> and the <code>DB changes</code>) were deployed successfully in the release <code>v3001.128.0</code> and are live in Prod.<br>@Dewan Kabir, I can move this ticket to <code>Regression Testing (STG)</code> for a quick verification. According to @Brian Pugh, it works on STG. Please confirm if that works for you.</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14805?focusedCommentId=1230624",
-        "lastCommentDisplay": "Oct 14, 2026, 1:22 PM",
-        "lastCommentAuthor": "Luis Vallejo Mursuli",
-        "testChecklist": null,
-        "type": "Task",
-        "isSubtask": false,
-        "status": "Regression Testing (STG)",
-        "priority": "P1",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
-        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-10-27T08:01:29.863-0400",
-        "updatedDisplay": "Oct 27, 2026, 8:01 AM",
-        "created": "2026-09-22T17:41:38.695-0400",
-        "createdDisplay": "Sep 22, 2026, 5:41 PM",
-        "components": [
-          "Database",
-          "GolfNow.Services.GolfCourse",
-          "GolfNowCentral"
-        ],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "Cannot Reproduce",
-        "parent": {
-          "key": "CORE-13901",
-          "url": "https://golfnow.atlassian.net/browse/CORE-13901",
-          "summary": "Customizable transaction fees",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "P1"
         }
       },
       {
@@ -43728,13 +43728,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-04T00:50:36.931Z",
-    "pulledAtDisplay": "Nov 3, 2026, 7:50 PM",
+    "pulledAt": "2026-11-04T00:55:50.143Z",
+    "pulledAtDisplay": "Nov 3, 2026, 7:55 PM",
     "window": {
-      "start": "2026-09-20T00:50:36.930Z",
-      "end": "2027-05-03T00:50:36.930Z",
-      "startDisplay": "Sep 19, 2026, 8:50 PM",
-      "endDisplay": "May 2, 2027, 8:50 PM"
+      "start": "2026-09-20T00:55:50.142Z",
+      "end": "2027-05-03T00:55:50.142Z",
+      "startDisplay": "Sep 19, 2026, 8:55 PM",
+      "endDisplay": "May 2, 2027, 8:55 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43747,7 +43747,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-04T00:50:38.998Z",
+        "pulledAt": "2026-11-04T00:55:52.943Z",
         "eventCount": 58,
         "events": [
           {
@@ -44278,6 +44278,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN000 - v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44307,23 +44324,6 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN000 - v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44397,6 +44397,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44426,23 +44443,6 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44601,23 +44601,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "GN: v3001.133.0",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44630,6 +44613,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "GN: v3001.133.0",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44742,10 +44742,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-04T00:47:13.409Z",
-    "previousPulledAtDisplay": "Nov 3, 2026, 7:47 PM",
-    "currentPulledAt": "2026-11-04T00:52:16.651Z",
-    "currentPulledAtDisplay": "Nov 3, 2026, 7:52 PM",
+    "previousPulledAt": "2026-11-04T00:52:16.651Z",
+    "previousPulledAtDisplay": "Nov 3, 2026, 7:52 PM",
+    "currentPulledAt": "2026-11-04T00:58:36.502Z",
+    "currentPulledAtDisplay": "Nov 3, 2026, 7:58 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44753,6 +44753,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-04T00:52:16.651Z",
+      "previousPulledAtDisplay": "Nov 3, 2026, 7:52 PM",
+      "currentPulledAt": "2026-11-04T00:58:36.502Z",
+      "currentPulledAtDisplay": "Nov 3, 2026, 7:58 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-04T00:47:13.409Z",
       "previousPulledAtDisplay": "Nov 3, 2026, 7:47 PM",
@@ -46584,17 +46595,6 @@
       "previousPulledAtDisplay": "Nov 3, 2026, 1:09 AM",
       "currentPulledAt": "2026-11-03T06:17:53.599Z",
       "currentPulledAtDisplay": "Nov 3, 2026, 1:17 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-03T05:58:15.086Z",
-      "previousPulledAtDisplay": "Nov 3, 2026, 12:58 AM",
-      "currentPulledAt": "2026-11-03T06:09:38.173Z",
-      "currentPulledAtDisplay": "Nov 3, 2026, 1:09 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
