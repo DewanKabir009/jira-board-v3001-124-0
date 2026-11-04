@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-04T21:59:21.378Z",
-  "pulledAtDisplay": "Nov 4, 2026, 4:59 PM",
+  "pulledAt": "2026-11-04T22:03:45.742Z",
+  "pulledAtDisplay": "Nov 4, 2026, 5:03 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-04T21:59:21.378Z",
-    "pulledAtDisplay": "Nov 4, 2026, 4:59 PM",
+    "pulledAt": "2026-11-04T22:03:45.742Z",
+    "pulledAtDisplay": "Nov 4, 2026, 5:03 PM",
     "total": 564,
     "mainTotal": 534,
     "subtaskTotal": 30,
@@ -8107,6 +8107,56 @@
         "parent": null
       },
       {
+        "key": "CORE-14848",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14848",
+        "summary": "Rounding Error Causing $0.01 Difference Between Total Due & Total Paid",
+        "description": "Issue: There is a $0.01 difference between some total amounts paid versus the total amount actually due.\n\nLikely root cause: double rounding in tax-included pricing\n\nFile: Framework/GolfNow.Framework.Pricing/PricingEngine.cs, method ApplyOverrideIfNecessary (lines ~429-430 for greens fee, ~461-462 for cart fee)\n\nC#\n\ngreensFeeInvoiceItemDetail.TaxSummary.TaxableAmount = detail.IsTaxIncluded\n? Math.Round(detail.SubtotalDue / (1 + greensFeeInvoiceItemDetail.AlternateGreensFeeTaxRate.Value), 2)\n: greensFeeInvoiceItemDetail.TaxSummary.TaxableAmount;\ngreensFeeInvoiceItemDetail.TaxSummary.ActualTax = Math.Round(\n(greensFeeInvoiceItemDetail.TaxSummary.TaxableAmount * greensFeeInvoiceItemDetail.AlternateGreensFeeTaxRate.Value), 2);\n\nThe bug: For tax-included rates (alternate tax rate override path), the code backs out the taxable base by rounding SubtotalDue / (1 + rate) to 2 decimals, then separately rounds TaxableAmount * rate to get the displayed tax. detail.SubtotalDue itself (the real amount actually charged — what becomes GrandTotalDue / TotalAmountPaid) is never adjusted. Because each piece is rounded independently, TaxableAmount + ActualTax frequently doesn't equal the original SubtotalDue by exactly $0.01 — that breakdown is what's rendered on receipts/invoice summaries (e.g. _PricingSummary.cshtml's \"Total Amount Paid\" line and tax tooltip), while the actual total due is computed straight from SubtotalDue. Same pattern repeats for cart fee just below it.\n\nWhy this surfaces as \"Total Amount Paid vs actual total due off by $0.01\": The real charge/invoice total is unaffected and correct, but the displayed subtotal+tax decomposition drifts a penny from it — so reservation detail/reporting screens that sum the component parts (Framework/GolfNow.Framework.Pricing/Builders/TeeTimeInvoiceItemBuilder.cs also has a related double-round at lines 540 & 779-783 for nonRefundableTax) show a value that's $0.01 away from the invoice/GrandTotal.\n\nWhere it's consumed: DotNet2/RevenueManagementSystem/NBCU.Golf.RMS.Business/Service/ReservationService.cs lines ~4341/4372/4882 pulls GrandTotal from invoice.TotalDue.TotalDue and TotalAmountPaid from a separately-summed source (actual charges or Pricing.TotalAmountPaid) — these two numbers are computed via different paths, so any upstream penny drift from the tax rounding above becomes visible as a mismatch on the Reservation screen.",
+        "descriptionHtml": "<p><strong>Issue: </strong>There is a $0.01 difference between some total amounts paid versus the total amount actually due. </p><h3>Likely root cause: double rounding in tax-included pricing</h3><p><strong>File:</strong> <code>Framework/GolfNow.Framework.Pricing/PricingEngine.cs</code>, method <code>ApplyOverrideIfNecessary</code> (lines ~429-430 for greens fee, ~461-462 for cart fee)</p><p>C#</p><pre><code>greensFeeInvoiceItemDetail.TaxSummary.TaxableAmount = detail.IsTaxIncluded\n    ? Math.Round(detail.SubtotalDue / (1 + greensFeeInvoiceItemDetail.AlternateGreensFeeTaxRate.Value), 2)\n    : greensFeeInvoiceItemDetail.TaxSummary.TaxableAmount;\ngreensFeeInvoiceItemDetail.TaxSummary.ActualTax = Math.Round(\n    (greensFeeInvoiceItemDetail.TaxSummary.TaxableAmount * greensFeeInvoiceItemDetail.AlternateGreensFeeTaxRate.Value), 2);\n\n</code></pre><p><strong>The bug:</strong> For tax-included rates (alternate tax rate override path), the code backs out the taxable base by rounding <code>SubtotalDue / (1 + rate)</code> to 2 decimals, then separately rounds <code>TaxableAmount * rate</code> to get the displayed tax. <code>detail.SubtotalDue</code> itself (the real amount actually charged — what becomes <code>GrandTotalDue</code> / <code>TotalAmountPaid</code>) is <strong>never adjusted</strong>. Because each piece is rounded independently, <code>TaxableAmount + ActualTax</code> frequently doesn't equal the original <code>SubtotalDue</code> by exactly $0.01 — that breakdown is what's rendered on receipts/invoice summaries (e.g. <code>_PricingSummary.cshtml</code>'s &quot;Total Amount Paid&quot; line and tax tooltip), while the actual total due is computed straight from <code>SubtotalDue</code>. Same pattern repeats for cart fee just below it.</p><p><strong>Why this surfaces as &quot;Total Amount Paid vs actual total due off by $0.01&quot;:</strong> The real charge/invoice total is unaffected and correct, but the displayed subtotal+tax decomposition drifts a penny from it — so reservation detail/reporting screens that sum the component parts (<code>Framework/GolfNow.Framework.Pricing/Builders/TeeTimeInvoiceItemBuilder.cs</code> also has a related double-round at lines 540 &amp; 779-783 for <code>nonRefundableTax</code>) show a value that's $0.01 away from the invoice/GrandTotal.</p><p><strong>Where it's consumed:</strong> <code>DotNet2/RevenueManagementSystem/NBCU.Golf.RMS.Business/Service/ReservationService.cs</code> lines ~4341/4372/4882 pulls <code>GrandTotal</code> from <code>invoice.TotalDue.TotalDue</code> and <code>TotalAmountPaid</code> from a separately-summed source (actual charges or <code>Pricing.TotalAmountPaid</code>) — these two numbers are computed via different paths, so any upstream penny drift from the tax rounding above becomes visible as a mismatch on the Reservation screen.</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Research",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "None",
+        "assignee": "Corrie Moncada",
+        "assigneeAccountId": "6278785f0e2c490069024297",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/6278785f0e2c490069024297/9a824d75-70de-4965-81ef-ce64794798ce/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-11-04T16:59:57.877-0500",
+        "updatedDisplay": "Nov 4, 2026, 4:59 PM",
+        "created": "2026-10-05T15:46:23.496-0400",
+        "createdDisplay": "Oct 5, 2026, 3:46 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14857",
         "url": "https://golfnow.atlassian.net/browse/CORE-14857",
         "summary": "GNC Mass Cancellations | Show facility name and date range on the Cancel confirmation popup",
@@ -12935,56 +12985,6 @@
           "2026.8"
         ],
         "resolution": "Done",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14848",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14848",
-        "summary": "Rounding Error Causing $0.01 Difference Between Total Due & Total Paid",
-        "description": "Issue: There is a $0.01 difference between some total amounts paid versus the total amount actually due.\n\nLikely root cause: double rounding in tax-included pricing\n\nFile: Framework/GolfNow.Framework.Pricing/PricingEngine.cs, method ApplyOverrideIfNecessary (lines ~429-430 for greens fee, ~461-462 for cart fee)\n\nC#\n\ngreensFeeInvoiceItemDetail.TaxSummary.TaxableAmount = detail.IsTaxIncluded\n? Math.Round(detail.SubtotalDue / (1 + greensFeeInvoiceItemDetail.AlternateGreensFeeTaxRate.Value), 2)\n: greensFeeInvoiceItemDetail.TaxSummary.TaxableAmount;\ngreensFeeInvoiceItemDetail.TaxSummary.ActualTax = Math.Round(\n(greensFeeInvoiceItemDetail.TaxSummary.TaxableAmount * greensFeeInvoiceItemDetail.AlternateGreensFeeTaxRate.Value), 2);\n\nThe bug: For tax-included rates (alternate tax rate override path), the code backs out the taxable base by rounding SubtotalDue / (1 + rate) to 2 decimals, then separately rounds TaxableAmount * rate to get the displayed tax. detail.SubtotalDue itself (the real amount actually charged — what becomes GrandTotalDue / TotalAmountPaid) is never adjusted. Because each piece is rounded independently, TaxableAmount + ActualTax frequently doesn't equal the original SubtotalDue by exactly $0.01 — that breakdown is what's rendered on receipts/invoice summaries (e.g. _PricingSummary.cshtml's \"Total Amount Paid\" line and tax tooltip), while the actual total due is computed straight from SubtotalDue. Same pattern repeats for cart fee just below it.\n\nWhy this surfaces as \"Total Amount Paid vs actual total due off by $0.01\": The real charge/invoice total is unaffected and correct, but the displayed subtotal+tax decomposition drifts a penny from it — so reservation detail/reporting screens that sum the component parts (Framework/GolfNow.Framework.Pricing/Builders/TeeTimeInvoiceItemBuilder.cs also has a related double-round at lines 540 & 779-783 for nonRefundableTax) show a value that's $0.01 away from the invoice/GrandTotal.\n\nWhere it's consumed: DotNet2/RevenueManagementSystem/NBCU.Golf.RMS.Business/Service/ReservationService.cs lines ~4341/4372/4882 pulls GrandTotal from invoice.TotalDue.TotalDue and TotalAmountPaid from a separately-summed source (actual charges or Pricing.TotalAmountPaid) — these two numbers are computed via different paths, so any upstream penny drift from the tax rounding above becomes visible as a mismatch on the Reservation screen.",
-        "descriptionHtml": "<p><strong>Issue: </strong>There is a $0.01 difference between some total amounts paid versus the total amount actually due. </p><h3>Likely root cause: double rounding in tax-included pricing</h3><p><strong>File:</strong> <code>Framework/GolfNow.Framework.Pricing/PricingEngine.cs</code>, method <code>ApplyOverrideIfNecessary</code> (lines ~429-430 for greens fee, ~461-462 for cart fee)</p><p>C#</p><pre><code>greensFeeInvoiceItemDetail.TaxSummary.TaxableAmount = detail.IsTaxIncluded\n    ? Math.Round(detail.SubtotalDue / (1 + greensFeeInvoiceItemDetail.AlternateGreensFeeTaxRate.Value), 2)\n    : greensFeeInvoiceItemDetail.TaxSummary.TaxableAmount;\ngreensFeeInvoiceItemDetail.TaxSummary.ActualTax = Math.Round(\n    (greensFeeInvoiceItemDetail.TaxSummary.TaxableAmount * greensFeeInvoiceItemDetail.AlternateGreensFeeTaxRate.Value), 2);\n\n</code></pre><p><strong>The bug:</strong> For tax-included rates (alternate tax rate override path), the code backs out the taxable base by rounding <code>SubtotalDue / (1 + rate)</code> to 2 decimals, then separately rounds <code>TaxableAmount * rate</code> to get the displayed tax. <code>detail.SubtotalDue</code> itself (the real amount actually charged — what becomes <code>GrandTotalDue</code> / <code>TotalAmountPaid</code>) is <strong>never adjusted</strong>. Because each piece is rounded independently, <code>TaxableAmount + ActualTax</code> frequently doesn't equal the original <code>SubtotalDue</code> by exactly $0.01 — that breakdown is what's rendered on receipts/invoice summaries (e.g. <code>_PricingSummary.cshtml</code>'s &quot;Total Amount Paid&quot; line and tax tooltip), while the actual total due is computed straight from <code>SubtotalDue</code>. Same pattern repeats for cart fee just below it.</p><p><strong>Why this surfaces as &quot;Total Amount Paid vs actual total due off by $0.01&quot;:</strong> The real charge/invoice total is unaffected and correct, but the displayed subtotal+tax decomposition drifts a penny from it — so reservation detail/reporting screens that sum the component parts (<code>Framework/GolfNow.Framework.Pricing/Builders/TeeTimeInvoiceItemBuilder.cs</code> also has a related double-round at lines 540 &amp; 779-783 for <code>nonRefundableTax</code>) show a value that's $0.01 away from the invoice/GrandTotal.</p><p><strong>Where it's consumed:</strong> <code>DotNet2/RevenueManagementSystem/NBCU.Golf.RMS.Business/Service/ReservationService.cs</code> lines ~4341/4372/4882 pulls <code>GrandTotal</code> from <code>invoice.TotalDue.TotalDue</code> and <code>TotalAmountPaid</code> from a separately-summed source (actual charges or <code>Pricing.TotalAmountPaid</code>) — these two numbers are computed via different paths, so any upstream penny drift from the tax rounding above becomes visible as a mismatch on the Reservation screen.</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Research",
-        "isSubtask": false,
-        "status": "Pre Planning",
-        "priority": "None",
-        "assignee": "Corrie Moncada",
-        "assigneeAccountId": "6278785f0e2c490069024297",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/6278785f0e2c490069024297/9a824d75-70de-4965-81ef-ce64794798ce/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-10-08T17:20:56.795-0400",
-        "updatedDisplay": "Oct 8, 2026, 5:20 PM",
-        "created": "2026-10-05T15:46:23.496-0400",
-        "createdDisplay": "Oct 5, 2026, 3:46 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
         "parent": {
           "key": "CORE-14268",
           "url": "https://golfnow.atlassian.net/browse/CORE-14268",
@@ -43827,13 +43827,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-04T21:56:46.119Z",
-    "pulledAtDisplay": "Nov 4, 2026, 4:56 PM",
+    "pulledAt": "2026-11-04T22:01:32.557Z",
+    "pulledAtDisplay": "Nov 4, 2026, 5:01 PM",
     "window": {
-      "start": "2026-09-20T21:56:46.119Z",
-      "end": "2027-05-03T21:56:46.119Z",
-      "startDisplay": "Sep 20, 2026, 5:56 PM",
-      "endDisplay": "May 3, 2027, 5:56 PM"
+      "start": "2026-09-20T22:01:32.556Z",
+      "end": "2027-05-03T22:01:32.556Z",
+      "startDisplay": "Sep 20, 2026, 6:01 PM",
+      "endDisplay": "May 3, 2027, 6:01 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43846,7 +43846,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-04T21:56:51.551Z",
+        "pulledAt": "2026-11-04T22:01:35.009Z",
         "eventCount": 65,
         "events": [
           {
@@ -44428,6 +44428,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN000 - v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44457,23 +44474,6 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN000 - v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44581,6 +44581,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44610,23 +44627,6 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44751,23 +44751,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - US Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44780,6 +44763,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - US Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44819,23 +44819,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "GN: v3001.133.0",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44848,6 +44831,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "GN: v3001.133.0",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44960,10 +44960,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-04T21:54:24.886Z",
-    "previousPulledAtDisplay": "Nov 4, 2026, 4:54 PM",
-    "currentPulledAt": "2026-11-04T21:59:21.378Z",
-    "currentPulledAtDisplay": "Nov 4, 2026, 4:59 PM",
+    "previousPulledAt": "2026-11-04T21:59:21.378Z",
+    "previousPulledAtDisplay": "Nov 4, 2026, 4:59 PM",
+    "currentPulledAt": "2026-11-04T22:03:45.742Z",
+    "currentPulledAtDisplay": "Nov 4, 2026, 5:03 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44971,6 +44971,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-04T21:59:21.378Z",
+      "previousPulledAtDisplay": "Nov 4, 2026, 4:59 PM",
+      "currentPulledAt": "2026-11-04T22:03:45.742Z",
+      "currentPulledAtDisplay": "Nov 4, 2026, 5:03 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-04T21:54:24.886Z",
       "previousPulledAtDisplay": "Nov 4, 2026, 4:54 PM",
@@ -46802,17 +46813,6 @@
       "previousPulledAtDisplay": "Nov 4, 2026, 1:08 AM",
       "currentPulledAt": "2026-11-04T06:13:24.834Z",
       "currentPulledAtDisplay": "Nov 4, 2026, 1:13 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-04T06:03:03.071Z",
-      "previousPulledAtDisplay": "Nov 4, 2026, 1:03 AM",
-      "currentPulledAt": "2026-11-04T06:08:32.249Z",
-      "currentPulledAtDisplay": "Nov 4, 2026, 1:08 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
