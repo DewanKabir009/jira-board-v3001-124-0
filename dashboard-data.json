@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-04T23:43:35.957Z",
-  "pulledAtDisplay": "Nov 4, 2026, 6:43 PM",
+  "pulledAt": "2026-11-04T23:48:10.842Z",
+  "pulledAtDisplay": "Nov 4, 2026, 6:48 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-04T23:43:35.957Z",
-    "pulledAtDisplay": "Nov 4, 2026, 6:43 PM",
+    "pulledAt": "2026-11-04T23:48:10.842Z",
+    "pulledAtDisplay": "Nov 4, 2026, 6:48 PM",
     "total": 564,
     "mainTotal": 534,
     "subtaskTotal": 30,
@@ -8107,6 +8107,76 @@
         "parent": null
       },
       {
+        "key": "CORE-14943",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14943",
+        "summary": "Fee messaging displaying INTL TransFee when not applicable",
+        "description": "We are seeing that the INTL TransFee is displaying as part of the FeeMessaging totals when that fee amount is not applicable to the tee times.\n\n- Set up configuration\n\n- OwnerId 21201 - Or any Owner that has $0 transaction fee configured\n\n- Rate Set - Add a $1 INTL TransFee\n\n- Load tee time and make sure rate set is connected to 21201\n\n- The expectation of this configuration is that Owners like 21201 will have a $0 fee but when you hit the same tee time on an Owner like 331, the fee should display and be charged\n\n- Actual\n\n- On 21201 - Get Facility Summaries -Not Expected\n\n\"FeeMessagingFacilityDisplayRates\": {\n\"MaxPriceGreenFees\": 50.0000,\n\"MaxPriceTotal\": 51.0000,\n\"MaxPriceTransactionFee\": 1.0000,\n\"MinPriceGreenFees\": 50.0000,\n\"MinPriceTotal\": 51.0000,\n\"MinPriceTransactionFee\": 1.0000\n},\n\n- On 21201 - Get Tee Times by Facility - Not expected\n\n\"FeeMessagingDisplayRates\": {\n\"GreensFees\": 50.0000,\n\"TotalPrice\": 51.0000,\n\"TransactionFeesTotal\": 1.00\n},\n\n- On 21201 - Order Invoice - Expected\n\n{\n\"Discount\": 0,\n\"Distributions\": null,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 0.00,\n\"SalesTax\": 0,\n\"SubTotal\": 0.00,\n\"Total\": 0.00,\n\"DisplayText\": \"Convenience Fee\",\n\"IsTaxIncluded\": false,\n\"Key\": \"TRNFEE\",\n\"Type\": 2\n}\n\n- On 331 -  Get Tee Times by Facility - Expected\n\n\"FeeMessagingDisplayRates\": {\n\"GreensFees\": 50.0000,\n\"TotalPrice\": 51.0000,\n\"TransactionFeesTotal\": 1.00\n},\n\n- On 331 - Order Invoice - Expected\n\n],\n\"NonRefundableSalesTax\": 0.00,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 1.00,\n\"SalesTax\": 0.19,\n\"SubTotal\": 1.00,\n\"Total\": 1.19,\n\"DisplayText\": \"Convenience Fee\",\n\"IsTaxIncluded\": false,\n\"Key\": \"TRNFEE\",\n\"Type\": 2\n}",
+        "descriptionHtml": "<p>We are seeing that the INTL TransFee is displaying as part of the FeeMessaging totals when that fee amount is not applicable to the tee times.</p><ol><li><p>Set up configuration</p><ol><li><p>OwnerId 21201 - Or any Owner that has $0 transaction fee configured </p></li><li><p>Rate Set - Add a $1 INTL TransFee</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14943/777915-image-20261030-134032.png\" alt=\"image-20261030-134032.png\" loading=\"lazy\"><figcaption>image-20261030-134032.png</figcaption></figure></div></li><li><p>Load tee time and make sure rate set is connected to 21201</p></li><li><p>The expectation of this configuration is that Owners like 21201 will have a $0 fee but when you hit the same tee time on an Owner like 331, the fee should display and be charged</p></li></ol></li><li><p>Actual</p><ol><li><p>On 21201 - Get Facility Summaries -Not Expected</p><pre><code>            &quot;FeeMessagingFacilityDisplayRates&quot;: {\n                &quot;MaxPriceGreenFees&quot;: 50.0000,\n                &quot;MaxPriceTotal&quot;: 51.0000,\n                &quot;MaxPriceTransactionFee&quot;: 1.0000,\n                &quot;MinPriceGreenFees&quot;: 50.0000,\n                &quot;MinPriceTotal&quot;: 51.0000,\n                &quot;MinPriceTransactionFee&quot;: 1.0000\n            },</code></pre></li><li><p>On 21201 - Get Tee Times by Facility - Not expected</p><pre><code>                    &quot;FeeMessagingDisplayRates&quot;: {\n                        &quot;GreensFees&quot;: 50.0000,\n                        &quot;TotalPrice&quot;: 51.0000,\n                        &quot;TransactionFeesTotal&quot;: 1.00\n                    },</code></pre></li><li><p>On 21201 - Order Invoice - Expected</p><pre><code>                {\n                    &quot;Discount&quot;: 0,\n                    &quot;Distributions&quot;: null,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 0.00,\n                    &quot;SalesTax&quot;: 0,\n                    &quot;SubTotal&quot;: 0.00,\n                    &quot;Total&quot;: 0.00,\n                    &quot;DisplayText&quot;: &quot;Convenience Fee&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;TRNFEE&quot;,\n                    &quot;Type&quot;: 2\n                }</code></pre></li><li><p>On 331 -  Get Tee Times by Facility - Expected</p><pre><code>                    &quot;FeeMessagingDisplayRates&quot;: {\n                        &quot;GreensFees&quot;: 50.0000,\n                        &quot;TotalPrice&quot;: 51.0000,\n                        &quot;TransactionFeesTotal&quot;: 1.00\n                    },</code></pre></li><li><p>On 331 - Order Invoice - Expected</p><pre><code>                    ],\n                    &quot;NonRefundableSalesTax&quot;: 0.00,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 1.00,\n                    &quot;SalesTax&quot;: 0.19,\n                    &quot;SubTotal&quot;: 1.00,\n                    &quot;Total&quot;: 1.19,\n                    &quot;DisplayText&quot;: &quot;Convenience Fee&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;TRNFEE&quot;,\n                    &quot;Type&quot;: 2\n                }</code></pre></li></ol></li></ol>",
+        "descriptionImageCount": 1,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 1,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1240558",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14943?focusedCommentId=1240558",
+            "author": "Yoel Martin Pardo",
+            "authorAccountId": "625571809e7380006fb29599",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+            "created": "2026-11-04T18:43:46.005-0500",
+            "createdDisplay": "Nov 4, 2026, 6:43 PM",
+            "updated": "2026-11-04T18:43:46.005-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "PR: https://github.com/GolfNowEng/gn-main-db/pull/752",
+            "bodyHtml": "<p>PR: <a href=\"https://github.com/GolfNowEng/gn-main-db/pull/752\" target=\"_blank\" rel=\"noopener\">https://github.com/GolfNowEng/gn-main-db/pull/752</a> </p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14943?focusedCommentId=1240558",
+        "lastCommentDisplay": "Nov 4, 2026, 6:43 PM",
+        "lastCommentAuthor": "Yoel Martin Pardo",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Code Review",
+        "priority": "None",
+        "assignee": "Raghav Kancherla",
+        "assigneeAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "assignedDeveloperAccountId": "625571809e7380006fb29599",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "updated": "2026-11-04T18:44:15.806-0500",
+        "updatedDisplay": "Nov 4, 2026, 6:44 PM",
+        "created": "2026-10-30T09:38:02.767-0400",
+        "createdDisplay": "Oct 30, 2026, 9:38 AM",
+        "components": [
+          "Database"
+        ],
+        "fixVersions": [
+          "v3001.131.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14848",
         "url": "https://golfnow.atlassian.net/browse/CORE-14848",
         "summary": "Rounding Error Causing $0.01 Difference Between Total Due & Total Paid",
@@ -8774,56 +8844,6 @@
           "type": "Epic",
           "status": "Backlog",
           "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14943",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14943",
-        "summary": "Fee messaging displaying INTL TransFee when not applicable",
-        "description": "We are seeing that the INTL TransFee is displaying as part of the FeeMessaging totals when that fee amount is not applicable to the tee times.\n\n- Set up configuration\n\n- OwnerId 21201 - Or any Owner that has $0 transaction fee configured\n\n- Rate Set - Add a $1 INTL TransFee\n\n- Load tee time and make sure rate set is connected to 21201\n\n- The expectation of this configuration is that Owners like 21201 will have a $0 fee but when you hit the same tee time on an Owner like 331, the fee should display and be charged\n\n- Actual\n\n- On 21201 - Get Facility Summaries -Not Expected\n\n\"FeeMessagingFacilityDisplayRates\": {\n\"MaxPriceGreenFees\": 50.0000,\n\"MaxPriceTotal\": 51.0000,\n\"MaxPriceTransactionFee\": 1.0000,\n\"MinPriceGreenFees\": 50.0000,\n\"MinPriceTotal\": 51.0000,\n\"MinPriceTransactionFee\": 1.0000\n},\n\n- On 21201 - Get Tee Times by Facility - Not expected\n\n\"FeeMessagingDisplayRates\": {\n\"GreensFees\": 50.0000,\n\"TotalPrice\": 51.0000,\n\"TransactionFeesTotal\": 1.00\n},\n\n- On 21201 - Order Invoice - Expected\n\n{\n\"Discount\": 0,\n\"Distributions\": null,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 0.00,\n\"SalesTax\": 0,\n\"SubTotal\": 0.00,\n\"Total\": 0.00,\n\"DisplayText\": \"Convenience Fee\",\n\"IsTaxIncluded\": false,\n\"Key\": \"TRNFEE\",\n\"Type\": 2\n}\n\n- On 331 -  Get Tee Times by Facility - Expected\n\n\"FeeMessagingDisplayRates\": {\n\"GreensFees\": 50.0000,\n\"TotalPrice\": 51.0000,\n\"TransactionFeesTotal\": 1.00\n},\n\n- On 331 - Order Invoice - Expected\n\n],\n\"NonRefundableSalesTax\": 0.00,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 1.00,\n\"SalesTax\": 0.19,\n\"SubTotal\": 1.00,\n\"Total\": 1.19,\n\"DisplayText\": \"Convenience Fee\",\n\"IsTaxIncluded\": false,\n\"Key\": \"TRNFEE\",\n\"Type\": 2\n}",
-        "descriptionHtml": "<p>We are seeing that the INTL TransFee is displaying as part of the FeeMessaging totals when that fee amount is not applicable to the tee times.</p><ol><li><p>Set up configuration</p><ol><li><p>OwnerId 21201 - Or any Owner that has $0 transaction fee configured </p></li><li><p>Rate Set - Add a $1 INTL TransFee</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14943/777915-image-20261030-134032.png\" alt=\"image-20261030-134032.png\" loading=\"lazy\"><figcaption>image-20261030-134032.png</figcaption></figure></div></li><li><p>Load tee time and make sure rate set is connected to 21201</p></li><li><p>The expectation of this configuration is that Owners like 21201 will have a $0 fee but when you hit the same tee time on an Owner like 331, the fee should display and be charged</p></li></ol></li><li><p>Actual</p><ol><li><p>On 21201 - Get Facility Summaries -Not Expected</p><pre><code>            &quot;FeeMessagingFacilityDisplayRates&quot;: {\n                &quot;MaxPriceGreenFees&quot;: 50.0000,\n                &quot;MaxPriceTotal&quot;: 51.0000,\n                &quot;MaxPriceTransactionFee&quot;: 1.0000,\n                &quot;MinPriceGreenFees&quot;: 50.0000,\n                &quot;MinPriceTotal&quot;: 51.0000,\n                &quot;MinPriceTransactionFee&quot;: 1.0000\n            },</code></pre></li><li><p>On 21201 - Get Tee Times by Facility - Not expected</p><pre><code>                    &quot;FeeMessagingDisplayRates&quot;: {\n                        &quot;GreensFees&quot;: 50.0000,\n                        &quot;TotalPrice&quot;: 51.0000,\n                        &quot;TransactionFeesTotal&quot;: 1.00\n                    },</code></pre></li><li><p>On 21201 - Order Invoice - Expected</p><pre><code>                {\n                    &quot;Discount&quot;: 0,\n                    &quot;Distributions&quot;: null,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 0.00,\n                    &quot;SalesTax&quot;: 0,\n                    &quot;SubTotal&quot;: 0.00,\n                    &quot;Total&quot;: 0.00,\n                    &quot;DisplayText&quot;: &quot;Convenience Fee&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;TRNFEE&quot;,\n                    &quot;Type&quot;: 2\n                }</code></pre></li><li><p>On 331 -  Get Tee Times by Facility - Expected</p><pre><code>                    &quot;FeeMessagingDisplayRates&quot;: {\n                        &quot;GreensFees&quot;: 50.0000,\n                        &quot;TotalPrice&quot;: 51.0000,\n                        &quot;TransactionFeesTotal&quot;: 1.00\n                    },</code></pre></li><li><p>On 331 - Order Invoice - Expected</p><pre><code>                    ],\n                    &quot;NonRefundableSalesTax&quot;: 0.00,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 1.00,\n                    &quot;SalesTax&quot;: 0.19,\n                    &quot;SubTotal&quot;: 1.00,\n                    &quot;Total&quot;: 1.19,\n                    &quot;DisplayText&quot;: &quot;Convenience Fee&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;TRNFEE&quot;,\n                    &quot;Type&quot;: 2\n                }</code></pre></li></ol></li></ol>",
-        "descriptionImageCount": 1,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "Development",
-        "priority": "None",
-        "assignee": "Yoel Martin Pardo",
-        "assigneeAccountId": "625571809e7380006fb29599",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-11-04T08:59:07.546-0500",
-        "updatedDisplay": "Nov 4, 2026, 8:59 AM",
-        "created": "2026-10-30T09:38:02.767-0400",
-        "createdDisplay": "Oct 30, 2026, 9:38 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
         }
       },
       {
@@ -43827,13 +43847,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-04T23:41:29.828Z",
-    "pulledAtDisplay": "Nov 4, 2026, 6:41 PM",
+    "pulledAt": "2026-11-04T23:46:29.312Z",
+    "pulledAtDisplay": "Nov 4, 2026, 6:46 PM",
     "window": {
-      "start": "2026-09-20T23:41:29.828Z",
-      "end": "2027-05-03T23:41:29.828Z",
-      "startDisplay": "Sep 20, 2026, 7:41 PM",
-      "endDisplay": "May 3, 2027, 7:41 PM"
+      "start": "2026-09-20T23:46:29.312Z",
+      "end": "2027-05-03T23:46:29.312Z",
+      "startDisplay": "Sep 20, 2026, 7:46 PM",
+      "endDisplay": "May 3, 2027, 7:46 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43846,7 +43866,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-04T23:41:32.153Z",
+        "pulledAt": "2026-11-04T23:46:31.226Z",
         "eventCount": 64,
         "events": [
           {
@@ -44904,23 +44924,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.66",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-03T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-03",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 3, 2027",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44936,6 +44939,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.66",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-03T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-03",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 3, 2027",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -44943,10 +44963,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-04T23:39:08.380Z",
-    "previousPulledAtDisplay": "Nov 4, 2026, 6:39 PM",
-    "currentPulledAt": "2026-11-04T23:43:35.957Z",
-    "currentPulledAtDisplay": "Nov 4, 2026, 6:43 PM",
+    "previousPulledAt": "2026-11-04T23:43:35.957Z",
+    "previousPulledAtDisplay": "Nov 4, 2026, 6:43 PM",
+    "currentPulledAt": "2026-11-04T23:48:10.842Z",
+    "currentPulledAtDisplay": "Nov 4, 2026, 6:48 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44954,6 +44974,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-04T23:43:35.957Z",
+      "previousPulledAtDisplay": "Nov 4, 2026, 6:43 PM",
+      "currentPulledAt": "2026-11-04T23:48:10.842Z",
+      "currentPulledAtDisplay": "Nov 4, 2026, 6:48 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-04T23:39:08.380Z",
       "previousPulledAtDisplay": "Nov 4, 2026, 6:39 PM",
@@ -46785,17 +46816,6 @@
       "previousPulledAtDisplay": "Nov 4, 2026, 2:52 AM",
       "currentPulledAt": "2026-11-04T07:57:28.806Z",
       "currentPulledAtDisplay": "Nov 4, 2026, 2:57 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-04T07:47:43.615Z",
-      "previousPulledAtDisplay": "Nov 4, 2026, 2:47 AM",
-      "currentPulledAt": "2026-11-04T07:52:45.998Z",
-      "currentPulledAtDisplay": "Nov 4, 2026, 2:52 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
