@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-04T20:23:49.392Z",
-  "pulledAtDisplay": "Nov 4, 2026, 3:23 PM",
+  "pulledAt": "2026-11-04T20:29:25.521Z",
+  "pulledAtDisplay": "Nov 4, 2026, 3:29 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-04T20:23:49.392Z",
-    "pulledAtDisplay": "Nov 4, 2026, 3:23 PM",
+    "pulledAt": "2026-11-04T20:29:25.521Z",
+    "pulledAtDisplay": "Nov 4, 2026, 3:29 PM",
     "total": 564,
     "mainTotal": 534,
     "subtaskTotal": 30,
@@ -43827,13 +43827,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-04T20:21:33.978Z",
-    "pulledAtDisplay": "Nov 4, 2026, 3:21 PM",
+    "pulledAt": "2026-11-04T20:26:48.512Z",
+    "pulledAtDisplay": "Nov 4, 2026, 3:26 PM",
     "window": {
-      "start": "2026-09-20T20:21:33.977Z",
-      "end": "2027-05-03T20:21:33.977Z",
-      "startDisplay": "Sep 20, 2026, 4:21 PM",
-      "endDisplay": "May 3, 2027, 4:21 PM"
+      "start": "2026-09-20T20:26:48.512Z",
+      "end": "2027-05-03T20:26:48.512Z",
+      "startDisplay": "Sep 20, 2026, 4:26 PM",
+      "endDisplay": "May 3, 2027, 4:26 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43846,7 +43846,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-04T20:21:36.583Z",
+        "pulledAt": "2026-11-04T20:26:51.714Z",
         "eventCount": 65,
         "events": [
           {
@@ -44751,23 +44751,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44780,6 +44763,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44921,23 +44921,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Pro Dev/Stage Swap",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-10T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-10",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 10, 2027",
-            "allDay": true,
-            "type": "Scheduled Maintenance",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44953,6 +44936,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Pro Dev/Stage Swap",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-10T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-10",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 10, 2027",
+            "allDay": true,
+            "type": "Scheduled Maintenance",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -44960,10 +44960,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-04T20:18:32.165Z",
-    "previousPulledAtDisplay": "Nov 4, 2026, 3:18 PM",
-    "currentPulledAt": "2026-11-04T20:23:49.392Z",
-    "currentPulledAtDisplay": "Nov 4, 2026, 3:23 PM",
+    "previousPulledAt": "2026-11-04T20:23:49.392Z",
+    "previousPulledAtDisplay": "Nov 4, 2026, 3:23 PM",
+    "currentPulledAt": "2026-11-04T20:29:25.521Z",
+    "currentPulledAtDisplay": "Nov 4, 2026, 3:29 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -44971,6 +44971,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-04T20:23:49.392Z",
+      "previousPulledAtDisplay": "Nov 4, 2026, 3:23 PM",
+      "currentPulledAt": "2026-11-04T20:29:25.521Z",
+      "currentPulledAtDisplay": "Nov 4, 2026, 3:29 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-04T20:18:32.165Z",
       "previousPulledAtDisplay": "Nov 4, 2026, 3:18 PM",
@@ -46802,17 +46813,6 @@
       "previousPulledAtDisplay": "Nov 3, 2026, 11:33 PM",
       "currentPulledAt": "2026-11-04T04:37:21.485Z",
       "currentPulledAtDisplay": "Nov 3, 2026, 11:37 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-04T04:27:13.119Z",
-      "previousPulledAtDisplay": "Nov 3, 2026, 11:27 PM",
-      "currentPulledAt": "2026-11-04T04:33:16.569Z",
-      "currentPulledAtDisplay": "Nov 3, 2026, 11:33 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
