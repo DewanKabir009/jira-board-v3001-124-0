@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-05T19:38:18.357Z",
-  "pulledAtDisplay": "Nov 5, 2026, 2:38 PM",
+  "pulledAt": "2026-11-05T19:43:42.492Z",
+  "pulledAtDisplay": "Nov 5, 2026, 2:43 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-05T19:38:18.357Z",
-    "pulledAtDisplay": "Nov 5, 2026, 2:38 PM",
+    "pulledAt": "2026-11-05T19:43:42.492Z",
+    "pulledAtDisplay": "Nov 5, 2026, 2:43 PM",
     "total": 566,
     "mainTotal": 536,
     "subtaskTotal": 30,
@@ -8107,6 +8107,76 @@
         "parent": null
       },
       {
+        "key": "CORE-14949",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14949",
+        "summary": "Upgrade golfnow-external-notification to .NET 10 + gn-svc-auth clients",
+        "description": "Background\n\ngolfnow-external-notification (GolfNow.Services.ExternalNotification, ECS service extnotification, b2c-pci) runs GolfNow.Notification.WebApi on netcoreapp2.2 (EOL Dec 2019) using dotnet/core/*:2.2-bionic images (EOL OS). Auth uses the legacy Golf.Authentication/Authorization 3.0.0.2 + GolfNow.Auth.Client 2.2.0.6 stack.\n\nGoal: move to .NET 10 (LTS) with no change to external behavior, and migrate auth to the gn-svc-auth client packages.\n\nScope\n\n- Retarget WebApi + PushManagement.Business, Settings.Business, Firebase.CloudMessaging to net10.0 (PushManagement.Models / Api.Refit stay netstandard2.0 if consumed as NuGet packages).\n\n- Prune dead code: Admin.Web, FireBase.Test, PushManagement.Console, orphaned projects not in the .sln, empty MSTest project, Drone/Jenkins/k8s/legacy Dockerfile/docker-compose.\n\n- Build enablers: .slnx, global.json, Directory.Build.props, Central Package Management, pull-request.yml workflow, new xUnit test project.\n\n- Package upgrades: MongoDB.Driver 2.30.x (LINQ3 audit), Newtonsoft.Json 13.x + AddNewtonsoftJson() for wire compatibility, Swashbuckle latest, AutoMapper 14.x, FirebaseAdmin 3.x (FCM batch API → SendEach*), Golf.Helpers 3001.x.\n\n- Hosting: generic host, IWebHostEnvironment, endpoint routing, /health/alive.\n\n- Auth: Golf.* / GolfNow.Auth.Client → GolfNow.Services.Auth.Identity.ApplicationPrincipal + GolfNow.Services.Auth.Identity.CustomerPrincipal; [ApplicationPrincipalPermission] → [ApplicationPermission]; customer endpoints → [CustomerAuth]/[OptionalCustomerAuthorization]; config AuthService:* → Auth:ApplicationPrincipal / Auth:CustomerPrincipal.\n\n- Dockerfile-aws → dotnet/sdk:10.0 / aspnet:10.0, pinned Datadog.Trace.Bundle.\n\nOut of scope (follow-ups)\n\nFull gn-repo-standardize (layout/chiseled/Aspire), gn-ecs-migrate (ecs-service-fargate, Serilog/OTel), MongoDB.Driver 3.x, Golf.Logging/Helpers → GolfNow.Tools.*, rotating/purging committed Firebase service-account keys and secrets in appsettings.json.\n\nAcceptance Criteria\n\n- [ ] dotnet build and dotnet test on the .slnx are clean; PR workflow green.\n\n- [ ] docker build -f Dockerfile-aws succeeds; container starts; HEALTHCHECK and /health/alive pass.\n\n- [ ] No remaining references to netcoreapp, Golf.Authentication, Golf.Authorization, GolfNow.Auth.Client, IHostingEnvironment, UseMvc.\n\n- [ ] Automated tests cover: 401/200 on Notification Send/SendSilentPush (ApplicationPrincipal), 401/403/200 on Settings endpoints (permissions), customer-token auth on DeviceRegistration, LogError anonymous, JSON contract matches pre-upgrade baseline.\n\n- [ ] DEV: swagger.json diff vs. baseline shows only expected security-scheme/OpenAPI version changes; smoke tests pass for AP Basic, customer token, and permissioned settings calls; a real push reaches a QA device.\n\n- [ ] New Auth:* deploy variables / Secrets Manager entries exist in dev/stg/prd before each deploy.\n\n- [ ] Datadog shows .NET 10 runtime with no error spike for 24h in DEV, then STG soak before PRD.\n\nRisks\n\n- Semantics of legacy [CustomerAuthorization(false)] and claim-type/CustomerId parity between Golf.* and gn-svc-auth (device tokens are keyed by customerId).\n\n- How appsettings.release.json is loaded today.\n\n- FCM legacy batch API may already be failing in prod.\n\nNote: Built with Claude assistance (Claude Opus 5.5)",
+        "descriptionHtml": "<h3>Background</h3><p><code>golfnow-external-notification</code> (GolfNow.Services.ExternalNotification, ECS service <code>extnotification</code>, b2c-pci) runs <code>GolfNow.Notification.WebApi</code> on <strong>netcoreapp2.2</strong> (EOL Dec 2019) using <code>dotnet/core/*:2.2-bionic</code> images (EOL OS). Auth uses the legacy Golf.Authentication/Authorization 3.0.0.2 + GolfNow.Auth.Client 2.2.0.6 stack.</p><p>Goal: move to <strong>.NET 10 (LTS)</strong> with no change to external behavior, and migrate auth to the gn-svc-auth client packages.</p><h3>Scope</h3><ul><li><p>Retarget WebApi + PushManagement.Business, Settings.Business, Firebase.CloudMessaging to <code>net10.0</code> (PushManagement.Models / Api.Refit stay netstandard2.0 if consumed as NuGet packages).</p></li><li><p>Prune dead code: Admin.Web, FireBase.Test, PushManagement.Console, orphaned projects not in the .sln, empty MSTest project, Drone/Jenkins/k8s/legacy Dockerfile/docker-compose.</p></li><li><p>Build enablers: <code>.slnx</code>, <code>global.json</code>, <code>Directory.Build.props</code>, Central Package Management, <code>pull-request.yml</code> workflow, new xUnit test project.</p></li><li><p>Package upgrades: MongoDB.Driver 2.30.x (LINQ3 audit), Newtonsoft.Json 13.x + <code>AddNewtonsoftJson()</code> for wire compatibility, Swashbuckle latest, AutoMapper 14.x, FirebaseAdmin 3.x (FCM batch API → SendEach*), Golf.Helpers 3001.x.</p></li><li><p>Hosting: generic host, <code>IWebHostEnvironment</code>, endpoint routing, <code>/health/alive</code>.</p></li><li><p>Auth: Golf.* / GolfNow.Auth.Client → <code>GolfNow.Services.Auth.Identity.ApplicationPrincipal</code> + <code>GolfNow.Services.Auth.Identity.CustomerPrincipal</code>; <code>[ApplicationPrincipalPermission]</code> → <code>[ApplicationPermission]</code>; customer endpoints → <code>[CustomerAuth]</code>/<code>[OptionalCustomerAuthorization]</code>; config <code>AuthService:*</code> → <code>Auth:ApplicationPrincipal</code> / <code>Auth:CustomerPrincipal</code>.</p></li><li><p><code>Dockerfile-aws</code> → <code>dotnet/sdk:10.0</code> / <code>aspnet:10.0</code>, pinned Datadog.Trace.Bundle.</p></li></ul><h3>Out of scope (follow-ups)</h3><p>Full gn-repo-standardize (layout/chiseled/Aspire), gn-ecs-migrate (ecs-service-fargate, Serilog/OTel), MongoDB.Driver 3.x, Golf.Logging/Helpers → GolfNow.Tools.*, rotating/purging committed Firebase service-account keys and secrets in appsettings.json.</p><h3>Acceptance Criteria</h3><ul><li><p>[ ] <code>dotnet build</code> and <code>dotnet test</code> on the .slnx are clean; PR workflow green.</p></li><li><p>[ ] <code>docker build -f Dockerfile-aws</code> succeeds; container starts; HEALTHCHECK and <code>/health/alive</code> pass.</p></li><li><p>[ ] No remaining references to <code>netcoreapp</code>, <code>Golf.Authentication</code>, <code>Golf.Authorization</code>, <code>GolfNow.Auth.Client</code>, <code>IHostingEnvironment</code>, <code>UseMvc</code>.</p></li><li><p>[ ] Automated tests cover: 401/200 on Notification Send/SendSilentPush (ApplicationPrincipal), 401/403/200 on Settings endpoints (permissions), customer-token auth on DeviceRegistration, LogError anonymous, JSON contract matches pre-upgrade baseline.</p></li><li><p>[ ] DEV: swagger.json diff vs. baseline shows only expected security-scheme/OpenAPI version changes; smoke tests pass for AP Basic, customer token, and permissioned settings calls; a real push reaches a QA device.</p></li><li><p>[ ] New <code>Auth:*</code> deploy variables / Secrets Manager entries exist in dev/stg/prd before each deploy.</p></li><li><p>[ ] Datadog shows .NET 10 runtime with no error spike for 24h in DEV, then STG soak before PRD.</p></li></ul><h3>Risks</h3><ul><li><p>Semantics of legacy <code>[CustomerAuthorization(false)]</code> and claim-type/CustomerId parity between Golf.* and gn-svc-auth (device tokens are keyed by customerId).</p></li><li><p>How <code>appsettings.release.json</code> is loaded today.</p></li><li><p>FCM legacy batch API may already be failing in prod.</p></li></ul><p>Note: Built with Claude assistance (Claude Opus 5.5)</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1240952",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14949?focusedCommentId=1240952",
+            "author": "Daniel McNaughton",
+            "authorAccountId": "5a53cc00246f8c21033ff5a6",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+            "created": "2026-11-05T13:11:57.768-0500",
+            "createdDisplay": "Nov 5, 2026, 1:11 PM",
+            "updated": "2026-11-05T13:48:53.891-0500",
+            "updatedDisplay": "Nov 5, 2026, 1:48 PM",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Summary\n\nImplementation is complete on branch feature/CORE-14949-1, with 8 local commits. It has not been pushed and no PR is open yet. The service now runs on .NET 10 and uses the gn-svc-auth client packages.\n\n- Build: 0 errors and 72 warnings. Most are missing XML docs; the rest are deprecated APIs and un-awaited calls already logged in BUGLIST (BUG-007, BUG-008). None are security advisories.\n\n- Tests: 675 passing, including MongoDB integration tests via Testcontainers.\n\n- Packages: no vulnerable packages remain.\n\nChanges\n\n- Cleanup: removed 8 unused projects and the pre-ECS pipelines (Drone, Jenkins, k8s, docker-compose). Added .slnx, global.json and Central Package Management.\n\n- Libraries: now on net10.0. MongoDB is at 2.30, with LINQ2 kept so queries behave as before. FirebaseAdmin is at 3.7 and Refit at 11. NuGet.Packaging is removed (critical CVE).\n\n- AutoMapper: removed and replaced with hand-written converters. Comparing old and new output on 97 test cases found no differences. This clears the GHSA-rvv3-g6hj-g44x advisory and meets the coding standard.\n\n- Api.Refit package (2.0.0): repaired. Its JSON wire format is byte-identical to before.\n\n- WebApi: now on net10.0. Settings and DeviceRegistration keep their current access rules, and anonymous endpoints stay anonymous.\n\n- Send/SendSilentPush: now ApplicationPrincipal only. Customer, guest and GolfId tokens get 401.\n\n- Startup check: the app refuses to start if the auth config is missing or a deploy token was never filled in.\n\n- Container: .NET 10 images, a non-root user, a pinned Datadog tracer, and no credentials in any image layer.\n\n- CI: a new PR workflow runs the build, the tests, and a Docker build that doesn't push.\n\n- BUGLIST.md: added at the repo root. It tracks 21 findings and marks each one as fixed, accepted or open.\n\nDeploy prerequisites\n\nThe Auth sections in appsettings.release.json use the same tokens as golf-svc-loyalty:\n\n- #{AuthService.BaseUrl} is the org-wide token, used in 100+ repos.\n\n- The credentials reuse this service's existing AuthenticationService.* tokens.\n\nAt deploy time the workflow fills these tokens from Parameter Store and pushes the result to Secrets Manager, so nobody edits the secret by hand. Before the first deploy: confirm that AuthService.BaseUrl resolves for this app in dev, stg and prd. It is most likely an existing global parameter.\n\nBehavior changes (accepted, documented in BUGLIST)\n\n- Customer tokens on Send/SendSilentPush are now rejected. Previously any authenticated customer could call them. Check Datadog for customer-token callers before release.\n\n- 401 responses now return a JSON body and no WWW-Authenticate header.\n\n- swagger.json security is now [{}].\n\n- An invalid CustomerToken no longer falls back to GolfId, and GolfId customers are looked up by email.\n\nPull Request\n\nNot opened yet. Waiting on review of the local commits.\n\nNote: Built with Claude assistance (Claude Opus 5.5)",
+            "bodyHtml": "<h3>Summary</h3><p>Implementation is complete on branch <code>feature/CORE-14949-1</code>, with 8 local commits. <strong>It has not been pushed and no PR is open yet.</strong> The service now runs on .NET 10 and uses the gn-svc-auth client packages.</p><ul><li><p><strong>Build:</strong> 0 errors and 72 warnings. Most are missing XML docs; the rest are deprecated APIs and un-awaited calls already logged in BUGLIST (BUG-007, BUG-008). None are security advisories.</p></li><li><p><strong>Tests:</strong> 675 passing, including MongoDB integration tests via Testcontainers.</p></li><li><p><strong>Packages:</strong> no vulnerable packages remain.</p></li></ul><h3>Changes</h3><ul><li><p><strong>Cleanup:</strong> removed 8 unused projects and the pre-ECS pipelines (Drone, Jenkins, k8s, docker-compose). Added <code>.slnx</code>, <code>global.json</code> and Central Package Management.</p></li><li><p><strong>Libraries:</strong> now on net10.0. MongoDB is at 2.30, with LINQ2 kept so queries behave as before. FirebaseAdmin is at 3.7 and Refit at 11. NuGet.Packaging is removed (critical CVE).</p></li><li><p><strong>AutoMapper:</strong> removed and replaced with hand-written converters. Comparing old and new output on 97 test cases found no differences. This clears the GHSA-rvv3-g6hj-g44x advisory and meets the coding standard.</p></li><li><p><strong>Api.Refit package (2.0.0):</strong> repaired. Its JSON wire format is byte-identical to before.</p></li><li><p><strong>WebApi:</strong> now on net10.0. Settings and DeviceRegistration keep their current access rules, and anonymous endpoints stay anonymous.</p></li><li><p><strong>Send/SendSilentPush:</strong> now <strong>ApplicationPrincipal only</strong>. Customer, guest and GolfId tokens get 401.</p></li><li><p><strong>Startup check:</strong> the app refuses to start if the auth config is missing or a deploy token was never filled in.</p></li><li><p><strong>Container:</strong> .NET 10 images, a non-root user, a pinned Datadog tracer, and no credentials in any image layer.</p></li><li><p><strong>CI:</strong> a new PR workflow runs the build, the tests, and a Docker build that doesn't push.</p></li><li><p><code>BUGLIST.md</code>: added at the repo root. It tracks 21 findings and marks each one as fixed, accepted or open.</p></li></ul><h3>Deploy prerequisites</h3><p>The <code>Auth</code> sections in <code>appsettings.release.json</code> use the same tokens as golf-svc-loyalty:</p><ul><li><p><code>#{AuthService.BaseUrl}</code> is the org-wide token, used in 100+ repos.</p></li><li><p>The credentials reuse this service's existing <code>AuthenticationService.*</code> tokens.</p></li></ul><p>At deploy time the workflow fills these tokens from Parameter Store and pushes the result to Secrets Manager, so nobody edits the secret by hand. <strong>Before the first deploy:</strong> confirm that <code>AuthService.BaseUrl</code> resolves for this app in dev, stg and prd. It is most likely an existing global parameter.</p><h3>Behavior changes (accepted, documented in BUGLIST)</h3><ul><li><p>Customer tokens on Send/SendSilentPush are now rejected. Previously any authenticated customer could call them. Check Datadog for customer-token callers before release.</p></li><li><p>401 responses now return a JSON body and no <code>WWW-Authenticate</code> header.</p></li><li><p>swagger.json <code>security</code> is now <code>[{}]</code>.</p></li><li><p>An invalid CustomerToken no longer falls back to GolfId, and GolfId customers are looked up by email.</p></li></ul><h3>Pull Request</h3><p>Not opened yet. Waiting on review of the local commits.</p><p>Note: Built with Claude assistance (Claude Opus 5.5)</p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14949?focusedCommentId=1240952",
+        "lastCommentDisplay": "Nov 5, 2026, 1:11 PM",
+        "lastCommentAuthor": "Daniel McNaughton",
+        "testChecklist": null,
+        "type": "Task",
+        "isSubtask": false,
+        "status": "Code Review",
+        "priority": "None",
+        "assignee": "Tyler Olechnowicz",
+        "assigneeAccountId": "5d2396c1ea26c40c2043fc92",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+        "assignedDeveloper": "Daniel McNaughton",
+        "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+        "updated": "2026-11-05T14:37:59.501-0500",
+        "updatedDisplay": "Nov 5, 2026, 2:37 PM",
+        "created": "2026-11-04T12:02:57.176-0500",
+        "createdDisplay": "Nov 4, 2026, 12:02 PM",
+        "components": [
+          "Push Notification Service "
+        ],
+        "fixVersions": [
+          "v3001.131.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14950",
         "url": "https://golfnow.atlassian.net/browse/CORE-14950",
         "summary": "Home Course | Return RemainingChanges and MaxChangesAllowed from GetActiveCustomerHomeCourse",
@@ -8398,72 +8468,6 @@
           "key": "CORE-14301",
           "url": "https://golfnow.atlassian.net/browse/CORE-14301",
           "summary": "GolfPass \"Home Course\": Phase I",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14949",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14949",
-        "summary": "Upgrade golfnow-external-notification to .NET 10 + gn-svc-auth clients",
-        "description": "Background\n\ngolfnow-external-notification (GolfNow.Services.ExternalNotification, ECS service extnotification, b2c-pci) runs GolfNow.Notification.WebApi on netcoreapp2.2 (EOL Dec 2019) using dotnet/core/*:2.2-bionic images (EOL OS). Auth uses the legacy Golf.Authentication/Authorization 3.0.0.2 + GolfNow.Auth.Client 2.2.0.6 stack.\n\nGoal: move to .NET 10 (LTS) with no change to external behavior, and migrate auth to the gn-svc-auth client packages.\n\nScope\n\n- Retarget WebApi + PushManagement.Business, Settings.Business, Firebase.CloudMessaging to net10.0 (PushManagement.Models / Api.Refit stay netstandard2.0 if consumed as NuGet packages).\n\n- Prune dead code: Admin.Web, FireBase.Test, PushManagement.Console, orphaned projects not in the .sln, empty MSTest project, Drone/Jenkins/k8s/legacy Dockerfile/docker-compose.\n\n- Build enablers: .slnx, global.json, Directory.Build.props, Central Package Management, pull-request.yml workflow, new xUnit test project.\n\n- Package upgrades: MongoDB.Driver 2.30.x (LINQ3 audit), Newtonsoft.Json 13.x + AddNewtonsoftJson() for wire compatibility, Swashbuckle latest, AutoMapper 14.x, FirebaseAdmin 3.x (FCM batch API → SendEach*), Golf.Helpers 3001.x.\n\n- Hosting: generic host, IWebHostEnvironment, endpoint routing, /health/alive.\n\n- Auth: Golf.* / GolfNow.Auth.Client → GolfNow.Services.Auth.Identity.ApplicationPrincipal + GolfNow.Services.Auth.Identity.CustomerPrincipal; [ApplicationPrincipalPermission] → [ApplicationPermission]; customer endpoints → [CustomerAuth]/[OptionalCustomerAuthorization]; config AuthService:* → Auth:ApplicationPrincipal / Auth:CustomerPrincipal.\n\n- Dockerfile-aws → dotnet/sdk:10.0 / aspnet:10.0, pinned Datadog.Trace.Bundle.\n\nOut of scope (follow-ups)\n\nFull gn-repo-standardize (layout/chiseled/Aspire), gn-ecs-migrate (ecs-service-fargate, Serilog/OTel), MongoDB.Driver 3.x, Golf.Logging/Helpers → GolfNow.Tools.*, rotating/purging committed Firebase service-account keys and secrets in appsettings.json.\n\nAcceptance Criteria\n\n- [ ] dotnet build and dotnet test on the .slnx are clean; PR workflow green.\n\n- [ ] docker build -f Dockerfile-aws succeeds; container starts; HEALTHCHECK and /health/alive pass.\n\n- [ ] No remaining references to netcoreapp, Golf.Authentication, Golf.Authorization, GolfNow.Auth.Client, IHostingEnvironment, UseMvc.\n\n- [ ] Automated tests cover: 401/200 on Notification Send/SendSilentPush (ApplicationPrincipal), 401/403/200 on Settings endpoints (permissions), customer-token auth on DeviceRegistration, LogError anonymous, JSON contract matches pre-upgrade baseline.\n\n- [ ] DEV: swagger.json diff vs. baseline shows only expected security-scheme/OpenAPI version changes; smoke tests pass for AP Basic, customer token, and permissioned settings calls; a real push reaches a QA device.\n\n- [ ] New Auth:* deploy variables / Secrets Manager entries exist in dev/stg/prd before each deploy.\n\n- [ ] Datadog shows .NET 10 runtime with no error spike for 24h in DEV, then STG soak before PRD.\n\nRisks\n\n- Semantics of legacy [CustomerAuthorization(false)] and claim-type/CustomerId parity between Golf.* and gn-svc-auth (device tokens are keyed by customerId).\n\n- How appsettings.release.json is loaded today.\n\n- FCM legacy batch API may already be failing in prod.\n\nNote: Built with Claude assistance (Claude Opus 5.5)",
-        "descriptionHtml": "<h3>Background</h3><p><code>golfnow-external-notification</code> (GolfNow.Services.ExternalNotification, ECS service <code>extnotification</code>, b2c-pci) runs <code>GolfNow.Notification.WebApi</code> on <strong>netcoreapp2.2</strong> (EOL Dec 2019) using <code>dotnet/core/*:2.2-bionic</code> images (EOL OS). Auth uses the legacy Golf.Authentication/Authorization 3.0.0.2 + GolfNow.Auth.Client 2.2.0.6 stack.</p><p>Goal: move to <strong>.NET 10 (LTS)</strong> with no change to external behavior, and migrate auth to the gn-svc-auth client packages.</p><h3>Scope</h3><ul><li><p>Retarget WebApi + PushManagement.Business, Settings.Business, Firebase.CloudMessaging to <code>net10.0</code> (PushManagement.Models / Api.Refit stay netstandard2.0 if consumed as NuGet packages).</p></li><li><p>Prune dead code: Admin.Web, FireBase.Test, PushManagement.Console, orphaned projects not in the .sln, empty MSTest project, Drone/Jenkins/k8s/legacy Dockerfile/docker-compose.</p></li><li><p>Build enablers: <code>.slnx</code>, <code>global.json</code>, <code>Directory.Build.props</code>, Central Package Management, <code>pull-request.yml</code> workflow, new xUnit test project.</p></li><li><p>Package upgrades: MongoDB.Driver 2.30.x (LINQ3 audit), Newtonsoft.Json 13.x + <code>AddNewtonsoftJson()</code> for wire compatibility, Swashbuckle latest, AutoMapper 14.x, FirebaseAdmin 3.x (FCM batch API → SendEach*), Golf.Helpers 3001.x.</p></li><li><p>Hosting: generic host, <code>IWebHostEnvironment</code>, endpoint routing, <code>/health/alive</code>.</p></li><li><p>Auth: Golf.* / GolfNow.Auth.Client → <code>GolfNow.Services.Auth.Identity.ApplicationPrincipal</code> + <code>GolfNow.Services.Auth.Identity.CustomerPrincipal</code>; <code>[ApplicationPrincipalPermission]</code> → <code>[ApplicationPermission]</code>; customer endpoints → <code>[CustomerAuth]</code>/<code>[OptionalCustomerAuthorization]</code>; config <code>AuthService:*</code> → <code>Auth:ApplicationPrincipal</code> / <code>Auth:CustomerPrincipal</code>.</p></li><li><p><code>Dockerfile-aws</code> → <code>dotnet/sdk:10.0</code> / <code>aspnet:10.0</code>, pinned Datadog.Trace.Bundle.</p></li></ul><h3>Out of scope (follow-ups)</h3><p>Full gn-repo-standardize (layout/chiseled/Aspire), gn-ecs-migrate (ecs-service-fargate, Serilog/OTel), MongoDB.Driver 3.x, Golf.Logging/Helpers → GolfNow.Tools.*, rotating/purging committed Firebase service-account keys and secrets in appsettings.json.</p><h3>Acceptance Criteria</h3><ul><li><p>[ ] <code>dotnet build</code> and <code>dotnet test</code> on the .slnx are clean; PR workflow green.</p></li><li><p>[ ] <code>docker build -f Dockerfile-aws</code> succeeds; container starts; HEALTHCHECK and <code>/health/alive</code> pass.</p></li><li><p>[ ] No remaining references to <code>netcoreapp</code>, <code>Golf.Authentication</code>, <code>Golf.Authorization</code>, <code>GolfNow.Auth.Client</code>, <code>IHostingEnvironment</code>, <code>UseMvc</code>.</p></li><li><p>[ ] Automated tests cover: 401/200 on Notification Send/SendSilentPush (ApplicationPrincipal), 401/403/200 on Settings endpoints (permissions), customer-token auth on DeviceRegistration, LogError anonymous, JSON contract matches pre-upgrade baseline.</p></li><li><p>[ ] DEV: swagger.json diff vs. baseline shows only expected security-scheme/OpenAPI version changes; smoke tests pass for AP Basic, customer token, and permissioned settings calls; a real push reaches a QA device.</p></li><li><p>[ ] New <code>Auth:*</code> deploy variables / Secrets Manager entries exist in dev/stg/prd before each deploy.</p></li><li><p>[ ] Datadog shows .NET 10 runtime with no error spike for 24h in DEV, then STG soak before PRD.</p></li></ul><h3>Risks</h3><ul><li><p>Semantics of legacy <code>[CustomerAuthorization(false)]</code> and claim-type/CustomerId parity between Golf.* and gn-svc-auth (device tokens are keyed by customerId).</p></li><li><p>How <code>appsettings.release.json</code> is loaded today.</p></li><li><p>FCM legacy batch API may already be failing in prod.</p></li></ul><p>Note: Built with Claude assistance (Claude Opus 5.5)</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1240952",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14949?focusedCommentId=1240952",
-            "author": "Daniel McNaughton",
-            "authorAccountId": "5a53cc00246f8c21033ff5a6",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-            "created": "2026-11-05T13:11:57.768-0500",
-            "createdDisplay": "Nov 5, 2026, 1:11 PM",
-            "updated": "2026-11-05T13:48:53.891-0500",
-            "updatedDisplay": "Nov 5, 2026, 1:48 PM",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Summary\n\nImplementation is complete on branch feature/CORE-14949-1, with 8 local commits. It has not been pushed and no PR is open yet. The service now runs on .NET 10 and uses the gn-svc-auth client packages.\n\n- Build: 0 errors and 72 warnings. Most are missing XML docs; the rest are deprecated APIs and un-awaited calls already logged in BUGLIST (BUG-007, BUG-008). None are security advisories.\n\n- Tests: 675 passing, including MongoDB integration tests via Testcontainers.\n\n- Packages: no vulnerable packages remain.\n\nChanges\n\n- Cleanup: removed 8 unused projects and the pre-ECS pipelines (Drone, Jenkins, k8s, docker-compose). Added .slnx, global.json and Central Package Management.\n\n- Libraries: now on net10.0. MongoDB is at 2.30, with LINQ2 kept so queries behave as before. FirebaseAdmin is at 3.7 and Refit at 11. NuGet.Packaging is removed (critical CVE).\n\n- AutoMapper: removed and replaced with hand-written converters. Comparing old and new output on 97 test cases found no differences. This clears the GHSA-rvv3-g6hj-g44x advisory and meets the coding standard.\n\n- Api.Refit package (2.0.0): repaired. Its JSON wire format is byte-identical to before.\n\n- WebApi: now on net10.0. Settings and DeviceRegistration keep their current access rules, and anonymous endpoints stay anonymous.\n\n- Send/SendSilentPush: now ApplicationPrincipal only. Customer, guest and GolfId tokens get 401.\n\n- Startup check: the app refuses to start if the auth config is missing or a deploy token was never filled in.\n\n- Container: .NET 10 images, a non-root user, a pinned Datadog tracer, and no credentials in any image layer.\n\n- CI: a new PR workflow runs the build, the tests, and a Docker build that doesn't push.\n\n- BUGLIST.md: added at the repo root. It tracks 21 findings and marks each one as fixed, accepted or open.\n\nDeploy prerequisites\n\nThe Auth sections in appsettings.release.json use the same tokens as golf-svc-loyalty:\n\n- #{AuthService.BaseUrl} is the org-wide token, used in 100+ repos.\n\n- The credentials reuse this service's existing AuthenticationService.* tokens.\n\nAt deploy time the workflow fills these tokens from Parameter Store and pushes the result to Secrets Manager, so nobody edits the secret by hand. Before the first deploy: confirm that AuthService.BaseUrl resolves for this app in dev, stg and prd. It is most likely an existing global parameter.\n\nBehavior changes (accepted, documented in BUGLIST)\n\n- Customer tokens on Send/SendSilentPush are now rejected. Previously any authenticated customer could call them. Check Datadog for customer-token callers before release.\n\n- 401 responses now return a JSON body and no WWW-Authenticate header.\n\n- swagger.json security is now [{}].\n\n- An invalid CustomerToken no longer falls back to GolfId, and GolfId customers are looked up by email.\n\nPull Request\n\nNot opened yet. Waiting on review of the local commits.\n\nNote: Built with Claude assistance (Claude Opus 5.5)",
-            "bodyHtml": "<h3>Summary</h3><p>Implementation is complete on branch <code>feature/CORE-14949-1</code>, with 8 local commits. <strong>It has not been pushed and no PR is open yet.</strong> The service now runs on .NET 10 and uses the gn-svc-auth client packages.</p><ul><li><p><strong>Build:</strong> 0 errors and 72 warnings. Most are missing XML docs; the rest are deprecated APIs and un-awaited calls already logged in BUGLIST (BUG-007, BUG-008). None are security advisories.</p></li><li><p><strong>Tests:</strong> 675 passing, including MongoDB integration tests via Testcontainers.</p></li><li><p><strong>Packages:</strong> no vulnerable packages remain.</p></li></ul><h3>Changes</h3><ul><li><p><strong>Cleanup:</strong> removed 8 unused projects and the pre-ECS pipelines (Drone, Jenkins, k8s, docker-compose). Added <code>.slnx</code>, <code>global.json</code> and Central Package Management.</p></li><li><p><strong>Libraries:</strong> now on net10.0. MongoDB is at 2.30, with LINQ2 kept so queries behave as before. FirebaseAdmin is at 3.7 and Refit at 11. NuGet.Packaging is removed (critical CVE).</p></li><li><p><strong>AutoMapper:</strong> removed and replaced with hand-written converters. Comparing old and new output on 97 test cases found no differences. This clears the GHSA-rvv3-g6hj-g44x advisory and meets the coding standard.</p></li><li><p><strong>Api.Refit package (2.0.0):</strong> repaired. Its JSON wire format is byte-identical to before.</p></li><li><p><strong>WebApi:</strong> now on net10.0. Settings and DeviceRegistration keep their current access rules, and anonymous endpoints stay anonymous.</p></li><li><p><strong>Send/SendSilentPush:</strong> now <strong>ApplicationPrincipal only</strong>. Customer, guest and GolfId tokens get 401.</p></li><li><p><strong>Startup check:</strong> the app refuses to start if the auth config is missing or a deploy token was never filled in.</p></li><li><p><strong>Container:</strong> .NET 10 images, a non-root user, a pinned Datadog tracer, and no credentials in any image layer.</p></li><li><p><strong>CI:</strong> a new PR workflow runs the build, the tests, and a Docker build that doesn't push.</p></li><li><p><code>BUGLIST.md</code>: added at the repo root. It tracks 21 findings and marks each one as fixed, accepted or open.</p></li></ul><h3>Deploy prerequisites</h3><p>The <code>Auth</code> sections in <code>appsettings.release.json</code> use the same tokens as golf-svc-loyalty:</p><ul><li><p><code>#{AuthService.BaseUrl}</code> is the org-wide token, used in 100+ repos.</p></li><li><p>The credentials reuse this service's existing <code>AuthenticationService.*</code> tokens.</p></li></ul><p>At deploy time the workflow fills these tokens from Parameter Store and pushes the result to Secrets Manager, so nobody edits the secret by hand. <strong>Before the first deploy:</strong> confirm that <code>AuthService.BaseUrl</code> resolves for this app in dev, stg and prd. It is most likely an existing global parameter.</p><h3>Behavior changes (accepted, documented in BUGLIST)</h3><ul><li><p>Customer tokens on Send/SendSilentPush are now rejected. Previously any authenticated customer could call them. Check Datadog for customer-token callers before release.</p></li><li><p>401 responses now return a JSON body and no <code>WWW-Authenticate</code> header.</p></li><li><p>swagger.json <code>security</code> is now <code>[{}]</code>.</p></li><li><p>An invalid CustomerToken no longer falls back to GolfId, and GolfId customers are looked up by email.</p></li></ul><h3>Pull Request</h3><p>Not opened yet. Waiting on review of the local commits.</p><p>Note: Built with Claude assistance (Claude Opus 5.5)</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14949?focusedCommentId=1240952",
-        "lastCommentDisplay": "Nov 5, 2026, 1:11 PM",
-        "lastCommentAuthor": "Daniel McNaughton",
-        "testChecklist": null,
-        "type": "Task",
-        "isSubtask": false,
-        "status": "Development",
-        "priority": "None",
-        "assignee": "Daniel McNaughton",
-        "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-        "assignedDeveloper": "Daniel McNaughton",
-        "assignedDeveloperAccountId": "5a53cc00246f8c21033ff5a6",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
-        "updated": "2026-11-05T14:32:55.861-0500",
-        "updatedDisplay": "Nov 5, 2026, 2:32 PM",
-        "created": "2026-11-04T12:02:57.176-0500",
-        "createdDisplay": "Nov 4, 2026, 12:02 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
           "description": "",
           "type": "Epic",
           "status": "Backlog",
@@ -44261,13 +44265,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-05T19:36:28.109Z",
-    "pulledAtDisplay": "Nov 5, 2026, 2:36 PM",
+    "pulledAt": "2026-11-05T19:41:35.780Z",
+    "pulledAtDisplay": "Nov 5, 2026, 2:41 PM",
     "window": {
-      "start": "2026-09-21T19:36:28.109Z",
-      "end": "2027-05-04T19:36:28.109Z",
-      "startDisplay": "Sep 21, 2026, 3:36 PM",
-      "endDisplay": "May 4, 2027, 3:36 PM"
+      "start": "2026-09-21T19:41:35.779Z",
+      "end": "2027-05-04T19:41:35.779Z",
+      "startDisplay": "Sep 21, 2026, 3:41 PM",
+      "endDisplay": "May 4, 2027, 3:41 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44280,7 +44284,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-05T19:36:33.023Z",
+        "pulledAt": "2026-11-05T19:41:37.865Z",
         "eventCount": 65,
         "events": [
           {
@@ -44828,6 +44832,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN000 - v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44857,23 +44878,6 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN000 - v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45185,23 +45189,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - US Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45214,6 +45201,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - US Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45253,23 +45257,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "GN: v3001.133.0",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45282,6 +45269,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "GN: v3001.133.0",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45355,23 +45359,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Pro Dev/Stage Swap",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-10T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-10",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 10, 2027",
-            "allDay": true,
-            "type": "Scheduled Maintenance",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45387,6 +45374,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Pro Dev/Stage Swap",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-10T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-10",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 10, 2027",
+            "allDay": true,
+            "type": "Scheduled Maintenance",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -45394,10 +45398,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-05T19:33:49.980Z",
-    "previousPulledAtDisplay": "Nov 5, 2026, 2:33 PM",
-    "currentPulledAt": "2026-11-05T19:38:18.357Z",
-    "currentPulledAtDisplay": "Nov 5, 2026, 2:38 PM",
+    "previousPulledAt": "2026-11-05T19:38:18.357Z",
+    "previousPulledAtDisplay": "Nov 5, 2026, 2:38 PM",
+    "currentPulledAt": "2026-11-05T19:43:42.492Z",
+    "currentPulledAtDisplay": "Nov 5, 2026, 2:43 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45405,6 +45409,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-05T19:38:18.357Z",
+      "previousPulledAtDisplay": "Nov 5, 2026, 2:38 PM",
+      "currentPulledAt": "2026-11-05T19:43:42.492Z",
+      "currentPulledAtDisplay": "Nov 5, 2026, 2:43 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-05T19:33:49.980Z",
       "previousPulledAtDisplay": "Nov 5, 2026, 2:33 PM",
@@ -47236,17 +47251,6 @@
       "previousPulledAtDisplay": "Nov 5, 2026, 12:08 AM",
       "currentPulledAt": "2026-11-05T05:13:31.385Z",
       "currentPulledAtDisplay": "Nov 5, 2026, 12:13 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-05T05:03:27.527Z",
-      "previousPulledAtDisplay": "Nov 5, 2026, 12:03 AM",
-      "currentPulledAt": "2026-11-05T05:08:10.583Z",
-      "currentPulledAtDisplay": "Nov 5, 2026, 12:08 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
