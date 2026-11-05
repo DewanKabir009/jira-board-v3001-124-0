@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-05T14:43:52.130Z",
-  "pulledAtDisplay": "Nov 5, 2026, 9:43 AM",
+  "pulledAt": "2026-11-05T14:48:56.997Z",
+  "pulledAtDisplay": "Nov 5, 2026, 9:48 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-05T14:43:52.130Z",
-    "pulledAtDisplay": "Nov 5, 2026, 9:43 AM",
+    "pulledAt": "2026-11-05T14:48:56.997Z",
+    "pulledAtDisplay": "Nov 5, 2026, 9:48 AM",
     "total": 565,
     "mainTotal": 535,
     "subtaskTotal": 30,
@@ -8107,6 +8107,56 @@
         "parent": null
       },
       {
+        "key": "CORE-14950",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14950",
+        "summary": "Home Course | Return RemainingChanges and MaxChangesAllowed from GetActiveCustomerHomeCourse",
+        "description": "Goal\n\nWhen asked for change counts, GetActiveCustomerHomeCourse returns the customer's real remaining and maximum home course changes, so clients can show \"X of Y changes left\" accurately.\n\n---\nProblem\n\nWith includeChangeCount=true, the API 2.1 endpoint builds the counts by calling ValidateHomeCourseEligibility(customerNumber, 2) against a hard-coded, disabled test facility. That method only fills in RemainingChanges and MaxChangesAllowed on its success path. Every early return leaves them at 0, so the counts come back as 0 when:\n\n- facility 2 is the customer's current home course\n\n- facility 2 is excluded\n\n- any other eligibility check fails\n\nCustomers can be told they have no changes left when they do.\n\n---\nBusiness Impact\n\n- Members see wrong change counts, which can stop them from changing their home course\n\n- Member Care gets avoidable support contacts\n\n- The API depends on a hard-coded test facility, which is fragile\n\n---\nProposed Change\n\nCustomer service (GolfNow.API.Customer)\n\n- Add an opt-in IncludeChangeCounts flag (default false) to GetActiveCustomerHomeCourseRequest.\n\n- Add a ChangeCounts { RemainingChanges, MaxChangesAllowed } object to the active home course response.\n\n- When the flag is true, compute the counts from the customer's current home course period. Share that lookup with ValidateHomeCourseEligibility.\n\n- When the flag is false, ChangeCounts is null and no extra DB round-trips are made.\n\nAPI 2.1 (GolfNowAPI)\n\n- Pass includeChangeCount through to the Customer service and map the returned ChangeCounts.\n\n- Remove the ValidateHomeCourseEligibility(customerNumber, 2) workaround.\n\nProxies\n\n- Regenerate the RMS / GNC CustService service reference.\n\n- Regenerate the GolfNow.API.Client proxy.\n\n- Review both diffs for unrelated contract changes.\n\n---\nAcceptance Criteria\n\n- With the flag true, ChangeCounts matches the customer's current period: MaxChangesAllowed = 2, and RemainingChanges = 2 minus the changes the customer made (never below 0). Changes made by support staff don't count.\n\n- The counts are correct even when facility 2 is the customer's home course or is excluded.\n\n- With the flag false (the default), ChangeCounts is null and no extra DB calls are made.\n\n- When the customer has no active home course, both the Customer service endpoint and the API 2.1 endpoint return null, so there is no ChangeCounts. This applies even when the flag is true.\n\n- Existing callers that don't send the flag (MakeReservation workflow, InvoiceService, InventoryChannel, SetCustomerHomeCourse, GNC) behave exactly as before.\n\n- The RMS CustService proxy and the GolfNow.API.Client proxy are regenerated, and both solutions build.\n\n- Unit tests cover the provider (HomeCourseProviderTests) and the converter (HomeCourseConverterTests).\n\n---\nTechnical Details\n\n- Customer service: HomeCourseProvider.GetActiveCustomerHomeCourse and ValidateHomeCourseEligibility, GetActiveCustomerHomeCourseRequest, the HomeCourse contracts in GolfNow.Services.Customer.Common, CustomerService.svc.cs\n\n- API 2.1: GolfNowAPI.Customers.cs (GetActiveCustomerHomeCourse), CustomerServiceFacade, HomeCourseConverter\n\n- RMS: NBCU.Golf.RMS.Business/Service References/CustService/Reference.cs, CustomerService.GetActiveCustomerHomeCourse\n\n- The contract change is additive and opt-in.\n\n- Deployment order: GolfNow.API.Customer before GolfNowAPI and GNC.\n\n---\nRelated Tickets\n\n- CORE-14301 — GolfPass \"Home Course\": Phase I (epic)",
+        "descriptionHtml": "<h3>Goal</h3><p>When asked for change counts, <code>GetActiveCustomerHomeCourse</code> returns the customer's real remaining and maximum home course changes, so clients can show &quot;X of Y changes left&quot; accurately.</p><hr><h3>Problem</h3><p>With <code>includeChangeCount=true</code>, the API 2.1 endpoint builds the counts by calling <code>ValidateHomeCourseEligibility(customerNumber, 2)</code> against a hard-coded, disabled test facility. That method only fills in <code>RemainingChanges</code> and <code>MaxChangesAllowed</code> on its success path. Every early return leaves them at 0, so the counts come back as 0 when:</p><ul><li><p>facility 2 is the customer's current home course</p></li><li><p>facility 2 is excluded</p></li><li><p>any other eligibility check fails</p></li></ul><p>Customers can be told they have no changes left when they do.</p><hr><h3>Business Impact</h3><ul><li><p>Members see wrong change counts, which can stop them from changing their home course</p></li><li><p>Member Care gets avoidable support contacts</p></li><li><p>The API depends on a hard-coded test facility, which is fragile</p></li></ul><hr><h3>Proposed Change</h3><p><strong>Customer service (GolfNow.API.Customer)</strong></p><ul><li><p>Add an opt-in <code>IncludeChangeCounts</code> flag (default <code>false</code>) to <code>GetActiveCustomerHomeCourseRequest</code>.</p></li><li><p>Add a <code>ChangeCounts { RemainingChanges, MaxChangesAllowed }</code> object to the active home course response.</p></li><li><p>When the flag is <code>true</code>, compute the counts from the customer's current home course period. Share that lookup with <code>ValidateHomeCourseEligibility</code>.</p></li><li><p>When the flag is <code>false</code>, <code>ChangeCounts</code> is <code>null</code> and no extra DB round-trips are made.</p></li></ul><p><strong>API 2.1 (GolfNowAPI)</strong></p><ul><li><p>Pass <code>includeChangeCount</code> through to the Customer service and map the returned <code>ChangeCounts</code>.</p></li><li><p>Remove the <code>ValidateHomeCourseEligibility(customerNumber, 2)</code> workaround.</p></li></ul><p><strong>Proxies</strong></p><ul><li><p>Regenerate the RMS / GNC <code>CustService</code> service reference.</p></li><li><p>Regenerate the <code>GolfNow.API.Client</code> proxy.</p></li><li><p>Review both diffs for unrelated contract changes.</p></li></ul><hr><h3>Acceptance Criteria</h3><ul><li><p>With the flag <code>true</code>, <code>ChangeCounts</code> matches the customer's current period: <code>MaxChangesAllowed</code> = 2, and <code>RemainingChanges</code> = 2 minus the changes the customer made (never below 0). Changes made by support staff don't count.</p></li><li><p>The counts are correct even when facility 2 is the customer's home course or is excluded.</p></li><li><p>With the flag <code>false</code> (the default), <code>ChangeCounts</code> is <code>null</code> and no extra DB calls are made.</p></li><li><p>When the customer has no active home course, both the Customer service endpoint and the API 2.1 endpoint return <code>null</code>, so there is no <code>ChangeCounts</code>. This applies even when the flag is <code>true</code>.</p></li><li><p>Existing callers that don't send the flag (MakeReservation workflow, InvoiceService, InventoryChannel, SetCustomerHomeCourse, GNC) behave exactly as before.</p></li><li><p>The RMS <code>CustService</code> proxy and the <code>GolfNow.API.Client</code> proxy are regenerated, and both solutions build.</p></li><li><p>Unit tests cover the provider (<code>HomeCourseProviderTests</code>) and the converter (<code>HomeCourseConverterTests</code>).</p></li></ul><hr><h3>Technical Details</h3><ul><li><p>Customer service: <code>HomeCourseProvider.GetActiveCustomerHomeCourse</code> and <code>ValidateHomeCourseEligibility</code>, <code>GetActiveCustomerHomeCourseRequest</code>, the HomeCourse contracts in <code>GolfNow.Services.Customer.Common</code>, <code>CustomerService.svc.cs</code></p></li><li><p>API 2.1: <code>GolfNowAPI.Customers.cs</code> (<code>GetActiveCustomerHomeCourse</code>), <code>CustomerServiceFacade</code>, <code>HomeCourseConverter</code></p></li><li><p>RMS: <code>NBCU.Golf.RMS.Business/Service References/CustService/Reference.cs</code>, <code>CustomerService.GetActiveCustomerHomeCourse</code></p></li><li><p>The contract change is additive and opt-in.</p></li><li><p><strong>Deployment order:</strong> GolfNow.API.Customer before GolfNowAPI and GNC.</p></li></ul><hr><h3>Related Tickets</h3><ul><li><p>CORE-14301 — GolfPass &quot;Home Course&quot;: Phase I (epic)</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Development",
+        "priority": "P2",
+        "assignee": "Luis Vallejo Mursuli",
+        "assigneeAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+        "assignedDeveloper": "Luis Vallejo Mursuli",
+        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+        "updated": "2026-11-05T09:45:53.041-0500",
+        "updatedDisplay": "Nov 5, 2026, 9:45 AM",
+        "created": "2026-11-04T19:49:32.142-0500",
+        "createdDisplay": "Nov 4, 2026, 7:49 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14301",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14301",
+          "summary": "GolfPass \"Home Course\": Phase I",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14852",
         "url": "https://golfnow.atlassian.net/browse/CORE-14852",
         "summary": "PFA Bonuses Being Awarded Before Play Date",
@@ -8200,56 +8250,6 @@
           "key": "CORE-14268",
           "url": "https://golfnow.atlassian.net/browse/CORE-14268",
           "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14950",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14950",
-        "summary": "Home Course | Return RemainingChanges and MaxChangesAllowed from GetActiveCustomerHomeCourse",
-        "description": "Goal\n\nWhen asked for change counts, GetActiveCustomerHomeCourse returns the customer's real remaining and maximum home course changes, so clients can show \"X of Y changes left\" accurately.\n\n---\nProblem\n\nWith includeChangeCount=true, the API 2.1 endpoint builds the counts by calling ValidateHomeCourseEligibility(customerNumber, 2) against a hard-coded, disabled test facility. That method only fills in RemainingChanges and MaxChangesAllowed on its success path. Every early return leaves them at 0, so the counts come back as 0 when:\n\n- facility 2 is the customer's current home course\n\n- facility 2 is excluded\n\n- any other eligibility check fails\n\nCustomers can be told they have no changes left when they do.\n\n---\nBusiness Impact\n\n- Members see wrong change counts, which can stop them from changing their home course\n\n- Member Care gets avoidable support contacts\n\n- The API depends on a hard-coded test facility, which is fragile\n\n---\nProposed Change\n\nCustomer service (GolfNow.API.Customer)\n\n- Add an opt-in IncludeChangeCounts flag (default false) to GetActiveCustomerHomeCourseRequest.\n\n- Add a ChangeCounts { RemainingChanges, MaxChangesAllowed } object to the active home course response.\n\n- When the flag is true, compute the counts from the customer's current home course period. Share that lookup with ValidateHomeCourseEligibility.\n\n- When the flag is false, ChangeCounts is null and no extra DB round-trips are made.\n\nAPI 2.1 (GolfNowAPI)\n\n- Pass includeChangeCount through to the Customer service and map the returned ChangeCounts.\n\n- Remove the ValidateHomeCourseEligibility(customerNumber, 2) workaround.\n\nProxies\n\n- Regenerate the RMS / GNC CustService service reference.\n\n- Regenerate the GolfNow.API.Client proxy.\n\n- Review both diffs for unrelated contract changes.\n\n---\nAcceptance Criteria\n\n- With the flag true, ChangeCounts matches the customer's current period: MaxChangesAllowed = 2, and RemainingChanges = 2 minus the changes the customer made (never below 0). Changes made by support staff don't count.\n\n- The counts are correct even when facility 2 is the customer's home course or is excluded.\n\n- With the flag false (the default), ChangeCounts is null and no extra DB calls are made.\n\n- When the customer has no active home course, both the Customer service endpoint and the API 2.1 endpoint return null, so there is no ChangeCounts. This applies even when the flag is true.\n\n- Existing callers that don't send the flag (MakeReservation workflow, InvoiceService, InventoryChannel, SetCustomerHomeCourse, GNC) behave exactly as before.\n\n- The RMS CustService proxy and the GolfNow.API.Client proxy are regenerated, and both solutions build.\n\n- Unit tests cover the provider (HomeCourseProviderTests) and the converter (HomeCourseConverterTests).\n\n---\nTechnical Details\n\n- Customer service: HomeCourseProvider.GetActiveCustomerHomeCourse and ValidateHomeCourseEligibility, GetActiveCustomerHomeCourseRequest, the HomeCourse contracts in GolfNow.Services.Customer.Common, CustomerService.svc.cs\n\n- API 2.1: GolfNowAPI.Customers.cs (GetActiveCustomerHomeCourse), CustomerServiceFacade, HomeCourseConverter\n\n- RMS: NBCU.Golf.RMS.Business/Service References/CustService/Reference.cs, CustomerService.GetActiveCustomerHomeCourse\n\n- The contract change is additive and opt-in.\n\n- Deployment order: GolfNow.API.Customer before GolfNowAPI and GNC.\n\n---\nRelated Tickets\n\n- CORE-14301 — GolfPass \"Home Course\": Phase I (epic)",
-        "descriptionHtml": "<h3>Goal</h3><p>When asked for change counts, <code>GetActiveCustomerHomeCourse</code> returns the customer's real remaining and maximum home course changes, so clients can show &quot;X of Y changes left&quot; accurately.</p><hr><h3>Problem</h3><p>With <code>includeChangeCount=true</code>, the API 2.1 endpoint builds the counts by calling <code>ValidateHomeCourseEligibility(customerNumber, 2)</code> against a hard-coded, disabled test facility. That method only fills in <code>RemainingChanges</code> and <code>MaxChangesAllowed</code> on its success path. Every early return leaves them at 0, so the counts come back as 0 when:</p><ul><li><p>facility 2 is the customer's current home course</p></li><li><p>facility 2 is excluded</p></li><li><p>any other eligibility check fails</p></li></ul><p>Customers can be told they have no changes left when they do.</p><hr><h3>Business Impact</h3><ul><li><p>Members see wrong change counts, which can stop them from changing their home course</p></li><li><p>Member Care gets avoidable support contacts</p></li><li><p>The API depends on a hard-coded test facility, which is fragile</p></li></ul><hr><h3>Proposed Change</h3><p><strong>Customer service (GolfNow.API.Customer)</strong></p><ul><li><p>Add an opt-in <code>IncludeChangeCounts</code> flag (default <code>false</code>) to <code>GetActiveCustomerHomeCourseRequest</code>.</p></li><li><p>Add a <code>ChangeCounts { RemainingChanges, MaxChangesAllowed }</code> object to the active home course response.</p></li><li><p>When the flag is <code>true</code>, compute the counts from the customer's current home course period. Share that lookup with <code>ValidateHomeCourseEligibility</code>.</p></li><li><p>When the flag is <code>false</code>, <code>ChangeCounts</code> is <code>null</code> and no extra DB round-trips are made.</p></li></ul><p><strong>API 2.1 (GolfNowAPI)</strong></p><ul><li><p>Pass <code>includeChangeCount</code> through to the Customer service and map the returned <code>ChangeCounts</code>.</p></li><li><p>Remove the <code>ValidateHomeCourseEligibility(customerNumber, 2)</code> workaround.</p></li></ul><p><strong>Proxies</strong></p><ul><li><p>Regenerate the RMS / GNC <code>CustService</code> service reference.</p></li><li><p>Regenerate the <code>GolfNow.API.Client</code> proxy.</p></li><li><p>Review both diffs for unrelated contract changes.</p></li></ul><hr><h3>Acceptance Criteria</h3><ul><li><p>With the flag <code>true</code>, <code>ChangeCounts</code> matches the customer's current period: <code>MaxChangesAllowed</code> = 2, and <code>RemainingChanges</code> = 2 minus the changes the customer made (never below 0). Changes made by support staff don't count.</p></li><li><p>The counts are correct even when facility 2 is the customer's home course or is excluded.</p></li><li><p>With the flag <code>false</code> (the default), <code>ChangeCounts</code> is <code>null</code> and no extra DB calls are made.</p></li><li><p>When the customer has no active home course, both the Customer service endpoint and the API 2.1 endpoint return <code>null</code>, so there is no <code>ChangeCounts</code>. This applies even when the flag is <code>true</code>.</p></li><li><p>Existing callers that don't send the flag (MakeReservation workflow, InvoiceService, InventoryChannel, SetCustomerHomeCourse, GNC) behave exactly as before.</p></li><li><p>The RMS <code>CustService</code> proxy and the <code>GolfNow.API.Client</code> proxy are regenerated, and both solutions build.</p></li><li><p>Unit tests cover the provider (<code>HomeCourseProviderTests</code>) and the converter (<code>HomeCourseConverterTests</code>).</p></li></ul><hr><h3>Technical Details</h3><ul><li><p>Customer service: <code>HomeCourseProvider.GetActiveCustomerHomeCourse</code> and <code>ValidateHomeCourseEligibility</code>, <code>GetActiveCustomerHomeCourseRequest</code>, the HomeCourse contracts in <code>GolfNow.Services.Customer.Common</code>, <code>CustomerService.svc.cs</code></p></li><li><p>API 2.1: <code>GolfNowAPI.Customers.cs</code> (<code>GetActiveCustomerHomeCourse</code>), <code>CustomerServiceFacade</code>, <code>HomeCourseConverter</code></p></li><li><p>RMS: <code>NBCU.Golf.RMS.Business/Service References/CustService/Reference.cs</code>, <code>CustomerService.GetActiveCustomerHomeCourse</code></p></li><li><p>The contract change is additive and opt-in.</p></li><li><p><strong>Deployment order:</strong> GolfNow.API.Customer before GolfNowAPI and GNC.</p></li></ul><hr><h3>Related Tickets</h3><ul><li><p>CORE-14301 — GolfPass &quot;Home Course&quot;: Phase I (epic)</p></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Analysis",
-        "priority": "P2",
-        "assignee": "Luis Vallejo Mursuli",
-        "assigneeAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
-        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-11-04T19:59:16.780-0500",
-        "updatedDisplay": "Nov 4, 2026, 7:59 PM",
-        "created": "2026-11-04T19:49:32.142-0500",
-        "createdDisplay": "Nov 4, 2026, 7:49 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14301",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14301",
-          "summary": "GolfPass \"Home Course\": Phase I",
           "description": "",
           "type": "Epic",
           "status": "Backlog",
@@ -43947,13 +43947,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-05T14:41:38.260Z",
-    "pulledAtDisplay": "Nov 5, 2026, 9:41 AM",
+    "pulledAt": "2026-11-05T14:46:38.463Z",
+    "pulledAtDisplay": "Nov 5, 2026, 9:46 AM",
     "window": {
-      "start": "2026-09-21T14:41:38.260Z",
-      "end": "2027-05-04T14:41:38.260Z",
-      "startDisplay": "Sep 21, 2026, 10:41 AM",
-      "endDisplay": "May 4, 2027, 10:41 AM"
+      "start": "2026-09-21T14:46:38.463Z",
+      "end": "2027-05-04T14:46:38.463Z",
+      "startDisplay": "Sep 21, 2026, 10:46 AM",
+      "endDisplay": "May 4, 2027, 10:46 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43966,8 +43966,8 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-05T14:41:40.543Z",
-        "eventCount": 64,
+        "pulledAt": "2026-11-05T14:46:40.443Z",
+        "eventCount": 65,
         "events": [
           {
             "id": "20260916T190921Z-1192689762@golfnow.atlassian.net",
@@ -44531,6 +44531,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN000 - v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44565,23 +44582,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN000 - v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "52379ea7-4ff8-4792-9670-f908745ff23c-63547@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44594,6 +44594,23 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "jira-project-releases",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20261105T144326Z--1750997684@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Premier Mobile Deploy",
+            "start": "2026-11-18T05:00:00.000Z",
+            "end": "2026-11-18T05:30:00.000Z",
+            "startDate": "",
+            "endDate": "",
+            "startDisplay": "Nov 18, 2026, 12:00 AM",
+            "endDisplay": "Nov 18, 2026, 12:30 AM",
+            "allDay": false,
+            "type": "EZLinks",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44684,6 +44701,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZLinks Non Prod Patching",
+            "start": "2026-12-08T00:00:00.000Z",
+            "end": "2026-12-09T00:00:00.000Z",
+            "startDate": "2026-12-08",
+            "endDate": "2026-12-09",
+            "startDisplay": "Dec 8, 2026",
+            "endDisplay": "Dec 9, 2026",
+            "allDay": true,
+            "type": "Patching",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260217T182445Z-507807582@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44713,23 +44747,6 @@
             "endDisplay": "Dec 9, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260112T140550Z--700362226@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZLinks Non Prod Patching",
-            "start": "2026-12-08T00:00:00.000Z",
-            "end": "2026-12-09T00:00:00.000Z",
-            "startDate": "2026-12-08",
-            "endDate": "2026-12-09",
-            "startDisplay": "Dec 8, 2026",
-            "endDisplay": "Dec 9, 2026",
-            "allDay": true,
-            "type": "Patching",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44854,23 +44871,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - US Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44883,6 +44883,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - US Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44922,23 +44939,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "GN: v3001.133.0",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44951,6 +44951,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "GN: v3001.133.0",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45063,10 +45080,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-05T14:38:28.008Z",
-    "previousPulledAtDisplay": "Nov 5, 2026, 9:38 AM",
-    "currentPulledAt": "2026-11-05T14:43:52.130Z",
-    "currentPulledAtDisplay": "Nov 5, 2026, 9:43 AM",
+    "previousPulledAt": "2026-11-05T14:43:52.130Z",
+    "previousPulledAtDisplay": "Nov 5, 2026, 9:43 AM",
+    "currentPulledAt": "2026-11-05T14:48:56.997Z",
+    "currentPulledAtDisplay": "Nov 5, 2026, 9:48 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45074,6 +45091,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-05T14:43:52.130Z",
+      "previousPulledAtDisplay": "Nov 5, 2026, 9:43 AM",
+      "currentPulledAt": "2026-11-05T14:48:56.997Z",
+      "currentPulledAtDisplay": "Nov 5, 2026, 9:48 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-05T14:38:28.008Z",
       "previousPulledAtDisplay": "Nov 5, 2026, 9:38 AM",
@@ -46905,17 +46933,6 @@
       "previousPulledAtDisplay": "Nov 4, 2026, 7:38 PM",
       "currentPulledAt": "2026-11-05T00:44:23.099Z",
       "currentPulledAtDisplay": "Nov 4, 2026, 7:44 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-05T00:33:33.528Z",
-      "previousPulledAtDisplay": "Nov 4, 2026, 7:33 PM",
-      "currentPulledAt": "2026-11-05T00:38:40.843Z",
-      "currentPulledAtDisplay": "Nov 4, 2026, 7:38 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
