@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-05T21:58:40.666Z",
-  "pulledAtDisplay": "Nov 5, 2026, 4:58 PM",
+  "pulledAt": "2026-11-05T22:03:15.324Z",
+  "pulledAtDisplay": "Nov 5, 2026, 5:03 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-05T21:58:40.666Z",
-    "pulledAtDisplay": "Nov 5, 2026, 4:58 PM",
+    "pulledAt": "2026-11-05T22:03:15.324Z",
+    "pulledAtDisplay": "Nov 5, 2026, 5:03 PM",
     "total": 566,
     "mainTotal": 536,
     "subtaskTotal": 30,
@@ -8107,6 +8107,60 @@
         "parent": null
       },
       {
+        "key": "CORE-14795",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14795",
+        "summary": "Missing QETI Reservations",
+        "description": "Root Cause Analysis - Missing QETI Reservations\n\nFinding\n\nA code-level bug in the QETI (Q18) tee sheet integration causes bookings to be confirmed on Q18 but never recorded in GolfNow. The reservation becomes orphaned on the tee sheet with no way for GolfNow to manage it (cancel, no-show, etc).\n\nRoot Cause: DateTime Matching Failure in QetiTeeSheet.cs\n\nThe Q18 MakeReservation API does not return a reservation ID in its response. Instead, the code makes a separate HTTP call to fetch all reservations for the customer, then tries to match the one just created by comparing DateTime values:\n\n// QetiTeeSheet.cs line 201\nprivate ReservationSummary GetReservation(List<ReservationSummary> summaries, DateTime playDate)\n{\nreturn summaries.FirstOrDefault(summary => DateTime.Parse(summary.TeeDateTime) == playDate);\n}\n\nThis comparison uses strict DateTime equality. The outbound request truncates time to minutes (yyyy-MM-dd HH:mm format, line 122), but the playDate parameter retains full precision (seconds, milliseconds). If Q18 returns a time with different precision, or if the format returned by summary.TeeDateTime does not parse to the exact same tick count, the match fails.\n\nWhat Happens When The Match Fails\n\n- GetReservation() returns null\n\n- makeReservationResponse.IsReserved stays false (default from line 80)\n\n- The calling workflow (SendReservationToInterfaceActivity) sees IsReserved = false and throws TeeSheetConnectionException\n\n- This triggers the saga rollback, which checks state.ReservationResult.IsReservedAtCourse\n\n- Since that was never set to true, the rollback skips Q18 cancellation entirely\n\n- The booking is already confirmed on Q18 but never persisted in GolfNow\n\nResult: A ghost reservation exists on the Q18 tee sheet with no corresponding record in GNC.\n\nAdditional Failure Mode\n\nThe GetSummaries HTTP call itself can fail (timeout, 500, network blip). Since it's wrapped in the same try/catch (line 103-161), any exception is caught and re-thrown as a TeeSheetException, which follows the same rollback path described above - resulting in the same orphan scenario.\n\nWhy This is Hard to Detect\n\n- The legacy reservation service (GolfNow.Services.Reservation) logs via log4net, not Datadog. Errors are not easily searchable.\n\n- The Phoenix commerce layer (tckt.api-commerce) only logs successful fulfillment results. The failure happens one layer below.\n\n- From the golfer's perspective, the booking may appear to have worked (depends on how the caller handles the error).\n\n- From the course's perspective, the booking shows up on Q18 normally - attributed to \"Golfnow API\" and http://TeeOff.com .\n\nConfirmed Pattern Match\n\nThe TTSUPPORT-7347 bookings (FID 523, via http://TeeOff.com  iOS, \"Golfnow API\" source on Q18) match this failure mode exactly: visible on Q18 tee sheet but absent from all GNC/GolfNow systems.\n\nRecommended Fix\n\nNOTE: Do both short and medium term fixes\n\n- Short-term: Change line 201 to use a tolerance-based comparison (e.g., compare only date + hour + minute, ignoring seconds/milliseconds):\n\n```csharp\n\nreturn summaries.FirstOrDefault(summary =>\n\nDateTime.Parse(summary.TeeDateTime).ToString(\"yyyy-MM-dd HH:mm\") ==\n\nplayDate.ToString(\"yyyy-MM-dd HH:mm\"));\n\n```\n\n- Medium-term: If GetReservation returns null after a successful MakeReservation, set IsReservedAtCourse = true anyway (since the HTTP POST succeeded) and attempt cancellation during rollback regardless. This prevents orphans.\n\n- ~Long-term: Request that Q18/QETI API return the reservation ID directly in the MakeReservation response, eliminating the fragile lookup entirely.~\n\nImpacted Facilities\n\nAny facility using the QETI (Q18) tee sheet integration is vulnerable. This is not specific to FID 523.",
+        "descriptionHtml": "<h3>Root Cause Analysis - Missing QETI Reservations</h3><h3>Finding</h3><p>A code-level bug in the QETI (Q18) tee sheet integration causes bookings to be confirmed on Q18 but never recorded in GolfNow. The reservation becomes orphaned on the tee sheet with no way for GolfNow to manage it (cancel, no-show, etc).</p><h3>Root Cause: DateTime Matching Failure in QetiTeeSheet.cs</h3><p>The Q18 MakeReservation API does not return a reservation ID in its response. Instead, the code makes a <em>separate</em> HTTP call to fetch all reservations for the customer, then tries to match the one just created by comparing DateTime values:</p><pre><code>// QetiTeeSheet.cs line 201\nprivate ReservationSummary GetReservation(List&lt;ReservationSummary&gt; summaries, DateTime playDate)\n{\n    return summaries.FirstOrDefault(summary =&gt; DateTime.Parse(summary.TeeDateTime) == playDate);\n}</code></pre><p>This comparison uses strict DateTime equality. The outbound request truncates time to minutes (<code>yyyy-MM-dd HH:mm</code> format, line 122), but the <code>playDate</code> parameter retains full precision (seconds, milliseconds). If Q18 returns a time with different precision, or if the format returned by <code>summary.TeeDateTime</code> does not parse to the exact same tick count, the match fails.</p><h3>What Happens When The Match Fails</h3><ol><li><p><code>GetReservation()</code> returns null</p></li><li><p><code>makeReservationResponse.IsReserved</code> stays <strong>false</strong> (default from line 80)</p></li><li><p>The calling workflow (<code>SendReservationToInterfaceActivity</code>) sees <code>IsReserved = false</code> and throws <code>TeeSheetConnectionException</code></p></li><li><p>This triggers the saga rollback, which checks <code>state.ReservationResult.IsReservedAtCourse</code></p></li><li><p>Since that was never set to <code>true</code>, the rollback <strong>skips Q18 cancellation</strong> entirely</p></li><li><p>The booking is already confirmed on Q18 but never persisted in GolfNow</p></li></ol><p>Result: A ghost reservation exists on the Q18 tee sheet with no corresponding record in GNC.</p><h3>Additional Failure Mode</h3><p>The <code>GetSummaries</code> HTTP call itself can fail (timeout, 500, network blip). Since it's wrapped in the same try/catch (line 103-161), any exception is caught and re-thrown as a <code>TeeSheetException</code>, which follows the same rollback path described above - resulting in the same orphan scenario.</p><h3>Why This is Hard to Detect</h3><ul><li><p>The legacy reservation service (<code>GolfNow.Services.Reservation</code>) logs via log4net, not Datadog. Errors are not easily searchable.</p></li><li><p>The Phoenix commerce layer (<code>tckt.api-commerce</code>) only logs successful fulfillment results. The failure happens one layer below.</p></li><li><p>From the golfer's perspective, the booking may appear to have worked (depends on how the caller handles the error).</p></li><li><p>From the course's perspective, the booking shows up on Q18 normally - attributed to &quot;Golfnow API&quot; and <a href=\"http://TeeOff.com\" target=\"_blank\" rel=\"noopener\">http://TeeOff.com</a> .</p></li></ul><h3>Confirmed Pattern Match</h3><p>The <a href=\"https://golfnow.atlassian.net/browse/TTSUPPORT-7347\" target=\"_blank\" rel=\"noopener\">TTSUPPORT-7347</a> bookings (FID 523, via <a href=\"http://TeeOff.com\" target=\"_blank\" rel=\"noopener\">http://TeeOff.com</a>  iOS, &quot;Golfnow API&quot; source on Q18) match this failure mode exactly: visible on Q18 tee sheet but absent from all GNC/GolfNow systems.</p><h3>Recommended Fix</h3><p><strong>NOTE: Do both short and medium term fixes</strong></p><ol><li><p><strong>Short-term</strong>: Change line 201 to use a tolerance-based comparison (e.g., compare only date + hour + minute, ignoring seconds/milliseconds):</p></li></ol><p>   ```csharp</p><p>   return summaries.FirstOrDefault(summary =&gt;</p><p>       DateTime.Parse(summary.TeeDateTime).ToString(&quot;yyyy-MM-dd HH:mm&quot;) ==</p><p>       playDate.ToString(&quot;yyyy-MM-dd HH:mm&quot;));</p><p>   ```</p><ol><li><p><strong>Medium-term</strong>: If <code>GetReservation</code> returns null after a successful <code>MakeReservation</code>, set <code>IsReservedAtCourse = true</code> anyway (since the HTTP POST succeeded) and attempt cancellation during rollback regardless. This prevents orphans.</p></li></ol><ol><li><p><s><strong>~Long-term</strong></s><s>: Request that Q18/QETI API return the reservation ID directly in the MakeReservation response, eliminating the fragile lookup entirely.~</s></p></li></ol><h3>Impacted Facilities</h3><p>Any facility using the QETI (Q18) tee sheet integration is vulnerable. This is not specific to FID 523.</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Code Review",
+        "priority": "P2",
+        "assignee": "Tyler Olechnowicz",
+        "assigneeAccountId": "5d2396c1ea26c40c2043fc92",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "assignedDeveloperAccountId": "625571809e7380006fb29599",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "updated": "2026-11-05T16:58:23.175-0500",
+        "updatedDisplay": "Nov 5, 2026, 4:58 PM",
+        "created": "2026-09-16T17:52:51.832-0400",
+        "createdDisplay": "Sep 16, 2026, 5:52 PM",
+        "components": [
+          "GolfNow.Services.Reservation"
+        ],
+        "fixVersions": [
+          "v3001.131.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "APP-7560",
         "url": "https://golfnow.atlassian.net/browse/APP-7560",
         "summary": "Update/add checkout flow labels for additional fees/non-refundable deposits",
@@ -9040,56 +9094,6 @@
         "fixVersions": [
           "v3001.131.0"
         ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14795",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14795",
-        "summary": "Missing QETI Reservations",
-        "description": "Root Cause Analysis - Missing QETI Reservations\n\nFinding\n\nA code-level bug in the QETI (Q18) tee sheet integration causes bookings to be confirmed on Q18 but never recorded in GolfNow. The reservation becomes orphaned on the tee sheet with no way for GolfNow to manage it (cancel, no-show, etc).\n\nRoot Cause: DateTime Matching Failure in QetiTeeSheet.cs\n\nThe Q18 MakeReservation API does not return a reservation ID in its response. Instead, the code makes a separate HTTP call to fetch all reservations for the customer, then tries to match the one just created by comparing DateTime values:\n\n// QetiTeeSheet.cs line 201\nprivate ReservationSummary GetReservation(List<ReservationSummary> summaries, DateTime playDate)\n{\nreturn summaries.FirstOrDefault(summary => DateTime.Parse(summary.TeeDateTime) == playDate);\n}\n\nThis comparison uses strict DateTime equality. The outbound request truncates time to minutes (yyyy-MM-dd HH:mm format, line 122), but the playDate parameter retains full precision (seconds, milliseconds). If Q18 returns a time with different precision, or if the format returned by summary.TeeDateTime does not parse to the exact same tick count, the match fails.\n\nWhat Happens When The Match Fails\n\n- GetReservation() returns null\n\n- makeReservationResponse.IsReserved stays false (default from line 80)\n\n- The calling workflow (SendReservationToInterfaceActivity) sees IsReserved = false and throws TeeSheetConnectionException\n\n- This triggers the saga rollback, which checks state.ReservationResult.IsReservedAtCourse\n\n- Since that was never set to true, the rollback skips Q18 cancellation entirely\n\n- The booking is already confirmed on Q18 but never persisted in GolfNow\n\nResult: A ghost reservation exists on the Q18 tee sheet with no corresponding record in GNC.\n\nAdditional Failure Mode\n\nThe GetSummaries HTTP call itself can fail (timeout, 500, network blip). Since it's wrapped in the same try/catch (line 103-161), any exception is caught and re-thrown as a TeeSheetException, which follows the same rollback path described above - resulting in the same orphan scenario.\n\nWhy This is Hard to Detect\n\n- The legacy reservation service (GolfNow.Services.Reservation) logs via log4net, not Datadog. Errors are not easily searchable.\n\n- The Phoenix commerce layer (tckt.api-commerce) only logs successful fulfillment results. The failure happens one layer below.\n\n- From the golfer's perspective, the booking may appear to have worked (depends on how the caller handles the error).\n\n- From the course's perspective, the booking shows up on Q18 normally - attributed to \"Golfnow API\" and http://TeeOff.com .\n\nConfirmed Pattern Match\n\nThe TTSUPPORT-7347 bookings (FID 523, via http://TeeOff.com  iOS, \"Golfnow API\" source on Q18) match this failure mode exactly: visible on Q18 tee sheet but absent from all GNC/GolfNow systems.\n\nRecommended Fix\n\nNOTE: Do both short and medium term fixes\n\n- Short-term: Change line 201 to use a tolerance-based comparison (e.g., compare only date + hour + minute, ignoring seconds/milliseconds):\n\n```csharp\n\nreturn summaries.FirstOrDefault(summary =>\n\nDateTime.Parse(summary.TeeDateTime).ToString(\"yyyy-MM-dd HH:mm\") ==\n\nplayDate.ToString(\"yyyy-MM-dd HH:mm\"));\n\n```\n\n- Medium-term: If GetReservation returns null after a successful MakeReservation, set IsReservedAtCourse = true anyway (since the HTTP POST succeeded) and attempt cancellation during rollback regardless. This prevents orphans.\n\n- ~Long-term: Request that Q18/QETI API return the reservation ID directly in the MakeReservation response, eliminating the fragile lookup entirely.~\n\nImpacted Facilities\n\nAny facility using the QETI (Q18) tee sheet integration is vulnerable. This is not specific to FID 523.",
-        "descriptionHtml": "<h3>Root Cause Analysis - Missing QETI Reservations</h3><h3>Finding</h3><p>A code-level bug in the QETI (Q18) tee sheet integration causes bookings to be confirmed on Q18 but never recorded in GolfNow. The reservation becomes orphaned on the tee sheet with no way for GolfNow to manage it (cancel, no-show, etc).</p><h3>Root Cause: DateTime Matching Failure in QetiTeeSheet.cs</h3><p>The Q18 MakeReservation API does not return a reservation ID in its response. Instead, the code makes a <em>separate</em> HTTP call to fetch all reservations for the customer, then tries to match the one just created by comparing DateTime values:</p><pre><code>// QetiTeeSheet.cs line 201\nprivate ReservationSummary GetReservation(List&lt;ReservationSummary&gt; summaries, DateTime playDate)\n{\n    return summaries.FirstOrDefault(summary =&gt; DateTime.Parse(summary.TeeDateTime) == playDate);\n}</code></pre><p>This comparison uses strict DateTime equality. The outbound request truncates time to minutes (<code>yyyy-MM-dd HH:mm</code> format, line 122), but the <code>playDate</code> parameter retains full precision (seconds, milliseconds). If Q18 returns a time with different precision, or if the format returned by <code>summary.TeeDateTime</code> does not parse to the exact same tick count, the match fails.</p><h3>What Happens When The Match Fails</h3><ol><li><p><code>GetReservation()</code> returns null</p></li><li><p><code>makeReservationResponse.IsReserved</code> stays <strong>false</strong> (default from line 80)</p></li><li><p>The calling workflow (<code>SendReservationToInterfaceActivity</code>) sees <code>IsReserved = false</code> and throws <code>TeeSheetConnectionException</code></p></li><li><p>This triggers the saga rollback, which checks <code>state.ReservationResult.IsReservedAtCourse</code></p></li><li><p>Since that was never set to <code>true</code>, the rollback <strong>skips Q18 cancellation</strong> entirely</p></li><li><p>The booking is already confirmed on Q18 but never persisted in GolfNow</p></li></ol><p>Result: A ghost reservation exists on the Q18 tee sheet with no corresponding record in GNC.</p><h3>Additional Failure Mode</h3><p>The <code>GetSummaries</code> HTTP call itself can fail (timeout, 500, network blip). Since it's wrapped in the same try/catch (line 103-161), any exception is caught and re-thrown as a <code>TeeSheetException</code>, which follows the same rollback path described above - resulting in the same orphan scenario.</p><h3>Why This is Hard to Detect</h3><ul><li><p>The legacy reservation service (<code>GolfNow.Services.Reservation</code>) logs via log4net, not Datadog. Errors are not easily searchable.</p></li><li><p>The Phoenix commerce layer (<code>tckt.api-commerce</code>) only logs successful fulfillment results. The failure happens one layer below.</p></li><li><p>From the golfer's perspective, the booking may appear to have worked (depends on how the caller handles the error).</p></li><li><p>From the course's perspective, the booking shows up on Q18 normally - attributed to &quot;Golfnow API&quot; and <a href=\"http://TeeOff.com\" target=\"_blank\" rel=\"noopener\">http://TeeOff.com</a> .</p></li></ul><h3>Confirmed Pattern Match</h3><p>The <a href=\"https://golfnow.atlassian.net/browse/TTSUPPORT-7347\" target=\"_blank\" rel=\"noopener\">TTSUPPORT-7347</a> bookings (FID 523, via <a href=\"http://TeeOff.com\" target=\"_blank\" rel=\"noopener\">http://TeeOff.com</a>  iOS, &quot;Golfnow API&quot; source on Q18) match this failure mode exactly: visible on Q18 tee sheet but absent from all GNC/GolfNow systems.</p><h3>Recommended Fix</h3><p><strong>NOTE: Do both short and medium term fixes</strong></p><ol><li><p><strong>Short-term</strong>: Change line 201 to use a tolerance-based comparison (e.g., compare only date + hour + minute, ignoring seconds/milliseconds):</p></li></ol><p>   ```csharp</p><p>   return summaries.FirstOrDefault(summary =&gt;</p><p>       DateTime.Parse(summary.TeeDateTime).ToString(&quot;yyyy-MM-dd HH:mm&quot;) ==</p><p>       playDate.ToString(&quot;yyyy-MM-dd HH:mm&quot;));</p><p>   ```</p><ol><li><p><strong>Medium-term</strong>: If <code>GetReservation</code> returns null after a successful <code>MakeReservation</code>, set <code>IsReservedAtCourse = true</code> anyway (since the HTTP POST succeeded) and attempt cancellation during rollback regardless. This prevents orphans.</p></li></ol><ol><li><p><s><strong>~Long-term</strong></s><s>: Request that Q18/QETI API return the reservation ID directly in the MakeReservation response, eliminating the fragile lookup entirely.~</s></p></li></ol><h3>Impacted Facilities</h3><p>Any facility using the QETI (Q18) tee sheet integration is vulnerable. This is not specific to FID 523.</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Development",
-        "priority": "P2",
-        "assignee": "Yoel Martin Pardo",
-        "assigneeAccountId": "625571809e7380006fb29599",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-11-05T09:59:08.173-0500",
-        "updatedDisplay": "Nov 5, 2026, 9:59 AM",
-        "created": "2026-09-16T17:52:51.832-0400",
-        "createdDisplay": "Sep 16, 2026, 5:52 PM",
-        "components": [],
-        "fixVersions": [],
         "sprints": [
           {
             "name": "2026.8"
@@ -44282,13 +44286,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-05T21:56:34.547Z",
-    "pulledAtDisplay": "Nov 5, 2026, 4:56 PM",
+    "pulledAt": "2026-11-05T22:01:28.582Z",
+    "pulledAtDisplay": "Nov 5, 2026, 5:01 PM",
     "window": {
-      "start": "2026-09-21T21:56:34.547Z",
-      "end": "2027-05-04T21:56:34.547Z",
-      "startDisplay": "Sep 21, 2026, 5:56 PM",
-      "endDisplay": "May 4, 2027, 5:56 PM"
+      "start": "2026-09-21T22:01:28.581Z",
+      "end": "2027-05-04T22:01:28.581Z",
+      "startDisplay": "Sep 21, 2026, 6:01 PM",
+      "endDisplay": "May 4, 2027, 6:01 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44301,7 +44305,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-05T21:56:37.370Z",
+        "pulledAt": "2026-11-05T22:01:30.529Z",
         "eventCount": 65,
         "events": [
           {
@@ -45206,23 +45210,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - US Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45235,6 +45222,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - US Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45376,23 +45380,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Pro Dev/Stage Swap",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-10T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-10",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 10, 2027",
-            "allDay": true,
-            "type": "Scheduled Maintenance",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45408,6 +45395,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Pro Dev/Stage Swap",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-10T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-10",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 10, 2027",
+            "allDay": true,
+            "type": "Scheduled Maintenance",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -45415,10 +45419,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-05T21:54:39.248Z",
-    "previousPulledAtDisplay": "Nov 5, 2026, 4:54 PM",
-    "currentPulledAt": "2026-11-05T21:58:40.666Z",
-    "currentPulledAtDisplay": "Nov 5, 2026, 4:58 PM",
+    "previousPulledAt": "2026-11-05T21:58:40.666Z",
+    "previousPulledAtDisplay": "Nov 5, 2026, 4:58 PM",
+    "currentPulledAt": "2026-11-05T22:03:15.324Z",
+    "currentPulledAtDisplay": "Nov 5, 2026, 5:03 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45426,6 +45430,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-05T21:58:40.666Z",
+      "previousPulledAtDisplay": "Nov 5, 2026, 4:58 PM",
+      "currentPulledAt": "2026-11-05T22:03:15.324Z",
+      "currentPulledAtDisplay": "Nov 5, 2026, 5:03 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-05T21:54:39.248Z",
       "previousPulledAtDisplay": "Nov 5, 2026, 4:54 PM",
@@ -47257,17 +47272,6 @@
       "previousPulledAtDisplay": "Nov 5, 2026, 2:29 AM",
       "currentPulledAt": "2026-11-05T07:33:41.597Z",
       "currentPulledAtDisplay": "Nov 5, 2026, 2:33 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-05T07:23:23.672Z",
-      "previousPulledAtDisplay": "Nov 5, 2026, 2:23 AM",
-      "currentPulledAt": "2026-11-05T07:29:19.350Z",
-      "currentPulledAtDisplay": "Nov 5, 2026, 2:29 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
