@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-05T17:44:54.263Z",
-  "pulledAtDisplay": "Nov 5, 2026, 12:44 PM",
+  "pulledAt": "2026-11-05T17:49:23.352Z",
+  "pulledAtDisplay": "Nov 5, 2026, 12:49 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-05T17:44:54.263Z",
-    "pulledAtDisplay": "Nov 5, 2026, 12:44 PM",
+    "pulledAt": "2026-11-05T17:49:23.352Z",
+    "pulledAtDisplay": "Nov 5, 2026, 12:49 PM",
     "total": 565,
     "mainTotal": 535,
     "subtaskTotal": 30,
@@ -8107,6 +8107,146 @@
         "parent": null
       },
       {
+        "key": "CORE-14875",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14875",
+        "summary": "Create Troon facility tag",
+        "description": "- INSERT INTO golfcourse.facilitytag VALUES ('TROON','Troon Golf Course')\n\n- Update GolfCourse.FacilityTagMapSync proc\n\n- If CRMGolfFacilitySalesforce has a record with ParentId IN( 00130000009Q6oAAAS,00130000009Q725AAC)  for a given GolfFacilityId\n\n- INSERT a record with that GolfFacilityId into GolfCourse.FacilityTagMap with TagCode = 'TROON'\n\n- If the ParentId changes or the record is no longer in the table for a given GolfFacilityId, delete the associated record from GolfCourse.FacilityTagMap",
+        "descriptionHtml": "<ol><li><p><code>INSERT INTO golfcourse.facilitytag VALUES ('TROON','Troon Golf Course')</code></p></li><li><p>Update <code>GolfCourse.FacilityTagMapSync</code> proc</p><ol><li><p>If <code>CRMGolfFacilitySalesforce</code> has a record with <code>ParentId</code> IN( <code>00130000009Q6oAAAS,00130000009Q725AAC) </code> for a given <code>GolfFacilityId</code></p><ol><li><p>INSERT a record with that <code>GolfFacilityId</code> into <code>GolfCourse.FacilityTagMap</code> with <code>TagCode</code> = <code>'TROON'</code></p></li></ol></li><li><p>If the <code>ParentId</code> changes or the record is no longer in the table for a given <code>GolfFacilityId</code>, delete the associated record from <code>GolfCourse.FacilityTagMap</code></p></li></ol></li></ol>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1236488",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14875?focusedCommentId=1236488",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-10-27T19:20:52.295-0400",
+            "createdDisplay": "Oct 27, 2026, 7:20 PM",
+            "updated": "2026-10-27T19:20:52.295-0400",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Please forgive the jump to Triage.  Something odd happened on Jira.  Development started, review and PR incoming (likely tomorrow)",
+            "bodyHtml": "<p>Please forgive the jump to Triage.  Something odd happened on Jira.  Development started, review and PR incoming (likely tomorrow)</p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14875?focusedCommentId=1236488",
+        "lastCommentDisplay": "Oct 27, 2026, 7:20 PM",
+        "lastCommentAuthor": "Alex Wulff",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Pending Deployment (DEV)",
+        "priority": "P1",
+        "assignee": "Nicole Greer",
+        "assigneeAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
+        "assignedDeveloper": "Alex Wulff",
+        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "updated": "2026-11-05T12:43:13.549-0500",
+        "updatedDisplay": "Nov 5, 2026, 12:43 PM",
+        "created": "2026-10-19T11:08:46.137-0400",
+        "createdDisplay": "Oct 19, 2026, 11:08 AM",
+        "components": [
+          "Database"
+        ],
+        "fixVersions": [
+          "v3001.131.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14874",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14874",
+        "summary": "Add Pagination to GNC Loyalty Ledger & Update Sort Order",
+        "description": "The transaction ledger in the Golf Rewards tab of GNC’s customer profile page is currently sorted from oldest date to newest. We need to update this so the newest transaction date is at the top of the ledger.\n\nWe also need to add pagination so the business can view any customer transaction, rather than being limited to the limited single page view.",
+        "descriptionHtml": "<p>The transaction ledger in the Golf Rewards tab of GNC’s customer profile page is currently sorted from oldest date to newest. We need to update this so the newest transaction date is at the top of the ledger. </p><p>We also need to add pagination so the business can view any customer transaction, rather than being limited to the limited single page view.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14874/774431-image-20261019-150211.png\" alt=\"image-20261019-150211.png\" loading=\"lazy\"><figcaption>image-20261019-150211.png</figcaption></figure></div>",
+        "descriptionImageCount": 1,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 1,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1238818",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14874?focusedCommentId=1238818",
+            "author": "Luis Vallejo Mursuli",
+            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+            "created": "2026-11-02T11:52:39.416-0500",
+            "createdDisplay": "Nov 2, 2026, 11:52 AM",
+            "updated": "2026-11-02T11:52:39.416-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "QA,\n\nBelow the guide to test this changes. Please let me know if you have any questions.",
+            "bodyHtml": "<p>QA,</p><p>Below the guide to test this changes. Please let me know if you have any questions.<br><br> </p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14874?focusedCommentId=1238818",
+        "lastCommentDisplay": "Nov 2, 2026, 11:52 AM",
+        "lastCommentAuthor": "Luis Vallejo Mursuli",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "QA Testing (DEV)",
+        "priority": "P1",
+        "assignee": "Nicole Greer",
+        "assigneeAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
+        "assignedDeveloper": "Luis Vallejo Mursuli",
+        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+        "updated": "2026-11-05T12:42:59.166-0500",
+        "updatedDisplay": "Nov 5, 2026, 12:42 PM",
+        "created": "2026-10-19T10:17:58.384-0400",
+        "createdDisplay": "Oct 19, 2026, 10:17 AM",
+        "components": [
+          "GolfNowCentral"
+        ],
+        "fixVersions": [
+          "v3001.131.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14857",
         "url": "https://golfnow.atlassian.net/browse/CORE-14857",
         "summary": "GNC Mass Cancellations | Show facility name and date range on the Cancel confirmation popup",
@@ -8393,76 +8533,6 @@
         "createdDisplay": "Oct 22, 2026, 8:50 AM",
         "components": [
           "GolfNow.Services.Reservation"
-        ],
-        "fixVersions": [
-          "v3001.131.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14875",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14875",
-        "summary": "Create Troon facility tag",
-        "description": "- INSERT INTO golfcourse.facilitytag VALUES ('TROON','Troon Golf Course')\n\n- Update GolfCourse.FacilityTagMapSync proc\n\n- If CRMGolfFacilitySalesforce has a record with ParentId IN( 00130000009Q6oAAAS,00130000009Q725AAC)  for a given GolfFacilityId\n\n- INSERT a record with that GolfFacilityId into GolfCourse.FacilityTagMap with TagCode = 'TROON'\n\n- If the ParentId changes or the record is no longer in the table for a given GolfFacilityId, delete the associated record from GolfCourse.FacilityTagMap",
-        "descriptionHtml": "<ol><li><p><code>INSERT INTO golfcourse.facilitytag VALUES ('TROON','Troon Golf Course')</code></p></li><li><p>Update <code>GolfCourse.FacilityTagMapSync</code> proc</p><ol><li><p>If <code>CRMGolfFacilitySalesforce</code> has a record with <code>ParentId</code> IN( <code>00130000009Q6oAAAS,00130000009Q725AAC) </code> for a given <code>GolfFacilityId</code></p><ol><li><p>INSERT a record with that <code>GolfFacilityId</code> into <code>GolfCourse.FacilityTagMap</code> with <code>TagCode</code> = <code>'TROON'</code></p></li></ol></li><li><p>If the <code>ParentId</code> changes or the record is no longer in the table for a given <code>GolfFacilityId</code>, delete the associated record from <code>GolfCourse.FacilityTagMap</code></p></li></ol></li></ol>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1236488",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14875?focusedCommentId=1236488",
-            "author": "Alex Wulff",
-            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-            "created": "2026-10-27T19:20:52.295-0400",
-            "createdDisplay": "Oct 27, 2026, 7:20 PM",
-            "updated": "2026-10-27T19:20:52.295-0400",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Please forgive the jump to Triage.  Something odd happened on Jira.  Development started, review and PR incoming (likely tomorrow)",
-            "bodyHtml": "<p>Please forgive the jump to Triage.  Something odd happened on Jira.  Development started, review and PR incoming (likely tomorrow)</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14875?focusedCommentId=1236488",
-        "lastCommentDisplay": "Oct 27, 2026, 7:20 PM",
-        "lastCommentAuthor": "Alex Wulff",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Pending Deployment (DEV)",
-        "priority": "P1",
-        "assignee": "Alex Wulff",
-        "assigneeAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "assignedDeveloper": "Alex Wulff",
-        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "updated": "2026-11-05T12:40:03.408-0500",
-        "updatedDisplay": "Nov 5, 2026, 12:40 PM",
-        "created": "2026-10-19T11:08:46.137-0400",
-        "createdDisplay": "Oct 19, 2026, 11:08 AM",
-        "components": [
-          "Database"
         ],
         "fixVersions": [
           "v3001.131.0"
@@ -10154,76 +10224,6 @@
         "createdDisplay": "Nov 2, 2026, 12:28 PM",
         "components": [],
         "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14874",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14874",
-        "summary": "Add Pagination to GNC Loyalty Ledger & Update Sort Order",
-        "description": "The transaction ledger in the Golf Rewards tab of GNC’s customer profile page is currently sorted from oldest date to newest. We need to update this so the newest transaction date is at the top of the ledger.\n\nWe also need to add pagination so the business can view any customer transaction, rather than being limited to the limited single page view.",
-        "descriptionHtml": "<p>The transaction ledger in the Golf Rewards tab of GNC’s customer profile page is currently sorted from oldest date to newest. We need to update this so the newest transaction date is at the top of the ledger. </p><p>We also need to add pagination so the business can view any customer transaction, rather than being limited to the limited single page view.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14874/774431-image-20261019-150211.png\" alt=\"image-20261019-150211.png\" loading=\"lazy\"><figcaption>image-20261019-150211.png</figcaption></figure></div>",
-        "descriptionImageCount": 1,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1238818",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14874?focusedCommentId=1238818",
-            "author": "Luis Vallejo Mursuli",
-            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-            "created": "2026-11-02T11:52:39.416-0500",
-            "createdDisplay": "Nov 2, 2026, 11:52 AM",
-            "updated": "2026-11-02T11:52:39.416-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "QA,\n\nBelow the guide to test this changes. Please let me know if you have any questions.",
-            "bodyHtml": "<p>QA,</p><p>Below the guide to test this changes. Please let me know if you have any questions.<br><br> </p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14874?focusedCommentId=1238818",
-        "lastCommentDisplay": "Nov 2, 2026, 11:52 AM",
-        "lastCommentAuthor": "Luis Vallejo Mursuli",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "QA Testing (DEV)",
-        "priority": "P1",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
-        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-11-02T12:17:06.264-0500",
-        "updatedDisplay": "Nov 2, 2026, 12:17 PM",
-        "created": "2026-10-19T10:17:58.384-0400",
-        "createdDisplay": "Oct 19, 2026, 10:17 AM",
-        "components": [
-          "GolfNowCentral"
-        ],
-        "fixVersions": [
-          "v3001.131.0"
-        ],
         "sprints": [
           {
             "name": "2026.8"
@@ -43947,13 +43947,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-05T17:42:18.623Z",
-    "pulledAtDisplay": "Nov 5, 2026, 12:42 PM",
+    "pulledAt": "2026-11-05T17:46:46.126Z",
+    "pulledAtDisplay": "Nov 5, 2026, 12:46 PM",
     "window": {
-      "start": "2026-09-21T17:42:18.622Z",
-      "end": "2027-05-04T17:42:18.622Z",
-      "startDisplay": "Sep 21, 2026, 1:42 PM",
-      "endDisplay": "May 4, 2027, 1:42 PM"
+      "start": "2026-09-21T17:46:46.126Z",
+      "end": "2027-05-04T17:46:46.126Z",
+      "startDisplay": "Sep 21, 2026, 1:46 PM",
+      "endDisplay": "May 4, 2027, 1:46 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -43966,7 +43966,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-05T17:42:21.584Z",
+        "pulledAt": "2026-11-05T17:46:49.077Z",
         "eventCount": 64,
         "events": [
           {
@@ -44667,6 +44667,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260817T171930Z--494012878@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "EZRTSv1.47.0",
+            "start": "2026-12-01T23:30:00.000Z",
+            "end": "2026-12-02T04:00:00.000Z",
+            "startDate": "",
+            "endDate": "",
+            "startDisplay": "Dec 1, 2026, 6:30 PM",
+            "endDisplay": "Dec 1, 2026, 11:00 PM",
+            "allDay": false,
+            "type": "EZLinks",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20261104T154101Z--1673406372@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44679,23 +44696,6 @@
             "endDisplay": "Dec 8, 2026, 9:00 PM",
             "allDay": false,
             "type": "Patching",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260817T171930Z--494012878@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "EZRTSv1.47.0",
-            "start": "2026-12-07T23:30:00.000Z",
-            "end": "2026-12-08T04:00:00.000Z",
-            "startDate": "",
-            "endDate": "",
-            "startDisplay": "Dec 7, 2026, 6:30 PM",
-            "endDisplay": "Dec 7, 2026, 11:00 PM",
-            "allDay": false,
-            "type": "EZLinks",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -44854,23 +44854,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44883,6 +44866,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45063,10 +45063,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-05T17:38:20.816Z",
-    "previousPulledAtDisplay": "Nov 5, 2026, 12:38 PM",
-    "currentPulledAt": "2026-11-05T17:44:54.263Z",
-    "currentPulledAtDisplay": "Nov 5, 2026, 12:44 PM",
+    "previousPulledAt": "2026-11-05T17:44:54.263Z",
+    "previousPulledAtDisplay": "Nov 5, 2026, 12:44 PM",
+    "currentPulledAt": "2026-11-05T17:49:23.352Z",
+    "currentPulledAtDisplay": "Nov 5, 2026, 12:49 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45074,6 +45074,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-05T17:44:54.263Z",
+      "previousPulledAtDisplay": "Nov 5, 2026, 12:44 PM",
+      "currentPulledAt": "2026-11-05T17:49:23.352Z",
+      "currentPulledAtDisplay": "Nov 5, 2026, 12:49 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-05T17:38:20.816Z",
       "previousPulledAtDisplay": "Nov 5, 2026, 12:38 PM",
@@ -46905,17 +46916,6 @@
       "previousPulledAtDisplay": "Nov 4, 2026, 10:14 PM",
       "currentPulledAt": "2026-11-05T03:19:13.079Z",
       "currentPulledAtDisplay": "Nov 4, 2026, 10:19 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-05T03:09:30.482Z",
-      "previousPulledAtDisplay": "Nov 4, 2026, 10:09 PM",
-      "currentPulledAt": "2026-11-05T03:14:23.263Z",
-      "currentPulledAtDisplay": "Nov 4, 2026, 10:14 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
