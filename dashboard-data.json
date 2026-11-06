@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-06T14:23:56.015Z",
-  "pulledAtDisplay": "Nov 6, 2026, 9:23 AM",
+  "pulledAt": "2026-11-06T14:29:26.466Z",
+  "pulledAtDisplay": "Nov 6, 2026, 9:29 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-06T14:23:56.015Z",
-    "pulledAtDisplay": "Nov 6, 2026, 9:23 AM",
+    "pulledAt": "2026-11-06T14:29:26.466Z",
+    "pulledAtDisplay": "Nov 6, 2026, 9:29 AM",
     "total": 568,
     "mainTotal": 538,
     "subtaskTotal": 30,
@@ -8110,8 +8110,8 @@
         "key": "CORE-14955",
         "url": "https://golfnow.atlassian.net/browse/CORE-14955",
         "summary": "Funded coupon codes are not refunding cart fees",
-        "description": "",
-        "descriptionHtml": "",
+        "description": "Steps to recreate:\n\n- Set up a coupon code for Trade, Course, Course-Prepaid (Funded Coupon Code config)\n\n- Set to 100% off Green Fees\n\n- Apply to a Hot Deal that has cart fees enabled\n\n- Example: Oyster Reef in the /South Carolina master facility\n\n- See that the promo code only discounts the green fee portions and ignores the cart fee distribution\n\n- Before Code Added\n\n\"DueOnline\": {\n\"Items\": [\n{\n\"Discount\": 0,\n\"Distributions\": [\n{\n\"Amount\": 93.95,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"GRNFEETRADE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 9.74,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"GRNFEETRADE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 16.58,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 1.72,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n}\n],\n\n- After Code Added\n\n\"DueOnline\": {\n\"Items\": [\n{\n\"Discount\": 103.69,\n\"Distributions\": [\n{\n\"Amount\": 16.58,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 1.72,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n}\n],\n\"NonRefundableSalesTax\": 0.00,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 121.99,\n\"SalesTax\": 8.70,\n\"SubTotal\": 18.30,\n\"Total\": 27.00,\n\"DisplayText\": \"Greens Fee - Composite\",\n\"IsTaxIncluded\": false,\n\"Key\": \"GRNFEETRADE\",\n\"Type\": 1\n},\n{\n\"Discount\": 0,\n\"Distributions\": [\n{\n\"Amount\": 3.49,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": null,\n\"SourceItemKey\": \"TRNFEE\",\n\"TaxAmount\": 0\n}\n],\n\"NonRefundableSalesTax\": 0.00,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 3.49,\n\"SalesTax\": 0.09,\n\"SubTotal\": 3.49,\n\"Total\": 3.58,\n\"DisplayText\": \"Convenience Fee\",\n\"IsTaxIncluded\": false,\n\"Key\": \"TRNFEE\",\n\"Type\": 2\n}\n],\n\"Summary\": {\n\"Discount\": 103.69,\n\"Distributions\": null,\n\"Original\": 125.48,\n\"SalesTax\": 8.79,\n\"SubTotal\": 21.79,\n\"Total\": 30.58\n}\n\n- Expected\n\n- Funded Coupon Codes should reduce the GreenFee portion first then move onto CartFee\n\n- This applies to course prepaid too and should also reduce GreenFee first then move onto CartFee\n\n- Sales tax should remain non-discountable and should be left to be be remaining due and to be charged",
+        "descriptionHtml": "<p>Steps to recreate:</p><ol><li><p>Set up a coupon code for Trade, Course, Course-Prepaid (Funded Coupon Code config)</p></li><li><p>Set to 100% off Green Fees</p></li><li><p>Apply to a Hot Deal that has cart fees enabled</p><ol><li><p>Example: Oyster Reef in the /South Carolina master facility </p></li></ol></li><li><p>See that the promo code only discounts the green fee portions and ignores the cart fee distribution</p><ol><li><p>Before Code Added</p><pre><code>&quot;DueOnline&quot;: {\n        &quot;Items&quot;: [\n            {\n                &quot;Discount&quot;: 0,\n                &quot;Distributions&quot;: [\n                    {\n                        &quot;Amount&quot;: 93.95,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633852,\n                        &quot;SourceItemKey&quot;: &quot;GRNFEETRADE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 9.74,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633853,\n                        &quot;SourceItemKey&quot;: &quot;GRNFEETRADE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 16.58,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633852,\n                        &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 1.72,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633853,\n                        &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    }\n                ],</code></pre></li><li><p>After Code Added </p><pre><code>&quot;DueOnline&quot;: {\n            &quot;Items&quot;: [\n                {\n                    &quot;Discount&quot;: 103.69,\n                    &quot;Distributions&quot;: [\n                        {\n                            &quot;Amount&quot;: 16.58,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: 1633852,\n                            &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        },\n                        {\n                            &quot;Amount&quot;: 1.72,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: 1633853,\n                            &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        }\n                    ],\n                    &quot;NonRefundableSalesTax&quot;: 0.00,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 121.99,\n                    &quot;SalesTax&quot;: 8.70,\n                    &quot;SubTotal&quot;: 18.30,\n                    &quot;Total&quot;: 27.00,\n                    &quot;DisplayText&quot;: &quot;Greens Fee - Composite&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;GRNFEETRADE&quot;,\n                    &quot;Type&quot;: 1\n                },\n                {\n                    &quot;Discount&quot;: 0,\n                    &quot;Distributions&quot;: [\n                        {\n                            &quot;Amount&quot;: 3.49,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: null,\n                            &quot;SourceItemKey&quot;: &quot;TRNFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        }\n                    ],\n                    &quot;NonRefundableSalesTax&quot;: 0.00,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 3.49,\n                    &quot;SalesTax&quot;: 0.09,\n                    &quot;SubTotal&quot;: 3.49,\n                    &quot;Total&quot;: 3.58,\n                    &quot;DisplayText&quot;: &quot;Convenience Fee&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;TRNFEE&quot;,\n                    &quot;Type&quot;: 2\n                }\n            ],\n            &quot;Summary&quot;: {\n                &quot;Discount&quot;: 103.69,\n                &quot;Distributions&quot;: null,\n                &quot;Original&quot;: 125.48,\n                &quot;SalesTax&quot;: 8.79,\n                &quot;SubTotal&quot;: 21.79,\n                &quot;Total&quot;: 30.58\n            }</code></pre></li></ol></li><li><p>Expected</p><ol><li><p>Funded Coupon Codes should reduce the GreenFee portion first then move onto CartFee</p></li><li><p>This applies to course prepaid too and should also reduce GreenFee first then move onto CartFee</p></li><li><p>Sales tax should remain non-discountable and should be left to be be remaining due and to be charged</p></li></ol></li></ol>",
         "descriptionImageCount": 0,
         "descriptionVideoCount": 0,
         "descriptionMediaCount": 0,
@@ -8131,8 +8131,8 @@
         "assignedDeveloper": "Unassigned",
         "assignedDeveloperAccountId": "",
         "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-11-06T09:16:00.477-0500",
-        "updatedDisplay": "Nov 6, 2026, 9:16 AM",
+        "updated": "2026-11-06T09:23:44.592-0500",
+        "updatedDisplay": "Nov 6, 2026, 9:23 AM",
         "created": "2026-11-06T09:15:57.570-0500",
         "createdDisplay": "Nov 6, 2026, 9:15 AM",
         "components": [],
@@ -44386,13 +44386,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-06T14:21:37.072Z",
-    "pulledAtDisplay": "Nov 6, 2026, 9:21 AM",
+    "pulledAt": "2026-11-06T14:27:03.969Z",
+    "pulledAtDisplay": "Nov 6, 2026, 9:27 AM",
     "window": {
-      "start": "2026-09-22T14:21:37.072Z",
-      "end": "2027-05-05T14:21:37.072Z",
-      "startDisplay": "Sep 22, 2026, 10:21 AM",
-      "endDisplay": "May 5, 2027, 10:21 AM"
+      "start": "2026-09-22T14:27:03.968Z",
+      "end": "2027-05-05T14:27:03.968Z",
+      "startDisplay": "Sep 22, 2026, 10:27 AM",
+      "endDisplay": "May 5, 2027, 10:27 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44405,7 +44405,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-06T14:21:41.915Z",
+        "pulledAt": "2026-11-06T14:27:06.693Z",
         "eventCount": 65,
         "events": [
           {
@@ -44953,6 +44953,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN000 - v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -44982,23 +44999,6 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN000 - v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45310,23 +45310,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - US Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45339,6 +45322,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - US Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45378,23 +45378,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "GN: v3001.133.0",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45407,6 +45390,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "GN: v3001.133.0",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45519,10 +45519,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-06T14:18:43.404Z",
-    "previousPulledAtDisplay": "Nov 6, 2026, 9:18 AM",
-    "currentPulledAt": "2026-11-06T14:23:56.015Z",
-    "currentPulledAtDisplay": "Nov 6, 2026, 9:23 AM",
+    "previousPulledAt": "2026-11-06T14:23:56.015Z",
+    "previousPulledAtDisplay": "Nov 6, 2026, 9:23 AM",
+    "currentPulledAt": "2026-11-06T14:29:26.466Z",
+    "currentPulledAtDisplay": "Nov 6, 2026, 9:29 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45530,6 +45530,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-06T14:23:56.015Z",
+      "previousPulledAtDisplay": "Nov 6, 2026, 9:23 AM",
+      "currentPulledAt": "2026-11-06T14:29:26.466Z",
+      "currentPulledAtDisplay": "Nov 6, 2026, 9:29 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-06T14:18:43.404Z",
       "previousPulledAtDisplay": "Nov 6, 2026, 9:18 AM",
@@ -47361,17 +47372,6 @@
       "previousPulledAtDisplay": "Nov 5, 2026, 7:09 PM",
       "currentPulledAt": "2026-11-06T00:13:16.178Z",
       "currentPulledAtDisplay": "Nov 5, 2026, 7:13 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-06T00:03:42.183Z",
-      "previousPulledAtDisplay": "Nov 5, 2026, 7:03 PM",
-      "currentPulledAt": "2026-11-06T00:09:33.021Z",
-      "currentPulledAtDisplay": "Nov 5, 2026, 7:09 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
