@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-09T22:53:50.800Z",
-  "pulledAtDisplay": "Nov 9, 2026, 5:53 PM",
+  "pulledAt": "2026-11-09T22:57:47.555Z",
+  "pulledAtDisplay": "Nov 9, 2026, 5:57 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-09T22:53:50.800Z",
-    "pulledAtDisplay": "Nov 9, 2026, 5:53 PM",
+    "pulledAt": "2026-11-09T22:57:47.555Z",
+    "pulledAtDisplay": "Nov 9, 2026, 5:57 PM",
     "total": 569,
     "mainTotal": 539,
     "subtaskTotal": 30,
@@ -8110,11 +8110,11 @@
         "key": "CORE-14967",
         "url": "https://golfnow.atlassian.net/browse/CORE-14967",
         "summary": "Commerce transactions are not storing credit card data when $0 due online",
-        "description": "",
-        "descriptionHtml": "",
-        "descriptionImageCount": 0,
+        "description": "Commerce bookings with the below configuration block No Shows from being submitted.\n\nSteps to recreate:\n\n- Owner configured to not require credit card\n\n- GolfCourse (rate set) configured to inherit from Owner\n\n- $0 due online tee time\n\n- Commerce transaction\n\nActual:\n\n- Transaction submits with CRMTeeTimeReservation.CreditCardId=-1\n\n- CRMTeeTimeReservationDetail.PaymentType=9\n\n- ReservationMetadata does not contain TypeId 87 or 81\n\n- The reservation does not show in the No Show Incidents as available for submission\n\nExpected\n\n- If commerce passes the API payment details, we should accept them and store them in the applicable location\n\n- We should not ignore the data just because credit card was not required\n\n- CreditCardId != -1\n\n- PaymentType=19\n\n- ReservationMetadata should have 87 or 81\n\n- Ultimate goal is for the reservation to show as available in No Show Incidents",
+        "descriptionHtml": "<p>Commerce bookings with the below configuration block No Shows from being submitted. </p><p><strong>Steps to recreate:</strong></p><ul><li><p>Owner configured to not require credit card</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14967/780167-image-20261109-224914.png\" alt=\"image-20261109-224914.png\" loading=\"lazy\"><figcaption>image-20261109-224914.png</figcaption></figure></div></li><li><p>GolfCourse (rate set) configured to inherit from Owner</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14967/780168-image-20261109-224941.png\" alt=\"image-20261109-224941.png\" loading=\"lazy\"><figcaption>image-20261109-224941.png</figcaption></figure></div></li><li><p>$0 due online tee time </p></li><li><p>Commerce transaction</p></li></ul><p>Actual:</p><ul><li><p>Transaction submits with CRMTeeTimeReservation.CreditCardId=-1</p></li><li><p>CRMTeeTimeReservationDetail.PaymentType=9</p></li><li><p>ReservationMetadata does not contain TypeId 87 or 81</p></li><li><p>The reservation does not show in the No Show Incidents as available for submission</p></li></ul><p>Expected</p><ul><li><p>If commerce passes the API payment details, we should accept them and store them in the applicable location</p><ul><li><p>We should not ignore the data just because credit card was not required</p></li></ul></li><li><p>CreditCardId != -1</p></li><li><p>PaymentType=19</p></li><li><p>ReservationMetadata should have 87 or 81</p></li><li><p>Ultimate goal is for the reservation to show as available in No Show Incidents</p></li></ul>",
+        "descriptionImageCount": 2,
         "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
+        "descriptionMediaCount": 2,
         "commentCount": 0,
         "comments": [],
         "lastCommentUrl": "",
@@ -8125,14 +8125,14 @@
         "isSubtask": false,
         "status": "Pre Planning",
         "priority": "None",
-        "assignee": "Brian Pugh",
-        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
+        "assignee": "Andrew Horvat",
+        "assigneeAccountId": "712020:fb2131ba-2122-41a0-9559-9966f684a89e",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:fb2131ba-2122-41a0-9559-9966f684a89e/169c8770-21ac-4272-a73c-858827f0c5bd/32",
         "assignedDeveloper": "Unassigned",
         "assignedDeveloperAccountId": "",
         "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-11-09T17:48:16.728-0500",
-        "updatedDisplay": "Nov 9, 2026, 5:48 PM",
+        "updated": "2026-11-09T17:55:36.282-0500",
+        "updatedDisplay": "Nov 9, 2026, 5:55 PM",
         "created": "2026-11-09T17:48:13.860-0500",
         "createdDisplay": "Nov 9, 2026, 5:48 PM",
         "components": [],
@@ -44494,13 +44494,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-09T22:51:05.670Z",
-    "pulledAtDisplay": "Nov 9, 2026, 5:51 PM",
+    "pulledAt": "2026-11-09T22:56:03.413Z",
+    "pulledAtDisplay": "Nov 9, 2026, 5:56 PM",
     "window": {
-      "start": "2026-09-25T22:51:05.670Z",
-      "end": "2027-05-08T22:51:05.670Z",
-      "startDisplay": "Sep 25, 2026, 6:51 PM",
-      "endDisplay": "May 8, 2027, 6:51 PM"
+      "start": "2026-09-25T22:56:03.412Z",
+      "end": "2027-05-08T22:56:03.412Z",
+      "startDisplay": "Sep 25, 2026, 6:56 PM",
+      "endDisplay": "May 8, 2027, 6:56 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44513,7 +44513,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-09T22:51:08.516Z",
+        "pulledAt": "2026-11-09T22:56:07.436Z",
         "eventCount": 65,
         "events": [
           {
@@ -45588,23 +45588,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.66",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-03T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-03",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 3, 2027",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45620,6 +45603,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.66",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-03T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-03",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 3, 2027",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -45627,10 +45627,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-09T22:48:52.094Z",
-    "previousPulledAtDisplay": "Nov 9, 2026, 5:48 PM",
-    "currentPulledAt": "2026-11-09T22:53:50.800Z",
-    "currentPulledAtDisplay": "Nov 9, 2026, 5:53 PM",
+    "previousPulledAt": "2026-11-09T22:53:50.800Z",
+    "previousPulledAtDisplay": "Nov 9, 2026, 5:53 PM",
+    "currentPulledAt": "2026-11-09T22:57:47.555Z",
+    "currentPulledAtDisplay": "Nov 9, 2026, 5:57 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45638,6 +45638,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-09T22:53:50.800Z",
+      "previousPulledAtDisplay": "Nov 9, 2026, 5:53 PM",
+      "currentPulledAt": "2026-11-09T22:57:47.555Z",
+      "currentPulledAtDisplay": "Nov 9, 2026, 5:57 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-09T22:48:52.094Z",
       "previousPulledAtDisplay": "Nov 9, 2026, 5:48 PM",
@@ -47469,17 +47480,6 @@
       "previousPulledAtDisplay": "Nov 9, 2026, 3:38 AM",
       "currentPulledAt": "2026-11-09T08:43:49.317Z",
       "currentPulledAtDisplay": "Nov 9, 2026, 3:43 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-09T08:32:40.311Z",
-      "previousPulledAtDisplay": "Nov 9, 2026, 3:32 AM",
-      "currentPulledAt": "2026-11-09T08:38:48.370Z",
-      "currentPulledAtDisplay": "Nov 9, 2026, 3:38 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
