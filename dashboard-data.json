@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-09T19:19:04.650Z",
-  "pulledAtDisplay": "Nov 9, 2026, 2:19 PM",
+  "pulledAt": "2026-11-09T19:23:23.270Z",
+  "pulledAtDisplay": "Nov 9, 2026, 2:23 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-09T19:19:04.650Z",
-    "pulledAtDisplay": "Nov 9, 2026, 2:19 PM",
+    "pulledAt": "2026-11-09T19:23:23.270Z",
+    "pulledAtDisplay": "Nov 9, 2026, 2:23 PM",
     "total": 568,
     "mainTotal": 538,
     "subtaskTotal": 30,
@@ -8107,6 +8107,56 @@
         }
       },
       {
+        "key": "CORE-14899",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14899",
+        "summary": "Topgolf | Show actionable booking errors in the customer UI",
+        "description": "Goal\n\nShow customers a clear next step when a Topgolf booking fails.\n\n---\nAcceptance Criteria\n\n- The UI presents a customer-safe message for partner booking errors.\n\n- Customers can correct input or retry when appropriate.",
+        "descriptionHtml": "<h3>Goal</h3><p>Show customers a clear next step when a Topgolf booking fails.</p><hr><h3>Acceptance Criteria</h3><ul><li><p>The UI presents a customer-safe message for partner booking errors.</p></li><li><p>Customers can correct input or retry when appropriate.</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Pre Planning",
+        "priority": "P2",
+        "assignee": "Joshua Marquess",
+        "assigneeAccountId": "557058:61c239b2-3f38-467e-afb0-40b29fe9aa94",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/JM-3.png",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-11-09T14:16:36.128-0500",
+        "updatedDisplay": "Nov 9, 2026, 2:16 PM",
+        "created": "2026-10-29T18:02:08.637-0400",
+        "createdDisplay": "Oct 29, 2026, 6:02 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14955",
         "url": "https://golfnow.atlassian.net/browse/CORE-14955",
         "summary": "Funded coupon codes are not refunding cart fees",
@@ -11074,56 +11124,6 @@
           "type": "Epic",
           "status": "Backlog",
           "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14899",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14899",
-        "summary": "Topgolf | Show actionable booking errors in the customer UI",
-        "description": "Goal\n\nShow customers a clear next step when a Topgolf booking fails.\n\n---\nAcceptance Criteria\n\n- The UI presents a customer-safe message for partner booking errors.\n\n- Customers can correct input or retry when appropriate.",
-        "descriptionHtml": "<h3>Goal</h3><p>Show customers a clear next step when a Topgolf booking fails.</p><hr><h3>Acceptance Criteria</h3><ul><li><p>The UI presents a customer-safe message for partner booking errors.</p></li><li><p>Customers can correct input or retry when appropriate.</p></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Pre Planning",
-        "priority": "P2",
-        "assignee": "Joshua Marquess",
-        "assigneeAccountId": "557058:61c239b2-3f38-467e-afb0-40b29fe9aa94",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/JM-3.png",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-10-29T18:03:01.586-0400",
-        "updatedDisplay": "Oct 29, 2026, 6:03 PM",
-        "created": "2026-10-29T18:02:08.637-0400",
-        "createdDisplay": "Oct 29, 2026, 6:02 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
         }
       },
       {
@@ -44429,13 +44429,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-09T19:16:07.620Z",
-    "pulledAtDisplay": "Nov 9, 2026, 2:16 PM",
+    "pulledAt": "2026-11-09T19:21:07.145Z",
+    "pulledAtDisplay": "Nov 9, 2026, 2:21 PM",
     "window": {
-      "start": "2026-09-25T19:16:07.620Z",
-      "end": "2027-05-08T19:16:07.620Z",
-      "startDisplay": "Sep 25, 2026, 3:16 PM",
-      "endDisplay": "May 8, 2027, 3:16 PM"
+      "start": "2026-09-25T19:21:07.145Z",
+      "end": "2027-05-08T19:21:07.145Z",
+      "startDisplay": "Sep 25, 2026, 3:21 PM",
+      "endDisplay": "May 8, 2027, 3:21 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44448,7 +44448,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-09T19:16:10.324Z",
+        "pulledAt": "2026-11-09T19:21:09.687Z",
         "eventCount": 65,
         "events": [
           {
@@ -44996,6 +44996,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN000 - v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45025,23 +45042,6 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN000 - v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45421,23 +45421,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "GN: v3001.133.0",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45450,6 +45433,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "GN: v3001.133.0",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45562,10 +45562,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-09T19:12:56.585Z",
-    "previousPulledAtDisplay": "Nov 9, 2026, 2:12 PM",
-    "currentPulledAt": "2026-11-09T19:19:04.650Z",
-    "currentPulledAtDisplay": "Nov 9, 2026, 2:19 PM",
+    "previousPulledAt": "2026-11-09T19:19:04.650Z",
+    "previousPulledAtDisplay": "Nov 9, 2026, 2:19 PM",
+    "currentPulledAt": "2026-11-09T19:23:23.270Z",
+    "currentPulledAtDisplay": "Nov 9, 2026, 2:23 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45573,6 +45573,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-09T19:19:04.650Z",
+      "previousPulledAtDisplay": "Nov 9, 2026, 2:19 PM",
+      "currentPulledAt": "2026-11-09T19:23:23.270Z",
+      "currentPulledAtDisplay": "Nov 9, 2026, 2:23 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-09T19:12:56.585Z",
       "previousPulledAtDisplay": "Nov 9, 2026, 2:12 PM",
@@ -47404,17 +47415,6 @@
       "previousPulledAtDisplay": "Nov 9, 2026, 12:03 AM",
       "currentPulledAt": "2026-11-09T05:08:34.021Z",
       "currentPulledAtDisplay": "Nov 9, 2026, 12:08 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-09T04:57:48.922Z",
-      "previousPulledAtDisplay": "Nov 8, 2026, 11:57 PM",
-      "currentPulledAt": "2026-11-09T05:03:18.866Z",
-      "currentPulledAtDisplay": "Nov 9, 2026, 12:03 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
