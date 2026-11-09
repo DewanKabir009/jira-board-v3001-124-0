@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-09T16:18:16.373Z",
-  "pulledAtDisplay": "Nov 9, 2026, 11:18 AM",
+  "pulledAt": "2026-11-09T16:23:49.785Z",
+  "pulledAtDisplay": "Nov 9, 2026, 11:23 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-09T16:18:16.373Z",
-    "pulledAtDisplay": "Nov 9, 2026, 11:18 AM",
+    "pulledAt": "2026-11-09T16:23:49.785Z",
+    "pulledAtDisplay": "Nov 9, 2026, 11:23 AM",
     "total": 568,
     "mainTotal": 538,
     "subtaskTotal": 30,
@@ -8107,6 +8107,310 @@
         "parent": null
       },
       {
+        "key": "CORE-14950",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14950",
+        "summary": "Home Course | Return RemainingChanges and MaxChangesAllowed from GetActiveCustomerHomeCourse",
+        "description": "Goal\n\nWhen asked for change counts, GetActiveCustomerHomeCourse returns the customer's real remaining and maximum home course changes, so clients can show \"X of Y changes left\" accurately.\n\n---\nProblem\n\nWith includeChangeCount=true, the API 2.1 endpoint builds the counts by calling ValidateHomeCourseEligibility(customerNumber, 2) against a hard-coded, disabled test facility. That method only fills in RemainingChanges and MaxChangesAllowed on its success path. Every early return leaves them at 0, so the counts come back as 0 when:\n\n- facility 2 is the customer's current home course\n\n- facility 2 is excluded\n\n- any other eligibility check fails\n\nCustomers can be told they have no changes left when they do.\n\n---\nBusiness Impact\n\n- Members see wrong change counts, which can stop them from changing their home course\n\n- Member Care gets avoidable support contacts\n\n- The API depends on a hard-coded test facility, which is fragile\n\n---\nProposed Change\n\nCustomer service (GolfNow.API.Customer)\n\n- Add an opt-in IncludeChangeCounts flag (default false) to GetActiveCustomerHomeCourseRequest.\n\n- Add a ChangeCounts { RemainingChanges, MaxChangesAllowed } object to the active home course response.\n\n- When the flag is true, compute the counts from the customer's current home course period. Share that lookup with ValidateHomeCourseEligibility.\n\n- When the flag is false, ChangeCounts is null and no extra DB round-trips are made.\n\nAPI 2.1 (GolfNowAPI)\n\n- Pass includeChangeCount through to the Customer service and map the returned ChangeCounts.\n\n- Remove the ValidateHomeCourseEligibility(customerNumber, 2) workaround.\n\nProxies\n\n- Regenerate the RMS / GNC CustService service reference.\n\n- Regenerate the GolfNow.API.Client proxy.\n\n- Review both diffs for unrelated contract changes.\n\n---\nAcceptance Criteria\n\n- With the flag true, ChangeCounts matches the customer's current period: MaxChangesAllowed = 2, and RemainingChanges = 2 minus the changes the customer made (never below 0). Changes made by support staff don't count.\n\n- The counts are correct even when facility 2 is the customer's home course or is excluded.\n\n- With the flag false (the default), ChangeCounts is null and no extra DB calls are made.\n\n- When the customer has no active home course, both the Customer service endpoint and the API 2.1 endpoint return null, so there is no ChangeCounts. This applies even when the flag is true.\n\n- Existing callers that don't send the flag (MakeReservation workflow, InvoiceService, InventoryChannel, SetCustomerHomeCourse, GNC) behave exactly as before.\n\n- The RMS CustService proxy and the GolfNow.API.Client proxy are regenerated, and both solutions build.\n\n- Unit tests cover the provider (HomeCourseProviderTests) and the converter (HomeCourseConverterTests).\n\n---\nTechnical Details\n\n- Customer service: HomeCourseProvider.GetActiveCustomerHomeCourse and ValidateHomeCourseEligibility, GetActiveCustomerHomeCourseRequest, the HomeCourse contracts in GolfNow.Services.Customer.Common, CustomerService.svc.cs\n\n- API 2.1: GolfNowAPI.Customers.cs (GetActiveCustomerHomeCourse), CustomerServiceFacade, HomeCourseConverter\n\n- RMS: NBCU.Golf.RMS.Business/Service References/CustService/Reference.cs, CustomerService.GetActiveCustomerHomeCourse\n\n- The contract change is additive and opt-in.\n\n- Deployment order: GolfNow.API.Customer before GolfNowAPI and GNC.\n\n---\nRelated Tickets\n\n- CORE-14301 — GolfPass \"Home Course\": Phase I (epic)",
+        "descriptionHtml": "<h3>Goal</h3><p>When asked for change counts, <code>GetActiveCustomerHomeCourse</code> returns the customer's real remaining and maximum home course changes, so clients can show &quot;X of Y changes left&quot; accurately.</p><hr><h3>Problem</h3><p>With <code>includeChangeCount=true</code>, the API 2.1 endpoint builds the counts by calling <code>ValidateHomeCourseEligibility(customerNumber, 2)</code> against a hard-coded, disabled test facility. That method only fills in <code>RemainingChanges</code> and <code>MaxChangesAllowed</code> on its success path. Every early return leaves them at 0, so the counts come back as 0 when:</p><ul><li><p>facility 2 is the customer's current home course</p></li><li><p>facility 2 is excluded</p></li><li><p>any other eligibility check fails</p></li></ul><p>Customers can be told they have no changes left when they do.</p><hr><h3>Business Impact</h3><ul><li><p>Members see wrong change counts, which can stop them from changing their home course</p></li><li><p>Member Care gets avoidable support contacts</p></li><li><p>The API depends on a hard-coded test facility, which is fragile</p></li></ul><hr><h3>Proposed Change</h3><p><strong>Customer service (GolfNow.API.Customer)</strong></p><ul><li><p>Add an opt-in <code>IncludeChangeCounts</code> flag (default <code>false</code>) to <code>GetActiveCustomerHomeCourseRequest</code>.</p></li><li><p>Add a <code>ChangeCounts { RemainingChanges, MaxChangesAllowed }</code> object to the active home course response.</p></li><li><p>When the flag is <code>true</code>, compute the counts from the customer's current home course period. Share that lookup with <code>ValidateHomeCourseEligibility</code>.</p></li><li><p>When the flag is <code>false</code>, <code>ChangeCounts</code> is <code>null</code> and no extra DB round-trips are made.</p></li></ul><p><strong>API 2.1 (GolfNowAPI)</strong></p><ul><li><p>Pass <code>includeChangeCount</code> through to the Customer service and map the returned <code>ChangeCounts</code>.</p></li><li><p>Remove the <code>ValidateHomeCourseEligibility(customerNumber, 2)</code> workaround.</p></li></ul><p><strong>Proxies</strong></p><ul><li><p>Regenerate the RMS / GNC <code>CustService</code> service reference.</p></li><li><p>Regenerate the <code>GolfNow.API.Client</code> proxy.</p></li><li><p>Review both diffs for unrelated contract changes.</p></li></ul><hr><h3>Acceptance Criteria</h3><ul><li><p>With the flag <code>true</code>, <code>ChangeCounts</code> matches the customer's current period: <code>MaxChangesAllowed</code> = 2, and <code>RemainingChanges</code> = 2 minus the changes the customer made (never below 0). Changes made by support staff don't count.</p></li><li><p>The counts are correct even when facility 2 is the customer's home course or is excluded.</p></li><li><p>With the flag <code>false</code> (the default), <code>ChangeCounts</code> is <code>null</code> and no extra DB calls are made.</p></li><li><p>When the customer has no active home course, both the Customer service endpoint and the API 2.1 endpoint return <code>null</code>, so there is no <code>ChangeCounts</code>. This applies even when the flag is <code>true</code>.</p></li><li><p>Existing callers that don't send the flag (MakeReservation workflow, InvoiceService, InventoryChannel, SetCustomerHomeCourse, GNC) behave exactly as before.</p></li><li><p>The RMS <code>CustService</code> proxy and the <code>GolfNow.API.Client</code> proxy are regenerated, and both solutions build.</p></li><li><p>Unit tests cover the provider (<code>HomeCourseProviderTests</code>) and the converter (<code>HomeCourseConverterTests</code>).</p></li></ul><hr><h3>Technical Details</h3><ul><li><p>Customer service: <code>HomeCourseProvider.GetActiveCustomerHomeCourse</code> and <code>ValidateHomeCourseEligibility</code>, <code>GetActiveCustomerHomeCourseRequest</code>, the HomeCourse contracts in <code>GolfNow.Services.Customer.Common</code>, <code>CustomerService.svc.cs</code></p></li><li><p>API 2.1: <code>GolfNowAPI.Customers.cs</code> (<code>GetActiveCustomerHomeCourse</code>), <code>CustomerServiceFacade</code>, <code>HomeCourseConverter</code></p></li><li><p>RMS: <code>NBCU.Golf.RMS.Business/Service References/CustService/Reference.cs</code>, <code>CustomerService.GetActiveCustomerHomeCourse</code></p></li><li><p>The contract change is additive and opt-in.</p></li><li><p><strong>Deployment order:</strong> GolfNow.API.Customer before GolfNowAPI and GNC.</p></li></ul><hr><h3>Related Tickets</h3><ul><li><p>CORE-14301 — GolfPass &quot;Home Course&quot;: Phase I (epic)</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1241029",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14950?focusedCommentId=1241029",
+            "author": "Luis Vallejo Mursuli",
+            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+            "created": "2026-11-05T14:28:38.992-0500",
+            "createdDisplay": "Nov 5, 2026, 2:28 PM",
+            "updated": "2026-11-05T14:28:38.992-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "QA,\n\nBelow the guide to test this changes. Please let me know if you have any questions.",
+            "bodyHtml": "<p>QA,</p><p>Below the guide to test this changes. Please let me know if you have any questions.<br><br> </p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14950?focusedCommentId=1241029",
+        "lastCommentDisplay": "Nov 5, 2026, 2:28 PM",
+        "lastCommentAuthor": "Luis Vallejo Mursuli",
+        "testChecklist": {
+          "files": [
+            {
+              "id": "779367",
+              "filename": "QA_Test_Guide_CORE-14950.md",
+              "created": "2026-11-05T14:28:38.768-0500",
+              "author": "Luis Vallejo Mursuli"
+            }
+          ],
+          "commentIds": [
+            "1241029"
+          ],
+          "total": 15,
+          "testCases": [
+            {
+              "id": "A1",
+              "title": "Parameter Omitted Returns No Counts",
+              "category": "4. Category A: Change Counts on GET Tests",
+              "blocking": false,
+              "description": "Verify that omitting includeChangeCount returns the home course with ChangeCounts: null. (Sandbox scenario 1)",
+              "checks": [
+                "HTTP 200",
+                "GolfFacilityId matches the active row in the database",
+                "ChangeCounts is null"
+              ],
+              "sourceFile": "QA_Test_Guide_CORE-14950.md"
+            },
+            {
+              "id": "A2",
+              "title": "includeChangeCount=false Returns No Counts",
+              "category": "4. Category A: Change Counts on GET Tests",
+              "blocking": false,
+              "description": "Verify that an explicit false behaves the same as omitting the parameter. (Sandbox scenario 2)",
+              "checks": [
+                "HTTP 200",
+                "Response identical to A1",
+                "ChangeCounts is null"
+              ],
+              "sourceFile": "QA_Test_Guide_CORE-14950.md"
+            },
+            {
+              "id": "A3",
+              "title": "One Customer Change Returns 1 / 2",
+              "category": "4. Category A: Change Counts on GET Tests",
+              "blocking": false,
+              "description": "Verify the real counts for a member with exactly one customer-initiated change in the period. (Sandbox scenario 3)",
+              "checks": [
+                "HTTP 200",
+                "RemainingChanges = 1",
+                "MaxChangesAllowed = 2",
+                "Values match max(0, 2 - CustomerModifications) from the database"
+              ],
+              "sourceFile": "QA_Test_Guide_CORE-14950.md"
+            },
+            {
+              "id": "A4",
+              "title": "At the Limit Returns 0 / 2",
+              "category": "4. Category A: Change Counts on GET Tests",
+              "blocking": false,
+              "description": "Verify that a customer at the change limit gets 0 / 2. Before this change the API returned 0 / 0. (Sandbox scenario 4)",
+              "checks": [
+                "HTTP 200",
+                "RemainingChanges = 0",
+                "MaxChangesAllowed = 2",
+                "RemainingChanges is not negative even if the customer has more than 2 customer rows in the period"
+              ],
+              "sourceFile": "QA_Test_Guide_CORE-14950.md"
+            },
+            {
+              "id": "A5",
+              "title": "Staff-Only Home Course Returns 2 / 2",
+              "category": "4. Category A: Change Counts on GET Tests",
+              "blocking": false,
+              "description": "Verify that changes made by GNC staff do not count against the customer. (Sandbox scenario 5)",
+              "checks": [
+                "HTTP 200",
+                "RemainingChanges = 2, MaxChangesAllowed = 2",
+                "Staff rows (SystemUserId set) did not reduce RemainingChanges"
+              ],
+              "sourceFile": "QA_Test_Guide_CORE-14950.md"
+            },
+            {
+              "id": "A6",
+              "title": "Home Course Is Facility 2 Returns Correct Counts",
+              "category": "4. Category A: Change Counts on GET Tests",
+              "blocking": false,
+              "description": "Verify the old bug is gone: when the customer's current home course is facility 2 (the facility the old workaround used), the counts are still correct. (Sandbox scenario 6)",
+              "checks": [
+                "HTTP 200",
+                "GolfFacilityId = 2",
+                "RemainingChanges matches the database",
+                "MaxChangesAllowed = 2"
+              ],
+              "sourceFile": "QA_Test_Guide_CORE-14950.md"
+            },
+            {
+              "id": "B1",
+              "title": "Customer With No Home Course",
+              "category": "5. Category B: Edge Case Tests",
+              "blocking": false,
+              "description": "Verify that a customer with no home course gets a null response and the same HTTP status the API returned before this change. (Sandbox scenario 7)",
+              "checks": [
+                "Body is null/empty",
+                "HTTP status recorded: ______",
+                "Status identical to the pre-change behavior",
+                "Same result for true, false and omitted"
+              ],
+              "sourceFile": "QA_Test_Guide_CORE-14950.md"
+            },
+            {
+              "id": "B2",
+              "title": "Counts Cannot Be Computed",
+              "category": "5. Category B: Edge Case Tests",
+              "blocking": false,
+              "description": "Verify that when the customer has an active home course but the counts cannot be computed (no period row, or non-member), the home course is returned with ChangeCounts: null and no error. (Sandbox scenario 8)",
+              "checks": [
+                "HTTP 200",
+                "Home course fields present",
+                "ChangeCounts is null",
+                "No error in the logs (see Section 9)"
+              ],
+              "sourceFile": "QA_Test_Guide_CORE-14950.md"
+            },
+            {
+              "id": "B3",
+              "title": "Invalid includeChangeCount Value",
+              "category": "5. Category B: Edge Case Tests",
+              "blocking": false,
+              "description": "Verify an unparsable boolean behaves as it did before this change. (Sandbox scenario 13)",
+              "checks": [
+                "HTTP status recorded: ______",
+                "Matches pre-change behavior"
+              ],
+              "sourceFile": "QA_Test_Guide_CORE-14950.md"
+            },
+            {
+              "id": "C1",
+              "title": "Customer Set Returns Exact Counts",
+              "category": "6. Category C: Set and GNC Integration Tests",
+              "blocking": false,
+              "description": "Verify that a customer-initiated set returns ChangeCounts one lower than before, and that a following GET agrees. (Sandbox scenario 9)",
+              "checks": [
+                "POST 200",
+                "ChangeCounts.RemainingChanges = N - 1",
+                "MaxChangesAllowed = 2",
+                "Follow-up GET matches the POST response",
+                "Database shows one new active row and the old row inactive"
+              ],
+              "sourceFile": "QA_Test_Guide_CORE-14950.md"
+            },
+            {
+              "id": "C2",
+              "title": "GNC Staff Change Does Not Consume a Customer Change",
+              "category": "6. Category C: Set and GNC Integration Tests",
+              "blocking": false,
+              "description": "Verify that a home course change made by GNC staff leaves the customer's RemainingChanges unchanged. (Sandbox scenario 10)",
+              "checks": [
+                "GNC save succeeds",
+                "New active row has SystemUserId populated",
+                "RemainingChanges unchanged",
+                "MaxChangesAllowed = 2"
+              ],
+              "sourceFile": "QA_Test_Guide_CORE-14950.md"
+            },
+            {
+              "id": "C3",
+              "title": "GNC Duplicate Facility Message",
+              "category": "6. Category C: Set and GNC Integration Tests",
+              "blocking": false,
+              "description": "Verify that GNC still blocks saving the customer's current home course again, with the same message. This confirms the regenerated service reference works. (Sandbox scenario 11)",
+              "checks": [
+                "Message displayed as above",
+                "Section 8 query shows no new row",
+                "Counts unchanged"
+              ],
+              "sourceFile": "QA_Test_Guide_CORE-14950.md"
+            },
+            {
+              "id": "C4",
+              "title": "Booking Regression for a Member With a Home Course",
+              "category": "6. Category C: Set and GNC Integration Tests",
+              "blocking": false,
+              "description": "The reservation flow reads the customer's home course through the same Customer-service operation. Verify that booking still works and that home course loyalty behavior is unchanged. (Sandbox scenario 12)",
+              "checks": [
+                "Home course booking succeeds",
+                "Other-course booking succeeds",
+                "Loyalty behavior unchanged",
+                "No new log errors"
+              ],
+              "sourceFile": "QA_Test_Guide_CORE-14950.md"
+            },
+            {
+              "id": "C5",
+              "title": "Customer Set at the Limit Is Still Rejected",
+              "category": "6. Category C: Set and GNC Integration Tests",
+              "blocking": false,
+              "description": "Extra check. Verify the change limit is still enforced for customers, and that a rejected set does not alter the counts.",
+              "checks": [
+                "POST rejected; status recorded: ______",
+                "Message as above",
+                "No new database row",
+                "Counts still 0 / 2"
+              ],
+              "sourceFile": "QA_Test_Guide_CORE-14950.md"
+            },
+            {
+              "id": "C6",
+              "title": "First-Ever Selection Takes the Counts From 2 / 2 to 1 / 2",
+              "category": "6. Category C: Set and GNC Integration Tests",
+              "blocking": false,
+              "description": "Extra check. A customer's very first home course selection also counts as a customer-initiated change, so the POST response should show 1 / 2.",
+              "checks": [
+                "POST 200",
+                "ChangeCounts = 1 / 2",
+                "GET matches",
+                "Exactly one active row",
+                "All Category A tests pass (A1-A6)",
+                "All Category B tests pass (B1-B3)",
+                "All Category C tests pass (C1-C6)",
+                "Counts match max(0, 2 - CustomerModifications) for every customer tested",
+                "MaxChangesAllowed is 2 in every response that has counts",
+                "ChangeCounts is null whenever the flag is omitted/false",
+                "Database verification complete for every test that sets a home course",
+                "Staff changes did not reduce RemainingChanges",
+                "Rejected sets created no rows",
+                "No new errors in the API 2.1 or Customer service logs during testing",
+                "Booking flow works for a member with a home course (C4)",
+                "GNC home course save and duplicate-facility message work (C2, C3)"
+              ],
+              "sourceFile": "QA_Test_Guide_CORE-14950.md"
+            }
+          ]
+        },
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Code Review",
+        "priority": "P2",
+        "assignee": "Yoel Martin Pardo",
+        "assigneeAccountId": "625571809e7380006fb29599",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "assignedDeveloper": "Luis Vallejo Mursuli",
+        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+        "updated": "2026-11-09T11:17:11.723-0500",
+        "updatedDisplay": "Nov 9, 2026, 11:17 AM",
+        "created": "2026-11-04T19:49:32.142-0500",
+        "createdDisplay": "Nov 4, 2026, 7:49 PM",
+        "components": [
+          "GolfNow.API.Customer",
+          "GolfNowAPI",
+          "GolfNowCentral"
+        ],
+        "fixVersions": [
+          "v3001.131.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14301",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14301",
+          "summary": "GolfPass \"Home Course\": Phase I",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14951",
         "url": "https://golfnow.atlassian.net/browse/CORE-14951",
         "summary": "Pro Agenda Follow Ups",
@@ -8632,304 +8936,6 @@
           "type": "Epic",
           "status": "Backlog",
           "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14950",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14950",
-        "summary": "Home Course | Return RemainingChanges and MaxChangesAllowed from GetActiveCustomerHomeCourse",
-        "description": "Goal\n\nWhen asked for change counts, GetActiveCustomerHomeCourse returns the customer's real remaining and maximum home course changes, so clients can show \"X of Y changes left\" accurately.\n\n---\nProblem\n\nWith includeChangeCount=true, the API 2.1 endpoint builds the counts by calling ValidateHomeCourseEligibility(customerNumber, 2) against a hard-coded, disabled test facility. That method only fills in RemainingChanges and MaxChangesAllowed on its success path. Every early return leaves them at 0, so the counts come back as 0 when:\n\n- facility 2 is the customer's current home course\n\n- facility 2 is excluded\n\n- any other eligibility check fails\n\nCustomers can be told they have no changes left when they do.\n\n---\nBusiness Impact\n\n- Members see wrong change counts, which can stop them from changing their home course\n\n- Member Care gets avoidable support contacts\n\n- The API depends on a hard-coded test facility, which is fragile\n\n---\nProposed Change\n\nCustomer service (GolfNow.API.Customer)\n\n- Add an opt-in IncludeChangeCounts flag (default false) to GetActiveCustomerHomeCourseRequest.\n\n- Add a ChangeCounts { RemainingChanges, MaxChangesAllowed } object to the active home course response.\n\n- When the flag is true, compute the counts from the customer's current home course period. Share that lookup with ValidateHomeCourseEligibility.\n\n- When the flag is false, ChangeCounts is null and no extra DB round-trips are made.\n\nAPI 2.1 (GolfNowAPI)\n\n- Pass includeChangeCount through to the Customer service and map the returned ChangeCounts.\n\n- Remove the ValidateHomeCourseEligibility(customerNumber, 2) workaround.\n\nProxies\n\n- Regenerate the RMS / GNC CustService service reference.\n\n- Regenerate the GolfNow.API.Client proxy.\n\n- Review both diffs for unrelated contract changes.\n\n---\nAcceptance Criteria\n\n- With the flag true, ChangeCounts matches the customer's current period: MaxChangesAllowed = 2, and RemainingChanges = 2 minus the changes the customer made (never below 0). Changes made by support staff don't count.\n\n- The counts are correct even when facility 2 is the customer's home course or is excluded.\n\n- With the flag false (the default), ChangeCounts is null and no extra DB calls are made.\n\n- When the customer has no active home course, both the Customer service endpoint and the API 2.1 endpoint return null, so there is no ChangeCounts. This applies even when the flag is true.\n\n- Existing callers that don't send the flag (MakeReservation workflow, InvoiceService, InventoryChannel, SetCustomerHomeCourse, GNC) behave exactly as before.\n\n- The RMS CustService proxy and the GolfNow.API.Client proxy are regenerated, and both solutions build.\n\n- Unit tests cover the provider (HomeCourseProviderTests) and the converter (HomeCourseConverterTests).\n\n---\nTechnical Details\n\n- Customer service: HomeCourseProvider.GetActiveCustomerHomeCourse and ValidateHomeCourseEligibility, GetActiveCustomerHomeCourseRequest, the HomeCourse contracts in GolfNow.Services.Customer.Common, CustomerService.svc.cs\n\n- API 2.1: GolfNowAPI.Customers.cs (GetActiveCustomerHomeCourse), CustomerServiceFacade, HomeCourseConverter\n\n- RMS: NBCU.Golf.RMS.Business/Service References/CustService/Reference.cs, CustomerService.GetActiveCustomerHomeCourse\n\n- The contract change is additive and opt-in.\n\n- Deployment order: GolfNow.API.Customer before GolfNowAPI and GNC.\n\n---\nRelated Tickets\n\n- CORE-14301 — GolfPass \"Home Course\": Phase I (epic)",
-        "descriptionHtml": "<h3>Goal</h3><p>When asked for change counts, <code>GetActiveCustomerHomeCourse</code> returns the customer's real remaining and maximum home course changes, so clients can show &quot;X of Y changes left&quot; accurately.</p><hr><h3>Problem</h3><p>With <code>includeChangeCount=true</code>, the API 2.1 endpoint builds the counts by calling <code>ValidateHomeCourseEligibility(customerNumber, 2)</code> against a hard-coded, disabled test facility. That method only fills in <code>RemainingChanges</code> and <code>MaxChangesAllowed</code> on its success path. Every early return leaves them at 0, so the counts come back as 0 when:</p><ul><li><p>facility 2 is the customer's current home course</p></li><li><p>facility 2 is excluded</p></li><li><p>any other eligibility check fails</p></li></ul><p>Customers can be told they have no changes left when they do.</p><hr><h3>Business Impact</h3><ul><li><p>Members see wrong change counts, which can stop them from changing their home course</p></li><li><p>Member Care gets avoidable support contacts</p></li><li><p>The API depends on a hard-coded test facility, which is fragile</p></li></ul><hr><h3>Proposed Change</h3><p><strong>Customer service (GolfNow.API.Customer)</strong></p><ul><li><p>Add an opt-in <code>IncludeChangeCounts</code> flag (default <code>false</code>) to <code>GetActiveCustomerHomeCourseRequest</code>.</p></li><li><p>Add a <code>ChangeCounts { RemainingChanges, MaxChangesAllowed }</code> object to the active home course response.</p></li><li><p>When the flag is <code>true</code>, compute the counts from the customer's current home course period. Share that lookup with <code>ValidateHomeCourseEligibility</code>.</p></li><li><p>When the flag is <code>false</code>, <code>ChangeCounts</code> is <code>null</code> and no extra DB round-trips are made.</p></li></ul><p><strong>API 2.1 (GolfNowAPI)</strong></p><ul><li><p>Pass <code>includeChangeCount</code> through to the Customer service and map the returned <code>ChangeCounts</code>.</p></li><li><p>Remove the <code>ValidateHomeCourseEligibility(customerNumber, 2)</code> workaround.</p></li></ul><p><strong>Proxies</strong></p><ul><li><p>Regenerate the RMS / GNC <code>CustService</code> service reference.</p></li><li><p>Regenerate the <code>GolfNow.API.Client</code> proxy.</p></li><li><p>Review both diffs for unrelated contract changes.</p></li></ul><hr><h3>Acceptance Criteria</h3><ul><li><p>With the flag <code>true</code>, <code>ChangeCounts</code> matches the customer's current period: <code>MaxChangesAllowed</code> = 2, and <code>RemainingChanges</code> = 2 minus the changes the customer made (never below 0). Changes made by support staff don't count.</p></li><li><p>The counts are correct even when facility 2 is the customer's home course or is excluded.</p></li><li><p>With the flag <code>false</code> (the default), <code>ChangeCounts</code> is <code>null</code> and no extra DB calls are made.</p></li><li><p>When the customer has no active home course, both the Customer service endpoint and the API 2.1 endpoint return <code>null</code>, so there is no <code>ChangeCounts</code>. This applies even when the flag is <code>true</code>.</p></li><li><p>Existing callers that don't send the flag (MakeReservation workflow, InvoiceService, InventoryChannel, SetCustomerHomeCourse, GNC) behave exactly as before.</p></li><li><p>The RMS <code>CustService</code> proxy and the <code>GolfNow.API.Client</code> proxy are regenerated, and both solutions build.</p></li><li><p>Unit tests cover the provider (<code>HomeCourseProviderTests</code>) and the converter (<code>HomeCourseConverterTests</code>).</p></li></ul><hr><h3>Technical Details</h3><ul><li><p>Customer service: <code>HomeCourseProvider.GetActiveCustomerHomeCourse</code> and <code>ValidateHomeCourseEligibility</code>, <code>GetActiveCustomerHomeCourseRequest</code>, the HomeCourse contracts in <code>GolfNow.Services.Customer.Common</code>, <code>CustomerService.svc.cs</code></p></li><li><p>API 2.1: <code>GolfNowAPI.Customers.cs</code> (<code>GetActiveCustomerHomeCourse</code>), <code>CustomerServiceFacade</code>, <code>HomeCourseConverter</code></p></li><li><p>RMS: <code>NBCU.Golf.RMS.Business/Service References/CustService/Reference.cs</code>, <code>CustomerService.GetActiveCustomerHomeCourse</code></p></li><li><p>The contract change is additive and opt-in.</p></li><li><p><strong>Deployment order:</strong> GolfNow.API.Customer before GolfNowAPI and GNC.</p></li></ul><hr><h3>Related Tickets</h3><ul><li><p>CORE-14301 — GolfPass &quot;Home Course&quot;: Phase I (epic)</p></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1241029",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14950?focusedCommentId=1241029",
-            "author": "Luis Vallejo Mursuli",
-            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-            "created": "2026-11-05T14:28:38.992-0500",
-            "createdDisplay": "Nov 5, 2026, 2:28 PM",
-            "updated": "2026-11-05T14:28:38.992-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "QA,\n\nBelow the guide to test this changes. Please let me know if you have any questions.",
-            "bodyHtml": "<p>QA,</p><p>Below the guide to test this changes. Please let me know if you have any questions.<br><br> </p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14950?focusedCommentId=1241029",
-        "lastCommentDisplay": "Nov 5, 2026, 2:28 PM",
-        "lastCommentAuthor": "Luis Vallejo Mursuli",
-        "testChecklist": {
-          "files": [
-            {
-              "id": "779367",
-              "filename": "QA_Test_Guide_CORE-14950.md",
-              "created": "2026-11-05T14:28:38.768-0500",
-              "author": "Luis Vallejo Mursuli"
-            }
-          ],
-          "commentIds": [
-            "1241029"
-          ],
-          "total": 15,
-          "testCases": [
-            {
-              "id": "A1",
-              "title": "Parameter Omitted Returns No Counts",
-              "category": "4. Category A: Change Counts on GET Tests",
-              "blocking": false,
-              "description": "Verify that omitting includeChangeCount returns the home course with ChangeCounts: null. (Sandbox scenario 1)",
-              "checks": [
-                "HTTP 200",
-                "GolfFacilityId matches the active row in the database",
-                "ChangeCounts is null"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "A2",
-              "title": "includeChangeCount=false Returns No Counts",
-              "category": "4. Category A: Change Counts on GET Tests",
-              "blocking": false,
-              "description": "Verify that an explicit false behaves the same as omitting the parameter. (Sandbox scenario 2)",
-              "checks": [
-                "HTTP 200",
-                "Response identical to A1",
-                "ChangeCounts is null"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "A3",
-              "title": "One Customer Change Returns 1 / 2",
-              "category": "4. Category A: Change Counts on GET Tests",
-              "blocking": false,
-              "description": "Verify the real counts for a member with exactly one customer-initiated change in the period. (Sandbox scenario 3)",
-              "checks": [
-                "HTTP 200",
-                "RemainingChanges = 1",
-                "MaxChangesAllowed = 2",
-                "Values match max(0, 2 - CustomerModifications) from the database"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "A4",
-              "title": "At the Limit Returns 0 / 2",
-              "category": "4. Category A: Change Counts on GET Tests",
-              "blocking": false,
-              "description": "Verify that a customer at the change limit gets 0 / 2. Before this change the API returned 0 / 0. (Sandbox scenario 4)",
-              "checks": [
-                "HTTP 200",
-                "RemainingChanges = 0",
-                "MaxChangesAllowed = 2",
-                "RemainingChanges is not negative even if the customer has more than 2 customer rows in the period"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "A5",
-              "title": "Staff-Only Home Course Returns 2 / 2",
-              "category": "4. Category A: Change Counts on GET Tests",
-              "blocking": false,
-              "description": "Verify that changes made by GNC staff do not count against the customer. (Sandbox scenario 5)",
-              "checks": [
-                "HTTP 200",
-                "RemainingChanges = 2, MaxChangesAllowed = 2",
-                "Staff rows (SystemUserId set) did not reduce RemainingChanges"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "A6",
-              "title": "Home Course Is Facility 2 Returns Correct Counts",
-              "category": "4. Category A: Change Counts on GET Tests",
-              "blocking": false,
-              "description": "Verify the old bug is gone: when the customer's current home course is facility 2 (the facility the old workaround used), the counts are still correct. (Sandbox scenario 6)",
-              "checks": [
-                "HTTP 200",
-                "GolfFacilityId = 2",
-                "RemainingChanges matches the database",
-                "MaxChangesAllowed = 2"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "B1",
-              "title": "Customer With No Home Course",
-              "category": "5. Category B: Edge Case Tests",
-              "blocking": false,
-              "description": "Verify that a customer with no home course gets a null response and the same HTTP status the API returned before this change. (Sandbox scenario 7)",
-              "checks": [
-                "Body is null/empty",
-                "HTTP status recorded: ______",
-                "Status identical to the pre-change behavior",
-                "Same result for true, false and omitted"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "B2",
-              "title": "Counts Cannot Be Computed",
-              "category": "5. Category B: Edge Case Tests",
-              "blocking": false,
-              "description": "Verify that when the customer has an active home course but the counts cannot be computed (no period row, or non-member), the home course is returned with ChangeCounts: null and no error. (Sandbox scenario 8)",
-              "checks": [
-                "HTTP 200",
-                "Home course fields present",
-                "ChangeCounts is null",
-                "No error in the logs (see Section 9)"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "B3",
-              "title": "Invalid includeChangeCount Value",
-              "category": "5. Category B: Edge Case Tests",
-              "blocking": false,
-              "description": "Verify an unparsable boolean behaves as it did before this change. (Sandbox scenario 13)",
-              "checks": [
-                "HTTP status recorded: ______",
-                "Matches pre-change behavior"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "C1",
-              "title": "Customer Set Returns Exact Counts",
-              "category": "6. Category C: Set and GNC Integration Tests",
-              "blocking": false,
-              "description": "Verify that a customer-initiated set returns ChangeCounts one lower than before, and that a following GET agrees. (Sandbox scenario 9)",
-              "checks": [
-                "POST 200",
-                "ChangeCounts.RemainingChanges = N - 1",
-                "MaxChangesAllowed = 2",
-                "Follow-up GET matches the POST response",
-                "Database shows one new active row and the old row inactive"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "C2",
-              "title": "GNC Staff Change Does Not Consume a Customer Change",
-              "category": "6. Category C: Set and GNC Integration Tests",
-              "blocking": false,
-              "description": "Verify that a home course change made by GNC staff leaves the customer's RemainingChanges unchanged. (Sandbox scenario 10)",
-              "checks": [
-                "GNC save succeeds",
-                "New active row has SystemUserId populated",
-                "RemainingChanges unchanged",
-                "MaxChangesAllowed = 2"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "C3",
-              "title": "GNC Duplicate Facility Message",
-              "category": "6. Category C: Set and GNC Integration Tests",
-              "blocking": false,
-              "description": "Verify that GNC still blocks saving the customer's current home course again, with the same message. This confirms the regenerated service reference works. (Sandbox scenario 11)",
-              "checks": [
-                "Message displayed as above",
-                "Section 8 query shows no new row",
-                "Counts unchanged"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "C4",
-              "title": "Booking Regression for a Member With a Home Course",
-              "category": "6. Category C: Set and GNC Integration Tests",
-              "blocking": false,
-              "description": "The reservation flow reads the customer's home course through the same Customer-service operation. Verify that booking still works and that home course loyalty behavior is unchanged. (Sandbox scenario 12)",
-              "checks": [
-                "Home course booking succeeds",
-                "Other-course booking succeeds",
-                "Loyalty behavior unchanged",
-                "No new log errors"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "C5",
-              "title": "Customer Set at the Limit Is Still Rejected",
-              "category": "6. Category C: Set and GNC Integration Tests",
-              "blocking": false,
-              "description": "Extra check. Verify the change limit is still enforced for customers, and that a rejected set does not alter the counts.",
-              "checks": [
-                "POST rejected; status recorded: ______",
-                "Message as above",
-                "No new database row",
-                "Counts still 0 / 2"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "C6",
-              "title": "First-Ever Selection Takes the Counts From 2 / 2 to 1 / 2",
-              "category": "6. Category C: Set and GNC Integration Tests",
-              "blocking": false,
-              "description": "Extra check. A customer's very first home course selection also counts as a customer-initiated change, so the POST response should show 1 / 2.",
-              "checks": [
-                "POST 200",
-                "ChangeCounts = 1 / 2",
-                "GET matches",
-                "Exactly one active row",
-                "All Category A tests pass (A1-A6)",
-                "All Category B tests pass (B1-B3)",
-                "All Category C tests pass (C1-C6)",
-                "Counts match max(0, 2 - CustomerModifications) for every customer tested",
-                "MaxChangesAllowed is 2 in every response that has counts",
-                "ChangeCounts is null whenever the flag is omitted/false",
-                "Database verification complete for every test that sets a home course",
-                "Staff changes did not reduce RemainingChanges",
-                "Rejected sets created no rows",
-                "No new errors in the API 2.1 or Customer service logs during testing",
-                "Booking flow works for a member with a home course (C4)",
-                "GNC home course save and duplicate-facility message work (C2, C3)"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            }
-          ]
-        },
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Development",
-        "priority": "P2",
-        "assignee": "Luis Vallejo Mursuli",
-        "assigneeAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
-        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-11-05T14:35:39.303-0500",
-        "updatedDisplay": "Nov 5, 2026, 2:35 PM",
-        "created": "2026-11-04T19:49:32.142-0500",
-        "createdDisplay": "Nov 4, 2026, 7:49 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14301",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14301",
-          "summary": "GolfPass \"Home Course\": Phase I",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
         }
       },
       {
@@ -44402,13 +44408,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-09T16:16:07.761Z",
-    "pulledAtDisplay": "Nov 9, 2026, 11:16 AM",
+    "pulledAt": "2026-11-09T16:21:17.842Z",
+    "pulledAtDisplay": "Nov 9, 2026, 11:21 AM",
     "window": {
-      "start": "2026-09-25T16:16:07.761Z",
-      "end": "2027-05-08T16:16:07.761Z",
-      "startDisplay": "Sep 25, 2026, 12:16 PM",
-      "endDisplay": "May 8, 2027, 12:16 PM"
+      "start": "2026-09-25T16:21:17.842Z",
+      "end": "2027-05-08T16:21:17.842Z",
+      "startDisplay": "Sep 25, 2026, 12:21 PM",
+      "endDisplay": "May 8, 2027, 12:21 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44421,7 +44427,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-09T16:16:10.467Z",
+        "pulledAt": "2026-11-09T16:21:20.647Z",
         "eventCount": 65,
         "events": [
           {
@@ -45496,23 +45502,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.66",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-03T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-03",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 3, 2027",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45528,6 +45517,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.66",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-03T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-03",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 3, 2027",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -45535,10 +45541,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-09T16:14:00.916Z",
-    "previousPulledAtDisplay": "Nov 9, 2026, 11:14 AM",
-    "currentPulledAt": "2026-11-09T16:18:16.373Z",
-    "currentPulledAtDisplay": "Nov 9, 2026, 11:18 AM",
+    "previousPulledAt": "2026-11-09T16:18:16.373Z",
+    "previousPulledAtDisplay": "Nov 9, 2026, 11:18 AM",
+    "currentPulledAt": "2026-11-09T16:23:49.785Z",
+    "currentPulledAtDisplay": "Nov 9, 2026, 11:23 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45546,6 +45552,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-09T16:18:16.373Z",
+      "previousPulledAtDisplay": "Nov 9, 2026, 11:18 AM",
+      "currentPulledAt": "2026-11-09T16:23:49.785Z",
+      "currentPulledAtDisplay": "Nov 9, 2026, 11:23 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-09T16:14:00.916Z",
       "previousPulledAtDisplay": "Nov 9, 2026, 11:14 AM",
@@ -47377,17 +47394,6 @@
       "previousPulledAtDisplay": "Nov 8, 2026, 9:18 PM",
       "currentPulledAt": "2026-11-09T02:23:45.200Z",
       "currentPulledAtDisplay": "Nov 8, 2026, 9:23 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-09T02:13:52.375Z",
-      "previousPulledAtDisplay": "Nov 8, 2026, 9:13 PM",
-      "currentPulledAt": "2026-11-09T02:18:40.687Z",
-      "currentPulledAtDisplay": "Nov 8, 2026, 9:18 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
