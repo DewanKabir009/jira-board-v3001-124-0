@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-10T09:47:45.800Z",
-  "pulledAtDisplay": "Nov 10, 2026, 4:47 AM",
+  "pulledAt": "2026-11-10T09:52:25.154Z",
+  "pulledAtDisplay": "Nov 10, 2026, 4:52 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-10T09:47:45.800Z",
-    "pulledAtDisplay": "Nov 10, 2026, 4:47 AM",
+    "pulledAt": "2026-11-10T09:52:25.154Z",
+    "pulledAtDisplay": "Nov 10, 2026, 4:52 AM",
     "total": 570,
     "mainTotal": 540,
     "subtaskTotal": 30,
@@ -44544,13 +44544,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-10T09:45:42.154Z",
-    "pulledAtDisplay": "Nov 10, 2026, 4:45 AM",
+    "pulledAt": "2026-11-10T09:50:44.166Z",
+    "pulledAtDisplay": "Nov 10, 2026, 4:50 AM",
     "window": {
-      "start": "2026-09-26T09:45:42.154Z",
-      "end": "2027-05-09T09:45:42.154Z",
-      "startDisplay": "Sep 26, 2026, 5:45 AM",
-      "endDisplay": "May 9, 2027, 5:45 AM"
+      "start": "2026-09-26T09:50:44.165Z",
+      "end": "2027-05-09T09:50:44.165Z",
+      "startDisplay": "Sep 26, 2026, 5:50 AM",
+      "endDisplay": "May 9, 2027, 5:50 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44563,7 +44563,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-10T09:45:44.831Z",
+        "pulledAt": "2026-11-10T09:50:46.089Z",
         "eventCount": 65,
         "events": [
           {
@@ -45638,23 +45638,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.66",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-03T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-03",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 3, 2027",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45670,6 +45653,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.66",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-03T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-03",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 3, 2027",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -45677,10 +45677,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-10T09:42:18.843Z",
-    "previousPulledAtDisplay": "Nov 10, 2026, 4:42 AM",
-    "currentPulledAt": "2026-11-10T09:47:45.800Z",
-    "currentPulledAtDisplay": "Nov 10, 2026, 4:47 AM",
+    "previousPulledAt": "2026-11-10T09:47:45.800Z",
+    "previousPulledAtDisplay": "Nov 10, 2026, 4:47 AM",
+    "currentPulledAt": "2026-11-10T09:52:25.154Z",
+    "currentPulledAtDisplay": "Nov 10, 2026, 4:52 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45688,6 +45688,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-10T09:47:45.800Z",
+      "previousPulledAtDisplay": "Nov 10, 2026, 4:47 AM",
+      "currentPulledAt": "2026-11-10T09:52:25.154Z",
+      "currentPulledAtDisplay": "Nov 10, 2026, 4:52 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-10T09:42:18.843Z",
       "previousPulledAtDisplay": "Nov 10, 2026, 4:42 AM",
@@ -47519,17 +47530,6 @@
       "previousPulledAtDisplay": "Nov 9, 2026, 2:33 PM",
       "currentPulledAt": "2026-11-09T19:38:17.369Z",
       "currentPulledAtDisplay": "Nov 9, 2026, 2:38 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-09T19:28:50.195Z",
-      "previousPulledAtDisplay": "Nov 9, 2026, 2:28 PM",
-      "currentPulledAt": "2026-11-09T19:33:19.743Z",
-      "currentPulledAtDisplay": "Nov 9, 2026, 2:33 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
