@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-10T08:12:28.876Z",
-  "pulledAtDisplay": "Nov 10, 2026, 3:12 AM",
+  "pulledAt": "2026-11-10T08:17:42.431Z",
+  "pulledAtDisplay": "Nov 10, 2026, 3:17 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-10T08:12:28.876Z",
-    "pulledAtDisplay": "Nov 10, 2026, 3:12 AM",
+    "pulledAt": "2026-11-10T08:17:42.431Z",
+    "pulledAtDisplay": "Nov 10, 2026, 3:17 AM",
     "total": 570,
     "mainTotal": 540,
     "subtaskTotal": 30,
@@ -9119,239 +9119,7 @@
         "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14950?focusedCommentId=1241029",
         "lastCommentDisplay": "Nov 5, 2026, 2:28 PM",
         "lastCommentAuthor": "Luis Vallejo Mursuli",
-        "testChecklist": {
-          "files": [
-            {
-              "id": "779367",
-              "filename": "QA_Test_Guide_CORE-14950.md",
-              "created": "2026-11-05T14:28:38.768-0500",
-              "author": "Luis Vallejo Mursuli"
-            }
-          ],
-          "commentIds": [
-            "1241029"
-          ],
-          "total": 15,
-          "testCases": [
-            {
-              "id": "A1",
-              "title": "Parameter Omitted Returns No Counts",
-              "category": "4. Category A: Change Counts on GET Tests",
-              "blocking": false,
-              "description": "Verify that omitting includeChangeCount returns the home course with ChangeCounts: null. (Sandbox scenario 1)",
-              "checks": [
-                "HTTP 200",
-                "GolfFacilityId matches the active row in the database",
-                "ChangeCounts is null"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "A2",
-              "title": "includeChangeCount=false Returns No Counts",
-              "category": "4. Category A: Change Counts on GET Tests",
-              "blocking": false,
-              "description": "Verify that an explicit false behaves the same as omitting the parameter. (Sandbox scenario 2)",
-              "checks": [
-                "HTTP 200",
-                "Response identical to A1",
-                "ChangeCounts is null"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "A3",
-              "title": "One Customer Change Returns 1 / 2",
-              "category": "4. Category A: Change Counts on GET Tests",
-              "blocking": false,
-              "description": "Verify the real counts for a member with exactly one customer-initiated change in the period. (Sandbox scenario 3)",
-              "checks": [
-                "HTTP 200",
-                "RemainingChanges = 1",
-                "MaxChangesAllowed = 2",
-                "Values match max(0, 2 - CustomerModifications) from the database"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "A4",
-              "title": "At the Limit Returns 0 / 2",
-              "category": "4. Category A: Change Counts on GET Tests",
-              "blocking": false,
-              "description": "Verify that a customer at the change limit gets 0 / 2. Before this change the API returned 0 / 0. (Sandbox scenario 4)",
-              "checks": [
-                "HTTP 200",
-                "RemainingChanges = 0",
-                "MaxChangesAllowed = 2",
-                "RemainingChanges is not negative even if the customer has more than 2 customer rows in the period"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "A5",
-              "title": "Staff-Only Home Course Returns 2 / 2",
-              "category": "4. Category A: Change Counts on GET Tests",
-              "blocking": false,
-              "description": "Verify that changes made by GNC staff do not count against the customer. (Sandbox scenario 5)",
-              "checks": [
-                "HTTP 200",
-                "RemainingChanges = 2, MaxChangesAllowed = 2",
-                "Staff rows (SystemUserId set) did not reduce RemainingChanges"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "A6",
-              "title": "Home Course Is Facility 2 Returns Correct Counts",
-              "category": "4. Category A: Change Counts on GET Tests",
-              "blocking": false,
-              "description": "Verify the old bug is gone: when the customer's current home course is facility 2 (the facility the old workaround used), the counts are still correct. (Sandbox scenario 6)",
-              "checks": [
-                "HTTP 200",
-                "GolfFacilityId = 2",
-                "RemainingChanges matches the database",
-                "MaxChangesAllowed = 2"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "B1",
-              "title": "Customer With No Home Course",
-              "category": "5. Category B: Edge Case Tests",
-              "blocking": false,
-              "description": "Verify that a customer with no home course gets a null response and the same HTTP status the API returned before this change. (Sandbox scenario 7)",
-              "checks": [
-                "Body is null/empty",
-                "HTTP status recorded: ______",
-                "Status identical to the pre-change behavior",
-                "Same result for true, false and omitted"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "B2",
-              "title": "Counts Cannot Be Computed",
-              "category": "5. Category B: Edge Case Tests",
-              "blocking": false,
-              "description": "Verify that when the customer has an active home course but the counts cannot be computed (no period row, or non-member), the home course is returned with ChangeCounts: null and no error. (Sandbox scenario 8)",
-              "checks": [
-                "HTTP 200",
-                "Home course fields present",
-                "ChangeCounts is null",
-                "No error in the logs (see Section 9)"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "B3",
-              "title": "Invalid includeChangeCount Value",
-              "category": "5. Category B: Edge Case Tests",
-              "blocking": false,
-              "description": "Verify an unparsable boolean behaves as it did before this change. (Sandbox scenario 13)",
-              "checks": [
-                "HTTP status recorded: ______",
-                "Matches pre-change behavior"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "C1",
-              "title": "Customer Set Returns Exact Counts",
-              "category": "6. Category C: Set and GNC Integration Tests",
-              "blocking": false,
-              "description": "Verify that a customer-initiated set returns ChangeCounts one lower than before, and that a following GET agrees. (Sandbox scenario 9)",
-              "checks": [
-                "POST 200",
-                "ChangeCounts.RemainingChanges = N - 1",
-                "MaxChangesAllowed = 2",
-                "Follow-up GET matches the POST response",
-                "Database shows one new active row and the old row inactive"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "C2",
-              "title": "GNC Staff Change Does Not Consume a Customer Change",
-              "category": "6. Category C: Set and GNC Integration Tests",
-              "blocking": false,
-              "description": "Verify that a home course change made by GNC staff leaves the customer's RemainingChanges unchanged. (Sandbox scenario 10)",
-              "checks": [
-                "GNC save succeeds",
-                "New active row has SystemUserId populated",
-                "RemainingChanges unchanged",
-                "MaxChangesAllowed = 2"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "C3",
-              "title": "GNC Duplicate Facility Message",
-              "category": "6. Category C: Set and GNC Integration Tests",
-              "blocking": false,
-              "description": "Verify that GNC still blocks saving the customer's current home course again, with the same message. This confirms the regenerated service reference works. (Sandbox scenario 11)",
-              "checks": [
-                "Message displayed as above",
-                "Section 8 query shows no new row",
-                "Counts unchanged"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "C4",
-              "title": "Booking Regression for a Member With a Home Course",
-              "category": "6. Category C: Set and GNC Integration Tests",
-              "blocking": false,
-              "description": "The reservation flow reads the customer's home course through the same Customer-service operation. Verify that booking still works and that home course loyalty behavior is unchanged. (Sandbox scenario 12)",
-              "checks": [
-                "Home course booking succeeds",
-                "Other-course booking succeeds",
-                "Loyalty behavior unchanged",
-                "No new log errors"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "C5",
-              "title": "Customer Set at the Limit Is Still Rejected",
-              "category": "6. Category C: Set and GNC Integration Tests",
-              "blocking": false,
-              "description": "Extra check. Verify the change limit is still enforced for customers, and that a rejected set does not alter the counts.",
-              "checks": [
-                "POST rejected; status recorded: ______",
-                "Message as above",
-                "No new database row",
-                "Counts still 0 / 2"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            },
-            {
-              "id": "C6",
-              "title": "First-Ever Selection Takes the Counts From 2 / 2 to 1 / 2",
-              "category": "6. Category C: Set and GNC Integration Tests",
-              "blocking": false,
-              "description": "Extra check. A customer's very first home course selection also counts as a customer-initiated change, so the POST response should show 1 / 2.",
-              "checks": [
-                "POST 200",
-                "ChangeCounts = 1 / 2",
-                "GET matches",
-                "Exactly one active row",
-                "All Category A tests pass (A1-A6)",
-                "All Category B tests pass (B1-B3)",
-                "All Category C tests pass (C1-C6)",
-                "Counts match max(0, 2 - CustomerModifications) for every customer tested",
-                "MaxChangesAllowed is 2 in every response that has counts",
-                "ChangeCounts is null whenever the flag is omitted/false",
-                "Database verification complete for every test that sets a home course",
-                "Staff changes did not reduce RemainingChanges",
-                "Rejected sets created no rows",
-                "No new errors in the API 2.1 or Customer service logs during testing",
-                "Booking flow works for a member with a home course (C4)",
-                "GNC home course save and duplicate-facility message work (C2, C3)"
-              ],
-              "sourceFile": "QA_Test_Guide_CORE-14950.md"
-            }
-          ]
-        },
+        "testChecklist": null,
         "type": "Story",
         "isSubtask": false,
         "status": "QA Testing (DEV)",
@@ -44544,13 +44312,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-10T08:10:37.887Z",
-    "pulledAtDisplay": "Nov 10, 2026, 3:10 AM",
+    "pulledAt": "2026-11-10T08:15:43.814Z",
+    "pulledAtDisplay": "Nov 10, 2026, 3:15 AM",
     "window": {
-      "start": "2026-09-26T08:10:37.887Z",
-      "end": "2027-05-09T08:10:37.887Z",
-      "startDisplay": "Sep 26, 2026, 4:10 AM",
-      "endDisplay": "May 9, 2027, 4:10 AM"
+      "start": "2026-09-26T08:15:43.813Z",
+      "end": "2027-05-09T08:15:43.813Z",
+      "startDisplay": "Sep 26, 2026, 4:15 AM",
+      "endDisplay": "May 9, 2027, 4:15 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44563,7 +44331,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-10T08:10:40.146Z",
+        "pulledAt": "2026-11-10T08:15:45.996Z",
         "eventCount": 65,
         "events": [
           {
@@ -45111,6 +44879,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN000 - v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45140,23 +44925,6 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN000 - v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45468,23 +45236,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45497,6 +45248,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45536,23 +45304,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "GN: v3001.133.0",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45565,6 +45316,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "GN: v3001.133.0",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45677,10 +45445,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-10T08:03:03.742Z",
-    "previousPulledAtDisplay": "Nov 10, 2026, 3:03 AM",
-    "currentPulledAt": "2026-11-10T08:12:28.876Z",
-    "currentPulledAtDisplay": "Nov 10, 2026, 3:12 AM",
+    "previousPulledAt": "2026-11-10T08:12:28.876Z",
+    "previousPulledAtDisplay": "Nov 10, 2026, 3:12 AM",
+    "currentPulledAt": "2026-11-10T08:17:42.431Z",
+    "currentPulledAtDisplay": "Nov 10, 2026, 3:17 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45688,6 +45456,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-10T08:12:28.876Z",
+      "previousPulledAtDisplay": "Nov 10, 2026, 3:12 AM",
+      "currentPulledAt": "2026-11-10T08:17:42.431Z",
+      "currentPulledAtDisplay": "Nov 10, 2026, 3:17 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-10T08:03:03.742Z",
       "previousPulledAtDisplay": "Nov 10, 2026, 3:03 AM",
@@ -47519,17 +47298,6 @@
       "previousPulledAtDisplay": "Nov 9, 2026, 12:44 PM",
       "currentPulledAt": "2026-11-09T17:48:02.052Z",
       "currentPulledAtDisplay": "Nov 9, 2026, 12:48 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-09T17:39:05.377Z",
-      "previousPulledAtDisplay": "Nov 9, 2026, 12:39 PM",
-      "currentPulledAt": "2026-11-09T17:44:01.526Z",
-      "currentPulledAtDisplay": "Nov 9, 2026, 12:44 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
