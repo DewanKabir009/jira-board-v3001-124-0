@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-10T03:22:14.718Z",
-  "pulledAtDisplay": "Nov 9, 2026, 10:22 PM",
+  "pulledAt": "2026-11-10T03:28:39.013Z",
+  "pulledAtDisplay": "Nov 9, 2026, 10:28 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-10T03:22:14.718Z",
-    "pulledAtDisplay": "Nov 9, 2026, 10:22 PM",
+    "pulledAt": "2026-11-10T03:28:39.013Z",
+    "pulledAtDisplay": "Nov 9, 2026, 10:28 PM",
     "total": 570,
     "mainTotal": 540,
     "subtaskTotal": 30,
@@ -8110,8 +8110,8 @@
         "key": "CORE-14968",
         "url": "https://golfnow.atlassian.net/browse/CORE-14968",
         "summary": "Remove the unused payment processor lookup from GetProductSubscriptionPurchaseDetail",
-        "description": "Remove the payment processor lookup that the Product service's GetProductSubscriptionPurchaseDetail makes to build a Payments list no caller reads. Every purchase detail request makes this external call for nothing.\n\nCurrent behavior\n\nSubscriptionProvider.GetProductSubscriptionPurchaseDetail (Product service) builds ProductSubscriptionPurchaseDetail.Payments:\n\n- It calls PaymentClient.GetTransactions(Purchase.ReferenceID), a payment processor lookup, whenever the purchase has a reference ID.\n\n- ProductConverter.ToServiceModel turns each processor payment into an ExternalPayment with four fields:\n\nField\n\nSource\n\nCurrencyCode\n\ntransaction currency\n\nAmount\n\npayment.Amount.Paid\n\nDescription\n\nprocessor payment description\n\nPaymentMethodKey\n\nprocessor payment key\n\nNobody reads the list\n\n- GolfNow API 2.1: ProductSubscriptionService.GetProductSubscriptionPurchaseDetail passes TranslatePayments to ToEntityModel(...). TranslatePayments converts each payment to a card, account balance, or similar payment detail and calls the Customer service (UnconvertPaymentOption) per payment, but ToEntityModel never invokes it, so the converted payments are dropped.\n\n- GolfNow API 2.1 response: PaymentDetails comes from a separate database query, ProductDataService.RetrieveSubscriptionPaymentDetails → GolfNowAPI.SubscriptionCharges_Get.\n\n- RMS: SubscriptionService.GetPurchaseDetails reads the purchase detail's Invoice, never Payments.\n\n- Commerce Proxy API: doesn't read Payments from the SubscribeExternal response.\n\nScope\n\n- Remove the PaymentClient.GetTransactions call and the Payments mapping from GetProductSubscriptionPurchaseDetail, or keep the contract member and stop filling it from the processor.\n\n- Remove the unused TranslatePayments converter parameter from the API 2.1 mapping, and TranslatePayments itself if nothing else uses it.\n\n- Before removing the Payments data member from the WCF contract, confirm no other client reads it: search the generated service references (for example RMS and the Entitlement service).\n\n- Keep GetProductSubscriptionPurchaseDetail's other results unchanged.\n\nRelated\n\n- CORE-14600: ExecuteFulfillment GolfPass support. Its GolfNow API change leaves Purchase.ReferenceID null for externally charged purchases, which already skips this lookup for them.",
-        "descriptionHtml": "<p>Remove the payment processor lookup that the Product service's <code>GetProductSubscriptionPurchaseDetail</code> makes to build a <code>Payments</code> list no caller reads. Every purchase detail request makes this external call for nothing.</p><h3>Current behavior</h3><p><code>SubscriptionProvider.GetProductSubscriptionPurchaseDetail</code> (Product service) builds <code>ProductSubscriptionPurchaseDetail.Payments</code>:</p><ol><li><p>It calls <code>PaymentClient.GetTransactions(Purchase.ReferenceID)</code>, a payment processor lookup, whenever the purchase has a reference ID.</p></li><li><p><code>ProductConverter.ToServiceModel</code> turns each processor payment into an <code>ExternalPayment</code> with four fields:</p></li></ol><div class=\"description-table-wrap\"><table><tr><th><p>Field</p></th><th><p>Source</p></th></tr><tr><td><p><code>CurrencyCode</code></p></td><td><p>transaction currency</p></td></tr><tr><td><p><code>Amount</code></p></td><td><p><code>payment.Amount.Paid</code></p></td></tr><tr><td><p><code>Description</code></p></td><td><p>processor payment description</p></td></tr><tr><td><p><code>PaymentMethodKey</code></p></td><td><p>processor payment key</p></td></tr></table></div><h3>Nobody reads the list</h3><ul><li><p><strong>GolfNow API 2.1:</strong> <code>ProductSubscriptionService.GetProductSubscriptionPurchaseDetail</code> passes <code>TranslatePayments</code> to <code>ToEntityModel(...)</code>. <code>TranslatePayments</code> converts each payment to a card, account balance, or similar payment detail and calls the Customer service (<code>UnconvertPaymentOption</code>) per payment, but <code>ToEntityModel</code> never invokes it, so the converted payments are dropped.</p></li><li><p><strong>GolfNow API 2.1 response:</strong> <code>PaymentDetails</code> comes from a separate database query, <code>ProductDataService.RetrieveSubscriptionPaymentDetails</code> → <code>GolfNowAPI.SubscriptionCharges_Get</code>.</p></li><li><p><strong>RMS:</strong> <code>SubscriptionService.GetPurchaseDetails</code> reads the purchase detail's <code>Invoice</code>, never <code>Payments</code>.</p></li><li><p><strong>Commerce Proxy API:</strong> doesn't read <code>Payments</code> from the <code>SubscribeExternal</code> response.</p></li></ul><h3>Scope</h3><ul><li><p>Remove the <code>PaymentClient.GetTransactions</code> call and the <code>Payments</code> mapping from <code>GetProductSubscriptionPurchaseDetail</code>, or keep the contract member and stop filling it from the processor.</p></li><li><p>Remove the unused <code>TranslatePayments</code> converter parameter from the API 2.1 mapping, and <code>TranslatePayments</code> itself if nothing else uses it.</p></li><li><p>Before removing the <code>Payments</code> data member from the WCF contract, confirm no other client reads it: search the generated service references (for example RMS and the Entitlement service).</p></li><li><p>Keep <code>GetProductSubscriptionPurchaseDetail</code>'s other results unchanged.</p></li></ul><h3>Related</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-14600\" target=\"_blank\" rel=\"noopener\">CORE-14600</a>: ExecuteFulfillment GolfPass support. Its GolfNow API change leaves <code>Purchase.ReferenceID</code> null for externally charged purchases, which already skips this lookup for them.</p></li></ul>",
+        "description": "Remove the payment processor lookup that the Product service's GetProductSubscriptionPurchaseDetail makes to build a Payments list no caller reads. Every purchase detail request pays for this external call, and API 2.1 then makes a Customer service call per payment to convert a list it throws away.\n\nCurrent behavior\n\nSubscriptionProvider.GetProductSubscriptionPurchaseDetail (Product service) builds ProductSubscriptionPurchaseDetail.Payments:\n\n- It calls PaymentClient.GetTransactions(Purchase.ReferenceID), a payment processor lookup, whenever the purchase has a reference ID.\n\n- ProductConverter.ToServiceModel turns each processor payment into an ExternalPayment with four fields:\n\nField\n\nSource\n\nCurrencyCode\n\ntransaction currency\n\nAmount\n\npayment.Amount.Paid\n\nDescription\n\nprocessor payment description\n\nPaymentMethodKey\n\nprocessor payment key\n\nNobody reads the list\n\n- GolfNow API 2.1: ProductSubscriptionService.GetProductSubscriptionPurchaseDetail passes TranslatePayments to ToEntityModel(...). TranslatePayments would convert each payment to a card, account balance, or similar payment detail by calling the Customer service (CustomerServiceFacade.UnconvertPaymentOption) once per payment, but ToEntityModel never invokes the converter, so the converted payments are dropped.\n\n- GolfNow API 2.1 response: PaymentDetails comes from a separate database query, ProductDataService.RetrieveSubscriptionPaymentDetails → GolfNowAPI.SubscriptionCharges_Get. Core/Extensions.cs ToServiceContract overwrites PaymentDetails with that query's result.\n\n- RMS: SubscriptionService.GetPurchaseDetails reads the purchase detail's Invoice, never Payments.\n\n- Commerce Proxy API: doesn't read Payments from the SubscribeExternal response.\n\nScope\n\n- Stop calling PaymentClient.GetTransactions from GetProductSubscriptionPurchaseDetail. Either remove the Payments mapping, or keep the contract member and leave it empty.\n\n- Remove the unused converter parameter from API 2.1's ProductSubscriptionPurchaseDetail.ToEntityModel(...), and TranslatePayments / ConvertWalletItemToPaymentDetail if nothing else uses them.\n\n- Before removing the Payments data member from the WCF contract, confirm no other client reads it. Search the generated service references too (for example RMS and the Entitlement service's Connected Services/SubscriptionService/Reference.cs).\n\n- Keep every other field GetProductSubscriptionPurchaseDetail returns unchanged: invoice, customer subscription, purchase date, and purchase ID.\n\nTest plan\n\n- Get the purchase detail for a GolfNow-charged card purchase, an Apple Pay purchase, and a gift card or account balance purchase through API 2.1 and RMS. The invoice, subscription, and PaymentDetails are unchanged.\n\n- The Product service no longer calls the payment processor for a purchase detail request.\n\nRelated\n\n- CORE-14969: adds payment method key (type 19) payment details to GolfNowAPI.SubscriptionCharges_Get. Its optional item would fill Payments from charge details, so decide this ticket first.\n\n- CORE-14600: ExecuteFulfillment GolfPass support. Its GolfNow API change (GolfNowEng/gn-main#2428) leaves Purchase.ReferenceID null for externally charged purchases, which already skips this lookup for them.\n\nContext for a new Claude session\n\nEnough to pick this up without the original conversation:\n\n- Repos: C:\\GolfNow\\Repos\\gn-main (code) and C:\\GolfNow\\Repos\\gn-main-db (database). Base branch for gn-main is develop; create feature/CORE-14968.\n\n- Files:\n\n- Internal Services/GolfNow.Services.Product/GolfNow.Services.Product.Provider/SubscriptionProvider.cs: GetProductSubscriptionPurchaseDetail, the PaymentClient.GetTransactions(purchase.ReferenceID.ToString()) call, and Payments = transactions?.ToServiceModel().\n\n- Internal Services/GolfNow.Services.Product/GolfNow.Services.Product.Provider/Converters/ProductConverter.cs: ToServiceModel(this List<PaymentProcessingModel.Transaction>), which builds the ExternalPayment list.\n\n- Internal Services/GolfNow.Services.Product/GolfNow.Services.Product.Common/Model/Subscription/ProductSubscriptionPurchaseDetail.cs: the Payments data member.\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Product/ProductSubscriptionService.cs: GetProductSubscriptionPurchaseDetail (.ToEntityModel(this.TranslatePayments)), TranslatePayments, and ConvertWalletItemToPaymentDetail.\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Converters/BusinessLayerMappingExtensions.cs: ToEntityModel(this ProductSubscriptionPurchaseDetail, Func<int, IEnumerable<Payment>, IEnumerable<IPaymentDetail>> paymentsConverter). The paymentsConverter parameter is never used.\n\n- DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Service/Core/Extensions.cs: ToServiceContract(this ProductSubscriptionPurchaseDetail), which fills PaymentDetails from ProductDataService.RetrieveSubscriptionPaymentDetails.\n\n- DotNet2/RevenueManagementSystem/NBCU.Golf.RMS.Business/Service/SubscriptionService.cs: GetPurchaseDetails, used by NBCU.Golf.RMS.WebApp/Controllers/CustomerController.cs.\n\n- Callers of GetProductSubscriptionPurchaseDetail: API 2.1 (GolfNowAPI.Product.cs and ProductSubscriptionService.Subscribe, SubscribeExternal, and the staged purchase path) and RMS. InternalGolfNowApi.Product.cs has a same-named method that reads ProductDataService.GetProductSubscriptionPurchaseDetail directly; it isn't this service call.\n\n- Conventions: .NET Framework 4.8, old-style csproj files, CRLF line endings and UTF-8 BOM in source files. Build with Visual Studio 18 MSBuild (C:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\MSBuild\\Current\\Bin\\MSBuild.exe). Remove any using that becomes unused. Conventional commit titles with no Jira key in the title, and a Refs: CORE-14968 footer.",
+        "descriptionHtml": "<p>Remove the payment processor lookup that the Product service's <code>GetProductSubscriptionPurchaseDetail</code> makes to build a <code>Payments</code> list no caller reads. Every purchase detail request pays for this external call, and API 2.1 then makes a Customer service call per payment to convert a list it throws away.</p><h3>Current behavior</h3><p><code>SubscriptionProvider.GetProductSubscriptionPurchaseDetail</code> (Product service) builds <code>ProductSubscriptionPurchaseDetail.Payments</code>:</p><ol><li><p>It calls <code>PaymentClient.GetTransactions(Purchase.ReferenceID)</code>, a payment processor lookup, whenever the purchase has a reference ID.</p></li><li><p><code>ProductConverter.ToServiceModel</code> turns each processor payment into an <code>ExternalPayment</code> with four fields:</p></li></ol><div class=\"description-table-wrap\"><table><tr><th><p>Field</p></th><th><p>Source</p></th></tr><tr><td><p><code>CurrencyCode</code></p></td><td><p>transaction currency</p></td></tr><tr><td><p><code>Amount</code></p></td><td><p><code>payment.Amount.Paid</code></p></td></tr><tr><td><p><code>Description</code></p></td><td><p>processor payment description</p></td></tr><tr><td><p><code>PaymentMethodKey</code></p></td><td><p>processor payment key</p></td></tr></table></div><h3>Nobody reads the list</h3><ul><li><p><strong>GolfNow API 2.1:</strong> <code>ProductSubscriptionService.GetProductSubscriptionPurchaseDetail</code> passes <code>TranslatePayments</code> to <code>ToEntityModel(...)</code>. <code>TranslatePayments</code> would convert each payment to a card, account balance, or similar payment detail by calling the Customer service (<code>CustomerServiceFacade.UnconvertPaymentOption</code>) once per payment, but <code>ToEntityModel</code> never invokes the converter, so the converted payments are dropped.</p></li><li><p><strong>GolfNow API 2.1 response:</strong> <code>PaymentDetails</code> comes from a separate database query, <code>ProductDataService.RetrieveSubscriptionPaymentDetails</code> → <code>GolfNowAPI.SubscriptionCharges_Get</code>. <code>Core/Extensions.cs</code> <code>ToServiceContract</code> overwrites <code>PaymentDetails</code> with that query's result.</p></li><li><p><strong>RMS:</strong> <code>SubscriptionService.GetPurchaseDetails</code> reads the purchase detail's <code>Invoice</code>, never <code>Payments</code>.</p></li><li><p><strong>Commerce Proxy API:</strong> doesn't read <code>Payments</code> from the <code>SubscribeExternal</code> response.</p></li></ul><h3>Scope</h3><ul><li><p>Stop calling <code>PaymentClient.GetTransactions</code> from <code>GetProductSubscriptionPurchaseDetail</code>. Either remove the <code>Payments</code> mapping, or keep the contract member and leave it empty.</p></li><li><p>Remove the unused converter parameter from API 2.1's <code>ProductSubscriptionPurchaseDetail.ToEntityModel(...)</code>, and <code>TranslatePayments</code> / <code>ConvertWalletItemToPaymentDetail</code> if nothing else uses them.</p></li><li><p>Before removing the <code>Payments</code> data member from the WCF contract, confirm no other client reads it. Search the generated service references too (for example RMS and the Entitlement service's <code>Connected Services/SubscriptionService/Reference.cs</code>).</p></li><li><p>Keep every other field <code>GetProductSubscriptionPurchaseDetail</code> returns unchanged: invoice, customer subscription, purchase date, and purchase ID.</p></li></ul><h3>Test plan</h3><ul><li><p>Get the purchase detail for a GolfNow-charged card purchase, an Apple Pay purchase, and a gift card or account balance purchase through API 2.1 and RMS. The invoice, subscription, and <code>PaymentDetails</code> are unchanged.</p></li><li><p>The Product service no longer calls the payment processor for a purchase detail request.</p></li></ul><h3>Related</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-14969\" target=\"_blank\" rel=\"noopener\">CORE-14969</a>: adds payment method key (type 19) payment details to <code>GolfNowAPI.SubscriptionCharges_Get</code>. Its optional item would fill <code>Payments</code> from charge details, so decide this ticket first.</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-14600\" target=\"_blank\" rel=\"noopener\">CORE-14600</a>: ExecuteFulfillment GolfPass support. Its GolfNow API change (GolfNowEng/gn-main#2428) leaves <code>Purchase.ReferenceID</code> null for externally charged purchases, which already skips this lookup for them.</p></li></ul><h3>Context for a new Claude session</h3><p>Enough to pick this up without the original conversation:</p><ul><li><p><strong>Repos:</strong> <code>C:\\GolfNow\\Repos\\gn-main</code> (code) and <code>C:\\GolfNow\\Repos\\gn-main-db</code> (database). Base branch for gn-main is <code>develop</code>; create <code>feature/CORE-14968</code>.</p></li><li><p><strong>Files:</strong></p><ul><li><p><code>Internal Services/GolfNow.Services.Product/GolfNow.Services.Product.Provider/SubscriptionProvider.cs</code>: <code>GetProductSubscriptionPurchaseDetail</code>, the <code>PaymentClient.GetTransactions(purchase.ReferenceID.ToString())</code> call, and <code>Payments = transactions?.ToServiceModel()</code>.</p></li><li><p><code>Internal Services/GolfNow.Services.Product/GolfNow.Services.Product.Provider/Converters/ProductConverter.cs</code>: <code>ToServiceModel(this List&lt;PaymentProcessingModel.Transaction&gt;)</code>, which builds the <code>ExternalPayment</code> list.</p></li><li><p><code>Internal Services/GolfNow.Services.Product/GolfNow.Services.Product.Common/Model/Subscription/ProductSubscriptionPurchaseDetail.cs</code>: the <code>Payments</code> data member.</p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Product/ProductSubscriptionService.cs</code>: <code>GetProductSubscriptionPurchaseDetail</code> (<code>.ToEntityModel(this.TranslatePayments)</code>), <code>TranslatePayments</code>, and <code>ConvertWalletItemToPaymentDetail</code>.</p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Business/Converters/BusinessLayerMappingExtensions.cs</code>: <code>ToEntityModel(this ProductSubscriptionPurchaseDetail, Func&lt;int, IEnumerable&lt;Payment&gt;, IEnumerable&lt;IPaymentDetail&gt;&gt; paymentsConverter)</code>. The <code>paymentsConverter</code> parameter is never used.</p></li><li><p><code>DotNet2/TeeTimesAPI/GolfNow.API.2.1/GolfNow.API.Service/Core/Extensions.cs</code>: <code>ToServiceContract(this ProductSubscriptionPurchaseDetail)</code>, which fills <code>PaymentDetails</code> from <code>ProductDataService.RetrieveSubscriptionPaymentDetails</code>.</p></li><li><p><code>DotNet2/RevenueManagementSystem/NBCU.Golf.RMS.Business/Service/SubscriptionService.cs</code>: <code>GetPurchaseDetails</code>, used by <code>NBCU.Golf.RMS.WebApp/Controllers/CustomerController.cs</code>.</p></li></ul></li><li><p><strong>Callers of </strong><code>GetProductSubscriptionPurchaseDetail</code>: API 2.1 (<code>GolfNowAPI.Product.cs</code> and <code>ProductSubscriptionService.Subscribe</code>, <code>SubscribeExternal</code>, and the staged purchase path) and RMS. <code>InternalGolfNowApi.Product.cs</code> has a same-named method that reads <code>ProductDataService.GetProductSubscriptionPurchaseDetail</code> directly; it isn't this service call.</p></li><li><p><strong>Conventions:</strong> .NET Framework 4.8, old-style csproj files, CRLF line endings and UTF-8 BOM in source files. Build with Visual Studio 18 MSBuild (<code>C:\\Program Files\\Microsoft Visual Studio\\18\\Professional\\MSBuild\\Current\\Bin\\MSBuild.exe</code>). Remove any <code>using</code> that becomes unused. Conventional commit titles with no Jira key in the title, and a <code>Refs: CORE-14968</code> footer.</p></li></ul>",
         "descriptionImageCount": 0,
         "descriptionVideoCount": 0,
         "descriptionMediaCount": 0,
@@ -8131,8 +8131,8 @@
         "assignedDeveloper": "Unassigned",
         "assignedDeveloperAccountId": "",
         "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-11-09T22:15:38.494-0500",
-        "updatedDisplay": "Nov 9, 2026, 10:15 PM",
+        "updated": "2026-11-09T22:26:09.817-0500",
+        "updatedDisplay": "Nov 9, 2026, 10:26 PM",
         "created": "2026-11-09T22:14:44.052-0500",
         "createdDisplay": "Nov 9, 2026, 10:14 PM",
         "components": [],
@@ -44544,13 +44544,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-10T03:20:41.046Z",
-    "pulledAtDisplay": "Nov 9, 2026, 10:20 PM",
+    "pulledAt": "2026-11-10T03:26:36.537Z",
+    "pulledAtDisplay": "Nov 9, 2026, 10:26 PM",
     "window": {
-      "start": "2026-09-26T03:20:41.045Z",
-      "end": "2027-05-09T03:20:41.045Z",
-      "startDisplay": "Sep 25, 2026, 11:20 PM",
-      "endDisplay": "May 8, 2027, 11:20 PM"
+      "start": "2026-09-26T03:26:36.537Z",
+      "end": "2027-05-09T03:26:36.537Z",
+      "startDisplay": "Sep 25, 2026, 11:26 PM",
+      "endDisplay": "May 8, 2027, 11:26 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44563,7 +44563,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-10T03:20:43.074Z",
+        "pulledAt": "2026-11-10T03:26:39.343Z",
         "eventCount": 65,
         "events": [
           {
@@ -45111,6 +45111,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN000 - v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45140,23 +45157,6 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN000 - v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45536,23 +45536,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "GN: v3001.133.0",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45565,6 +45548,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "GN: v3001.133.0",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45638,23 +45638,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Pro Dev/Stage Swap",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-10T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-10",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 10, 2027",
-            "allDay": true,
-            "type": "Scheduled Maintenance",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45670,6 +45653,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Pro Dev/Stage Swap",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-10T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-10",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 10, 2027",
+            "allDay": true,
+            "type": "Scheduled Maintenance",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -45677,10 +45677,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-10T03:17:37.335Z",
-    "previousPulledAtDisplay": "Nov 9, 2026, 10:17 PM",
-    "currentPulledAt": "2026-11-10T03:22:14.718Z",
-    "currentPulledAtDisplay": "Nov 9, 2026, 10:22 PM",
+    "previousPulledAt": "2026-11-10T03:22:14.718Z",
+    "previousPulledAtDisplay": "Nov 9, 2026, 10:22 PM",
+    "currentPulledAt": "2026-11-10T03:28:39.013Z",
+    "currentPulledAtDisplay": "Nov 9, 2026, 10:28 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45688,6 +45688,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-10T03:22:14.718Z",
+      "previousPulledAtDisplay": "Nov 9, 2026, 10:22 PM",
+      "currentPulledAt": "2026-11-10T03:28:39.013Z",
+      "currentPulledAtDisplay": "Nov 9, 2026, 10:28 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-10T03:17:37.335Z",
       "previousPulledAtDisplay": "Nov 9, 2026, 10:17 PM",
@@ -47519,17 +47530,6 @@
       "previousPulledAtDisplay": "Nov 9, 2026, 8:03 AM",
       "currentPulledAt": "2026-11-09T13:08:40.469Z",
       "currentPulledAtDisplay": "Nov 9, 2026, 8:08 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-09T12:57:42.749Z",
-      "previousPulledAtDisplay": "Nov 9, 2026, 7:57 AM",
-      "currentPulledAt": "2026-11-09T13:03:22.149Z",
-      "currentPulledAtDisplay": "Nov 9, 2026, 8:03 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
