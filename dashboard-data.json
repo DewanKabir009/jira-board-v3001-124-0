@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-10T03:13:30.120Z",
-  "pulledAtDisplay": "Nov 9, 2026, 10:13 PM",
+  "pulledAt": "2026-11-10T03:17:37.335Z",
+  "pulledAtDisplay": "Nov 9, 2026, 10:17 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,10 +1809,10 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-10T03:13:30.120Z",
-    "pulledAtDisplay": "Nov 9, 2026, 10:13 PM",
-    "total": 569,
-    "mainTotal": 539,
+    "pulledAt": "2026-11-10T03:17:37.335Z",
+    "pulledAtDisplay": "Nov 9, 2026, 10:17 PM",
+    "total": 570,
+    "mainTotal": 540,
     "subtaskTotal": 30,
     "issues": [
       {
@@ -8104,6 +8104,56 @@
           "type": "Epic",
           "status": "Backlog",
           "priority": "P1"
+        }
+      },
+      {
+        "key": "CORE-14968",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14968",
+        "summary": "Remove the unused payment processor lookup from GetProductSubscriptionPurchaseDetail",
+        "description": "Remove the payment processor lookup that the Product service's GetProductSubscriptionPurchaseDetail makes to build a Payments list no caller reads. Every purchase detail request makes this external call for nothing.\n\nCurrent behavior\n\nSubscriptionProvider.GetProductSubscriptionPurchaseDetail (Product service) builds ProductSubscriptionPurchaseDetail.Payments:\n\n- It calls PaymentClient.GetTransactions(Purchase.ReferenceID), a payment processor lookup, whenever the purchase has a reference ID.\n\n- ProductConverter.ToServiceModel turns each processor payment into an ExternalPayment with four fields:\n\nField\n\nSource\n\nCurrencyCode\n\ntransaction currency\n\nAmount\n\npayment.Amount.Paid\n\nDescription\n\nprocessor payment description\n\nPaymentMethodKey\n\nprocessor payment key\n\nNobody reads the list\n\n- GolfNow API 2.1: ProductSubscriptionService.GetProductSubscriptionPurchaseDetail passes TranslatePayments to ToEntityModel(...). TranslatePayments converts each payment to a card, account balance, or similar payment detail and calls the Customer service (UnconvertPaymentOption) per payment, but ToEntityModel never invokes it, so the converted payments are dropped.\n\n- GolfNow API 2.1 response: PaymentDetails comes from a separate database query, ProductDataService.RetrieveSubscriptionPaymentDetails → GolfNowAPI.SubscriptionCharges_Get.\n\n- RMS: SubscriptionService.GetPurchaseDetails reads the purchase detail's Invoice, never Payments.\n\n- Commerce Proxy API: doesn't read Payments from the SubscribeExternal response.\n\nScope\n\n- Remove the PaymentClient.GetTransactions call and the Payments mapping from GetProductSubscriptionPurchaseDetail, or keep the contract member and stop filling it from the processor.\n\n- Remove the unused TranslatePayments converter parameter from the API 2.1 mapping, and TranslatePayments itself if nothing else uses it.\n\n- Before removing the Payments data member from the WCF contract, confirm no other client reads it: search the generated service references (for example RMS and the Entitlement service).\n\n- Keep GetProductSubscriptionPurchaseDetail's other results unchanged.\n\nRelated\n\n- CORE-14600: ExecuteFulfillment GolfPass support. Its GolfNow API change leaves Purchase.ReferenceID null for externally charged purchases, which already skips this lookup for them.",
+        "descriptionHtml": "<p>Remove the payment processor lookup that the Product service's <code>GetProductSubscriptionPurchaseDetail</code> makes to build a <code>Payments</code> list no caller reads. Every purchase detail request makes this external call for nothing.</p><h3>Current behavior</h3><p><code>SubscriptionProvider.GetProductSubscriptionPurchaseDetail</code> (Product service) builds <code>ProductSubscriptionPurchaseDetail.Payments</code>:</p><ol><li><p>It calls <code>PaymentClient.GetTransactions(Purchase.ReferenceID)</code>, a payment processor lookup, whenever the purchase has a reference ID.</p></li><li><p><code>ProductConverter.ToServiceModel</code> turns each processor payment into an <code>ExternalPayment</code> with four fields:</p></li></ol><div class=\"description-table-wrap\"><table><tr><th><p>Field</p></th><th><p>Source</p></th></tr><tr><td><p><code>CurrencyCode</code></p></td><td><p>transaction currency</p></td></tr><tr><td><p><code>Amount</code></p></td><td><p><code>payment.Amount.Paid</code></p></td></tr><tr><td><p><code>Description</code></p></td><td><p>processor payment description</p></td></tr><tr><td><p><code>PaymentMethodKey</code></p></td><td><p>processor payment key</p></td></tr></table></div><h3>Nobody reads the list</h3><ul><li><p><strong>GolfNow API 2.1:</strong> <code>ProductSubscriptionService.GetProductSubscriptionPurchaseDetail</code> passes <code>TranslatePayments</code> to <code>ToEntityModel(...)</code>. <code>TranslatePayments</code> converts each payment to a card, account balance, or similar payment detail and calls the Customer service (<code>UnconvertPaymentOption</code>) per payment, but <code>ToEntityModel</code> never invokes it, so the converted payments are dropped.</p></li><li><p><strong>GolfNow API 2.1 response:</strong> <code>PaymentDetails</code> comes from a separate database query, <code>ProductDataService.RetrieveSubscriptionPaymentDetails</code> → <code>GolfNowAPI.SubscriptionCharges_Get</code>.</p></li><li><p><strong>RMS:</strong> <code>SubscriptionService.GetPurchaseDetails</code> reads the purchase detail's <code>Invoice</code>, never <code>Payments</code>.</p></li><li><p><strong>Commerce Proxy API:</strong> doesn't read <code>Payments</code> from the <code>SubscribeExternal</code> response.</p></li></ul><h3>Scope</h3><ul><li><p>Remove the <code>PaymentClient.GetTransactions</code> call and the <code>Payments</code> mapping from <code>GetProductSubscriptionPurchaseDetail</code>, or keep the contract member and stop filling it from the processor.</p></li><li><p>Remove the unused <code>TranslatePayments</code> converter parameter from the API 2.1 mapping, and <code>TranslatePayments</code> itself if nothing else uses it.</p></li><li><p>Before removing the <code>Payments</code> data member from the WCF contract, confirm no other client reads it: search the generated service references (for example RMS and the Entitlement service).</p></li><li><p>Keep <code>GetProductSubscriptionPurchaseDetail</code>'s other results unchanged.</p></li></ul><h3>Related</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-14600\" target=\"_blank\" rel=\"noopener\">CORE-14600</a>: ExecuteFulfillment GolfPass support. Its GolfNow API change leaves <code>Purchase.ReferenceID</code> null for externally charged purchases, which already skips this lookup for them.</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Task",
+        "isSubtask": false,
+        "status": "Pre Planning",
+        "priority": "None",
+        "assignee": "Unassigned",
+        "assigneeAccountId": "",
+        "assigneeAvatarUrl": "",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-11-09T22:15:38.494-0500",
+        "updatedDisplay": "Nov 9, 2026, 10:15 PM",
+        "created": "2026-11-09T22:14:44.052-0500",
+        "createdDisplay": "Nov 9, 2026, 10:14 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
         }
       },
       {
@@ -44494,13 +44544,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-10T03:10:49.285Z",
-    "pulledAtDisplay": "Nov 9, 2026, 10:10 PM",
+    "pulledAt": "2026-11-10T03:15:41.068Z",
+    "pulledAtDisplay": "Nov 9, 2026, 10:15 PM",
     "window": {
-      "start": "2026-09-26T03:10:49.285Z",
-      "end": "2027-05-09T03:10:49.285Z",
-      "startDisplay": "Sep 25, 2026, 11:10 PM",
-      "endDisplay": "May 8, 2027, 11:10 PM"
+      "start": "2026-09-26T03:15:41.068Z",
+      "end": "2027-05-09T03:15:41.068Z",
+      "startDisplay": "Sep 25, 2026, 11:15 PM",
+      "endDisplay": "May 8, 2027, 11:15 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44513,7 +44563,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-10T03:10:52.043Z",
+        "pulledAt": "2026-11-10T03:15:43.850Z",
         "eventCount": 65,
         "events": [
           {
@@ -45061,6 +45111,23 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
+            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN000 - v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
             "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45090,23 +45157,6 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN000 - v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45418,23 +45468,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45447,6 +45480,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45486,23 +45536,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "GN: v3001.133.0",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45515,6 +45548,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "GN: v3001.133.0",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45588,23 +45638,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Pro Dev/Stage Swap",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-10T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-10",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 10, 2027",
-            "allDay": true,
-            "type": "Scheduled Maintenance",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45620,6 +45653,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Pro Dev/Stage Swap",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-10T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-10",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 10, 2027",
+            "allDay": true,
+            "type": "Scheduled Maintenance",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -45627,10 +45677,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-10T03:08:05.786Z",
-    "previousPulledAtDisplay": "Nov 9, 2026, 10:08 PM",
-    "currentPulledAt": "2026-11-10T03:13:30.120Z",
-    "currentPulledAtDisplay": "Nov 9, 2026, 10:13 PM",
+    "previousPulledAt": "2026-11-10T03:13:30.120Z",
+    "previousPulledAtDisplay": "Nov 9, 2026, 10:13 PM",
+    "currentPulledAt": "2026-11-10T03:17:37.335Z",
+    "currentPulledAtDisplay": "Nov 9, 2026, 10:17 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45638,6 +45688,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-10T03:13:30.120Z",
+      "previousPulledAtDisplay": "Nov 9, 2026, 10:13 PM",
+      "currentPulledAt": "2026-11-10T03:17:37.335Z",
+      "currentPulledAtDisplay": "Nov 9, 2026, 10:17 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-10T03:08:05.786Z",
       "previousPulledAtDisplay": "Nov 9, 2026, 10:08 PM",
@@ -47469,17 +47530,6 @@
       "previousPulledAtDisplay": "Nov 9, 2026, 7:53 AM",
       "currentPulledAt": "2026-11-09T12:57:42.749Z",
       "currentPulledAtDisplay": "Nov 9, 2026, 7:57 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-09T12:48:14.489Z",
-      "previousPulledAtDisplay": "Nov 9, 2026, 7:48 AM",
-      "currentPulledAt": "2026-11-09T12:53:03.337Z",
-      "currentPulledAtDisplay": "Nov 9, 2026, 7:53 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
