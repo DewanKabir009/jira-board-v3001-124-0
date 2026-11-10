@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-10T15:21:36.909Z",
-  "pulledAtDisplay": "Nov 10, 2026, 10:21 AM",
+  "pulledAt": "2026-11-10T15:32:37.398Z",
+  "pulledAtDisplay": "Nov 10, 2026, 10:32 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-10T15:21:36.909Z",
-    "pulledAtDisplay": "Nov 10, 2026, 10:21 AM",
+    "pulledAt": "2026-11-10T15:32:37.398Z",
+    "pulledAtDisplay": "Nov 10, 2026, 10:32 AM",
     "total": 570,
     "mainTotal": 540,
     "subtaskTotal": 30,
@@ -8107,6 +8107,306 @@
         }
       },
       {
+        "key": "CORE-14967",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14967",
+        "summary": "Commerce transactions are not storing credit card data when $0 due online",
+        "description": "Commerce bookings with the below configuration block No Shows from being submitted.\n\nSteps to recreate:\n\n- Owner configured to not require credit card\n\n- GolfCourse (rate set) configured to inherit from Owner\n\n- $0 due online tee time\n\n- Commerce transaction\n\nActual:\n\n- Transaction submits with CRMTeeTimeReservation.CreditCardId=-1\n\n- CRMTeeTimeReservationDetail.PaymentType=9\n\n- ReservationMetadata does not contain TypeId 87 or 81\n\n- The reservation does not show in the No Show Incidents as available for submission\n\nExpected\n\n- If commerce passes the API payment details, we should accept them and store them in the applicable location\n\n- We should not ignore the data just because credit card was not required\n\n- CreditCardId != -1\n\n- PaymentType=19\n\n- ReservationMetadata should have 87 or 81\n\n- Ultimate goal is for the reservation to show as available in No Show Incidents",
+        "descriptionHtml": "<p>Commerce bookings with the below configuration block No Shows from being submitted. </p><p><strong>Steps to recreate:</strong></p><ul><li><p>Owner configured to not require credit card</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14967/780167-image-20261109-224914.png\" alt=\"image-20261109-224914.png\" loading=\"lazy\"><figcaption>image-20261109-224914.png</figcaption></figure></div></li><li><p>GolfCourse (rate set) configured to inherit from Owner</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14967/780168-image-20261109-224941.png\" alt=\"image-20261109-224941.png\" loading=\"lazy\"><figcaption>image-20261109-224941.png</figcaption></figure></div></li><li><p>$0 due online tee time </p></li><li><p>Commerce transaction</p></li></ul><p>Actual:</p><ul><li><p>Transaction submits with CRMTeeTimeReservation.CreditCardId=-1</p></li><li><p>CRMTeeTimeReservationDetail.PaymentType=9</p></li><li><p>ReservationMetadata does not contain TypeId 87 or 81</p></li><li><p>The reservation does not show in the No Show Incidents as available for submission</p></li></ul><p>Expected</p><ul><li><p>If commerce passes the API payment details, we should accept them and store them in the applicable location</p><ul><li><p>We should not ignore the data just because credit card was not required</p></li></ul></li><li><p>CreditCardId != -1</p></li><li><p>PaymentType=19</p></li><li><p>ReservationMetadata should have 87 or 81</p></li><li><p>Ultimate goal is for the reservation to show as available in No Show Incidents</p></li></ul>",
+        "descriptionImageCount": 2,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 2,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Pre Planning",
+        "priority": "P1",
+        "assignee": "Andrew Horvat",
+        "assigneeAccountId": "712020:d714b2a6-3491-46da-89f1-9777e2d1ab70",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:d714b2a6-3491-46da-89f1-9777e2d1ab70/25dedc4a-09d9-4ec9-945c-34d31d771711/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-11-10T10:27:56.615-0500",
+        "updatedDisplay": "Nov 10, 2026, 10:27 AM",
+        "created": "2026-11-09T17:48:13.860-0500",
+        "createdDisplay": "Nov 9, 2026, 5:48 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14955",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14955",
+        "summary": "Funded coupon codes are not refunding cart fees",
+        "description": "Steps to recreate:\n\n- Set up a coupon code for Trade, Course, Course-Prepaid (Funded Coupon Code config)\n\n- Set to 100% off Green Fees\n\n- Apply to a Hot Deal that has cart fees enabled\n\n- Example: Oyster Reef in the /South Carolina master facility\n\n- See that the promo code only discounts the green fee portions and ignores the cart fee distribution\n\n- Before Code Added\n\n\"DueOnline\": {\n\"Items\": [\n{\n\"Discount\": 0,\n\"Distributions\": [\n{\n\"Amount\": 93.95,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"GRNFEETRADE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 9.74,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"GRNFEETRADE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 16.58,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 1.72,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n}\n],\n\n- After Code Added\n\n\"DueOnline\": {\n\"Items\": [\n{\n\"Discount\": 103.69,\n\"Distributions\": [\n{\n\"Amount\": 16.58,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 1.72,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n}\n],\n\"NonRefundableSalesTax\": 0.00,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 121.99,\n\"SalesTax\": 8.70,\n\"SubTotal\": 18.30,\n\"Total\": 27.00,\n\"DisplayText\": \"Greens Fee - Composite\",\n\"IsTaxIncluded\": false,\n\"Key\": \"GRNFEETRADE\",\n\"Type\": 1\n},\n{\n\"Discount\": 0,\n\"Distributions\": [\n{\n\"Amount\": 3.49,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": null,\n\"SourceItemKey\": \"TRNFEE\",\n\"TaxAmount\": 0\n}\n],\n\"NonRefundableSalesTax\": 0.00,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 3.49,\n\"SalesTax\": 0.09,\n\"SubTotal\": 3.49,\n\"Total\": 3.58,\n\"DisplayText\": \"Convenience Fee\",\n\"IsTaxIncluded\": false,\n\"Key\": \"TRNFEE\",\n\"Type\": 2\n}\n],\n\"Summary\": {\n\"Discount\": 103.69,\n\"Distributions\": null,\n\"Original\": 125.48,\n\"SalesTax\": 8.79,\n\"SubTotal\": 21.79,\n\"Total\": 30.58\n}\n\n- Expected\n\n- Funded Coupon Codes should reduce the GreenFee portion first then move onto CartFee\n\n- This applies to course prepaid too and should also reduce GreenFee first then move onto CartFee\n\n- Sales tax should remain non-discountable and should be left to be be remaining due and to be charged",
+        "descriptionHtml": "<p>Steps to recreate:</p><ol><li><p>Set up a coupon code for Trade, Course, Course-Prepaid (Funded Coupon Code config)</p></li><li><p>Set to 100% off Green Fees</p></li><li><p>Apply to a Hot Deal that has cart fees enabled</p><ol><li><p>Example: Oyster Reef in the /South Carolina master facility </p></li></ol></li><li><p>See that the promo code only discounts the green fee portions and ignores the cart fee distribution</p><ol><li><p>Before Code Added</p><pre><code>&quot;DueOnline&quot;: {\n        &quot;Items&quot;: [\n            {\n                &quot;Discount&quot;: 0,\n                &quot;Distributions&quot;: [\n                    {\n                        &quot;Amount&quot;: 93.95,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633852,\n                        &quot;SourceItemKey&quot;: &quot;GRNFEETRADE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 9.74,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633853,\n                        &quot;SourceItemKey&quot;: &quot;GRNFEETRADE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 16.58,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633852,\n                        &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 1.72,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633853,\n                        &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    }\n                ],</code></pre></li><li><p>After Code Added </p><pre><code>&quot;DueOnline&quot;: {\n            &quot;Items&quot;: [\n                {\n                    &quot;Discount&quot;: 103.69,\n                    &quot;Distributions&quot;: [\n                        {\n                            &quot;Amount&quot;: 16.58,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: 1633852,\n                            &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        },\n                        {\n                            &quot;Amount&quot;: 1.72,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: 1633853,\n                            &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        }\n                    ],\n                    &quot;NonRefundableSalesTax&quot;: 0.00,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 121.99,\n                    &quot;SalesTax&quot;: 8.70,\n                    &quot;SubTotal&quot;: 18.30,\n                    &quot;Total&quot;: 27.00,\n                    &quot;DisplayText&quot;: &quot;Greens Fee - Composite&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;GRNFEETRADE&quot;,\n                    &quot;Type&quot;: 1\n                },\n                {\n                    &quot;Discount&quot;: 0,\n                    &quot;Distributions&quot;: [\n                        {\n                            &quot;Amount&quot;: 3.49,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: null,\n                            &quot;SourceItemKey&quot;: &quot;TRNFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        }\n                    ],\n                    &quot;NonRefundableSalesTax&quot;: 0.00,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 3.49,\n                    &quot;SalesTax&quot;: 0.09,\n                    &quot;SubTotal&quot;: 3.49,\n                    &quot;Total&quot;: 3.58,\n                    &quot;DisplayText&quot;: &quot;Convenience Fee&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;TRNFEE&quot;,\n                    &quot;Type&quot;: 2\n                }\n            ],\n            &quot;Summary&quot;: {\n                &quot;Discount&quot;: 103.69,\n                &quot;Distributions&quot;: null,\n                &quot;Original&quot;: 125.48,\n                &quot;SalesTax&quot;: 8.79,\n                &quot;SubTotal&quot;: 21.79,\n                &quot;Total&quot;: 30.58\n            }</code></pre></li></ol></li><li><p>Expected</p><ol><li><p>Funded Coupon Codes should reduce the GreenFee portion first then move onto CartFee</p></li><li><p>This applies to course prepaid too and should also reduce GreenFee first then move onto CartFee</p></li><li><p>Sales tax should remain non-discountable and should be left to be be remaining due and to be charged</p></li></ol></li></ol>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Pre Planning",
+        "priority": "P1",
+        "assignee": "Yoel Martin Pardo",
+        "assigneeAccountId": "625571809e7380006fb29599",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-11-10T10:26:23.710-0500",
+        "updatedDisplay": "Nov 10, 2026, 10:26 AM",
+        "created": "2026-11-06T09:15:57.570-0500",
+        "createdDisplay": "Nov 6, 2026, 9:15 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14954",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14954",
+        "summary": "Mass cancellation tool in GNC does not refund transaction fees",
+        "description": "Description:\nWhen the Golf Mass Cancel tool processes a refund, it refunds the greens fees but does not refund the transaction fees. The tool should automatically refund both when processing the cancellation.\n\nExpected behavior:\nFor eligible reservations processed through Mass Cancel, refund both the greens fees and transaction fees.\n\nActual behavior:\nOnly the greens fees are refunded; transaction fees remain charged.\n\nAcceptance criteria:\n\n- Mass Cancel refunds transaction fees along with greens fees when processing an eligible refund. The main purpose of the tool is provide refunds for course cancellations for which we do issue refunds for transaction fees.",
+        "descriptionHtml": "<p><strong>Description:</strong><br>When the Golf Mass Cancel tool processes a refund, it refunds the greens fees but does not refund the transaction fees. The tool should automatically refund both when processing the cancellation.</p><p><strong>Expected behavior:</strong><br>For eligible reservations processed through Mass Cancel, refund both the greens fees and transaction fees.</p><p><strong>Actual behavior:</strong><br>Only the greens fees are refunded; transaction fees remain charged.</p><p><strong>Acceptance criteria:</strong></p><ul><li><p>Mass Cancel refunds transaction fees along with greens fees when processing an eligible refund. The main purpose of the tool is provide refunds for course cancellations for which we do issue refunds for transaction fees.</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Pre Planning",
+        "priority": "P1",
+        "assignee": "Luis Vallejo Mursuli",
+        "assigneeAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-11-10T10:25:13.002-0500",
+        "updatedDisplay": "Nov 10, 2026, 10:25 AM",
+        "created": "2026-11-06T09:11:44.566-0500",
+        "createdDisplay": "Nov 6, 2026, 9:11 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14945",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14945",
+        "summary": "Topgolf | Persist SessionId and RequestId for support tracing",
+        "description": "Goal\n\nPersist the Topgolf TG-CLIENT-SESSIONID and TG-CLIENT-REQUESTID values so Support can provide them to Topgolf when tracing a reservation or API call.\n\nAcceptance Criteria\n\n- SessionId and RequestId values for Topgolf hold and booking attempts are persisted Currently we are not storing these anywhere\n\n- Booking reuses the hold SessionId, and each API call retains its own unique RequestId.",
+        "descriptionHtml": "<h3>Goal</h3><p>Persist the Topgolf <code>TG-CLIENT-SESSIONID</code> and <code>TG-CLIENT-REQUESTID</code> values so Support can provide them to Topgolf when tracing a reservation or API call.</p><h3>Acceptance Criteria</h3><ul><li><p>SessionId and RequestId values for Topgolf hold and booking attempts are persisted Currently we are not storing these anywhere</p></li><li><p>Booking reuses the hold SessionId, and each API call retains its own unique RequestId.</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Task",
+        "isSubtask": false,
+        "status": "Planning",
+        "priority": "P1",
+        "assignee": "Yoel Martin Pardo",
+        "assigneeAccountId": "625571809e7380006fb29599",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-11-10T10:23:14.471-0500",
+        "updatedDisplay": "Nov 10, 2026, 10:23 AM",
+        "created": "2026-11-02T12:28:03.665-0500",
+        "createdDisplay": "Nov 2, 2026, 12:28 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14942",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14942",
+        "summary": "Improved refund support for Pro Agenda ",
+        "description": "We need to support the callback to Pro Agenda when a refund is submitted so the Agenda Order can be updated with applicable refunded amounts. This is very similar to what we do with Vendor Service Orders, G1 and Tee Times.\n\n- Pro Agenda Doc: https://golfnow.atlassian.net/wiki/spaces/GC/pages/11767840788/Refund+Order+Process+and+Request+Body+Details\n\n- Expected:\n\n- When a refund is submitted through one of the following endpoints, we need to callback to Agenda using their ThirdParty API\n\n- G1 UI - POST {{api-base-url}}/InternalGolfNowApi.svc/internal/reservation/adjust\n\n- GN Customer Facing UI - PUT {{api-base-url}}/GolfNowAPI.svc/rest/customers/{{EmailAddress}}/reservation-details/419824627?cancellationReasonId=1\n\n- G1 UI - https://api.gnsvc.com/InternalGolfNowApi.svc/internal/coursecancellation\n\n- GNC Directly\n\n- Any scenario where a credit card refund is submitted successfully, the callback needs to happen. Whether it is inside or outside cancellation policy\n\n- If an amount is refunded to Account Balance, do not send the callback to Agenda\n\n- Testing:\n\n- Test full refunds - Happy path\n\n- Test partial refunds - This might not be supported yet from Agenda side\n\n- Confirm/validate all tests with Agenda team in #gn-agenda-interface slack channel\n\n- Match the testing cases done with VendorService refunds",
+        "descriptionHtml": "<p>We need to support the callback to Pro Agenda when a refund is submitted so the Agenda Order can be updated with applicable refunded amounts. This is very similar to what we do with Vendor Service Orders, G1 and Tee Times. </p><ul><li><p>Pro Agenda Doc: <a href=\"https://golfnow.atlassian.net/wiki/spaces/GC/pages/11767840788/Refund+Order+Process+and+Request+Body+Details\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/wiki/spaces/GC/pages/11767840788/Refund+Order+Process+and+Request+Body+Details</a></p></li><li><p>Expected:</p><ul><li><p>When a refund is submitted through one of the following endpoints, we need to callback to Agenda using their ThirdParty API</p><ul><li><p>G1 UI - POST {{api-base-url}}/InternalGolfNowApi.svc/internal/reservation/adjust</p></li><li><p>GN Customer Facing UI - PUT {{api-base-url}}/GolfNowAPI.svc/rest/customers/{{EmailAddress}}/reservation-details/419824627?cancellationReasonId=1</p></li><li><p>G1 UI - <a href=\"https://api.gnsvc.com/InternalGolfNowApi.svc/internal/coursecancellation\" target=\"_blank\" rel=\"noopener\">https://api.gnsvc.com/InternalGolfNowApi.svc/internal/coursecancellation</a></p></li><li><p>GNC Directly</p></li></ul></li><li><p>Any scenario where a credit card refund is submitted successfully, the callback needs to happen. Whether it is inside or outside cancellation policy</p></li><li><p>If an amount is refunded to Account Balance, do not send the callback to Agenda</p></li></ul></li><li><p>Testing:</p><ul><li><p>Test full refunds - Happy path</p></li><li><p>Test partial refunds - This might not be supported yet from Agenda side</p></li><li><p>Confirm/validate all tests with Agenda team in #gn-agenda-interface slack channel</p></li><li><p>Match the testing cases done with VendorService refunds </p></li></ul></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Pre Planning",
+        "priority": "P1",
+        "assignee": "Alex Wulff",
+        "assigneeAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-11-10T10:21:09.300-0500",
+        "updatedDisplay": "Nov 10, 2026, 10:21 AM",
+        "created": "2026-10-30T09:07:27.917-0400",
+        "createdDisplay": "Oct 30, 2026, 9:07 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14900",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14900",
+        "summary": "API 2.1 | Validate booking phone numbers using E.164",
+        "description": "Goal\n\nRequire a valid E.164 phone number before an API 2.1 booking can continue.\n\n---\nAcceptance Criteria\n\n- Missing or invalid numbers block booking with an actionable prompt.\n\n- Customers can update the number and continue booking.",
+        "descriptionHtml": "<h3>Goal</h3><p>Require a valid E.164 phone number before an API 2.1 booking can continue.</p><hr><h3>Acceptance Criteria</h3><ul><li><p>Missing or invalid numbers block booking with an actionable prompt.</p></li><li><p>Customers can update the number and continue booking.</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Pre Planning",
+        "priority": "P1",
+        "assignee": "Luis Vallejo Mursuli",
+        "assigneeAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-11-10T10:19:20.871-0500",
+        "updatedDisplay": "Nov 10, 2026, 10:19 AM",
+        "created": "2026-10-29T18:02:10.810-0400",
+        "createdDisplay": "Oct 29, 2026, 6:02 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14898",
         "url": "https://golfnow.atlassian.net/browse/CORE-14898",
         "summary": "Topgolf | Preserve partner errors through the booking API",
@@ -8375,56 +8675,6 @@
         }
       },
       {
-        "key": "CORE-14967",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14967",
-        "summary": "Commerce transactions are not storing credit card data when $0 due online",
-        "description": "Commerce bookings with the below configuration block No Shows from being submitted.\n\nSteps to recreate:\n\n- Owner configured to not require credit card\n\n- GolfCourse (rate set) configured to inherit from Owner\n\n- $0 due online tee time\n\n- Commerce transaction\n\nActual:\n\n- Transaction submits with CRMTeeTimeReservation.CreditCardId=-1\n\n- CRMTeeTimeReservationDetail.PaymentType=9\n\n- ReservationMetadata does not contain TypeId 87 or 81\n\n- The reservation does not show in the No Show Incidents as available for submission\n\nExpected\n\n- If commerce passes the API payment details, we should accept them and store them in the applicable location\n\n- We should not ignore the data just because credit card was not required\n\n- CreditCardId != -1\n\n- PaymentType=19\n\n- ReservationMetadata should have 87 or 81\n\n- Ultimate goal is for the reservation to show as available in No Show Incidents",
-        "descriptionHtml": "<p>Commerce bookings with the below configuration block No Shows from being submitted. </p><p><strong>Steps to recreate:</strong></p><ul><li><p>Owner configured to not require credit card</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14967/780167-image-20261109-224914.png\" alt=\"image-20261109-224914.png\" loading=\"lazy\"><figcaption>image-20261109-224914.png</figcaption></figure></div></li><li><p>GolfCourse (rate set) configured to inherit from Owner</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14967/780168-image-20261109-224941.png\" alt=\"image-20261109-224941.png\" loading=\"lazy\"><figcaption>image-20261109-224941.png</figcaption></figure></div></li><li><p>$0 due online tee time </p></li><li><p>Commerce transaction</p></li></ul><p>Actual:</p><ul><li><p>Transaction submits with CRMTeeTimeReservation.CreditCardId=-1</p></li><li><p>CRMTeeTimeReservationDetail.PaymentType=9</p></li><li><p>ReservationMetadata does not contain TypeId 87 or 81</p></li><li><p>The reservation does not show in the No Show Incidents as available for submission</p></li></ul><p>Expected</p><ul><li><p>If commerce passes the API payment details, we should accept them and store them in the applicable location</p><ul><li><p>We should not ignore the data just because credit card was not required</p></li></ul></li><li><p>CreditCardId != -1</p></li><li><p>PaymentType=19</p></li><li><p>ReservationMetadata should have 87 or 81</p></li><li><p>Ultimate goal is for the reservation to show as available in No Show Incidents</p></li></ul>",
-        "descriptionImageCount": 2,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 2,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "Pre Planning",
-        "priority": "P1",
-        "assignee": "Andrew Horvat",
-        "assigneeAccountId": "712020:fb2131ba-2122-41a0-9559-9966f684a89e",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:fb2131ba-2122-41a0-9559-9966f684a89e/169c8770-21ac-4272-a73c-858827f0c5bd/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-11-09T17:56:49.896-0500",
-        "updatedDisplay": "Nov 9, 2026, 5:56 PM",
-        "created": "2026-11-09T17:48:13.860-0500",
-        "createdDisplay": "Nov 9, 2026, 5:48 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
         "key": "CORE-14943",
         "url": "https://golfnow.atlassian.net/browse/CORE-14943",
         "summary": "Fee messaging displaying INTL TransFee when not applicable",
@@ -8622,256 +8872,6 @@
         "updated": "2026-11-09T14:16:36.128-0500",
         "updatedDisplay": "Nov 9, 2026, 2:16 PM",
         "created": "2026-10-29T18:02:08.637-0400",
-        "createdDisplay": "Oct 29, 2026, 6:02 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14955",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14955",
-        "summary": "Funded coupon codes are not refunding cart fees",
-        "description": "Steps to recreate:\n\n- Set up a coupon code for Trade, Course, Course-Prepaid (Funded Coupon Code config)\n\n- Set to 100% off Green Fees\n\n- Apply to a Hot Deal that has cart fees enabled\n\n- Example: Oyster Reef in the /South Carolina master facility\n\n- See that the promo code only discounts the green fee portions and ignores the cart fee distribution\n\n- Before Code Added\n\n\"DueOnline\": {\n\"Items\": [\n{\n\"Discount\": 0,\n\"Distributions\": [\n{\n\"Amount\": 93.95,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"GRNFEETRADE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 9.74,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"GRNFEETRADE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 16.58,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 1.72,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n}\n],\n\n- After Code Added\n\n\"DueOnline\": {\n\"Items\": [\n{\n\"Discount\": 103.69,\n\"Distributions\": [\n{\n\"Amount\": 16.58,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 1.72,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n}\n],\n\"NonRefundableSalesTax\": 0.00,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 121.99,\n\"SalesTax\": 8.70,\n\"SubTotal\": 18.30,\n\"Total\": 27.00,\n\"DisplayText\": \"Greens Fee - Composite\",\n\"IsTaxIncluded\": false,\n\"Key\": \"GRNFEETRADE\",\n\"Type\": 1\n},\n{\n\"Discount\": 0,\n\"Distributions\": [\n{\n\"Amount\": 3.49,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": null,\n\"SourceItemKey\": \"TRNFEE\",\n\"TaxAmount\": 0\n}\n],\n\"NonRefundableSalesTax\": 0.00,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 3.49,\n\"SalesTax\": 0.09,\n\"SubTotal\": 3.49,\n\"Total\": 3.58,\n\"DisplayText\": \"Convenience Fee\",\n\"IsTaxIncluded\": false,\n\"Key\": \"TRNFEE\",\n\"Type\": 2\n}\n],\n\"Summary\": {\n\"Discount\": 103.69,\n\"Distributions\": null,\n\"Original\": 125.48,\n\"SalesTax\": 8.79,\n\"SubTotal\": 21.79,\n\"Total\": 30.58\n}\n\n- Expected\n\n- Funded Coupon Codes should reduce the GreenFee portion first then move onto CartFee\n\n- This applies to course prepaid too and should also reduce GreenFee first then move onto CartFee\n\n- Sales tax should remain non-discountable and should be left to be be remaining due and to be charged",
-        "descriptionHtml": "<p>Steps to recreate:</p><ol><li><p>Set up a coupon code for Trade, Course, Course-Prepaid (Funded Coupon Code config)</p></li><li><p>Set to 100% off Green Fees</p></li><li><p>Apply to a Hot Deal that has cart fees enabled</p><ol><li><p>Example: Oyster Reef in the /South Carolina master facility </p></li></ol></li><li><p>See that the promo code only discounts the green fee portions and ignores the cart fee distribution</p><ol><li><p>Before Code Added</p><pre><code>&quot;DueOnline&quot;: {\n        &quot;Items&quot;: [\n            {\n                &quot;Discount&quot;: 0,\n                &quot;Distributions&quot;: [\n                    {\n                        &quot;Amount&quot;: 93.95,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633852,\n                        &quot;SourceItemKey&quot;: &quot;GRNFEETRADE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 9.74,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633853,\n                        &quot;SourceItemKey&quot;: &quot;GRNFEETRADE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 16.58,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633852,\n                        &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 1.72,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633853,\n                        &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    }\n                ],</code></pre></li><li><p>After Code Added </p><pre><code>&quot;DueOnline&quot;: {\n            &quot;Items&quot;: [\n                {\n                    &quot;Discount&quot;: 103.69,\n                    &quot;Distributions&quot;: [\n                        {\n                            &quot;Amount&quot;: 16.58,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: 1633852,\n                            &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        },\n                        {\n                            &quot;Amount&quot;: 1.72,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: 1633853,\n                            &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        }\n                    ],\n                    &quot;NonRefundableSalesTax&quot;: 0.00,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 121.99,\n                    &quot;SalesTax&quot;: 8.70,\n                    &quot;SubTotal&quot;: 18.30,\n                    &quot;Total&quot;: 27.00,\n                    &quot;DisplayText&quot;: &quot;Greens Fee - Composite&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;GRNFEETRADE&quot;,\n                    &quot;Type&quot;: 1\n                },\n                {\n                    &quot;Discount&quot;: 0,\n                    &quot;Distributions&quot;: [\n                        {\n                            &quot;Amount&quot;: 3.49,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: null,\n                            &quot;SourceItemKey&quot;: &quot;TRNFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        }\n                    ],\n                    &quot;NonRefundableSalesTax&quot;: 0.00,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 3.49,\n                    &quot;SalesTax&quot;: 0.09,\n                    &quot;SubTotal&quot;: 3.49,\n                    &quot;Total&quot;: 3.58,\n                    &quot;DisplayText&quot;: &quot;Convenience Fee&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;TRNFEE&quot;,\n                    &quot;Type&quot;: 2\n                }\n            ],\n            &quot;Summary&quot;: {\n                &quot;Discount&quot;: 103.69,\n                &quot;Distributions&quot;: null,\n                &quot;Original&quot;: 125.48,\n                &quot;SalesTax&quot;: 8.79,\n                &quot;SubTotal&quot;: 21.79,\n                &quot;Total&quot;: 30.58\n            }</code></pre></li></ol></li><li><p>Expected</p><ol><li><p>Funded Coupon Codes should reduce the GreenFee portion first then move onto CartFee</p></li><li><p>This applies to course prepaid too and should also reduce GreenFee first then move onto CartFee</p></li><li><p>Sales tax should remain non-discountable and should be left to be be remaining due and to be charged</p></li></ol></li></ol>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "Pre Planning",
-        "priority": "P1",
-        "assignee": "Brian Pugh",
-        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-11-09T14:16:12.018-0500",
-        "updatedDisplay": "Nov 9, 2026, 2:16 PM",
-        "created": "2026-11-06T09:15:57.570-0500",
-        "createdDisplay": "Nov 6, 2026, 9:15 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14954",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14954",
-        "summary": "Mass cancellation tool in GNC does not refund transaction fees",
-        "description": "Description:\nWhen the Golf Mass Cancel tool processes a refund, it refunds the greens fees but does not refund the transaction fees. The tool should automatically refund both when processing the cancellation.\n\nExpected behavior:\nFor eligible reservations processed through Mass Cancel, refund both the greens fees and transaction fees.\n\nActual behavior:\nOnly the greens fees are refunded; transaction fees remain charged.\n\nAcceptance criteria:\n\n- Mass Cancel refunds transaction fees along with greens fees when processing an eligible refund. The main purpose of the tool is provide refunds for course cancellations for which we do issue refunds for transaction fees.",
-        "descriptionHtml": "<p><strong>Description:</strong><br>When the Golf Mass Cancel tool processes a refund, it refunds the greens fees but does not refund the transaction fees. The tool should automatically refund both when processing the cancellation.</p><p><strong>Expected behavior:</strong><br>For eligible reservations processed through Mass Cancel, refund both the greens fees and transaction fees.</p><p><strong>Actual behavior:</strong><br>Only the greens fees are refunded; transaction fees remain charged.</p><p><strong>Acceptance criteria:</strong></p><ul><li><p>Mass Cancel refunds transaction fees along with greens fees when processing an eligible refund. The main purpose of the tool is provide refunds for course cancellations for which we do issue refunds for transaction fees.</p></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Pre Planning",
-        "priority": "P1",
-        "assignee": "Brian Pugh",
-        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-11-09T14:14:26.307-0500",
-        "updatedDisplay": "Nov 9, 2026, 2:14 PM",
-        "created": "2026-11-06T09:11:44.566-0500",
-        "createdDisplay": "Nov 6, 2026, 9:11 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14945",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14945",
-        "summary": "Topgolf | Persist SessionId and RequestId for support tracing",
-        "description": "Goal\n\nPersist the Topgolf TG-CLIENT-SESSIONID and TG-CLIENT-REQUESTID values so Support can provide them to Topgolf when tracing a reservation or API call.\n\nAcceptance Criteria\n\n- SessionId and RequestId values for Topgolf hold and booking attempts are persisted Currently we are not storing these anywhere\n\n- Booking reuses the hold SessionId, and each API call retains its own unique RequestId.",
-        "descriptionHtml": "<h3>Goal</h3><p>Persist the Topgolf <code>TG-CLIENT-SESSIONID</code> and <code>TG-CLIENT-REQUESTID</code> values so Support can provide them to Topgolf when tracing a reservation or API call.</p><h3>Acceptance Criteria</h3><ul><li><p>SessionId and RequestId values for Topgolf hold and booking attempts are persisted Currently we are not storing these anywhere</p></li><li><p>Booking reuses the hold SessionId, and each API call retains its own unique RequestId.</p></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Task",
-        "isSubtask": false,
-        "status": "Planning",
-        "priority": "P1",
-        "assignee": "Yoel Martin Pardo",
-        "assigneeAccountId": "625571809e7380006fb29599",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-11-09T14:13:59.602-0500",
-        "updatedDisplay": "Nov 9, 2026, 2:13 PM",
-        "created": "2026-11-02T12:28:03.665-0500",
-        "createdDisplay": "Nov 2, 2026, 12:28 PM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14942",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14942",
-        "summary": "Improved refund support for Pro Agenda ",
-        "description": "We need to support the callback to Pro Agenda when a refund is submitted so the Agenda Order can be updated with applicable refunded amounts. This is very similar to what we do with Vendor Service Orders, G1 and Tee Times.\n\n- Pro Agenda Doc: https://golfnow.atlassian.net/wiki/spaces/GC/pages/11767840788/Refund+Order+Process+and+Request+Body+Details\n\n- Expected:\n\n- When a refund is submitted through one of the following endpoints, we need to callback to Agenda using their ThirdParty API\n\n- G1 UI - POST {{api-base-url}}/InternalGolfNowApi.svc/internal/reservation/adjust\n\n- GN Customer Facing UI - PUT {{api-base-url}}/GolfNowAPI.svc/rest/customers/{{EmailAddress}}/reservation-details/419824627?cancellationReasonId=1\n\n- G1 UI - https://api.gnsvc.com/InternalGolfNowApi.svc/internal/coursecancellation\n\n- GNC Directly\n\n- Any scenario where a credit card refund is submitted successfully, the callback needs to happen. Whether it is inside or outside cancellation policy\n\n- If an amount is refunded to Account Balance, do not send the callback to Agenda\n\n- Testing:\n\n- Test full refunds - Happy path\n\n- Test partial refunds - This might not be supported yet from Agenda side\n\n- Confirm/validate all tests with Agenda team in #gn-agenda-interface slack channel\n\n- Match the testing cases done with VendorService refunds",
-        "descriptionHtml": "<p>We need to support the callback to Pro Agenda when a refund is submitted so the Agenda Order can be updated with applicable refunded amounts. This is very similar to what we do with Vendor Service Orders, G1 and Tee Times. </p><ul><li><p>Pro Agenda Doc: <a href=\"https://golfnow.atlassian.net/wiki/spaces/GC/pages/11767840788/Refund+Order+Process+and+Request+Body+Details\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/wiki/spaces/GC/pages/11767840788/Refund+Order+Process+and+Request+Body+Details</a></p></li><li><p>Expected:</p><ul><li><p>When a refund is submitted through one of the following endpoints, we need to callback to Agenda using their ThirdParty API</p><ul><li><p>G1 UI - POST {{api-base-url}}/InternalGolfNowApi.svc/internal/reservation/adjust</p></li><li><p>GN Customer Facing UI - PUT {{api-base-url}}/GolfNowAPI.svc/rest/customers/{{EmailAddress}}/reservation-details/419824627?cancellationReasonId=1</p></li><li><p>G1 UI - <a href=\"https://api.gnsvc.com/InternalGolfNowApi.svc/internal/coursecancellation\" target=\"_blank\" rel=\"noopener\">https://api.gnsvc.com/InternalGolfNowApi.svc/internal/coursecancellation</a></p></li><li><p>GNC Directly</p></li></ul></li><li><p>Any scenario where a credit card refund is submitted successfully, the callback needs to happen. Whether it is inside or outside cancellation policy</p></li><li><p>If an amount is refunded to Account Balance, do not send the callback to Agenda</p></li></ul></li><li><p>Testing:</p><ul><li><p>Test full refunds - Happy path</p></li><li><p>Test partial refunds - This might not be supported yet from Agenda side</p></li><li><p>Confirm/validate all tests with Agenda team in #gn-agenda-interface slack channel</p></li><li><p>Match the testing cases done with VendorService refunds </p></li></ul></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Pre Planning",
-        "priority": "P1",
-        "assignee": "Brian Pugh",
-        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-11-09T14:13:49.439-0500",
-        "updatedDisplay": "Nov 9, 2026, 2:13 PM",
-        "created": "2026-10-30T09:07:27.917-0400",
-        "createdDisplay": "Oct 30, 2026, 9:07 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14900",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14900",
-        "summary": "API 2.1 | Validate booking phone numbers using E.164",
-        "description": "Goal\n\nRequire a valid E.164 phone number before an API 2.1 booking can continue.\n\n---\nAcceptance Criteria\n\n- Missing or invalid numbers block booking with an actionable prompt.\n\n- Customers can update the number and continue booking.",
-        "descriptionHtml": "<h3>Goal</h3><p>Require a valid E.164 phone number before an API 2.1 booking can continue.</p><hr><h3>Acceptance Criteria</h3><ul><li><p>Missing or invalid numbers block booking with an actionable prompt.</p></li><li><p>Customers can update the number and continue booking.</p></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Pre Planning",
-        "priority": "P1",
-        "assignee": "Joshua Marquess",
-        "assigneeAccountId": "557058:61c239b2-3f38-467e-afb0-40b29fe9aa94",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/JM-3.png",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-11-09T14:12:57.404-0500",
-        "updatedDisplay": "Nov 9, 2026, 2:12 PM",
-        "created": "2026-10-29T18:02:10.810-0400",
         "createdDisplay": "Oct 29, 2026, 6:02 PM",
         "components": [],
         "fixVersions": [],
@@ -44544,13 +44544,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-10T15:18:46.757Z",
-    "pulledAtDisplay": "Nov 10, 2026, 10:18 AM",
+    "pulledAt": "2026-11-10T15:30:47.995Z",
+    "pulledAtDisplay": "Nov 10, 2026, 10:30 AM",
     "window": {
-      "start": "2026-09-26T15:18:46.757Z",
-      "end": "2027-05-09T15:18:46.757Z",
-      "startDisplay": "Sep 26, 2026, 11:18 AM",
-      "endDisplay": "May 9, 2027, 11:18 AM"
+      "start": "2026-09-26T15:30:47.994Z",
+      "end": "2027-05-09T15:30:47.994Z",
+      "startDisplay": "Sep 26, 2026, 11:30 AM",
+      "endDisplay": "May 9, 2027, 11:30 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44563,7 +44563,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-10T15:18:49.473Z",
+        "pulledAt": "2026-11-10T15:30:50.153Z",
         "eventCount": 65,
         "events": [
           {
@@ -45677,10 +45677,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-10T15:12:53.657Z",
-    "previousPulledAtDisplay": "Nov 10, 2026, 10:12 AM",
-    "currentPulledAt": "2026-11-10T15:21:36.909Z",
-    "currentPulledAtDisplay": "Nov 10, 2026, 10:21 AM",
+    "previousPulledAt": "2026-11-10T15:21:36.909Z",
+    "previousPulledAtDisplay": "Nov 10, 2026, 10:21 AM",
+    "currentPulledAt": "2026-11-10T15:32:37.398Z",
+    "currentPulledAtDisplay": "Nov 10, 2026, 10:32 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45688,6 +45688,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-10T15:21:36.909Z",
+      "previousPulledAtDisplay": "Nov 10, 2026, 10:21 AM",
+      "currentPulledAt": "2026-11-10T15:32:37.398Z",
+      "currentPulledAtDisplay": "Nov 10, 2026, 10:32 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-10T15:12:53.657Z",
       "previousPulledAtDisplay": "Nov 10, 2026, 10:12 AM",
@@ -47519,17 +47530,6 @@
       "previousPulledAtDisplay": "Nov 9, 2026, 8:02 PM",
       "currentPulledAt": "2026-11-10T01:07:53.316Z",
       "currentPulledAtDisplay": "Nov 9, 2026, 8:07 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-10T00:53:32.906Z",
-      "previousPulledAtDisplay": "Nov 9, 2026, 7:53 PM",
-      "currentPulledAt": "2026-11-10T01:02:42.816Z",
-      "currentPulledAtDisplay": "Nov 9, 2026, 8:02 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
