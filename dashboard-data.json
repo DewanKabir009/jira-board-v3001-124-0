@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-11T21:03:01.463Z",
-  "pulledAtDisplay": "Nov 11, 2026, 4:03 PM",
+  "pulledAt": "2026-11-11T21:13:18.231Z",
+  "pulledAtDisplay": "Nov 11, 2026, 4:13 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-11T21:03:01.463Z",
-    "pulledAtDisplay": "Nov 11, 2026, 4:03 PM",
+    "pulledAt": "2026-11-11T21:13:18.231Z",
+    "pulledAtDisplay": "Nov 11, 2026, 4:13 PM",
     "total": 572,
     "mainTotal": 542,
     "subtaskTotal": 30,
@@ -8115,7 +8115,7 @@
         "descriptionImageCount": 0,
         "descriptionVideoCount": 0,
         "descriptionMediaCount": 0,
-        "commentCount": 3,
+        "commentCount": 5,
         "comments": [
           {
             "id": "1236488",
@@ -8161,10 +8161,40 @@
             "mediaCount": 0,
             "body": "@Nicole Greer Do we know if there’s the same number of qualified troon facilities on each?\n\nI believe selection is done like this:\n\nSELECT DISTINCT\n[GolfFacilityID],\n'TROON'\nFROM [dbo].[CRMGolfFacilitySalesForce] (NOLOCK)\nWHERE 1 = 1\nAND [GolfFacilityID] IS NOT NULL\nAND [ParentId] IN ( '00130000009Q6oAAAS', '00130000009Q725AAC' );\n\nCould you check if you have the same count differences between environments?  You could change the SELECT component to this for a simple count:\n\nSELECT COUNT(*)\nFROM [dbo].[CRMGolfFacilitySalesForce] (NOLOCK)\nWHERE 1 = 1\nAND [GolfFacilityID] IS NOT NULL\nAND [ParentId] IN ( '00130000009Q6oAAAS', '00130000009Q725AAC' );",
             "bodyHtml": "<p>@Nicole Greer Do we know if there’s the same number of qualified troon facilities on each?<br><br>I believe selection is done like this:<br></p><pre><code>SELECT DISTINCT\n        [GolfFacilityID],\n        'TROON'\n    FROM [dbo].[CRMGolfFacilitySalesForce] (NOLOCK)\n    WHERE 1 = 1\n        AND [GolfFacilityID] IS NOT NULL\n        AND [ParentId] IN ( '00130000009Q6oAAAS', '00130000009Q725AAC' );</code></pre><p><br>Could you check if you have the same count differences between environments?  You could change the SELECT component to this for a simple count:<br></p><pre><code>SELECT COUNT(*)\n    FROM [dbo].[CRMGolfFacilitySalesForce] (NOLOCK)\n    WHERE 1 = 1\n        AND [GolfFacilityID] IS NOT NULL\n        AND [ParentId] IN ( '00130000009Q6oAAAS', '00130000009Q725AAC' );</code></pre>"
+          },
+          {
+            "id": "1243804",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14875?focusedCommentId=1243804",
+            "author": "Nicole Greer",
+            "authorAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
+            "created": "2026-11-11T16:04:54.654-0500",
+            "createdDisplay": "Nov 11, 2026, 4:04 PM",
+            "updated": "2026-11-11T16:04:54.654-0500",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 1,
+            "body": "@Alex Wulff Yeah can do. Still looks like 404 on DEV. 498 in PROD which Brian said he assumes there are just prod/dev environment differences.",
+            "bodyHtml": "<p>@Alex Wulff Yeah can do. Still looks like 404 on DEV. 498 in PROD which Brian said he assumes there are just prod/dev environment differences. </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14875/comments/1243804/781281-image-20261111-210330.png\" alt=\"image-20261111-210330.png\" loading=\"lazy\"><figcaption>image-20261111-210330.png</figcaption></figure></div>"
+          },
+          {
+            "id": "1243807",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14875?focusedCommentId=1243807",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-11-11T16:07:42.788-0500",
+            "createdDisplay": "Nov 11, 2026, 4:07 PM",
+            "updated": "2026-11-11T16:07:42.788-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "@Nicole Greer That would make some sense.  Thanks for the info!",
+            "bodyHtml": "<p>@Nicole Greer That would make some sense.  Thanks for the info!</p>"
           }
         ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14875?focusedCommentId=1243801",
-        "lastCommentDisplay": "Nov 11, 2026, 4:00 PM",
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14875?focusedCommentId=1243807",
+        "lastCommentDisplay": "Nov 11, 2026, 4:07 PM",
         "lastCommentAuthor": "Alex Wulff",
         "testChecklist": null,
         "type": "Story",
@@ -8177,8 +8207,8 @@
         "assignedDeveloper": "Alex Wulff",
         "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
         "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "updated": "2026-11-11T16:00:37.996-0500",
-        "updatedDisplay": "Nov 11, 2026, 4:00 PM",
+        "updated": "2026-11-11T16:07:42.788-0500",
+        "updatedDisplay": "Nov 11, 2026, 4:07 PM",
         "created": "2026-10-19T11:08:46.137-0400",
         "createdDisplay": "Oct 19, 2026, 11:08 AM",
         "components": [
@@ -44689,13 +44719,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-11T21:01:12.081Z",
-    "pulledAtDisplay": "Nov 11, 2026, 4:01 PM",
+    "pulledAt": "2026-11-11T21:11:10.908Z",
+    "pulledAtDisplay": "Nov 11, 2026, 4:11 PM",
     "window": {
-      "start": "2026-09-27T21:01:12.080Z",
-      "end": "2027-05-10T21:01:12.080Z",
-      "startDisplay": "Sep 27, 2026, 5:01 PM",
-      "endDisplay": "May 10, 2027, 5:01 PM"
+      "start": "2026-09-27T21:11:10.908Z",
+      "end": "2027-05-10T21:11:10.908Z",
+      "startDisplay": "Sep 27, 2026, 5:11 PM",
+      "endDisplay": "May 10, 2027, 5:11 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44708,7 +44738,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-11T21:01:14.039Z",
+        "pulledAt": "2026-11-11T21:11:13.602Z",
         "eventCount": 65,
         "events": [
           {
@@ -45596,23 +45626,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45625,6 +45638,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45783,23 +45813,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.66",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-03T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-03",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 3, 2027",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45815,6 +45828,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.66",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-03T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-03",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 3, 2027",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -45822,10 +45852,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-11T20:18:07.152Z",
-    "previousPulledAtDisplay": "Nov 11, 2026, 3:18 PM",
-    "currentPulledAt": "2026-11-11T21:03:01.463Z",
-    "currentPulledAtDisplay": "Nov 11, 2026, 4:03 PM",
+    "previousPulledAt": "2026-11-11T21:03:01.463Z",
+    "previousPulledAtDisplay": "Nov 11, 2026, 4:03 PM",
+    "currentPulledAt": "2026-11-11T21:13:18.231Z",
+    "currentPulledAtDisplay": "Nov 11, 2026, 4:13 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45833,6 +45863,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-11T21:03:01.463Z",
+      "previousPulledAtDisplay": "Nov 11, 2026, 4:03 PM",
+      "currentPulledAt": "2026-11-11T21:13:18.231Z",
+      "currentPulledAtDisplay": "Nov 11, 2026, 4:13 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-11T20:18:07.152Z",
       "previousPulledAtDisplay": "Nov 11, 2026, 3:18 PM",
@@ -47664,17 +47705,6 @@
       "previousPulledAtDisplay": "Nov 11, 2026, 1:08 AM",
       "currentPulledAt": "2026-11-11T06:13:31.850Z",
       "currentPulledAtDisplay": "Nov 11, 2026, 1:13 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-11T06:03:00.190Z",
-      "previousPulledAtDisplay": "Nov 11, 2026, 1:03 AM",
-      "currentPulledAt": "2026-11-11T06:08:22.841Z",
-      "currentPulledAtDisplay": "Nov 11, 2026, 1:08 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
