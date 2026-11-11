@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-11T23:48:00.462Z",
-  "pulledAtDisplay": "Nov 11, 2026, 6:48 PM",
+  "pulledAt": "2026-11-11T23:52:47.852Z",
+  "pulledAtDisplay": "Nov 11, 2026, 6:52 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-11T23:48:00.462Z",
-    "pulledAtDisplay": "Nov 11, 2026, 6:48 PM",
+    "pulledAt": "2026-11-11T23:52:47.852Z",
+    "pulledAtDisplay": "Nov 11, 2026, 6:52 PM",
     "total": 572,
     "mainTotal": 542,
     "subtaskTotal": 30,
@@ -8140,12 +8140,12 @@
             "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
             "created": "2026-11-11T18:26:59.363-0500",
             "createdDisplay": "Nov 11, 2026, 6:26 PM",
-            "updated": "2026-11-11T18:26:59.363-0500",
-            "updatedDisplay": "",
+            "updated": "2026-11-11T18:51:09.720-0500",
+            "updatedDisplay": "Nov 11, 2026, 6:51 PM",
             "hasMedia": true,
             "mediaCount": 1,
-            "body": "Tested working transaction ledgers for customers with no transactions, 1 page/25+ pages transactions, changing amount of rows per page, transactions listed in correct date order, UI resizing, options reset on refresh, loading indicator remains, correct amount per page on each page amount option, rows per page persists on changing pages, correct default view of 25 rows, return to page 1 on row amount change, available points and newest row running balance values match.\n\nIf I refresh on the GOLF Rewards transaction page it loads back to the reservation history page.",
-            "bodyHtml": "<p>Tested working transaction ledgers for customers with no transactions, 1 page/25+ pages transactions, changing amount of rows per page, transactions listed in correct date order, UI resizing, options reset on refresh, loading indicator remains, correct amount per page on each page amount option, rows per page persists on changing pages, correct default view of 25 rows, return to page 1 on row amount change, available points and newest row running balance values match.<br><br>If I refresh on the GOLF Rewards transaction page it loads back to the reservation history page. </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14874/comments/1243904/781336-image-20261111-232653.png\" alt=\"image-20261111-232653.png\" loading=\"lazy\"><figcaption>image-20261111-232653.png</figcaption></figure></div>"
+            "body": "Tested working transaction ledgers for customers with no transactions, 1 page/25+ pages transactions, changing amount of rows per page, transactions listed in correct date order, UI resizing, options reset on refresh, loading indicator remains, correct amount per page on each page amount option, rows per page persists on changing pages, correct default view of 25 rows, return to page 1 on row amount change, available points and newest row running balance values match.",
+            "bodyHtml": "<p>Tested working transaction ledgers for customers with no transactions, 1 page/25+ pages transactions, changing amount of rows per page, transactions listed in correct date order, UI resizing, options reset on refresh, loading indicator remains, correct amount per page on each page amount option, rows per page persists on changing pages, correct default view of 25 rows, return to page 1 on row amount change, available points and newest row running balance values match.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14874/comments/1243904/781336-image-20261111-232653.png\" alt=\"image-20261111-232653.png\" loading=\"lazy\"><figcaption>image-20261111-232653.png</figcaption></figure></div>"
           }
         ],
         "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14874?focusedCommentId=1243904",
@@ -8162,8 +8162,8 @@
         "assignedDeveloper": "Luis Vallejo Mursuli",
         "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
         "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-11-11T18:26:59.428-0500",
-        "updatedDisplay": "Nov 11, 2026, 6:26 PM",
+        "updated": "2026-11-11T18:51:09.762-0500",
+        "updatedDisplay": "Nov 11, 2026, 6:51 PM",
         "created": "2026-10-19T10:17:58.384-0400",
         "createdDisplay": "Oct 19, 2026, 10:17 AM",
         "components": [
@@ -44765,13 +44765,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-11T23:46:08.810Z",
-    "pulledAtDisplay": "Nov 11, 2026, 6:46 PM",
+    "pulledAt": "2026-11-11T23:51:08.330Z",
+    "pulledAtDisplay": "Nov 11, 2026, 6:51 PM",
     "window": {
-      "start": "2026-09-27T23:46:08.809Z",
-      "end": "2027-05-10T23:46:08.809Z",
-      "startDisplay": "Sep 27, 2026, 7:46 PM",
-      "endDisplay": "May 10, 2027, 7:46 PM"
+      "start": "2026-09-27T23:51:08.330Z",
+      "end": "2027-05-10T23:51:08.330Z",
+      "startDisplay": "Sep 27, 2026, 7:51 PM",
+      "endDisplay": "May 10, 2027, 7:51 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44784,7 +44784,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-11T23:46:10.998Z",
+        "pulledAt": "2026-11-11T23:51:10.242Z",
         "eventCount": 65,
         "events": [
           {
@@ -45898,10 +45898,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-11T23:43:25.034Z",
-    "previousPulledAtDisplay": "Nov 11, 2026, 6:43 PM",
-    "currentPulledAt": "2026-11-11T23:48:00.462Z",
-    "currentPulledAtDisplay": "Nov 11, 2026, 6:48 PM",
+    "previousPulledAt": "2026-11-11T23:48:00.462Z",
+    "previousPulledAtDisplay": "Nov 11, 2026, 6:48 PM",
+    "currentPulledAt": "2026-11-11T23:52:47.852Z",
+    "currentPulledAtDisplay": "Nov 11, 2026, 6:52 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45909,6 +45909,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-11T23:48:00.462Z",
+      "previousPulledAtDisplay": "Nov 11, 2026, 6:48 PM",
+      "currentPulledAt": "2026-11-11T23:52:47.852Z",
+      "currentPulledAtDisplay": "Nov 11, 2026, 6:52 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-11T23:43:25.034Z",
       "previousPulledAtDisplay": "Nov 11, 2026, 6:43 PM",
@@ -47740,17 +47751,6 @@
       "previousPulledAtDisplay": "Nov 11, 2026, 3:58 AM",
       "currentPulledAt": "2026-11-11T09:03:44.002Z",
       "currentPulledAtDisplay": "Nov 11, 2026, 4:03 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-11T08:53:33.217Z",
-      "previousPulledAtDisplay": "Nov 11, 2026, 3:53 AM",
-      "currentPulledAt": "2026-11-11T08:58:22.745Z",
-      "currentPulledAtDisplay": "Nov 11, 2026, 3:58 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
