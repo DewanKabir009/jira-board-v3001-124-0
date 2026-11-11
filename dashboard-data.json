@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-11T22:58:08.740Z",
-  "pulledAtDisplay": "Nov 11, 2026, 5:58 PM",
+  "pulledAt": "2026-11-11T23:03:13.346Z",
+  "pulledAtDisplay": "Nov 11, 2026, 6:03 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-11T22:58:08.740Z",
-    "pulledAtDisplay": "Nov 11, 2026, 5:58 PM",
+    "pulledAt": "2026-11-11T23:03:13.346Z",
+    "pulledAtDisplay": "Nov 11, 2026, 6:03 PM",
     "total": 572,
     "mainTotal": 542,
     "subtaskTotal": 30,
@@ -8170,12 +8170,12 @@
             "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:a9213a71-d1a8-4118-a357-a5d529100ce5/a1d800ef-093e-4fd8-8bbf-bb9e7068ffda/32",
             "created": "2026-11-11T17:38:59.304-0500",
             "createdDisplay": "Nov 11, 2026, 5:38 PM",
-            "updated": "2026-11-11T17:42:55.604-0500",
-            "updatedDisplay": "Nov 11, 2026, 5:42 PM",
+            "updated": "2026-11-11T18:00:50.628-0500",
+            "updatedDisplay": "Nov 11, 2026, 6:00 PM",
             "hasMedia": true,
-            "mediaCount": 7,
+            "mediaCount": 11,
             "body": "Retested on both OSs - fee text is now more readable.:check_mark:\n*NYC R. Fee does not apply to Hot Deals, only to course times\n\nios\n\nandroid\n\nBuild Ready - 6.11.0 - Android - DEV\nGN-US - Build 818\nGN-UK - Build 794\nGN-AU - Build 797\nGN-EU - Build 557\nTeeOff - Build 794\n\nBuild Ready - 6.11.0 - iOS - DEV\nGN-US - Build 794\nGN-UK - Build 780\nGN-AU - Build 767\nGN-EU - Build 546\nTeeOff - Build 781",
-            "bodyHtml": "<p>Retested on both OSs - fee text is now more readable.:check_mark: <br><em>*NYC R. Fee does not apply to Hot Deals, only to course times</em></p><div class=\"description-table-wrap\"><table><tr><th><p><strong>ios</strong></p></th><th><p><strong>android</strong></p></th></tr><tr><td><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/781319-IMG_1027.png\" alt=\"IMG_1027.png\" loading=\"lazy\"><figcaption>IMG_1027.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/781320-IMG_1035.png\" alt=\"IMG_1035.png\" loading=\"lazy\"><figcaption>IMG_1035.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/781323-IMG_1030.png\" alt=\"IMG_1030.png\" loading=\"lazy\"><figcaption>IMG_1030.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/781321-IMG_1037.png\" alt=\"IMG_1037.png\" loading=\"lazy\"><figcaption>IMG_1037.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/781322-IMG_1029.jpeg\" alt=\"IMG_1029.jpeg\" loading=\"lazy\"><figcaption>IMG_1029.jpeg</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/781324-IMG_1028.jpeg\" alt=\"IMG_1028.jpeg\" loading=\"lazy\"><figcaption>IMG_1028.jpeg</figcaption></figure></div></td><td><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/780559-image-20261110-183650.png\" alt=\"image-20261110-183650.png\" loading=\"lazy\"><figcaption>image-20261110-183650.png</figcaption></figure></div></td></tr></table></div><p><strong>Build Ready - 6.11.0 - Android - DEV</strong><br>GN-US - Build <a href=\"https://appdistribution.firebase.google.com/testerapps/1:511066535825:android:953733f314950db3/releases/454vi2p7tj7so?utm_source=fastlane\" target=\"_blank\" rel=\"noopener\">818</a><br>GN-UK - Build <a href=\"https://appdistribution.firebase.google.com/testerapps/1:511066535825:android:66f7e9c8824a5e31/releases/7kpksfc01jir0?utm_source=fastlane\" target=\"_blank\" rel=\"noopener\">794</a><br>GN-AU - Build <a href=\"https://appdistribution.firebase.google.com/testerapps/1:511066535825:android:3c105622393663899b8c30/releases/6oas2oe8qbp1g?utm_source=fastlane\" target=\"_blank\" rel=\"noopener\">797</a><br>GN-EU - Build <a href=\"https://appdistribution.firebase.google.com/testerapps/1:511066535825:android:4ec28097ae0a0d299b8c30/releases/5295vkqa2g22g?utm_source=fastlane\" target=\"_blank\" rel=\"noopener\">557</a> <br>TeeOff - Build <a href=\"https://appdistribution.firebase.google.com/testerapps/1:511066535825:android:277c9d3cfefa2e719b8c30/releases/7q9iq9ldsk8t0?utm_source=fastlane\" target=\"_blank\" rel=\"noopener\">794</a></p><p> <strong>Build Ready - 6.11.0 - iOS - DEV</strong><br>GN-US - Build <a href=\"https://beta.itunes.apple.com/v1/app/961794013\" target=\"_blank\" rel=\"noopener\">794</a><br>GN-UK - Build <a href=\"https://beta.itunes.apple.com/v1/app/6741133181\" target=\"_blank\" rel=\"noopener\">780</a> <br>GN-AU - Build <a href=\"https://beta.itunes.apple.com/v1/app/6742331093\" target=\"_blank\" rel=\"noopener\">767</a> <br>GN-EU - Build <a href=\"https://beta.itunes.apple.com/v1/app/6739084854\" target=\"_blank\" rel=\"noopener\">546</a><br>TeeOff - Build <a href=\"https://beta.itunes.apple.com/v1/app/6742330990\" target=\"_blank\" rel=\"noopener\">781</a> </p>"
+            "bodyHtml": "<p>Retested on both OSs - fee text is now more readable.:check_mark: <br><em>*NYC R. Fee does not apply to Hot Deals, only to course times</em></p><div class=\"description-table-wrap\"><table><tr><th><p><strong>ios</strong></p></th><th><p><strong>android</strong></p></th></tr><tr><td><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/781319-IMG_1027.png\" alt=\"IMG_1027.png\" loading=\"lazy\"><figcaption>IMG_1027.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/781320-IMG_1035.png\" alt=\"IMG_1035.png\" loading=\"lazy\"><figcaption>IMG_1035.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/781323-IMG_1030.png\" alt=\"IMG_1030.png\" loading=\"lazy\"><figcaption>IMG_1030.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/781321-IMG_1037.png\" alt=\"IMG_1037.png\" loading=\"lazy\"><figcaption>IMG_1037.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/781322-IMG_1029.jpeg\" alt=\"IMG_1029.jpeg\" loading=\"lazy\"><figcaption>IMG_1029.jpeg</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/781324-IMG_1028.jpeg\" alt=\"IMG_1028.jpeg\" loading=\"lazy\"><figcaption>IMG_1028.jpeg</figcaption></figure></div></td><td><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/775056-image-20261020-172416.png\" alt=\"image-20261020-172416.png\" loading=\"lazy\"><figcaption>image-20261020-172416.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/775054-image-20261020-172558.png\" alt=\"image-20261020-172558.png\" loading=\"lazy\"><figcaption>image-20261020-172558.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/775055-image-20261020-172650.png\" alt=\"image-20261020-172650.png\" loading=\"lazy\"><figcaption>image-20261020-172650.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/779399-image-20261105-204037.png\" alt=\"image-20261105-204037.png\" loading=\"lazy\"><figcaption>image-20261105-204037.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/APP-7560/comments/1243869/780559-image-20261110-183650.png\" alt=\"image-20261110-183650.png\" loading=\"lazy\"><figcaption>image-20261110-183650.png</figcaption></figure></div></td></tr></table></div><p><strong>Build Ready - 6.11.0 - Android - DEV</strong><br>GN-US - Build <a href=\"https://appdistribution.firebase.google.com/testerapps/1:511066535825:android:953733f314950db3/releases/454vi2p7tj7so?utm_source=fastlane\" target=\"_blank\" rel=\"noopener\">818</a><br>GN-UK - Build <a href=\"https://appdistribution.firebase.google.com/testerapps/1:511066535825:android:66f7e9c8824a5e31/releases/7kpksfc01jir0?utm_source=fastlane\" target=\"_blank\" rel=\"noopener\">794</a><br>GN-AU - Build <a href=\"https://appdistribution.firebase.google.com/testerapps/1:511066535825:android:3c105622393663899b8c30/releases/6oas2oe8qbp1g?utm_source=fastlane\" target=\"_blank\" rel=\"noopener\">797</a><br>GN-EU - Build <a href=\"https://appdistribution.firebase.google.com/testerapps/1:511066535825:android:4ec28097ae0a0d299b8c30/releases/5295vkqa2g22g?utm_source=fastlane\" target=\"_blank\" rel=\"noopener\">557</a> <br>TeeOff - Build <a href=\"https://appdistribution.firebase.google.com/testerapps/1:511066535825:android:277c9d3cfefa2e719b8c30/releases/7q9iq9ldsk8t0?utm_source=fastlane\" target=\"_blank\" rel=\"noopener\">794</a></p><p> <strong>Build Ready - 6.11.0 - iOS - DEV</strong><br>GN-US - Build <a href=\"https://beta.itunes.apple.com/v1/app/961794013\" target=\"_blank\" rel=\"noopener\">794</a><br>GN-UK - Build <a href=\"https://beta.itunes.apple.com/v1/app/6741133181\" target=\"_blank\" rel=\"noopener\">780</a> <br>GN-AU - Build <a href=\"https://beta.itunes.apple.com/v1/app/6742331093\" target=\"_blank\" rel=\"noopener\">767</a> <br>GN-EU - Build <a href=\"https://beta.itunes.apple.com/v1/app/6739084854\" target=\"_blank\" rel=\"noopener\">546</a><br>TeeOff - Build <a href=\"https://beta.itunes.apple.com/v1/app/6742330990\" target=\"_blank\" rel=\"noopener\">781</a> </p>"
           }
         ],
         "lastCommentUrl": "https://golfnow.atlassian.net/browse/APP-7560?focusedCommentId=1243869",
@@ -8192,8 +8192,8 @@
         "assignedDeveloper": "Nadya Malyavko",
         "assignedDeveloperAccountId": "712020:76419ca4-24c1-477f-b8f2-f9cdabed32aa",
         "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/228031fab503c8796547a1dc4512fc27?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FNM-2.png",
-        "updated": "2026-11-11T17:42:56.792-0500",
-        "updatedDisplay": "Nov 11, 2026, 5:42 PM",
+        "updated": "2026-11-11T18:00:51.377-0500",
+        "updatedDisplay": "Nov 11, 2026, 6:00 PM",
         "created": "2026-10-20T11:10:43.364-0400",
         "createdDisplay": "Oct 20, 2026, 11:10 AM",
         "components": [
@@ -44734,13 +44734,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-11T22:56:10.604Z",
-    "pulledAtDisplay": "Nov 11, 2026, 5:56 PM",
+    "pulledAt": "2026-11-11T23:01:04.522Z",
+    "pulledAtDisplay": "Nov 11, 2026, 6:01 PM",
     "window": {
-      "start": "2026-09-27T22:56:10.603Z",
-      "end": "2027-05-10T22:56:10.603Z",
-      "startDisplay": "Sep 27, 2026, 6:56 PM",
-      "endDisplay": "May 10, 2027, 6:56 PM"
+      "start": "2026-09-27T23:01:04.522Z",
+      "end": "2027-05-10T23:01:04.522Z",
+      "startDisplay": "Sep 27, 2026, 7:01 PM",
+      "endDisplay": "May 10, 2027, 7:01 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44753,7 +44753,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-11T22:56:12.898Z",
+        "pulledAt": "2026-11-11T23:01:06.505Z",
         "eventCount": 65,
         "events": [
           {
@@ -45284,23 +45284,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN000 - v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45330,6 +45313,23 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN000 - v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45709,23 +45709,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.64",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45738,6 +45721,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.64",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45828,23 +45828,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.66",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-03T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-03",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 3, 2027",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45860,6 +45843,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.66",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-03T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-03",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 3, 2027",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -45867,10 +45867,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-11T22:53:54.561Z",
-    "previousPulledAtDisplay": "Nov 11, 2026, 5:53 PM",
-    "currentPulledAt": "2026-11-11T22:58:08.740Z",
-    "currentPulledAtDisplay": "Nov 11, 2026, 5:58 PM",
+    "previousPulledAt": "2026-11-11T22:58:08.740Z",
+    "previousPulledAtDisplay": "Nov 11, 2026, 5:58 PM",
+    "currentPulledAt": "2026-11-11T23:03:13.346Z",
+    "currentPulledAtDisplay": "Nov 11, 2026, 6:03 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45878,6 +45878,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-11T22:58:08.740Z",
+      "previousPulledAtDisplay": "Nov 11, 2026, 5:58 PM",
+      "currentPulledAt": "2026-11-11T23:03:13.346Z",
+      "currentPulledAtDisplay": "Nov 11, 2026, 6:03 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-11T22:53:54.561Z",
       "previousPulledAtDisplay": "Nov 11, 2026, 5:53 PM",
@@ -47709,17 +47720,6 @@
       "previousPulledAtDisplay": "Nov 11, 2026, 3:08 AM",
       "currentPulledAt": "2026-11-11T08:12:40.670Z",
       "currentPulledAtDisplay": "Nov 11, 2026, 3:12 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-11T08:03:38.649Z",
-      "previousPulledAtDisplay": "Nov 11, 2026, 3:03 AM",
-      "currentPulledAt": "2026-11-11T08:08:35.956Z",
-      "currentPulledAtDisplay": "Nov 11, 2026, 3:08 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
