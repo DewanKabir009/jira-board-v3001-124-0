@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-12T02:58:53.892Z",
-  "pulledAtDisplay": "Nov 11, 2026, 9:58 PM",
+  "pulledAt": "2026-11-12T03:03:33.837Z",
+  "pulledAtDisplay": "Nov 11, 2026, 10:03 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,10 +1809,10 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-12T02:58:53.892Z",
-    "pulledAtDisplay": "Nov 11, 2026, 9:58 PM",
-    "total": 572,
-    "mainTotal": 542,
+    "pulledAt": "2026-11-12T03:03:33.837Z",
+    "pulledAtDisplay": "Nov 11, 2026, 10:03 PM",
+    "total": 573,
+    "mainTotal": 543,
     "subtaskTotal": 30,
     "issues": [
       {
@@ -8104,6 +8104,56 @@
           "type": "Epic",
           "status": "Backlog",
           "priority": "P1"
+        }
+      },
+      {
+        "key": "CORE-14974",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14974",
+        "summary": "STG: GetCourseRollupByGeolocation hits the 30 s SQL timeout nightly (p95 30.2 s vs 0.7 s in Production)",
+        "description": "Problem\n\nIn STG, the GolfNowAPI stored procedure [ GolfNowAPI ] . [ GetCourseRollupByGeolocation ] (database CRM, SQL Server use2gnswsql0201.ad.idelb.com_4070) often runs until the SQL client timeout and fails with:\n\nSystem.Data.SqlClient.SqlException: Execution Timeout Expired. The timeout period elapsed prior to completion of the operation or the server is not responding.\n\nThe procedure runs behind GET /golfnowapi.svc/rest/channel/?/facility-summaries (service golfnow.api-golfnowapi). GolfNow Web's course search (POST /api/tee-times/courses-near-me) calls that endpoint. When the procedure times out, the search page takes 18–60 s to show results, or shows none.\n\nThe same procedure is fast in Production. The cause looks specific to the STG database or what runs on it, not to the procedure's code.\n\nEvidence (Datadog APM, 2026-10-29 to 2026-11-12)\n\nThese counts come from indexed spans only. Retention filters keep errors and slow spans more often than other traffic, so treat them as a sample, not as request totals.\n\nEnv\n\nSpans\n\np95\n\nErrors\n\nProduction\n\n152,392\n\n0.7 s\n\n420\n\nDEV\n\n15,690\n\n2.7 s\n\n39\n\nSTG\n\n7,027\n\n30.2 s\n\n1,664\n\n- Every STG API host is affected: USE2GNSWW005001, 005002, 006001 and 006002. This points to the database, not to one host.\n\n- The errors cluster at night: 250 of the 500 most recent STG errors (2026-11-06 to 2026-11-12) are between 01:00 and 02:59 UTC (8–10 PM ET). The worst hours were 2026-11-12 01:00 UTC (125), 2026-11-08 01:00 UTC (27) and 2026-11-07 02:00 UTC (26).\n\n- Incident example: 2026-11-12 from 02:00:12 to 02:05:18 UTC, 28 timeouts in a row of about 30 s each. Example trace: 6af51dff00000000e08ca82ea34a67a4.\n\n- The ~30 s duration matches the default SqlCommand.CommandTimeout (30 s). So the query is probably cut off by the client, not completing slowly. (Inference.)\n\nImpact\n\n- GolfNow Web's post-deploy E2E on STG runs in that same nightly window. Release-candidate runs fail when search returns no results (GNSCM-11337). This blocks release verification and hides real regressions.\n\n- Any manual QA on STG search in that window sees the same slowness.\n\n- Production has 420 timeouts in the same period (about 0.3% of indexed spans). They are low but not zero, and worth a look while investigating.\n\nHypotheses (not verified)\n\n- A scheduled job on the STG SQL server runs in the 01:00–03:00 UTC window and competes with the query: SQL Agent jobs, backups, index rebuilds, or a data refresh from Production.\n\n- Blocking or lock waits on the tables the procedure reads.\n\n- A different execution plan in STG: stale statistics, a missing index (as in CORE-14420), or parameter sniffing.\n\n- The STG SQL server has less capacity than the load needs.\n\nRequested investigation\n\n- List what runs on use2gnswsql0201 between 01:00 and 03:00 UTC.\n\n- Check Query Store and blocking or wait data for 2026-11-12 02:00–02:05 UTC.\n\n- Compare the actual execution plan of GetCourseRollupByGeolocation in STG and Production for an Orlando, FL geolocation search: latitude 28.53834, longitude -81.37924, radius 100.\n\n- Report the root cause, and the fix if one is in scope.\n\nAcceptance criteria\n\n- The cause of the STG timeouts is identified with evidence (job schedule, wait or blocking data, or a plan comparison).\n\n- Either the cause is fixed, or a decision is recorded (for example, moving the job out of the window).\n\n- After the fix, Datadog shows no Execution Timeout Expired errors on GetCourseRollupByGeolocation in STG for 7 days.\n\nRelated\n\n- GNSCM-11337: GolfNow Web post-deploy E2E failure that found this.\n\n- CORE-14420: a past STG CRM timeout caused by a missing index.",
+        "descriptionHtml": "<h3>Problem</h3><p>In STG, the GolfNowAPI stored procedure <code>[ GolfNowAPI ] . [ GetCourseRollupByGeolocation ]</code> (database <code>CRM</code>, SQL Server <code>use2gnswsql0201.ad.idelb.com_4070</code>) often runs until the SQL client timeout and fails with:</p><p><code>System.Data.SqlClient.SqlException: Execution Timeout Expired. The timeout period elapsed prior to completion of the operation or the server is not responding.</code></p><p>The procedure runs behind <code>GET /golfnowapi.svc/rest/channel/?/facility-summaries</code> (service <code>golfnow.api-golfnowapi</code>). GolfNow Web's course search (<code>POST /api/tee-times/courses-near-me</code>) calls that endpoint. When the procedure times out, the search page takes 18–60 s to show results, or shows none.</p><p>The same procedure is fast in Production. The cause looks specific to the STG database or what runs on it, not to the procedure's code.</p><h3>Evidence (Datadog APM, 2026-10-29 to 2026-11-12)</h3><p>These counts come from indexed spans only. Retention filters keep errors and slow spans more often than other traffic, so treat them as a sample, not as request totals.</p><div class=\"description-table-wrap\"><table><tr><th><p>Env</p></th><th><p>Spans</p></th><th><p>p95</p></th><th><p>Errors</p></th></tr><tr><td><p>Production</p></td><td><p>152,392</p></td><td><p>0.7 s</p></td><td><p>420</p></td></tr><tr><td><p>DEV</p></td><td><p>15,690</p></td><td><p>2.7 s</p></td><td><p>39</p></td></tr><tr><td><p><strong>STG</strong></p></td><td><p>7,027</p></td><td><p><strong>30.2 s</strong></p></td><td><p><strong>1,664</strong></p></td></tr></table></div><ul><li><p><strong>Every STG API host is affected:</strong> USE2GNSWW005001, 005002, 006001 and 006002. This points to the database, not to one host.</p></li><li><p><strong>The errors cluster at night:</strong> 250 of the 500 most recent STG errors (2026-11-06 to 2026-11-12) are between <strong>01:00 and 02:59 UTC</strong> (8–10 PM ET). The worst hours were 2026-11-12 01:00 UTC (125), 2026-11-08 01:00 UTC (27) and 2026-11-07 02:00 UTC (26).</p></li><li><p><strong>Incident example:</strong> 2026-11-12 from 02:00:12 to 02:05:18 UTC, 28 timeouts in a row of about 30 s each. Example trace: <code>6af51dff00000000e08ca82ea34a67a4</code>.</p></li><li><p>The ~30 s duration matches the default <code>SqlCommand.CommandTimeout</code> (30 s). So the query is probably cut off by the client, not completing slowly. <em>(Inference.)</em></p></li></ul><h3>Impact</h3><ul><li><p>GolfNow Web's post-deploy E2E on STG runs in that same nightly window. Release-candidate runs fail when search returns no results (<a href=\"https://golfnow.atlassian.net/browse/GNSCM-11337\" target=\"_blank\" rel=\"noopener\">GNSCM-11337</a>). This blocks release verification and hides real regressions.</p></li><li><p>Any manual QA on STG search in that window sees the same slowness.</p></li><li><p>Production has 420 timeouts in the same period (about 0.3% of indexed spans). They are low but not zero, and worth a look while investigating.</p></li></ul><h3>Hypotheses (not verified)</h3><ol><li><p>A scheduled job on the STG SQL server runs in the 01:00–03:00 UTC window and competes with the query: SQL Agent jobs, backups, index rebuilds, or a data refresh from Production.</p></li><li><p>Blocking or lock waits on the tables the procedure reads.</p></li><li><p>A different execution plan in STG: stale statistics, a missing index (as in <a href=\"https://golfnow.atlassian.net/browse/CORE-14420\" target=\"_blank\" rel=\"noopener\">CORE-14420</a>), or parameter sniffing.</p></li><li><p>The STG SQL server has less capacity than the load needs.</p></li></ol><h3>Requested investigation</h3><ol><li><p>List what runs on <code>use2gnswsql0201</code> between 01:00 and 03:00 UTC.</p></li><li><p>Check Query Store and blocking or wait data for 2026-11-12 02:00–02:05 UTC.</p></li><li><p>Compare the actual execution plan of <code>GetCourseRollupByGeolocation</code> in STG and Production for an Orlando, FL geolocation search: latitude 28.53834, longitude -81.37924, radius 100.</p></li><li><p>Report the root cause, and the fix if one is in scope.</p></li></ol><h3>Acceptance criteria</h3><ol><li><p>The cause of the STG timeouts is identified with evidence (job schedule, wait or blocking data, or a plan comparison).</p></li><li><p>Either the cause is fixed, or a decision is recorded (for example, moving the job out of the window).</p></li><li><p>After the fix, Datadog shows no <code>Execution Timeout Expired</code> errors on <code>GetCourseRollupByGeolocation</code> in STG for 7 days.</p></li></ol><h3>Related</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/GNSCM-11337\" target=\"_blank\" rel=\"noopener\">GNSCM-11337</a>: GolfNow Web post-deploy E2E failure that found this.</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-14420\" target=\"_blank\" rel=\"noopener\">CORE-14420</a>: a past STG CRM timeout caused by a missing index.</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Task",
+        "isSubtask": false,
+        "status": "Pre Planning",
+        "priority": "None",
+        "assignee": "Unassigned",
+        "assigneeAccountId": "",
+        "assigneeAvatarUrl": "",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-11-11T21:59:56.109-0500",
+        "updatedDisplay": "Nov 11, 2026, 9:59 PM",
+        "created": "2026-11-11T21:59:43.449-0500",
+        "createdDisplay": "Nov 11, 2026, 9:59 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
         }
       },
       {
@@ -44765,13 +44815,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-12T02:56:09.741Z",
-    "pulledAtDisplay": "Nov 11, 2026, 9:56 PM",
+    "pulledAt": "2026-11-12T03:01:32.012Z",
+    "pulledAtDisplay": "Nov 11, 2026, 10:01 PM",
     "window": {
-      "start": "2026-09-28T02:56:09.741Z",
-      "end": "2027-05-11T02:56:09.741Z",
-      "startDisplay": "Sep 27, 2026, 10:56 PM",
-      "endDisplay": "May 10, 2027, 10:56 PM"
+      "start": "2026-09-28T03:01:32.012Z",
+      "end": "2027-05-11T03:01:32.012Z",
+      "startDisplay": "Sep 27, 2026, 11:01 PM",
+      "endDisplay": "May 10, 2027, 11:01 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44784,7 +44834,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-12T02:56:12.779Z",
+        "pulledAt": "2026-11-12T03:01:34.508Z",
         "eventCount": 64,
         "events": [
           {
@@ -45298,23 +45348,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN000 - v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45344,6 +45377,23 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134239Z--1637603159@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN000 - v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45723,23 +45773,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.64",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45752,6 +45785,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.64",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45881,10 +45931,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-12T02:53:35.993Z",
-    "previousPulledAtDisplay": "Nov 11, 2026, 9:53 PM",
-    "currentPulledAt": "2026-11-12T02:58:53.892Z",
-    "currentPulledAtDisplay": "Nov 11, 2026, 9:58 PM",
+    "previousPulledAt": "2026-11-12T02:58:53.892Z",
+    "previousPulledAtDisplay": "Nov 11, 2026, 9:58 PM",
+    "currentPulledAt": "2026-11-12T03:03:33.837Z",
+    "currentPulledAtDisplay": "Nov 11, 2026, 10:03 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45892,6 +45942,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-12T02:58:53.892Z",
+      "previousPulledAtDisplay": "Nov 11, 2026, 9:58 PM",
+      "currentPulledAt": "2026-11-12T03:03:33.837Z",
+      "currentPulledAtDisplay": "Nov 11, 2026, 10:03 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-12T02:53:35.993Z",
       "previousPulledAtDisplay": "Nov 11, 2026, 9:53 PM",
@@ -47723,17 +47784,6 @@
       "previousPulledAtDisplay": "Nov 11, 2026, 7:07 AM",
       "currentPulledAt": "2026-11-11T12:12:38.037Z",
       "currentPulledAtDisplay": "Nov 11, 2026, 7:12 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-11T12:03:32.151Z",
-      "previousPulledAtDisplay": "Nov 11, 2026, 7:03 AM",
-      "currentPulledAt": "2026-11-11T12:07:53.084Z",
-      "currentPulledAtDisplay": "Nov 11, 2026, 7:07 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
