@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-12T22:28:39.283Z",
-  "pulledAtDisplay": "Nov 12, 2026, 5:28 PM",
+  "pulledAt": "2026-11-12T22:33:52.056Z",
+  "pulledAtDisplay": "Nov 12, 2026, 5:33 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-12T22:28:39.283Z",
-    "pulledAtDisplay": "Nov 12, 2026, 5:28 PM",
+    "pulledAt": "2026-11-12T22:33:52.056Z",
+    "pulledAtDisplay": "Nov 12, 2026, 5:33 PM",
     "total": 574,
     "mainTotal": 544,
     "subtaskTotal": 30,
@@ -8107,6 +8107,61 @@
         }
       },
       {
+        "key": "CORE-14871",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14871",
+        "summary": "Cache Manager/XCS support for tee time alerts",
+        "description": "The B2B team has uses an RMQ feed to get data regarding tee time to support their Tee Time Alert feature. The data feed does not contain RackTimes. We need to use Cache Manager and XCS to send RackTime data to the the RMQ feed at run time so they can get the most up to date data.\n\n- RMQ Data:\n\n- https://rmq01-golfnow-core-us-west1.svc.golf/\n\n- exchange: TeeQsTopicEx\nrouting keys: publisherchannelid.all & publisherchannelid.nolist\n\n- Current B2B Sample Payload:\n\n{\"TTTeeTimeID\":291463080,\"GolfFacilityID\":14793,\"GolfCourseID\":79740,\"TTStatus\":\"NOVACANCY\",\"TTDateTime\":\"2027-01-29T07:09:00.000\",\"TTRule\":0,\"TTValueRate\":35.0000,\"TTBaseSpecialRate\":35.0000,\"TTBlockRemote\":0,\"TTAutoReplenish\":1,\"TTIcons\":\"*10\",\"TTOriginalRule\":11,\"UpdateUserPK\":1,\"TIMESTAMP\":1790035810000,\"TTLoadFromInterface\":0,\"TTTeeTimeType\":\"DISC\",\"ScheduleID\":1,\"TTReleaseDate\":1791418264000,\"IsDeleted\":0,\"CreateDate\":\"2026-09-21T19:10:10.373Z\",\"RateType\":\"Online Rate\",\"GCHoles\":18,\"IsTradeTime\":0,\"TransportionType\":\"Walking\",\"EZLCourseID\":\"\",\"SponsorID\":\"\",\"TTIconNames\":\"18 Hole Time\",\"GCPlayFacilityID\":14793,\"Version\":1791400264}\n\n- We need to send a payload with the following data\n\nTTTeeTimeID      //this will be the RackTimeId\nTTStatus\nTTRule\nGCPlayFacilityID\nTTDateTime\nGolfCourseID\n\n- Logic\n\n- At CacheManager/XCS run time, send a payload to the RMQ feed containing the above information for all RackTimes (negative IDs) inserted/updated during the sync\n\n- This should only send for rate sets configured to TeeSheetPricing=true\n\n- Any failures in sending the payload should not affect CacheManager/XCS sync performance.\n\n- We should not be failing any syncing due to RMQ outage, failure of delivery or slow connections\n\n- Testing\n\n- Confirm all results with @Conor Maley\n\n- Test on EZL(XCS), BRSG, and maybe one other tee sheet to be safe\n\n- Test not using Tee Sheet Pricing and make sure no data is sent",
+        "descriptionHtml": "<p>The B2B team has uses an RMQ feed to get data regarding tee time to support their Tee Time Alert feature. The data feed does not contain RackTimes. We need to use Cache Manager and XCS to send RackTime data to the the RMQ feed at run time so they can get the most up to date data.</p><ol><li><p>RMQ Data:</p><ol><li><p><a href=\"https://rmq01-golfnow-core-us-west1.svc.golf/\" target=\"_blank\" rel=\"noopener\">https://rmq01-golfnow-core-us-west1.svc.golf/</a></p></li><li><pre><code>exchange: TeeQsTopicEx\nrouting keys: publisherchannelid.all &amp; publisherchannelid.nolist</code></pre></li><li><p>Current B2B Sample Payload:</p><pre><code>{&quot;TTTeeTimeID&quot;:291463080,&quot;GolfFacilityID&quot;:14793,&quot;GolfCourseID&quot;:79740,&quot;TTStatus&quot;:&quot;NOVACANCY&quot;,&quot;TTDateTime&quot;:&quot;2027-01-29T07:09:00.000&quot;,&quot;TTRule&quot;:0,&quot;TTValueRate&quot;:35.0000,&quot;TTBaseSpecialRate&quot;:35.0000,&quot;TTBlockRemote&quot;:0,&quot;TTAutoReplenish&quot;:1,&quot;TTIcons&quot;:&quot;*10&quot;,&quot;TTOriginalRule&quot;:11,&quot;UpdateUserPK&quot;:1,&quot;TIMESTAMP&quot;:1790035810000,&quot;TTLoadFromInterface&quot;:0,&quot;TTTeeTimeType&quot;:&quot;DISC&quot;,&quot;ScheduleID&quot;:1,&quot;TTReleaseDate&quot;:1791418264000,&quot;IsDeleted&quot;:0,&quot;CreateDate&quot;:&quot;2026-09-21T19:10:10.373Z&quot;,&quot;RateType&quot;:&quot;Online Rate&quot;,&quot;GCHoles&quot;:18,&quot;IsTradeTime&quot;:0,&quot;TransportionType&quot;:&quot;Walking&quot;,&quot;EZLCourseID&quot;:&quot;&quot;,&quot;SponsorID&quot;:&quot;&quot;,&quot;TTIconNames&quot;:&quot;18 Hole Time&quot;,&quot;GCPlayFacilityID&quot;:14793,&quot;Version&quot;:1791400264}</code></pre></li><li><p>We need to send a payload with the following data</p><pre><code>TTTeeTimeID      //this will be the RackTimeId \nTTStatus\nTTRule\nGCPlayFacilityID\nTTDateTime\nGolfCourseID</code></pre></li></ol></li><li><p>Logic</p><ol><li><p>At CacheManager/XCS run time, send a payload to the RMQ feed containing the above information for all RackTimes (negative IDs) inserted/updated during the sync</p></li><li><p><strong>This should only send for rate sets configured to TeeSheetPricing=true</strong></p></li><li><p>Any failures in sending the payload should not affect CacheManager/XCS sync performance. </p><ol><li><p>We should not be failing any syncing due to RMQ outage, failure of delivery or slow connections</p></li></ol></li></ol></li><li><p>Testing</p><ol><li><p>Confirm all results with @Conor Maley </p></li><li><p>Test on EZL(XCS), BRSG, and maybe one other tee sheet to be safe</p></li><li><p>Test not using Tee Sheet Pricing and make sure no data is sent</p></li></ol></li></ol>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Pending Deployment (DEV)",
+        "priority": "P1",
+        "assignee": "Raghav Kancherla",
+        "assigneeAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+        "assignedDeveloper": "Raghav Kancherla",
+        "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+        "updated": "2026-11-12T17:31:07.124-0500",
+        "updatedDisplay": "Nov 12, 2026, 5:31 PM",
+        "created": "2026-10-16T10:26:05.761-0400",
+        "createdDisplay": "Oct 16, 2026, 10:26 AM",
+        "components": [
+          "Cache Manager",
+          "XCS.Processor"
+        ],
+        "fixVersions": [
+          "v3001.130.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14951",
         "url": "https://golfnow.atlassian.net/browse/CORE-14951",
         "summary": "Pro Agenda Follow Ups",
@@ -8386,61 +8441,6 @@
         "createdDisplay": "Oct 29, 2026, 6:02 PM",
         "components": [],
         "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14871",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14871",
-        "summary": "Cache Manager/XCS support for tee time alerts",
-        "description": "The B2B team has uses an RMQ feed to get data regarding tee time to support their Tee Time Alert feature. The data feed does not contain RackTimes. We need to use Cache Manager and XCS to send RackTime data to the the RMQ feed at run time so they can get the most up to date data.\n\n- RMQ Data:\n\n- https://rmq01-golfnow-core-us-west1.svc.golf/\n\n- exchange: TeeQsTopicEx\nrouting keys: publisherchannelid.all & publisherchannelid.nolist\n\n- Current B2B Sample Payload:\n\n{\"TTTeeTimeID\":291463080,\"GolfFacilityID\":14793,\"GolfCourseID\":79740,\"TTStatus\":\"NOVACANCY\",\"TTDateTime\":\"2027-01-29T07:09:00.000\",\"TTRule\":0,\"TTValueRate\":35.0000,\"TTBaseSpecialRate\":35.0000,\"TTBlockRemote\":0,\"TTAutoReplenish\":1,\"TTIcons\":\"*10\",\"TTOriginalRule\":11,\"UpdateUserPK\":1,\"TIMESTAMP\":1790035810000,\"TTLoadFromInterface\":0,\"TTTeeTimeType\":\"DISC\",\"ScheduleID\":1,\"TTReleaseDate\":1791418264000,\"IsDeleted\":0,\"CreateDate\":\"2026-09-21T19:10:10.373Z\",\"RateType\":\"Online Rate\",\"GCHoles\":18,\"IsTradeTime\":0,\"TransportionType\":\"Walking\",\"EZLCourseID\":\"\",\"SponsorID\":\"\",\"TTIconNames\":\"18 Hole Time\",\"GCPlayFacilityID\":14793,\"Version\":1791400264}\n\n- We need to send a payload with the following data\n\nTTTeeTimeID      //this will be the RackTimeId\nTTStatus\nTTRule\nGCPlayFacilityID\nTTDateTime\nGolfCourseID\n\n- Logic\n\n- At CacheManager/XCS run time, send a payload to the RMQ feed containing the above information for all RackTimes (negative IDs) inserted/updated during the sync\n\n- This should only send for rate sets configured to TeeSheetPricing=true\n\n- Any failures in sending the payload should not affect CacheManager/XCS sync performance.\n\n- We should not be failing any syncing due to RMQ outage, failure of delivery or slow connections\n\n- Testing\n\n- Confirm all results with @Conor Maley\n\n- Test on EZL(XCS), BRSG, and maybe one other tee sheet to be safe\n\n- Test not using Tee Sheet Pricing and make sure no data is sent",
-        "descriptionHtml": "<p>The B2B team has uses an RMQ feed to get data regarding tee time to support their Tee Time Alert feature. The data feed does not contain RackTimes. We need to use Cache Manager and XCS to send RackTime data to the the RMQ feed at run time so they can get the most up to date data.</p><ol><li><p>RMQ Data:</p><ol><li><p><a href=\"https://rmq01-golfnow-core-us-west1.svc.golf/\" target=\"_blank\" rel=\"noopener\">https://rmq01-golfnow-core-us-west1.svc.golf/</a></p></li><li><pre><code>exchange: TeeQsTopicEx\nrouting keys: publisherchannelid.all &amp; publisherchannelid.nolist</code></pre></li><li><p>Current B2B Sample Payload:</p><pre><code>{&quot;TTTeeTimeID&quot;:291463080,&quot;GolfFacilityID&quot;:14793,&quot;GolfCourseID&quot;:79740,&quot;TTStatus&quot;:&quot;NOVACANCY&quot;,&quot;TTDateTime&quot;:&quot;2027-01-29T07:09:00.000&quot;,&quot;TTRule&quot;:0,&quot;TTValueRate&quot;:35.0000,&quot;TTBaseSpecialRate&quot;:35.0000,&quot;TTBlockRemote&quot;:0,&quot;TTAutoReplenish&quot;:1,&quot;TTIcons&quot;:&quot;*10&quot;,&quot;TTOriginalRule&quot;:11,&quot;UpdateUserPK&quot;:1,&quot;TIMESTAMP&quot;:1790035810000,&quot;TTLoadFromInterface&quot;:0,&quot;TTTeeTimeType&quot;:&quot;DISC&quot;,&quot;ScheduleID&quot;:1,&quot;TTReleaseDate&quot;:1791418264000,&quot;IsDeleted&quot;:0,&quot;CreateDate&quot;:&quot;2026-09-21T19:10:10.373Z&quot;,&quot;RateType&quot;:&quot;Online Rate&quot;,&quot;GCHoles&quot;:18,&quot;IsTradeTime&quot;:0,&quot;TransportionType&quot;:&quot;Walking&quot;,&quot;EZLCourseID&quot;:&quot;&quot;,&quot;SponsorID&quot;:&quot;&quot;,&quot;TTIconNames&quot;:&quot;18 Hole Time&quot;,&quot;GCPlayFacilityID&quot;:14793,&quot;Version&quot;:1791400264}</code></pre></li><li><p>We need to send a payload with the following data</p><pre><code>TTTeeTimeID      //this will be the RackTimeId \nTTStatus\nTTRule\nGCPlayFacilityID\nTTDateTime\nGolfCourseID</code></pre></li></ol></li><li><p>Logic</p><ol><li><p>At CacheManager/XCS run time, send a payload to the RMQ feed containing the above information for all RackTimes (negative IDs) inserted/updated during the sync</p></li><li><p><strong>This should only send for rate sets configured to TeeSheetPricing=true</strong></p></li><li><p>Any failures in sending the payload should not affect CacheManager/XCS sync performance. </p><ol><li><p>We should not be failing any syncing due to RMQ outage, failure of delivery or slow connections</p></li></ol></li></ol></li><li><p>Testing</p><ol><li><p>Confirm all results with @Conor Maley </p></li><li><p>Test on EZL(XCS), BRSG, and maybe one other tee sheet to be safe</p></li><li><p>Test not using Tee Sheet Pricing and make sure no data is sent</p></li></ol></li></ol>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Code Review",
-        "priority": "P1",
-        "assignee": "Yoel Martin Pardo",
-        "assigneeAccountId": "625571809e7380006fb29599",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "assignedDeveloper": "Raghav Kancherla",
-        "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "updated": "2026-11-12T12:03:58.181-0500",
-        "updatedDisplay": "Nov 12, 2026, 12:03 PM",
-        "created": "2026-10-16T10:26:05.761-0400",
-        "createdDisplay": "Oct 16, 2026, 10:26 AM",
-        "components": [
-          "Cache Manager",
-          "XCS.Processor"
-        ],
-        "fixVersions": [
-          "v3001.130.0"
-        ],
         "sprints": [
           {
             "name": "2026.8"
@@ -44893,13 +44893,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-12T22:26:10.214Z",
-    "pulledAtDisplay": "Nov 12, 2026, 5:26 PM",
+    "pulledAt": "2026-11-12T22:31:09.788Z",
+    "pulledAtDisplay": "Nov 12, 2026, 5:31 PM",
     "window": {
-      "start": "2026-09-28T22:26:10.214Z",
-      "end": "2027-05-11T22:26:10.214Z",
-      "startDisplay": "Sep 28, 2026, 6:26 PM",
-      "endDisplay": "May 11, 2027, 6:26 PM"
+      "start": "2026-09-28T22:31:09.788Z",
+      "end": "2027-05-11T22:31:09.788Z",
+      "startDisplay": "Sep 28, 2026, 6:31 PM",
+      "endDisplay": "May 11, 2027, 6:31 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44912,7 +44912,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-12T22:26:15.991Z",
+        "pulledAt": "2026-11-12T22:31:12.739Z",
         "eventCount": 64,
         "events": [
           {
@@ -45783,23 +45783,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45812,6 +45795,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -46009,10 +46009,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-12T22:23:48.625Z",
-    "previousPulledAtDisplay": "Nov 12, 2026, 5:23 PM",
-    "currentPulledAt": "2026-11-12T22:28:39.283Z",
-    "currentPulledAtDisplay": "Nov 12, 2026, 5:28 PM",
+    "previousPulledAt": "2026-11-12T22:28:39.283Z",
+    "previousPulledAtDisplay": "Nov 12, 2026, 5:28 PM",
+    "currentPulledAt": "2026-11-12T22:33:52.056Z",
+    "currentPulledAtDisplay": "Nov 12, 2026, 5:33 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -46020,6 +46020,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-12T22:28:39.283Z",
+      "previousPulledAtDisplay": "Nov 12, 2026, 5:28 PM",
+      "currentPulledAt": "2026-11-12T22:33:52.056Z",
+      "currentPulledAtDisplay": "Nov 12, 2026, 5:33 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-12T22:23:48.625Z",
       "previousPulledAtDisplay": "Nov 12, 2026, 5:23 PM",
@@ -47851,17 +47862,6 @@
       "previousPulledAtDisplay": "Nov 12, 2026, 3:13 AM",
       "currentPulledAt": "2026-11-12T08:17:44.643Z",
       "currentPulledAtDisplay": "Nov 12, 2026, 3:17 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-12T08:09:01.815Z",
-      "previousPulledAtDisplay": "Nov 12, 2026, 3:09 AM",
-      "currentPulledAt": "2026-11-12T08:13:12.761Z",
-      "currentPulledAtDisplay": "Nov 12, 2026, 3:13 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
