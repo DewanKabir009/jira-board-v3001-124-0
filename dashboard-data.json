@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-16T13:58:17.422Z",
-  "pulledAtDisplay": "Nov 16, 2026, 8:58 AM",
+  "pulledAt": "2026-11-16T14:48:09.141Z",
+  "pulledAtDisplay": "Nov 16, 2026, 9:48 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-16T13:58:17.422Z",
-    "pulledAtDisplay": "Nov 16, 2026, 8:58 AM",
+    "pulledAt": "2026-11-16T14:48:09.141Z",
+    "pulledAtDisplay": "Nov 16, 2026, 9:48 AM",
     "total": 574,
     "mainTotal": 544,
     "subtaskTotal": 30,
@@ -8107,6 +8107,79 @@
         }
       },
       {
+        "key": "CORE-14977",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14977",
+        "summary": "Add take value and configuration to Topgolf (TPG) InterfaceAttributes",
+        "description": "- Current TPG URL used to call for GetAvailability and CacheManager\n\n- {{baseUrl}}/rest/facilities/{{facilityId}}/tee-times?duration=120&date-min=2026-11-20&date-max=2026-11-27\n\n- When you run this, you see that they dont have inventory out to 11-27\n\n- Update to add &take={{interfaceattributevariable}}\n\n- Hitting their API with Take=1000 now shows all inventory for requested sync schedule\n\n- Add a new AttributeName and AttributeValue to CRMInterfaceAttribute for TPG Interface\n\n- AttributeName: TPG_TAKE\n\n- AttributeValue: 1000\n\n- If the TPG_TAKE does not exist, default coded value should be 1000\n\n- Run CacheManager and confirm that all days in the sync schedule have RackTimes for the full day\n\n- Hit API 2.1 Get Tee Times by Facility and confirm all the inventory matches",
+        "descriptionHtml": "<ol><li><p>Current TPG URL used to call for GetAvailability and CacheManager</p><ol><li><p>{{baseUrl}}/rest/facilities/{{facilityId}}/tee-times?duration=120&amp;date-min=2026-11-20&amp;date-max=2026-11-27</p></li><li><p>When you run this, you see that they dont have inventory out to 11-27</p></li></ol></li><li><p>Update to add <code>&amp;take={{interfaceattributevariable}}</code></p><ol><li><p>Hitting their API with Take=1000 now shows all inventory for requested sync schedule</p></li></ol></li><li><p>Add a new AttributeName and AttributeValue to CRMInterfaceAttribute for TPG Interface</p><ol><li><p>AttributeName: TPG_TAKE</p></li><li><p>AttributeValue: 1000</p></li><li><p>If the TPG_TAKE does not exist, default coded value should be 1000</p></li></ol></li><li><p>Run CacheManager and confirm that all days in the sync schedule have RackTimes for the full day</p></li><li><p>Hit API 2.1 Get Tee Times by Facility and confirm all the inventory matches</p></li></ol>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1244664",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14977?focusedCommentId=1244664",
+            "author": "Yoel Martin Pardo",
+            "authorAccountId": "625571809e7380006fb29599",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+            "created": "2026-11-12T15:17:20.014-0500",
+            "createdDisplay": "Nov 12, 2026, 3:17 PM",
+            "updated": "2026-11-12T15:17:20.014-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "QA: We already added a new Attribute to Topgolf defaulted to 1000. @Brian Pugh is going to test teesheet, but you will need to test Cache Manager. The issue that we were facing was that there was some days that the teesheet was not returning and we need to start passing in the new parameter to get all the teetimes. Reach out to Brian if you need anything.",
+            "bodyHtml": "<p>QA: We already added a new Attribute to Topgolf defaulted to 1000. @Brian Pugh is going to test teesheet, but you will need to test Cache Manager. The issue that we were facing was that there was some days that the teesheet was not returning and we need to start passing in the new parameter to get all the teetimes. Reach out to Brian if you need anything. </p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14977?focusedCommentId=1244664",
+        "lastCommentDisplay": "Nov 12, 2026, 3:17 PM",
+        "lastCommentAuthor": "Yoel Martin Pardo",
+        "testChecklist": null,
+        "type": "Task",
+        "isSubtask": false,
+        "status": "QA Testing (DEV)",
+        "priority": "P0",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Dewan Kabir",
+        "assignedDeveloperAccountId": "630fb06bb433b060db559bdb",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "updated": "2026-11-16T09:37:07.560-0500",
+        "updatedDisplay": "Nov 16, 2026, 9:37 AM",
+        "created": "2026-11-12T13:23:09.652-0500",
+        "createdDisplay": "Nov 12, 2026, 1:23 PM",
+        "components": [
+          "Cache Manager",
+          "Database",
+          "GolfNow.Services.Reservation",
+          "GolfNow.Services.TeeSheet"
+        ],
+        "fixVersions": [
+          "v3001.131.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14951",
         "url": "https://golfnow.atlassian.net/browse/CORE-14951",
         "summary": "Pro Agenda Follow Ups",
@@ -8171,79 +8244,6 @@
           "GolfNow.Services.Reservation",
           "GolfNow.Services.TeeSheet",
           "GolfNowCentral"
-        ],
-        "fixVersions": [
-          "v3001.131.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14977",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14977",
-        "summary": "Add take value and configuration to Topgolf (TPG) InterfaceAttributes",
-        "description": "- Current TPG URL used to call for GetAvailability and CacheManager\n\n- {{baseUrl}}/rest/facilities/{{facilityId}}/tee-times?duration=120&date-min=2026-11-20&date-max=2026-11-27\n\n- When you run this, you see that they dont have inventory out to 11-27\n\n- Update to add &take={{interfaceattributevariable}}\n\n- Hitting their API with Take=1000 now shows all inventory for requested sync schedule\n\n- Add a new AttributeName and AttributeValue to CRMInterfaceAttribute for TPG Interface\n\n- AttributeName: TPG_TAKE\n\n- AttributeValue: 1000\n\n- If the TPG_TAKE does not exist, default coded value should be 1000\n\n- Run CacheManager and confirm that all days in the sync schedule have RackTimes for the full day\n\n- Hit API 2.1 Get Tee Times by Facility and confirm all the inventory matches",
-        "descriptionHtml": "<ol><li><p>Current TPG URL used to call for GetAvailability and CacheManager</p><ol><li><p>{{baseUrl}}/rest/facilities/{{facilityId}}/tee-times?duration=120&amp;date-min=2026-11-20&amp;date-max=2026-11-27</p></li><li><p>When you run this, you see that they dont have inventory out to 11-27</p></li></ol></li><li><p>Update to add <code>&amp;take={{interfaceattributevariable}}</code></p><ol><li><p>Hitting their API with Take=1000 now shows all inventory for requested sync schedule</p></li></ol></li><li><p>Add a new AttributeName and AttributeValue to CRMInterfaceAttribute for TPG Interface</p><ol><li><p>AttributeName: TPG_TAKE</p></li><li><p>AttributeValue: 1000</p></li><li><p>If the TPG_TAKE does not exist, default coded value should be 1000</p></li></ol></li><li><p>Run CacheManager and confirm that all days in the sync schedule have RackTimes for the full day</p></li><li><p>Hit API 2.1 Get Tee Times by Facility and confirm all the inventory matches</p></li></ol>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1244664",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14977?focusedCommentId=1244664",
-            "author": "Yoel Martin Pardo",
-            "authorAccountId": "625571809e7380006fb29599",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-            "created": "2026-11-12T15:17:20.014-0500",
-            "createdDisplay": "Nov 12, 2026, 3:17 PM",
-            "updated": "2026-11-12T15:17:20.014-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "QA: We already added a new Attribute to Topgolf defaulted to 1000. @Brian Pugh is going to test teesheet, but you will need to test Cache Manager. The issue that we were facing was that there was some days that the teesheet was not returning and we need to start passing in the new parameter to get all the teetimes. Reach out to Brian if you need anything.",
-            "bodyHtml": "<p>QA: We already added a new Attribute to Topgolf defaulted to 1000. @Brian Pugh is going to test teesheet, but you will need to test Cache Manager. The issue that we were facing was that there was some days that the teesheet was not returning and we need to start passing in the new parameter to get all the teetimes. Reach out to Brian if you need anything. </p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14977?focusedCommentId=1244664",
-        "lastCommentDisplay": "Nov 12, 2026, 3:17 PM",
-        "lastCommentAuthor": "Yoel Martin Pardo",
-        "testChecklist": null,
-        "type": "Task",
-        "isSubtask": false,
-        "status": "Code Review",
-        "priority": "P0",
-        "assignee": "Raghav Kancherla",
-        "assigneeAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-11-13T14:16:49.439-0500",
-        "updatedDisplay": "Nov 13, 2026, 2:16 PM",
-        "created": "2026-11-12T13:23:09.652-0500",
-        "createdDisplay": "Nov 12, 2026, 1:23 PM",
-        "components": [
-          "Cache Manager",
-          "Database",
-          "GolfNow.Services.Reservation",
-          "GolfNow.Services.TeeSheet"
         ],
         "fixVersions": [
           "v3001.131.0"
@@ -44931,13 +44931,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-16T13:56:13.426Z",
-    "pulledAtDisplay": "Nov 16, 2026, 8:56 AM",
+    "pulledAt": "2026-11-16T14:46:13.838Z",
+    "pulledAtDisplay": "Nov 16, 2026, 9:46 AM",
     "window": {
-      "start": "2026-10-02T13:56:13.426Z",
-      "end": "2027-05-15T13:56:13.426Z",
-      "startDisplay": "Oct 2, 2026, 9:56 AM",
-      "endDisplay": "May 15, 2027, 9:56 AM"
+      "start": "2026-10-02T14:46:13.838Z",
+      "end": "2027-05-15T14:46:13.838Z",
+      "startDisplay": "Oct 2, 2026, 10:46 AM",
+      "endDisplay": "May 15, 2027, 10:46 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -44950,7 +44950,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-16T13:56:15.747Z",
+        "pulledAt": "2026-11-16T14:46:19.111Z",
         "eventCount": 64,
         "events": [
           {
@@ -45447,23 +45447,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20261026T193601Z-1177941235@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "TN001 - v100.62",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45493,6 +45476,23 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20261026T193601Z-1177941235@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "TN001 - v100.62",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -45889,23 +45889,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.64",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45918,6 +45901,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.64",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -46008,23 +46008,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.66",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-03T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-03",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 3, 2027",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -46040,6 +46023,23 @@
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.66",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-03T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-03",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 3, 2027",
+            "allDay": true,
+            "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           }
         ],
         "sourceType": "ics-export"
@@ -46047,10 +46047,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-16T13:53:30.345Z",
-    "previousPulledAtDisplay": "Nov 16, 2026, 8:53 AM",
-    "currentPulledAt": "2026-11-16T13:58:17.422Z",
-    "currentPulledAtDisplay": "Nov 16, 2026, 8:58 AM",
+    "previousPulledAt": "2026-11-16T13:58:17.422Z",
+    "previousPulledAtDisplay": "Nov 16, 2026, 8:58 AM",
+    "currentPulledAt": "2026-11-16T14:48:09.141Z",
+    "currentPulledAtDisplay": "Nov 16, 2026, 9:48 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -46058,6 +46058,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-16T13:58:17.422Z",
+      "previousPulledAtDisplay": "Nov 16, 2026, 8:58 AM",
+      "currentPulledAt": "2026-11-16T14:48:09.141Z",
+      "currentPulledAtDisplay": "Nov 16, 2026, 9:48 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-16T13:53:30.345Z",
       "previousPulledAtDisplay": "Nov 16, 2026, 8:53 AM",
@@ -47889,17 +47900,6 @@
       "previousPulledAtDisplay": "Nov 15, 2026, 6:18 PM",
       "currentPulledAt": "2026-11-15T23:23:21.064Z",
       "currentPulledAtDisplay": "Nov 15, 2026, 6:23 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-15T23:13:44.210Z",
-      "previousPulledAtDisplay": "Nov 15, 2026, 6:13 PM",
-      "currentPulledAt": "2026-11-15T23:18:17.334Z",
-      "currentPulledAtDisplay": "Nov 15, 2026, 6:18 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
