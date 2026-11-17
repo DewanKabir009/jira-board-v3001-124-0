@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-17T19:29:09.605Z",
-  "pulledAtDisplay": "Nov 17, 2026, 2:29 PM",
+  "pulledAt": "2026-11-17T19:33:07.912Z",
+  "pulledAtDisplay": "Nov 17, 2026, 2:33 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-17T19:29:09.605Z",
-    "pulledAtDisplay": "Nov 17, 2026, 2:29 PM",
+    "pulledAt": "2026-11-17T19:33:07.912Z",
+    "pulledAtDisplay": "Nov 17, 2026, 2:33 PM",
     "total": 577,
     "mainTotal": 547,
     "subtaskTotal": 30,
@@ -8110,8 +8110,8 @@
         "key": "CORE-14990",
         "url": "https://golfnow.atlassian.net/browse/CORE-14990",
         "summary": "Commerce - External orders: carry group size, amounts and taxes through to tee sheet interfaces",
-        "description": "",
-        "descriptionHtml": "",
+        "description": "Bookings made through POST /internal/channel/{channelId}/external-orders (the external checkout, ReservationExternalWorkflow) don't pass everything a tee sheet might require. Interfaces that rely on the group size, for example get the wrong value (a default of null).\n\nCurrent gaps\n\n- Group size isn't carried. The external order has no GroupSize, so the reservation's group size is never set and every tee sheet interface gets 0. The standard order flow passes it through. Interfaces that book by group size or guest count get no value. For example, Pro Agenda sends a guest count of 0 and can't create the order for a prepaid booking.\n\n- The caller's amounts and taxes may not be handled by simulators correctly.  They can differ from our normal pricing (they don't come from CRMTeeTime) and can be discounted. The pricing sent to the interface may take the course's share from our own invoice, not from the external line items*. The course's online tax comes out as 0, because the tax distributions are stored only after the interface is called.\n\n- Invoice commit failure. TaxInvoiceDao.InvoiceItemDetailInsert throws a NullReferenceException when an invoice detail has no TaxSummary. This happens in the external flow when a fee on the invoice has no matching external line item*.\n\nScope\n\n- Trace how an external order reaches SendReservationToInterfaceActivity: the player count and group size, the amounts and taxes, and the tax summaries.\n\n- Add an optional GroupSize to ExternalOrderDetail, as a nullable byte to match the database tinyint, and pass it through the TeeTimes API to the reservation. The Reservation service already sends the group size to the interfaces when it's set. Decide whether to re-enable the group size limit check for external orders.\n\n- Ensure any amounts and taxes, are carried all the way into the pricing sent to the interface if applicable.\n\n- Fix the TaxSummary null in TaxInvoiceDao*, and any other failure found during testing.\n\n- Regression and manual testing:\n\n- external orders with and without GroupSize;\n\n- discounted, split-allocation and tax-included orders;\n\n- standard (non-external) bookings, to confirm no change;\n\n- cancellations**;\n\n- at least one interface that uses group size and one that doesn't.\n\nComponents: TeeTimes API (contracts, business, service), Reservation service, GolfNow.Framework.Pricing. GolfNow.Framework.TeeSheets only if an interface needs changes. No database changes.\n\n*NOTE: this was found on an interface which shouldn’t use this flow.  It would be good to confirm that Pro Agenda was an edge case and others are not at risk.\n**NOTE: this may be exceedingly difficult to test as the commerce-proxy flow can require a bridged network like NGrok to do this when working with non-developer data.",
+        "descriptionHtml": "<p>Bookings made through POST /internal/channel/{channelId}/external-orders (the external checkout, ReservationExternalWorkflow) don't pass everything a tee sheet might require. Interfaces that rely on the group size, for example get the wrong value (a default of null). </p><p>Current gaps</p><ul><li><p>Group size isn't carried. The external order has no GroupSize, so the reservation's group size is never set and every tee sheet interface gets 0. The standard order flow passes it through. Interfaces that book by group size or guest count get no value. For example, Pro Agenda sends a guest count of 0 and can't create the order for a prepaid booking.</p></li><li><p>The caller's amounts and taxes may not be handled by simulators correctly.  They can differ from our normal pricing (they don't come from CRMTeeTime) and can be discounted. The pricing sent to the interface may take the course's share from our own invoice, not from the external line items*. The course's online tax comes out as 0, because the tax distributions are stored only after the interface is called.</p></li><li><p>Invoice commit failure. TaxInvoiceDao.InvoiceItemDetailInsert throws a NullReferenceException when an invoice detail has no TaxSummary. This happens in the external flow when a fee on the invoice has no matching external line item*. </p></li></ul><p>Scope</p><ol><li><p>Trace how an external order reaches SendReservationToInterfaceActivity: the player count and group size, the amounts and taxes, and the tax summaries.</p></li><li><p>Add an optional GroupSize to ExternalOrderDetail, as a nullable byte to match the database tinyint, and pass it through the TeeTimes API to the reservation. The Reservation service already sends the group size to the interfaces when it's set. Decide whether to re-enable the group size limit check for external orders.</p></li><li><p>Ensure any amounts and taxes, are carried all the way into the pricing sent to the interface if applicable.</p></li><li><p>Fix the TaxSummary null in TaxInvoiceDao*, and any other failure found during testing.</p></li><li><p>Regression and manual testing:</p><ul><li><p>external orders with and without GroupSize;</p></li><li><p>discounted, split-allocation and tax-included orders;</p></li><li><p>standard (non-external) bookings, to confirm no change;</p></li><li><p>cancellations**;</p></li><li><p>at least one interface that uses group size and one that doesn't.</p></li></ul></li></ol><p>Components: TeeTimes API (contracts, business, service), Reservation service, GolfNow.Framework.Pricing. GolfNow.Framework.TeeSheets only if an interface needs changes. No database changes.</p><p>*NOTE: this was found on an interface which shouldn’t use this flow.  It would be good to confirm that Pro Agenda was an edge case and others are not at risk.<br>**NOTE: this may be exceedingly difficult to test as the commerce-proxy flow can require a bridged network like <a href=\"https://ngrok.com/\" target=\"_blank\" rel=\"noopener\">NGrok</a> to do this when working with non-developer data.<br></p>",
         "descriptionImageCount": 0,
         "descriptionVideoCount": 0,
         "descriptionMediaCount": 0,
@@ -8131,8 +8131,8 @@
         "assignedDeveloper": "Unassigned",
         "assignedDeveloperAccountId": "",
         "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-11-17T14:19:42.716-0500",
-        "updatedDisplay": "Nov 17, 2026, 2:19 PM",
+        "updated": "2026-11-17T14:29:09.592-0500",
+        "updatedDisplay": "Nov 17, 2026, 2:29 PM",
         "created": "2026-11-17T14:19:40.075-0500",
         "createdDisplay": "Nov 17, 2026, 2:19 PM",
         "components": [],
@@ -45113,13 +45113,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-17T19:26:16.717Z",
-    "pulledAtDisplay": "Nov 17, 2026, 2:26 PM",
+    "pulledAt": "2026-11-17T19:31:11.714Z",
+    "pulledAtDisplay": "Nov 17, 2026, 2:31 PM",
     "window": {
-      "start": "2026-10-03T19:26:16.717Z",
-      "end": "2027-05-16T19:26:16.717Z",
-      "startDisplay": "Oct 3, 2026, 3:26 PM",
-      "endDisplay": "May 16, 2027, 3:26 PM"
+      "start": "2026-10-03T19:31:11.714Z",
+      "end": "2027-05-16T19:31:11.714Z",
+      "startDisplay": "Oct 3, 2026, 3:31 PM",
+      "endDisplay": "May 16, 2027, 3:31 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -45132,7 +45132,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-17T19:26:19.735Z",
+        "pulledAt": "2026-11-17T19:31:13.858Z",
         "eventCount": 74,
         "events": [
           {
@@ -46399,10 +46399,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-17T19:23:11.704Z",
-    "previousPulledAtDisplay": "Nov 17, 2026, 2:23 PM",
-    "currentPulledAt": "2026-11-17T19:29:09.605Z",
-    "currentPulledAtDisplay": "Nov 17, 2026, 2:29 PM",
+    "previousPulledAt": "2026-11-17T19:29:09.605Z",
+    "previousPulledAtDisplay": "Nov 17, 2026, 2:29 PM",
+    "currentPulledAt": "2026-11-17T19:33:07.912Z",
+    "currentPulledAtDisplay": "Nov 17, 2026, 2:33 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -46410,6 +46410,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-17T19:29:09.605Z",
+      "previousPulledAtDisplay": "Nov 17, 2026, 2:29 PM",
+      "currentPulledAt": "2026-11-17T19:33:07.912Z",
+      "currentPulledAtDisplay": "Nov 17, 2026, 2:33 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-17T19:23:11.704Z",
       "previousPulledAtDisplay": "Nov 17, 2026, 2:23 PM",
@@ -48241,17 +48252,6 @@
       "previousPulledAtDisplay": "Nov 17, 2026, 12:14 AM",
       "currentPulledAt": "2026-11-17T05:18:17.264Z",
       "currentPulledAtDisplay": "Nov 17, 2026, 12:18 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-17T05:09:02.472Z",
-      "previousPulledAtDisplay": "Nov 17, 2026, 12:09 AM",
-      "currentPulledAt": "2026-11-17T05:14:16.219Z",
-      "currentPulledAtDisplay": "Nov 17, 2026, 12:14 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
