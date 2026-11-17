@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-17T19:33:07.912Z",
-  "pulledAtDisplay": "Nov 17, 2026, 2:33 PM",
+  "pulledAt": "2026-11-17T19:38:03.988Z",
+  "pulledAtDisplay": "Nov 17, 2026, 2:38 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-17T19:33:07.912Z",
-    "pulledAtDisplay": "Nov 17, 2026, 2:33 PM",
+    "pulledAt": "2026-11-17T19:38:03.988Z",
+    "pulledAtDisplay": "Nov 17, 2026, 2:38 PM",
     "total": 577,
     "mainTotal": 547,
     "subtaskTotal": 30,
@@ -8107,6 +8107,58 @@
         }
       },
       {
+        "key": "CORE-14986",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14986",
+        "summary": "Pro Agenda - Modifications To Amounts",
+        "description": "The Pro Agenda testing group found issues with the amounts we send.\n\nBooking request: Amount (serialized as externalPrice) is now the course's share of the booking, without tax. Before, it was the total due at the course, including tax. It is still left out for hot deals.\n\nOrder request: the order now carries only what Pro Agenda (the course) receives. The parts of the base cost and taxes that are allocated to GolfNow are removed:\n\n- EventBookingData.Amount (serialized as price) is the course's share without tax. It matches the booking's externalPrice.\n\n- The ad-hoc taxes (adhocTaxes) contain only the course's tax.\n\n- PROAPayment.Amount (serialized as amount) is the course's amount only: line + taxes, which still matches what G1 requires.\n\nPro Agenda requested these changes and has accepted and confirmed them. The PROA unit tests pass (335/335).\n\nPRs are drafted against develop and against a new hot-fix / off-cycle release branch, release/3001.131.1. In the morning I'll decide which one becomes the full PR and work out any release changes from there.",
+        "descriptionHtml": "<p>The Pro Agenda testing group found issues with the amounts we send.</p><p>Booking request: Amount (serialized as externalPrice) is now the course's share of the booking, without tax. Before, it was the total due at the course, including tax. It is still left out for hot deals.</p><p>Order request: the order now carries only what Pro Agenda (the course) receives. The parts of the base cost and taxes that are allocated to GolfNow are removed:</p><ul><li><p>EventBookingData.Amount (serialized as price) is the course's share without tax. It matches the booking's externalPrice.</p></li><li><p>The ad-hoc taxes (adhocTaxes) contain only the course's tax.</p></li><li><p>PROAPayment.Amount (serialized as amount) is the course's amount only: line + taxes, which still matches what G1 requires.</p></li></ul><p>Pro Agenda requested these changes and has accepted and confirmed them. The PROA unit tests pass (335/335).</p><p>PRs are drafted against develop and against a new hot-fix / off-cycle release branch, release/3001.131.1. In the morning I'll decide which one becomes the full PR and work out any release changes from there.</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Development",
+        "priority": "None",
+        "assignee": "Alex Wulff",
+        "assigneeAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "assignedDeveloper": "Alex Wulff",
+        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "updated": "2026-11-17T14:36:00.337-0500",
+        "updatedDisplay": "Nov 17, 2026, 2:36 PM",
+        "created": "2026-11-17T06:11:12.633-0500",
+        "createdDisplay": "Nov 17, 2026, 6:11 AM",
+        "components": [
+          "GolfNow.Services.Reservation"
+        ],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14990",
         "url": "https://golfnow.atlassian.net/browse/CORE-14990",
         "summary": "Commerce - External orders: carry group size, amounts and taxes through to tee sheet interfaces",
@@ -9651,58 +9703,6 @@
           "type": "Epic",
           "status": "Backlog",
           "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14986",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14986",
-        "summary": "Pro Agenda - Modifications To Amounts",
-        "description": "The Pro Agenda testing group found issues with the amounts we send.\n\nBooking request: Amount (serialized as externalPrice) is now the course's share of the booking, without tax. Before, it was the total due at the course, including tax. It is still left out for hot deals.\n\nOrder request: the order now carries only what Pro Agenda (the course) receives. The parts of the base cost and taxes that are allocated to GolfNow are removed:\n\n- EventBookingData.Amount (serialized as price) is the course's share without tax. It matches the booking's externalPrice.\n\n- The ad-hoc taxes (adhocTaxes) contain only the course's tax.\n\n- PROAPayment.Amount (serialized as amount) is the course's amount only: line + taxes, which still matches what G1 requires.\n\nPro Agenda requested these changes and has accepted and confirmed them. The PROA unit tests pass (335/335).\n\nPRs are drafted against develop and against a new hot-fix / off-cycle release branch, release/3001.131.1. In the morning I'll decide which one becomes the full PR and work out any release changes from there.",
-        "descriptionHtml": "<p>The Pro Agenda testing group found issues with the amounts we send.</p><p>Booking request: Amount (serialized as externalPrice) is now the course's share of the booking, without tax. Before, it was the total due at the course, including tax. It is still left out for hot deals.</p><p>Order request: the order now carries only what Pro Agenda (the course) receives. The parts of the base cost and taxes that are allocated to GolfNow are removed:</p><ul><li><p>EventBookingData.Amount (serialized as price) is the course's share without tax. It matches the booking's externalPrice.</p></li><li><p>The ad-hoc taxes (adhocTaxes) contain only the course's tax.</p></li><li><p>PROAPayment.Amount (serialized as amount) is the course's amount only: line + taxes, which still matches what G1 requires.</p></li></ul><p>Pro Agenda requested these changes and has accepted and confirmed them. The PROA unit tests pass (335/335).</p><p>PRs are drafted against develop and against a new hot-fix / off-cycle release branch, release/3001.131.1. In the morning I'll decide which one becomes the full PR and work out any release changes from there.</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Development",
-        "priority": "None",
-        "assignee": "Alex Wulff",
-        "assigneeAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "assignedDeveloper": "Alex Wulff",
-        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "updated": "2026-11-17T07:35:05.577-0500",
-        "updatedDisplay": "Nov 17, 2026, 7:35 AM",
-        "created": "2026-11-17T06:11:12.633-0500",
-        "createdDisplay": "Nov 17, 2026, 6:11 AM",
-        "components": [
-          "GolfNow.Services.Reservation"
-        ],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
         }
       },
       {
@@ -45113,13 +45113,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-17T19:31:11.714Z",
-    "pulledAtDisplay": "Nov 17, 2026, 2:31 PM",
+    "pulledAt": "2026-11-17T19:36:13.825Z",
+    "pulledAtDisplay": "Nov 17, 2026, 2:36 PM",
     "window": {
-      "start": "2026-10-03T19:31:11.714Z",
-      "end": "2027-05-16T19:31:11.714Z",
-      "startDisplay": "Oct 3, 2026, 3:31 PM",
-      "endDisplay": "May 16, 2027, 3:31 PM"
+      "start": "2026-10-03T19:36:13.825Z",
+      "end": "2027-05-16T19:36:13.825Z",
+      "startDisplay": "Oct 3, 2026, 3:36 PM",
+      "endDisplay": "May 16, 2027, 3:36 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -45132,7 +45132,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-17T19:31:13.858Z",
+        "pulledAt": "2026-11-17T19:36:15.991Z",
         "eventCount": 74,
         "events": [
           {
@@ -46037,23 +46037,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -46066,6 +46049,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -46399,10 +46399,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-17T19:29:09.605Z",
-    "previousPulledAtDisplay": "Nov 17, 2026, 2:29 PM",
-    "currentPulledAt": "2026-11-17T19:33:07.912Z",
-    "currentPulledAtDisplay": "Nov 17, 2026, 2:33 PM",
+    "previousPulledAt": "2026-11-17T19:33:07.912Z",
+    "previousPulledAtDisplay": "Nov 17, 2026, 2:33 PM",
+    "currentPulledAt": "2026-11-17T19:38:03.988Z",
+    "currentPulledAtDisplay": "Nov 17, 2026, 2:38 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -46410,6 +46410,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-17T19:33:07.912Z",
+      "previousPulledAtDisplay": "Nov 17, 2026, 2:33 PM",
+      "currentPulledAt": "2026-11-17T19:38:03.988Z",
+      "currentPulledAtDisplay": "Nov 17, 2026, 2:38 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-17T19:29:09.605Z",
       "previousPulledAtDisplay": "Nov 17, 2026, 2:29 PM",
@@ -48241,17 +48252,6 @@
       "previousPulledAtDisplay": "Nov 17, 2026, 12:18 AM",
       "currentPulledAt": "2026-11-17T05:24:03.967Z",
       "currentPulledAtDisplay": "Nov 17, 2026, 12:24 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-17T05:14:16.219Z",
-      "previousPulledAtDisplay": "Nov 17, 2026, 12:14 AM",
-      "currentPulledAt": "2026-11-17T05:18:17.264Z",
-      "currentPulledAtDisplay": "Nov 17, 2026, 12:18 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
