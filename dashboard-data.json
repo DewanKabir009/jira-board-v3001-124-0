@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-18T20:53:13.940Z",
-  "pulledAtDisplay": "Nov 18, 2026, 3:53 PM",
+  "pulledAt": "2026-11-18T20:58:48.411Z",
+  "pulledAtDisplay": "Nov 18, 2026, 3:58 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-18T20:53:13.940Z",
-    "pulledAtDisplay": "Nov 18, 2026, 3:53 PM",
+    "pulledAt": "2026-11-18T20:58:48.411Z",
+    "pulledAtDisplay": "Nov 18, 2026, 3:58 PM",
     "total": 579,
     "mainTotal": 549,
     "subtaskTotal": 30,
@@ -8107,6 +8107,188 @@
         }
       },
       {
+        "key": "CORE-14986",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14986",
+        "summary": "Pro Agenda - Modifications To Amounts",
+        "description": "The Pro Agenda testing group found issues with the amounts we send.\n\nBooking request: Amount (serialized as externalPrice) is now the course's share of the booking, without tax. Before, it was the total due at the course, including tax. It is still left out for hot deals.\n\nOrder request: the order now carries only what Pro Agenda (the course) receives. The parts of the base cost and taxes that are allocated to GolfNow are removed:\n\n- EventBookingData.Amount (serialized as price) is the course's share without tax. It matches the booking's externalPrice.\n\n- The ad-hoc taxes (adhocTaxes) contain only the course's tax.\n\n- PROAPayment.Amount (serialized as amount) is the course's amount only: line + taxes, which still matches what G1 requires.\n\nPro Agenda requested these changes and has accepted and confirmed them. The PROA unit tests pass (335/335).\n\nPRs are drafted against develop and against a new hot-fix / off-cycle release branch, release/3001.131.1. In the morning I'll decide which one becomes the full PR and work out any release changes from there.",
+        "descriptionHtml": "<p>The Pro Agenda testing group found issues with the amounts we send.</p><p>Booking request: Amount (serialized as externalPrice) is now the course's share of the booking, without tax. Before, it was the total due at the course, including tax. It is still left out for hot deals.</p><p>Order request: the order now carries only what Pro Agenda (the course) receives. The parts of the base cost and taxes that are allocated to GolfNow are removed:</p><ul><li><p>EventBookingData.Amount (serialized as price) is the course's share without tax. It matches the booking's externalPrice.</p></li><li><p>The ad-hoc taxes (adhocTaxes) contain only the course's tax.</p></li><li><p>PROAPayment.Amount (serialized as amount) is the course's amount only: line + taxes, which still matches what G1 requires.</p></li></ul><p>Pro Agenda requested these changes and has accepted and confirmed them. The PROA unit tests pass (335/335).</p><p>PRs are drafted against develop and against a new hot-fix / off-cycle release branch, release/3001.131.1. In the morning I'll decide which one becomes the full PR and work out any release changes from there.</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1246726",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14986?focusedCommentId=1246726",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-11-17T14:44:23.444-0500",
+            "createdDisplay": "Nov 17, 2026, 2:44 PM",
+            "updated": "2026-11-17T14:44:23.444-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "While investigating the feedback from Copilot about the Commerce-Proxy’s calls through channel/{channelId}/external-orders, it was determined that Pro Agenda will never be used along this path as the Pro Agenda team have their own integration with Booking Engine.\n\nWhile I investigated this with the help of Brian, Tyler and Yoel, it was found that IF this restriction ever changes, we will need to be careful how to pick up and resume the changes here to facilitate a plumbing of new at least one new parameter (GroupSize) through API 2.1 and into the interface.  Further, some light testing while investigating showed a failure at the storage of the TaxInvoice.\n\nTo keep a log what would be changed, the following plans were drafted.\n\nThis plan outlines the current assumptions of what a change would require (and has references to prior assumptions for historical reference).  It outlines the GroupSize addition, the manual testing and gaps in where exactly some values are defaulted (playerCount, for example).\n\nThis patch file contains some of the changes that were actually started for this effort.  While many may not be relevant in the future, hopefully the tests can be of use.",
+            "bodyHtml": "<p>While investigating the feedback from Copilot about the Commerce-Proxy’s calls through <code>channel/{channelId}/external-orders</code>, it was determined that Pro Agenda will never be used along this path as the Pro Agenda team have their own integration with Booking Engine.<br><br>While I investigated this with the help of Brian, Tyler and Yoel, it was found that <strong><em>IF </em></strong>this restriction ever changes, we will need to be careful how to pick up and resume the changes here to facilitate a plumbing of new at least one new parameter (GroupSize) through API 2.1 and into the interface.  Further, some light testing while investigating showed a failure at the storage of the TaxInvoice.<br><br>To keep a log what would be changed, the following plans were drafted.<br><br> <br>This plan outlines the current assumptions of what a change would require (and has references to prior assumptions for historical reference).  It outlines the GroupSize addition, the manual testing and gaps in where exactly some values are defaulted (playerCount, for example).<br><br> <br>This patch file contains some of the changes that were actually started for this effort.  While many may not be relevant in the future, hopefully the tests can be of use.</p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14986?focusedCommentId=1246726",
+        "lastCommentDisplay": "Nov 17, 2026, 2:44 PM",
+        "lastCommentAuthor": "Alex Wulff",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Pending Deployment (DEV)",
+        "priority": "None",
+        "assignee": "Alex Wulff",
+        "assigneeAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "assignedDeveloper": "Alex Wulff",
+        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "updated": "2026-11-18T15:54:59.057-0500",
+        "updatedDisplay": "Nov 18, 2026, 3:54 PM",
+        "created": "2026-11-17T06:11:12.633-0500",
+        "createdDisplay": "Nov 17, 2026, 6:11 AM",
+        "components": [
+          "GolfNow.Services.Reservation",
+          "GolfNow.Services.TeeSheet"
+        ],
+        "fixVersions": [
+          "v3001.131.1"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14871",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14871",
+        "summary": "Cache Manager/XCS support for tee time alerts",
+        "description": "The B2B team has uses an RMQ feed to get data regarding tee time to support their Tee Time Alert feature. The data feed does not contain RackTimes. We need to use Cache Manager and XCS to send RackTime data to the the RMQ feed at run time so they can get the most up to date data.\n\n- RMQ Data:\n\n- https://rmq01-golfnow-core-us-west1.svc.golf/\n\n- exchange: TeeQsTopicEx\nrouting keys: publisherchannelid.all & publisherchannelid.nolist\n\n- Current B2B Sample Payload:\n\n{\"TTTeeTimeID\":291463080,\"GolfFacilityID\":14793,\"GolfCourseID\":79740,\"TTStatus\":\"NOVACANCY\",\"TTDateTime\":\"2027-01-29T07:09:00.000\",\"TTRule\":0,\"TTValueRate\":35.0000,\"TTBaseSpecialRate\":35.0000,\"TTBlockRemote\":0,\"TTAutoReplenish\":1,\"TTIcons\":\"*10\",\"TTOriginalRule\":11,\"UpdateUserPK\":1,\"TIMESTAMP\":1790035810000,\"TTLoadFromInterface\":0,\"TTTeeTimeType\":\"DISC\",\"ScheduleID\":1,\"TTReleaseDate\":1791418264000,\"IsDeleted\":0,\"CreateDate\":\"2026-09-21T19:10:10.373Z\",\"RateType\":\"Online Rate\",\"GCHoles\":18,\"IsTradeTime\":0,\"TransportionType\":\"Walking\",\"EZLCourseID\":\"\",\"SponsorID\":\"\",\"TTIconNames\":\"18 Hole Time\",\"GCPlayFacilityID\":14793,\"Version\":1791400264}\n\n- We need to send a payload with the following data\n\nTTTeeTimeID      //this will be the RackTimeId\nTTStatus\nTTRule\nGCPlayFacilityID\nTTDateTime\nGolfCourseID\n\n- Logic\n\n- At CacheManager/XCS run time, send a payload to the RMQ feed containing the above information for all RackTimes (negative IDs) inserted/updated during the sync\n\n- This should only send for rate sets configured to TeeSheetPricing=true\n\n- Any failures in sending the payload should not affect CacheManager/XCS sync performance.\n\n- We should not be failing any syncing due to RMQ outage, failure of delivery or slow connections\n\n- Testing\n\n- Confirm all results with @Conor Maley\n\n- Test on EZL(XCS), BRSG, and maybe one other tee sheet to be safe\n\n- Test not using Tee Sheet Pricing and make sure no data is sent",
+        "descriptionHtml": "<p>The B2B team has uses an RMQ feed to get data regarding tee time to support their Tee Time Alert feature. The data feed does not contain RackTimes. We need to use Cache Manager and XCS to send RackTime data to the the RMQ feed at run time so they can get the most up to date data.</p><ol><li><p>RMQ Data:</p><ol><li><p><a href=\"https://rmq01-golfnow-core-us-west1.svc.golf/\" target=\"_blank\" rel=\"noopener\">https://rmq01-golfnow-core-us-west1.svc.golf/</a></p></li><li><pre><code>exchange: TeeQsTopicEx\nrouting keys: publisherchannelid.all &amp; publisherchannelid.nolist</code></pre></li><li><p>Current B2B Sample Payload:</p><pre><code>{&quot;TTTeeTimeID&quot;:291463080,&quot;GolfFacilityID&quot;:14793,&quot;GolfCourseID&quot;:79740,&quot;TTStatus&quot;:&quot;NOVACANCY&quot;,&quot;TTDateTime&quot;:&quot;2027-01-29T07:09:00.000&quot;,&quot;TTRule&quot;:0,&quot;TTValueRate&quot;:35.0000,&quot;TTBaseSpecialRate&quot;:35.0000,&quot;TTBlockRemote&quot;:0,&quot;TTAutoReplenish&quot;:1,&quot;TTIcons&quot;:&quot;*10&quot;,&quot;TTOriginalRule&quot;:11,&quot;UpdateUserPK&quot;:1,&quot;TIMESTAMP&quot;:1790035810000,&quot;TTLoadFromInterface&quot;:0,&quot;TTTeeTimeType&quot;:&quot;DISC&quot;,&quot;ScheduleID&quot;:1,&quot;TTReleaseDate&quot;:1791418264000,&quot;IsDeleted&quot;:0,&quot;CreateDate&quot;:&quot;2026-09-21T19:10:10.373Z&quot;,&quot;RateType&quot;:&quot;Online Rate&quot;,&quot;GCHoles&quot;:18,&quot;IsTradeTime&quot;:0,&quot;TransportionType&quot;:&quot;Walking&quot;,&quot;EZLCourseID&quot;:&quot;&quot;,&quot;SponsorID&quot;:&quot;&quot;,&quot;TTIconNames&quot;:&quot;18 Hole Time&quot;,&quot;GCPlayFacilityID&quot;:14793,&quot;Version&quot;:1791400264}</code></pre></li><li><p>We need to send a payload with the following data</p><pre><code>TTTeeTimeID      //this will be the RackTimeId \nTTStatus\nTTRule\nGCPlayFacilityID\nTTDateTime\nGolfCourseID</code></pre></li></ol></li><li><p>Logic</p><ol><li><p>At CacheManager/XCS run time, send a payload to the RMQ feed containing the above information for all RackTimes (negative IDs) inserted/updated during the sync</p></li><li><p><strong>This should only send for rate sets configured to TeeSheetPricing=true</strong></p></li><li><p>Any failures in sending the payload should not affect CacheManager/XCS sync performance. </p><ol><li><p>We should not be failing any syncing due to RMQ outage, failure of delivery or slow connections</p></li></ol></li></ol></li><li><p>Testing</p><ol><li><p>Confirm all results with @Conor Maley </p></li><li><p>Test on EZL(XCS), BRSG, and maybe one other tee sheet to be safe</p></li><li><p>Test not using Tee Sheet Pricing and make sure no data is sent</p></li></ol></li></ol>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "PO Review",
+        "priority": "P1",
+        "assignee": "Raghav Kancherla",
+        "assigneeAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+        "assignedDeveloper": "Raghav Kancherla",
+        "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+        "updated": "2026-11-18T15:53:04.341-0500",
+        "updatedDisplay": "Nov 18, 2026, 3:53 PM",
+        "created": "2026-10-16T10:26:05.761-0400",
+        "createdDisplay": "Oct 16, 2026, 10:26 AM",
+        "components": [
+          "Cache Manager",
+          "XCS.Processor"
+        ],
+        "fixVersions": [
+          "v3001.131.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14955",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14955",
+        "summary": "Funded coupon codes are not refunding cart fees",
+        "description": "Steps to recreate:\n\n- Set up a coupon code for Trade, Course, Course-Prepaid (Funded Coupon Code config)\n\n- Set to 100% off Green Fees\n\n- Apply to a Hot Deal that has cart fees enabled\n\n- Example: Oyster Reef in the /South Carolina master facility\n\n- See that the promo code only discounts the green fee portions and ignores the cart fee distribution\n\n- Before Code Added\n\n\"DueOnline\": {\n\"Items\": [\n{\n\"Discount\": 0,\n\"Distributions\": [\n{\n\"Amount\": 93.95,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"GRNFEETRADE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 9.74,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"GRNFEETRADE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 16.58,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 1.72,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n}\n],\n\n- After Code Added\n\n\"DueOnline\": {\n\"Items\": [\n{\n\"Discount\": 103.69,\n\"Distributions\": [\n{\n\"Amount\": 16.58,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 1.72,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n}\n],\n\"NonRefundableSalesTax\": 0.00,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 121.99,\n\"SalesTax\": 8.70,\n\"SubTotal\": 18.30,\n\"Total\": 27.00,\n\"DisplayText\": \"Greens Fee - Composite\",\n\"IsTaxIncluded\": false,\n\"Key\": \"GRNFEETRADE\",\n\"Type\": 1\n},\n{\n\"Discount\": 0,\n\"Distributions\": [\n{\n\"Amount\": 3.49,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": null,\n\"SourceItemKey\": \"TRNFEE\",\n\"TaxAmount\": 0\n}\n],\n\"NonRefundableSalesTax\": 0.00,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 3.49,\n\"SalesTax\": 0.09,\n\"SubTotal\": 3.49,\n\"Total\": 3.58,\n\"DisplayText\": \"Convenience Fee\",\n\"IsTaxIncluded\": false,\n\"Key\": \"TRNFEE\",\n\"Type\": 2\n}\n],\n\"Summary\": {\n\"Discount\": 103.69,\n\"Distributions\": null,\n\"Original\": 125.48,\n\"SalesTax\": 8.79,\n\"SubTotal\": 21.79,\n\"Total\": 30.58\n}\n\n- Expected\n\n- Funded Coupon Codes should reduce the GreenFee portion first then move onto CartFee\n\n- This applies to course prepaid too and should also reduce GreenFee first then move onto CartFee\n\n- Sales tax should remain non-discountable and should be left to be be remaining due and to be charged",
+        "descriptionHtml": "<p>Steps to recreate:</p><ol><li><p>Set up a coupon code for Trade, Course, Course-Prepaid (Funded Coupon Code config)</p></li><li><p>Set to 100% off Green Fees</p></li><li><p>Apply to a Hot Deal that has cart fees enabled</p><ol><li><p>Example: Oyster Reef in the /South Carolina master facility </p></li></ol></li><li><p>See that the promo code only discounts the green fee portions and ignores the cart fee distribution</p><ol><li><p>Before Code Added</p><pre><code>&quot;DueOnline&quot;: {\n        &quot;Items&quot;: [\n            {\n                &quot;Discount&quot;: 0,\n                &quot;Distributions&quot;: [\n                    {\n                        &quot;Amount&quot;: 93.95,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633852,\n                        &quot;SourceItemKey&quot;: &quot;GRNFEETRADE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 9.74,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633853,\n                        &quot;SourceItemKey&quot;: &quot;GRNFEETRADE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 16.58,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633852,\n                        &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 1.72,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633853,\n                        &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    }\n                ],</code></pre></li><li><p>After Code Added </p><pre><code>&quot;DueOnline&quot;: {\n            &quot;Items&quot;: [\n                {\n                    &quot;Discount&quot;: 103.69,\n                    &quot;Distributions&quot;: [\n                        {\n                            &quot;Amount&quot;: 16.58,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: 1633852,\n                            &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        },\n                        {\n                            &quot;Amount&quot;: 1.72,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: 1633853,\n                            &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        }\n                    ],\n                    &quot;NonRefundableSalesTax&quot;: 0.00,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 121.99,\n                    &quot;SalesTax&quot;: 8.70,\n                    &quot;SubTotal&quot;: 18.30,\n                    &quot;Total&quot;: 27.00,\n                    &quot;DisplayText&quot;: &quot;Greens Fee - Composite&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;GRNFEETRADE&quot;,\n                    &quot;Type&quot;: 1\n                },\n                {\n                    &quot;Discount&quot;: 0,\n                    &quot;Distributions&quot;: [\n                        {\n                            &quot;Amount&quot;: 3.49,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: null,\n                            &quot;SourceItemKey&quot;: &quot;TRNFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        }\n                    ],\n                    &quot;NonRefundableSalesTax&quot;: 0.00,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 3.49,\n                    &quot;SalesTax&quot;: 0.09,\n                    &quot;SubTotal&quot;: 3.49,\n                    &quot;Total&quot;: 3.58,\n                    &quot;DisplayText&quot;: &quot;Convenience Fee&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;TRNFEE&quot;,\n                    &quot;Type&quot;: 2\n                }\n            ],\n            &quot;Summary&quot;: {\n                &quot;Discount&quot;: 103.69,\n                &quot;Distributions&quot;: null,\n                &quot;Original&quot;: 125.48,\n                &quot;SalesTax&quot;: 8.79,\n                &quot;SubTotal&quot;: 21.79,\n                &quot;Total&quot;: 30.58\n            }</code></pre></li></ol></li><li><p>Expected</p><ol><li><p>Funded Coupon Codes should reduce the GreenFee portion first then move onto CartFee</p></li><li><p>This applies to course prepaid too and should also reduce GreenFee first then move onto CartFee</p></li><li><p>Sales tax should remain non-discountable and should be left to be be remaining due and to be charged</p></li></ol></li></ol>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Code Review",
+        "priority": "P1",
+        "assignee": "Raghav Kancherla",
+        "assigneeAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "assignedDeveloperAccountId": "625571809e7380006fb29599",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "updated": "2026-11-18T15:52:36.536-0500",
+        "updatedDisplay": "Nov 18, 2026, 3:52 PM",
+        "created": "2026-11-06T09:15:57.570-0500",
+        "createdDisplay": "Nov 6, 2026, 9:15 AM",
+        "components": [
+          "Database",
+          "GolfNow.Services.Reservation",
+          "GolfNowCentral"
+        ],
+        "fixVersions": [
+          "v3001.132.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14977",
         "url": "https://golfnow.atlassian.net/browse/CORE-14977",
         "summary": "Add take value and configuration to Topgolf (TPG) InterfaceAttributes",
@@ -8889,77 +9071,6 @@
         "createdDisplay": "Sep 16, 2026, 5:52 PM",
         "components": [
           "GolfNow.Services.Reservation"
-        ],
-        "fixVersions": [
-          "v3001.131.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14986",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14986",
-        "summary": "Pro Agenda - Modifications To Amounts",
-        "description": "The Pro Agenda testing group found issues with the amounts we send.\n\nBooking request: Amount (serialized as externalPrice) is now the course's share of the booking, without tax. Before, it was the total due at the course, including tax. It is still left out for hot deals.\n\nOrder request: the order now carries only what Pro Agenda (the course) receives. The parts of the base cost and taxes that are allocated to GolfNow are removed:\n\n- EventBookingData.Amount (serialized as price) is the course's share without tax. It matches the booking's externalPrice.\n\n- The ad-hoc taxes (adhocTaxes) contain only the course's tax.\n\n- PROAPayment.Amount (serialized as amount) is the course's amount only: line + taxes, which still matches what G1 requires.\n\nPro Agenda requested these changes and has accepted and confirmed them. The PROA unit tests pass (335/335).\n\nPRs are drafted against develop and against a new hot-fix / off-cycle release branch, release/3001.131.1. In the morning I'll decide which one becomes the full PR and work out any release changes from there.",
-        "descriptionHtml": "<p>The Pro Agenda testing group found issues with the amounts we send.</p><p>Booking request: Amount (serialized as externalPrice) is now the course's share of the booking, without tax. Before, it was the total due at the course, including tax. It is still left out for hot deals.</p><p>Order request: the order now carries only what Pro Agenda (the course) receives. The parts of the base cost and taxes that are allocated to GolfNow are removed:</p><ul><li><p>EventBookingData.Amount (serialized as price) is the course's share without tax. It matches the booking's externalPrice.</p></li><li><p>The ad-hoc taxes (adhocTaxes) contain only the course's tax.</p></li><li><p>PROAPayment.Amount (serialized as amount) is the course's amount only: line + taxes, which still matches what G1 requires.</p></li></ul><p>Pro Agenda requested these changes and has accepted and confirmed them. The PROA unit tests pass (335/335).</p><p>PRs are drafted against develop and against a new hot-fix / off-cycle release branch, release/3001.131.1. In the morning I'll decide which one becomes the full PR and work out any release changes from there.</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1246726",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14986?focusedCommentId=1246726",
-            "author": "Alex Wulff",
-            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-            "created": "2026-11-17T14:44:23.444-0500",
-            "createdDisplay": "Nov 17, 2026, 2:44 PM",
-            "updated": "2026-11-17T14:44:23.444-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "While investigating the feedback from Copilot about the Commerce-Proxy’s calls through channel/{channelId}/external-orders, it was determined that Pro Agenda will never be used along this path as the Pro Agenda team have their own integration with Booking Engine.\n\nWhile I investigated this with the help of Brian, Tyler and Yoel, it was found that IF this restriction ever changes, we will need to be careful how to pick up and resume the changes here to facilitate a plumbing of new at least one new parameter (GroupSize) through API 2.1 and into the interface.  Further, some light testing while investigating showed a failure at the storage of the TaxInvoice.\n\nTo keep a log what would be changed, the following plans were drafted.\n\nThis plan outlines the current assumptions of what a change would require (and has references to prior assumptions for historical reference).  It outlines the GroupSize addition, the manual testing and gaps in where exactly some values are defaulted (playerCount, for example).\n\nThis patch file contains some of the changes that were actually started for this effort.  While many may not be relevant in the future, hopefully the tests can be of use.",
-            "bodyHtml": "<p>While investigating the feedback from Copilot about the Commerce-Proxy’s calls through <code>channel/{channelId}/external-orders</code>, it was determined that Pro Agenda will never be used along this path as the Pro Agenda team have their own integration with Booking Engine.<br><br>While I investigated this with the help of Brian, Tyler and Yoel, it was found that <strong><em>IF </em></strong>this restriction ever changes, we will need to be careful how to pick up and resume the changes here to facilitate a plumbing of new at least one new parameter (GroupSize) through API 2.1 and into the interface.  Further, some light testing while investigating showed a failure at the storage of the TaxInvoice.<br><br>To keep a log what would be changed, the following plans were drafted.<br><br> <br>This plan outlines the current assumptions of what a change would require (and has references to prior assumptions for historical reference).  It outlines the GroupSize addition, the manual testing and gaps in where exactly some values are defaulted (playerCount, for example).<br><br> <br>This patch file contains some of the changes that were actually started for this effort.  While many may not be relevant in the future, hopefully the tests can be of use.</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14986?focusedCommentId=1246726",
-        "lastCommentDisplay": "Nov 17, 2026, 2:44 PM",
-        "lastCommentAuthor": "Alex Wulff",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Pending Deployment (DEV)",
-        "priority": "None",
-        "assignee": "Alex Wulff",
-        "assigneeAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "assignedDeveloper": "Alex Wulff",
-        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "updated": "2026-11-18T15:44:11.688-0500",
-        "updatedDisplay": "Nov 18, 2026, 3:44 PM",
-        "created": "2026-11-17T06:11:12.633-0500",
-        "createdDisplay": "Nov 17, 2026, 6:11 AM",
-        "components": [
-          "GolfNow.Services.Reservation",
-          "GolfNow.Services.TeeSheet"
         ],
         "fixVersions": [
           "v3001.131.0"
@@ -9840,61 +9951,6 @@
         }
       },
       {
-        "key": "CORE-14871",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14871",
-        "summary": "Cache Manager/XCS support for tee time alerts",
-        "description": "The B2B team has uses an RMQ feed to get data regarding tee time to support their Tee Time Alert feature. The data feed does not contain RackTimes. We need to use Cache Manager and XCS to send RackTime data to the the RMQ feed at run time so they can get the most up to date data.\n\n- RMQ Data:\n\n- https://rmq01-golfnow-core-us-west1.svc.golf/\n\n- exchange: TeeQsTopicEx\nrouting keys: publisherchannelid.all & publisherchannelid.nolist\n\n- Current B2B Sample Payload:\n\n{\"TTTeeTimeID\":291463080,\"GolfFacilityID\":14793,\"GolfCourseID\":79740,\"TTStatus\":\"NOVACANCY\",\"TTDateTime\":\"2027-01-29T07:09:00.000\",\"TTRule\":0,\"TTValueRate\":35.0000,\"TTBaseSpecialRate\":35.0000,\"TTBlockRemote\":0,\"TTAutoReplenish\":1,\"TTIcons\":\"*10\",\"TTOriginalRule\":11,\"UpdateUserPK\":1,\"TIMESTAMP\":1790035810000,\"TTLoadFromInterface\":0,\"TTTeeTimeType\":\"DISC\",\"ScheduleID\":1,\"TTReleaseDate\":1791418264000,\"IsDeleted\":0,\"CreateDate\":\"2026-09-21T19:10:10.373Z\",\"RateType\":\"Online Rate\",\"GCHoles\":18,\"IsTradeTime\":0,\"TransportionType\":\"Walking\",\"EZLCourseID\":\"\",\"SponsorID\":\"\",\"TTIconNames\":\"18 Hole Time\",\"GCPlayFacilityID\":14793,\"Version\":1791400264}\n\n- We need to send a payload with the following data\n\nTTTeeTimeID      //this will be the RackTimeId\nTTStatus\nTTRule\nGCPlayFacilityID\nTTDateTime\nGolfCourseID\n\n- Logic\n\n- At CacheManager/XCS run time, send a payload to the RMQ feed containing the above information for all RackTimes (negative IDs) inserted/updated during the sync\n\n- This should only send for rate sets configured to TeeSheetPricing=true\n\n- Any failures in sending the payload should not affect CacheManager/XCS sync performance.\n\n- We should not be failing any syncing due to RMQ outage, failure of delivery or slow connections\n\n- Testing\n\n- Confirm all results with @Conor Maley\n\n- Test on EZL(XCS), BRSG, and maybe one other tee sheet to be safe\n\n- Test not using Tee Sheet Pricing and make sure no data is sent",
-        "descriptionHtml": "<p>The B2B team has uses an RMQ feed to get data regarding tee time to support their Tee Time Alert feature. The data feed does not contain RackTimes. We need to use Cache Manager and XCS to send RackTime data to the the RMQ feed at run time so they can get the most up to date data.</p><ol><li><p>RMQ Data:</p><ol><li><p><a href=\"https://rmq01-golfnow-core-us-west1.svc.golf/\" target=\"_blank\" rel=\"noopener\">https://rmq01-golfnow-core-us-west1.svc.golf/</a></p></li><li><pre><code>exchange: TeeQsTopicEx\nrouting keys: publisherchannelid.all &amp; publisherchannelid.nolist</code></pre></li><li><p>Current B2B Sample Payload:</p><pre><code>{&quot;TTTeeTimeID&quot;:291463080,&quot;GolfFacilityID&quot;:14793,&quot;GolfCourseID&quot;:79740,&quot;TTStatus&quot;:&quot;NOVACANCY&quot;,&quot;TTDateTime&quot;:&quot;2027-01-29T07:09:00.000&quot;,&quot;TTRule&quot;:0,&quot;TTValueRate&quot;:35.0000,&quot;TTBaseSpecialRate&quot;:35.0000,&quot;TTBlockRemote&quot;:0,&quot;TTAutoReplenish&quot;:1,&quot;TTIcons&quot;:&quot;*10&quot;,&quot;TTOriginalRule&quot;:11,&quot;UpdateUserPK&quot;:1,&quot;TIMESTAMP&quot;:1790035810000,&quot;TTLoadFromInterface&quot;:0,&quot;TTTeeTimeType&quot;:&quot;DISC&quot;,&quot;ScheduleID&quot;:1,&quot;TTReleaseDate&quot;:1791418264000,&quot;IsDeleted&quot;:0,&quot;CreateDate&quot;:&quot;2026-09-21T19:10:10.373Z&quot;,&quot;RateType&quot;:&quot;Online Rate&quot;,&quot;GCHoles&quot;:18,&quot;IsTradeTime&quot;:0,&quot;TransportionType&quot;:&quot;Walking&quot;,&quot;EZLCourseID&quot;:&quot;&quot;,&quot;SponsorID&quot;:&quot;&quot;,&quot;TTIconNames&quot;:&quot;18 Hole Time&quot;,&quot;GCPlayFacilityID&quot;:14793,&quot;Version&quot;:1791400264}</code></pre></li><li><p>We need to send a payload with the following data</p><pre><code>TTTeeTimeID      //this will be the RackTimeId \nTTStatus\nTTRule\nGCPlayFacilityID\nTTDateTime\nGolfCourseID</code></pre></li></ol></li><li><p>Logic</p><ol><li><p>At CacheManager/XCS run time, send a payload to the RMQ feed containing the above information for all RackTimes (negative IDs) inserted/updated during the sync</p></li><li><p><strong>This should only send for rate sets configured to TeeSheetPricing=true</strong></p></li><li><p>Any failures in sending the payload should not affect CacheManager/XCS sync performance. </p><ol><li><p>We should not be failing any syncing due to RMQ outage, failure of delivery or slow connections</p></li></ol></li></ol></li><li><p>Testing</p><ol><li><p>Confirm all results with @Conor Maley </p></li><li><p>Test on EZL(XCS), BRSG, and maybe one other tee sheet to be safe</p></li><li><p>Test not using Tee Sheet Pricing and make sure no data is sent</p></li></ol></li></ol>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Pending Deployment (DEV)",
-        "priority": "P1",
-        "assignee": "Raghav Kancherla",
-        "assigneeAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "assignedDeveloper": "Raghav Kancherla",
-        "assignedDeveloperAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "updated": "2026-11-17T11:00:29.038-0500",
-        "updatedDisplay": "Nov 17, 2026, 11:00 AM",
-        "created": "2026-10-16T10:26:05.761-0400",
-        "createdDisplay": "Oct 16, 2026, 10:26 AM",
-        "components": [
-          "Cache Manager",
-          "XCS.Processor"
-        ],
-        "fixVersions": [
-          "v3001.130.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
         "key": "CORE-14769",
         "url": "https://golfnow.atlassian.net/browse/CORE-14769",
         "summary": "EZL/Integrators API | Provide prepaid payment token, card details, and charge-on-booking status",
@@ -10074,56 +10130,6 @@
           "type": "Epic",
           "status": "Backlog",
           "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14955",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14955",
-        "summary": "Funded coupon codes are not refunding cart fees",
-        "description": "Steps to recreate:\n\n- Set up a coupon code for Trade, Course, Course-Prepaid (Funded Coupon Code config)\n\n- Set to 100% off Green Fees\n\n- Apply to a Hot Deal that has cart fees enabled\n\n- Example: Oyster Reef in the /South Carolina master facility\n\n- See that the promo code only discounts the green fee portions and ignores the cart fee distribution\n\n- Before Code Added\n\n\"DueOnline\": {\n\"Items\": [\n{\n\"Discount\": 0,\n\"Distributions\": [\n{\n\"Amount\": 93.95,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"GRNFEETRADE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 9.74,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"GRNFEETRADE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 16.58,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 1.72,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n}\n],\n\n- After Code Added\n\n\"DueOnline\": {\n\"Items\": [\n{\n\"Discount\": 103.69,\n\"Distributions\": [\n{\n\"Amount\": 16.58,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 1.72,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n}\n],\n\"NonRefundableSalesTax\": 0.00,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 121.99,\n\"SalesTax\": 8.70,\n\"SubTotal\": 18.30,\n\"Total\": 27.00,\n\"DisplayText\": \"Greens Fee - Composite\",\n\"IsTaxIncluded\": false,\n\"Key\": \"GRNFEETRADE\",\n\"Type\": 1\n},\n{\n\"Discount\": 0,\n\"Distributions\": [\n{\n\"Amount\": 3.49,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": null,\n\"SourceItemKey\": \"TRNFEE\",\n\"TaxAmount\": 0\n}\n],\n\"NonRefundableSalesTax\": 0.00,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 3.49,\n\"SalesTax\": 0.09,\n\"SubTotal\": 3.49,\n\"Total\": 3.58,\n\"DisplayText\": \"Convenience Fee\",\n\"IsTaxIncluded\": false,\n\"Key\": \"TRNFEE\",\n\"Type\": 2\n}\n],\n\"Summary\": {\n\"Discount\": 103.69,\n\"Distributions\": null,\n\"Original\": 125.48,\n\"SalesTax\": 8.79,\n\"SubTotal\": 21.79,\n\"Total\": 30.58\n}\n\n- Expected\n\n- Funded Coupon Codes should reduce the GreenFee portion first then move onto CartFee\n\n- This applies to course prepaid too and should also reduce GreenFee first then move onto CartFee\n\n- Sales tax should remain non-discountable and should be left to be be remaining due and to be charged",
-        "descriptionHtml": "<p>Steps to recreate:</p><ol><li><p>Set up a coupon code for Trade, Course, Course-Prepaid (Funded Coupon Code config)</p></li><li><p>Set to 100% off Green Fees</p></li><li><p>Apply to a Hot Deal that has cart fees enabled</p><ol><li><p>Example: Oyster Reef in the /South Carolina master facility </p></li></ol></li><li><p>See that the promo code only discounts the green fee portions and ignores the cart fee distribution</p><ol><li><p>Before Code Added</p><pre><code>&quot;DueOnline&quot;: {\n        &quot;Items&quot;: [\n            {\n                &quot;Discount&quot;: 0,\n                &quot;Distributions&quot;: [\n                    {\n                        &quot;Amount&quot;: 93.95,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633852,\n                        &quot;SourceItemKey&quot;: &quot;GRNFEETRADE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 9.74,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633853,\n                        &quot;SourceItemKey&quot;: &quot;GRNFEETRADE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 16.58,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633852,\n                        &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 1.72,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633853,\n                        &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    }\n                ],</code></pre></li><li><p>After Code Added </p><pre><code>&quot;DueOnline&quot;: {\n            &quot;Items&quot;: [\n                {\n                    &quot;Discount&quot;: 103.69,\n                    &quot;Distributions&quot;: [\n                        {\n                            &quot;Amount&quot;: 16.58,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: 1633852,\n                            &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        },\n                        {\n                            &quot;Amount&quot;: 1.72,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: 1633853,\n                            &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        }\n                    ],\n                    &quot;NonRefundableSalesTax&quot;: 0.00,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 121.99,\n                    &quot;SalesTax&quot;: 8.70,\n                    &quot;SubTotal&quot;: 18.30,\n                    &quot;Total&quot;: 27.00,\n                    &quot;DisplayText&quot;: &quot;Greens Fee - Composite&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;GRNFEETRADE&quot;,\n                    &quot;Type&quot;: 1\n                },\n                {\n                    &quot;Discount&quot;: 0,\n                    &quot;Distributions&quot;: [\n                        {\n                            &quot;Amount&quot;: 3.49,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: null,\n                            &quot;SourceItemKey&quot;: &quot;TRNFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        }\n                    ],\n                    &quot;NonRefundableSalesTax&quot;: 0.00,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 3.49,\n                    &quot;SalesTax&quot;: 0.09,\n                    &quot;SubTotal&quot;: 3.49,\n                    &quot;Total&quot;: 3.58,\n                    &quot;DisplayText&quot;: &quot;Convenience Fee&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;TRNFEE&quot;,\n                    &quot;Type&quot;: 2\n                }\n            ],\n            &quot;Summary&quot;: {\n                &quot;Discount&quot;: 103.69,\n                &quot;Distributions&quot;: null,\n                &quot;Original&quot;: 125.48,\n                &quot;SalesTax&quot;: 8.79,\n                &quot;SubTotal&quot;: 21.79,\n                &quot;Total&quot;: 30.58\n            }</code></pre></li></ol></li><li><p>Expected</p><ol><li><p>Funded Coupon Codes should reduce the GreenFee portion first then move onto CartFee</p></li><li><p>This applies to course prepaid too and should also reduce GreenFee first then move onto CartFee</p></li><li><p>Sales tax should remain non-discountable and should be left to be be remaining due and to be charged</p></li></ol></li></ol>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "Development",
-        "priority": "P1",
-        "assignee": "Yoel Martin Pardo",
-        "assigneeAccountId": "625571809e7380006fb29599",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-11-16T12:36:29.320-0500",
-        "updatedDisplay": "Nov 16, 2026, 12:36 PM",
-        "created": "2026-11-06T09:15:57.570-0500",
-        "createdDisplay": "Nov 6, 2026, 9:15 AM",
-        "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
         }
       },
       {
@@ -45263,13 +45269,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-18T20:51:26.114Z",
-    "pulledAtDisplay": "Nov 18, 2026, 3:51 PM",
+    "pulledAt": "2026-11-18T20:56:32.782Z",
+    "pulledAtDisplay": "Nov 18, 2026, 3:56 PM",
     "window": {
-      "start": "2026-10-04T20:51:26.114Z",
-      "end": "2027-05-17T20:51:26.114Z",
-      "startDisplay": "Oct 4, 2026, 4:51 PM",
-      "endDisplay": "May 17, 2027, 4:51 PM"
+      "start": "2026-10-04T20:56:32.782Z",
+      "end": "2027-05-17T20:56:32.782Z",
+      "startDisplay": "Oct 4, 2026, 4:56 PM",
+      "endDisplay": "May 17, 2027, 4:56 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -45282,7 +45288,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-18T20:51:28.724Z",
+        "pulledAt": "2026-11-18T20:56:35.268Z",
         "eventCount": 79,
         "events": [
           {
@@ -45796,40 +45802,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "GN: v3001.131.0",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
-            "id": "20260217T182437Z--918076334@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "FinTech Release v7681.023.0",
-            "start": "2026-11-17T00:00:00.000Z",
-            "end": "2026-11-18T00:00:00.000Z",
-            "startDate": "2026-11-17",
-            "endDate": "2026-11-18",
-            "startDisplay": "Nov 17, 2026",
-            "endDisplay": "Nov 18, 2026",
-            "allDay": true,
-            "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20261026T193601Z-1177941235@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -45859,6 +45831,40 @@
             "endDisplay": "Nov 18, 2026",
             "allDay": true,
             "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260115T221727Z-1802707895@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "GN: v3001.131.0",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260217T182437Z--918076334@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "FinTech Release v7681.023.0",
+            "start": "2026-11-17T00:00:00.000Z",
+            "end": "2026-11-18T00:00:00.000Z",
+            "startDate": "2026-11-17",
+            "endDate": "2026-11-18",
+            "startDisplay": "Nov 17, 2026",
+            "endDisplay": "Nov 18, 2026",
+            "allDay": true,
+            "type": "Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -46221,23 +46227,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -46250,6 +46239,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -46289,23 +46295,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "GN: v3001.133.0",
-            "start": "2027-01-06T00:00:00.000Z",
-            "end": "2027-01-07T00:00:00.000Z",
-            "startDate": "2027-01-06",
-            "endDate": "2027-01-07",
-            "startDisplay": "Jan 6, 2027",
-            "endDisplay": "Jan 7, 2027",
-            "allDay": true,
-            "type": "Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134311Z--1073635477@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -46318,6 +46307,23 @@
             "endDisplay": "Jan 7, 2027",
             "allDay": true,
             "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260824T123047Z--1465725421@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "GN: v3001.133.0",
+            "start": "2027-01-06T00:00:00.000Z",
+            "end": "2027-01-07T00:00:00.000Z",
+            "startDate": "2027-01-06",
+            "endDate": "2027-01-07",
+            "startDisplay": "Jan 6, 2027",
+            "endDisplay": "Jan 7, 2027",
+            "allDay": true,
+            "type": "Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -46634,10 +46640,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-18T20:48:45.289Z",
-    "previousPulledAtDisplay": "Nov 18, 2026, 3:48 PM",
-    "currentPulledAt": "2026-11-18T20:53:13.940Z",
-    "currentPulledAtDisplay": "Nov 18, 2026, 3:53 PM",
+    "previousPulledAt": "2026-11-18T20:53:13.940Z",
+    "previousPulledAtDisplay": "Nov 18, 2026, 3:53 PM",
+    "currentPulledAt": "2026-11-18T20:58:48.411Z",
+    "currentPulledAtDisplay": "Nov 18, 2026, 3:58 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -46645,6 +46651,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-18T20:53:13.940Z",
+      "previousPulledAtDisplay": "Nov 18, 2026, 3:53 PM",
+      "currentPulledAt": "2026-11-18T20:58:48.411Z",
+      "currentPulledAtDisplay": "Nov 18, 2026, 3:58 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-18T20:48:45.289Z",
       "previousPulledAtDisplay": "Nov 18, 2026, 3:48 PM",
@@ -48476,17 +48493,6 @@
       "previousPulledAtDisplay": "Nov 18, 2026, 1:48 AM",
       "currentPulledAt": "2026-11-18T06:53:12.536Z",
       "currentPulledAtDisplay": "Nov 18, 2026, 1:53 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-18T06:43:06.806Z",
-      "previousPulledAtDisplay": "Nov 18, 2026, 1:43 AM",
-      "currentPulledAt": "2026-11-18T06:48:12.268Z",
-      "currentPulledAtDisplay": "Nov 18, 2026, 1:48 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
