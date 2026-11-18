@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-18T19:28:18.287Z",
-  "pulledAtDisplay": "Nov 18, 2026, 2:28 PM",
+  "pulledAt": "2026-11-18T19:33:19.842Z",
+  "pulledAtDisplay": "Nov 18, 2026, 2:33 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,10 +1809,10 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-18T19:28:18.287Z",
-    "pulledAtDisplay": "Nov 18, 2026, 2:28 PM",
-    "total": 578,
-    "mainTotal": 548,
+    "pulledAt": "2026-11-18T19:33:19.842Z",
+    "pulledAtDisplay": "Nov 18, 2026, 2:33 PM",
+    "total": 579,
+    "mainTotal": 549,
     "subtaskTotal": 30,
     "issues": [
       {
@@ -8104,6 +8104,56 @@
           "type": "Epic",
           "status": "Backlog",
           "priority": "P1"
+        }
+      },
+      {
+        "key": "CORE-14996",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14996",
+        "summary": "Handle GNC refund callback idempotently once Commerce Prepaid G1-payment refunds are supported (avoid double-processing/failure)",
+        "description": "Summary\n\nOnce CORE-14995 is fixed (GNC Auto Credit refund succeeding for G1 payment methods — Credit Account, Gift Certificate, Credit Book), GNC will send a callback to G1/Commerce confirming the refund amount/transaction. This callback path has never been tested end-to-end for this payment-method class and needs explicit handling.\n\nWhy\n\nRaised by Desimo during the 2026-11-18 Pro Payments follow-up: Commerce's refund record for one of these orders may already be created on our side (e.g., via void, or via the initial refund call) before GNC's confirmation callback arrives. If the callback handler blindly tries to reprocess/sync that refund transaction, it will fail or double-process because the refund already exists on our table.\n\nDesimo's expectation: GNC should send identifying information (e.g., transaction ID / an indicator that this is a G1 payment) on the callback so Commerce can recognize \"this refund is already recorded\" and simply acknowledge rather than reprocess.\n\nRisk if not addressed\n\nDesimo flagged that since this flow has never gone through full end-to-end QA, fixing just the initial refund call (CORE-14995) is \"just the start of the whole thing\" — the callback handling could be a separate can of worms that surfaces only after the first fix ships.\n\nProposed Approach\n\n- Confirm what GNC sends on the refund-confirmation callback for a G1-payment-method prepaid order (transaction ID, amount, any G1-payment indicator).\n\n- Ensure Commerce's callback handler checks for an existing refund record before attempting to reprocess, and acknowledges/no-ops when one already exists.\n\n- Test end-to-end: initiate refund → GNC processes → GNC calls back → Commerce correctly recognizes already-refunded state.\n\nRelated\n\n- CORE-14995 — Commerce Prepaid order refund from GNC fails with PaymentMethodNotSupported for G1 payment methods (this ticket's fix is a prerequisite — the callback can't be tested until that refund call succeeds)\n\n- GN1-27581 — G1-side refund button no-op symptom\n\n- GN1-27596 — BLBE orders should bypass this GNC round-trip entirely (separate scenario, not affected by this ticket)\n\nSource\n\nSurfaced in the 2026-11-18 \"Commerce - Pro Payments Show Stopper Bug\" follow-up meeting (Mike Kozakewicz, Desimo Recaido, Yurii Levytskyi).",
+        "descriptionHtml": "<h3>Summary</h3><p>Once <strong>CORE-14995</strong> is fixed (GNC Auto Credit refund succeeding for G1 payment methods — Credit Account, Gift Certificate, Credit Book), GNC will send a callback to G1/Commerce confirming the refund amount/transaction. This callback path has never been tested end-to-end for this payment-method class and needs explicit handling.</p><h3>Why</h3><p>Raised by Desimo during the 2026-11-18 Pro Payments follow-up: Commerce's refund record for one of these orders may already be created on our side (e.g., via void, or via the initial refund call) before GNC's confirmation callback arrives. If the callback handler blindly tries to reprocess/sync that refund transaction, it will fail or double-process because the refund already exists on our table.</p><p>Desimo's expectation: GNC should send identifying information (e.g., transaction ID / an indicator that this is a G1 payment) on the callback so Commerce can recognize &quot;this refund is already recorded&quot; and simply acknowledge rather than reprocess.</p><h3>Risk if not addressed</h3><p>Desimo flagged that since this flow has never gone through full end-to-end QA, fixing just the initial refund call (CORE-14995) is &quot;just the start of the whole thing&quot; — the callback handling could be a separate can of worms that surfaces only after the first fix ships.</p><h3>Proposed Approach</h3><ol><li><p>Confirm what GNC sends on the refund-confirmation callback for a G1-payment-method prepaid order (transaction ID, amount, any G1-payment indicator).</p></li><li><p>Ensure Commerce's callback handler checks for an existing refund record before attempting to reprocess, and acknowledges/no-ops when one already exists.</p></li><li><p>Test end-to-end: initiate refund → GNC processes → GNC calls back → Commerce correctly recognizes already-refunded state.</p></li></ol><h3>Related</h3><ul><li><p><strong>CORE-14995</strong> — Commerce Prepaid order refund from GNC fails with PaymentMethodNotSupported for G1 payment methods (this ticket's fix is a prerequisite — the callback can't be tested until that refund call succeeds)</p></li><li><p><strong>GN1-27581</strong> — G1-side refund button no-op symptom</p></li><li><p><strong>GN1-27596</strong> — BLBE orders should bypass this GNC round-trip entirely (separate scenario, not affected by this ticket)</p></li></ul><h3>Source</h3><p>Surfaced in the 2026-11-18 &quot;Commerce - Pro Payments Show Stopper Bug&quot; follow-up meeting (Mike Kozakewicz, Desimo Recaido, Yurii Levytskyi).</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Pre Planning",
+        "priority": "None",
+        "assignee": "Unassigned",
+        "assigneeAccountId": "",
+        "assigneeAvatarUrl": "",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-11-18T14:27:55.672-0500",
+        "updatedDisplay": "Nov 18, 2026, 2:27 PM",
+        "created": "2026-11-18T14:27:43.710-0500",
+        "createdDisplay": "Nov 18, 2026, 2:27 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
         }
       },
       {
@@ -45213,13 +45263,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-18T19:26:27.238Z",
-    "pulledAtDisplay": "Nov 18, 2026, 2:26 PM",
+    "pulledAt": "2026-11-18T19:31:28.333Z",
+    "pulledAtDisplay": "Nov 18, 2026, 2:31 PM",
     "window": {
-      "start": "2026-10-04T19:26:27.237Z",
-      "end": "2027-05-17T19:26:27.237Z",
-      "startDisplay": "Oct 4, 2026, 3:26 PM",
-      "endDisplay": "May 17, 2027, 3:26 PM"
+      "start": "2026-10-04T19:31:28.333Z",
+      "end": "2027-05-17T19:31:28.333Z",
+      "startDisplay": "Oct 4, 2026, 3:31 PM",
+      "endDisplay": "May 17, 2027, 3:31 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -45232,7 +45282,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-18T19:26:29.127Z",
+        "pulledAt": "2026-11-18T19:31:32.750Z",
         "eventCount": 79,
         "events": [
           {
@@ -46171,23 +46221,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - US Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -46200,6 +46233,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - US Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -46584,10 +46634,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-18T19:23:42.240Z",
-    "previousPulledAtDisplay": "Nov 18, 2026, 2:23 PM",
-    "currentPulledAt": "2026-11-18T19:28:18.287Z",
-    "currentPulledAtDisplay": "Nov 18, 2026, 2:28 PM",
+    "previousPulledAt": "2026-11-18T19:28:18.287Z",
+    "previousPulledAtDisplay": "Nov 18, 2026, 2:28 PM",
+    "currentPulledAt": "2026-11-18T19:33:19.842Z",
+    "currentPulledAtDisplay": "Nov 18, 2026, 2:33 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -46595,6 +46645,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-18T19:28:18.287Z",
+      "previousPulledAtDisplay": "Nov 18, 2026, 2:28 PM",
+      "currentPulledAt": "2026-11-18T19:33:19.842Z",
+      "currentPulledAtDisplay": "Nov 18, 2026, 2:33 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-18T19:23:42.240Z",
       "previousPulledAtDisplay": "Nov 18, 2026, 2:23 PM",
@@ -48426,17 +48487,6 @@
       "previousPulledAtDisplay": "Nov 18, 2026, 12:18 AM",
       "currentPulledAt": "2026-11-18T05:24:03.800Z",
       "currentPulledAtDisplay": "Nov 18, 2026, 12:24 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-18T05:14:09.920Z",
-      "previousPulledAtDisplay": "Nov 18, 2026, 12:14 AM",
-      "currentPulledAt": "2026-11-18T05:18:17.180Z",
-      "currentPulledAtDisplay": "Nov 18, 2026, 12:18 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
