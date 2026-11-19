@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-19T20:52:40.599Z",
-  "pulledAtDisplay": "Nov 19, 2026, 3:52 PM",
+  "pulledAt": "2026-11-19T20:58:56.435Z",
+  "pulledAtDisplay": "Nov 19, 2026, 3:58 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,10 +1809,10 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-19T20:52:40.599Z",
-    "pulledAtDisplay": "Nov 19, 2026, 3:52 PM",
-    "total": 580,
-    "mainTotal": 550,
+    "pulledAt": "2026-11-19T20:58:56.435Z",
+    "pulledAtDisplay": "Nov 19, 2026, 3:58 PM",
+    "total": 581,
+    "mainTotal": 551,
     "subtaskTotal": 30,
     "issues": [
       {
@@ -8104,6 +8104,56 @@
           "type": "Epic",
           "status": "Backlog",
           "priority": "P1"
+        }
+      },
+      {
+        "key": "CORE-15000",
+        "url": "https://golfnow.atlassian.net/browse/CORE-15000",
+        "summary": "Move Golf.Task.LoyaltyActionsProcessor into golf-svc-loyalty mono-repo",
+        "description": "Overview\n\nMove the deployable Golf.Task.LoyaltyActionsProcessor (projects, unit tests, Docker/ECS config, and its GitHub Actions workflows) from golf-task-loyalty-actionsprocessor into the golf-svc-loyalty mono-repo, without breaking the existing DEV/STG/PRD deployments. The old repo is archived afterwards.\n\nApproach\n\n- Keep the project, assembly and app names as Golf.Task.LoyaltyActionsProcessor.*. The AWS secret path, APP_NAME, Datadog service, app-library entry and DLL name depend on them.\n\n- Per-app folders follow the existing loyalty-api convention, using the slug loyalty-actions: docker/loyalty-actions/, .aws/loyalty-actions/, .github/golfnow/loyalty-actions/.\n\n- EC2 deploys stay on the legacy shared-github-workflows/aws-ec2*.yml workflows with the current inputs. The build script moves to .github/build-scripts/build-script-Golf.Task.LoyaltyActionsProcessor.ps1 and must not be at the repo root.\n\n- The ECS dev workflow is kept, pinned to the same shared-workflow SHA.\n\n- Adopt the repo's conventions: Central Package Management, .slnx, Directory.Build.props. Port the tests to xunit.v3 / Microsoft Testing Platform.\n\n- Narrow the existing API triggers (aws-ec2-dev, loyalty-api-ecs-dev, publish-nuget-client) so task-only changes don't redeploy the API or republish the client NuGet.\n\n- The task's PRD workflow defaults CREATE_GITHUB_RELEASE to false; the API workflow owns release tags.\n\n- Merge the Datadog entity into the mono-repo's service.datadog.yaml.\n\n- Update the golf-svc-loyalty README: deployables table, build/test, CI/CD trigger matrix, Docker.\n\nExternal dependencies\n\n- terraform-golfnow-pci: TASK farm repo lists (dev/stg/prd), and loyalty-actions.repository in the dev ECS scheduled tasks.\n\n- shared-github-actions: app-library-details/Golf.Task.LoyaltyActionsProcessor.yml repo_name, flipped at cutover.\n\n- GitHub environments in golf-svc-loyalty for Golf.Task.LoyaltyActionsProcessor (dev/stg/prd-primary/prd-secondary), including the prd-primary required reviewers.\n\nRollout\n\n- PR A: code and workflows land with workflow_dispatch only.\n\n- DEV cutover: disable the old repo's dev workflows, enable the push triggers, verify EC2 (TASK002) and the ECS task-definition registration.\n\n- STG/PRD on the next release train.\n\n- Archive the old repo and remove its Datadog entity.\n\nAcceptance Criteria\n\n- dotnet build / dotnet test on GolfNow.Services.Loyalty.slnx pass, including the task's unit tests, and the PR validation workflow is green.\n\n- DEV EC2 and DEV ECS deploys for the task succeed from golf-svc-loyalty.\n\n- A task-only commit to develop does not trigger API deploys or the client NuGet publish, and an API-only commit does not trigger task deploys.\n\n- STG and PRD deploys of the task succeed from golf-svc-loyalty on the next release, with PRD protected by required reviewers.\n\n- golf-svc-loyalty README documents both deployables, their workflows/triggers and local build/test.\n\n- The old repo's workflows are disabled and the repo is archived, with a README pointer to golf-svc-loyalty.\n\nPlan: Working Folder/_docs/research/loyalty-actionsprocessor-monorepo/plan.md\n\nNote: Built with Claude assistance (Claude Opus 5.5)",
+        "descriptionHtml": "<h3>Overview</h3><p>Move the deployable <code>Golf.Task.LoyaltyActionsProcessor</code> (projects, unit tests, Docker/ECS config, and its GitHub Actions workflows) from <code>golf-task-loyalty-actionsprocessor</code> into the <code>golf-svc-loyalty</code> mono-repo, without breaking the existing DEV/STG/PRD deployments. The old repo is archived afterwards.</p><h3>Approach</h3><ul><li><p>Keep the project, assembly and app names as <code>Golf.Task.LoyaltyActionsProcessor.*</code>. The AWS secret path, APP_NAME, Datadog service, app-library entry and DLL name depend on them.</p></li><li><p>Per-app folders follow the existing <code>loyalty-api</code> convention, using the slug <code>loyalty-actions</code>: <code>docker/loyalty-actions/</code>, <code>.aws/loyalty-actions/</code>, <code>.github/golfnow/loyalty-actions/</code>.</p></li><li><p><strong>EC2 deploys stay on the legacy </strong><code>shared-github-workflows/aws-ec2*.yml</code> workflows with the current inputs. The build script moves to <code>.github/build-scripts/build-script-Golf.Task.LoyaltyActionsProcessor.ps1</code> and must not be at the repo root.</p></li><li><p>The ECS dev workflow is kept, pinned to the same shared-workflow SHA.</p></li><li><p>Adopt the repo's conventions: Central Package Management, <code>.slnx</code>, <code>Directory.Build.props</code>. Port the tests to xunit.v3 / Microsoft Testing Platform.</p></li><li><p>Narrow the existing API triggers (<code>aws-ec2-dev</code>, <code>loyalty-api-ecs-dev</code>, <code>publish-nuget-client</code>) so task-only changes don't redeploy the API or republish the client NuGet.</p></li><li><p>The task's PRD workflow defaults <code>CREATE_GITHUB_RELEASE</code> to false; the API workflow owns release tags.</p></li><li><p>Merge the Datadog entity into the mono-repo's <code>service.datadog.yaml</code>.</p></li><li><p>Update the golf-svc-loyalty README: deployables table, build/test, CI/CD trigger matrix, Docker.</p></li></ul><h3>External dependencies</h3><ul><li><p><code>terraform-golfnow-pci</code>: TASK farm repo lists (dev/stg/prd), and <code>loyalty-actions.repository</code> in the dev ECS scheduled tasks.</p></li><li><p><code>shared-github-actions</code>: <code>app-library-details/Golf.Task.LoyaltyActionsProcessor.yml</code> <code>repo_name</code>, flipped at cutover.</p></li><li><p>GitHub environments in golf-svc-loyalty for <code>Golf.Task.LoyaltyActionsProcessor</code> (dev/stg/prd-primary/prd-secondary), including the prd-primary required reviewers.</p></li></ul><h3>Rollout</h3><ol><li><p>PR A: code and workflows land with <code>workflow_dispatch</code> only.</p></li><li><p>DEV cutover: disable the old repo's dev workflows, enable the push triggers, verify EC2 (TASK002) and the ECS task-definition registration.</p></li><li><p>STG/PRD on the next release train.</p></li><li><p>Archive the old repo and remove its Datadog entity.</p></li></ol><h3>Acceptance Criteria</h3><ul><li><p><code>dotnet build</code> / <code>dotnet test</code> on <code>GolfNow.Services.Loyalty.slnx</code> pass, including the task's unit tests, and the PR validation workflow is green.</p></li><li><p>DEV EC2 and DEV ECS deploys for the task succeed from golf-svc-loyalty.</p></li><li><p>A task-only commit to develop does not trigger API deploys or the client NuGet publish, and an API-only commit does not trigger task deploys.</p></li><li><p>STG and PRD deploys of the task succeed from golf-svc-loyalty on the next release, with PRD protected by required reviewers.</p></li><li><p>golf-svc-loyalty README documents both deployables, their workflows/triggers and local build/test.</p></li><li><p>The old repo's workflows are disabled and the repo is archived, with a README pointer to golf-svc-loyalty.</p></li></ul><p>Plan: Working Folder/_docs/research/loyalty-actionsprocessor-monorepo/plan.md</p><p>Note: Built with Claude assistance (Claude Opus 5.5)</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Task",
+        "isSubtask": false,
+        "status": "Pre Planning",
+        "priority": "None",
+        "assignee": "Daniel McNaughton",
+        "assigneeAccountId": "5a53cc00246f8c21033ff5a6",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5a53cc00246f8c21033ff5a6/9d9bf25d-bfdb-4c2c-8a73-8182ef838b09/32",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-11-19T15:55:32.000-0500",
+        "updatedDisplay": "Nov 19, 2026, 3:55 PM",
+        "created": "2026-11-19T15:55:29.061-0500",
+        "createdDisplay": "Nov 19, 2026, 3:55 PM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
         }
       },
       {
@@ -45379,13 +45429,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-19T20:50:48.207Z",
-    "pulledAtDisplay": "Nov 19, 2026, 3:50 PM",
+    "pulledAt": "2026-11-19T20:56:19.509Z",
+    "pulledAtDisplay": "Nov 19, 2026, 3:56 PM",
     "window": {
-      "start": "2026-10-05T20:50:48.207Z",
-      "end": "2027-05-18T20:50:48.207Z",
-      "startDisplay": "Oct 5, 2026, 4:50 PM",
-      "endDisplay": "May 18, 2027, 4:50 PM"
+      "start": "2026-10-05T20:56:19.508Z",
+      "end": "2027-05-18T20:56:19.508Z",
+      "startDisplay": "Oct 5, 2026, 4:56 PM",
+      "endDisplay": "May 18, 2027, 4:56 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -45398,7 +45448,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-19T20:50:49.936Z",
+        "pulledAt": "2026-11-19T20:56:22.706Z",
         "eventCount": 80,
         "events": [
           {
@@ -46354,23 +46404,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -46383,6 +46416,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -46767,10 +46817,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-19T20:47:42.482Z",
-    "previousPulledAtDisplay": "Nov 19, 2026, 3:47 PM",
-    "currentPulledAt": "2026-11-19T20:52:40.599Z",
-    "currentPulledAtDisplay": "Nov 19, 2026, 3:52 PM",
+    "previousPulledAt": "2026-11-19T20:52:40.599Z",
+    "previousPulledAtDisplay": "Nov 19, 2026, 3:52 PM",
+    "currentPulledAt": "2026-11-19T20:58:56.435Z",
+    "currentPulledAtDisplay": "Nov 19, 2026, 3:58 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -46778,6 +46828,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-19T20:52:40.599Z",
+      "previousPulledAtDisplay": "Nov 19, 2026, 3:52 PM",
+      "currentPulledAt": "2026-11-19T20:58:56.435Z",
+      "currentPulledAtDisplay": "Nov 19, 2026, 3:58 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-19T20:47:42.482Z",
       "previousPulledAtDisplay": "Nov 19, 2026, 3:47 PM",
@@ -48609,17 +48670,6 @@
       "previousPulledAtDisplay": "Nov 19, 2026, 1:43 AM",
       "currentPulledAt": "2026-11-19T06:49:16.297Z",
       "currentPulledAtDisplay": "Nov 19, 2026, 1:49 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-19T06:38:07.914Z",
-      "previousPulledAtDisplay": "Nov 19, 2026, 1:38 AM",
-      "currentPulledAt": "2026-11-19T06:43:09.150Z",
-      "currentPulledAtDisplay": "Nov 19, 2026, 1:43 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
