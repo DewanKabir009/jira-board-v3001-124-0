@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-19T17:38:11.529Z",
-  "pulledAtDisplay": "Nov 19, 2026, 12:38 PM",
+  "pulledAt": "2026-11-19T17:42:41.891Z",
+  "pulledAtDisplay": "Nov 19, 2026, 12:42 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-19T17:38:11.529Z",
-    "pulledAtDisplay": "Nov 19, 2026, 12:38 PM",
+    "pulledAt": "2026-11-19T17:42:41.891Z",
+    "pulledAtDisplay": "Nov 19, 2026, 12:42 PM",
     "total": 580,
     "mainTotal": 550,
     "subtaskTotal": 30,
@@ -8107,6 +8107,60 @@
         }
       },
       {
+        "key": "CORE-14994",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14994",
+        "summary": "Commerce Proxy API: return accurate HTTP status codes and add a global exception handler",
+        "description": "Every Commerce Proxy API endpoint decides its HTTP status by checking whether FailureReason contains the text \"Error Log ID\": 500 when it does, 400 otherwise. The status should come from what actually happened, not from message text.\n\nChanges:\n\n- Classify each failure where it happens and map it to a status in one place, for all eight Commerce endpoints (Inventory, Invoice, and Fulfillment):\n\n- 400 when the request is invalid or a business rule rejects it, including when GolfNow rejects the request with a 4xx.\n\n- 401 when the client token is missing, malformed, or expired.\n\n- 502 when GolfNow fails with a 5xx or an unreadable response.\n\n- 504 when GolfNow doesn't respond in time.\n\n- 500 for any other server-side failure (database, cache, or an unexpected error).\n\n- For endpoints with per-item failures (PrepareFulfillment, ExecuteFulfillment, ReverseFulfillment), the status reflects the most serious item failure. Each item keeps its own reason and Error Log ID.\n\n- Add a global exception handler that logs any exception that escapes an endpoint and returns a 500 with an Error Log ID in the same response shape the endpoints use.\n\n- Dispose HTTP request, content, and response objects in the GolfNow API client.\n\nResponse bodies and messages are unchanged. Status codes change for the cases above where they were previously 400 or 500.\n\nRaised from review of GolfNowEng/gn-svc-commerceproxy#102.",
+        "descriptionHtml": "<p>Every Commerce Proxy API endpoint decides its HTTP status by checking whether <code>FailureReason</code> contains the text &quot;Error Log ID&quot;: 500 when it does, 400 otherwise. The status should come from what actually happened, not from message text.</p><p>Changes:</p><ul><li><p>Classify each failure where it happens and map it to a status in one place, for all eight Commerce endpoints (Inventory, Invoice, and Fulfillment):</p><ul><li><p>400 when the request is invalid or a business rule rejects it, including when GolfNow rejects the request with a 4xx.</p></li><li><p>401 when the client token is missing, malformed, or expired.</p></li><li><p>502 when GolfNow fails with a 5xx or an unreadable response.</p></li><li><p>504 when GolfNow doesn't respond in time.</p></li><li><p>500 for any other server-side failure (database, cache, or an unexpected error).</p></li></ul></li><li><p>For endpoints with per-item failures (PrepareFulfillment, ExecuteFulfillment, ReverseFulfillment), the status reflects the most serious item failure. Each item keeps its own reason and Error Log ID.</p></li><li><p>Add a global exception handler that logs any exception that escapes an endpoint and returns a 500 with an Error Log ID in the same response shape the endpoints use.</p></li><li><p>Dispose HTTP request, content, and response objects in the GolfNow API client.</p></li></ul><p>Response bodies and messages are unchanged. Status codes change for the cases above where they were previously 400 or 500.</p><p>Raised from review of GolfNowEng/gn-svc-commerceproxy#102.</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Technical Debt",
+        "isSubtask": false,
+        "status": "Pending Deployment (DEV)",
+        "priority": "P2",
+        "assignee": "Tyler Olechnowicz",
+        "assigneeAccountId": "5d2396c1ea26c40c2043fc92",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+        "updated": "2026-11-19T12:37:47.364-0500",
+        "updatedDisplay": "Nov 19, 2026, 12:37 PM",
+        "created": "2026-11-17T20:41:41.891-0500",
+        "createdDisplay": "Nov 17, 2026, 8:41 PM",
+        "components": [
+          "GolfNow.Services.CommerceProxy"
+        ],
+        "fixVersions": [
+          "v3001.132.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14986",
         "url": "https://golfnow.atlassian.net/browse/CORE-14986",
         "summary": "Pro Agenda - Modifications To Amounts",
@@ -8242,60 +8296,6 @@
           "GolfNow.Notification (Windows Service)",
           "GolfNowAPI",
           "Golf Shared Library"
-        ],
-        "fixVersions": [
-          "v3001.132.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14994",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14994",
-        "summary": "Commerce Proxy API: return accurate HTTP status codes and add a global exception handler",
-        "description": "Every Commerce Proxy API endpoint decides its HTTP status by checking whether FailureReason contains the text \"Error Log ID\": 500 when it does, 400 otherwise. The status should come from what actually happened, not from message text.\n\nChanges:\n\n- Classify each failure where it happens and map it to a status in one place, for all eight Commerce endpoints (Inventory, Invoice, and Fulfillment):\n\n- 400 when the request is invalid or a business rule rejects it, including when GolfNow rejects the request with a 4xx.\n\n- 401 when the client token is missing, malformed, or expired.\n\n- 502 when GolfNow fails with a 5xx or an unreadable response.\n\n- 504 when GolfNow doesn't respond in time.\n\n- 500 for any other server-side failure (database, cache, or an unexpected error).\n\n- For endpoints with per-item failures (PrepareFulfillment, ExecuteFulfillment, ReverseFulfillment), the status reflects the most serious item failure. Each item keeps its own reason and Error Log ID.\n\n- Add a global exception handler that logs any exception that escapes an endpoint and returns a 500 with an Error Log ID in the same response shape the endpoints use.\n\n- Dispose HTTP request, content, and response objects in the GolfNow API client.\n\nResponse bodies and messages are unchanged. Status codes change for the cases above where they were previously 400 or 500.\n\nRaised from review of GolfNowEng/gn-svc-commerceproxy#102.",
-        "descriptionHtml": "<p>Every Commerce Proxy API endpoint decides its HTTP status by checking whether <code>FailureReason</code> contains the text &quot;Error Log ID&quot;: 500 when it does, 400 otherwise. The status should come from what actually happened, not from message text.</p><p>Changes:</p><ul><li><p>Classify each failure where it happens and map it to a status in one place, for all eight Commerce endpoints (Inventory, Invoice, and Fulfillment):</p><ul><li><p>400 when the request is invalid or a business rule rejects it, including when GolfNow rejects the request with a 4xx.</p></li><li><p>401 when the client token is missing, malformed, or expired.</p></li><li><p>502 when GolfNow fails with a 5xx or an unreadable response.</p></li><li><p>504 when GolfNow doesn't respond in time.</p></li><li><p>500 for any other server-side failure (database, cache, or an unexpected error).</p></li></ul></li><li><p>For endpoints with per-item failures (PrepareFulfillment, ExecuteFulfillment, ReverseFulfillment), the status reflects the most serious item failure. Each item keeps its own reason and Error Log ID.</p></li><li><p>Add a global exception handler that logs any exception that escapes an endpoint and returns a 500 with an Error Log ID in the same response shape the endpoints use.</p></li><li><p>Dispose HTTP request, content, and response objects in the GolfNow API client.</p></li></ul><p>Response bodies and messages are unchanged. Status codes change for the cases above where they were previously 400 or 500.</p><p>Raised from review of GolfNowEng/gn-svc-commerceproxy#102.</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Technical Debt",
-        "isSubtask": false,
-        "status": "Code Review",
-        "priority": "P2",
-        "assignee": "Luis Vallejo Mursuli",
-        "assigneeAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "assignedDeveloper": "Tyler Olechnowicz",
-        "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-        "updated": "2026-11-19T11:19:03.974-0500",
-        "updatedDisplay": "Nov 19, 2026, 11:19 AM",
-        "created": "2026-11-17T20:41:41.891-0500",
-        "createdDisplay": "Nov 17, 2026, 8:41 PM",
-        "components": [
-          "GolfNow.Services.CommerceProxy"
         ],
         "fixVersions": [
           "v3001.132.0"
@@ -45363,13 +45363,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-19T17:35:48.895Z",
-    "pulledAtDisplay": "Nov 19, 2026, 12:35 PM",
+    "pulledAt": "2026-11-19T17:40:48.815Z",
+    "pulledAtDisplay": "Nov 19, 2026, 12:40 PM",
     "window": {
-      "start": "2026-10-05T17:35:48.894Z",
-      "end": "2027-05-18T17:35:48.894Z",
-      "startDisplay": "Oct 5, 2026, 1:35 PM",
-      "endDisplay": "May 18, 2027, 1:35 PM"
+      "start": "2026-10-05T17:40:48.815Z",
+      "end": "2027-05-18T17:40:48.815Z",
+      "startDisplay": "Oct 5, 2026, 1:40 PM",
+      "endDisplay": "May 18, 2027, 1:40 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -45382,7 +45382,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "error",
-        "pulledAt": "2026-11-19T17:36:13.277Z",
+        "pulledAt": "2026-11-19T17:41:12.112Z",
         "eventCount": 0,
         "events": [],
         "error": "HTTP 500 from https://golfnow.atlassian.net/wiki/rest/calendar-services/1.0/calendar/export/subcalendar/413a852e-d20c-454c-9808-425e167314f2.ics | HTTP 400 from https://golfnow.atlassian.net/wiki/rest/calendar-services/1.0/calendar/export/subcalendar/private/413a852e-d20c-454c-9808-425e167314f2.ics"
@@ -45390,10 +45390,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-19T17:33:58.270Z",
-    "previousPulledAtDisplay": "Nov 19, 2026, 12:33 PM",
-    "currentPulledAt": "2026-11-19T17:38:11.529Z",
-    "currentPulledAtDisplay": "Nov 19, 2026, 12:38 PM",
+    "previousPulledAt": "2026-11-19T17:38:11.529Z",
+    "previousPulledAtDisplay": "Nov 19, 2026, 12:38 PM",
+    "currentPulledAt": "2026-11-19T17:42:41.891Z",
+    "currentPulledAtDisplay": "Nov 19, 2026, 12:42 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -45401,6 +45401,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-19T17:38:11.529Z",
+      "previousPulledAtDisplay": "Nov 19, 2026, 12:38 PM",
+      "currentPulledAt": "2026-11-19T17:42:41.891Z",
+      "currentPulledAtDisplay": "Nov 19, 2026, 12:42 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-19T17:33:58.270Z",
       "previousPulledAtDisplay": "Nov 19, 2026, 12:33 PM",
@@ -47232,17 +47243,6 @@
       "previousPulledAtDisplay": "Nov 18, 2026, 10:24 PM",
       "currentPulledAt": "2026-11-19T03:28:09.528Z",
       "currentPulledAtDisplay": "Nov 18, 2026, 10:28 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-19T03:18:04.964Z",
-      "previousPulledAtDisplay": "Nov 18, 2026, 10:18 PM",
-      "currentPulledAt": "2026-11-19T03:24:14.600Z",
-      "currentPulledAtDisplay": "Nov 18, 2026, 10:24 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
