@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-23T15:57:51.068Z",
-  "pulledAtDisplay": "Nov 23, 2026, 10:57 AM",
+  "pulledAt": "2026-11-23T16:03:26.076Z",
+  "pulledAtDisplay": "Nov 23, 2026, 11:03 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-23T15:57:51.068Z",
-    "pulledAtDisplay": "Nov 23, 2026, 10:57 AM",
+    "pulledAt": "2026-11-23T16:03:26.076Z",
+    "pulledAtDisplay": "Nov 23, 2026, 11:03 AM",
     "total": 581,
     "mainTotal": 551,
     "subtaskTotal": 30,
@@ -8107,6 +8107,74 @@
         }
       },
       {
+        "key": "UXD-1264",
+        "url": "https://golfnow.atlassian.net/browse/UXD-1264",
+        "summary": "[Design] Apple Pay - MVP",
+        "description": "We will be integrating Apple Pay into our existing UI and we would like to get mobile app designs for the payment methods on tee time checkout and GolfPass checkout.\n\n- Documentation: https://developer.apple.com/design/human-interface-guidelines/apple-pay , https://developer.apple.com/apple-pay/marketing/\n\n- Current App:\n\n- These are not exact UI examples, they are from the dev local device but you get the idea of where we show Apple Pay\n\n- You will see in the Apple Documentation that we are not required to change our Book Now button to the Apple Pay CTA so we would like to keep our current Book Now button\n\n- Apple Pay should be prioritized above PayPal\n\n- Screens Needed\n\n- Manage Payments selection (First screenshot)\n\n- Unselected state\n\n- Selected state\n\n- Checkout view Apple Pay selected payment method (Second screenshot)\n\n- This design does not include redesigning the screens themselves, this only involves which Apple Pay buttons, icons and logo we should use in our current UI",
+        "descriptionHtml": "<p>We will be integrating Apple Pay into our existing UI and we would like to get mobile app designs for the payment methods on tee time checkout and GolfPass checkout. </p><ul><li><p>Documentation: <a href=\"https://developer.apple.com/design/human-interface-guidelines/apple-pay\" target=\"_blank\" rel=\"noopener\">https://developer.apple.com/design/human-interface-guidelines/apple-pay</a> , <a href=\"https://developer.apple.com/apple-pay/marketing/\" target=\"_blank\" rel=\"noopener\">https://developer.apple.com/apple-pay/marketing/</a> </p></li><li><p>Current App: </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/UXD-1264/692888-image-20260218-143742.png\" alt=\"image-20260218-143742.png\" loading=\"lazy\"><figcaption>image-20260218-143742.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/UXD-1264/692889-image-20260218-143754.png\" alt=\"image-20260218-143754.png\" loading=\"lazy\"><figcaption>image-20260218-143754.png</figcaption></figure></div><ul><li><p>These are not exact UI examples, they are from the dev local device but you get the idea of where we show Apple Pay</p></li></ul></li><li><p>You will see in the Apple Documentation that we are not required to change our Book Now button to the Apple Pay CTA so we would like to keep our current Book Now button</p></li><li><p>Apple Pay should be prioritized above PayPal</p></li><li><p>Screens Needed</p><ul><li><p>Manage Payments selection (First screenshot)</p><ul><li><p>Unselected state</p></li><li><p>Selected state</p></li></ul></li><li><p>Checkout view Apple Pay selected payment method (Second screenshot)</p></li></ul></li><li><p>This design does not include redesigning the screens themselves, this only involves which Apple Pay buttons, icons and logo we should use in our current UI </p></li></ul>",
+        "descriptionImageCount": 2,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 2,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1133583",
+            "url": "https://golfnow.atlassian.net/browse/UXD-1264?focusedCommentId=1133583",
+            "author": "Allen Shoup",
+            "authorAccountId": "6283defef0302e0068bd49f8",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/6283defef0302e0068bd49f8/849b74d6-ead2-47cd-a381-883ce4836eb2/32",
+            "created": "2026-03-04T10:15:32.553-0500",
+            "createdDisplay": "Mar 4, 2026, 10:15 AM",
+            "updated": "2026-03-04T10:15:32.553-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Needs GNSCM and APP (if applicable) tickets linked",
+            "bodyHtml": "<p>Needs GNSCM and APP (if applicable) tickets linked</p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/UXD-1264?focusedCommentId=1133583",
+        "lastCommentDisplay": "Mar 4, 2026, 10:15 AM",
+        "lastCommentAuthor": "Allen Shoup",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Ready for Development",
+        "priority": "None",
+        "assignee": "Brian Pugh",
+        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-11-23T10:56:27.792-0500",
+        "updatedDisplay": "Nov 23, 2026, 10:56 AM",
+        "created": "2026-02-18T09:34:51.467-0500",
+        "createdDisplay": "Feb 18, 2026, 9:34 AM",
+        "components": [
+          "GolfNow"
+        ],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "B2C-68",
+          "url": "https://golfnow.atlassian.net/browse/B2C-68",
+          "summary": "Apple Pay 2026",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14986",
         "url": "https://golfnow.atlassian.net/browse/CORE-14986",
         "summary": "Pro Agenda - Modifications To Amounts",
@@ -10471,74 +10539,6 @@
           "key": "CORE-14268",
           "url": "https://golfnow.atlassian.net/browse/CORE-14268",
           "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "UXD-1264",
-        "url": "https://golfnow.atlassian.net/browse/UXD-1264",
-        "summary": "[Design] Apple Pay - MVP",
-        "description": "We will be integrating Apple Pay into our existing UI and we would like to get mobile app designs for the payment methods on tee time checkout and GolfPass checkout.\n\n- Documentation: https://developer.apple.com/design/human-interface-guidelines/apple-pay , https://developer.apple.com/apple-pay/marketing/\n\n- Current App:\n\n- These are not exact UI examples, they are from the dev local device but you get the idea of where we show Apple Pay\n\n- You will see in the Apple Documentation that we are not required to change our Book Now button to the Apple Pay CTA so we would like to keep our current Book Now button\n\n- Apple Pay should be prioritized above PayPal\n\n- Screens Needed\n\n- Manage Payments selection (First screenshot)\n\n- Unselected state\n\n- Selected state\n\n- Checkout view Apple Pay selected payment method (Second screenshot)\n\n- This design does not include redesigning the screens themselves, this only involves which Apple Pay buttons, icons and logo we should use in our current UI",
-        "descriptionHtml": "<p>We will be integrating Apple Pay into our existing UI and we would like to get mobile app designs for the payment methods on tee time checkout and GolfPass checkout. </p><ul><li><p>Documentation: <a href=\"https://developer.apple.com/design/human-interface-guidelines/apple-pay\" target=\"_blank\" rel=\"noopener\">https://developer.apple.com/design/human-interface-guidelines/apple-pay</a> , <a href=\"https://developer.apple.com/apple-pay/marketing/\" target=\"_blank\" rel=\"noopener\">https://developer.apple.com/apple-pay/marketing/</a> </p></li><li><p>Current App: </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/UXD-1264/692888-image-20260218-143742.png\" alt=\"image-20260218-143742.png\" loading=\"lazy\"><figcaption>image-20260218-143742.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/UXD-1264/692889-image-20260218-143754.png\" alt=\"image-20260218-143754.png\" loading=\"lazy\"><figcaption>image-20260218-143754.png</figcaption></figure></div><ul><li><p>These are not exact UI examples, they are from the dev local device but you get the idea of where we show Apple Pay</p></li></ul></li><li><p>You will see in the Apple Documentation that we are not required to change our Book Now button to the Apple Pay CTA so we would like to keep our current Book Now button</p></li><li><p>Apple Pay should be prioritized above PayPal</p></li><li><p>Screens Needed</p><ul><li><p>Manage Payments selection (First screenshot)</p><ul><li><p>Unselected state</p></li><li><p>Selected state</p></li></ul></li><li><p>Checkout view Apple Pay selected payment method (Second screenshot)</p></li></ul></li><li><p>This design does not include redesigning the screens themselves, this only involves which Apple Pay buttons, icons and logo we should use in our current UI </p></li></ul>",
-        "descriptionImageCount": 2,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 2,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1133583",
-            "url": "https://golfnow.atlassian.net/browse/UXD-1264?focusedCommentId=1133583",
-            "author": "Allen Shoup",
-            "authorAccountId": "6283defef0302e0068bd49f8",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/6283defef0302e0068bd49f8/849b74d6-ead2-47cd-a381-883ce4836eb2/32",
-            "created": "2026-03-04T10:15:32.553-0500",
-            "createdDisplay": "Mar 4, 2026, 10:15 AM",
-            "updated": "2026-03-04T10:15:32.553-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Needs GNSCM and APP (if applicable) tickets linked",
-            "bodyHtml": "<p>Needs GNSCM and APP (if applicable) tickets linked</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/UXD-1264?focusedCommentId=1133583",
-        "lastCommentDisplay": "Mar 4, 2026, 10:15 AM",
-        "lastCommentAuthor": "Allen Shoup",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Ready for Development",
-        "priority": "None",
-        "assignee": "Brian Pugh",
-        "assigneeAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-        "assignedDeveloper": "Unassigned",
-        "assignedDeveloperAccountId": "",
-        "assignedDeveloperAvatarUrl": "",
-        "updated": "2026-11-16T10:46:16.065-0500",
-        "updatedDisplay": "Nov 16, 2026, 10:46 AM",
-        "created": "2026-02-18T09:34:51.467-0500",
-        "createdDisplay": "Feb 18, 2026, 9:34 AM",
-        "components": [
-          "GolfNow"
-        ],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "B2C-68",
-          "url": "https://golfnow.atlassian.net/browse/B2C-68",
-          "summary": "Apple Pay 2026",
           "description": "",
           "type": "Epic",
           "status": "Backlog",
@@ -45464,13 +45464,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-23T15:56:02.440Z",
-    "pulledAtDisplay": "Nov 23, 2026, 10:56 AM",
+    "pulledAt": "2026-11-23T16:00:58.569Z",
+    "pulledAtDisplay": "Nov 23, 2026, 11:00 AM",
     "window": {
-      "start": "2026-10-09T15:56:02.439Z",
-      "end": "2027-05-22T15:56:02.439Z",
-      "startDisplay": "Oct 9, 2026, 11:56 AM",
-      "endDisplay": "May 22, 2027, 11:56 AM"
+      "start": "2026-10-09T16:00:58.569Z",
+      "end": "2027-05-22T16:00:58.569Z",
+      "startDisplay": "Oct 9, 2026, 12:00 PM",
+      "endDisplay": "May 22, 2027, 12:00 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -45483,7 +45483,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-23T15:56:04.451Z",
+        "pulledAt": "2026-11-23T16:01:01.092Z",
         "eventCount": 83,
         "events": [
           {
@@ -46405,23 +46405,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -46434,6 +46417,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -46609,23 +46609,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "v100.66",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-03T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-03",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 3, 2027",
-            "allDay": true,
-            "type": "Pro Release",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -46638,6 +46621,23 @@
             "endDisplay": "Feb 10, 2027",
             "allDay": true,
             "type": "Scheduled Maintenance",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "v100.66",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-03T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-03",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 3, 2027",
+            "allDay": true,
+            "type": "Pro Release",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -46903,10 +46903,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-23T15:52:53.459Z",
-    "previousPulledAtDisplay": "Nov 23, 2026, 10:52 AM",
-    "currentPulledAt": "2026-11-23T15:57:51.068Z",
-    "currentPulledAtDisplay": "Nov 23, 2026, 10:57 AM",
+    "previousPulledAt": "2026-11-23T15:57:51.068Z",
+    "previousPulledAtDisplay": "Nov 23, 2026, 10:57 AM",
+    "currentPulledAt": "2026-11-23T16:03:26.076Z",
+    "currentPulledAtDisplay": "Nov 23, 2026, 11:03 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -46914,6 +46914,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-23T15:57:51.068Z",
+      "previousPulledAtDisplay": "Nov 23, 2026, 10:57 AM",
+      "currentPulledAt": "2026-11-23T16:03:26.076Z",
+      "currentPulledAtDisplay": "Nov 23, 2026, 11:03 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-23T15:52:53.459Z",
       "previousPulledAtDisplay": "Nov 23, 2026, 10:52 AM",
@@ -48745,17 +48756,6 @@
       "previousPulledAtDisplay": "Nov 22, 2026, 8:52 PM",
       "currentPulledAt": "2026-11-23T01:58:31.891Z",
       "currentPulledAtDisplay": "Nov 22, 2026, 8:58 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-23T01:48:42.163Z",
-      "previousPulledAtDisplay": "Nov 22, 2026, 8:48 PM",
-      "currentPulledAt": "2026-11-23T01:52:52.364Z",
-      "currentPulledAtDisplay": "Nov 22, 2026, 8:52 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
