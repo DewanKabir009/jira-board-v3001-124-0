@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-23T19:04:11.993Z",
-  "pulledAtDisplay": "Nov 23, 2026, 2:04 PM",
+  "pulledAt": "2026-11-23T19:09:39.390Z",
+  "pulledAtDisplay": "Nov 23, 2026, 2:09 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-23T19:04:11.993Z",
-    "pulledAtDisplay": "Nov 23, 2026, 2:04 PM",
+    "pulledAt": "2026-11-23T19:09:39.390Z",
+    "pulledAtDisplay": "Nov 23, 2026, 2:09 PM",
     "total": 581,
     "mainTotal": 551,
     "subtaskTotal": 30,
@@ -8107,6 +8107,77 @@
         }
       },
       {
+        "key": "CORE-14986",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14986",
+        "summary": "Pro Agenda - Modifications To Amounts",
+        "description": "The Pro Agenda testing group found issues with the amounts we send.\n\nBooking request: Amount (serialized as externalPrice) is now the course's share of the booking, without tax. Before, it was the total due at the course, including tax. It is still left out for hot deals.\n\nOrder request: the order now carries only what Pro Agenda (the course) receives. The parts of the base cost and taxes that are allocated to GolfNow are removed:\n\n- EventBookingData.Amount (serialized as price) is the course's share without tax. It matches the booking's externalPrice.\n\n- The ad-hoc taxes (adhocTaxes) contain only the course's tax.\n\n- PROAPayment.Amount (serialized as amount) is the course's amount only: line + taxes, which still matches what G1 requires.\n\nPro Agenda requested these changes and has accepted and confirmed them. The PROA unit tests pass (335/335).\n\nPRs are drafted against develop and against a new hot-fix / off-cycle release branch, release/3001.131.1. In the morning I'll decide which one becomes the full PR and work out any release changes from there.",
+        "descriptionHtml": "<p>The Pro Agenda testing group found issues with the amounts we send.</p><p>Booking request: Amount (serialized as externalPrice) is now the course's share of the booking, without tax. Before, it was the total due at the course, including tax. It is still left out for hot deals.</p><p>Order request: the order now carries only what Pro Agenda (the course) receives. The parts of the base cost and taxes that are allocated to GolfNow are removed:</p><ul><li><p>EventBookingData.Amount (serialized as price) is the course's share without tax. It matches the booking's externalPrice.</p></li><li><p>The ad-hoc taxes (adhocTaxes) contain only the course's tax.</p></li><li><p>PROAPayment.Amount (serialized as amount) is the course's amount only: line + taxes, which still matches what G1 requires.</p></li></ul><p>Pro Agenda requested these changes and has accepted and confirmed them. The PROA unit tests pass (335/335).</p><p>PRs are drafted against develop and against a new hot-fix / off-cycle release branch, release/3001.131.1. In the morning I'll decide which one becomes the full PR and work out any release changes from there.</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1246726",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14986?focusedCommentId=1246726",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-11-17T14:44:23.444-0500",
+            "createdDisplay": "Nov 17, 2026, 2:44 PM",
+            "updated": "2026-11-17T14:44:23.444-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "While investigating the feedback from Copilot about the Commerce-Proxy’s calls through channel/{channelId}/external-orders, it was determined that Pro Agenda will never be used along this path as the Pro Agenda team have their own integration with Booking Engine.\n\nWhile I investigated this with the help of Brian, Tyler and Yoel, it was found that IF this restriction ever changes, we will need to be careful how to pick up and resume the changes here to facilitate a plumbing of new at least one new parameter (GroupSize) through API 2.1 and into the interface.  Further, some light testing while investigating showed a failure at the storage of the TaxInvoice.\n\nTo keep a log what would be changed, the following plans were drafted.\n\nThis plan outlines the current assumptions of what a change would require (and has references to prior assumptions for historical reference).  It outlines the GroupSize addition, the manual testing and gaps in where exactly some values are defaulted (playerCount, for example).\n\nThis patch file contains some of the changes that were actually started for this effort.  While many may not be relevant in the future, hopefully the tests can be of use.",
+            "bodyHtml": "<p>While investigating the feedback from Copilot about the Commerce-Proxy’s calls through <code>channel/{channelId}/external-orders</code>, it was determined that Pro Agenda will never be used along this path as the Pro Agenda team have their own integration with Booking Engine.<br><br>While I investigated this with the help of Brian, Tyler and Yoel, it was found that <strong><em>IF </em></strong>this restriction ever changes, we will need to be careful how to pick up and resume the changes here to facilitate a plumbing of new at least one new parameter (GroupSize) through API 2.1 and into the interface.  Further, some light testing while investigating showed a failure at the storage of the TaxInvoice.<br><br>To keep a log what would be changed, the following plans were drafted.<br><br> <br>This plan outlines the current assumptions of what a change would require (and has references to prior assumptions for historical reference).  It outlines the GroupSize addition, the manual testing and gaps in where exactly some values are defaulted (playerCount, for example).<br><br> <br>This patch file contains some of the changes that were actually started for this effort.  While many may not be relevant in the future, hopefully the tests can be of use.</p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14986?focusedCommentId=1246726",
+        "lastCommentDisplay": "Nov 17, 2026, 2:44 PM",
+        "lastCommentAuthor": "Alex Wulff",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Regression Testing (STG)",
+        "priority": "None",
+        "assignee": "Alex Wulff",
+        "assigneeAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "assignedDeveloper": "Alex Wulff",
+        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "updated": "2026-11-23T14:06:39.180-0500",
+        "updatedDisplay": "Nov 23, 2026, 2:06 PM",
+        "created": "2026-11-17T06:11:12.633-0500",
+        "createdDisplay": "Nov 17, 2026, 6:11 AM",
+        "components": [
+          "GolfNow.Services.Reservation",
+          "GolfNow.Services.TeeSheet"
+        ],
+        "fixVersions": [
+          "v3001.131.1"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14997",
         "url": "https://golfnow.atlassian.net/browse/CORE-14997",
         "summary": "Update Pro Agenda endpoint used for Cancellations",
@@ -8218,77 +8289,6 @@
           "key": "B2C-68",
           "url": "https://golfnow.atlassian.net/browse/B2C-68",
           "summary": "Apple Pay 2026",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14986",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14986",
-        "summary": "Pro Agenda - Modifications To Amounts",
-        "description": "The Pro Agenda testing group found issues with the amounts we send.\n\nBooking request: Amount (serialized as externalPrice) is now the course's share of the booking, without tax. Before, it was the total due at the course, including tax. It is still left out for hot deals.\n\nOrder request: the order now carries only what Pro Agenda (the course) receives. The parts of the base cost and taxes that are allocated to GolfNow are removed:\n\n- EventBookingData.Amount (serialized as price) is the course's share without tax. It matches the booking's externalPrice.\n\n- The ad-hoc taxes (adhocTaxes) contain only the course's tax.\n\n- PROAPayment.Amount (serialized as amount) is the course's amount only: line + taxes, which still matches what G1 requires.\n\nPro Agenda requested these changes and has accepted and confirmed them. The PROA unit tests pass (335/335).\n\nPRs are drafted against develop and against a new hot-fix / off-cycle release branch, release/3001.131.1. In the morning I'll decide which one becomes the full PR and work out any release changes from there.",
-        "descriptionHtml": "<p>The Pro Agenda testing group found issues with the amounts we send.</p><p>Booking request: Amount (serialized as externalPrice) is now the course's share of the booking, without tax. Before, it was the total due at the course, including tax. It is still left out for hot deals.</p><p>Order request: the order now carries only what Pro Agenda (the course) receives. The parts of the base cost and taxes that are allocated to GolfNow are removed:</p><ul><li><p>EventBookingData.Amount (serialized as price) is the course's share without tax. It matches the booking's externalPrice.</p></li><li><p>The ad-hoc taxes (adhocTaxes) contain only the course's tax.</p></li><li><p>PROAPayment.Amount (serialized as amount) is the course's amount only: line + taxes, which still matches what G1 requires.</p></li></ul><p>Pro Agenda requested these changes and has accepted and confirmed them. The PROA unit tests pass (335/335).</p><p>PRs are drafted against develop and against a new hot-fix / off-cycle release branch, release/3001.131.1. In the morning I'll decide which one becomes the full PR and work out any release changes from there.</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1246726",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14986?focusedCommentId=1246726",
-            "author": "Alex Wulff",
-            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-            "created": "2026-11-17T14:44:23.444-0500",
-            "createdDisplay": "Nov 17, 2026, 2:44 PM",
-            "updated": "2026-11-17T14:44:23.444-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "While investigating the feedback from Copilot about the Commerce-Proxy’s calls through channel/{channelId}/external-orders, it was determined that Pro Agenda will never be used along this path as the Pro Agenda team have their own integration with Booking Engine.\n\nWhile I investigated this with the help of Brian, Tyler and Yoel, it was found that IF this restriction ever changes, we will need to be careful how to pick up and resume the changes here to facilitate a plumbing of new at least one new parameter (GroupSize) through API 2.1 and into the interface.  Further, some light testing while investigating showed a failure at the storage of the TaxInvoice.\n\nTo keep a log what would be changed, the following plans were drafted.\n\nThis plan outlines the current assumptions of what a change would require (and has references to prior assumptions for historical reference).  It outlines the GroupSize addition, the manual testing and gaps in where exactly some values are defaulted (playerCount, for example).\n\nThis patch file contains some of the changes that were actually started for this effort.  While many may not be relevant in the future, hopefully the tests can be of use.",
-            "bodyHtml": "<p>While investigating the feedback from Copilot about the Commerce-Proxy’s calls through <code>channel/{channelId}/external-orders</code>, it was determined that Pro Agenda will never be used along this path as the Pro Agenda team have their own integration with Booking Engine.<br><br>While I investigated this with the help of Brian, Tyler and Yoel, it was found that <strong><em>IF </em></strong>this restriction ever changes, we will need to be careful how to pick up and resume the changes here to facilitate a plumbing of new at least one new parameter (GroupSize) through API 2.1 and into the interface.  Further, some light testing while investigating showed a failure at the storage of the TaxInvoice.<br><br>To keep a log what would be changed, the following plans were drafted.<br><br> <br>This plan outlines the current assumptions of what a change would require (and has references to prior assumptions for historical reference).  It outlines the GroupSize addition, the manual testing and gaps in where exactly some values are defaulted (playerCount, for example).<br><br> <br>This patch file contains some of the changes that were actually started for this effort.  While many may not be relevant in the future, hopefully the tests can be of use.</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14986?focusedCommentId=1246726",
-        "lastCommentDisplay": "Nov 17, 2026, 2:44 PM",
-        "lastCommentAuthor": "Alex Wulff",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "QA Testing (DEV)",
-        "priority": "None",
-        "assignee": "Alex Wulff",
-        "assigneeAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "assignedDeveloper": "Alex Wulff",
-        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "updated": "2026-11-23T10:07:39.093-0500",
-        "updatedDisplay": "Nov 23, 2026, 10:07 AM",
-        "created": "2026-11-17T06:11:12.633-0500",
-        "createdDisplay": "Nov 17, 2026, 6:11 AM",
-        "components": [
-          "GolfNow.Services.Reservation",
-          "GolfNow.Services.TeeSheet"
-        ],
-        "fixVersions": [
-          "v3001.131.1"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
           "description": "",
           "type": "Epic",
           "status": "Backlog",
@@ -45464,13 +45464,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-23T19:01:28.943Z",
-    "pulledAtDisplay": "Nov 23, 2026, 2:01 PM",
+    "pulledAt": "2026-11-23T19:06:35.156Z",
+    "pulledAtDisplay": "Nov 23, 2026, 2:06 PM",
     "window": {
-      "start": "2026-10-09T19:01:28.942Z",
-      "end": "2027-05-22T19:01:28.942Z",
-      "startDisplay": "Oct 9, 2026, 3:01 PM",
-      "endDisplay": "May 22, 2027, 3:01 PM"
+      "start": "2026-10-09T19:06:35.156Z",
+      "end": "2027-05-22T19:06:35.156Z",
+      "startDisplay": "Oct 9, 2026, 3:06 PM",
+      "endDisplay": "May 22, 2027, 3:06 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -45483,7 +45483,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-23T19:01:31.719Z",
+        "pulledAt": "2026-11-23T19:06:38.707Z",
         "eventCount": 83,
         "events": [
           {
@@ -46405,23 +46405,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - US Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -46434,6 +46417,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - US Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -46609,23 +46609,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Pro Dev/Stage Swap",
-            "start": "2027-02-02T00:00:00.000Z",
-            "end": "2027-02-10T00:00:00.000Z",
-            "startDate": "2027-02-02",
-            "endDate": "2027-02-10",
-            "startDisplay": "Feb 2, 2027",
-            "endDisplay": "Feb 10, 2027",
-            "allDay": true,
-            "type": "Scheduled Maintenance",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20260827T134343Z--5677480@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -46638,6 +46621,23 @@
             "endDisplay": "Feb 3, 2027",
             "allDay": true,
             "type": "Pro Release",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20261020T201249Z-1327354608@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Pro Dev/Stage Swap",
+            "start": "2027-02-02T00:00:00.000Z",
+            "end": "2027-02-10T00:00:00.000Z",
+            "startDate": "2027-02-02",
+            "endDate": "2027-02-10",
+            "startDisplay": "Feb 2, 2027",
+            "endDisplay": "Feb 10, 2027",
+            "allDay": true,
+            "type": "Scheduled Maintenance",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -46903,10 +46903,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-23T18:59:20.022Z",
-    "previousPulledAtDisplay": "Nov 23, 2026, 1:59 PM",
-    "currentPulledAt": "2026-11-23T19:04:11.993Z",
-    "currentPulledAtDisplay": "Nov 23, 2026, 2:04 PM",
+    "previousPulledAt": "2026-11-23T19:04:11.993Z",
+    "previousPulledAtDisplay": "Nov 23, 2026, 2:04 PM",
+    "currentPulledAt": "2026-11-23T19:09:39.390Z",
+    "currentPulledAtDisplay": "Nov 23, 2026, 2:09 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -46914,6 +46914,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-23T19:04:11.993Z",
+      "previousPulledAtDisplay": "Nov 23, 2026, 2:04 PM",
+      "currentPulledAt": "2026-11-23T19:09:39.390Z",
+      "currentPulledAtDisplay": "Nov 23, 2026, 2:09 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-23T18:59:20.022Z",
       "previousPulledAtDisplay": "Nov 23, 2026, 1:59 PM",
@@ -48745,17 +48756,6 @@
       "previousPulledAtDisplay": "Nov 22, 2026, 11:52 PM",
       "currentPulledAt": "2026-11-23T04:58:15.468Z",
       "currentPulledAtDisplay": "Nov 22, 2026, 11:58 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-23T04:48:03.265Z",
-      "previousPulledAtDisplay": "Nov 22, 2026, 11:48 PM",
-      "currentPulledAt": "2026-11-23T04:52:40.864Z",
-      "currentPulledAtDisplay": "Nov 22, 2026, 11:52 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
