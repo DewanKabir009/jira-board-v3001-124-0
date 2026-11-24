@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-24T14:33:47.467Z",
-  "pulledAtDisplay": "Nov 24, 2026, 9:33 AM",
+  "pulledAt": "2026-11-24T14:38:56.137Z",
+  "pulledAtDisplay": "Nov 24, 2026, 9:38 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-24T14:33:47.467Z",
-    "pulledAtDisplay": "Nov 24, 2026, 9:33 AM",
+    "pulledAt": "2026-11-24T14:38:56.137Z",
+    "pulledAtDisplay": "Nov 24, 2026, 9:38 AM",
     "total": 581,
     "mainTotal": 551,
     "subtaskTotal": 30,
@@ -8107,6 +8107,401 @@
         }
       },
       {
+        "key": "CORE-14893",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14893",
+        "summary": "Topgolf Facility Tag",
+        "description": "- TG (Topgolf)TagCode should already exist in GolfCourse.FacilityTag\n\n- Update GolfCourse.FacilityTagMapSync proc\n\n- If CRMGolfFacilitySalesforce has a record with ParentId = 0018000001gN39yAAC for a given GolfFacilityId\n\n- INSERT a record with that GolfFacilityId into GolfCourse.FacilityTagMap with TagCode = 'TG'\n\n- If the ParentId changes or the record is no longer in the table for a given GolfFacilityId, delete the associated record from GolfCourse.FacilityTagMap",
+        "descriptionHtml": "<ol><li><p><code>TG</code> (Topgolf)TagCode should already exist in GolfCourse.FacilityTag</p></li><li><p>Update <code>GolfCourse.FacilityTagMapSync</code> proc</p><ol><li><p>If <code>CRMGolfFacilitySalesforce</code> has a record with <code>ParentId = 0018000001gN39yAAC</code> for a given <code>GolfFacilityId</code></p><ol><li><p>INSERT a record with that <code>GolfFacilityId</code> into <code>GolfCourse.FacilityTagMap</code> with <code>TagCode</code> = <code>'TG'</code></p></li></ol></li><li><p>If the <code>ParentId</code> changes or the record is no longer in the table for a given <code>GolfFacilityId</code>, delete the associated record from <code>GolfCourse.FacilityTagMap</code></p></li></ol></li></ol>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 2,
+        "comments": [
+          {
+            "id": "1240562",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14893?focusedCommentId=1240562",
+            "author": "Yoel Martin Pardo",
+            "authorAccountId": "625571809e7380006fb29599",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+            "created": "2026-11-04T18:57:52.277-0500",
+            "createdDisplay": "Nov 4, 2026, 6:57 PM",
+            "updated": "2026-11-04T18:57:52.277-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "PR: https://github.com/GolfNowEng/gn-main-db/pull/753",
+            "bodyHtml": "<p>PR: <a href=\"https://github.com/GolfNowEng/gn-main-db/pull/753\" target=\"_blank\" rel=\"noopener\">https://github.com/GolfNowEng/gn-main-db/pull/753</a> </p>"
+          },
+          {
+            "id": "1240563",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14893?focusedCommentId=1240563",
+            "author": "Yoel Martin Pardo",
+            "authorAccountId": "625571809e7380006fb29599",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+            "created": "2026-11-04T18:58:12.625-0500",
+            "createdDisplay": "Nov 4, 2026, 6:58 PM",
+            "updated": "2026-11-04T18:58:12.625-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "QA: We have added TG to facility tag sync. Please test this ticket when you have a chance.",
+            "bodyHtml": "<p>QA: We have added TG to facility tag sync. Please test this ticket when you have a chance.</p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14893?focusedCommentId=1240563",
+        "lastCommentDisplay": "Nov 4, 2026, 6:58 PM",
+        "lastCommentAuthor": "Yoel Martin Pardo",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Closed",
+        "priority": "None",
+        "assignee": "Unassigned",
+        "assigneeAccountId": "",
+        "assigneeAvatarUrl": "",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "assignedDeveloperAccountId": "625571809e7380006fb29599",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "updated": "2026-11-24T09:34:48.024-0500",
+        "updatedDisplay": "Nov 24, 2026, 9:34 AM",
+        "created": "2026-10-26T17:06:59.883-0400",
+        "createdDisplay": "Oct 26, 2026, 5:06 PM",
+        "components": [
+          "Database"
+        ],
+        "fixVersions": [
+          "v3001.131.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "Completed",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14857",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14857",
+        "summary": "GNC Mass Cancellations | Show facility name and date range on the Cancel confirmation popup",
+        "description": "Goal\n\nThe Cancel Selected confirmation popup on the GNC Mass Cancellations page clearly shows the facility and date range about to be cancelled, so a specialist cannot cancel the wrong course by accident.\n\n---\nProblem\n\nMember Care often searches a course and date range, selects all, and uses Copy Email Addresses to send course condition notices (aeration, walking only, etc). On the next case they can forget to change the facility or dates and click Cancel Selected, which cancels a batch of tee times in error. The current popup does not say which course is being cancelled.\n\n---\nBusiness Impact\n\n- ~4 revenue-impacting wrong-course mass cancellations in the past few months\n\n- Each one forces an urgent, manual recovery effort for Member Care\n\n- Golfers lose their booked rounds and the facility loses revenue until it is fixed\n\n---\nProposed Popup Text\n\nAdd a bold, highly visible block at the top of the existing confirmation popup (screenshot of the results page the popup opens from is attached):\n\nYou are about to CANCEL 138 reservations at:\n\nDUBSDREAD GOLF COURSE\nWed, Jun 03, 2026 to Wed, Jun 10, 2026\n\nRound types: Course only   (or: Course and Trade)\n\nPlease confirm this is the correct course and date range for this case.\n\n- Existing Submit Refund option and Confirm button stay as they are\n\n- Facility name should be large and stand out (for example bold, colored banner)\n\n- Optional extra: require typing or confirming the facility name before the Confirm button enables\n\n---\nAcceptance Criteria\n\n- Popup shows the selected facility name in large, bold text above the refund option\n\n- Popup shows the start and end date of the search and the reservation count\n\n- Popup states whether Include Trade was on (Course only vs Course and Trade)\n\n- Facility name shown matches the facility used for the search results\n\n- Existing refund and cancel behavior is unchanged\n\n---\nTechnical Details\n\nFront-end change to the confirmation modal on the GNC Mass Cancellations page (CORE-13954). Facility, dates, and Include Trade value are already on the page. Source: #consumercare-development thread. Page reference: https://golfnow.atlassian.net/wiki/spaces/PD/pages/11363123203\n\n---\nRelated Tickets\n\n- CORE-13954 original Mass Cancellation page\n\n- CORE-13890 Mass Cancellation epic",
+        "descriptionHtml": "<h3>Goal</h3><p>The Cancel Selected confirmation popup on the GNC Mass Cancellations page clearly shows the facility and date range about to be cancelled, so a specialist cannot cancel the wrong course by accident.</p><hr><h3>Problem</h3><p>Member Care often searches a course and date range, selects all, and uses Copy Email Addresses to send course condition notices (aeration, walking only, etc). On the next case they can forget to change the facility or dates and click Cancel Selected, which cancels a batch of tee times in error. The current popup does not say which course is being cancelled.</p><hr><h3>Business Impact</h3><ul><li><p>~4 revenue-impacting wrong-course mass cancellations in the past few months</p></li><li><p>Each one forces an urgent, manual recovery effort for Member Care</p></li><li><p>Golfers lose their booked rounds and the facility loses revenue until it is fixed</p></li></ul><hr><h3>Proposed Popup Text</h3><p>Add a bold, highly visible block at the top of the existing confirmation popup (screenshot of the results page the popup opens from is attached):</p><pre><code>You are about to CANCEL 138 reservations at:\n\nDUBSDREAD GOLF COURSE\nWed, Jun 03, 2026 to Wed, Jun 10, 2026\n\nRound types: Course only   (or: Course and Trade)\n\nPlease confirm this is the correct course and date range for this case.</code></pre><ul><li><p>Existing Submit Refund option and Confirm button stay as they are</p></li><li><p>Facility name should be large and stand out (for example bold, colored banner)</p></li><li><p>Optional extra: require typing or confirming the facility name before the Confirm button enables</p></li></ul><hr><h3>Acceptance Criteria</h3><ul><li><p>Popup shows the selected facility name in large, bold text above the refund option</p></li><li><p>Popup shows the start and end date of the search and the reservation count</p></li><li><p>Popup states whether Include Trade was on (Course only vs Course and Trade)</p></li><li><p>Facility name shown matches the facility used for the search results</p></li><li><p>Existing refund and cancel behavior is unchanged</p></li></ul><hr><h3>Technical Details</h3><p>Front-end change to the confirmation modal on the GNC Mass Cancellations page (<a href=\"https://golfnow.atlassian.net/browse/CORE-13954\" target=\"_blank\" rel=\"noopener\">CORE-13954</a>). Facility, dates, and Include Trade value are already on the page. Source: #consumercare-development thread. Page reference: https://golfnow.atlassian.net/wiki/spaces/PD/pages/11363123203</p><hr><h3>Related Tickets</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-13954\" target=\"_blank\" rel=\"noopener\">CORE-13954</a> original Mass Cancellation page</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-13890\" target=\"_blank\" rel=\"noopener\">CORE-13890</a> Mass Cancellation epic</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 2,
+        "comments": [
+          {
+            "id": "1239826",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14857?focusedCommentId=1239826",
+            "author": "Luis Vallejo Mursuli",
+            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+            "created": "2026-11-03T22:18:58.938-0500",
+            "createdDisplay": "Nov 3, 2026, 10:18 PM",
+            "updated": "2026-11-03T22:18:58.938-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "QA,\n\nBelow the guide to test this changes. Please let me know if you have any questions.",
+            "bodyHtml": "<p>QA,</p><p>Below the guide to test this changes. Please let me know if you have any questions.<br><br> </p>"
+          },
+          {
+            "id": "1242158",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14857?focusedCommentId=1242158",
+            "author": "Nicole Greer",
+            "authorAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
+            "created": "2026-11-09T16:33:27.114-0500",
+            "createdDisplay": "Nov 9, 2026, 4:33 PM",
+            "updated": "2026-11-09T16:33:27.114-0500",
+            "updatedDisplay": "",
+            "hasMedia": true,
+            "mediaCount": 4,
+            "body": "Tested Mass Cancellations in GNC with different courses, different amounts and ways of selecting courses to cancel,  checked that correct facility is shown on switching, that it shows cancellation only when times are selected, and that dates were working/displaying correctly. Tested options reset on refresh and didn’t persist.",
+            "bodyHtml": "<p>Tested Mass Cancellations in GNC with different courses, different amounts and ways of selecting courses to cancel,  checked that correct facility is shown on switching, that it shows cancellation only when times are selected, and that dates were working/displaying correctly. Tested options reset on refresh and didn’t persist. </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14857/comments/1242158/780140-cancelReservationsWarningMessage.png\" alt=\"cancelReservationsWarningMessage.png\" loading=\"lazy\"><figcaption>cancelReservationsWarningMessage.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14857/comments/1242158/780141-Screenshot-2026-11-09-160507.png\" alt=\"Screenshot 2026-11-09 160507.png\" loading=\"lazy\"><figcaption>Screenshot 2026-11-09 160507.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14857/comments/1242158/780139-gnccancelRes2.png\" alt=\"gnccancelRes2.png\" loading=\"lazy\"><figcaption>gnccancelRes2.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14857/comments/1242158/780138-cancelSuccessmasscancel.png\" alt=\"cancelSuccessmasscancel.png\" loading=\"lazy\"><figcaption>cancelSuccessmasscancel.png</figcaption></figure></div>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14857?focusedCommentId=1242158",
+        "lastCommentDisplay": "Nov 9, 2026, 4:33 PM",
+        "lastCommentAuthor": "Nicole Greer",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Closed",
+        "priority": "P2",
+        "assignee": "Unassigned",
+        "assigneeAccountId": "",
+        "assigneeAvatarUrl": "",
+        "assignedDeveloper": "Luis Vallejo Mursuli",
+        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+        "updated": "2026-11-24T09:34:09.788-0500",
+        "updatedDisplay": "Nov 24, 2026, 9:34 AM",
+        "created": "2026-10-13T17:48:36.268-0400",
+        "createdDisplay": "Oct 13, 2026, 5:48 PM",
+        "components": [
+          "GolfNowCentral"
+        ],
+        "fixVersions": [
+          "v3001.131.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "Completed",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14795",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14795",
+        "summary": "Missing QETI Reservations",
+        "description": "Root Cause Analysis - Missing QETI Reservations\n\nFinding\n\nA code-level bug in the QETI (Q18) tee sheet integration causes bookings to be confirmed on Q18 but never recorded in GolfNow. The reservation becomes orphaned on the tee sheet with no way for GolfNow to manage it (cancel, no-show, etc).\n\nRoot Cause: DateTime Matching Failure in QetiTeeSheet.cs\n\nThe Q18 MakeReservation API does not return a reservation ID in its response. Instead, the code makes a separate HTTP call to fetch all reservations for the customer, then tries to match the one just created by comparing DateTime values:\n\n// QetiTeeSheet.cs line 201\nprivate ReservationSummary GetReservation(List<ReservationSummary> summaries, DateTime playDate)\n{\nreturn summaries.FirstOrDefault(summary => DateTime.Parse(summary.TeeDateTime) == playDate);\n}\n\nThis comparison uses strict DateTime equality. The outbound request truncates time to minutes (yyyy-MM-dd HH:mm format, line 122), but the playDate parameter retains full precision (seconds, milliseconds). If Q18 returns a time with different precision, or if the format returned by summary.TeeDateTime does not parse to the exact same tick count, the match fails.\n\nWhat Happens When The Match Fails\n\n- GetReservation() returns null\n\n- makeReservationResponse.IsReserved stays false (default from line 80)\n\n- The calling workflow (SendReservationToInterfaceActivity) sees IsReserved = false and throws TeeSheetConnectionException\n\n- This triggers the saga rollback, which checks state.ReservationResult.IsReservedAtCourse\n\n- Since that was never set to true, the rollback skips Q18 cancellation entirely\n\n- The booking is already confirmed on Q18 but never persisted in GolfNow\n\nResult: A ghost reservation exists on the Q18 tee sheet with no corresponding record in GNC.\n\nAdditional Failure Mode\n\nThe GetSummaries HTTP call itself can fail (timeout, 500, network blip). Since it's wrapped in the same try/catch (line 103-161), any exception is caught and re-thrown as a TeeSheetException, which follows the same rollback path described above - resulting in the same orphan scenario.\n\nWhy This is Hard to Detect\n\n- The legacy reservation service (GolfNow.Services.Reservation) logs via log4net, not Datadog. Errors are not easily searchable.\n\n- The Phoenix commerce layer (tckt.api-commerce) only logs successful fulfillment results. The failure happens one layer below.\n\n- From the golfer's perspective, the booking may appear to have worked (depends on how the caller handles the error).\n\n- From the course's perspective, the booking shows up on Q18 normally - attributed to \"Golfnow API\" and http://TeeOff.com .\n\nConfirmed Pattern Match\n\nThe TTSUPPORT-7347 bookings (FID 523, via http://TeeOff.com  iOS, \"Golfnow API\" source on Q18) match this failure mode exactly: visible on Q18 tee sheet but absent from all GNC/GolfNow systems.\n\nRecommended Fix\n\nNOTE: Do both short and medium term fixes\n\n- Short-term: Change line 201 to use a tolerance-based comparison (e.g., compare only date + hour + minute, ignoring seconds/milliseconds):\n\n```csharp\n\nreturn summaries.FirstOrDefault(summary =>\n\nDateTime.Parse(summary.TeeDateTime).ToString(\"yyyy-MM-dd HH:mm\") ==\n\nplayDate.ToString(\"yyyy-MM-dd HH:mm\"));\n\n```\n\n- Medium-term: If GetReservation returns null after a successful MakeReservation, set IsReservedAtCourse = true anyway (since the HTTP POST succeeded) and attempt cancellation during rollback regardless. This prevents orphans.\n\n- ~Long-term: Request that Q18/QETI API return the reservation ID directly in the MakeReservation response, eliminating the fragile lookup entirely.~\n\nImpacted Facilities\n\nAny facility using the QETI (Q18) tee sheet integration is vulnerable. This is not specific to FID 523.",
+        "descriptionHtml": "<h3>Root Cause Analysis - Missing QETI Reservations</h3><h3>Finding</h3><p>A code-level bug in the QETI (Q18) tee sheet integration causes bookings to be confirmed on Q18 but never recorded in GolfNow. The reservation becomes orphaned on the tee sheet with no way for GolfNow to manage it (cancel, no-show, etc).</p><h3>Root Cause: DateTime Matching Failure in QetiTeeSheet.cs</h3><p>The Q18 MakeReservation API does not return a reservation ID in its response. Instead, the code makes a <em>separate</em> HTTP call to fetch all reservations for the customer, then tries to match the one just created by comparing DateTime values:</p><pre><code>// QetiTeeSheet.cs line 201\nprivate ReservationSummary GetReservation(List&lt;ReservationSummary&gt; summaries, DateTime playDate)\n{\n    return summaries.FirstOrDefault(summary =&gt; DateTime.Parse(summary.TeeDateTime) == playDate);\n}</code></pre><p>This comparison uses strict DateTime equality. The outbound request truncates time to minutes (<code>yyyy-MM-dd HH:mm</code> format, line 122), but the <code>playDate</code> parameter retains full precision (seconds, milliseconds). If Q18 returns a time with different precision, or if the format returned by <code>summary.TeeDateTime</code> does not parse to the exact same tick count, the match fails.</p><h3>What Happens When The Match Fails</h3><ol><li><p><code>GetReservation()</code> returns null</p></li><li><p><code>makeReservationResponse.IsReserved</code> stays <strong>false</strong> (default from line 80)</p></li><li><p>The calling workflow (<code>SendReservationToInterfaceActivity</code>) sees <code>IsReserved = false</code> and throws <code>TeeSheetConnectionException</code></p></li><li><p>This triggers the saga rollback, which checks <code>state.ReservationResult.IsReservedAtCourse</code></p></li><li><p>Since that was never set to <code>true</code>, the rollback <strong>skips Q18 cancellation</strong> entirely</p></li><li><p>The booking is already confirmed on Q18 but never persisted in GolfNow</p></li></ol><p>Result: A ghost reservation exists on the Q18 tee sheet with no corresponding record in GNC.</p><h3>Additional Failure Mode</h3><p>The <code>GetSummaries</code> HTTP call itself can fail (timeout, 500, network blip). Since it's wrapped in the same try/catch (line 103-161), any exception is caught and re-thrown as a <code>TeeSheetException</code>, which follows the same rollback path described above - resulting in the same orphan scenario.</p><h3>Why This is Hard to Detect</h3><ul><li><p>The legacy reservation service (<code>GolfNow.Services.Reservation</code>) logs via log4net, not Datadog. Errors are not easily searchable.</p></li><li><p>The Phoenix commerce layer (<code>tckt.api-commerce</code>) only logs successful fulfillment results. The failure happens one layer below.</p></li><li><p>From the golfer's perspective, the booking may appear to have worked (depends on how the caller handles the error).</p></li><li><p>From the course's perspective, the booking shows up on Q18 normally - attributed to &quot;Golfnow API&quot; and <a href=\"http://TeeOff.com\" target=\"_blank\" rel=\"noopener\">http://TeeOff.com</a> .</p></li></ul><h3>Confirmed Pattern Match</h3><p>The <a href=\"https://golfnow.atlassian.net/browse/TTSUPPORT-7347\" target=\"_blank\" rel=\"noopener\">TTSUPPORT-7347</a> bookings (FID 523, via <a href=\"http://TeeOff.com\" target=\"_blank\" rel=\"noopener\">http://TeeOff.com</a>  iOS, &quot;Golfnow API&quot; source on Q18) match this failure mode exactly: visible on Q18 tee sheet but absent from all GNC/GolfNow systems.</p><h3>Recommended Fix</h3><p><strong>NOTE: Do both short and medium term fixes</strong></p><ol><li><p><strong>Short-term</strong>: Change line 201 to use a tolerance-based comparison (e.g., compare only date + hour + minute, ignoring seconds/milliseconds):</p></li></ol><p>   ```csharp</p><p>   return summaries.FirstOrDefault(summary =&gt;</p><p>       DateTime.Parse(summary.TeeDateTime).ToString(&quot;yyyy-MM-dd HH:mm&quot;) ==</p><p>       playDate.ToString(&quot;yyyy-MM-dd HH:mm&quot;));</p><p>   ```</p><ol><li><p><strong>Medium-term</strong>: If <code>GetReservation</code> returns null after a successful <code>MakeReservation</code>, set <code>IsReservedAtCourse = true</code> anyway (since the HTTP POST succeeded) and attempt cancellation during rollback regardless. This prevents orphans.</p></li></ol><ol><li><p><s><strong>~Long-term</strong></s><s>: Request that Q18/QETI API return the reservation ID directly in the MakeReservation response, eliminating the fragile lookup entirely.~</s></p></li></ol><h3>Impacted Facilities</h3><p>Any facility using the QETI (Q18) tee sheet integration is vulnerable. This is not specific to FID 523.</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1243894",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14795?focusedCommentId=1243894",
+            "author": "Yoel Martin Pardo",
+            "authorAccountId": "625571809e7380006fb29599",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+            "created": "2026-11-11T18:13:18.996-0500",
+            "createdDisplay": "Nov 11, 2026, 6:13 PM",
+            "updated": "2026-11-11T18:13:18.996-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "QA: We will need to do bookings and cancellations on this interface. There is one scenario that we will need to also test that is when the teesheet move the reservation to a different time. In order to test this you will need to reach out to Duane Craw dcraw@sagacitygolf.com. They can move the reservation to a different time and we can proceed with the cancellation. To test this use facility 155 that is a test facility on prod teesheet, but please cancel all reservations.",
+            "bodyHtml": "<p>QA: We will need to do bookings and cancellations on this interface. There is one scenario that we will need to also test that is when the teesheet move the reservation to a different time. In order to test this you will need to reach out to Duane Craw <a href=\"mailto:dcraw@sagacitygolf.com\" target=\"_blank\" rel=\"noopener\">dcraw@sagacitygolf.com</a>. They can move the reservation to a different time and we can proceed with the cancellation. To test this use facility <code>155</code> that is a test facility on prod teesheet, but please cancel all reservations.</p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14795?focusedCommentId=1243894",
+        "lastCommentDisplay": "Nov 11, 2026, 6:13 PM",
+        "lastCommentAuthor": "Yoel Martin Pardo",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Closed",
+        "priority": "P2",
+        "assignee": "Unassigned",
+        "assigneeAccountId": "",
+        "assigneeAvatarUrl": "",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "assignedDeveloperAccountId": "625571809e7380006fb29599",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "updated": "2026-11-24T09:33:27.013-0500",
+        "updatedDisplay": "Nov 24, 2026, 9:33 AM",
+        "created": "2026-09-16T17:52:51.832-0400",
+        "createdDisplay": "Sep 16, 2026, 5:52 PM",
+        "components": [
+          "GolfNow.Services.Reservation"
+        ],
+        "fixVersions": [
+          "v3001.131.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "Completed",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14881",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14881",
+        "summary": "CVV not validating with with Payments",
+        "description": "We have confirmed that not all CVV requests are being sent to Payments to be processed/validated. This creates unnecessary exposure for fraud because transactions will succeed with invalid CVVs. Below is a chart of CVVs checked from a previous period. Our most popular booking channel 5151 is not on here, 7886 and 331 are very low.\n\nExpected:\n\n- Any time a CVV is sent into API 2.1, we should be sending that to payments for validation\n\n- This does not mean that CVV should be required on all transactions\n\n- We should continue using the rolling 90 CVV required check on wallet options\n\n- If the UI has their own configuration to display CVV outside of the 90 days, we should send that one to payments too\n\n- ValidateCVV_Product is a CRMOwnerConfig currently enabled on a few channels, if this is enabled, require CVV on all product transactions for that Owner\n\n- ValidateCVV_TeeTimeis a CRMOwnerConfig that exists but is not currently in use. This requires CVV on all tee time transactions. When tested in STG, this was working as expected but it is not a config we woudl like to use in prod\n\n- Payments team should have a way to confirm that a CVV was checked so validate test reservations with them to confirm\n\n- https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-- Test CVV Codes",
+        "descriptionHtml": "<p>We have confirmed that not all CVV requests are being sent to Payments to be processed/validated. This creates unnecessary exposure for fraud because transactions will succeed with invalid CVVs. Below is a chart of CVVs checked from a previous period. Our most popular booking channel 5151 is not on here, 7886 and 331 are very low.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14881/775664-image-20261022-125108.png\" alt=\"image-20261022-125108.png\" loading=\"lazy\"><figcaption>image-20261022-125108.png</figcaption></figure></div><p><strong>Expected:</strong></p><ul><li><p>Any time a CVV is sent into API 2.1, we should be sending that to payments for validation</p></li><li><p>This does not mean that CVV should be required on all transactions</p></li><li><p>We should continue using the rolling 90 CVV required check on wallet options</p></li><li><p>If the UI has their own configuration to display CVV outside of the 90 days, we should send that one to payments too</p></li><li><p><code>ValidateCVV_Product</code> is a CRMOwnerConfig currently enabled on a few channels, if this is enabled, require CVV on all product transactions for that Owner</p></li><li><p><code>ValidateCVV_TeeTime</code>is a CRMOwnerConfig that exists but is not currently in use. This requires CVV on all tee time transactions. When tested in STG, this was working as expected but it is not a config we woudl like to use in prod</p></li><li><p>Payments team should have a way to confirm that a CVV was checked so validate test reservations with them to confirm</p></li><li><p><a href=\"https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-%2D%20Test%20CVV%20Codes\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-- Test CVV Codes</a></p></li></ul>",
+        "descriptionImageCount": 1,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 1,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1239645",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14881?focusedCommentId=1239645",
+            "author": "Luis Vallejo Mursuli",
+            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+            "created": "2026-11-03T13:19:28.140-0500",
+            "createdDisplay": "Nov 3, 2026, 1:19 PM",
+            "updated": "2026-11-03T13:19:28.140-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "QA,\n\nBelow the guide to test this changes. Please let me know if you have any questions.",
+            "bodyHtml": "<p>QA,</p><p>Below the guide to test this changes. Please let me know if you have any questions.<br><br> </p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14881?focusedCommentId=1239645",
+        "lastCommentDisplay": "Nov 3, 2026, 1:19 PM",
+        "lastCommentAuthor": "Luis Vallejo Mursuli",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Closed",
+        "priority": "P1",
+        "assignee": "Unassigned",
+        "assigneeAccountId": "",
+        "assigneeAvatarUrl": "",
+        "assignedDeveloper": "Luis Vallejo Mursuli",
+        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+        "updated": "2026-11-24T09:32:47.590-0500",
+        "updatedDisplay": "Nov 24, 2026, 9:32 AM",
+        "created": "2026-10-22T08:50:22.261-0400",
+        "createdDisplay": "Oct 22, 2026, 8:50 AM",
+        "components": [
+          "GolfNow.Services.Reservation"
+        ],
+        "fixVersions": [
+          "v3001.131.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "Completed",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14874",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14874",
+        "summary": "Add Pagination to GNC Loyalty Ledger & Update Sort Order",
+        "description": "The transaction ledger in the Golf Rewards tab of GNC’s customer profile page is currently sorted from oldest date to newest. We need to update this so the newest transaction date is at the top of the ledger.\n\nWe also need to add pagination so the business can view any customer transaction, rather than being limited to the limited single page view.",
+        "descriptionHtml": "<p>The transaction ledger in the Golf Rewards tab of GNC’s customer profile page is currently sorted from oldest date to newest. We need to update this so the newest transaction date is at the top of the ledger. </p><p>We also need to add pagination so the business can view any customer transaction, rather than being limited to the limited single page view.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14874/774431-image-20261019-150211.png\" alt=\"image-20261019-150211.png\" loading=\"lazy\"><figcaption>image-20261019-150211.png</figcaption></figure></div>",
+        "descriptionImageCount": 1,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 1,
+        "commentCount": 2,
+        "comments": [
+          {
+            "id": "1238818",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14874?focusedCommentId=1238818",
+            "author": "Luis Vallejo Mursuli",
+            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+            "created": "2026-11-02T11:52:39.416-0500",
+            "createdDisplay": "Nov 2, 2026, 11:52 AM",
+            "updated": "2026-11-02T11:52:39.416-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "QA,\n\nBelow the guide to test this changes. Please let me know if you have any questions.",
+            "bodyHtml": "<p>QA,</p><p>Below the guide to test this changes. Please let me know if you have any questions.<br><br> </p>"
+          },
+          {
+            "id": "1243904",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14874?focusedCommentId=1243904",
+            "author": "Nicole Greer",
+            "authorAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
+            "created": "2026-11-11T18:26:59.363-0500",
+            "createdDisplay": "Nov 11, 2026, 6:26 PM",
+            "updated": "2026-11-11T18:51:09.720-0500",
+            "updatedDisplay": "Nov 11, 2026, 6:51 PM",
+            "hasMedia": true,
+            "mediaCount": 1,
+            "body": "Tested working transaction ledgers for customers with no transactions, 1 page/25+ pages transactions, changing amount of rows per page, transactions listed in correct date order, UI resizing, options reset on refresh, loading indicator remains, correct amount per page on each page amount option, rows per page persists on changing pages, correct default view of 25 rows, return to page 1 on row amount change, available points and newest row running balance values match.",
+            "bodyHtml": "<p>Tested working transaction ledgers for customers with no transactions, 1 page/25+ pages transactions, changing amount of rows per page, transactions listed in correct date order, UI resizing, options reset on refresh, loading indicator remains, correct amount per page on each page amount option, rows per page persists on changing pages, correct default view of 25 rows, return to page 1 on row amount change, available points and newest row running balance values match.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14874/comments/1243904/781336-image-20261111-232653.png\" alt=\"image-20261111-232653.png\" loading=\"lazy\"><figcaption>image-20261111-232653.png</figcaption></figure></div>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14874?focusedCommentId=1243904",
+        "lastCommentDisplay": "Nov 11, 2026, 6:26 PM",
+        "lastCommentAuthor": "Nicole Greer",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Closed",
+        "priority": "P1",
+        "assignee": "Unassigned",
+        "assigneeAccountId": "",
+        "assigneeAvatarUrl": "",
+        "assignedDeveloper": "Luis Vallejo Mursuli",
+        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+        "updated": "2026-11-24T09:32:14.916-0500",
+        "updatedDisplay": "Nov 24, 2026, 9:32 AM",
+        "created": "2026-10-19T10:17:58.384-0400",
+        "createdDisplay": "Oct 19, 2026, 10:17 AM",
+        "components": [
+          "GolfNowCentral"
+        ],
+        "fixVersions": [
+          "v3001.131.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "Completed",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14875",
         "url": "https://golfnow.atlassian.net/browse/CORE-14875",
         "summary": "Create Troon facility tag",
@@ -8207,7 +8602,7 @@
         "assignedDeveloper": "Alex Wulff",
         "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
         "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "updated": "2026-11-24T09:31:29.293-0500",
+        "updated": "2026-11-24T09:31:36.148-0500",
         "updatedDisplay": "Nov 24, 2026, 9:31 AM",
         "created": "2026-10-19T11:08:46.137-0400",
         "createdDisplay": "Oct 19, 2026, 11:08 AM",
@@ -9748,231 +10143,6 @@
         }
       },
       {
-        "key": "CORE-14893",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14893",
-        "summary": "Topgolf Facility Tag",
-        "description": "- TG (Topgolf)TagCode should already exist in GolfCourse.FacilityTag\n\n- Update GolfCourse.FacilityTagMapSync proc\n\n- If CRMGolfFacilitySalesforce has a record with ParentId = 0018000001gN39yAAC for a given GolfFacilityId\n\n- INSERT a record with that GolfFacilityId into GolfCourse.FacilityTagMap with TagCode = 'TG'\n\n- If the ParentId changes or the record is no longer in the table for a given GolfFacilityId, delete the associated record from GolfCourse.FacilityTagMap",
-        "descriptionHtml": "<ol><li><p><code>TG</code> (Topgolf)TagCode should already exist in GolfCourse.FacilityTag</p></li><li><p>Update <code>GolfCourse.FacilityTagMapSync</code> proc</p><ol><li><p>If <code>CRMGolfFacilitySalesforce</code> has a record with <code>ParentId = 0018000001gN39yAAC</code> for a given <code>GolfFacilityId</code></p><ol><li><p>INSERT a record with that <code>GolfFacilityId</code> into <code>GolfCourse.FacilityTagMap</code> with <code>TagCode</code> = <code>'TG'</code></p></li></ol></li><li><p>If the <code>ParentId</code> changes or the record is no longer in the table for a given <code>GolfFacilityId</code>, delete the associated record from <code>GolfCourse.FacilityTagMap</code></p></li></ol></li></ol>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 2,
-        "comments": [
-          {
-            "id": "1240562",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14893?focusedCommentId=1240562",
-            "author": "Yoel Martin Pardo",
-            "authorAccountId": "625571809e7380006fb29599",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-            "created": "2026-11-04T18:57:52.277-0500",
-            "createdDisplay": "Nov 4, 2026, 6:57 PM",
-            "updated": "2026-11-04T18:57:52.277-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "PR: https://github.com/GolfNowEng/gn-main-db/pull/753",
-            "bodyHtml": "<p>PR: <a href=\"https://github.com/GolfNowEng/gn-main-db/pull/753\" target=\"_blank\" rel=\"noopener\">https://github.com/GolfNowEng/gn-main-db/pull/753</a> </p>"
-          },
-          {
-            "id": "1240563",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14893?focusedCommentId=1240563",
-            "author": "Yoel Martin Pardo",
-            "authorAccountId": "625571809e7380006fb29599",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-            "created": "2026-11-04T18:58:12.625-0500",
-            "createdDisplay": "Nov 4, 2026, 6:58 PM",
-            "updated": "2026-11-04T18:58:12.625-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "QA: We have added TG to facility tag sync. Please test this ticket when you have a chance.",
-            "bodyHtml": "<p>QA: We have added TG to facility tag sync. Please test this ticket when you have a chance.</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14893?focusedCommentId=1240563",
-        "lastCommentDisplay": "Nov 4, 2026, 6:58 PM",
-        "lastCommentAuthor": "Yoel Martin Pardo",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "PO Review",
-        "priority": "None",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-11-18T15:49:12.328-0500",
-        "updatedDisplay": "Nov 18, 2026, 3:49 PM",
-        "created": "2026-10-26T17:06:59.883-0400",
-        "createdDisplay": "Oct 26, 2026, 5:06 PM",
-        "components": [
-          "Database"
-        ],
-        "fixVersions": [
-          "v3001.131.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14881",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14881",
-        "summary": "CVV not validating with with Payments",
-        "description": "We have confirmed that not all CVV requests are being sent to Payments to be processed/validated. This creates unnecessary exposure for fraud because transactions will succeed with invalid CVVs. Below is a chart of CVVs checked from a previous period. Our most popular booking channel 5151 is not on here, 7886 and 331 are very low.\n\nExpected:\n\n- Any time a CVV is sent into API 2.1, we should be sending that to payments for validation\n\n- This does not mean that CVV should be required on all transactions\n\n- We should continue using the rolling 90 CVV required check on wallet options\n\n- If the UI has their own configuration to display CVV outside of the 90 days, we should send that one to payments too\n\n- ValidateCVV_Product is a CRMOwnerConfig currently enabled on a few channels, if this is enabled, require CVV on all product transactions for that Owner\n\n- ValidateCVV_TeeTimeis a CRMOwnerConfig that exists but is not currently in use. This requires CVV on all tee time transactions. When tested in STG, this was working as expected but it is not a config we woudl like to use in prod\n\n- Payments team should have a way to confirm that a CVV was checked so validate test reservations with them to confirm\n\n- https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-- Test CVV Codes",
-        "descriptionHtml": "<p>We have confirmed that not all CVV requests are being sent to Payments to be processed/validated. This creates unnecessary exposure for fraud because transactions will succeed with invalid CVVs. Below is a chart of CVVs checked from a previous period. Our most popular booking channel 5151 is not on here, 7886 and 331 are very low.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14881/775664-image-20261022-125108.png\" alt=\"image-20261022-125108.png\" loading=\"lazy\"><figcaption>image-20261022-125108.png</figcaption></figure></div><p><strong>Expected:</strong></p><ul><li><p>Any time a CVV is sent into API 2.1, we should be sending that to payments for validation</p></li><li><p>This does not mean that CVV should be required on all transactions</p></li><li><p>We should continue using the rolling 90 CVV required check on wallet options</p></li><li><p>If the UI has their own configuration to display CVV outside of the 90 days, we should send that one to payments too</p></li><li><p><code>ValidateCVV_Product</code> is a CRMOwnerConfig currently enabled on a few channels, if this is enabled, require CVV on all product transactions for that Owner</p></li><li><p><code>ValidateCVV_TeeTime</code>is a CRMOwnerConfig that exists but is not currently in use. This requires CVV on all tee time transactions. When tested in STG, this was working as expected but it is not a config we woudl like to use in prod</p></li><li><p>Payments team should have a way to confirm that a CVV was checked so validate test reservations with them to confirm</p></li><li><p><a href=\"https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-%2D%20Test%20CVV%20Codes\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/wiki/spaces/TEC/pages/2507636748/CVV+Verification#:~:text=Test-,Processor,-- Test CVV Codes</a></p></li></ul>",
-        "descriptionImageCount": 1,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1239645",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14881?focusedCommentId=1239645",
-            "author": "Luis Vallejo Mursuli",
-            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-            "created": "2026-11-03T13:19:28.140-0500",
-            "createdDisplay": "Nov 3, 2026, 1:19 PM",
-            "updated": "2026-11-03T13:19:28.140-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "QA,\n\nBelow the guide to test this changes. Please let me know if you have any questions.",
-            "bodyHtml": "<p>QA,</p><p>Below the guide to test this changes. Please let me know if you have any questions.<br><br> </p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14881?focusedCommentId=1239645",
-        "lastCommentDisplay": "Nov 3, 2026, 1:19 PM",
-        "lastCommentAuthor": "Luis Vallejo Mursuli",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "PO Review",
-        "priority": "P1",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
-        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-11-18T15:48:33.903-0500",
-        "updatedDisplay": "Nov 18, 2026, 3:48 PM",
-        "created": "2026-10-22T08:50:22.261-0400",
-        "createdDisplay": "Oct 22, 2026, 8:50 AM",
-        "components": [
-          "GolfNow.Services.Reservation"
-        ],
-        "fixVersions": [
-          "v3001.131.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14795",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14795",
-        "summary": "Missing QETI Reservations",
-        "description": "Root Cause Analysis - Missing QETI Reservations\n\nFinding\n\nA code-level bug in the QETI (Q18) tee sheet integration causes bookings to be confirmed on Q18 but never recorded in GolfNow. The reservation becomes orphaned on the tee sheet with no way for GolfNow to manage it (cancel, no-show, etc).\n\nRoot Cause: DateTime Matching Failure in QetiTeeSheet.cs\n\nThe Q18 MakeReservation API does not return a reservation ID in its response. Instead, the code makes a separate HTTP call to fetch all reservations for the customer, then tries to match the one just created by comparing DateTime values:\n\n// QetiTeeSheet.cs line 201\nprivate ReservationSummary GetReservation(List<ReservationSummary> summaries, DateTime playDate)\n{\nreturn summaries.FirstOrDefault(summary => DateTime.Parse(summary.TeeDateTime) == playDate);\n}\n\nThis comparison uses strict DateTime equality. The outbound request truncates time to minutes (yyyy-MM-dd HH:mm format, line 122), but the playDate parameter retains full precision (seconds, milliseconds). If Q18 returns a time with different precision, or if the format returned by summary.TeeDateTime does not parse to the exact same tick count, the match fails.\n\nWhat Happens When The Match Fails\n\n- GetReservation() returns null\n\n- makeReservationResponse.IsReserved stays false (default from line 80)\n\n- The calling workflow (SendReservationToInterfaceActivity) sees IsReserved = false and throws TeeSheetConnectionException\n\n- This triggers the saga rollback, which checks state.ReservationResult.IsReservedAtCourse\n\n- Since that was never set to true, the rollback skips Q18 cancellation entirely\n\n- The booking is already confirmed on Q18 but never persisted in GolfNow\n\nResult: A ghost reservation exists on the Q18 tee sheet with no corresponding record in GNC.\n\nAdditional Failure Mode\n\nThe GetSummaries HTTP call itself can fail (timeout, 500, network blip). Since it's wrapped in the same try/catch (line 103-161), any exception is caught and re-thrown as a TeeSheetException, which follows the same rollback path described above - resulting in the same orphan scenario.\n\nWhy This is Hard to Detect\n\n- The legacy reservation service (GolfNow.Services.Reservation) logs via log4net, not Datadog. Errors are not easily searchable.\n\n- The Phoenix commerce layer (tckt.api-commerce) only logs successful fulfillment results. The failure happens one layer below.\n\n- From the golfer's perspective, the booking may appear to have worked (depends on how the caller handles the error).\n\n- From the course's perspective, the booking shows up on Q18 normally - attributed to \"Golfnow API\" and http://TeeOff.com .\n\nConfirmed Pattern Match\n\nThe TTSUPPORT-7347 bookings (FID 523, via http://TeeOff.com  iOS, \"Golfnow API\" source on Q18) match this failure mode exactly: visible on Q18 tee sheet but absent from all GNC/GolfNow systems.\n\nRecommended Fix\n\nNOTE: Do both short and medium term fixes\n\n- Short-term: Change line 201 to use a tolerance-based comparison (e.g., compare only date + hour + minute, ignoring seconds/milliseconds):\n\n```csharp\n\nreturn summaries.FirstOrDefault(summary =>\n\nDateTime.Parse(summary.TeeDateTime).ToString(\"yyyy-MM-dd HH:mm\") ==\n\nplayDate.ToString(\"yyyy-MM-dd HH:mm\"));\n\n```\n\n- Medium-term: If GetReservation returns null after a successful MakeReservation, set IsReservedAtCourse = true anyway (since the HTTP POST succeeded) and attempt cancellation during rollback regardless. This prevents orphans.\n\n- ~Long-term: Request that Q18/QETI API return the reservation ID directly in the MakeReservation response, eliminating the fragile lookup entirely.~\n\nImpacted Facilities\n\nAny facility using the QETI (Q18) tee sheet integration is vulnerable. This is not specific to FID 523.",
-        "descriptionHtml": "<h3>Root Cause Analysis - Missing QETI Reservations</h3><h3>Finding</h3><p>A code-level bug in the QETI (Q18) tee sheet integration causes bookings to be confirmed on Q18 but never recorded in GolfNow. The reservation becomes orphaned on the tee sheet with no way for GolfNow to manage it (cancel, no-show, etc).</p><h3>Root Cause: DateTime Matching Failure in QetiTeeSheet.cs</h3><p>The Q18 MakeReservation API does not return a reservation ID in its response. Instead, the code makes a <em>separate</em> HTTP call to fetch all reservations for the customer, then tries to match the one just created by comparing DateTime values:</p><pre><code>// QetiTeeSheet.cs line 201\nprivate ReservationSummary GetReservation(List&lt;ReservationSummary&gt; summaries, DateTime playDate)\n{\n    return summaries.FirstOrDefault(summary =&gt; DateTime.Parse(summary.TeeDateTime) == playDate);\n}</code></pre><p>This comparison uses strict DateTime equality. The outbound request truncates time to minutes (<code>yyyy-MM-dd HH:mm</code> format, line 122), but the <code>playDate</code> parameter retains full precision (seconds, milliseconds). If Q18 returns a time with different precision, or if the format returned by <code>summary.TeeDateTime</code> does not parse to the exact same tick count, the match fails.</p><h3>What Happens When The Match Fails</h3><ol><li><p><code>GetReservation()</code> returns null</p></li><li><p><code>makeReservationResponse.IsReserved</code> stays <strong>false</strong> (default from line 80)</p></li><li><p>The calling workflow (<code>SendReservationToInterfaceActivity</code>) sees <code>IsReserved = false</code> and throws <code>TeeSheetConnectionException</code></p></li><li><p>This triggers the saga rollback, which checks <code>state.ReservationResult.IsReservedAtCourse</code></p></li><li><p>Since that was never set to <code>true</code>, the rollback <strong>skips Q18 cancellation</strong> entirely</p></li><li><p>The booking is already confirmed on Q18 but never persisted in GolfNow</p></li></ol><p>Result: A ghost reservation exists on the Q18 tee sheet with no corresponding record in GNC.</p><h3>Additional Failure Mode</h3><p>The <code>GetSummaries</code> HTTP call itself can fail (timeout, 500, network blip). Since it's wrapped in the same try/catch (line 103-161), any exception is caught and re-thrown as a <code>TeeSheetException</code>, which follows the same rollback path described above - resulting in the same orphan scenario.</p><h3>Why This is Hard to Detect</h3><ul><li><p>The legacy reservation service (<code>GolfNow.Services.Reservation</code>) logs via log4net, not Datadog. Errors are not easily searchable.</p></li><li><p>The Phoenix commerce layer (<code>tckt.api-commerce</code>) only logs successful fulfillment results. The failure happens one layer below.</p></li><li><p>From the golfer's perspective, the booking may appear to have worked (depends on how the caller handles the error).</p></li><li><p>From the course's perspective, the booking shows up on Q18 normally - attributed to &quot;Golfnow API&quot; and <a href=\"http://TeeOff.com\" target=\"_blank\" rel=\"noopener\">http://TeeOff.com</a> .</p></li></ul><h3>Confirmed Pattern Match</h3><p>The <a href=\"https://golfnow.atlassian.net/browse/TTSUPPORT-7347\" target=\"_blank\" rel=\"noopener\">TTSUPPORT-7347</a> bookings (FID 523, via <a href=\"http://TeeOff.com\" target=\"_blank\" rel=\"noopener\">http://TeeOff.com</a>  iOS, &quot;Golfnow API&quot; source on Q18) match this failure mode exactly: visible on Q18 tee sheet but absent from all GNC/GolfNow systems.</p><h3>Recommended Fix</h3><p><strong>NOTE: Do both short and medium term fixes</strong></p><ol><li><p><strong>Short-term</strong>: Change line 201 to use a tolerance-based comparison (e.g., compare only date + hour + minute, ignoring seconds/milliseconds):</p></li></ol><p>   ```csharp</p><p>   return summaries.FirstOrDefault(summary =&gt;</p><p>       DateTime.Parse(summary.TeeDateTime).ToString(&quot;yyyy-MM-dd HH:mm&quot;) ==</p><p>       playDate.ToString(&quot;yyyy-MM-dd HH:mm&quot;));</p><p>   ```</p><ol><li><p><strong>Medium-term</strong>: If <code>GetReservation</code> returns null after a successful <code>MakeReservation</code>, set <code>IsReservedAtCourse = true</code> anyway (since the HTTP POST succeeded) and attempt cancellation during rollback regardless. This prevents orphans.</p></li></ol><ol><li><p><s><strong>~Long-term</strong></s><s>: Request that Q18/QETI API return the reservation ID directly in the MakeReservation response, eliminating the fragile lookup entirely.~</s></p></li></ol><h3>Impacted Facilities</h3><p>Any facility using the QETI (Q18) tee sheet integration is vulnerable. This is not specific to FID 523.</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1243894",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14795?focusedCommentId=1243894",
-            "author": "Yoel Martin Pardo",
-            "authorAccountId": "625571809e7380006fb29599",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-            "created": "2026-11-11T18:13:18.996-0500",
-            "createdDisplay": "Nov 11, 2026, 6:13 PM",
-            "updated": "2026-11-11T18:13:18.996-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "QA: We will need to do bookings and cancellations on this interface. There is one scenario that we will need to also test that is when the teesheet move the reservation to a different time. In order to test this you will need to reach out to Duane Craw dcraw@sagacitygolf.com. They can move the reservation to a different time and we can proceed with the cancellation. To test this use facility 155 that is a test facility on prod teesheet, but please cancel all reservations.",
-            "bodyHtml": "<p>QA: We will need to do bookings and cancellations on this interface. There is one scenario that we will need to also test that is when the teesheet move the reservation to a different time. In order to test this you will need to reach out to Duane Craw <a href=\"mailto:dcraw@sagacitygolf.com\" target=\"_blank\" rel=\"noopener\">dcraw@sagacitygolf.com</a>. They can move the reservation to a different time and we can proceed with the cancellation. To test this use facility <code>155</code> that is a test facility on prod teesheet, but please cancel all reservations.</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14795?focusedCommentId=1243894",
-        "lastCommentDisplay": "Nov 11, 2026, 6:13 PM",
-        "lastCommentAuthor": "Yoel Martin Pardo",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "PO Review",
-        "priority": "P2",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-11-18T15:48:11.438-0500",
-        "updatedDisplay": "Nov 18, 2026, 3:48 PM",
-        "created": "2026-09-16T17:52:51.832-0400",
-        "createdDisplay": "Sep 16, 2026, 5:52 PM",
-        "components": [
-          "GolfNow.Services.Reservation"
-        ],
-        "fixVersions": [
-          "v3001.131.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
         "key": "CORE-14996",
         "url": "https://golfnow.atlassian.net/browse/CORE-14996",
         "summary": "Handle GNC refund callback idempotently once Commerce Prepaid G1-payment refunds are supported (avoid double-processing/failure)",
@@ -10003,176 +10173,6 @@
         "createdDisplay": "Nov 18, 2026, 2:27 PM",
         "components": [],
         "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14874",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14874",
-        "summary": "Add Pagination to GNC Loyalty Ledger & Update Sort Order",
-        "description": "The transaction ledger in the Golf Rewards tab of GNC’s customer profile page is currently sorted from oldest date to newest. We need to update this so the newest transaction date is at the top of the ledger.\n\nWe also need to add pagination so the business can view any customer transaction, rather than being limited to the limited single page view.",
-        "descriptionHtml": "<p>The transaction ledger in the Golf Rewards tab of GNC’s customer profile page is currently sorted from oldest date to newest. We need to update this so the newest transaction date is at the top of the ledger. </p><p>We also need to add pagination so the business can view any customer transaction, rather than being limited to the limited single page view.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14874/774431-image-20261019-150211.png\" alt=\"image-20261019-150211.png\" loading=\"lazy\"><figcaption>image-20261019-150211.png</figcaption></figure></div>",
-        "descriptionImageCount": 1,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 1,
-        "commentCount": 2,
-        "comments": [
-          {
-            "id": "1238818",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14874?focusedCommentId=1238818",
-            "author": "Luis Vallejo Mursuli",
-            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-            "created": "2026-11-02T11:52:39.416-0500",
-            "createdDisplay": "Nov 2, 2026, 11:52 AM",
-            "updated": "2026-11-02T11:52:39.416-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "QA,\n\nBelow the guide to test this changes. Please let me know if you have any questions.",
-            "bodyHtml": "<p>QA,</p><p>Below the guide to test this changes. Please let me know if you have any questions.<br><br> </p>"
-          },
-          {
-            "id": "1243904",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14874?focusedCommentId=1243904",
-            "author": "Nicole Greer",
-            "authorAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
-            "created": "2026-11-11T18:26:59.363-0500",
-            "createdDisplay": "Nov 11, 2026, 6:26 PM",
-            "updated": "2026-11-11T18:51:09.720-0500",
-            "updatedDisplay": "Nov 11, 2026, 6:51 PM",
-            "hasMedia": true,
-            "mediaCount": 1,
-            "body": "Tested working transaction ledgers for customers with no transactions, 1 page/25+ pages transactions, changing amount of rows per page, transactions listed in correct date order, UI resizing, options reset on refresh, loading indicator remains, correct amount per page on each page amount option, rows per page persists on changing pages, correct default view of 25 rows, return to page 1 on row amount change, available points and newest row running balance values match.",
-            "bodyHtml": "<p>Tested working transaction ledgers for customers with no transactions, 1 page/25+ pages transactions, changing amount of rows per page, transactions listed in correct date order, UI resizing, options reset on refresh, loading indicator remains, correct amount per page on each page amount option, rows per page persists on changing pages, correct default view of 25 rows, return to page 1 on row amount change, available points and newest row running balance values match.</p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14874/comments/1243904/781336-image-20261111-232653.png\" alt=\"image-20261111-232653.png\" loading=\"lazy\"><figcaption>image-20261111-232653.png</figcaption></figure></div>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14874?focusedCommentId=1243904",
-        "lastCommentDisplay": "Nov 11, 2026, 6:26 PM",
-        "lastCommentAuthor": "Nicole Greer",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "PO Review",
-        "priority": "P1",
-        "assignee": "Nicole Greer",
-        "assigneeAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
-        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-11-18T10:58:19.894-0500",
-        "updatedDisplay": "Nov 18, 2026, 10:58 AM",
-        "created": "2026-10-19T10:17:58.384-0400",
-        "createdDisplay": "Oct 19, 2026, 10:17 AM",
-        "components": [
-          "GolfNowCentral"
-        ],
-        "fixVersions": [
-          "v3001.131.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14857",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14857",
-        "summary": "GNC Mass Cancellations | Show facility name and date range on the Cancel confirmation popup",
-        "description": "Goal\n\nThe Cancel Selected confirmation popup on the GNC Mass Cancellations page clearly shows the facility and date range about to be cancelled, so a specialist cannot cancel the wrong course by accident.\n\n---\nProblem\n\nMember Care often searches a course and date range, selects all, and uses Copy Email Addresses to send course condition notices (aeration, walking only, etc). On the next case they can forget to change the facility or dates and click Cancel Selected, which cancels a batch of tee times in error. The current popup does not say which course is being cancelled.\n\n---\nBusiness Impact\n\n- ~4 revenue-impacting wrong-course mass cancellations in the past few months\n\n- Each one forces an urgent, manual recovery effort for Member Care\n\n- Golfers lose their booked rounds and the facility loses revenue until it is fixed\n\n---\nProposed Popup Text\n\nAdd a bold, highly visible block at the top of the existing confirmation popup (screenshot of the results page the popup opens from is attached):\n\nYou are about to CANCEL 138 reservations at:\n\nDUBSDREAD GOLF COURSE\nWed, Jun 03, 2026 to Wed, Jun 10, 2026\n\nRound types: Course only   (or: Course and Trade)\n\nPlease confirm this is the correct course and date range for this case.\n\n- Existing Submit Refund option and Confirm button stay as they are\n\n- Facility name should be large and stand out (for example bold, colored banner)\n\n- Optional extra: require typing or confirming the facility name before the Confirm button enables\n\n---\nAcceptance Criteria\n\n- Popup shows the selected facility name in large, bold text above the refund option\n\n- Popup shows the start and end date of the search and the reservation count\n\n- Popup states whether Include Trade was on (Course only vs Course and Trade)\n\n- Facility name shown matches the facility used for the search results\n\n- Existing refund and cancel behavior is unchanged\n\n---\nTechnical Details\n\nFront-end change to the confirmation modal on the GNC Mass Cancellations page (CORE-13954). Facility, dates, and Include Trade value are already on the page. Source: #consumercare-development thread. Page reference: https://golfnow.atlassian.net/wiki/spaces/PD/pages/11363123203\n\n---\nRelated Tickets\n\n- CORE-13954 original Mass Cancellation page\n\n- CORE-13890 Mass Cancellation epic",
-        "descriptionHtml": "<h3>Goal</h3><p>The Cancel Selected confirmation popup on the GNC Mass Cancellations page clearly shows the facility and date range about to be cancelled, so a specialist cannot cancel the wrong course by accident.</p><hr><h3>Problem</h3><p>Member Care often searches a course and date range, selects all, and uses Copy Email Addresses to send course condition notices (aeration, walking only, etc). On the next case they can forget to change the facility or dates and click Cancel Selected, which cancels a batch of tee times in error. The current popup does not say which course is being cancelled.</p><hr><h3>Business Impact</h3><ul><li><p>~4 revenue-impacting wrong-course mass cancellations in the past few months</p></li><li><p>Each one forces an urgent, manual recovery effort for Member Care</p></li><li><p>Golfers lose their booked rounds and the facility loses revenue until it is fixed</p></li></ul><hr><h3>Proposed Popup Text</h3><p>Add a bold, highly visible block at the top of the existing confirmation popup (screenshot of the results page the popup opens from is attached):</p><pre><code>You are about to CANCEL 138 reservations at:\n\nDUBSDREAD GOLF COURSE\nWed, Jun 03, 2026 to Wed, Jun 10, 2026\n\nRound types: Course only   (or: Course and Trade)\n\nPlease confirm this is the correct course and date range for this case.</code></pre><ul><li><p>Existing Submit Refund option and Confirm button stay as they are</p></li><li><p>Facility name should be large and stand out (for example bold, colored banner)</p></li><li><p>Optional extra: require typing or confirming the facility name before the Confirm button enables</p></li></ul><hr><h3>Acceptance Criteria</h3><ul><li><p>Popup shows the selected facility name in large, bold text above the refund option</p></li><li><p>Popup shows the start and end date of the search and the reservation count</p></li><li><p>Popup states whether Include Trade was on (Course only vs Course and Trade)</p></li><li><p>Facility name shown matches the facility used for the search results</p></li><li><p>Existing refund and cancel behavior is unchanged</p></li></ul><hr><h3>Technical Details</h3><p>Front-end change to the confirmation modal on the GNC Mass Cancellations page (<a href=\"https://golfnow.atlassian.net/browse/CORE-13954\" target=\"_blank\" rel=\"noopener\">CORE-13954</a>). Facility, dates, and Include Trade value are already on the page. Source: #consumercare-development thread. Page reference: https://golfnow.atlassian.net/wiki/spaces/PD/pages/11363123203</p><hr><h3>Related Tickets</h3><ul><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-13954\" target=\"_blank\" rel=\"noopener\">CORE-13954</a> original Mass Cancellation page</p></li><li><p><a href=\"https://golfnow.atlassian.net/browse/CORE-13890\" target=\"_blank\" rel=\"noopener\">CORE-13890</a> Mass Cancellation epic</p></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 2,
-        "comments": [
-          {
-            "id": "1239826",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14857?focusedCommentId=1239826",
-            "author": "Luis Vallejo Mursuli",
-            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-            "created": "2026-11-03T22:18:58.938-0500",
-            "createdDisplay": "Nov 3, 2026, 10:18 PM",
-            "updated": "2026-11-03T22:18:58.938-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "QA,\n\nBelow the guide to test this changes. Please let me know if you have any questions.",
-            "bodyHtml": "<p>QA,</p><p>Below the guide to test this changes. Please let me know if you have any questions.<br><br> </p>"
-          },
-          {
-            "id": "1242158",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14857?focusedCommentId=1242158",
-            "author": "Nicole Greer",
-            "authorAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
-            "created": "2026-11-09T16:33:27.114-0500",
-            "createdDisplay": "Nov 9, 2026, 4:33 PM",
-            "updated": "2026-11-09T16:33:27.114-0500",
-            "updatedDisplay": "",
-            "hasMedia": true,
-            "mediaCount": 4,
-            "body": "Tested Mass Cancellations in GNC with different courses, different amounts and ways of selecting courses to cancel,  checked that correct facility is shown on switching, that it shows cancellation only when times are selected, and that dates were working/displaying correctly. Tested options reset on refresh and didn’t persist.",
-            "bodyHtml": "<p>Tested Mass Cancellations in GNC with different courses, different amounts and ways of selecting courses to cancel,  checked that correct facility is shown on switching, that it shows cancellation only when times are selected, and that dates were working/displaying correctly. Tested options reset on refresh and didn’t persist. </p><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14857/comments/1242158/780140-cancelReservationsWarningMessage.png\" alt=\"cancelReservationsWarningMessage.png\" loading=\"lazy\"><figcaption>cancelReservationsWarningMessage.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14857/comments/1242158/780141-Screenshot-2026-11-09-160507.png\" alt=\"Screenshot 2026-11-09 160507.png\" loading=\"lazy\"><figcaption>Screenshot 2026-11-09 160507.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14857/comments/1242158/780139-gnccancelRes2.png\" alt=\"gnccancelRes2.png\" loading=\"lazy\"><figcaption>gnccancelRes2.png</figcaption></figure></div><div class=\"description-media-group\"><figure class=\"description-media\"><img src=\"assets/jira-media/CORE-14857/comments/1242158/780138-cancelSuccessmasscancel.png\" alt=\"cancelSuccessmasscancel.png\" loading=\"lazy\"><figcaption>cancelSuccessmasscancel.png</figcaption></figure></div>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14857?focusedCommentId=1242158",
-        "lastCommentDisplay": "Nov 9, 2026, 4:33 PM",
-        "lastCommentAuthor": "Nicole Greer",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "PO Review",
-        "priority": "P2",
-        "assignee": "Nicole Greer",
-        "assigneeAccountId": "712020:8fa0be04-9400-422d-8c63-61e7d7b54669",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:8fa0be04-9400-422d-8c63-61e7d7b54669/01136d3f-e8cd-4bac-9ba8-24e390f7c07e/32",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
-        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-11-18T10:58:00.264-0500",
-        "updatedDisplay": "Nov 18, 2026, 10:58 AM",
-        "created": "2026-10-13T17:48:36.268-0400",
-        "createdDisplay": "Oct 13, 2026, 5:48 PM",
-        "components": [
-          "GolfNowCentral"
-        ],
-        "fixVersions": [
-          "v3001.131.0"
-        ],
         "sprints": [
           {
             "name": "2026.8"
@@ -45464,13 +45464,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-24T14:31:26.186Z",
-    "pulledAtDisplay": "Nov 24, 2026, 9:31 AM",
+    "pulledAt": "2026-11-24T14:36:32.678Z",
+    "pulledAtDisplay": "Nov 24, 2026, 9:36 AM",
     "window": {
-      "start": "2026-10-10T14:31:26.186Z",
-      "end": "2027-05-23T14:31:26.186Z",
-      "startDisplay": "Oct 10, 2026, 10:31 AM",
-      "endDisplay": "May 23, 2027, 10:31 AM"
+      "start": "2026-10-10T14:36:32.678Z",
+      "end": "2027-05-23T14:36:32.678Z",
+      "startDisplay": "Oct 10, 2026, 10:36 AM",
+      "endDisplay": "May 23, 2027, 10:36 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -45483,7 +45483,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-24T14:31:28.161Z",
+        "pulledAt": "2026-11-24T14:36:35.061Z",
         "eventCount": 83,
         "events": [
           {
@@ -46903,10 +46903,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-24T14:29:31.073Z",
-    "previousPulledAtDisplay": "Nov 24, 2026, 9:29 AM",
-    "currentPulledAt": "2026-11-24T14:33:47.467Z",
-    "currentPulledAtDisplay": "Nov 24, 2026, 9:33 AM",
+    "previousPulledAt": "2026-11-24T14:33:47.467Z",
+    "previousPulledAtDisplay": "Nov 24, 2026, 9:33 AM",
+    "currentPulledAt": "2026-11-24T14:38:56.137Z",
+    "currentPulledAtDisplay": "Nov 24, 2026, 9:38 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -46914,6 +46914,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-24T14:33:47.467Z",
+      "previousPulledAtDisplay": "Nov 24, 2026, 9:33 AM",
+      "currentPulledAt": "2026-11-24T14:38:56.137Z",
+      "currentPulledAtDisplay": "Nov 24, 2026, 9:38 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-24T14:29:31.073Z",
       "previousPulledAtDisplay": "Nov 24, 2026, 9:29 AM",
@@ -48745,17 +48756,6 @@
       "previousPulledAtDisplay": "Nov 23, 2026, 7:28 PM",
       "currentPulledAt": "2026-11-24T00:34:26.550Z",
       "currentPulledAtDisplay": "Nov 23, 2026, 7:34 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-24T00:23:45.309Z",
-      "previousPulledAtDisplay": "Nov 23, 2026, 7:23 PM",
-      "currentPulledAt": "2026-11-24T00:28:30.328Z",
-      "currentPulledAtDisplay": "Nov 23, 2026, 7:28 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
