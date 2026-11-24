@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-24T02:28:41.634Z",
-  "pulledAtDisplay": "Nov 23, 2026, 9:28 PM",
+  "pulledAt": "2026-11-24T02:34:20.275Z",
+  "pulledAtDisplay": "Nov 23, 2026, 9:34 PM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-24T02:28:41.634Z",
-    "pulledAtDisplay": "Nov 23, 2026, 9:28 PM",
+    "pulledAt": "2026-11-24T02:34:20.275Z",
+    "pulledAtDisplay": "Nov 23, 2026, 9:34 PM",
     "total": 581,
     "mainTotal": 551,
     "subtaskTotal": 30,
@@ -8107,6 +8107,336 @@
         }
       },
       {
+        "key": "CORE-14954",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14954",
+        "summary": "Mass cancellation tool in GNC does not refund transaction fees",
+        "description": "Description:\nWhen the Golf Mass Cancel tool processes a refund, it refunds the greens fees but does not refund the transaction fees. The tool should automatically refund both when processing the cancellation.\n\nExpected behavior:\nFor eligible reservations processed through Mass Cancel, refund both the greens fees and transaction fees.\n\n- This includes NYC Reservation Fee and any other transaction fee\n\n- This includes the sales tax on transaction fees\n\n- Only refund the refundable amounts\n\n- Exclude non-refundable amounts\n\nActual behavior:\nOnly the greens fees are refunded; transaction fees remain charged.\n\nAcceptance criteria:\n\n- Mass Cancel refunds transaction fees along with greens fees when processing an eligible refund. The main purpose of the tool is provide refunds for course cancellations for which we do issue refunds for transaction fees.",
+        "descriptionHtml": "<p><strong>Description:</strong><br>When the Golf Mass Cancel tool processes a refund, it refunds the greens fees but does not refund the transaction fees. The tool should automatically refund both when processing the cancellation.</p><p><strong>Expected behavior:</strong><br>For eligible reservations processed through Mass Cancel, refund both the greens fees and transaction fees.</p><ul><li><p>This includes NYC Reservation Fee and any other transaction fee</p></li><li><p>This includes the sales tax on transaction fees</p></li><li><p>Only refund the refundable amounts</p><ul><li><p>Exclude non-refundable amounts</p></li></ul></li></ul><p><strong>Actual behavior:</strong><br>Only the greens fees are refunded; transaction fees remain charged.</p><p><strong>Acceptance criteria:</strong></p><ul><li><p>Mass Cancel refunds transaction fees along with greens fees when processing an eligible refund. The main purpose of the tool is provide refunds for course cancellations for which we do issue refunds for transaction fees.</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 3,
+        "comments": [
+          {
+            "id": "1246744",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14954?focusedCommentId=1246744",
+            "author": "Luis Vallejo Mursuli",
+            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+            "created": "2026-11-17T15:00:43.689-0500",
+            "createdDisplay": "Nov 17, 2026, 3:00 PM",
+            "updated": "2026-11-17T15:00:43.689-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Hey @Brian Pugh ,\n\nWorking on this ticket I’ve found a gap in the logic for a sibling scenario (not the main scenario mentioned in this ticket). I put together all the detail in the following .md file. Please take a look and let me know your opinion about it.\n\nThanks!",
+            "bodyHtml": "<p>Hey @Brian Pugh ,<br><br>Working on this ticket I’ve found a gap in the logic for a sibling scenario (not the main scenario mentioned in this ticket). I put together all the detail in the following .md file. Please take a look and let me know your opinion about it. <br><br>Thanks!<br><br> </p>"
+          },
+          {
+            "id": "1247407",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14954?focusedCommentId=1247407",
+            "author": "Brian Pugh",
+            "authorAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
+            "created": "2026-11-18T09:18:11.197-0500",
+            "createdDisplay": "Nov 18, 2026, 9:18 AM",
+            "updated": "2026-11-18T09:18:11.197-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "@Luis Vallejo Mursuli If Pay Later is the only outstanding scenario, i’d say you are good leave that *still not refunded. Pay Later has been disabled for over 8 years and in some scenario where we bring it back to life, we’ll deal with refundable fees at that time",
+            "bodyHtml": "<p>@Luis Vallejo Mursuli If Pay Later is the only outstanding scenario, i’d say you are good leave that *still not refunded. Pay Later has been disabled for over 8 years and in some scenario where we bring it back to life, we’ll deal with refundable fees at that time </p>"
+          },
+          {
+            "id": "1248676",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14954?focusedCommentId=1248676",
+            "author": "Luis Vallejo Mursuli",
+            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+            "created": "2026-11-19T19:01:18.791-0500",
+            "createdDisplay": "Nov 19, 2026, 7:01 PM",
+            "updated": "2026-11-19T19:01:18.791-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "QA,\n\nBelow the guide to test this changes. Please let me know if you have any questions.",
+            "bodyHtml": "<p>QA,</p><p>Below the guide to test this changes. Please let me know if you have any questions.<br><br> </p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14954?focusedCommentId=1248676",
+        "lastCommentDisplay": "Nov 19, 2026, 7:01 PM",
+        "lastCommentAuthor": "Luis Vallejo Mursuli",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "QA Testing (DEV)",
+        "priority": "P1",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Luis Vallejo Mursuli",
+        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
+        "updated": "2026-11-23T21:31:40.432-0500",
+        "updatedDisplay": "Nov 23, 2026, 9:31 PM",
+        "created": "2026-11-06T09:11:44.566-0500",
+        "createdDisplay": "Nov 6, 2026, 9:11 AM",
+        "components": [
+          "GolfNow.Services.Reservation"
+        ],
+        "fixVersions": [
+          "v3001.132.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14955",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14955",
+        "summary": "Funded coupon codes are not refunding cart fees",
+        "description": "Steps to recreate:\n\n- Set up a coupon code for Trade, Course, Course-Prepaid (Funded Coupon Code config)\n\n- Set to 100% off Green Fees\n\n- Apply to a Hot Deal that has cart fees enabled\n\n- Example: Oyster Reef in the /South Carolina master facility\n\n- See that the promo code only discounts the green fee portions and ignores the cart fee distribution\n\n- Before Code Added\n\n\"DueOnline\": {\n\"Items\": [\n{\n\"Discount\": 0,\n\"Distributions\": [\n{\n\"Amount\": 93.95,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"GRNFEETRADE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 9.74,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"GRNFEETRADE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 16.58,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 1.72,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n}\n],\n\n- After Code Added\n\n\"DueOnline\": {\n\"Items\": [\n{\n\"Discount\": 103.69,\n\"Distributions\": [\n{\n\"Amount\": 16.58,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 1.72,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n}\n],\n\"NonRefundableSalesTax\": 0.00,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 121.99,\n\"SalesTax\": 8.70,\n\"SubTotal\": 18.30,\n\"Total\": 27.00,\n\"DisplayText\": \"Greens Fee - Composite\",\n\"IsTaxIncluded\": false,\n\"Key\": \"GRNFEETRADE\",\n\"Type\": 1\n},\n{\n\"Discount\": 0,\n\"Distributions\": [\n{\n\"Amount\": 3.49,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": null,\n\"SourceItemKey\": \"TRNFEE\",\n\"TaxAmount\": 0\n}\n],\n\"NonRefundableSalesTax\": 0.00,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 3.49,\n\"SalesTax\": 0.09,\n\"SubTotal\": 3.49,\n\"Total\": 3.58,\n\"DisplayText\": \"Convenience Fee\",\n\"IsTaxIncluded\": false,\n\"Key\": \"TRNFEE\",\n\"Type\": 2\n}\n],\n\"Summary\": {\n\"Discount\": 103.69,\n\"Distributions\": null,\n\"Original\": 125.48,\n\"SalesTax\": 8.79,\n\"SubTotal\": 21.79,\n\"Total\": 30.58\n}\n\n- Expected\n\n- Funded Coupon Codes should reduce the GreenFee portion first then move onto CartFee\n\n- This applies to course prepaid too and should also reduce GreenFee first then move onto CartFee\n\n- Sales tax should remain non-discountable and should be left to be be remaining due and to be charged",
+        "descriptionHtml": "<p>Steps to recreate:</p><ol><li><p>Set up a coupon code for Trade, Course, Course-Prepaid (Funded Coupon Code config)</p></li><li><p>Set to 100% off Green Fees</p></li><li><p>Apply to a Hot Deal that has cart fees enabled</p><ol><li><p>Example: Oyster Reef in the /South Carolina master facility </p></li></ol></li><li><p>See that the promo code only discounts the green fee portions and ignores the cart fee distribution</p><ol><li><p>Before Code Added</p><pre><code>&quot;DueOnline&quot;: {\n        &quot;Items&quot;: [\n            {\n                &quot;Discount&quot;: 0,\n                &quot;Distributions&quot;: [\n                    {\n                        &quot;Amount&quot;: 93.95,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633852,\n                        &quot;SourceItemKey&quot;: &quot;GRNFEETRADE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 9.74,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633853,\n                        &quot;SourceItemKey&quot;: &quot;GRNFEETRADE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 16.58,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633852,\n                        &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 1.72,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633853,\n                        &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    }\n                ],</code></pre></li><li><p>After Code Added </p><pre><code>&quot;DueOnline&quot;: {\n            &quot;Items&quot;: [\n                {\n                    &quot;Discount&quot;: 103.69,\n                    &quot;Distributions&quot;: [\n                        {\n                            &quot;Amount&quot;: 16.58,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: 1633852,\n                            &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        },\n                        {\n                            &quot;Amount&quot;: 1.72,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: 1633853,\n                            &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        }\n                    ],\n                    &quot;NonRefundableSalesTax&quot;: 0.00,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 121.99,\n                    &quot;SalesTax&quot;: 8.70,\n                    &quot;SubTotal&quot;: 18.30,\n                    &quot;Total&quot;: 27.00,\n                    &quot;DisplayText&quot;: &quot;Greens Fee - Composite&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;GRNFEETRADE&quot;,\n                    &quot;Type&quot;: 1\n                },\n                {\n                    &quot;Discount&quot;: 0,\n                    &quot;Distributions&quot;: [\n                        {\n                            &quot;Amount&quot;: 3.49,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: null,\n                            &quot;SourceItemKey&quot;: &quot;TRNFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        }\n                    ],\n                    &quot;NonRefundableSalesTax&quot;: 0.00,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 3.49,\n                    &quot;SalesTax&quot;: 0.09,\n                    &quot;SubTotal&quot;: 3.49,\n                    &quot;Total&quot;: 3.58,\n                    &quot;DisplayText&quot;: &quot;Convenience Fee&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;TRNFEE&quot;,\n                    &quot;Type&quot;: 2\n                }\n            ],\n            &quot;Summary&quot;: {\n                &quot;Discount&quot;: 103.69,\n                &quot;Distributions&quot;: null,\n                &quot;Original&quot;: 125.48,\n                &quot;SalesTax&quot;: 8.79,\n                &quot;SubTotal&quot;: 21.79,\n                &quot;Total&quot;: 30.58\n            }</code></pre></li></ol></li><li><p>Expected</p><ol><li><p>Funded Coupon Codes should reduce the GreenFee portion first then move onto CartFee</p></li><li><p>This applies to course prepaid too and should also reduce GreenFee first then move onto CartFee</p></li><li><p>Sales tax should remain non-discountable and should be left to be be remaining due and to be charged</p></li></ol></li></ol>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1247821",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14955?focusedCommentId=1247821",
+            "author": "Yoel Martin Pardo",
+            "authorAccountId": "625571809e7380006fb29599",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+            "created": "2026-11-18T15:59:29.435-0500",
+            "createdDisplay": "Nov 18, 2026, 3:59 PM",
+            "updated": "2026-11-18T15:59:29.435-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "QA: We can apply funded coupon code to cart fee now. Please do regression on funded coupon code, we need to also check with vertex to make sure that what we are sending during bookings and refunds are correct, and also test existing bookings done prior to deploy this ticket. We have created a new table called CRMFundedCouponCodeAllocation that will stored the distribution of each item, greensfee, cartfee and transctionfee based of golfcourse and golfnow.",
+            "bodyHtml": "<p>QA: We can apply funded coupon code to cart fee now. Please do regression on funded coupon code, we need to also check with vertex to make sure that what we are sending during bookings and refunds are correct, and also test existing bookings done prior to deploy this ticket. We have created a new table called <code>CRMFundedCouponCodeAllocation</code> that will stored the distribution of each item, greensfee, cartfee and transctionfee based of golfcourse and golfnow. </p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14955?focusedCommentId=1247821",
+        "lastCommentDisplay": "Nov 18, 2026, 3:59 PM",
+        "lastCommentAuthor": "Yoel Martin Pardo",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Code Review",
+        "priority": "P1",
+        "assignee": "Raghav Kancherla",
+        "assigneeAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
+        "assignedDeveloper": "Yoel Martin Pardo",
+        "assignedDeveloperAccountId": "625571809e7380006fb29599",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
+        "updated": "2026-11-23T21:31:25.111-0500",
+        "updatedDisplay": "Nov 23, 2026, 9:31 PM",
+        "created": "2026-11-06T09:15:57.570-0500",
+        "createdDisplay": "Nov 6, 2026, 9:15 AM",
+        "components": [
+          "Database",
+          "GolfNow.Services.Reservation",
+          "GolfNowCentral"
+        ],
+        "fixVersions": [
+          "v3001.132.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14973",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14973",
+        "summary": "Add CancellationWindow field to GetFacility APIs",
+        "description": "We would like an explicit field that returns that value for the CancellationWindow so UI teams can display this value without parsing a text blob.\n\n- Add a new field to all GetFacility APIs\n\n- Field Name: CancellationWindow\n\n- Source: CRMGolfFacilitySalesforce\n\n- The same source we use for our cancellation policy\n\n-     \"Details\": \"Shingle Creek Golf Club has a 24-hour tee time cancellation policy. If you cancel within 24 hours of your tee time, your credit card may be charged up to the Total amount due (and any amounts pre-paid may not be refunded). If you cancel at least 24 hours prior to your tee time, any amounts already paid will be refunded to the original card used to purchase the tee time and may take up to 7 days to process.\",\n\"Key\": \"CANCELLATION_POLICY\"\n\n- If there is no value from CRMGolfFacilitySalesforce, we should follow the same logic to use the fallback for the Owner\n\n- I think this is set to 24 in either CRMConfig or CRMOwnerConfig or maybe its in code\n\n- This field should never return null",
+        "descriptionHtml": "<p>We would like an explicit field that returns that value for the CancellationWindow so UI teams can display this value without parsing a text blob. </p><ol><li><p>Add a new field to all GetFacility APIs</p><ol><li><p>Field Name: CancellationWindow</p></li><li><p>Source: CRMGolfFacilitySalesforce </p><ol><li><p>The same source we use for our cancellation policy </p></li><li><pre><code>    &quot;Details&quot;: &quot;Shingle Creek Golf Club has a 24-hour tee time cancellation policy. If you cancel within 24 hours of your tee time, your credit card may be charged up to the Total amount due (and any amounts pre-paid may not be refunded). If you cancel at least 24 hours prior to your tee time, any amounts already paid will be refunded to the original card used to purchase the tee time and may take up to 7 days to process.&quot;,\n            &quot;Key&quot;: &quot;CANCELLATION_POLICY&quot;</code></pre></li><li><p>If there is no value from CRMGolfFacilitySalesforce, we should follow the same logic to use the fallback for the Owner</p><ol><li><p>I think this is set to 24 in either CRMConfig or CRMOwnerConfig or maybe its in code</p></li></ol></li></ol></li><li><p>This field should never return null</p></li></ol></li></ol>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 2,
+        "comments": [
+          {
+            "id": "1244904",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14973?focusedCommentId=1244904",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-11-13T08:36:06.100-0500",
+            "createdDisplay": "Nov 13, 2026, 8:36 AM",
+            "updated": "2026-11-19T05:09:19.386-0500",
+            "updatedDisplay": "Nov 19, 2026, 5:09 AM",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "CORE-14973: CancellationWindowHours testing summary\n\nUpdated 2026-11-18: the configured default (rule step 3) is now built, with a database patch. See the step 3 notes, the deploy order, T-OPT4 and T-OPT5, and the known gaps.\n\nWhat's being tested: facility responses now return CancellationWindowHours. It's a whole number of hours, never null and never 0. It uses the same rule as the \"X-hour\" number in the CANCELLATION_POLICY text:\n\n- The facility's own Salesforce window.\n\n- Otherwise the global trade window divided by 60, if it's at least 60 minutes.\n\n- Otherwise the configured default: the CRM config value Reservations / Cancellation / DefaultCancellationWindowHours, read through the new proc dbo.GetDefaultCancellationWindow. The database patch sets it to 24.\n\n- Otherwise 24.\n\nThe field appears in:\n\n- API 2.1: facility detail and lists, facility summaries, home course suggestions, and favorites\n\n- Social expand=FavoriteCourses\n\n- The Salesforce bridge GetFacility\n\n- Management salesForce/facility\n\nKey behaviours to know\n\n- Caching: the API caches the hours for 30 minutes. For up to 30 minutes after a Salesforce or config change, the field can disagree with the policy text. This has been accepted.\n\n- CRM outage: if the lookup fails, the affected facilities return 24 for that request. The error is logged and nothing is cached. If only the configured default can't be read, facilities that already have a value keep it, and only the step 3 ones get 24.\n\n- Policy text change: a trade window under 60 minutes now gives the configured default (\"24-hour\" as seeded) instead of \"0-hour\".\n\n- Configured default looks like the fallback: the patch seeds 24, the same as the hard-coded fallback, so nothing changes in the API until someone edits the config value. Changing the value changes the field and the policy text together.\n\nDeploy order\n\nDeploy Notification before Management in every environment. A new Management build calling an old bridge returns 0.\n\nRun the database patch CORE-14993.05 (gn-main-db, CRM) before or together with the GolfNow API and Notification deploys. If the code goes first, the field still works: step 3 falls back to 24, but every lookup that reaches step 3 logs a warning until the patch runs. To roll back, roll the code back first or together with the patch's Rollback script.\n\nTest data - From the Developer Environment, your milage may vary.\n\nFacility\n\nScenario\n\nExpected\n\n55\n\nFacility window 48 h\n\n48\n\n4568\n\nFacility window 47 h\n\n47\n\n7094\n\nFacility window 6 h\n\n6\n\n2450\n\nFacility window 1 h\n\n1\n\n3023\n\nFacility window 8760 h (extreme)\n\n8760\n\n649\n\nNo policy row\n\n24 (fallback)\n\n237\n\nNULL window\n\n24 (fallback)\n\n8528\n\nWindow 0\n\n24 (fallback)\n\n20731\n\nNo Salesforce row\n\n24 (fallback)\n\nFor dev, stg and prd, get the expected values from the read-only script CORE-14973-A4-expected-cancellation-window.sql (attached here:   ).\n\nNOTE: If your data doesn’t match the above table due to environmental differences, please run the SQL-script and use that for your source of truth.\n\nDeveloper testing (done)\n\nArea\n\nWhat it checked\n\nResult\n\nFacility detail and lists (M1)\n\nCorrect values and field name on the smoke facilities\n\nPass\n\nFacility summaries (M2)\n\n234-result geo search: every facility has a value, none 0\n\nPass at the business layer. The response itself was blocked by account permissions, so it's covered by unit tests\n\nHome course suggestions (M3)\n\nAll four lists have correct non-zero values, for a customer with play history and one without\n\nPass (also fixes an earlier bug where all four lists returned 0)\n\nFavorites list and single (M4, M5)\n\nValues on favorite facilities\n\nPass\n\nLarge result set (M8)\n\nNormal response time, one policy lookup per request\n\nPass\n\nInvoice policy text (M9)\n\n\"X-hour\" wording unchanged\n\nPass\n\nConfirmation email text (M10)\n\nPolicy text through the Notification queue harness\n\nPass (no real email sent)\n\nSalesforce bridge (M11)\n\nGetFacility returns the field\n\nPass\n\nSummary search with no filters (M16)\n\nThe shape used by Top Rated in home course suggestions doesn't error\n\nPass\n\nUnit tests\n\nResolver rule, bulk lookup and configured default (16, including \"the configured default can't be read\"), mappers and JSON/XML name (8), bulk lookup, caching, cached-list refresh and CRM failure (10), no-filter summary search (1)\n\n35/35 pass (2026-11-18)\n\nSQL check (A4)\n\nExpected value per facility. Now also reads the configured default and shows \"configured default\" where step 3 decides\n\nDEV matches M1\n\nKnown gaps (covered by QA after deploy)\n\n- Social favorites (M6): not run, because the local Social service doesn't work. It uses the same code path as favorites. QA: T-AD4.\n\n- Facility summaries response (M2): not seen because of the permissions block. QA: T-AD2.\n\n- Real confirmation email (M10): not sent. QA: T-AD6.\n\n- Management (M13): not run, because it needs the new bridge deployed first. The Management project also has no unit tests. QA: T-AD8.\n\n- Configured default (rule step 3): built 2026-11-18 and covered by unit tests, but not yet committed or deployed. The database patch hasn't been run anywhere yet; a developer rehearsal of Apply and Rollback is still to do before it goes to DEV. The proc call itself has no unit test. Step 3 is only reached when the trade window is under 60 minutes, and DEV's is 1440, so it can only be seen with T-OPT4.\n\n- 24 default vs trade fallback: can't be told apart on DEV, because DEV's trade window is also 24 hours and the configured default is seeded as 24. Optional: T-OPT2 to T-OPT4.\n\nQA before merge (optional)\n\n#\n\nTest\n\nExpected\n\nT-BM1\n\nSmoke-check facility detail for 55, 2450, 649 and 3023\n\n48, 1, 24, 8760\n\nT-BM2\n\nFacility summaries for 55, 2450 and 649, using an account that has permission\n\n48, 1, 24\n\nT-BM3\n\nSummary search regression, with and without price and time filters\n\nNo error without filters; same results as develop with filters\n\nQA after DEV deployment\n\n#\n\nTest\n\nExpected\n\nT-AD1, T-AD2\n\nFacility detail, lists and summaries\n\nValues match the test data\n\nT-AD3\n\nHome course suggestions, including a customer with no history\n\n200 response, lists filled, no value is 0\n\nT-AD4\n\n:warning: Social favorites (gap). Request as the profile owner\n\n48 and 24 for 55 and 649\n\nT-AD5\n\nFavorites list and single\n\n48, 1, 24 on both\n\nT-AD6\n\n:warning: Real confirmation email (gap)\n\n\"48-hour\" and \"24-hour\", matching the field\n\nT-AD7\n\nNotification deploy check, then bridge GetFacility\n\nValues match; unknown facilities return Facility: null, not an error\n\nT-AD8\n\n:warning: Management (gap). Run only after T-AD7 passes\n\nMatches the bridge. A 0 means the deploy order is wrong\n\nT-AD9\n\nInvoice policy text regression\n\nSame \"X-hour\" wording as before\n\nT-AD10\n\nResponse time for a 200+ facility search\n\nIn line with develop\n\nT-AD11\n\nDatabase patch CORE-14993.05 is on DEV CRM: EXEC dbo.GetDefaultCancellationWindow\n\nOne row, 24. No \"default cancellation window\" warnings in the API logs\n\nOptional, but changes DEV data or config (agree with the team first):\n\n#\n\nTest\n\nExpected\n\nT-OPT1\n\nCache refresh after a Salesforce change\n\nNew value within about 30 minutes\n\nT-OPT2\n\nTrade window set to 720\n\n12, and \"12-hour\" in the text\n\nT-OPT3\n\nTrade window set to 30\n\n24 instead of 0 (from the configured default once the patch is on DEV; from the hard-coded 24 before that)\n\nT-OPT4\n\nAfter T-AD11: set the configured default to 6 and the trade window to 30. Check facilities 649, 237 and 8528 after the 30-minute cache. Restore both values afterwards\n\n6, and \"6-hour\" in the text. Facilities with their own window don't change\n\nT-OPT5\n\nWith T-OPT4: set the configured default to abc\n\n24, no error\n\nStaging and production\n\n- Run the database patch CORE-14993.05, then deploy Notification, then Management.\n\n- Run the A4 SQL to get the expected values.\n\n- Repeat the detail, summaries, bridge and Management checks for 3–4 facilities. Include at least one that uses its own window and one that falls back.\n\n- Check one email or invoice.\n\n- After the prd deploy, spot-check detail and Management.\n\nExit criteria\n\n- Every surface shows the field with the expected values.\n\n- The field is never missing, null or 0.\n\n- The field matches the policy text.\n\n- Management matches the bridge.\n\n- The three gap tests (T-AD4, T-AD6, T-AD8) and the database patch check (T-AD11) have passed.\n\nOpen questions\n\n- Is 24 the right starting value for the configured default? It matches the hard-coded fallback, so nothing changes until someone edits it. (Where it comes from is settled: CRM config.)\nThis has been agreed as a 24-hour default.  It exists as a constant in code (CancellationWindowResolver.DefaultCancellationWindowHours) and in database under dbo].[CRMConfig]WHERE  [Entity] = 'Reservations' AND [EntityID] = 'Cancellation' AND [Key] = 'DefaultCancellationWindowHours'\n\n- A follow-up ticket will decide whether the fallback should use the Course window instead of the Trade window.\n\nFull plan: plans/CORE-14973-CancellationWindowHours-Test-Plan.md here (   ) and on branch feature/CORE-14973. The attached copy is from 2026-11-13 and doesn't include the configured default tests.",
+            "bodyHtml": "<h3>CORE-14973: CancellationWindowHours testing summary</h3><p><em>Updated 2026-11-18: the configured default (rule step 3) is now built, with a database patch. See the step 3 notes, the deploy order, T-OPT4 and T-OPT5, and the known gaps.</em></p><p><strong>What's being tested: </strong>facility responses now return <code>CancellationWindowHours</code>. It's a whole number of hours, never null and never 0. It uses the same rule as the &quot;X-hour&quot; number in the CANCELLATION_POLICY text:</p><ol><li><p>The facility's own Salesforce window.</p></li><li><p>Otherwise the global trade window divided by 60, if it's at least 60 minutes.</p></li><li><p>Otherwise the configured default: the CRM config value <code>Reservations / Cancellation / DefaultCancellationWindowHours</code>, read through the new proc <code>dbo.GetDefaultCancellationWindow</code>. The database patch sets it to <strong>24</strong>.</p></li><li><p>Otherwise 24.</p></li></ol><p>The field appears in:</p><ul><li><p>API 2.1: facility detail and lists, facility summaries, home course suggestions, and favorites</p></li><li><p>Social <code>expand=FavoriteCourses</code></p></li><li><p>The Salesforce bridge <code>GetFacility</code></p></li><li><p>Management <code>salesForce/facility</code></p></li></ul><div class=\"description-note\"><p><strong>Key behaviours to know</strong></p><ul><li><p><strong>Caching: </strong>the API caches the hours for 30 minutes. For up to 30 minutes after a Salesforce or config change, the field can disagree with the policy text. This has been accepted.</p></li><li><p><strong>CRM outage: </strong>if the lookup fails, the affected facilities return 24 for that request. The error is logged and nothing is cached. If only the configured default can't be read, facilities that already have a value keep it, and only the step 3 ones get 24.</p></li><li><p><strong>Policy text change: </strong>a trade window under 60 minutes now gives the configured default (&quot;24-hour&quot; as seeded) instead of &quot;0-hour&quot;.</p></li><li><p><strong>Configured default looks like the fallback: </strong>the patch seeds 24, the same as the hard-coded fallback, so nothing changes in the API until someone edits the config value. Changing the value changes the field and the policy text together.</p></li></ul></div><div class=\"description-note\"><p><strong>Deploy order</strong></p><p>Deploy <strong>Notification before Management</strong> in every environment. A new Management build calling an old bridge returns <strong>0</strong>.</p><p>Run the database patch <strong>CORE-14993.05</strong> (gn-main-db, CRM) <strong>before or together with</strong> the GolfNow API and Notification deploys. If the code goes first, the field still works: step 3 falls back to 24, but every lookup that reaches step 3 logs a warning until the patch runs. To roll back, roll the code back first or together with the patch's Rollback script.</p></div><h3>Test data - From the Developer Environment, your milage may vary.</h3><div class=\"description-table-wrap\"><table><tr><th><p><strong>Facility</strong></p></th><th><p><strong>Scenario</strong></p></th><th><p><strong>Expected</strong></p></th></tr><tr><td><p>55</p></td><td><p>Facility window 48 h</p></td><td><p><strong>48</strong></p></td></tr><tr><td><p>4568</p></td><td><p>Facility window 47 h</p></td><td><p><strong>47</strong></p></td></tr><tr><td><p>7094</p></td><td><p>Facility window 6 h</p></td><td><p><strong>6</strong></p></td></tr><tr><td><p>2450</p></td><td><p>Facility window 1 h</p></td><td><p><strong>1</strong></p></td></tr><tr><td><p>3023</p></td><td><p>Facility window 8760 h (extreme)</p></td><td><p><strong>8760</strong></p></td></tr><tr><td><p>649</p></td><td><p>No policy row</p></td><td><p><strong>24</strong> (fallback)</p></td></tr><tr><td><p>237</p></td><td><p>NULL window</p></td><td><p><strong>24</strong> (fallback)</p></td></tr><tr><td><p>8528</p></td><td><p>Window 0</p></td><td><p><strong>24</strong> (fallback)</p></td></tr><tr><td><p>20731</p></td><td><p>No Salesforce row</p></td><td><p><strong>24</strong> (fallback)</p></td></tr></table></div><p>For dev, stg and prd, get the expected values from the read-only script <code>CORE-14973-A4-expected-cancellation-window.sql</code> (attached here:   ).</p><p>NOTE: If your data doesn’t match the above table due to environmental differences, please run the SQL-script and use that for your source of truth.</p><h3>Developer testing (done)</h3><div class=\"description-table-wrap\"><table><tr><th><p><strong>Area</strong></p></th><th><p><strong>What it checked</strong></p></th><th><p><strong>Result</strong></p></th></tr><tr><td><p>Facility detail and lists (M1)</p></td><td><p>Correct values and field name on the smoke facilities</p></td><td><p><strong>Pass</strong></p></td></tr><tr><td><p>Facility summaries (M2)</p></td><td><p>234-result geo search: every facility has a value, none 0</p></td><td><p><strong>Pass</strong> at the business layer. The response itself was blocked by account permissions, so it's covered by unit tests</p></td></tr><tr><td><p>Home course suggestions (M3)</p></td><td><p>All four lists have correct non-zero values, for a customer with play history and one without</p></td><td><p><strong>Pass</strong> (also fixes an earlier bug where all four lists returned 0)</p></td></tr><tr><td><p>Favorites list and single (M4, M5)</p></td><td><p>Values on favorite facilities</p></td><td><p><strong>Pass</strong></p></td></tr><tr><td><p>Large result set (M8)</p></td><td><p>Normal response time, one policy lookup per request</p></td><td><p><strong>Pass</strong></p></td></tr><tr><td><p>Invoice policy text (M9)</p></td><td><p>&quot;X-hour&quot; wording unchanged</p></td><td><p><strong>Pass</strong></p></td></tr><tr><td><p>Confirmation email text (M10)</p></td><td><p>Policy text through the Notification queue harness</p></td><td><p><strong>Pass</strong> (no real email sent)</p></td></tr><tr><td><p>Salesforce bridge (M11)</p></td><td><p><code>GetFacility</code> returns the field</p></td><td><p><strong>Pass</strong></p></td></tr><tr><td><p>Summary search with no filters (M16)</p></td><td><p>The shape used by Top Rated in home course suggestions doesn't error</p></td><td><p><strong>Pass</strong></p></td></tr><tr><td><p>Unit tests</p></td><td><p>Resolver rule, bulk lookup and configured default (16, including &quot;the configured default can't be read&quot;), mappers and JSON/XML name (8), bulk lookup, caching, cached-list refresh and CRM failure (10), no-filter summary search (1)</p></td><td><p><strong>35/35 pass</strong> (2026-11-18)</p></td></tr><tr><td><p>SQL check (A4)</p></td><td><p>Expected value per facility. Now also reads the configured default and shows &quot;configured default&quot; where step 3 decides</p></td><td><p>DEV matches M1</p></td></tr></table></div><h3>Known gaps (covered by QA after deploy)</h3><ul><li><p><strong>Social favorites (M6): </strong>not run, because the local Social service doesn't work. It uses the same code path as favorites. QA: T-AD4.</p></li><li><p><strong>Facility summaries response (M2): </strong>not seen because of the permissions block. QA: T-AD2.</p></li><li><p><strong>Real confirmation email (M10): </strong>not sent. QA: T-AD6.</p></li><li><p><strong>Management (M13): </strong>not run, because it needs the new bridge deployed first. The Management project also has no unit tests. QA: T-AD8.</p></li><li><p><strong>Configured default (rule step 3): </strong>built 2026-11-18 and covered by unit tests, but not yet committed or deployed. The database patch hasn't been run anywhere yet; a developer rehearsal of Apply and Rollback is still to do before it goes to DEV. The proc call itself has no unit test. Step 3 is only reached when the trade window is under 60 minutes, and DEV's is 1440, so it can only be seen with T-OPT4.</p></li><li><p><strong>24 default vs trade fallback: </strong>can't be told apart on DEV, because DEV's trade window is also 24 hours and the configured default is seeded as 24. Optional: T-OPT2 to T-OPT4.</p></li></ul><h3>QA before merge (optional)</h3><div class=\"description-table-wrap\"><table><tr><th><p><strong>#</strong></p></th><th><p><strong>Test</strong></p></th><th><p><strong>Expected</strong></p></th></tr><tr><td><p>T-BM1</p></td><td><p>Smoke-check facility detail for 55, 2450, 649 and 3023</p></td><td><p>48, 1, 24, 8760</p></td></tr><tr><td><p>T-BM2</p></td><td><p>Facility summaries for 55, 2450 and 649, using an account that has permission</p></td><td><p>48, 1, 24</p></td></tr><tr><td><p>T-BM3</p></td><td><p>Summary search regression, with and without price and time filters</p></td><td><p>No error without filters; same results as <code>develop</code> with filters</p></td></tr></table></div><h3>QA after DEV deployment</h3><div class=\"description-table-wrap\"><table><tr><th><p><strong>#</strong></p></th><th><p><strong>Test</strong></p></th><th><p><strong>Expected</strong></p></th></tr><tr><td><p>T-AD1, T-AD2</p></td><td><p>Facility detail, lists and summaries</p></td><td><p>Values match the test data</p></td></tr><tr><td><p>T-AD3</p></td><td><p>Home course suggestions, including a customer with no history</p></td><td><p>200 response, lists filled, no value is 0</p></td></tr><tr><td><p>T-AD4</p></td><td><p>:warning: <strong>Social favorites (gap).</strong> Request as the profile owner</p></td><td><p>48 and 24 for 55 and 649</p></td></tr><tr><td><p>T-AD5</p></td><td><p>Favorites list and single</p></td><td><p>48, 1, 24 on both</p></td></tr><tr><td><p>T-AD6</p></td><td><p>:warning: <strong>Real confirmation email (gap)</strong></p></td><td><p>&quot;48-hour&quot; and &quot;24-hour&quot;, matching the field</p></td></tr><tr><td><p>T-AD7</p></td><td><p>Notification deploy check, then bridge <code>GetFacility</code></p></td><td><p>Values match; unknown facilities return <code>Facility: null</code>, not an error</p></td></tr><tr><td><p>T-AD8</p></td><td><p>:warning: <strong>Management (gap).</strong> Run only after T-AD7 passes</p></td><td><p>Matches the bridge. A 0 means the deploy order is wrong</p></td></tr><tr><td><p>T-AD9</p></td><td><p>Invoice policy text regression</p></td><td><p>Same &quot;X-hour&quot; wording as before</p></td></tr><tr><td><p>T-AD10</p></td><td><p>Response time for a 200+ facility search</p></td><td><p>In line with <code>develop</code></p></td></tr><tr><td><p>T-AD11</p></td><td><p>Database patch CORE-14993.05 is on DEV CRM: <code>EXEC dbo.GetDefaultCancellationWindow</code></p></td><td><p>One row, <strong>24</strong>. No &quot;default cancellation window&quot; warnings in the API logs</p></td></tr></table></div><p><strong>Optional, but changes DEV data or config (agree with the team first):</strong></p><div class=\"description-table-wrap\"><table><tr><th><p><strong>#</strong></p></th><th><p><strong>Test</strong></p></th><th><p><strong>Expected</strong></p></th></tr><tr><td><p>T-OPT1</p></td><td><p>Cache refresh after a Salesforce change</p></td><td><p>New value within about 30 minutes</p></td></tr><tr><td><p>T-OPT2</p></td><td><p>Trade window set to 720</p></td><td><p><strong>12</strong>, and &quot;12-hour&quot; in the text</p></td></tr><tr><td><p>T-OPT3</p></td><td><p>Trade window set to 30</p></td><td><p><strong>24</strong> instead of 0 (from the configured default once the patch is on DEV; from the hard-coded 24 before that)</p></td></tr><tr><td><p>T-OPT4</p></td><td><p>After T-AD11: set the configured default to <code>6</code> and the trade window to 30. Check facilities 649, 237 and 8528 after the 30-minute cache. Restore both values afterwards</p></td><td><p><strong>6</strong>, and &quot;6-hour&quot; in the text. Facilities with their own window don't change</p></td></tr><tr><td><p>T-OPT5</p></td><td><p>With T-OPT4: set the configured default to <code>abc</code></p></td><td><p><strong>24</strong>, no error</p></td></tr></table></div><h3>Staging and production</h3><ol><li><p>Run the database patch CORE-14993.05, then deploy Notification, then Management.</p></li><li><p>Run the A4 SQL to get the expected values.</p></li><li><p>Repeat the detail, summaries, bridge and Management checks for 3–4 facilities. Include at least one that uses its own window and one that falls back.</p></li><li><p>Check one email or invoice.</p></li><li><p>After the prd deploy, spot-check detail and Management.</p></li></ol><h3>Exit criteria</h3><ul><li><p>Every surface shows the field with the expected values.</p></li><li><p>The field is never missing, null or 0.</p></li><li><p>The field matches the policy text.</p></li><li><p>Management matches the bridge.</p></li><li><p>The three gap tests (T-AD4, T-AD6, T-AD8) and the database patch check (T-AD11) have passed.</p></li></ul><h3>Open questions</h3><ul><li><p><s>Is 24 the right starting value for the configured default? It matches the hard-coded fallback, so nothing changes until someone edits it. (Where it comes from is settled: CRM config.)</s><br>This has been agreed as a 24-hour default.  It exists as a constant in code (<code>CancellationWindowResolver</code>.<code>DefaultCancellationWindowHours</code>) and in database under <code>dbo].[CRMConfig]</code>WHERE  [Entity] = 'Reservations' AND [EntityID] = 'Cancellation' AND [Key] = 'DefaultCancellationWindowHours'</p></li><li><p>A follow-up ticket will decide whether the fallback should use the Course window instead of the Trade window.</p></li></ul><p><em>Full plan: </em><code>plans/CORE-14973-CancellationWindowHours-Test-Plan.md</code><em> here (</em>   ) <em>and</em> <em>on branch </em><code>feature/CORE-14973</code><em>. The attached copy is from 2026-11-13 and doesn't include the configured default tests.</em></p>"
+          },
+          {
+            "id": "1244927",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14973?focusedCommentId=1244927",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-11-13T09:27:08.588-0500",
+            "createdDisplay": "Nov 13, 2026, 9:27 AM",
+            "updated": "2026-11-13T09:29:09.056-0500",
+            "updatedDisplay": "Nov 13, 2026, 9:29 AM",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Business - Followup work recommendation\n\nWhat we found\nWhile reviewing this change, we found a problem in how the GolfNow API reuses saved (cached) course information. To be fast, the API keeps one saved copy of each course's details in memory and shares it across all requests. Some requests then change parts of that shared copy for their own customer, for example the distance from the customer's location. When two customers search at the same moment, one can overwrite what the other sees.\n\nWho it affects, and how\n\n- Distance to course (most important): when two location searches hit the same courses at the same time, customers can see the wrong distance or a wrong \"closest first\" order. This happens today and isn't caused by this ticket.\n\n- Cancellation window (this ticket): a customer can briefly see the standard 24 hours in place of the course's real window, but only if our CRM system is having an outage at that moment. 24 hours is already the agreed fallback, so the risk here is low.\n\n- Other course details (perks, tags, product access): short-lived mix-ups are possible but rare.\n\nWhy it isn't fixed in this ticket\nThe issue is older than this work and affects more than the cancellation window. A proper fix changes how course data is handled on our busiest search endpoints, so it should be its own piece of work with its own testing.\n\nRecommendation\nOpen a follow-up ticket so each request works on its own copy of the course details and never changes the shared saved data. Fix the distance problem first.\n\n- Estimated size: about 3 to 4 days, including tests and a performance check.\n\n- Scope: GolfNow API only. No database changes, and no changes to what the API returns.\n\nThe technical plan is attached to this ticket ( ).",
+            "bodyHtml": "<h3>Business - Followup work recommendation</h3><p><strong>What we found</strong>\nWhile reviewing this change, we found a problem in how the GolfNow API reuses saved (cached) course information. To be fast, the API keeps one saved copy of each course's details in memory and shares it across all requests. Some requests then change parts of that shared copy for their own customer, for example the distance from the customer's location. When two customers search at the same moment, one can overwrite what the other sees.</p><p><strong>Who it affects, and how</strong></p><ul><li><p><strong>Distance to course (most important):</strong> when two location searches hit the same courses at the same time, customers can see the wrong distance or a wrong &quot;closest first&quot; order. This happens today and isn't caused by this ticket.</p></li><li><p><strong>Cancellation window (this ticket):</strong> a customer can briefly see the standard 24 hours in place of the course's real window, but only if our CRM system is having an outage at that moment. 24 hours is already the agreed fallback, so the risk here is low.</p></li><li><p><strong>Other course details (perks, tags, product access):</strong> short-lived mix-ups are possible but rare.</p></li></ul><p><strong>Why it isn't fixed in this ticket</strong>\nThe issue is older than this work and affects more than the cancellation window. A proper fix changes how course data is handled on our busiest search endpoints, so it should be its own piece of work with its own testing.</p><p><strong>Recommendation</strong>\nOpen a follow-up ticket so each request works on its own copy of the course details and never changes the shared saved data. Fix the distance problem first.</p><ul><li><p><strong>Estimated size:</strong> about 3 to 4 days, including tests and a performance check.</p></li><li><p><strong>Scope:</strong> GolfNow API only. No database changes, and no changes to what the API returns.</p></li></ul><p>The technical plan is attached to this ticket ( ).</p>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14973?focusedCommentId=1244927",
+        "lastCommentDisplay": "Nov 13, 2026, 9:27 AM",
+        "lastCommentAuthor": "Alex Wulff",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Development",
+        "priority": "P1",
+        "assignee": "Alex Wulff",
+        "assigneeAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "assignedDeveloper": "Alex Wulff",
+        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "updated": "2026-11-23T21:31:12.426-0500",
+        "updatedDisplay": "Nov 23, 2026, 9:31 PM",
+        "created": "2026-11-10T15:39:42.744-0500",
+        "createdDisplay": "Nov 10, 2026, 3:39 PM",
+        "components": [
+          "GolfNow.Management.API",
+          "GolfNow.Notification (Windows Service)",
+          "GolfNowAPI",
+          "Golf Shared Library"
+        ],
+        "fixVersions": [
+          "v3001.132.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
+        "key": "CORE-14994",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14994",
+        "summary": "Commerce Proxy API: return accurate HTTP status codes and add a global exception handler",
+        "description": "Every Commerce Proxy API endpoint decides its HTTP status by checking whether FailureReason contains the text \"Error Log ID\": 500 when it does, 400 otherwise. The status should come from what actually happened, not from message text.\n\nChanges:\n\n- Classify each failure where it happens and map it to a status in one place, for all eight Commerce endpoints (Inventory, Invoice, and Fulfillment):\n\n- 400 when the request is invalid or a business rule rejects it, including when GolfNow rejects the request with a 4xx.\n\n- 401 when the client token is missing, malformed, or expired.\n\n- 502 when GolfNow fails with a 5xx or an unreadable response.\n\n- 504 when GolfNow doesn't respond in time.\n\n- 500 for any other server-side failure (database, cache, or an unexpected error).\n\n- For endpoints with per-item failures (PrepareFulfillment, ExecuteFulfillment, ReverseFulfillment), the status reflects the most serious item failure. Each item keeps its own reason and Error Log ID.\n\n- Add a global exception handler that logs any exception that escapes an endpoint and returns a 500 with an Error Log ID in the same response shape the endpoints use.\n\n- Dispose HTTP request, content, and response objects in the GolfNow API client.\n\nResponse bodies and messages are unchanged. Status codes change for the cases above where they were previously 400 or 500.\n\nRaised from review of GolfNowEng/gn-svc-commerceproxy#102.",
+        "descriptionHtml": "<p>Every Commerce Proxy API endpoint decides its HTTP status by checking whether <code>FailureReason</code> contains the text &quot;Error Log ID&quot;: 500 when it does, 400 otherwise. The status should come from what actually happened, not from message text.</p><p>Changes:</p><ul><li><p>Classify each failure where it happens and map it to a status in one place, for all eight Commerce endpoints (Inventory, Invoice, and Fulfillment):</p><ul><li><p>400 when the request is invalid or a business rule rejects it, including when GolfNow rejects the request with a 4xx.</p></li><li><p>401 when the client token is missing, malformed, or expired.</p></li><li><p>502 when GolfNow fails with a 5xx or an unreadable response.</p></li><li><p>504 when GolfNow doesn't respond in time.</p></li><li><p>500 for any other server-side failure (database, cache, or an unexpected error).</p></li></ul></li><li><p>For endpoints with per-item failures (PrepareFulfillment, ExecuteFulfillment, ReverseFulfillment), the status reflects the most serious item failure. Each item keeps its own reason and Error Log ID.</p></li><li><p>Add a global exception handler that logs any exception that escapes an endpoint and returns a 500 with an Error Log ID in the same response shape the endpoints use.</p></li><li><p>Dispose HTTP request, content, and response objects in the GolfNow API client.</p></li></ul><p>Response bodies and messages are unchanged. Status codes change for the cases above where they were previously 400 or 500.</p><p>Raised from review of GolfNowEng/gn-svc-commerceproxy#102.</p>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1248442",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14994?focusedCommentId=1248442",
+            "author": "Tyler Olechnowicz",
+            "authorAccountId": "5d2396c1ea26c40c2043fc92",
+            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+            "created": "2026-11-19T12:59:04.675-0500",
+            "createdDisplay": "Nov 19, 2026, 12:59 PM",
+            "updated": "2026-11-19T12:59:04.675-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "QA Test Instructions\n\nWhat changed: the API's HTTP status codes now come from what actually went wrong, not from the text of the error message. Response bodies and messages are unchanged. You only need the Commerce Proxy Postman collection and a valid test cart. Failures that need broken infrastructure (GolfNow down or slow, Redis or the database unavailable) are not part of this test.\n\nSetup: in the Commerce Proxy Postman collection, run GenerateClientToken for a cart, and use that cart's CartKey in the requests below.\n\n#\n\nScenario\n\nExpected\n\n1\n\nSend a request with a valid token and a valid body. Try at least one request from each of the Inventory, Invoice, and Fulfillment folders.\n\n200, with the same body as before.\n\n2\n\nSend any request with the client-token header removed.\n\n401. FailureReason is \"The 'client-token' header is missing, malformed, or lacks a required claim.\" This was 400 before.\n\n3\n\nSend any request with a garbled client-token (change a few characters).\n\n401, same message as #2. This was 400 before.\n\n4\n\nSend a request with a token generated for cart A and CartKey set to cart B.\n\n400. \"The provided cart key does not match the one used to generate the client token.\" Unchanged from before.\n\n5\n\nSend a request with the wrong proxy username or password.\n\n401 with no result body. Unchanged from before.\n\n6\n\nOptional: reuse a token that is more than 30 minutes old.\n\n401. \"The client token has expired.\" This was 400 before.\n\n7\n\nReverseFulfillment for a tee time reservation that is already canceled.\n\n200. The item is in ReversedItems.\n\n8\n\nGenerateClientToken with valid input, then with a required field missing.\n\nValid input returns 200 with a token. A missing field returns 400. Unchanged from before.",
+            "bodyHtml": "<h3>QA Test Instructions</h3><p><strong>What changed:</strong> the API's HTTP status codes now come from what actually went wrong, not from the text of the error message. Response bodies and messages are unchanged. You only need the Commerce Proxy Postman collection and a valid test cart. Failures that need broken infrastructure (GolfNow down or slow, Redis or the database unavailable) are not part of this test.</p><p><strong>Setup:</strong> in the Commerce Proxy Postman collection, run <code>GenerateClientToken</code> for a cart, and use that cart's <code>CartKey</code> in the requests below.</p><div class=\"description-table-wrap\"><table><tr><th><p>#</p></th><th><p>Scenario</p></th><th><p>Expected</p></th></tr><tr><td><p>1</p></td><td><p>Send a request with a valid token and a valid body. Try at least one request from each of the <code>Inventory</code>, <code>Invoice</code>, and <code>Fulfillment</code> folders.</p></td><td><p><code>200</code>, with the same body as before.</p></td></tr><tr><td><p>2</p></td><td><p>Send any request with the <code>client-token</code> header removed.</p></td><td><p><code>401</code>. <code>FailureReason</code> is &quot;The 'client-token' header is missing, malformed, or lacks a required claim.&quot; This was <code>400</code> before.</p></td></tr><tr><td><p>3</p></td><td><p>Send any request with a garbled <code>client-token</code> (change a few characters).</p></td><td><p><code>401</code>, same message as #2. This was <code>400</code> before.</p></td></tr><tr><td><p>4</p></td><td><p>Send a request with a token generated for cart A and <code>CartKey</code> set to cart B.</p></td><td><p><code>400</code>. &quot;The provided cart key does not match the one used to generate the client token.&quot; Unchanged from before.</p></td></tr><tr><td><p>5</p></td><td><p>Send a request with the wrong proxy username or password.</p></td><td><p><code>401</code> with no result body. Unchanged from before.</p></td></tr><tr><td><p>6</p></td><td><p>Optional: reuse a token that is more than 30 minutes old.</p></td><td><p><code>401</code>. &quot;The client token has expired.&quot; This was <code>400</code> before.</p></td></tr><tr><td><p>7</p></td><td><p><code>ReverseFulfillment</code> for a tee time reservation that is already canceled.</p></td><td><p><code>200</code>. The item is in <code>ReversedItems</code>.</p></td></tr><tr><td><p>8</p></td><td><p><code>GenerateClientToken</code> with valid input, then with a required field missing.</p></td><td><p>Valid input returns <code>200</code> with a token. A missing field returns <code>400</code>. Unchanged from before.</p></td></tr></table></div>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14994?focusedCommentId=1248442",
+        "lastCommentDisplay": "Nov 19, 2026, 12:59 PM",
+        "lastCommentAuthor": "Tyler Olechnowicz",
+        "testChecklist": null,
+        "type": "Technical Debt",
+        "isSubtask": false,
+        "status": "QA Testing (DEV)",
+        "priority": "P2",
+        "assignee": "Dewan Kabir",
+        "assigneeAccountId": "630fb06bb433b060db559bdb",
+        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
+        "assignedDeveloper": "Tyler Olechnowicz",
+        "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
+        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
+        "updated": "2026-11-23T21:31:00.945-0500",
+        "updatedDisplay": "Nov 23, 2026, 9:31 PM",
+        "created": "2026-11-17T20:41:41.891-0500",
+        "createdDisplay": "Nov 17, 2026, 8:41 PM",
+        "components": [
+          "GolfNow.Services.CommerceProxy"
+        ],
+        "fixVersions": [
+          "v3001.132.0"
+        ],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14986",
         "url": "https://golfnow.atlassian.net/browse/CORE-14986",
         "summary": "Pro Agenda - Modifications To Amounts",
@@ -8346,106 +8676,6 @@
         }
       },
       {
-        "key": "CORE-14954",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14954",
-        "summary": "Mass cancellation tool in GNC does not refund transaction fees",
-        "description": "Description:\nWhen the Golf Mass Cancel tool processes a refund, it refunds the greens fees but does not refund the transaction fees. The tool should automatically refund both when processing the cancellation.\n\nExpected behavior:\nFor eligible reservations processed through Mass Cancel, refund both the greens fees and transaction fees.\n\n- This includes NYC Reservation Fee and any other transaction fee\n\n- This includes the sales tax on transaction fees\n\n- Only refund the refundable amounts\n\n- Exclude non-refundable amounts\n\nActual behavior:\nOnly the greens fees are refunded; transaction fees remain charged.\n\nAcceptance criteria:\n\n- Mass Cancel refunds transaction fees along with greens fees when processing an eligible refund. The main purpose of the tool is provide refunds for course cancellations for which we do issue refunds for transaction fees.",
-        "descriptionHtml": "<p><strong>Description:</strong><br>When the Golf Mass Cancel tool processes a refund, it refunds the greens fees but does not refund the transaction fees. The tool should automatically refund both when processing the cancellation.</p><p><strong>Expected behavior:</strong><br>For eligible reservations processed through Mass Cancel, refund both the greens fees and transaction fees.</p><ul><li><p>This includes NYC Reservation Fee and any other transaction fee</p></li><li><p>This includes the sales tax on transaction fees</p></li><li><p>Only refund the refundable amounts</p><ul><li><p>Exclude non-refundable amounts</p></li></ul></li></ul><p><strong>Actual behavior:</strong><br>Only the greens fees are refunded; transaction fees remain charged.</p><p><strong>Acceptance criteria:</strong></p><ul><li><p>Mass Cancel refunds transaction fees along with greens fees when processing an eligible refund. The main purpose of the tool is provide refunds for course cancellations for which we do issue refunds for transaction fees.</p></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 3,
-        "comments": [
-          {
-            "id": "1246744",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14954?focusedCommentId=1246744",
-            "author": "Luis Vallejo Mursuli",
-            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-            "created": "2026-11-17T15:00:43.689-0500",
-            "createdDisplay": "Nov 17, 2026, 3:00 PM",
-            "updated": "2026-11-17T15:00:43.689-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Hey @Brian Pugh ,\n\nWorking on this ticket I’ve found a gap in the logic for a sibling scenario (not the main scenario mentioned in this ticket). I put together all the detail in the following .md file. Please take a look and let me know your opinion about it.\n\nThanks!",
-            "bodyHtml": "<p>Hey @Brian Pugh ,<br><br>Working on this ticket I’ve found a gap in the logic for a sibling scenario (not the main scenario mentioned in this ticket). I put together all the detail in the following .md file. Please take a look and let me know your opinion about it. <br><br>Thanks!<br><br> </p>"
-          },
-          {
-            "id": "1247407",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14954?focusedCommentId=1247407",
-            "author": "Brian Pugh",
-            "authorAccountId": "557058:79515867-a346-45f1-bb5e-5bc2e73b125a",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/BP-5.png",
-            "created": "2026-11-18T09:18:11.197-0500",
-            "createdDisplay": "Nov 18, 2026, 9:18 AM",
-            "updated": "2026-11-18T09:18:11.197-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "@Luis Vallejo Mursuli If Pay Later is the only outstanding scenario, i’d say you are good leave that *still not refunded. Pay Later has been disabled for over 8 years and in some scenario where we bring it back to life, we’ll deal with refundable fees at that time",
-            "bodyHtml": "<p>@Luis Vallejo Mursuli If Pay Later is the only outstanding scenario, i’d say you are good leave that *still not refunded. Pay Later has been disabled for over 8 years and in some scenario where we bring it back to life, we’ll deal with refundable fees at that time </p>"
-          },
-          {
-            "id": "1248676",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14954?focusedCommentId=1248676",
-            "author": "Luis Vallejo Mursuli",
-            "authorAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-            "created": "2026-11-19T19:01:18.791-0500",
-            "createdDisplay": "Nov 19, 2026, 7:01 PM",
-            "updated": "2026-11-19T19:01:18.791-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "QA,\n\nBelow the guide to test this changes. Please let me know if you have any questions.",
-            "bodyHtml": "<p>QA,</p><p>Below the guide to test this changes. Please let me know if you have any questions.<br><br> </p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14954?focusedCommentId=1248676",
-        "lastCommentDisplay": "Nov 19, 2026, 7:01 PM",
-        "lastCommentAuthor": "Luis Vallejo Mursuli",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "QA Testing (DEV)",
-        "priority": "P1",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Luis Vallejo Mursuli",
-        "assignedDeveloperAccountId": "712020:2e637bb4-c610-467b-839d-9a5b84f75f01",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/712020:2e637bb4-c610-467b-839d-9a5b84f75f01/4dca1d1b-3faa-4d03-90b8-2b3e0cc02887/32",
-        "updated": "2026-11-19T19:01:18.791-0500",
-        "updatedDisplay": "Nov 19, 2026, 7:01 PM",
-        "created": "2026-11-06T09:11:44.566-0500",
-        "createdDisplay": "Nov 6, 2026, 9:11 AM",
-        "components": [
-          "GolfNow.Services.Reservation"
-        ],
-        "fixVersions": [
-          "v3001.132.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
         "key": "CORE-14945",
         "url": "https://golfnow.atlassian.net/browse/CORE-14945",
         "summary": "Topgolf | Persist SessionId and RequestId for support tracing",
@@ -8564,164 +8794,6 @@
         "createdDisplay": "Nov 19, 2026, 3:55 PM",
         "components": [],
         "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14994",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14994",
-        "summary": "Commerce Proxy API: return accurate HTTP status codes and add a global exception handler",
-        "description": "Every Commerce Proxy API endpoint decides its HTTP status by checking whether FailureReason contains the text \"Error Log ID\": 500 when it does, 400 otherwise. The status should come from what actually happened, not from message text.\n\nChanges:\n\n- Classify each failure where it happens and map it to a status in one place, for all eight Commerce endpoints (Inventory, Invoice, and Fulfillment):\n\n- 400 when the request is invalid or a business rule rejects it, including when GolfNow rejects the request with a 4xx.\n\n- 401 when the client token is missing, malformed, or expired.\n\n- 502 when GolfNow fails with a 5xx or an unreadable response.\n\n- 504 when GolfNow doesn't respond in time.\n\n- 500 for any other server-side failure (database, cache, or an unexpected error).\n\n- For endpoints with per-item failures (PrepareFulfillment, ExecuteFulfillment, ReverseFulfillment), the status reflects the most serious item failure. Each item keeps its own reason and Error Log ID.\n\n- Add a global exception handler that logs any exception that escapes an endpoint and returns a 500 with an Error Log ID in the same response shape the endpoints use.\n\n- Dispose HTTP request, content, and response objects in the GolfNow API client.\n\nResponse bodies and messages are unchanged. Status codes change for the cases above where they were previously 400 or 500.\n\nRaised from review of GolfNowEng/gn-svc-commerceproxy#102.",
-        "descriptionHtml": "<p>Every Commerce Proxy API endpoint decides its HTTP status by checking whether <code>FailureReason</code> contains the text &quot;Error Log ID&quot;: 500 when it does, 400 otherwise. The status should come from what actually happened, not from message text.</p><p>Changes:</p><ul><li><p>Classify each failure where it happens and map it to a status in one place, for all eight Commerce endpoints (Inventory, Invoice, and Fulfillment):</p><ul><li><p>400 when the request is invalid or a business rule rejects it, including when GolfNow rejects the request with a 4xx.</p></li><li><p>401 when the client token is missing, malformed, or expired.</p></li><li><p>502 when GolfNow fails with a 5xx or an unreadable response.</p></li><li><p>504 when GolfNow doesn't respond in time.</p></li><li><p>500 for any other server-side failure (database, cache, or an unexpected error).</p></li></ul></li><li><p>For endpoints with per-item failures (PrepareFulfillment, ExecuteFulfillment, ReverseFulfillment), the status reflects the most serious item failure. Each item keeps its own reason and Error Log ID.</p></li><li><p>Add a global exception handler that logs any exception that escapes an endpoint and returns a 500 with an Error Log ID in the same response shape the endpoints use.</p></li><li><p>Dispose HTTP request, content, and response objects in the GolfNow API client.</p></li></ul><p>Response bodies and messages are unchanged. Status codes change for the cases above where they were previously 400 or 500.</p><p>Raised from review of GolfNowEng/gn-svc-commerceproxy#102.</p>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1248442",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14994?focusedCommentId=1248442",
-            "author": "Tyler Olechnowicz",
-            "authorAccountId": "5d2396c1ea26c40c2043fc92",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-            "created": "2026-11-19T12:59:04.675-0500",
-            "createdDisplay": "Nov 19, 2026, 12:59 PM",
-            "updated": "2026-11-19T12:59:04.675-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "QA Test Instructions\n\nWhat changed: the API's HTTP status codes now come from what actually went wrong, not from the text of the error message. Response bodies and messages are unchanged. You only need the Commerce Proxy Postman collection and a valid test cart. Failures that need broken infrastructure (GolfNow down or slow, Redis or the database unavailable) are not part of this test.\n\nSetup: in the Commerce Proxy Postman collection, run GenerateClientToken for a cart, and use that cart's CartKey in the requests below.\n\n#\n\nScenario\n\nExpected\n\n1\n\nSend a request with a valid token and a valid body. Try at least one request from each of the Inventory, Invoice, and Fulfillment folders.\n\n200, with the same body as before.\n\n2\n\nSend any request with the client-token header removed.\n\n401. FailureReason is \"The 'client-token' header is missing, malformed, or lacks a required claim.\" This was 400 before.\n\n3\n\nSend any request with a garbled client-token (change a few characters).\n\n401, same message as #2. This was 400 before.\n\n4\n\nSend a request with a token generated for cart A and CartKey set to cart B.\n\n400. \"The provided cart key does not match the one used to generate the client token.\" Unchanged from before.\n\n5\n\nSend a request with the wrong proxy username or password.\n\n401 with no result body. Unchanged from before.\n\n6\n\nOptional: reuse a token that is more than 30 minutes old.\n\n401. \"The client token has expired.\" This was 400 before.\n\n7\n\nReverseFulfillment for a tee time reservation that is already canceled.\n\n200. The item is in ReversedItems.\n\n8\n\nGenerateClientToken with valid input, then with a required field missing.\n\nValid input returns 200 with a token. A missing field returns 400. Unchanged from before.",
-            "bodyHtml": "<h3>QA Test Instructions</h3><p><strong>What changed:</strong> the API's HTTP status codes now come from what actually went wrong, not from the text of the error message. Response bodies and messages are unchanged. You only need the Commerce Proxy Postman collection and a valid test cart. Failures that need broken infrastructure (GolfNow down or slow, Redis or the database unavailable) are not part of this test.</p><p><strong>Setup:</strong> in the Commerce Proxy Postman collection, run <code>GenerateClientToken</code> for a cart, and use that cart's <code>CartKey</code> in the requests below.</p><div class=\"description-table-wrap\"><table><tr><th><p>#</p></th><th><p>Scenario</p></th><th><p>Expected</p></th></tr><tr><td><p>1</p></td><td><p>Send a request with a valid token and a valid body. Try at least one request from each of the <code>Inventory</code>, <code>Invoice</code>, and <code>Fulfillment</code> folders.</p></td><td><p><code>200</code>, with the same body as before.</p></td></tr><tr><td><p>2</p></td><td><p>Send any request with the <code>client-token</code> header removed.</p></td><td><p><code>401</code>. <code>FailureReason</code> is &quot;The 'client-token' header is missing, malformed, or lacks a required claim.&quot; This was <code>400</code> before.</p></td></tr><tr><td><p>3</p></td><td><p>Send any request with a garbled <code>client-token</code> (change a few characters).</p></td><td><p><code>401</code>, same message as #2. This was <code>400</code> before.</p></td></tr><tr><td><p>4</p></td><td><p>Send a request with a token generated for cart A and <code>CartKey</code> set to cart B.</p></td><td><p><code>400</code>. &quot;The provided cart key does not match the one used to generate the client token.&quot; Unchanged from before.</p></td></tr><tr><td><p>5</p></td><td><p>Send a request with the wrong proxy username or password.</p></td><td><p><code>401</code> with no result body. Unchanged from before.</p></td></tr><tr><td><p>6</p></td><td><p>Optional: reuse a token that is more than 30 minutes old.</p></td><td><p><code>401</code>. &quot;The client token has expired.&quot; This was <code>400</code> before.</p></td></tr><tr><td><p>7</p></td><td><p><code>ReverseFulfillment</code> for a tee time reservation that is already canceled.</p></td><td><p><code>200</code>. The item is in <code>ReversedItems</code>.</p></td></tr><tr><td><p>8</p></td><td><p><code>GenerateClientToken</code> with valid input, then with a required field missing.</p></td><td><p>Valid input returns <code>200</code> with a token. A missing field returns <code>400</code>. Unchanged from before.</p></td></tr></table></div>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14994?focusedCommentId=1248442",
-        "lastCommentDisplay": "Nov 19, 2026, 12:59 PM",
-        "lastCommentAuthor": "Tyler Olechnowicz",
-        "testChecklist": null,
-        "type": "Technical Debt",
-        "isSubtask": false,
-        "status": "QA Testing (DEV)",
-        "priority": "P2",
-        "assignee": "Dewan Kabir",
-        "assigneeAccountId": "630fb06bb433b060db559bdb",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/630fb06bb433b060db559bdb/32ec0eb9-63e5-4027-9641-1dd0e01b4d01/32",
-        "assignedDeveloper": "Tyler Olechnowicz",
-        "assignedDeveloperAccountId": "5d2396c1ea26c40c2043fc92",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/5d2396c1ea26c40c2043fc92/1647fb84-acea-4c3f-b1e8-9a79aa120f8f/32",
-        "updated": "2026-11-19T12:59:04.675-0500",
-        "updatedDisplay": "Nov 19, 2026, 12:59 PM",
-        "created": "2026-11-17T20:41:41.891-0500",
-        "createdDisplay": "Nov 17, 2026, 8:41 PM",
-        "components": [
-          "GolfNow.Services.CommerceProxy"
-        ],
-        "fixVersions": [
-          "v3001.132.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14973",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14973",
-        "summary": "Add CancellationWindow field to GetFacility APIs",
-        "description": "We would like an explicit field that returns that value for the CancellationWindow so UI teams can display this value without parsing a text blob.\n\n- Add a new field to all GetFacility APIs\n\n- Field Name: CancellationWindow\n\n- Source: CRMGolfFacilitySalesforce\n\n- The same source we use for our cancellation policy\n\n-     \"Details\": \"Shingle Creek Golf Club has a 24-hour tee time cancellation policy. If you cancel within 24 hours of your tee time, your credit card may be charged up to the Total amount due (and any amounts pre-paid may not be refunded). If you cancel at least 24 hours prior to your tee time, any amounts already paid will be refunded to the original card used to purchase the tee time and may take up to 7 days to process.\",\n\"Key\": \"CANCELLATION_POLICY\"\n\n- If there is no value from CRMGolfFacilitySalesforce, we should follow the same logic to use the fallback for the Owner\n\n- I think this is set to 24 in either CRMConfig or CRMOwnerConfig or maybe its in code\n\n- This field should never return null",
-        "descriptionHtml": "<p>We would like an explicit field that returns that value for the CancellationWindow so UI teams can display this value without parsing a text blob. </p><ol><li><p>Add a new field to all GetFacility APIs</p><ol><li><p>Field Name: CancellationWindow</p></li><li><p>Source: CRMGolfFacilitySalesforce </p><ol><li><p>The same source we use for our cancellation policy </p></li><li><pre><code>    &quot;Details&quot;: &quot;Shingle Creek Golf Club has a 24-hour tee time cancellation policy. If you cancel within 24 hours of your tee time, your credit card may be charged up to the Total amount due (and any amounts pre-paid may not be refunded). If you cancel at least 24 hours prior to your tee time, any amounts already paid will be refunded to the original card used to purchase the tee time and may take up to 7 days to process.&quot;,\n            &quot;Key&quot;: &quot;CANCELLATION_POLICY&quot;</code></pre></li><li><p>If there is no value from CRMGolfFacilitySalesforce, we should follow the same logic to use the fallback for the Owner</p><ol><li><p>I think this is set to 24 in either CRMConfig or CRMOwnerConfig or maybe its in code</p></li></ol></li></ol></li><li><p>This field should never return null</p></li></ol></li></ol>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 2,
-        "comments": [
-          {
-            "id": "1244904",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14973?focusedCommentId=1244904",
-            "author": "Alex Wulff",
-            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-            "created": "2026-11-13T08:36:06.100-0500",
-            "createdDisplay": "Nov 13, 2026, 8:36 AM",
-            "updated": "2026-11-19T05:09:19.386-0500",
-            "updatedDisplay": "Nov 19, 2026, 5:09 AM",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "CORE-14973: CancellationWindowHours testing summary\n\nUpdated 2026-11-18: the configured default (rule step 3) is now built, with a database patch. See the step 3 notes, the deploy order, T-OPT4 and T-OPT5, and the known gaps.\n\nWhat's being tested: facility responses now return CancellationWindowHours. It's a whole number of hours, never null and never 0. It uses the same rule as the \"X-hour\" number in the CANCELLATION_POLICY text:\n\n- The facility's own Salesforce window.\n\n- Otherwise the global trade window divided by 60, if it's at least 60 minutes.\n\n- Otherwise the configured default: the CRM config value Reservations / Cancellation / DefaultCancellationWindowHours, read through the new proc dbo.GetDefaultCancellationWindow. The database patch sets it to 24.\n\n- Otherwise 24.\n\nThe field appears in:\n\n- API 2.1: facility detail and lists, facility summaries, home course suggestions, and favorites\n\n- Social expand=FavoriteCourses\n\n- The Salesforce bridge GetFacility\n\n- Management salesForce/facility\n\nKey behaviours to know\n\n- Caching: the API caches the hours for 30 minutes. For up to 30 minutes after a Salesforce or config change, the field can disagree with the policy text. This has been accepted.\n\n- CRM outage: if the lookup fails, the affected facilities return 24 for that request. The error is logged and nothing is cached. If only the configured default can't be read, facilities that already have a value keep it, and only the step 3 ones get 24.\n\n- Policy text change: a trade window under 60 minutes now gives the configured default (\"24-hour\" as seeded) instead of \"0-hour\".\n\n- Configured default looks like the fallback: the patch seeds 24, the same as the hard-coded fallback, so nothing changes in the API until someone edits the config value. Changing the value changes the field and the policy text together.\n\nDeploy order\n\nDeploy Notification before Management in every environment. A new Management build calling an old bridge returns 0.\n\nRun the database patch CORE-14993.05 (gn-main-db, CRM) before or together with the GolfNow API and Notification deploys. If the code goes first, the field still works: step 3 falls back to 24, but every lookup that reaches step 3 logs a warning until the patch runs. To roll back, roll the code back first or together with the patch's Rollback script.\n\nTest data - From the Developer Environment, your milage may vary.\n\nFacility\n\nScenario\n\nExpected\n\n55\n\nFacility window 48 h\n\n48\n\n4568\n\nFacility window 47 h\n\n47\n\n7094\n\nFacility window 6 h\n\n6\n\n2450\n\nFacility window 1 h\n\n1\n\n3023\n\nFacility window 8760 h (extreme)\n\n8760\n\n649\n\nNo policy row\n\n24 (fallback)\n\n237\n\nNULL window\n\n24 (fallback)\n\n8528\n\nWindow 0\n\n24 (fallback)\n\n20731\n\nNo Salesforce row\n\n24 (fallback)\n\nFor dev, stg and prd, get the expected values from the read-only script CORE-14973-A4-expected-cancellation-window.sql (attached here:   ).\n\nNOTE: If your data doesn’t match the above table due to environmental differences, please run the SQL-script and use that for your source of truth.\n\nDeveloper testing (done)\n\nArea\n\nWhat it checked\n\nResult\n\nFacility detail and lists (M1)\n\nCorrect values and field name on the smoke facilities\n\nPass\n\nFacility summaries (M2)\n\n234-result geo search: every facility has a value, none 0\n\nPass at the business layer. The response itself was blocked by account permissions, so it's covered by unit tests\n\nHome course suggestions (M3)\n\nAll four lists have correct non-zero values, for a customer with play history and one without\n\nPass (also fixes an earlier bug where all four lists returned 0)\n\nFavorites list and single (M4, M5)\n\nValues on favorite facilities\n\nPass\n\nLarge result set (M8)\n\nNormal response time, one policy lookup per request\n\nPass\n\nInvoice policy text (M9)\n\n\"X-hour\" wording unchanged\n\nPass\n\nConfirmation email text (M10)\n\nPolicy text through the Notification queue harness\n\nPass (no real email sent)\n\nSalesforce bridge (M11)\n\nGetFacility returns the field\n\nPass\n\nSummary search with no filters (M16)\n\nThe shape used by Top Rated in home course suggestions doesn't error\n\nPass\n\nUnit tests\n\nResolver rule, bulk lookup and configured default (16, including \"the configured default can't be read\"), mappers and JSON/XML name (8), bulk lookup, caching, cached-list refresh and CRM failure (10), no-filter summary search (1)\n\n35/35 pass (2026-11-18)\n\nSQL check (A4)\n\nExpected value per facility. Now also reads the configured default and shows \"configured default\" where step 3 decides\n\nDEV matches M1\n\nKnown gaps (covered by QA after deploy)\n\n- Social favorites (M6): not run, because the local Social service doesn't work. It uses the same code path as favorites. QA: T-AD4.\n\n- Facility summaries response (M2): not seen because of the permissions block. QA: T-AD2.\n\n- Real confirmation email (M10): not sent. QA: T-AD6.\n\n- Management (M13): not run, because it needs the new bridge deployed first. The Management project also has no unit tests. QA: T-AD8.\n\n- Configured default (rule step 3): built 2026-11-18 and covered by unit tests, but not yet committed or deployed. The database patch hasn't been run anywhere yet; a developer rehearsal of Apply and Rollback is still to do before it goes to DEV. The proc call itself has no unit test. Step 3 is only reached when the trade window is under 60 minutes, and DEV's is 1440, so it can only be seen with T-OPT4.\n\n- 24 default vs trade fallback: can't be told apart on DEV, because DEV's trade window is also 24 hours and the configured default is seeded as 24. Optional: T-OPT2 to T-OPT4.\n\nQA before merge (optional)\n\n#\n\nTest\n\nExpected\n\nT-BM1\n\nSmoke-check facility detail for 55, 2450, 649 and 3023\n\n48, 1, 24, 8760\n\nT-BM2\n\nFacility summaries for 55, 2450 and 649, using an account that has permission\n\n48, 1, 24\n\nT-BM3\n\nSummary search regression, with and without price and time filters\n\nNo error without filters; same results as develop with filters\n\nQA after DEV deployment\n\n#\n\nTest\n\nExpected\n\nT-AD1, T-AD2\n\nFacility detail, lists and summaries\n\nValues match the test data\n\nT-AD3\n\nHome course suggestions, including a customer with no history\n\n200 response, lists filled, no value is 0\n\nT-AD4\n\n:warning: Social favorites (gap). Request as the profile owner\n\n48 and 24 for 55 and 649\n\nT-AD5\n\nFavorites list and single\n\n48, 1, 24 on both\n\nT-AD6\n\n:warning: Real confirmation email (gap)\n\n\"48-hour\" and \"24-hour\", matching the field\n\nT-AD7\n\nNotification deploy check, then bridge GetFacility\n\nValues match; unknown facilities return Facility: null, not an error\n\nT-AD8\n\n:warning: Management (gap). Run only after T-AD7 passes\n\nMatches the bridge. A 0 means the deploy order is wrong\n\nT-AD9\n\nInvoice policy text regression\n\nSame \"X-hour\" wording as before\n\nT-AD10\n\nResponse time for a 200+ facility search\n\nIn line with develop\n\nT-AD11\n\nDatabase patch CORE-14993.05 is on DEV CRM: EXEC dbo.GetDefaultCancellationWindow\n\nOne row, 24. No \"default cancellation window\" warnings in the API logs\n\nOptional, but changes DEV data or config (agree with the team first):\n\n#\n\nTest\n\nExpected\n\nT-OPT1\n\nCache refresh after a Salesforce change\n\nNew value within about 30 minutes\n\nT-OPT2\n\nTrade window set to 720\n\n12, and \"12-hour\" in the text\n\nT-OPT3\n\nTrade window set to 30\n\n24 instead of 0 (from the configured default once the patch is on DEV; from the hard-coded 24 before that)\n\nT-OPT4\n\nAfter T-AD11: set the configured default to 6 and the trade window to 30. Check facilities 649, 237 and 8528 after the 30-minute cache. Restore both values afterwards\n\n6, and \"6-hour\" in the text. Facilities with their own window don't change\n\nT-OPT5\n\nWith T-OPT4: set the configured default to abc\n\n24, no error\n\nStaging and production\n\n- Run the database patch CORE-14993.05, then deploy Notification, then Management.\n\n- Run the A4 SQL to get the expected values.\n\n- Repeat the detail, summaries, bridge and Management checks for 3–4 facilities. Include at least one that uses its own window and one that falls back.\n\n- Check one email or invoice.\n\n- After the prd deploy, spot-check detail and Management.\n\nExit criteria\n\n- Every surface shows the field with the expected values.\n\n- The field is never missing, null or 0.\n\n- The field matches the policy text.\n\n- Management matches the bridge.\n\n- The three gap tests (T-AD4, T-AD6, T-AD8) and the database patch check (T-AD11) have passed.\n\nOpen questions\n\n- Is 24 the right starting value for the configured default? It matches the hard-coded fallback, so nothing changes until someone edits it. (Where it comes from is settled: CRM config.)\nThis has been agreed as a 24-hour default.  It exists as a constant in code (CancellationWindowResolver.DefaultCancellationWindowHours) and in database under dbo].[CRMConfig]WHERE  [Entity] = 'Reservations' AND [EntityID] = 'Cancellation' AND [Key] = 'DefaultCancellationWindowHours'\n\n- A follow-up ticket will decide whether the fallback should use the Course window instead of the Trade window.\n\nFull plan: plans/CORE-14973-CancellationWindowHours-Test-Plan.md here (   ) and on branch feature/CORE-14973. The attached copy is from 2026-11-13 and doesn't include the configured default tests.",
-            "bodyHtml": "<h3>CORE-14973: CancellationWindowHours testing summary</h3><p><em>Updated 2026-11-18: the configured default (rule step 3) is now built, with a database patch. See the step 3 notes, the deploy order, T-OPT4 and T-OPT5, and the known gaps.</em></p><p><strong>What's being tested: </strong>facility responses now return <code>CancellationWindowHours</code>. It's a whole number of hours, never null and never 0. It uses the same rule as the &quot;X-hour&quot; number in the CANCELLATION_POLICY text:</p><ol><li><p>The facility's own Salesforce window.</p></li><li><p>Otherwise the global trade window divided by 60, if it's at least 60 minutes.</p></li><li><p>Otherwise the configured default: the CRM config value <code>Reservations / Cancellation / DefaultCancellationWindowHours</code>, read through the new proc <code>dbo.GetDefaultCancellationWindow</code>. The database patch sets it to <strong>24</strong>.</p></li><li><p>Otherwise 24.</p></li></ol><p>The field appears in:</p><ul><li><p>API 2.1: facility detail and lists, facility summaries, home course suggestions, and favorites</p></li><li><p>Social <code>expand=FavoriteCourses</code></p></li><li><p>The Salesforce bridge <code>GetFacility</code></p></li><li><p>Management <code>salesForce/facility</code></p></li></ul><div class=\"description-note\"><p><strong>Key behaviours to know</strong></p><ul><li><p><strong>Caching: </strong>the API caches the hours for 30 minutes. For up to 30 minutes after a Salesforce or config change, the field can disagree with the policy text. This has been accepted.</p></li><li><p><strong>CRM outage: </strong>if the lookup fails, the affected facilities return 24 for that request. The error is logged and nothing is cached. If only the configured default can't be read, facilities that already have a value keep it, and only the step 3 ones get 24.</p></li><li><p><strong>Policy text change: </strong>a trade window under 60 minutes now gives the configured default (&quot;24-hour&quot; as seeded) instead of &quot;0-hour&quot;.</p></li><li><p><strong>Configured default looks like the fallback: </strong>the patch seeds 24, the same as the hard-coded fallback, so nothing changes in the API until someone edits the config value. Changing the value changes the field and the policy text together.</p></li></ul></div><div class=\"description-note\"><p><strong>Deploy order</strong></p><p>Deploy <strong>Notification before Management</strong> in every environment. A new Management build calling an old bridge returns <strong>0</strong>.</p><p>Run the database patch <strong>CORE-14993.05</strong> (gn-main-db, CRM) <strong>before or together with</strong> the GolfNow API and Notification deploys. If the code goes first, the field still works: step 3 falls back to 24, but every lookup that reaches step 3 logs a warning until the patch runs. To roll back, roll the code back first or together with the patch's Rollback script.</p></div><h3>Test data - From the Developer Environment, your milage may vary.</h3><div class=\"description-table-wrap\"><table><tr><th><p><strong>Facility</strong></p></th><th><p><strong>Scenario</strong></p></th><th><p><strong>Expected</strong></p></th></tr><tr><td><p>55</p></td><td><p>Facility window 48 h</p></td><td><p><strong>48</strong></p></td></tr><tr><td><p>4568</p></td><td><p>Facility window 47 h</p></td><td><p><strong>47</strong></p></td></tr><tr><td><p>7094</p></td><td><p>Facility window 6 h</p></td><td><p><strong>6</strong></p></td></tr><tr><td><p>2450</p></td><td><p>Facility window 1 h</p></td><td><p><strong>1</strong></p></td></tr><tr><td><p>3023</p></td><td><p>Facility window 8760 h (extreme)</p></td><td><p><strong>8760</strong></p></td></tr><tr><td><p>649</p></td><td><p>No policy row</p></td><td><p><strong>24</strong> (fallback)</p></td></tr><tr><td><p>237</p></td><td><p>NULL window</p></td><td><p><strong>24</strong> (fallback)</p></td></tr><tr><td><p>8528</p></td><td><p>Window 0</p></td><td><p><strong>24</strong> (fallback)</p></td></tr><tr><td><p>20731</p></td><td><p>No Salesforce row</p></td><td><p><strong>24</strong> (fallback)</p></td></tr></table></div><p>For dev, stg and prd, get the expected values from the read-only script <code>CORE-14973-A4-expected-cancellation-window.sql</code> (attached here:   ).</p><p>NOTE: If your data doesn’t match the above table due to environmental differences, please run the SQL-script and use that for your source of truth.</p><h3>Developer testing (done)</h3><div class=\"description-table-wrap\"><table><tr><th><p><strong>Area</strong></p></th><th><p><strong>What it checked</strong></p></th><th><p><strong>Result</strong></p></th></tr><tr><td><p>Facility detail and lists (M1)</p></td><td><p>Correct values and field name on the smoke facilities</p></td><td><p><strong>Pass</strong></p></td></tr><tr><td><p>Facility summaries (M2)</p></td><td><p>234-result geo search: every facility has a value, none 0</p></td><td><p><strong>Pass</strong> at the business layer. The response itself was blocked by account permissions, so it's covered by unit tests</p></td></tr><tr><td><p>Home course suggestions (M3)</p></td><td><p>All four lists have correct non-zero values, for a customer with play history and one without</p></td><td><p><strong>Pass</strong> (also fixes an earlier bug where all four lists returned 0)</p></td></tr><tr><td><p>Favorites list and single (M4, M5)</p></td><td><p>Values on favorite facilities</p></td><td><p><strong>Pass</strong></p></td></tr><tr><td><p>Large result set (M8)</p></td><td><p>Normal response time, one policy lookup per request</p></td><td><p><strong>Pass</strong></p></td></tr><tr><td><p>Invoice policy text (M9)</p></td><td><p>&quot;X-hour&quot; wording unchanged</p></td><td><p><strong>Pass</strong></p></td></tr><tr><td><p>Confirmation email text (M10)</p></td><td><p>Policy text through the Notification queue harness</p></td><td><p><strong>Pass</strong> (no real email sent)</p></td></tr><tr><td><p>Salesforce bridge (M11)</p></td><td><p><code>GetFacility</code> returns the field</p></td><td><p><strong>Pass</strong></p></td></tr><tr><td><p>Summary search with no filters (M16)</p></td><td><p>The shape used by Top Rated in home course suggestions doesn't error</p></td><td><p><strong>Pass</strong></p></td></tr><tr><td><p>Unit tests</p></td><td><p>Resolver rule, bulk lookup and configured default (16, including &quot;the configured default can't be read&quot;), mappers and JSON/XML name (8), bulk lookup, caching, cached-list refresh and CRM failure (10), no-filter summary search (1)</p></td><td><p><strong>35/35 pass</strong> (2026-11-18)</p></td></tr><tr><td><p>SQL check (A4)</p></td><td><p>Expected value per facility. Now also reads the configured default and shows &quot;configured default&quot; where step 3 decides</p></td><td><p>DEV matches M1</p></td></tr></table></div><h3>Known gaps (covered by QA after deploy)</h3><ul><li><p><strong>Social favorites (M6): </strong>not run, because the local Social service doesn't work. It uses the same code path as favorites. QA: T-AD4.</p></li><li><p><strong>Facility summaries response (M2): </strong>not seen because of the permissions block. QA: T-AD2.</p></li><li><p><strong>Real confirmation email (M10): </strong>not sent. QA: T-AD6.</p></li><li><p><strong>Management (M13): </strong>not run, because it needs the new bridge deployed first. The Management project also has no unit tests. QA: T-AD8.</p></li><li><p><strong>Configured default (rule step 3): </strong>built 2026-11-18 and covered by unit tests, but not yet committed or deployed. The database patch hasn't been run anywhere yet; a developer rehearsal of Apply and Rollback is still to do before it goes to DEV. The proc call itself has no unit test. Step 3 is only reached when the trade window is under 60 minutes, and DEV's is 1440, so it can only be seen with T-OPT4.</p></li><li><p><strong>24 default vs trade fallback: </strong>can't be told apart on DEV, because DEV's trade window is also 24 hours and the configured default is seeded as 24. Optional: T-OPT2 to T-OPT4.</p></li></ul><h3>QA before merge (optional)</h3><div class=\"description-table-wrap\"><table><tr><th><p><strong>#</strong></p></th><th><p><strong>Test</strong></p></th><th><p><strong>Expected</strong></p></th></tr><tr><td><p>T-BM1</p></td><td><p>Smoke-check facility detail for 55, 2450, 649 and 3023</p></td><td><p>48, 1, 24, 8760</p></td></tr><tr><td><p>T-BM2</p></td><td><p>Facility summaries for 55, 2450 and 649, using an account that has permission</p></td><td><p>48, 1, 24</p></td></tr><tr><td><p>T-BM3</p></td><td><p>Summary search regression, with and without price and time filters</p></td><td><p>No error without filters; same results as <code>develop</code> with filters</p></td></tr></table></div><h3>QA after DEV deployment</h3><div class=\"description-table-wrap\"><table><tr><th><p><strong>#</strong></p></th><th><p><strong>Test</strong></p></th><th><p><strong>Expected</strong></p></th></tr><tr><td><p>T-AD1, T-AD2</p></td><td><p>Facility detail, lists and summaries</p></td><td><p>Values match the test data</p></td></tr><tr><td><p>T-AD3</p></td><td><p>Home course suggestions, including a customer with no history</p></td><td><p>200 response, lists filled, no value is 0</p></td></tr><tr><td><p>T-AD4</p></td><td><p>:warning: <strong>Social favorites (gap).</strong> Request as the profile owner</p></td><td><p>48 and 24 for 55 and 649</p></td></tr><tr><td><p>T-AD5</p></td><td><p>Favorites list and single</p></td><td><p>48, 1, 24 on both</p></td></tr><tr><td><p>T-AD6</p></td><td><p>:warning: <strong>Real confirmation email (gap)</strong></p></td><td><p>&quot;48-hour&quot; and &quot;24-hour&quot;, matching the field</p></td></tr><tr><td><p>T-AD7</p></td><td><p>Notification deploy check, then bridge <code>GetFacility</code></p></td><td><p>Values match; unknown facilities return <code>Facility: null</code>, not an error</p></td></tr><tr><td><p>T-AD8</p></td><td><p>:warning: <strong>Management (gap).</strong> Run only after T-AD7 passes</p></td><td><p>Matches the bridge. A 0 means the deploy order is wrong</p></td></tr><tr><td><p>T-AD9</p></td><td><p>Invoice policy text regression</p></td><td><p>Same &quot;X-hour&quot; wording as before</p></td></tr><tr><td><p>T-AD10</p></td><td><p>Response time for a 200+ facility search</p></td><td><p>In line with <code>develop</code></p></td></tr><tr><td><p>T-AD11</p></td><td><p>Database patch CORE-14993.05 is on DEV CRM: <code>EXEC dbo.GetDefaultCancellationWindow</code></p></td><td><p>One row, <strong>24</strong>. No &quot;default cancellation window&quot; warnings in the API logs</p></td></tr></table></div><p><strong>Optional, but changes DEV data or config (agree with the team first):</strong></p><div class=\"description-table-wrap\"><table><tr><th><p><strong>#</strong></p></th><th><p><strong>Test</strong></p></th><th><p><strong>Expected</strong></p></th></tr><tr><td><p>T-OPT1</p></td><td><p>Cache refresh after a Salesforce change</p></td><td><p>New value within about 30 minutes</p></td></tr><tr><td><p>T-OPT2</p></td><td><p>Trade window set to 720</p></td><td><p><strong>12</strong>, and &quot;12-hour&quot; in the text</p></td></tr><tr><td><p>T-OPT3</p></td><td><p>Trade window set to 30</p></td><td><p><strong>24</strong> instead of 0 (from the configured default once the patch is on DEV; from the hard-coded 24 before that)</p></td></tr><tr><td><p>T-OPT4</p></td><td><p>After T-AD11: set the configured default to <code>6</code> and the trade window to 30. Check facilities 649, 237 and 8528 after the 30-minute cache. Restore both values afterwards</p></td><td><p><strong>6</strong>, and &quot;6-hour&quot; in the text. Facilities with their own window don't change</p></td></tr><tr><td><p>T-OPT5</p></td><td><p>With T-OPT4: set the configured default to <code>abc</code></p></td><td><p><strong>24</strong>, no error</p></td></tr></table></div><h3>Staging and production</h3><ol><li><p>Run the database patch CORE-14993.05, then deploy Notification, then Management.</p></li><li><p>Run the A4 SQL to get the expected values.</p></li><li><p>Repeat the detail, summaries, bridge and Management checks for 3–4 facilities. Include at least one that uses its own window and one that falls back.</p></li><li><p>Check one email or invoice.</p></li><li><p>After the prd deploy, spot-check detail and Management.</p></li></ol><h3>Exit criteria</h3><ul><li><p>Every surface shows the field with the expected values.</p></li><li><p>The field is never missing, null or 0.</p></li><li><p>The field matches the policy text.</p></li><li><p>Management matches the bridge.</p></li><li><p>The three gap tests (T-AD4, T-AD6, T-AD8) and the database patch check (T-AD11) have passed.</p></li></ul><h3>Open questions</h3><ul><li><p><s>Is 24 the right starting value for the configured default? It matches the hard-coded fallback, so nothing changes until someone edits it. (Where it comes from is settled: CRM config.)</s><br>This has been agreed as a 24-hour default.  It exists as a constant in code (<code>CancellationWindowResolver</code>.<code>DefaultCancellationWindowHours</code>) and in database under <code>dbo].[CRMConfig]</code>WHERE  [Entity] = 'Reservations' AND [EntityID] = 'Cancellation' AND [Key] = 'DefaultCancellationWindowHours'</p></li><li><p>A follow-up ticket will decide whether the fallback should use the Course window instead of the Trade window.</p></li></ul><p><em>Full plan: </em><code>plans/CORE-14973-CancellationWindowHours-Test-Plan.md</code><em> here (</em>   ) <em>and</em> <em>on branch </em><code>feature/CORE-14973</code><em>. The attached copy is from 2026-11-13 and doesn't include the configured default tests.</em></p>"
-          },
-          {
-            "id": "1244927",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14973?focusedCommentId=1244927",
-            "author": "Alex Wulff",
-            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-            "created": "2026-11-13T09:27:08.588-0500",
-            "createdDisplay": "Nov 13, 2026, 9:27 AM",
-            "updated": "2026-11-13T09:29:09.056-0500",
-            "updatedDisplay": "Nov 13, 2026, 9:29 AM",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "Business - Followup work recommendation\n\nWhat we found\nWhile reviewing this change, we found a problem in how the GolfNow API reuses saved (cached) course information. To be fast, the API keeps one saved copy of each course's details in memory and shares it across all requests. Some requests then change parts of that shared copy for their own customer, for example the distance from the customer's location. When two customers search at the same moment, one can overwrite what the other sees.\n\nWho it affects, and how\n\n- Distance to course (most important): when two location searches hit the same courses at the same time, customers can see the wrong distance or a wrong \"closest first\" order. This happens today and isn't caused by this ticket.\n\n- Cancellation window (this ticket): a customer can briefly see the standard 24 hours in place of the course's real window, but only if our CRM system is having an outage at that moment. 24 hours is already the agreed fallback, so the risk here is low.\n\n- Other course details (perks, tags, product access): short-lived mix-ups are possible but rare.\n\nWhy it isn't fixed in this ticket\nThe issue is older than this work and affects more than the cancellation window. A proper fix changes how course data is handled on our busiest search endpoints, so it should be its own piece of work with its own testing.\n\nRecommendation\nOpen a follow-up ticket so each request works on its own copy of the course details and never changes the shared saved data. Fix the distance problem first.\n\n- Estimated size: about 3 to 4 days, including tests and a performance check.\n\n- Scope: GolfNow API only. No database changes, and no changes to what the API returns.\n\nThe technical plan is attached to this ticket ( ).",
-            "bodyHtml": "<h3>Business - Followup work recommendation</h3><p><strong>What we found</strong>\nWhile reviewing this change, we found a problem in how the GolfNow API reuses saved (cached) course information. To be fast, the API keeps one saved copy of each course's details in memory and shares it across all requests. Some requests then change parts of that shared copy for their own customer, for example the distance from the customer's location. When two customers search at the same moment, one can overwrite what the other sees.</p><p><strong>Who it affects, and how</strong></p><ul><li><p><strong>Distance to course (most important):</strong> when two location searches hit the same courses at the same time, customers can see the wrong distance or a wrong &quot;closest first&quot; order. This happens today and isn't caused by this ticket.</p></li><li><p><strong>Cancellation window (this ticket):</strong> a customer can briefly see the standard 24 hours in place of the course's real window, but only if our CRM system is having an outage at that moment. 24 hours is already the agreed fallback, so the risk here is low.</p></li><li><p><strong>Other course details (perks, tags, product access):</strong> short-lived mix-ups are possible but rare.</p></li></ul><p><strong>Why it isn't fixed in this ticket</strong>\nThe issue is older than this work and affects more than the cancellation window. A proper fix changes how course data is handled on our busiest search endpoints, so it should be its own piece of work with its own testing.</p><p><strong>Recommendation</strong>\nOpen a follow-up ticket so each request works on its own copy of the course details and never changes the shared saved data. Fix the distance problem first.</p><ul><li><p><strong>Estimated size:</strong> about 3 to 4 days, including tests and a performance check.</p></li><li><p><strong>Scope:</strong> GolfNow API only. No database changes, and no changes to what the API returns.</p></li></ul><p>The technical plan is attached to this ticket ( ).</p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14973?focusedCommentId=1244927",
-        "lastCommentDisplay": "Nov 13, 2026, 9:27 AM",
-        "lastCommentAuthor": "Alex Wulff",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Development",
-        "priority": "P1",
-        "assignee": "Alex Wulff",
-        "assigneeAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "assignedDeveloper": "Alex Wulff",
-        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "updated": "2026-11-19T11:57:16.606-0500",
-        "updatedDisplay": "Nov 19, 2026, 11:57 AM",
-        "created": "2026-11-10T15:39:42.744-0500",
-        "createdDisplay": "Nov 10, 2026, 3:39 PM",
-        "components": [
-          "GolfNow.Management.API",
-          "GolfNow.Notification (Windows Service)",
-          "GolfNowAPI",
-          "Golf Shared Library"
-        ],
-        "fixVersions": [
-          "v3001.132.0"
-        ],
         "sprints": [
           {
             "name": "2026.8"
@@ -8975,78 +9047,6 @@
           "type": "Epic",
           "status": "Backlog",
           "priority": "P1"
-        }
-      },
-      {
-        "key": "CORE-14955",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14955",
-        "summary": "Funded coupon codes are not refunding cart fees",
-        "description": "Steps to recreate:\n\n- Set up a coupon code for Trade, Course, Course-Prepaid (Funded Coupon Code config)\n\n- Set to 100% off Green Fees\n\n- Apply to a Hot Deal that has cart fees enabled\n\n- Example: Oyster Reef in the /South Carolina master facility\n\n- See that the promo code only discounts the green fee portions and ignores the cart fee distribution\n\n- Before Code Added\n\n\"DueOnline\": {\n\"Items\": [\n{\n\"Discount\": 0,\n\"Distributions\": [\n{\n\"Amount\": 93.95,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"GRNFEETRADE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 9.74,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"GRNFEETRADE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 16.58,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 1.72,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n}\n],\n\n- After Code Added\n\n\"DueOnline\": {\n\"Items\": [\n{\n\"Discount\": 103.69,\n\"Distributions\": [\n{\n\"Amount\": 16.58,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633852,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n},\n{\n\"Amount\": 1.72,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": 1633853,\n\"SourceItemKey\": \"CARTFEE\",\n\"TaxAmount\": 0\n}\n],\n\"NonRefundableSalesTax\": 0.00,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 121.99,\n\"SalesTax\": 8.70,\n\"SubTotal\": 18.30,\n\"Total\": 27.00,\n\"DisplayText\": \"Greens Fee - Composite\",\n\"IsTaxIncluded\": false,\n\"Key\": \"GRNFEETRADE\",\n\"Type\": 1\n},\n{\n\"Discount\": 0,\n\"Distributions\": [\n{\n\"Amount\": 3.49,\n\"IsRefundable\": true,\n\"Recipient\": 1,\n\"RevenueDetailId\": null,\n\"SourceItemKey\": \"TRNFEE\",\n\"TaxAmount\": 0\n}\n],\n\"NonRefundableSalesTax\": 0.00,\n\"NonRefundableSubtotal\": 0.00,\n\"NonRefundableTotal\": 0.00,\n\"Original\": 3.49,\n\"SalesTax\": 0.09,\n\"SubTotal\": 3.49,\n\"Total\": 3.58,\n\"DisplayText\": \"Convenience Fee\",\n\"IsTaxIncluded\": false,\n\"Key\": \"TRNFEE\",\n\"Type\": 2\n}\n],\n\"Summary\": {\n\"Discount\": 103.69,\n\"Distributions\": null,\n\"Original\": 125.48,\n\"SalesTax\": 8.79,\n\"SubTotal\": 21.79,\n\"Total\": 30.58\n}\n\n- Expected\n\n- Funded Coupon Codes should reduce the GreenFee portion first then move onto CartFee\n\n- This applies to course prepaid too and should also reduce GreenFee first then move onto CartFee\n\n- Sales tax should remain non-discountable and should be left to be be remaining due and to be charged",
-        "descriptionHtml": "<p>Steps to recreate:</p><ol><li><p>Set up a coupon code for Trade, Course, Course-Prepaid (Funded Coupon Code config)</p></li><li><p>Set to 100% off Green Fees</p></li><li><p>Apply to a Hot Deal that has cart fees enabled</p><ol><li><p>Example: Oyster Reef in the /South Carolina master facility </p></li></ol></li><li><p>See that the promo code only discounts the green fee portions and ignores the cart fee distribution</p><ol><li><p>Before Code Added</p><pre><code>&quot;DueOnline&quot;: {\n        &quot;Items&quot;: [\n            {\n                &quot;Discount&quot;: 0,\n                &quot;Distributions&quot;: [\n                    {\n                        &quot;Amount&quot;: 93.95,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633852,\n                        &quot;SourceItemKey&quot;: &quot;GRNFEETRADE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 9.74,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633853,\n                        &quot;SourceItemKey&quot;: &quot;GRNFEETRADE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 16.58,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633852,\n                        &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    },\n                    {\n                        &quot;Amount&quot;: 1.72,\n                        &quot;IsRefundable&quot;: true,\n                        &quot;Recipient&quot;: 1,\n                        &quot;RevenueDetailId&quot;: 1633853,\n                        &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                        &quot;TaxAmount&quot;: 0\n                    }\n                ],</code></pre></li><li><p>After Code Added </p><pre><code>&quot;DueOnline&quot;: {\n            &quot;Items&quot;: [\n                {\n                    &quot;Discount&quot;: 103.69,\n                    &quot;Distributions&quot;: [\n                        {\n                            &quot;Amount&quot;: 16.58,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: 1633852,\n                            &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        },\n                        {\n                            &quot;Amount&quot;: 1.72,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: 1633853,\n                            &quot;SourceItemKey&quot;: &quot;CARTFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        }\n                    ],\n                    &quot;NonRefundableSalesTax&quot;: 0.00,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 121.99,\n                    &quot;SalesTax&quot;: 8.70,\n                    &quot;SubTotal&quot;: 18.30,\n                    &quot;Total&quot;: 27.00,\n                    &quot;DisplayText&quot;: &quot;Greens Fee - Composite&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;GRNFEETRADE&quot;,\n                    &quot;Type&quot;: 1\n                },\n                {\n                    &quot;Discount&quot;: 0,\n                    &quot;Distributions&quot;: [\n                        {\n                            &quot;Amount&quot;: 3.49,\n                            &quot;IsRefundable&quot;: true,\n                            &quot;Recipient&quot;: 1,\n                            &quot;RevenueDetailId&quot;: null,\n                            &quot;SourceItemKey&quot;: &quot;TRNFEE&quot;,\n                            &quot;TaxAmount&quot;: 0\n                        }\n                    ],\n                    &quot;NonRefundableSalesTax&quot;: 0.00,\n                    &quot;NonRefundableSubtotal&quot;: 0.00,\n                    &quot;NonRefundableTotal&quot;: 0.00,\n                    &quot;Original&quot;: 3.49,\n                    &quot;SalesTax&quot;: 0.09,\n                    &quot;SubTotal&quot;: 3.49,\n                    &quot;Total&quot;: 3.58,\n                    &quot;DisplayText&quot;: &quot;Convenience Fee&quot;,\n                    &quot;IsTaxIncluded&quot;: false,\n                    &quot;Key&quot;: &quot;TRNFEE&quot;,\n                    &quot;Type&quot;: 2\n                }\n            ],\n            &quot;Summary&quot;: {\n                &quot;Discount&quot;: 103.69,\n                &quot;Distributions&quot;: null,\n                &quot;Original&quot;: 125.48,\n                &quot;SalesTax&quot;: 8.79,\n                &quot;SubTotal&quot;: 21.79,\n                &quot;Total&quot;: 30.58\n            }</code></pre></li></ol></li><li><p>Expected</p><ol><li><p>Funded Coupon Codes should reduce the GreenFee portion first then move onto CartFee</p></li><li><p>This applies to course prepaid too and should also reduce GreenFee first then move onto CartFee</p></li><li><p>Sales tax should remain non-discountable and should be left to be be remaining due and to be charged</p></li></ol></li></ol>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 1,
-        "comments": [
-          {
-            "id": "1247821",
-            "url": "https://golfnow.atlassian.net/browse/CORE-14955?focusedCommentId=1247821",
-            "author": "Yoel Martin Pardo",
-            "authorAccountId": "625571809e7380006fb29599",
-            "authorAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-            "created": "2026-11-18T15:59:29.435-0500",
-            "createdDisplay": "Nov 18, 2026, 3:59 PM",
-            "updated": "2026-11-18T15:59:29.435-0500",
-            "updatedDisplay": "",
-            "hasMedia": false,
-            "mediaCount": 0,
-            "body": "QA: We can apply funded coupon code to cart fee now. Please do regression on funded coupon code, we need to also check with vertex to make sure that what we are sending during bookings and refunds are correct, and also test existing bookings done prior to deploy this ticket. We have created a new table called CRMFundedCouponCodeAllocation that will stored the distribution of each item, greensfee, cartfee and transctionfee based of golfcourse and golfnow.",
-            "bodyHtml": "<p>QA: We can apply funded coupon code to cart fee now. Please do regression on funded coupon code, we need to also check with vertex to make sure that what we are sending during bookings and refunds are correct, and also test existing bookings done prior to deploy this ticket. We have created a new table called <code>CRMFundedCouponCodeAllocation</code> that will stored the distribution of each item, greensfee, cartfee and transctionfee based of golfcourse and golfnow. </p>"
-          }
-        ],
-        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14955?focusedCommentId=1247821",
-        "lastCommentDisplay": "Nov 18, 2026, 3:59 PM",
-        "lastCommentAuthor": "Yoel Martin Pardo",
-        "testChecklist": null,
-        "type": "Bug",
-        "isSubtask": false,
-        "status": "Code Review",
-        "priority": "P1",
-        "assignee": "Raghav Kancherla",
-        "assigneeAccountId": "557058:24f78684-6276-42b4-9860-f81502d6d45e",
-        "assigneeAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/initials/RK-4.png",
-        "assignedDeveloper": "Yoel Martin Pardo",
-        "assignedDeveloperAccountId": "625571809e7380006fb29599",
-        "assignedDeveloperAvatarUrl": "https://avatar-management--avatars.us-west-2.prod.public.atl-paas.net/625571809e7380006fb29599/0884fec7-a707-4919-8f07-c6d0e05dcc62/32",
-        "updated": "2026-11-18T15:59:29.519-0500",
-        "updatedDisplay": "Nov 18, 2026, 3:59 PM",
-        "created": "2026-11-06T09:15:57.570-0500",
-        "createdDisplay": "Nov 6, 2026, 9:15 AM",
-        "components": [
-          "Database",
-          "GolfNow.Services.Reservation",
-          "GolfNowCentral"
-        ],
-        "fixVersions": [
-          "v3001.132.0"
-        ],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
         }
       },
       {
@@ -45464,13 +45464,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-24T02:26:28.301Z",
-    "pulledAtDisplay": "Nov 23, 2026, 9:26 PM",
+    "pulledAt": "2026-11-24T02:31:43.733Z",
+    "pulledAtDisplay": "Nov 23, 2026, 9:31 PM",
     "window": {
-      "start": "2026-10-10T02:26:28.301Z",
-      "end": "2027-05-23T02:26:28.301Z",
-      "startDisplay": "Oct 9, 2026, 10:26 PM",
-      "endDisplay": "May 22, 2027, 10:26 PM"
+      "start": "2026-10-10T02:31:43.733Z",
+      "end": "2027-05-23T02:31:43.733Z",
+      "startDisplay": "Oct 9, 2026, 10:31 PM",
+      "endDisplay": "May 22, 2027, 10:31 PM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -45483,7 +45483,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-24T02:26:30.923Z",
+        "pulledAt": "2026-11-24T02:31:47.092Z",
         "eventCount": 83,
         "events": [
           {
@@ -46405,23 +46405,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - UK Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (UK)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -46434,6 +46417,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (US)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - UK Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (UK)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -46903,10 +46903,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-24T02:23:13.197Z",
-    "previousPulledAtDisplay": "Nov 23, 2026, 9:23 PM",
-    "currentPulledAt": "2026-11-24T02:28:41.634Z",
-    "currentPulledAtDisplay": "Nov 23, 2026, 9:28 PM",
+    "previousPulledAt": "2026-11-24T02:28:41.634Z",
+    "previousPulledAtDisplay": "Nov 23, 2026, 9:28 PM",
+    "currentPulledAt": "2026-11-24T02:34:20.275Z",
+    "currentPulledAtDisplay": "Nov 23, 2026, 9:34 PM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -46914,6 +46914,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-24T02:28:41.634Z",
+      "previousPulledAtDisplay": "Nov 23, 2026, 9:28 PM",
+      "currentPulledAt": "2026-11-24T02:34:20.275Z",
+      "currentPulledAtDisplay": "Nov 23, 2026, 9:34 PM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-24T02:23:13.197Z",
       "previousPulledAtDisplay": "Nov 23, 2026, 9:23 PM",
@@ -48745,17 +48756,6 @@
       "previousPulledAtDisplay": "Nov 23, 2026, 7:03 AM",
       "currentPulledAt": "2026-11-23T12:07:54.930Z",
       "currentPulledAtDisplay": "Nov 23, 2026, 7:07 AM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-23T11:58:54.652Z",
-      "previousPulledAtDisplay": "Nov 23, 2026, 6:58 AM",
-      "currentPulledAt": "2026-11-23T12:03:12.997Z",
-      "currentPulledAtDisplay": "Nov 23, 2026, 7:03 AM",
       "isBaseline": false,
       "added": [],
       "removed": [],
