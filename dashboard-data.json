@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-25T11:04:41.614Z",
-  "pulledAtDisplay": "Nov 25, 2026, 6:04 AM",
+  "pulledAt": "2026-11-25T11:08:35.137Z",
+  "pulledAtDisplay": "Nov 25, 2026, 6:08 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,8 +1809,8 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-25T11:04:41.614Z",
-    "pulledAtDisplay": "Nov 25, 2026, 6:04 AM",
+    "pulledAt": "2026-11-25T11:08:35.137Z",
+    "pulledAtDisplay": "Nov 25, 2026, 6:08 AM",
     "total": 581,
     "mainTotal": 551,
     "subtaskTotal": 30,
@@ -8107,6 +8107,78 @@
         }
       },
       {
+        "key": "CORE-14942",
+        "url": "https://golfnow.atlassian.net/browse/CORE-14942",
+        "summary": "Improved refund support for Pro Agenda ",
+        "description": "We need to support the callback to Pro Agenda when a refund is submitted so the Agenda Order can be updated with applicable refunded amounts. This is very similar to what we do with Vendor Service Orders, G1 and Tee Times.\n\n- Pro Agenda Doc: https://golfnow.atlassian.net/wiki/spaces/GC/pages/11767840788/Refund+Order+Process+and+Request+Body+Details\n\n- Expected:\n\n- When a refund is submitted through one of the following endpoints, we need to callback to Agenda using their ThirdParty API\n\n- G1 UI - POST {{api-base-url}}/InternalGolfNowApi.svc/internal/reservation/adjust\n\n- GN Customer Facing UI - PUT {{api-base-url}}/GolfNowAPI.svc/rest/customers/{{EmailAddress}}/reservation-details/419824627?cancellationReasonId=1\n\n- G1 UI - https://api.gnsvc.com/InternalGolfNowApi.svc/internal/coursecancellation\n\n- GNC Directly\n\n- Any scenario where a credit card refund is submitted successfully, the callback needs to happen. Whether it is inside or outside cancellation policy\n\n- If an amount is refunded to Account Balance, do not send the callback to Agenda\n\n- Testing:\n\n- Test full refunds - Happy path\n\n- Test partial refunds - This might not be supported yet from Agenda side\n\n- Confirm/validate all tests with Agenda team in #gn-agenda-interface slack channel\n\n- Match the testing cases done with VendorService refunds",
+        "descriptionHtml": "<p>We need to support the callback to Pro Agenda when a refund is submitted so the Agenda Order can be updated with applicable refunded amounts. This is very similar to what we do with Vendor Service Orders, G1 and Tee Times. </p><ul><li><p>Pro Agenda Doc: <a href=\"https://golfnow.atlassian.net/wiki/spaces/GC/pages/11767840788/Refund+Order+Process+and+Request+Body+Details\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/wiki/spaces/GC/pages/11767840788/Refund+Order+Process+and+Request+Body+Details</a></p></li><li><p>Expected:</p><ul><li><p>When a refund is submitted through one of the following endpoints, we need to callback to Agenda using their ThirdParty API</p><ul><li><p>G1 UI - POST {{api-base-url}}/InternalGolfNowApi.svc/internal/reservation/adjust</p></li><li><p>GN Customer Facing UI - PUT {{api-base-url}}/GolfNowAPI.svc/rest/customers/{{EmailAddress}}/reservation-details/419824627?cancellationReasonId=1</p></li><li><p>G1 UI - <a href=\"https://api.gnsvc.com/InternalGolfNowApi.svc/internal/coursecancellation\" target=\"_blank\" rel=\"noopener\">https://api.gnsvc.com/InternalGolfNowApi.svc/internal/coursecancellation</a></p></li><li><p>GNC Directly</p></li></ul></li><li><p>Any scenario where a credit card refund is submitted successfully, the callback needs to happen. Whether it is inside or outside cancellation policy</p></li><li><p>If an amount is refunded to Account Balance, do not send the callback to Agenda</p></li></ul></li><li><p>Testing:</p><ul><li><p>Test full refunds - Happy path</p></li><li><p>Test partial refunds - This might not be supported yet from Agenda side</p></li><li><p>Confirm/validate all tests with Agenda team in #gn-agenda-interface slack channel</p></li><li><p>Match the testing cases done with VendorService refunds </p></li></ul></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 1,
+        "comments": [
+          {
+            "id": "1250190",
+            "url": "https://golfnow.atlassian.net/browse/CORE-14942?focusedCommentId=1250190",
+            "author": "Alex Wulff",
+            "authorAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+            "authorAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+            "created": "2026-11-25T06:05:19.546-0500",
+            "createdDisplay": "Nov 25, 2026, 6:05 AM",
+            "updated": "2026-11-25T06:05:19.546-0500",
+            "updatedDisplay": "",
+            "hasMedia": false,
+            "mediaCount": 0,
+            "body": "Business - Followup work recommendation\n\nWhile testing my logging changes for interfaces (PROA specifically) I stumbled on a problem that extends to additional TeeSheets and some other components.  Attached is an AI plan ( ) for addressing this.\n\nSummary\nSome code builds an exception just to log it, without throwing it. An exception that was never thrown has no TargetSite and no stack trace. CRMDataAccess.LogError reads TargetSite to build the error log's PageName, so it hits a NullReferenceException internally. LogError catches that itself, so the row is still written and nothing reaches the caller. But the PageName shows \"Unknown on {host}\" instead of the class and method, there is no stack trace, and a debugger set to break on all exceptions stops on it.\n\nFound during PROA sandbox testing under CORE-14998. The PROA warning log was fixed there by throwing and catching the exception before logging it.\n\nAffected: tee sheets (all go through CRMDataAccess.LogError)\n\n- EZLinksTeeOffTeesheet.cs line 482: WARNING EZLTMinMaxFlex (min and max flex fee both $0)\n\n- EZLinksTeeOffTeesheet.cs lines 537, 561, 586: WARNING EZLTDueAtCourse ($0.00 due at course on a non-trade time)\n\n- EZLinksTeeOffTeesheet.cs line 603: Fatal\n\n- EZLinksTeeSheet.cs lines 457, 474, 496, 1946, 2210: Fatal\n\n- Each Fatal log builds a new TeeSheetException from a caught EZLinksException and doesn't keep the original as the inner exception, so the original stack trace is lost as well.\n\nAffected: other callers of CRMDataAccess.LogError\n\n- DotNet2/AutoLoad/Console.cs lines 91, 95\n\n- DotNet2/CRM/domain/Customer/Customer.cs line 819\n\n- DotNet2/CRM/Web/res_eml/eml_search.aspx.cs lines 74, 91\n\n- DotNet2/CRMAPI/API/App_Code/URLRewriter.cs line 164\n\n- TeeTimesAPI CancellationProcessor.cs lines 575, 595\n\nNeeds checking\n\n- ProcessYesmailUpdates/EmailUpdate.cs line 193 passes an exception it never threw to a LogError method that isn't defined in the repo. It may come from a referenced assembly. Find out which logger it uses.\n\n- DBL.SQLDataAccess.DataAccess.LogError reads TargetSite with no try/catch, so an exception that was never thrown would make it throw to its caller. No callers were found. Suggest removing it.\n\nNot affected\n\n- Callers that use LogServiceProxy, the Notification LogHelper or BaseLogger. These loggers don't read TargetSite, so nothing throws. The only loss is the stack trace, which is expected for an exception that was never thrown.\n\nOptions\n\n- Fix each caller: throw and catch the exception before logging it (as PROA does now), using a shared helper in GolfNow.Framework.TeeSheets. For the Fatal logs, also keep the caught EZLinksException as the inner exception.\n\n- Make CRMDataAccess.LogError null-safe when reading TargetSite, keeping the \"Unknown\" fallback. This is a one-line change and the logged rows stay the same. It covers every caller, but CRMDataAccess is shared widely and needs its own review and deployment.\n\n- Both (recommended): fix the tee sheet callers first, since they log real booking failures, then make the CRMDataAccess check a separate change.\n\nSteps\n\n- Decide on the option.\n\n- Tee sheets: add a shared helper, update the 10 EZL and EZLT calls, keep the inner exception on the Fatal logs, and unit test the helper.\n\n- Decide whether the other CRMDataAccess callers get changed or are left to option 2.\n\n- Find out which logger the Yesmail LogError uses.\n\n- Decide whether to remove DBL DataAccess.LogError.\n\n- Manual check in DEV: trigger an EZLT $0.00 due-at-course warning and an EZL booking failure, and confirm the CRM error log PageName shows the class and method instead of \"Unknown\".",
+            "bodyHtml": "<h3>Business - Followup work recommendation</h3><p>While testing my logging changes for interfaces (PROA specifically) I stumbled on a problem that extends to additional TeeSheets and some other components.  Attached is an AI plan ( ) for addressing this. </p><p>Summary<br>Some code builds an exception just to log it, without throwing it. An exception that was never thrown has no TargetSite and no stack trace. CRMDataAccess.LogError reads TargetSite to build the error log's PageName, so it hits a NullReferenceException internally. LogError catches that itself, so the row is still written and nothing reaches the caller. But the PageName shows &quot;Unknown on {host}&quot; instead of the class and method, there is no stack trace, and a debugger set to break on all exceptions stops on it.</p><p>Found during PROA sandbox testing under CORE-14998. The PROA warning log was fixed there by throwing and catching the exception before logging it.</p><p>Affected: tee sheets (all go through CRMDataAccess.LogError)</p><ul><li><p>EZLinksTeeOffTeesheet.cs line 482: WARNING EZLTMinMaxFlex (min and max flex fee both $0)</p></li><li><p>EZLinksTeeOffTeesheet.cs lines 537, 561, 586: WARNING EZLTDueAtCourse ($0.00 due at course on a non-trade time)</p></li><li><p>EZLinksTeeOffTeesheet.cs line 603: Fatal</p></li><li><p>EZLinksTeeSheet.cs lines 457, 474, 496, 1946, 2210: Fatal</p></li><li><p>Each Fatal log builds a new TeeSheetException from a caught EZLinksException and doesn't keep the original as the inner exception, so the original stack trace is lost as well.</p></li></ul><p>Affected: other callers of CRMDataAccess.LogError</p><ul><li><p>DotNet2/AutoLoad/Console.cs lines 91, 95</p></li><li><p>DotNet2/CRM/domain/Customer/Customer.cs line 819</p></li><li><p>DotNet2/CRM/Web/res_eml/eml_search.aspx.cs lines 74, 91</p></li><li><p>DotNet2/CRMAPI/API/App_Code/URLRewriter.cs line 164</p></li><li><p>TeeTimesAPI CancellationProcessor.cs lines 575, 595</p></li></ul><p>Needs checking</p><ul><li><p>ProcessYesmailUpdates/EmailUpdate.cs line 193 passes an exception it never threw to a LogError method that isn't defined in the repo. It may come from a referenced assembly. Find out which logger it uses.</p></li><li><p>DBL.SQLDataAccess.DataAccess.LogError reads TargetSite with no try/catch, so an exception that was never thrown would make it throw to its caller. No callers were found. Suggest removing it.</p></li></ul><p>Not affected</p><ul><li><p>Callers that use LogServiceProxy, the Notification LogHelper or BaseLogger. These loggers don't read TargetSite, so nothing throws. The only loss is the stack trace, which is expected for an exception that was never thrown.</p></li></ul><p>Options</p><ol><li><p>Fix each caller: throw and catch the exception before logging it (as PROA does now), using a shared helper in GolfNow.Framework.TeeSheets. For the Fatal logs, also keep the caught EZLinksException as the inner exception.</p></li><li><p>Make CRMDataAccess.LogError null-safe when reading TargetSite, keeping the &quot;Unknown&quot; fallback. This is a one-line change and the logged rows stay the same. It covers every caller, but CRMDataAccess is shared widely and needs its own review and deployment.</p></li><li><p>Both (recommended): fix the tee sheet callers first, since they log real booking failures, then make the CRMDataAccess check a separate change.</p></li></ol><p>Steps</p><ul><li><p>Decide on the option.</p></li><li><p>Tee sheets: add a shared helper, update the 10 EZL and EZLT calls, keep the inner exception on the Fatal logs, and unit test the helper.</p></li><li><p>Decide whether the other CRMDataAccess callers get changed or are left to option 2.</p></li><li><p>Find out which logger the Yesmail LogError uses.</p></li><li><p>Decide whether to remove DBL DataAccess.LogError.</p></li><li><p>Manual check in DEV: trigger an EZLT $0.00 due-at-course warning and an EZL booking failure, and confirm the CRM error log PageName shows the class and method instead of &quot;Unknown&quot;.</p></li></ul>"
+          }
+        ],
+        "lastCommentUrl": "https://golfnow.atlassian.net/browse/CORE-14942?focusedCommentId=1250190",
+        "lastCommentDisplay": "Nov 25, 2026, 6:05 AM",
+        "lastCommentAuthor": "Alex Wulff",
+        "testChecklist": null,
+        "type": "Story",
+        "isSubtask": false,
+        "status": "Development",
+        "priority": "P1",
+        "assignee": "Alex Wulff",
+        "assigneeAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "assignedDeveloper": "Alex Wulff",
+        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
+        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
+        "updated": "2026-11-25T06:05:19.636-0500",
+        "updatedDisplay": "Nov 25, 2026, 6:05 AM",
+        "created": "2026-10-30T09:07:27.917-0400",
+        "createdDisplay": "Oct 30, 2026, 9:07 AM",
+        "components": [
+          "GolfNow.Services.Reservation",
+          "GolfNow.Services.TeeSheet",
+          "GolfNowAPI",
+          "GolfNowCentral",
+          "Secrets"
+        ],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
+        }
+      },
+      {
         "key": "CORE-14900",
         "url": "https://golfnow.atlassian.net/browse/CORE-14900",
         "summary": "API 2.1 | Validate booking phone numbers using E.164",
@@ -8136,62 +8208,6 @@
         "created": "2026-10-29T18:02:10.810-0400",
         "createdDisplay": "Oct 29, 2026, 6:02 PM",
         "components": [],
-        "fixVersions": [],
-        "sprints": [
-          {
-            "name": "2026.8"
-          }
-        ],
-        "sprintNames": [
-          "2026.8"
-        ],
-        "resolution": "",
-        "parent": {
-          "key": "CORE-14268",
-          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
-          "summary": "OpEx",
-          "description": "",
-          "type": "Epic",
-          "status": "Backlog",
-          "priority": "None"
-        }
-      },
-      {
-        "key": "CORE-14942",
-        "url": "https://golfnow.atlassian.net/browse/CORE-14942",
-        "summary": "Improved refund support for Pro Agenda ",
-        "description": "We need to support the callback to Pro Agenda when a refund is submitted so the Agenda Order can be updated with applicable refunded amounts. This is very similar to what we do with Vendor Service Orders, G1 and Tee Times.\n\n- Pro Agenda Doc: https://golfnow.atlassian.net/wiki/spaces/GC/pages/11767840788/Refund+Order+Process+and+Request+Body+Details\n\n- Expected:\n\n- When a refund is submitted through one of the following endpoints, we need to callback to Agenda using their ThirdParty API\n\n- G1 UI - POST {{api-base-url}}/InternalGolfNowApi.svc/internal/reservation/adjust\n\n- GN Customer Facing UI - PUT {{api-base-url}}/GolfNowAPI.svc/rest/customers/{{EmailAddress}}/reservation-details/419824627?cancellationReasonId=1\n\n- G1 UI - https://api.gnsvc.com/InternalGolfNowApi.svc/internal/coursecancellation\n\n- GNC Directly\n\n- Any scenario where a credit card refund is submitted successfully, the callback needs to happen. Whether it is inside or outside cancellation policy\n\n- If an amount is refunded to Account Balance, do not send the callback to Agenda\n\n- Testing:\n\n- Test full refunds - Happy path\n\n- Test partial refunds - This might not be supported yet from Agenda side\n\n- Confirm/validate all tests with Agenda team in #gn-agenda-interface slack channel\n\n- Match the testing cases done with VendorService refunds",
-        "descriptionHtml": "<p>We need to support the callback to Pro Agenda when a refund is submitted so the Agenda Order can be updated with applicable refunded amounts. This is very similar to what we do with Vendor Service Orders, G1 and Tee Times. </p><ul><li><p>Pro Agenda Doc: <a href=\"https://golfnow.atlassian.net/wiki/spaces/GC/pages/11767840788/Refund+Order+Process+and+Request+Body+Details\" target=\"_blank\" rel=\"noopener\">https://golfnow.atlassian.net/wiki/spaces/GC/pages/11767840788/Refund+Order+Process+and+Request+Body+Details</a></p></li><li><p>Expected:</p><ul><li><p>When a refund is submitted through one of the following endpoints, we need to callback to Agenda using their ThirdParty API</p><ul><li><p>G1 UI - POST {{api-base-url}}/InternalGolfNowApi.svc/internal/reservation/adjust</p></li><li><p>GN Customer Facing UI - PUT {{api-base-url}}/GolfNowAPI.svc/rest/customers/{{EmailAddress}}/reservation-details/419824627?cancellationReasonId=1</p></li><li><p>G1 UI - <a href=\"https://api.gnsvc.com/InternalGolfNowApi.svc/internal/coursecancellation\" target=\"_blank\" rel=\"noopener\">https://api.gnsvc.com/InternalGolfNowApi.svc/internal/coursecancellation</a></p></li><li><p>GNC Directly</p></li></ul></li><li><p>Any scenario where a credit card refund is submitted successfully, the callback needs to happen. Whether it is inside or outside cancellation policy</p></li><li><p>If an amount is refunded to Account Balance, do not send the callback to Agenda</p></li></ul></li><li><p>Testing:</p><ul><li><p>Test full refunds - Happy path</p></li><li><p>Test partial refunds - This might not be supported yet from Agenda side</p></li><li><p>Confirm/validate all tests with Agenda team in #gn-agenda-interface slack channel</p></li><li><p>Match the testing cases done with VendorService refunds </p></li></ul></li></ul>",
-        "descriptionImageCount": 0,
-        "descriptionVideoCount": 0,
-        "descriptionMediaCount": 0,
-        "commentCount": 0,
-        "comments": [],
-        "lastCommentUrl": "",
-        "lastCommentDisplay": "",
-        "lastCommentAuthor": "",
-        "testChecklist": null,
-        "type": "Story",
-        "isSubtask": false,
-        "status": "Development",
-        "priority": "P1",
-        "assignee": "Alex Wulff",
-        "assigneeAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-        "assigneeAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "assignedDeveloper": "Alex Wulff",
-        "assignedDeveloperAccountId": "712020:8c566c61-4772-409f-aae0-9454ee2fa9ef",
-        "assignedDeveloperAvatarUrl": "https://secure.gravatar.com/avatar/711a4fd1f5bc5f694aeb4863d488d5ba?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FAW-5.png",
-        "updated": "2026-11-24T15:47:28.938-0500",
-        "updatedDisplay": "Nov 24, 2026, 3:47 PM",
-        "created": "2026-10-30T09:07:27.917-0400",
-        "createdDisplay": "Oct 30, 2026, 9:07 AM",
-        "components": [
-          "GolfNow.Services.Reservation",
-          "GolfNow.Services.TeeSheet",
-          "GolfNowAPI",
-          "GolfNowCentral",
-          "Secrets"
-        ],
         "fixVersions": [],
         "sprints": [
           {
@@ -45486,13 +45502,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-25T11:01:41.853Z",
-    "pulledAtDisplay": "Nov 25, 2026, 6:01 AM",
+    "pulledAt": "2026-11-25T11:06:28.049Z",
+    "pulledAtDisplay": "Nov 25, 2026, 6:06 AM",
     "window": {
-      "start": "2026-10-11T11:01:41.853Z",
-      "end": "2027-05-24T11:01:41.853Z",
-      "startDisplay": "Oct 11, 2026, 7:01 AM",
-      "endDisplay": "May 24, 2027, 7:01 AM"
+      "start": "2026-10-11T11:06:28.049Z",
+      "end": "2027-05-24T11:06:28.049Z",
+      "startDisplay": "Oct 11, 2026, 7:06 AM",
+      "endDisplay": "May 24, 2027, 7:06 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -45505,7 +45521,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-25T11:01:44.662Z",
+        "pulledAt": "2026-11-25T11:06:30.470Z",
         "eventCount": 83,
         "events": [
           {
@@ -46427,23 +46443,6 @@
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
           },
           {
-            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
-            "calendarId": "gn-releases",
-            "calendarName": "GN Releases",
-            "title": "Christmas - US Company Holiday",
-            "start": "2026-12-25T00:00:00.000Z",
-            "end": "2026-12-26T00:00:00.000Z",
-            "startDate": "2026-12-25",
-            "endDate": "2026-12-26",
-            "startDisplay": "Dec 25, 2026",
-            "endDisplay": "Dec 26, 2026",
-            "allDay": true,
-            "type": "Holiday (US)",
-            "location": "",
-            "description": "",
-            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
-          },
-          {
             "id": "20251222T203257Z-1019084408@golfnow.atlassian.net",
             "calendarId": "gn-releases",
             "calendarName": "GN Releases",
@@ -46456,6 +46455,23 @@
             "endDisplay": "Dec 26, 2026",
             "allDay": true,
             "type": "Holiday (UK)",
+            "location": "",
+            "description": "",
+            "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
+          },
+          {
+            "id": "20251222T203128Z--1877137642@golfnow.atlassian.net",
+            "calendarId": "gn-releases",
+            "calendarName": "GN Releases",
+            "title": "Christmas - US Company Holiday",
+            "start": "2026-12-25T00:00:00.000Z",
+            "end": "2026-12-26T00:00:00.000Z",
+            "startDate": "2026-12-25",
+            "endDate": "2026-12-26",
+            "startDisplay": "Dec 25, 2026",
+            "endDisplay": "Dec 26, 2026",
+            "allDay": true,
+            "type": "Holiday (US)",
             "location": "",
             "description": "",
             "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases"
@@ -46925,10 +46941,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-25T10:58:25.918Z",
-    "previousPulledAtDisplay": "Nov 25, 2026, 5:58 AM",
-    "currentPulledAt": "2026-11-25T11:04:41.614Z",
-    "currentPulledAtDisplay": "Nov 25, 2026, 6:04 AM",
+    "previousPulledAt": "2026-11-25T11:04:41.614Z",
+    "previousPulledAtDisplay": "Nov 25, 2026, 6:04 AM",
+    "currentPulledAt": "2026-11-25T11:08:35.137Z",
+    "currentPulledAtDisplay": "Nov 25, 2026, 6:08 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -46936,6 +46952,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-25T11:04:41.614Z",
+      "previousPulledAtDisplay": "Nov 25, 2026, 6:04 AM",
+      "currentPulledAt": "2026-11-25T11:08:35.137Z",
+      "currentPulledAtDisplay": "Nov 25, 2026, 6:08 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-25T10:58:25.918Z",
       "previousPulledAtDisplay": "Nov 25, 2026, 5:58 AM",
@@ -48767,17 +48794,6 @@
       "previousPulledAtDisplay": "Nov 24, 2026, 3:44 PM",
       "currentPulledAt": "2026-11-24T20:49:22.970Z",
       "currentPulledAtDisplay": "Nov 24, 2026, 3:49 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-24T20:38:44.737Z",
-      "previousPulledAtDisplay": "Nov 24, 2026, 3:38 PM",
-      "currentPulledAt": "2026-11-24T20:44:16.299Z",
-      "currentPulledAtDisplay": "Nov 24, 2026, 3:44 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
