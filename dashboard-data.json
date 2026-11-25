@@ -4,8 +4,8 @@
   "dashboardVersion": "v1.11.3",
   "siteUrl": "https://golfnow.atlassian.net",
   "jql": "fixVersion = \"v3001.124.0\" ORDER BY updated DESC",
-  "pulledAt": "2026-11-25T11:39:25.614Z",
-  "pulledAtDisplay": "Nov 25, 2026, 6:39 AM",
+  "pulledAt": "2026-11-25T11:44:30.539Z",
+  "pulledAtDisplay": "Nov 25, 2026, 6:44 AM",
   "total": 24,
   "issues": [
     {
@@ -1809,10 +1809,10 @@
     "queryDescription": "Jira board \"GN Core Platform\" sprint \"2026.8\"",
     "jql": "project = \"CORE\" AND Sprint = \"2026.8\"",
     "jiraFilterUrl": "https://golfnow.atlassian.net/jira/software/c/projects/CORE/boards/75",
-    "pulledAt": "2026-11-25T11:39:25.614Z",
-    "pulledAtDisplay": "Nov 25, 2026, 6:39 AM",
-    "total": 581,
-    "mainTotal": 551,
+    "pulledAt": "2026-11-25T11:44:30.539Z",
+    "pulledAtDisplay": "Nov 25, 2026, 6:44 AM",
+    "total": 582,
+    "mainTotal": 552,
     "subtaskTotal": 30,
     "issues": [
       {
@@ -8104,6 +8104,56 @@
           "type": "Epic",
           "status": "Backlog",
           "priority": "P1"
+        }
+      },
+      {
+        "key": "CORE-15011",
+        "url": "https://golfnow.atlassian.net/browse/CORE-15011",
+        "summary": "Logging errors",
+        "description": "Found on CORE-14942.  Rewritten here for visibility.\n\nSummary\nSome code builds an exception just to log it, without throwing it. An exception that was never thrown has no TargetSite and no stack trace. CRMDataAccess.LogError reads TargetSite to build the error log's PageName, so it hits a NullReferenceException internally. LogError catches that itself, so the row is still written and nothing reaches the caller. But the PageName shows \"Unknown on {host}\" instead of the class and method, there is no stack trace, and a debugger set to break on all exceptions stops on it.\n\nFound during PROA sandbox testing under CORE-14998. The PROA warning log was fixed there by throwing and catching the exception before logging it.\n\nAffected: tee sheets (all go through CRMDataAccess.LogError)\n\n- EZLinksTeeOffTeesheet.cs line 482: WARNING EZLTMinMaxFlex (min and max flex fee both $0)\n\n- EZLinksTeeOffTeesheet.cs lines 537, 561, 586: WARNING EZLTDueAtCourse ($0.00 due at course on a non-trade time)\n\n- EZLinksTeeOffTeesheet.cs line 603: Fatal\n\n- EZLinksTeeSheet.cs lines 457, 474, 496, 1946, 2210: Fatal\n\n- Each Fatal log builds a new TeeSheetException from a caught EZLinksException and doesn't keep the original as the inner exception, so the original stack trace is lost as well.\n\nAffected: other callers of CRMDataAccess.LogError\n\n- DotNet2/AutoLoad/Console.cs lines 91, 95\n\n- DotNet2/CRM/domain/Customer/Customer.cs line 819\n\n- DotNet2/CRM/Web/res_eml/eml_search.aspx.cs lines 74, 91\n\n- DotNet2/CRMAPI/API/App_Code/URLRewriter.cs line 164\n\n- TeeTimesAPI CancellationProcessor.cs lines 575, 595\n\nNeeds checking\n\n- ProcessYesmailUpdates/EmailUpdate.cs line 193 passes an exception it never threw to a LogError method that isn't defined in the repo. It may come from a referenced assembly. Find out which logger it uses.\n\n- DBL.SQLDataAccess.DataAccess.LogError reads TargetSite with no try/catch, so an exception that was never thrown would make it throw to its caller. No callers were found. Suggest removing it.\n\nNot affected\n\n- Callers that use LogServiceProxy, the Notification LogHelper or BaseLogger. These loggers don't read TargetSite, so nothing throws. The only loss is the stack trace, which is expected for an exception that was never thrown.\n\nOptions\n\n- Fix each caller: throw and catch the exception before logging it (as PROA does now), using a shared helper in GolfNow.Framework.TeeSheets. For the Fatal logs, also keep the caught EZLinksException as the inner exception.\n\n- Make CRMDataAccess.LogError null-safe when reading TargetSite, keeping the \"Unknown\" fallback. This is a one-line change and the logged rows stay the same. It covers every caller, but CRMDataAccess is shared widely and needs its own review and deployment.\n\n- Both (recommended): fix the tee sheet callers first, since they log real booking failures, then make the CRMDataAccess check a separate change.\n\nSteps\n\n- Decide on the option.\n\n- Tee sheets: add a shared helper, update the 10 EZL and EZLT calls, keep the inner exception on the Fatal logs, and unit test the helper.\n\n- Decide whether the other CRMDataAccess callers get changed or are left to option 2.\n\n- Find out which logger the Yesmail LogError uses.\n\n- Decide whether to remove DBL DataAccess.LogError.\n\n- Manual check in DEV: trigger an EZLT $0.00 due-at-course warning and an EZL booking failure, and confirm the CRM error log PageName shows the class and method instead of \"Unknown\".",
+        "descriptionHtml": "<p>Found on <a href=\"https://golfnow.atlassian.net/browse/CORE-14942\" target=\"_blank\" rel=\"noopener\">CORE-14942</a>.  Rewritten here for visibility.</p><p>Summary<br>Some code builds an exception just to log it, without throwing it. An exception that was never thrown has no TargetSite and no stack trace. CRMDataAccess.LogError reads TargetSite to build the error log's PageName, so it hits a NullReferenceException internally. LogError catches that itself, so the row is still written and nothing reaches the caller. But the PageName shows &quot;Unknown on {host}&quot; instead of the class and method, there is no stack trace, and a debugger set to break on all exceptions stops on it.</p><p>Found during PROA sandbox testing under CORE-14998. The PROA warning log was fixed there by throwing and catching the exception before logging it.</p><p>Affected: tee sheets (all go through CRMDataAccess.LogError)</p><ul><li><p>EZLinksTeeOffTeesheet.cs line 482: WARNING EZLTMinMaxFlex (min and max flex fee both $0)</p></li><li><p>EZLinksTeeOffTeesheet.cs lines 537, 561, 586: WARNING EZLTDueAtCourse ($0.00 due at course on a non-trade time)</p></li><li><p>EZLinksTeeOffTeesheet.cs line 603: Fatal</p></li><li><p>EZLinksTeeSheet.cs lines 457, 474, 496, 1946, 2210: Fatal</p></li><li><p>Each Fatal log builds a new TeeSheetException from a caught EZLinksException and doesn't keep the original as the inner exception, so the original stack trace is lost as well.</p></li></ul><p>Affected: other callers of CRMDataAccess.LogError</p><ul><li><p>DotNet2/AutoLoad/Console.cs lines 91, 95</p></li><li><p>DotNet2/CRM/domain/Customer/Customer.cs line 819</p></li><li><p>DotNet2/CRM/Web/res_eml/eml_search.aspx.cs lines 74, 91</p></li><li><p>DotNet2/CRMAPI/API/App_Code/URLRewriter.cs line 164</p></li><li><p>TeeTimesAPI CancellationProcessor.cs lines 575, 595</p></li></ul><p>Needs checking</p><ul><li><p>ProcessYesmailUpdates/EmailUpdate.cs line 193 passes an exception it never threw to a LogError method that isn't defined in the repo. It may come from a referenced assembly. Find out which logger it uses.</p></li><li><p>DBL.SQLDataAccess.DataAccess.LogError reads TargetSite with no try/catch, so an exception that was never thrown would make it throw to its caller. No callers were found. Suggest removing it.</p></li></ul><p>Not affected</p><ul><li><p>Callers that use LogServiceProxy, the Notification LogHelper or BaseLogger. These loggers don't read TargetSite, so nothing throws. The only loss is the stack trace, which is expected for an exception that was never thrown.</p></li></ul><p>Options</p><ol><li><p>Fix each caller: throw and catch the exception before logging it (as PROA does now), using a shared helper in GolfNow.Framework.TeeSheets. For the Fatal logs, also keep the caught EZLinksException as the inner exception.</p></li><li><p>Make CRMDataAccess.LogError null-safe when reading TargetSite, keeping the &quot;Unknown&quot; fallback. This is a one-line change and the logged rows stay the same. It covers every caller, but CRMDataAccess is shared widely and needs its own review and deployment.</p></li><li><p>Both (recommended): fix the tee sheet callers first, since they log real booking failures, then make the CRMDataAccess check a separate change.</p></li></ol><p>Steps</p><ul><li><p>Decide on the option.</p></li><li><p>Tee sheets: add a shared helper, update the 10 EZL and EZLT calls, keep the inner exception on the Fatal logs, and unit test the helper.</p></li><li><p>Decide whether the other CRMDataAccess callers get changed or are left to option 2.</p></li><li><p>Find out which logger the Yesmail LogError uses.</p></li><li><p>Decide whether to remove DBL DataAccess.LogError.</p></li><li><p>Manual check in DEV: trigger an EZLT $0.00 due-at-course warning and an EZL booking failure, and confirm the CRM error log PageName shows the class and method instead of &quot;Unknown&quot;.</p></li></ul>",
+        "descriptionImageCount": 0,
+        "descriptionVideoCount": 0,
+        "descriptionMediaCount": 0,
+        "commentCount": 0,
+        "comments": [],
+        "lastCommentUrl": "",
+        "lastCommentDisplay": "",
+        "lastCommentAuthor": "",
+        "testChecklist": null,
+        "type": "Bug",
+        "isSubtask": false,
+        "status": "Pre Planning",
+        "priority": "None",
+        "assignee": "Unassigned",
+        "assigneeAccountId": "",
+        "assigneeAvatarUrl": "",
+        "assignedDeveloper": "Unassigned",
+        "assignedDeveloperAccountId": "",
+        "assignedDeveloperAvatarUrl": "",
+        "updated": "2026-11-25T06:39:27.157-0500",
+        "updatedDisplay": "Nov 25, 2026, 6:39 AM",
+        "created": "2026-11-25T06:38:29.670-0500",
+        "createdDisplay": "Nov 25, 2026, 6:38 AM",
+        "components": [],
+        "fixVersions": [],
+        "sprints": [
+          {
+            "name": "2026.8"
+          }
+        ],
+        "sprintNames": [
+          "2026.8"
+        ],
+        "resolution": "",
+        "parent": {
+          "key": "CORE-14268",
+          "url": "https://golfnow.atlassian.net/browse/CORE-14268",
+          "summary": "OpEx",
+          "description": "",
+          "type": "Epic",
+          "status": "Backlog",
+          "priority": "None"
         }
       },
       {
@@ -45502,13 +45552,13 @@
   "calendarMenu": {
     "schemaVersion": "hq-calendar/v1",
     "refreshSeconds": 300,
-    "pulledAt": "2026-11-25T11:36:48.545Z",
-    "pulledAtDisplay": "Nov 25, 2026, 6:36 AM",
+    "pulledAt": "2026-11-25T11:41:40.728Z",
+    "pulledAtDisplay": "Nov 25, 2026, 6:41 AM",
     "window": {
-      "start": "2026-10-11T11:36:48.545Z",
-      "end": "2027-05-24T11:36:48.545Z",
-      "startDisplay": "Oct 11, 2026, 7:36 AM",
-      "endDisplay": "May 24, 2027, 7:36 AM"
+      "start": "2026-10-11T11:41:40.728Z",
+      "end": "2027-05-24T11:41:40.728Z",
+      "startDisplay": "Oct 11, 2026, 7:41 AM",
+      "endDisplay": "May 24, 2027, 7:41 AM"
     },
     "defaultSourceId": "gn-releases",
     "duplicateSourceUrls": false,
@@ -45521,7 +45571,7 @@
         "url": "https://golfnow.atlassian.net/wiki/display/GQE/calendar/413a852e-d20c-454c-9808-425e167314f2?calendarName=GN%20Releases",
         "description": "Default GN Releases Confluence Team Calendar.",
         "status": "loaded",
-        "pulledAt": "2026-11-25T11:36:51.617Z",
+        "pulledAt": "2026-11-25T11:41:43.519Z",
         "eventCount": 83,
         "events": [
           {
@@ -46941,10 +46991,10 @@
     ]
   },
   "pullDiff": {
-    "previousPulledAt": "2026-11-25T11:34:25.975Z",
-    "previousPulledAtDisplay": "Nov 25, 2026, 6:34 AM",
-    "currentPulledAt": "2026-11-25T11:39:25.614Z",
-    "currentPulledAtDisplay": "Nov 25, 2026, 6:39 AM",
+    "previousPulledAt": "2026-11-25T11:39:25.614Z",
+    "previousPulledAtDisplay": "Nov 25, 2026, 6:39 AM",
+    "currentPulledAt": "2026-11-25T11:44:30.539Z",
+    "currentPulledAtDisplay": "Nov 25, 2026, 6:44 AM",
     "isBaseline": false,
     "added": [],
     "removed": [],
@@ -46952,6 +47002,17 @@
     "statusChanges": []
   },
   "pullHistory": [
+    {
+      "previousPulledAt": "2026-11-25T11:39:25.614Z",
+      "previousPulledAtDisplay": "Nov 25, 2026, 6:39 AM",
+      "currentPulledAt": "2026-11-25T11:44:30.539Z",
+      "currentPulledAtDisplay": "Nov 25, 2026, 6:44 AM",
+      "isBaseline": false,
+      "added": [],
+      "removed": [],
+      "updated": [],
+      "statusChanges": []
+    },
     {
       "previousPulledAt": "2026-11-25T11:34:25.975Z",
       "previousPulledAtDisplay": "Nov 25, 2026, 6:34 AM",
@@ -48783,17 +48844,6 @@
       "previousPulledAtDisplay": "Nov 24, 2026, 4:18 PM",
       "currentPulledAt": "2026-11-24T21:24:14.800Z",
       "currentPulledAtDisplay": "Nov 24, 2026, 4:24 PM",
-      "isBaseline": false,
-      "added": [],
-      "removed": [],
-      "updated": [],
-      "statusChanges": []
-    },
-    {
-      "previousPulledAt": "2026-11-24T21:14:24.017Z",
-      "previousPulledAtDisplay": "Nov 24, 2026, 4:14 PM",
-      "currentPulledAt": "2026-11-24T21:18:18.114Z",
-      "currentPulledAtDisplay": "Nov 24, 2026, 4:18 PM",
       "isBaseline": false,
       "added": [],
       "removed": [],
